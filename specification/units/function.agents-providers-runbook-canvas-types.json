@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "function.agents-providers-runbook-canvas-types",
+	"uid": "u_kg5hqd6hij",
+	"kind": "function",
+	"title": "runbookCanvas",
+	"responsibility": "Define the runbook source, canvas state and port shapes used to keep one Slack canvas equal to the repository runbooks.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/agents-providers/runbookCanvas.types.ts"],
+		"symbols": ["RunbookSource", "RunbookCanvasState", "RunbookCanvasPorts"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/agents-providers/runbookCanvas.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/agents-providers/runbookCanvas.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

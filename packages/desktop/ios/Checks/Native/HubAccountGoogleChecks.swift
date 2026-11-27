@@ -56,9 +56,12 @@ func accountComputerChecks() {
     bench.hub.routes["POST \(path)"] = { _ in hubJSON(202, ["state": "requested"]) }
     let prepared: Result<RemotePairing.Input, HubAccountFailure>? =
         awaited { bench.session.computerPairing(hostId, name: "iPhone", done: $0) }
-    guard let input = try? prepared?.get(), let account = input.account else {
+    guard let input = try? prepared?.get() else {
         return check(false, "account computers: the native session prepares pairing")
     }
+    let account = input.account
+    check(input.code.isEmpty && account.subject == bench.session.credential?.subject,
+          "account computers: the connection is bound to the signed-in subject and takes no code")
     accountComputerRequest(bench, input: input, account: account, path: path)
 }
 

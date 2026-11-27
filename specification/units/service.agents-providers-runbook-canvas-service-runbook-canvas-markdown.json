@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-runbook-canvas-service-runbook-canvas-markdown",
+	"uid": "u_kg5hqb4cde",
+	"kind": "service",
+	"title": "runbookCanvasMarkdown",
+	"responsibility": "Owns the runbookCanvasMarkdown service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/runbook-canvas-service/runbookCanvasMarkdown.ts"],
+		"symbols": ["runbookCanvasMarkdown"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runbookCanvasMarkdown.title",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "runbookCanvasMarkdown.runbooks",
+				"type": "readonly RunbookSource[]",
+				"required": true
+			},
+			{
+				"name": "runbookCanvasMarkdown.allowedOrigins",
+				"type": "readonly string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "runbookCanvasMarkdown",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runbookCanvasMarkdown",
+				"inputs": [
+					{
+						"name": "runbookCanvasMarkdown.title",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "runbookCanvasMarkdown.runbooks",
+						"type": "readonly RunbookSource[]",
+						"required": true
+					},
+					{
+						"name": "runbookCanvasMarkdown.allowedOrigins",
+						"type": "readonly string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runbookCanvasMarkdown",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-redact-secrets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-runbook-canvas-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/runbook-canvas-service/runbookCanvasMarkdown.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/runbook-canvas-service/runbookCanvasMarkdown.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,9 +1,22 @@
 // @harness-uid u_fyf7e7kyi5
-import { createHash } from 'node:crypto';
-import { closeSync, constants, fstatSync, openSync, readFileSync } from 'node:fs';
+import { createHash, randomUUID } from 'node:crypto';
+import {
+	closeSync,
+	constants,
+	fstatSync,
+	openSync,
+	readFileSync,
+	renameSync,
+	rmSync,
+	writeFileSync
+} from 'node:fs';
 import { join } from 'node:path';
 import { z } from 'zod';
+import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';
+import { claudeStartupFailure } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchSchema';
 import type { TrackerHostSession } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
+import { managedClaudeStartupPhase } from './trackerClaudeStartupPhase';
+import { trackerStartupCause } from './trackerStartupCause';
 import type {
 	TrackerManagedPresence,
 	TrackerManagedReceipt
@@ -16,7 +29,8 @@ const receiptSchema = z.strictObject({
 	key: z.string(),
 	token: z.string().regex(/^[a-f0-9]{64}$/),
 	tmux: z.string().regex(/^auto-[a-z0-9]{6}-r[0-9]+$/),
-	issuedAt: z.int().nonnegative()
+	issuedAt: z.int().nonnegative(),
+	checkClaudeStartup: z.literal(true).optional()
 });
 
 export function trackerManagedToken(node: string, key: string): string {
@@ -38,6 +52,12 @@ export function checkTrackerManagedReceipt(
 	return record;
 }
 
+/** Where one attempt runs: its own worktree unless it recorded that it runs in place. */
+export function trackerManagedWorkingDirectory(directory: string, node: string, key: string) {
+	const attempt = join(directory, trackerManagedToken(node, key));
+	return privateRecord(join(attempt, 'working-directory')) ?? join(attempt, 'worktree');
+}
+
 export function trackerManagedEvidence(
 	directory: string,
 	receipt: TrackerManagedReceipt,
@@ -49,7 +69,11 @@ export function trackerManagedEvidence(
 	if (presence === 'unknown' && exitCode === undefined) return undefined;
 	let state: TrackerHostSession['state'] = 'exited';
 	if (exitCode === undefined) state = presence === 'absent' ? 'lost' : 'live';
+	const diagnostic = exitCode
+		? trackerStartupCause(privateRecord(join(directory, 'startup-error')) ?? '')
+		: undefined;
 	return {
+		...(diagnostic && { diagnostic }),
 		itemId: receipt.itemId,
 		key: receipt.key,
 		id: receipt.token,
@@ -100,4 +124,76 @@ function openTrackerReceipt(path: string): number | undefined {
 		if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return undefined;
 		throw error;
 	}
+}
+
+/** Keep a new Claude attempt queued until its own pane reaches the composer. */
+export async function confirmManagedClaudeStartup(
+	{
+		path,
+		receipt,
+		tmux,
+		socket,
+		live
+	}: {
+		path: string;
+		receipt: TrackerManagedReceipt;
+		tmux: string;
+		socket: string;
+		live: boolean;
+	},
+	session: TrackerHostSession,
+	signal: AbortSignal
+): Promise<TrackerHostSession | undefined> {
+	const marker = join(path, 'claude-startup');
+	const recorded = privateRecord(marker);
+	if (recorded === 'ready') return session;
+	const result = recorded
+		? claudeStartupFailure.parse(recorded)
+		: await managedClaudeStartupPhase(
+				// A worker that already failed will never reach the composer.
+				{ tmux, socket, live: live && !session.exitCode, directory: path },
+				receipt,
+				signal
+			);
+	if (!result) return undefined;
+	if (!recorded) writeClaudeStartup(marker, result);
+	if (result === 'ready') return session;
+	if (live) await closeClaudeStartupPane(tmux, socket, receipt, signal);
+	return { ...session, startupFailure: result };
+}
+
+function writeClaudeStartup(path: string, phase: string): void {
+	const temporary = `${path}.${randomUUID()}.tmp`;
+	try {
+		writeFileSync(temporary, phase, { mode: 0o600, flag: 'wx' });
+		renameSync(temporary, path);
+	} finally {
+		rmSync(temporary, { force: true });
+	}
+}
+
+async function closeClaudeStartupPane(
+	tmux: string,
+	socket: string,
+	receipt: TrackerManagedReceipt,
+	signal: AbortSignal
+) {
+	await runTrackerHostCommand(
+		tmux,
+		[
+			'-L',
+			socket,
+			'if-shell',
+			'-F',
+			'-t',
+			`=${receipt.tmux}:`,
+			`#{==:#{HARNESS_TRACKER_ATTEMPT},${receipt.token}}`,
+			`kill-session -t =${receipt.tmux}`
+		],
+		signal
+	);
+}
+
+export function managedSessionName(itemId: string, runId: number): string {
+	return `auto-${itemId.slice(0, 6)}-r${runId}`;
 }

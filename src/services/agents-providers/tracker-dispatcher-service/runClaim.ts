@@ -5,22 +5,22 @@ import type {
 	TrackerDispatchPolicy,
 	TrackerDispatchSnapshot,
 	TrackerDueGrant,
-	TrackerLaunchIntent,
 	TrackerLaunchRung,
 	TrackerRunReceipt
 } from '../TrackerDispatcherService.types';
 import {
 	attemptKey,
-	canonicalNode,
+	automaticRequestHold,
 	dueItemHold,
 	hasOpenSession,
 	matchesRequest,
-	mayScheduleHere,
 	minute,
 	ownsLaunch,
+	schedulingHold,
 	skip,
 	startable
 } from './launchEligibility';
+import { dueGrantHold } from './dueGrantHold';
 import { etaFor, failRun, finishRun, queueRun, recordRun, reviseRun } from './runReceipt';
 
 // Give an interrupted host start time to publish its session evidence.
@@ -53,11 +53,16 @@ export function prepareRetry(
 	now: number
 ): TrackerDispatchDecision {
 	const { item } = snapshot;
-	if (run.state !== 'queued' || run.dispatch_at !== undefined || run.cli === 'none') {
+	if (!awaitingRetry(run)) {
 		return skip('ignored', 'attempt is no longer awaiting dispatch');
 	}
-	if (item?.launch?.token !== run.auto_token || expiredUnavailableRetry(item, run, now))
+	if (!item || item.launch?.token !== run.auto_token)
 		return retireUnstartedRun(snapshot, run, { policy, now });
+	const itemHold = schedulingHold(item, now);
+	if (itemHold)
+		return recordRun(finishRun(run, { outcome: 'abandoned', reason: itemHold, now }), {
+			launch: null
+		});
 	const hold = claimHold(snapshot, { item, grant, run }, policy, now);
 	if (hold) return skip('held', hold);
 	const rung = {
@@ -68,12 +73,20 @@ export function prepareRetry(
 		pinned: run.pinned
 	};
 	const problem = policy.admit(item, item.launch, rung);
-	if (problem) return skip('held', problem);
+	if (problem) {
+		if (problem === run.failure_reason) return skip('held', problem);
+		return {
+			result: { status: 'held', reason: problem },
+			writes: { runs: [reviseRun(run, { failure_reason: problem })] }
+		};
+	}
 	return reserveStart(item, { run, rung }, policy, now);
 }
 
-function expiredUnavailableRetry(item: TrackerDispatchItem, run: TrackerRunReceipt, now: number) {
-	return !startable(item) && now - run.queued_at >= launchStartupGrace;
+function awaitingRetry(
+	run: TrackerRunReceipt
+): run is TrackerRunReceipt & { cli: Exclude<TrackerRunReceipt['cli'], 'none'> } {
+	return run.state === 'queued' && run.dispatch_at === undefined && run.cli !== 'none';
 }
 
 export function retireUnstartedRun(
@@ -94,10 +107,15 @@ export function retireUnstartedRun(
 		now - (run.dispatch_at ?? run.queued_at) < launchStartupGrace
 	)
 		return skip('ignored', 'launch reservation is owned elsewhere or still within startup grace');
-	const failure = { outcome: 'abandoned', reason: 'launch expired before startup', now } as const;
+	const failure = expiredStart(run, now);
 	if (run.dispatch_at !== undefined && startable(item))
 		return failRun(snapshot, run, { ...failure, startup: true }, clock);
 	return recordRun(finishRun(run, failure), { launch: null });
+}
+
+function expiredStart({ failure_reason: cause }: TrackerRunReceipt, now: number) {
+	const reason = `launch expired before startup${cause ? `: ${cause}` : ''}`;
+	return { outcome: 'abandoned', reason, now } as const;
 }
 
 function unstartedRun({ activeSessionKeys }: TrackerDispatchSnapshot, run: TrackerRunReceipt) {
@@ -120,8 +138,8 @@ function claimHold(
 	now: number
 ): string | null {
 	const intent = item.launch!;
-	if (policy.enabled === false) return 'launcher disabled';
-	if (!startable(item)) return 'item is not startable';
+	const eligibility = claimItemHold(item, Boolean(run), policy, now);
+	if (eligibility) return eligibility;
 	if (!ownsLaunch(intent, policy)) return 'launch is assigned to a different computer';
 	if (hasOpenSession(snapshot, policy, now, run)) return 'item already has an open session';
 	if (intent.source !== 'due') return null;
@@ -134,51 +152,19 @@ function claimHold(
 	);
 }
 
-function dueGrantHold(
-	{ due, lastDueStartAt }: TrackerDispatchSnapshot,
-	{
-		item,
-		intent,
-		grant
-	}: { item: TrackerDispatchItem; intent: TrackerLaunchIntent; grant?: TrackerDueGrant },
-	policy: TrackerDispatchPolicy,
-	now: number
-): string | null {
-	if (!due || due.paused) return 'due scheduler unavailable or paused';
-	const canSchedule = mayScheduleHere(item, due, policy);
-	if (policy.hub)
-		return hubHold(item, { enabled: due.enabled, canSchedule, lastDueStartAt }, policy, now);
-	if (
-		grant?.token !== intent.token ||
-		canonicalNode(grant.node, policy) !== canonicalNode(policy.node, policy)
-	) {
-		return 'waiting for the hub to authorize due launch';
-	}
-	return acceptsGrant(grant, canSchedule, Boolean(item.adapterDueOwner))
-		? null
-		: 'waiting for the hub to authorize due launch';
-}
-
-function acceptsGrant(grant: TrackerDueGrant, canSchedule: boolean, isAdapterDue: boolean) {
-	if (grant.decision === 'unreachable') return canSchedule;
-	return grant.decision === 'granted' && (!isAdapterDue || canSchedule);
-}
-
-function hubHold(
+function claimItemHold(
 	item: TrackerDispatchItem,
-	{
-		enabled,
-		canSchedule,
-		lastDueStartAt
-	}: { enabled: boolean; canSchedule: boolean; lastDueStartAt?: number },
+	retry: boolean,
 	policy: TrackerDispatchPolicy,
 	now: number
 ) {
-	if (item.adapterDueOwner ? !canSchedule : !enabled) return 'due scheduler disabled for this item';
-	const interval = policy.dueIntervalMs ?? 15_000;
-	return lastDueStartAt !== undefined && now - lastDueStartAt < interval
-		? 'due launch interval has not elapsed'
-		: null;
+	if (policy.enabled === false) return 'launcher disabled';
+	if (item.launch!.source !== 'manual' || retry) {
+		const hold = automaticRequestHold(item, policy, now);
+		if (hold) return hold;
+	}
+	if (!startable(item)) return 'item is not startable';
+	return null;
 }
 
 function reserveStart(
@@ -188,13 +174,15 @@ function reserveStart(
 	now: number
 ): TrackerDispatchDecision {
 	const intent = item.launch!;
-	const reserved = reviseRun(run, { dispatch_at: now, eta_at: etaFor(item, policy, now) });
+	// A run queued before the model change starts on its replacement.
+	const model = rung.model === 'gpt-6.1-sol' ? 'gpt-6.2-sol' : rung.model;
+	const reserved = reviseRun(run, { model, dispatch_at: now, eta_at: etaFor(item, policy, now) });
 	return {
 		result: {
 			status: 'start',
 			run: reserved,
 			key: attemptKey(reserved),
-			selection: { provider: rung.cli, model: rung.model, intelligence: rung.effort ?? '' }
+			selection: { provider: rung.cli, model, intelligence: rung.effort ?? '' }
 		},
 		writes: {
 			runs: [reserved],

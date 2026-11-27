@@ -1,0 +1,215 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.service.networking-security-linked-home",
+	"uid": "u_ppvcb4vola",
+	"kind": "service",
+	"title": "LinkedHomeService",
+	"responsibility": "Reads the Home view of every online computer linked to the signed-in account over the encrypted device connection, keeping each connection for the next read.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/services/networking-security/LinkedHomeService.ts",
+			"packages/hub/src/services/networking-security/LinkedHomeService.types.ts"
+		],
+		"symbols": [
+			"LinkedHome",
+			"LinkedHomeService",
+			"LinkedHomeService.constructor",
+			"LinkedHomeService.read",
+			"LinkedHomeService.chat",
+			"LinkedHomeService.close",
+			"LinkedHome",
+			"Connect"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "LinkedHomeService.constructor.api",
+				"type": "BrowserApi",
+				"required": true,
+				"description": "Same-origin Hub API used to list the account’s linked computers."
+			},
+			{
+				"name": "LinkedHomeService.constructor.actor",
+				"type": "string",
+				"required": true,
+				"description": "Verified account id; keys the stored device identity for each computer."
+			},
+			{
+				"name": "LinkedHomeService.constructor.create",
+				"type": "Connect",
+				"required": false,
+				"description": "Makes the connection to one computer. Defaults to a browser connection using the stored device keys."
+			},
+			{
+				"name": "LinkedHomeService.chat.message",
+				"type": "HomeChatInput",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "LinkedHomeService.read",
+				"type": "Promise<LinkedHome>",
+				"description": "How many computers are linked, how many answered, and their merged Home view (null when none answered). Never throws: a failing computer is dropped and retried next read."
+			},
+			{
+				"name": "LinkedHomeService.close",
+				"type": "void",
+				"description": "Nothing. Closes every connection; later reads answer nothing."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "LinkedHomeService.read",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LinkedHomeService.read",
+						"type": "Promise<LinkedHome>",
+						"description": "How many computers are linked, how many answered, and their merged Home view (null when none answered). Never throws: a failing computer is dropped and retried next read."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LinkedHomeService.chat",
+				"inputs": [
+					{
+						"name": "LinkedHomeService.chat.message",
+						"type": "HomeChatInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LinkedHomeService.chat",
+						"type": "Promise<HomeChatReceipt | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LinkedHomeService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LinkedHomeService.close",
+						"type": "void",
+						"description": "Nothing. Closes every connection; later reads answer nothing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "LinkedHomeService.constructor",
+				"inputs": [
+					{
+						"name": "LinkedHomeService.constructor.api",
+						"type": "BrowserApi",
+						"required": true,
+						"description": "Same-origin Hub API used to list the account’s linked computers."
+					},
+					{
+						"name": "LinkedHomeService.constructor.actor",
+						"type": "string",
+						"required": true,
+						"description": "Verified account id; keys the stored device identity for each computer."
+					},
+					{
+						"name": "LinkedHomeService.constructor.create",
+						"type": "Connect",
+						"required": false,
+						"description": "Makes the connection to one computer. Defaults to a browser connection using the stored device keys."
+					}
+				],
+				"outputs": [
+					{
+						"name": "LinkedHomeService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.networking-security-browser-device-keys",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-merge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.networking-security-browser-computer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.networking-security-linked-home-chat",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-control-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-direct-agents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/services/networking-security/LinkedHomeService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/services/networking-security/LinkedHomeService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

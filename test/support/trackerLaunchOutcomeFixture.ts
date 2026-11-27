@@ -1,62 +1,10 @@
+import { seedBlockedLaunch } from './trackerObservedRunFixture';
 import type { DatabaseSync } from 'node:sqlite';
 import { expect } from 'vitest';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerSupervisorService } from '../../src/services/projects-sessions/TrackerSupervisorService';
+import { watchLaunchRequests } from '../../src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests';
 import { trackerNodeApi } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeListeners';
-import { fixtureTrackerJson, trackerProcess } from './trackerNodeProcess';
-import type { TrackerNodeFixture } from './trackerNodeProcess.types';
-
-export async function verifyLaunchCliOptions(spoke: TrackerNodeFixture, id: string) {
-	const short = id.slice(0, 6);
-	const launch = ['launch', short, '--project', 'Tracker', '--model', 'Fable:high'];
-	const rejected = await trackerProcess(spoke, launch).exited;
-	expect(rejected).toMatchObject({
-		code: 1,
-		stdout: '',
-		stderr: expect.stringContaining('launcher disabled')
-	});
-	const launched = await fixtureTrackerJson(spoke, ['show', short]);
-	expect(launched).toMatchObject({
-		id,
-		auto: expect.stringMatching(/^synthetic-spoke@/),
-		launch_source: 'manual',
-		launch_target: 'synthetic-spoke',
-		project: 'Tracker',
-		model: 'Fable:high'
-	});
-	expect((await trackerProcess(spoke, launch).exited).code).toBe(1);
-	expect(await fixtureTrackerJson(spoke, ['show', short])).toEqual(launched);
-	expect(await fixtureTrackerJson(spoke, ['pick', short])).toMatchObject({
-		rung: 'fable',
-		model: 'claude-fable-5-2',
-		effort: 'high',
-		pinned: true
-	});
-	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
-		1
-	);
-	await verifyLaunchCliTimeout(spoke, short, id);
-	expect(await fixtureTrackerJson(spoke, ['launch', 'on', short])).toMatchObject({
-		id,
-		schedule_off: false
-	});
-}
-
-async function verifyLaunchCliTimeout(spoke: TrackerNodeFixture, short: string, id: string) {
-	const clear = ['launch', 'off', short];
-	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({
-		id,
-		auto: null,
-		schedule_off: true
-	});
-	const waiting = await trackerProcess(spoke, ['launch', short, '--computer', 'grok-box']).exited;
-	expect(waiting).toMatchObject({
-		code: 1,
-		stdout: '',
-		stderr: expect.stringContaining('no run confirmation within 20 seconds on grok-box')
-	});
-	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({ id, auto: null });
-}
 
 export async function verifyLaunchWatchdogBoundary(
 	runtime: TrackerNativeRuntimeService,
@@ -72,7 +20,8 @@ export async function verifyLaunchWatchdogBoundary(
 			kind: 'task',
 			status: 'open',
 			launch_target: 'harbor-mbp-2',
-			auto: 'fixture-request'
+			auto: 'fixture-request',
+			'note+': 'auto-launch requested on harbor-mbp-2'
 		}
 	});
 	advance(minute - 1);
@@ -102,7 +51,8 @@ export async function verifyIdleWatchdogAlert(
 		new Request('http://tracker-fixture.invalid/items/' + itemId)
 	);
 	expect(await item.json()).toMatchObject({
-		needs_daniel: true,
+		needs_daniel: false,
+		question: null,
 		notes_log: [
 			{ text: expect.stringContaining('watchdog nudge 1/1') },
 			{ text: expect.stringContaining('watchdog idle') }
@@ -132,6 +82,8 @@ export async function verifyHostLaunchOutcomes(
 			['recurring1', 'recurring item'],
 			['plan123456', 'item is a plan; only tasks can launch']
 		]) {
+			if (id === 'next100002' || id === 'next100003')
+				await seedBlockedLaunch(runtime, database, id);
 			const held = await launchReply(runtime, id);
 			expect.soft(held.status).toBe(409);
 			expect.soft(await held.json()).toMatchObject({ error: expect.stringContaining(reason) });
@@ -163,6 +115,7 @@ function seedUnlaunchableItems(runtime: TrackerNativeRuntimeService, database: D
 				computer,
 				launch_target: computer,
 				launch_source: 'manual',
+				'note+': 'auto-launch requested on ' + computer,
 				...overrides
 			}
 		});
@@ -174,7 +127,6 @@ function seedUnlaunchableItems(runtime: TrackerNativeRuntimeService, database: D
 		)
 		.run(runtime.now(), runtime.now());
 }
-
 function launchReply(runtime: TrackerNativeRuntimeService, id: string) {
 	return trackerNodeApi(
 		new Request(`http://tracker-fixture.invalid/items/${id}/launch?outcome=run`, {
@@ -185,4 +137,78 @@ function launchReply(runtime: TrackerNativeRuntimeService, id: string) {
 		new TrackerSupervisorService(runtime),
 		'fixture'
 	);
+}
+export async function verifyIdleCapacityQueue(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	signal: AbortSignal,
+	advance: (elapsed: number) => void
+) {
+	const states = {
+		'idle-task1': {},
+		'later-task': { schedule_off: 1 },
+		'blocked-id': { needs_daniel: 1, question: 'Blocked: approval' }
+	};
+	const setActivity = database.prepare('UPDATE items SET updated_at = ? WHERE id = ?');
+	const lastActivity = new Date(runtime.now() - 119 * 60_000).toISOString();
+	for (const [id, state] of Object.entries(states)) {
+		const fields = { title: id, kind: 'task', status: 'open', project: 'Harness', ...state };
+		runtime.store.appendLocal({ itemId: id, fields });
+		setActivity.run(lastActivity, id);
+	}
+	await runtime.watchdog!.tick(signal);
+	const read = async (path: string) =>
+		await (await runtime.items.handle(new Request(`http://localhost${path}`))).json();
+	expect(await read('/items/idle-task1')).toMatchObject({ auto: null });
+	advance(60_000);
+	await runtime.watchdog!.tick(signal);
+	const queued = await read('/items/idle-task1');
+	expect(queued).toMatchObject({ auto: expect.any(String), launch_target: runtime.store.node });
+	expect(await read('/items/later-task')).toMatchObject({ auto: null });
+	expect(await read('/items/blocked-id')).toMatchObject({ auto: null });
+	advance(180_000);
+	await runtime.scheduler!.tick(signal);
+	expect(await read('/items/idle-task1')).toMatchObject({ auto: queued.auto });
+	expect(await read('/digest')).toMatchObject({
+		queued: expect.arrayContaining([
+			expect.objectContaining({ id: 'idle-task1', waiting_minutes: 3 })
+		])
+	});
+	const at = Date.parse(queued.updated_at) + 30 * 60_000;
+	watchLaunchRequests(runtime.store, at);
+	expect(
+		runtime
+			.watchdog!.alerts()
+			.some(({ kind, item_id }) => item_id === 'idle-task1' && kind === 'launch-queue-stuck')
+	).toBe(false);
+	watchLaunchRequests(runtime.store, at + 1);
+	expect(runtime.watchdog!.alerts()).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({ item_id: 'idle-task1', kind: 'launch-queue-stuck' })
+		])
+	);
+	expect(watchLaunchRequests(runtime.store, at + 1)).toBe(false);
+	verifyUrgentQueueAlert(runtime);
+}
+function verifyUrgentQueueAlert(runtime: TrackerNativeRuntimeService) {
+	const id = 'urgent0001';
+	const now = runtime.now();
+	runtime.store.appendLocal({
+		itemId: id,
+		fields: {
+			title: 'Urgent tester intake',
+			kind: 'task',
+			status: 'open',
+			priority: 'urgent',
+			adapter_due_owner: runtime.store.node,
+			due: new Date(now).toISOString()
+		}
+	});
+	const alerts = () => runtime.watchdog!.alerts().filter(({ item_id }) => item_id === id);
+	watchLaunchRequests(runtime.store, now + 15 * 60_000);
+	expect(alerts()).toEqual([]);
+	watchLaunchRequests(runtime.store, now + 15 * 60_000 + 1);
+	expect(alerts()).toMatchObject([
+		{ kind: 'urgent-launch-queue-stuck', reason: expect.stringContaining('15 minutes') }
+	]);
 }

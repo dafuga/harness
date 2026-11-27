@@ -30,7 +30,8 @@ export class RemoteHostRuntimeService {
 			hostId,
 			credential: state.credential,
 			onFrame: (frame) => this.frame(frame),
-			onState: (linked) => this.linked(linked)
+			onState: (linked) => this.linked(linked),
+			onUnlinked: options.unlinked
 		});
 	}
 	start(): void {
@@ -57,6 +58,14 @@ export class RemoteHostRuntimeService {
 		}
 		this.options.changed();
 	}
+	private async receive(frame: Extract<RelayHostFrame, { type: 'pairing-request' }>) {
+		const linked = Boolean(this.options.state.ownerId);
+		if (linked !== Boolean(frame.holder)) return;
+		const request = await this.pairing.receive(frame);
+		if (linked && request) this.options.accountRequest(this, request);
+		else this.options.changed();
+	}
+
 	private frame(frame: RelayHostFrame): void {
 		switch (frame.type) {
 			case 'ready':
@@ -75,7 +84,7 @@ export class RemoteHostRuntimeService {
 			case 'packet':
 				return void this.sessions.packet(frame, frame.packet);
 			case 'pairing-request':
-				return void this.pairing.receive(frame).then(() => this.options.changed());
+				return void this.receive(frame);
 			case 'device-revoked':
 				this.options.revoked(frame.deviceId);
 				break;

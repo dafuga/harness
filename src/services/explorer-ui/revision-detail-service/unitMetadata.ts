@@ -1,5 +1,6 @@
 // @harness-uid u_dr2xl6z3dy
-import type { Unit } from './unitMetadata.types';
+
+import type { RevisionUnit } from '../../../utils/verification-evidence/revision-registry/revisionRegistry.types';
 import { explorerKindCategory } from '../../../utils/explorer-ui/explorerRoute';
 import { pureHelpers } from './pureHelpers';
 import { helperConsumers } from './helperConsumers';
@@ -48,7 +49,7 @@ async function helpersAt(tree: Pick<SourceTree, 'read'>, path: string) {
 }
 
 /** Service sharing uses exported runtime bindings, never type exports or module forwarding. */
-async function servicesAt(tree: HelperTree, unit: Unit): Promise<void> {
+async function servicesAt(tree: HelperTree, unit: RevisionUnit): Promise<void> {
 	unit.serviceExports = [];
 	unit.serviceConsumers = [];
 	unit.serviceClasses = [];
@@ -72,7 +73,7 @@ async function servicesAt(tree: HelperTree, unit: Unit): Promise<void> {
 }
 
 /** Enrich the selected revision from its own source; absent historical files stay absent. */
-export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<void> {
+export async function unitMetadata(tree: HelperTree, units: RevisionUnit[]): Promise<void> {
 	const categories = await categoriesAt(tree, units);
 	await configurationsAt(tree, units);
 	await modelsAt(tree, units);
@@ -109,7 +110,7 @@ export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<voi
 	await helperConsumers(tree, units);
 }
 
-async function modelsAt(tree: Pick<SourceTree, 'read'>, units: Unit[]): Promise<void> {
+async function modelsAt(tree: Pick<SourceTree, 'read'>, units: RevisionUnit[]): Promise<void> {
 	for (const unit of units) {
 		if (unit.kind !== 'model') continue;
 		unit.modelDefinitions = [];
@@ -134,7 +135,10 @@ function helperDetails(
 	return { ...helper, ...(examples ? { examples } : {}), ...(group ? { group } : {}) };
 }
 
-async function configurationsAt(tree: Pick<SourceTree, 'read'>, units: Unit[]): Promise<void> {
+async function configurationsAt(
+	tree: Pick<SourceTree, 'read'>,
+	units: RevisionUnit[]
+): Promise<void> {
 	for (const unit of units) {
 		if (unit.kind !== 'config') continue;
 		unit.configValues = [];
@@ -155,7 +159,7 @@ async function configurationsAt(tree: Pick<SourceTree, 'read'>, units: Unit[]): 
 	}
 }
 
-async function categoriesAt(tree: HelperTree, units: Unit[]) {
+async function categoriesAt(tree: HelperTree, units: RevisionUnit[]) {
 	const categories = await new ModuleCategoryService().at(tree);
 	for (const unit of units) {
 		const group = categories ? await canonicalGroup(tree, unit, categories.groups) : undefined;
@@ -166,7 +170,11 @@ async function categoriesAt(tree: HelperTree, units: Unit[]) {
 }
 
 /** Compatibility forwards do not establish a second implementation domain. */
-async function canonicalGroup(tree: Pick<SourceTree, 'read'>, unit: Unit, groups: ModuleGroup[]) {
+async function canonicalGroup(
+	tree: Pick<SourceTree, 'read'>,
+	unit: RevisionUnit,
+	groups: ModuleGroup[]
+) {
 	const group = moduleGroup(unit.owns.source, groups);
 	if (group || !groups.length) return group;
 	const declarations: string[] = [];

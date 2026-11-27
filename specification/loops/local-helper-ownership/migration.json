@@ -6519,6 +6519,446 @@
 			"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 			"reason": "Wire the native device route and Google handoff through the existing Hub auth owner.",
 			"definition": "36972ee8755d60d147dcf4542771b97401e3f6f5f632444fd976804fee62fc7f"
+		},
+		{
+			"unit": "desktop.function.remote-host-identity",
+			"name": "registerRemoteHost",
+			"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+			"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation.",
+			"definition": "134719d5abdcb8e50c42cc1545b64a1c90f0624377d627b2cb7081e441f3a637",
+			"to": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
+			"ownerSource": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts"
+		},
+		{
+			"unit": "desktop.function.remote-labels",
+			"name": "hostLine",
+			"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+			"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation.",
+			"definition": "7cee46fd5bd01fcff42c4fe73cceaa47faea5e5d75d3321c79ce37af55864e1b",
+			"to": "packages/desktop/src/components/networking-security/remote-host-panel/remoteLabels.ts",
+			"ownerSource": "packages/desktop/src/components/networking-security/remote-host-panel/RemoteHostPanel.svelte"
+		},
+		{
+			"unit": "desktop.function.remote-labels",
+			"name": "hostSummary",
+			"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+			"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation.",
+			"definition": "6539a20bc02e4f4495bed9f49748d1053973f0c622aaf955ce21f5bce580f631",
+			"to": "packages/desktop/src/components/networking-security/remote-host-panel/remoteLabels.ts",
+			"ownerSource": "packages/desktop/src/components/networking-security/remote-host-panel/RemoteHostPanel.svelte"
+		},
+		{
+			"unit": "hub.function.compose-hub-auth",
+			"name": "composeHubAuth",
+			"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+			"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation.",
+			"definition": "9818446ee17d960bc6e4a0bd9557ee64a4b5d2e424b1a9b6b0771d716ae8f91f",
+			"to": "packages/hub/src/lib/verification-evidence/server/auth/composeHubAuth.ts",
+			"ownerSource": "packages/hub/src/lib/verification-evidence/server/auth/auth.ts"
+		},
+		{
+			"unit": "desktop.function.qr-symbol",
+			"name": "qrSymbol",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "58126e02237d7de272b36560c9ccc83effe5ce1be4bb1869e174d3fa4d2b3bb4",
+			"retired": true
+		},
+		{
+			"unit": "desktop.function.remote-labels",
+			"name": "timeLeft",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "951d4e94908c1cf7dfea9b10d63f55ae2f98351d4f80fce4e442bad92a9141d5",
+			"retired": true
+		},
+		{
+			"unit": "desktop.function.scan-notice",
+			"name": "scanFailure",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "32249aa25dc97083116e9517b0561f83977557d529203697e45851bb98bbbe24",
+			"retired": true
+		},
+		{
+			"unit": "remote.function.pairing-offer",
+			"name": "pairingOffer",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "a76c0923199af1b68df6b8f7865dd37ce8e610c5091702bc0227f4ab5bfc0446",
+			"retired": true
+		},
+		{
+			"unit": "remote.function.pairing-offer",
+			"name": "readPairingOffer",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "443501ce8fdb41f613733e550773c46b52c647a174436c7ed01718f15b2d0eee",
+			"retired": true
+		},
+		{
+			"unit": "remote.function.remote-identity",
+			"name": "pairingCode",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "a7092bdf2a687b5df2386a9cb98a5a78581a31e22681d67d21c824501310755a",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.activity-client",
+			"name": "activityClient",
+			"commit": "767cc7ce137ab34328e466fe2d46eb5474f47a5f",
+			"reason": "Retired in deferred plan wave 4: no live consumer.",
+			"definition": "e770b23a9d2553ee87a094b05ffedc900267ee8052ee4deab37b589953f749d6",
+			"retired": true
+		},
+		{
+			"unit": "function.helper-consumers",
+			"name": "helperConsumers",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "098f562e795d081a0f6baa9a0c3af21c1fadee408ddd9efe701b41e20e03daaa"
+		},
+		{
+			"unit": "function.record-capture",
+			"name": "evidenceRequested",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "af4352cbff2f16cf3e0b2340779c409a5b69b52ac3484a44b9ff84dff486dca7"
+		},
+		{
+			"unit": "function.unit-metadata",
+			"name": "unitMetadata",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "be78e5d3af9bf380137e841ae7410f375d0783feb0829b3d343d4b8aa5fccc4f"
+		},
+		{
+			"unit": "hub.function.browser-evidence-reads",
+			"name": "browserEvidenceReads",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "d9f38a9b838b734c5659eb04e24a3a3dcd886c610db78112d90a7928778d1cda"
+		},
+		{
+			"unit": "reports.function.contract-fields",
+			"name": "contractFields",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "a9e81cd0600f376ca8207a76d866a8e02081b2109f6c67eb208a8fbe99103b44"
+		},
+		{
+			"unit": "reports.function.e2e-fixtures",
+			"name": "e2eFixtures",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "c9af5236655848bc157c8c6dd1c9d5015c1d96ed746a97d5506ce9c8ba60e9df"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"name": "entityMeasure",
+			"to": "packages/reports/src/components/explorer-ui/entity-sections/entityMeasure.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "7e3930162f6e15b01de04ff4ae3aafc2cae566fa9c4e67952fa635b337f83a06"
+		},
+		{
+			"unit": "reports.function.trackpad-zoom",
+			"name": "imageAnchor",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "19ee7ec1cbcec229281046327dc254613ae9c8f17cbe0fe116c792b1d79708a3"
+		},
+		{
+			"unit": "reports.function.trackpad-zoom",
+			"name": "keepPointerInPlace",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "87f64a711d685ad18f57b0b4257f9a911f7e9e937db15666cee26b9663402bbb"
+		},
+		{
+			"unit": "desktop.function.artifact-media",
+			"name": "artifactMedia",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "880261ae09bf4f585de14ab06335f03999e58a52706321d5f0c6791fe2a2c243",
+			"to": "packages/desktop/src/utils/verification-evidence/artifact-answer/artifactMedia.ts",
+			"ownerSource": "packages/desktop/src/utils/verification-evidence/artifact-answer/artifactAnswer.ts"
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"name": "regionField",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "fef3e77790f17af9304235525859f645dec95b0169a3107b59412c12a32ab9d2",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/regionField.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "threadPayload",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "c48e8d60df16eb6baf0252a617dae81181f59ab43298f96031cfd2c4b3a44fff",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "creationPayload",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "8adaea991904511fcbbf3298f344fcea8064a9ebb2a737289fdf696b4dd6d79a",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "runPayload",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "3d891781378fb3bfb34253fe652fdc43f7705ae9f638fd2a5f800995f2275a5d",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "desktop.function.recorded-projection",
+			"name": "recordedProjection",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "3937ea2625adebea4ef673c8776ccec0e6738d58b03e281d34b22d7272c22064",
+			"to": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedProjection.ts",
+			"ownerSource": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedAnswer.ts"
+		},
+		{
+			"unit": "desktop.function.scrub-environment",
+			"name": "scrubEnvironment",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "0db72e2a49862f3859a846b448bab964d5f991bf03d548b80704c4a95ed5aad0",
+			"to": "packages/desktop/src/utils/execution-runtimes/cli-environment/scrubEnvironment.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/cli-environment/cliEnvironment.ts"
+		},
+		{
+			"unit": "collaboration.function.add-comment",
+			"name": "addComment",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "23f90b201f805e97c56fb6957ab00956218285190c7d390fd0c5916c5c3c756d"
+		},
+		{
+			"unit": "collaboration.function.create-invitation",
+			"name": "acceptInvitation",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "7f4eeefba897135d79e4911f1338777c398d563a2937a46f81ddad2cafd2a556"
+		},
+		{
+			"unit": "desktop.function.hosted-artifact",
+			"name": "hostedArtifact",
+			"to": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/hostedArtifact.ts",
+			"ownerSource": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserArtifact.ts",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "b7780d18c8e7b888c3ef1a7bb040731592aec23eb0df84b98b621cc686e78dcc"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "threadPayload",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "7ce309a7063d20570bc3173226fdd2b12ef1141b1e446789434d5e33363c2aa2"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "runPayload",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "2f8e74596df5ce6743470242586d6471575dae54273a3a77920b6972fe7fde7f"
+		},
+		{
+			"unit": "desktop.function.planning-message",
+			"name": "planningMessage",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "8b0c6b5afcce8d87065845a0755b19747b5bb031ccfe097073cce0ed096c6a36"
+		},
+		{
+			"unit": "desktop.function.planning-reads",
+			"name": "planningReads",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "5b45d759d5b2b7c4cd12d40f865623d2d30eba2a2aa79316642b4dd376a57f63"
+		},
+		{
+			"unit": "desktop.function.planning-reads",
+			"name": "readPlanMessages",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "2aee0e01d1fde37747eea9214b40efeb01d5f0978200b0899758218951e4595e"
+		},
+		{
+			"unit": "desktop.function.planning-writes",
+			"name": "planningWrites",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "bcadd26218c044f8b0c0cdc6a623b49351e354bcfc640cb9d28441e5718f7e1b"
+		},
+		{
+			"unit": "desktop.function.planning-writes",
+			"name": "ensurePlan",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "20262940de05309a96258cd180e4276d338a08226ab09bc3391b280df29e0558"
+		},
+		{
+			"unit": "desktop.function.planning-writes",
+			"name": "addPlanDesign",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "1eb1c1f7acce4f7c3be01e3d6416428ab68f92c825620a3722ed8988e2a20c8c"
+		},
+		{
+			"unit": "desktop.function.planning-writes",
+			"name": "openPlanThread",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "6044276e4ceec03b032972370a2f15df095e2ce1614deecc73e51600d9c4eaf9"
+		},
+		{
+			"unit": "desktop.function.planning-writes",
+			"name": "approvePlanDesign",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "bc865c7a56a0ea1413a5d3085546f263f8ae333f235cdddd8b14f8962e80d720"
+		},
+		{
+			"unit": "hub.function.browser-artifact",
+			"name": "browserArtifact",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "2457f5da75fa23c1f618e871879098f8abc47e0a67ac4762c41b92f04b7db651"
+		},
+		{
+			"unit": "hub.function.hub-evidence-registry",
+			"name": "hubEvidenceRegistry",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "efa489577e9fcfcdc89a444ae76eefb33e5c914b2c73433f19f3cc11bf15482e"
+		},
+		{
+			"unit": "hub.function.hub-evidence-scope",
+			"name": "hubEvidenceContext",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "92a514d798a8a27b8ec65dc0768efbaa1daf1af199a76888a25d55821f529bd1"
+		},
+		{
+			"unit": "hub.function.hub-evidence-scope",
+			"name": "hubEvidenceScope",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "ac894b199848851bbd0874cadfe58f23fd5856c5878ca8ba3b9aef46458038dc"
+		},
+		{
+			"unit": "hub.function.hub-evidence-views",
+			"name": "hubEvidenceViews",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "f60fa1fdb192e6d38426a81614030efdc80e338bc4d060709450689045f96440"
+		},
+		{
+			"unit": "hub.function.hub-snapshot",
+			"name": "hubSnapshot",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "f2f23976c343c2d29767045232cb434017bb892318c3891b13d3d45731a3ed50"
+		},
+		{
+			"unit": "planning.function.plan-design",
+			"name": "planDesign",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "b9725124506057d033682cbdfef8419a20b99625d96e340020c5df731f087409"
+		},
+		{
+			"unit": "planning.function.plan-design",
+			"name": "approve",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "d5ab9790ced1f6d2e629db3a6b9d189cdde08a2d88cc1b05067c82428c43073d"
+		},
+		{
+			"unit": "planning.function.plan-history",
+			"name": "planHistory",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "b07e9d8f1a15de11bd8a85e48024363365145639757b51d2351112c31594fdc4"
+		},
+		{
+			"unit": "planning.function.plan-thread",
+			"name": "planThread",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "4b9673821c4a51e4d867173591a2ed4f22b671b888f35fd267bc539125f142c3"
+		},
+		{
+			"unit": "planning.function.plan-thread",
+			"name": "append",
+			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
+			"definition": "295d60710ebf241cd574ff31348237ef687eb07d5632cfc1d9bf758162c10b39"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "threadPayload",
+			"commit": "3f638101fe3cfedaa0bd481767c9cf5b86948e83",
+			"reason": "Names the Wave 5 contract types within existing file and class limits, preserving JavaScript output.",
+			"definition": "ae33aafa7296de2b03252581b006603800be4ef0d6eb07d3f7a53d59d0da24e0",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "hub.function.hub-runtime",
+			"name": "hubRuntime",
+			"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
+			"to": "packages/hub/src/routes/api/[...path]/hubRuntime.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/+server.ts",
+			"definition": "0221e29418ba511059ec27966139419a15b970acd2326e591d37843f82b51036",
+			"reason": "Expose the configured verified owner identity for the read-only projects fallback."
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererPolicy",
+			"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+			"reason": "Allows HTTPS images for plan details when requested by the Tracker route while keeping the existing script, frame and connection sources.",
+			"definition": "83e8d0154a24e7ba1b69c1445c2da86a0930ddefc217f1827854ccf38df7aef4"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererAssets",
+			"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+			"reason": "Enables HTTPS image previews on the Plans and schedule document by its local route and view.",
+			"definition": "ad1a4063a13a239f1b02f10836accd8ff855c93fbc4b1b1cd900bdff6edf924d"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererAssets",
+			"commit": "b442b79f09e089f667e205bb0455648e834b4172",
+			"reason": "Extracts filesystem fallback resolution while preserving the renderer route, asset containment and content policy.",
+			"definition": "1fab226c14bba012f3eeddd476c8d1263900879fc7e48463c2bb8327a4a17cb9"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererAssets",
+			"commit": "03259124cf3b2fd6212b6a458098c59a5ce089a2",
+			"reason": "Allows HTTPS plan mockups on signed-in Mac Home and the Plans and schedule view.",
+			"definition": "fb762d46bd29138d129f553d50d3c1388506ddbeb78efbc8570da070444870a1"
 		}
 	],
 	"retiredOwners": [

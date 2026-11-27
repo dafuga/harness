@@ -1,0 +1,174 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-ask",
+	"uid": "u_gnhmm7tirz",
+	"kind": "component",
+	"title": "HubHomeAsk",
+	"responsibility": "Shows one agent's open Tracker question on the Agents card with its option buttons and a short reply, and sends the answer to the owner chat queue.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-choices",
+			"reports.component.explorer-ui-explorer-kit-view-spec-buttons",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-linkified-text"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte"],
+		"symbols": ["HubHomeAsk", "HubHomeAsk.choices", "HubHomeAsk.answers"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeAsk.ask",
+				"type": "HomeOpenAsk",
+				"required": true,
+				"description": "The open question of one agent, with its item, choices and confirm kind."
+			},
+			{
+				"name": "HubHomeAsk.send",
+				"type": "SendHomeChat",
+				"required": true,
+				"description": "Submits the chosen option or typed reply as an answer and returns its receipt."
+			},
+			{
+				"name": "HubHomeAsk.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true,
+				"description": "Reads the delivery status of a submitted answer by its chat command identifier."
+			},
+			{
+				"name": "HubHomeAsk.submitted",
+				"type": "(message: HomeChatInput, receipt: HomeChatReceipt) => void",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Receives each queued answer and its receipt. Defaults to nothing being notified."
+			},
+			{
+				"name": "HubHomeAsk.present",
+				"type": "(content: Snippet | null) => void",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Renders a choice or written-answer dialog beside the Home list when provided."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeAsk",
+				"type": "markup",
+				"description": "Shows one agent's open Tracker question on the Agents card with its option buttons and a short reply, and sends the answer to the owner chat queue."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeAsk.choices",
+				"inputs": [
+					{
+						"name": "HubHomeAsk.choices.done",
+						"type": "() => void",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeAsk.choices",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeAsk.answers",
+				"inputs": [
+					{
+						"name": "HubHomeAsk.answers.close",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeAsk.answers",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-choices",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-spec-document",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-view-spec-buttons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

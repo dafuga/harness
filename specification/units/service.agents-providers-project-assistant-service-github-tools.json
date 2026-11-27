@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-project-assistant-service-github-tools",
+	"uid": "u_kg5hqi4cde",
+	"kind": "service",
+	"title": "githubTools",
+	"responsibility": "Owns the githubTools service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/project-assistant-service/githubTools.ts"],
+		"symbols": ["githubReadTools"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "githubReadTools.github",
+				"type": "GitHubAppAdapter",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "githubReadTools",
+				"type": "AssistantToolDefinition[]"
+			}
+		],
+		"errors": [
+			{
+				"name": "ProjectAssistantError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "githubReadTools",
+				"inputs": [
+					{
+						"name": "githubReadTools.github",
+						"type": "GitHubAppAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubReadTools",
+						"type": "AssistantToolDefinition[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-git-hub-app",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-tool-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-tool-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-github-format",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-github-issue-tools",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/project-assistant-service/githubTools.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/project-assistant-service/githubTools.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

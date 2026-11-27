@@ -1,4 +1,5 @@
 // @harness-uid u_wc2qeqx5mz
+import type { SessionRecord } from './HubAuthStore.types';
 import type { Actor } from 'collaboration';
 import type { RepositoryIdentity } from 'collaboration';
 import type { NATIVE_AUDIENCE } from './HubAuthValues';
@@ -30,6 +31,8 @@ export interface InstallationTokenInput {
 export interface HubAuth {
 	/** Session cookie or `Authorization: Bearer`; null when absent, expired, revoked or out of scope. */
 	actor(request: Request): Promise<Actor | null>;
+	/** The verified session, used for account-bound device connections. */
+	session?(request: Request): Promise<SessionRecord | null>;
 	/** Answers only sign-in, account device and GitHub connection routes. */
 	handle(request: Request): Promise<Response | null>;
 	/** Re-proves GitHub admin and installation access on every call. Throws AuthFailure. */

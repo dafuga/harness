@@ -13,7 +13,8 @@
 			"ManageBodyValidator",
 			"ManageBodyValidator.owner",
 			"ManageBodyValidator.register",
-			"ManageBodyValidator.device"
+			"ManageBodyValidator.device",
+			"accountHolder"
 		]
 	},
 	"contract": {
@@ -89,6 +90,12 @@
 					}
 				],
 				"unknownReason": "The device request body is raw data until the owner and device fields have been checked."
+			},
+			{
+				"name": "accountHolder.value",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "The Hub-managed session reference arrives as an untyped header or body field and is validated here."
 			}
 		],
 		"outputs": [
@@ -323,6 +330,25 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "accountHolder",
+				"inputs": [
+					{
+						"name": "accountHolder.value",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "The Hub-managed session reference arrives as an untyped header or body field and is validated here."
+					}
+				],
+				"outputs": [
+					{
+						"name": "accountHolder",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []

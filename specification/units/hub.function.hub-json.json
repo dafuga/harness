@@ -9,16 +9,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/hub/src/utils/development-tooling/HarnessArtifactUnavailableError.ts",
 			"packages/hub/src/utils/development-tooling/hubJson.ts",
 			"packages/hub/src/utils/development-tooling/hubJson.types.ts"
 		],
 		"symbols": [
+			"HarnessArtifactUnavailableError",
 			"hubJson",
 			"hubHash",
 			"hubContractHash",
 			"hubFail",
 			"hubFile",
-			"HarnessArtifactUnavailableError"
+			"HarnessArtifactUnavailableError",
+			"HubJsonValue"
 		]
 	},
 	"contract": {

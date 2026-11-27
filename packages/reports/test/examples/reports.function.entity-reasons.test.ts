@@ -6,8 +6,7 @@ import type { HarnessExplanation } from '../../src/models/explorer-ui/Harness.ty
 import { entityReasons } from '../../src/utils/explorer-ui/entityReasons';
 import { reasonsTried } from '../../src/components/explorer-ui/entity-history-row/entityReasons';
 import { reasonUses } from '../../src/components/explorer-ui/entity-reasons/entityReasons';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.entity-reasons.test.types';
 
 const unitId = 'reports.function.entity-reasons';
 const unchanged = 'Registration only; implementation unchanged.';

@@ -14,10 +14,7 @@ import {
 } from '../explorerFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-type Evidence = ReturnType<typeof explorerEvidence>;
-type Capture = Evidence['after']['captures'][number];
-type Side = Evidence['after'];
+import type { Capture, Side } from './reports.function.explorer-evidence.test.types';
 
 const page = unit('page.titles', 'page');
 const built = (commit: string) =>

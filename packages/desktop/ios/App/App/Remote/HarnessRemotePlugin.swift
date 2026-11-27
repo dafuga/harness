@@ -1,5 +1,6 @@
 import Capacitor
 import Foundation
+import LocalAuthentication
 import UIKit
 
 /// The one bridge between the page and this phone's connection to a computer. The page gets a
@@ -11,7 +12,6 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
     public let jsName = "HarnessRemote"
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "status", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "scan", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "computers", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "connectAccountComputer", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "disconnect", returnType: CAPPluginReturnPromise),
@@ -59,7 +59,8 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
             UIApplication.shared.applicationState == .active
         else { return call.resolve(session.trackerWriteReply(code: "unavailable")) }
         let intent = confirmation.intent
-        let message = [confirmation.itemTitle, confirmation.question, intent.text].compactMap { $0 }.joined(separator: "\n\n")
+        let choice = intent.option.map { "Option \($0): " + intent.text }
+        let message = [confirmation.itemTitle, confirmation.question, choice ?? intent.text].compactMap { $0 }.joined(separator: "\n\n")
         let title = confirmation.discard ? "Discard queued Tracker write" : "Queue Tracker " + intent.action
         let button = confirmation.discard ? "Discard" : "Queue " + intent.action
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -67,9 +68,23 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
             call.resolve(session.trackerWriteReply(code: "cancelled"))
         })
         alert.addAction(UIAlertAction(title: button, style: confirmation.discard ? .destructive : .default) { [session] _ in
-            session.confirmTrackerWrite(confirmation) { call.resolve($0) }
+            self.confirmedByOwner(confirmation) { allowed in
+                guard allowed else { return call.resolve(session.trackerWriteReply(code: "cancelled")) }
+                session.confirmTrackerWrite(confirmation) { call.resolve($0) }
+            }
         })
         presenter.present(alert, animated: true)
+    }
+
+    /// Deploy, money and secret asks need Face ID (or the passcode) on top of the confirm dialog.
+    private func confirmedByOwner(_ confirmation: TrackerReplicaConfirmation, done: @escaping (Bool) -> Void) {
+        guard let kind = confirmation.confirm, !confirmation.discard else { return done(true) }
+        let context = LAContext()
+        var error: NSError?
+        guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else { return done(false) }
+        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Confirm this \(kind) answer") { allowed, _ in
+            DispatchQueue.main.async { done(allowed) }
+        }
     }
 
     @objc func refreshTracker(_ call: CAPPluginCall) {
@@ -79,23 +94,6 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
 
     @objc func status(_ call: CAPPluginCall) {
         session.status { call.resolve($0) }
-    }
-
-    /// Opens the camera for the QR code a computer shows and asks with the offer it reads. The
-    /// page gives a name and nothing else: it hands over no offer and no address, and is handed
-    /// none. Nothing connects here; the phone waits for a person to approve it on the computer.
-    /// The session owns the scan: Disconnect ends it, and a camera that answers late asks nobody.
-    @objc func scan(_ call: CAPPluginCall) {
-        guard let name = RemoteScanFlow.name(call.getString("deviceName")) else {
-            return call.reject(RemoteFailure.invalid.message, RemoteFailure.invalid.code)
-        }
-        let scanner = RemoteCameraScanner(presenter: { [weak self] in self?.bridge?.viewController })
-        session.scan(scanner, deviceName: name) { result in
-            switch result {
-            case .success(let status): call.resolve(status)
-            case .failure(let failure): call.reject(failure.message, failure.code)
-            }
-        }
     }
 
     @objc func disconnect(_ call: CAPPluginCall) {
@@ -129,7 +127,7 @@ extension HarnessRemotePlugin {
     }
 
     @objc func connectAccountComputer(_ call: CAPPluginCall) {
-        guard let hostId = call.getString("hostId"), let name = RemoteScanFlow.name(call.getString("deviceName"))
+        guard let hostId = call.getString("hostId"), let name = RemotePairing.deviceName(call.getString("deviceName"))
         else { return call.reject(RemoteFailure.invalid.message, RemoteFailure.invalid.code) }
         HarnessAccountPlugin.sharedSession.computerPairing(hostId, name: name) { result in
             switch result {

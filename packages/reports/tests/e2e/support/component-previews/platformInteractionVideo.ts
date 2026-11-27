@@ -40,23 +40,30 @@ export function record(
 					.toBe(before);
 				await mark('edge', 'leave');
 			} else {
-				await page.getByRole('button', { name: 'Filters', exact: true }).click();
-				const dialog = page.getByRole('dialog', { name: 'Filters', exact: true });
-				await expect(dialog).toBeVisible();
-				const picker = dialog.getByRole('combobox', { name: 'Status filter' });
-				await picker.click();
-				await expect.poll(() => picker.evaluate((node) => node.matches(':open'))).toBe(true);
-				await mark('edge', 'open-picker');
-				await mark('state', 'picker-open');
-				await page.waitForTimeout(800);
-				await page.keyboard.press('Escape');
-				await dialog.getByRole('button', { name: 'Done', exact: true }).click();
-				await expect(dialog).not.toBeVisible();
-				await mark('edge', 'close-picker');
+				await recordPicker(page, mark);
 			}
 			await resetPlatformBoundary(page);
 			await mark('state', 'ready');
 			await page.waitForTimeout(500);
 		}
 	};
+}
+
+async function recordPicker(
+	page: NativeRecordingScript['page'],
+	mark: NativeRecordingScript['mark']
+) {
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
+	const dialog = page.getByRole('dialog', { name: 'Filters', exact: true });
+	await expect(dialog).toBeVisible();
+	const picker = dialog.getByRole('combobox', { name: 'Status filter' });
+	await picker.click();
+	await expect.poll(() => picker.evaluate((node) => node.matches(':open'))).toBe(true);
+	await mark('edge', 'open-picker');
+	await mark('state', 'picker-open');
+	await page.waitForTimeout(800);
+	await page.keyboard.press('Escape');
+	await dialog.getByRole('button', { name: 'Done', exact: true }).click();
+	await expect(dialog).not.toBeVisible();
+	await mark('edge', 'close-picker');
 }

@@ -9,7 +9,13 @@
 	"status": "active",
 	"composition": {
 		"level": "organism",
-		"uses": ["desktop.component.remote-host-panel", "desktop.component.remote-phone-panel"]
+		"uses": [
+			"desktop.component.remote-host-panel",
+			"desktop.component.remote-phone-panel",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/networking-security/RemoteConnection.svelte"],
@@ -37,7 +43,7 @@
 			{
 				"name": "RemoteConnection",
 				"type": "markup",
-				"description": "Renders the host panel with the host store when context stores and workspace.remote.host are truthy; otherwise it renders the phone panel with the phone store when context stores and workspace.remote.phone are truthy, or renders nothing. The host branch takes precedence when both remote values are truthy, and the compact value is forwarded to the rendered panel."
+				"description": "Renders the host panel with the host store when context stores and workspace.remote.host are truthy; otherwise it renders the phone panel with the phone store when context stores and workspace.remote.phone are truthy, or renders nothing. The host branch takes precedence when both remote values are truthy, and the compact value is forwarded to the rendered panel. Below the phone panel, where workspace.remote.phone.openVault exists, a Vault button calls it; a rejected call shows the error's message, or a fixed fallback, as an alert until the next attempt."
 			}
 		],
 		"errors": [],
@@ -73,6 +79,21 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -1,0 +1,141 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-container-browser-adapter-container-browser-args",
+	"uid": "u_nkd2qsvjco",
+	"kind": "adapter",
+	"title": "containerBrowserArgs",
+	"responsibility": "Define the browser container confinement: capped, no capabilities and no published port.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/execution-runtimes/container-browser-adapter/containerBrowserArgs.ts"],
+		"symbols": ["browserImage", "browserLabel", "containerBrowserName", "containerBrowserArgs"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "containerBrowserName.profile",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "containerBrowserArgs.config",
+				"type": "ContainerBrowserConfig",
+				"required": true
+			},
+			{
+				"name": "containerBrowserArgs.seccompPath",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "browserImage",
+				"type": "unknown"
+			},
+			{
+				"name": "browserLabel",
+				"type": "unknown"
+			},
+			{
+				"name": "containerBrowserName",
+				"type": "string"
+			},
+			{
+				"name": "containerBrowserArgs",
+				"type": "string[]"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "containerBrowserName",
+				"inputs": [
+					{
+						"name": "containerBrowserName.profile",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "containerBrowserName",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "containerBrowserArgs",
+				"inputs": [
+					{
+						"name": "containerBrowserArgs.config",
+						"type": "ContainerBrowserConfig",
+						"required": true
+					},
+					{
+						"name": "containerBrowserArgs.seccompPath",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "containerBrowserArgs",
+						"type": "string[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-container-browser",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/container-browser-adapter/containerBrowserArgs.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/container-browser-adapter/containerBrowserArgs.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -4,7 +4,6 @@ import { createContext, runInContext } from 'node:vm';
 import type {
 	HomePlanState,
 	HomeRun,
-	HomeSubscription,
 	OwnerHomeSnapshot
 } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import type {
@@ -13,8 +12,8 @@ import type {
 } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
 import type { HomeFixtureState, MockupHomeData } from './hub-home-fixture.types';
 
-export const homeClock = Date.parse('2026-11-21T22:30:00.000Z');
-const at = (minutes = 0) => new Date(homeClock + minutes * 60000).toISOString();
+import { at, quotas } from './hub-home-fixture-quota';
+export { homeClock } from './hub-home-fixture-quota';
 
 const fixtures = createContext({ window: {} });
 runInContext("Object.defineProperty(globalThis, 'HH', { get: () => window.HH })", fixtures);
@@ -28,7 +27,9 @@ for (const name of ['data', 'data-work', 'data-busy', 'data-quota']) {
 }
 
 export function mockup(state: HomeFixtureState): MockupHomeData {
-	return fixtures.window.HH.data[state === 'loading' ? 'default' : state];
+	return fixtures.window.HH.data[
+		state === 'loading' || state === 'unavailable' ? 'default' : state
+	];
 }
 
 function workCards(data: MockupHomeData): OverviewCard[] {
@@ -110,30 +111,15 @@ function scheduled(data: MockupHomeData): HomeRun[] {
 	});
 }
 
-function quotas(data: MockupHomeData): HomeSubscription[] {
-	return data.quota.map((sub, index) => ({
-		id: `subscription-${index}`,
-		provider: sub.provider === 'Claude Code' ? 'claude' : 'codex',
-		plan: sub.plan,
-		account: sub.account,
-		readAt: at(sub.stale ? -180 : -2),
-		limits: sub.limits.map((limit, pos) => ({
-			id: `limit-${pos}`,
-			label: limit.label,
-			left: limit.left,
-			resetsAt: at(pos ? 3600 : 85)
-		})),
-		credits: sub.credits?.left ?? null,
-		history: sub.history.map((used, pos) => ({ day: at((pos - 6) * 1440).slice(0, 10), used })),
-		agents: sub.top.map(([name, usage]) => ({ name, description: `${usage}%` }))
-	}));
-}
-
 function agents(data: MockupHomeData): OwnerHomeSnapshot['agents'] {
-	return data.agents.map((agent, index) => ({
-		id: `agent-${index}`,
+	const all: OwnerHomeSnapshot['agents'] = data.agents.map((agent, index) => ({
+		// The Mac publishes every Tracker project as an agent keyed by its Tracker agent value.
+		id: agent.name === 'Chief of Staff' ? 'cos' : `agent-${index}`,
 		name: agent.name,
 		state: agent.state,
+		sessions: agent.state === 'working' ? 1 : 0,
+		tasks: [],
+		subAgents: { sessions: 0, tasks: [] },
 		since: at(-15),
 		itemId: agent.state === 'offline' ? null : `item-${index}`,
 		task: agent.task,
@@ -141,6 +127,17 @@ function agents(data: MockupHomeData): OwnerHomeSnapshot['agents'] {
 		model: agent.model,
 		question:
 			agent.state === 'needs-you' ? 'Approve the Nudge production window, Sat 09:00?' : null,
+		...(agent.state === 'needs-you' && {
+			options: [
+				{
+					label: 'Approve Saturday 09:00',
+					effect: 'Schedules the production deploy for Saturday at 09:00.',
+					recommended: true as const
+				},
+				{ label: 'Move to Monday', effect: 'Holds the deploy until Monday morning.' }
+			],
+			confirm: 'deploy' as const
+		}),
 		messages:
 			agent.state === 'needs-you'
 				? [
@@ -165,6 +162,8 @@ function agents(data: MockupHomeData): OwnerHomeSnapshot['agents'] {
 					]
 				: []
 	}));
+	// Home lists only the sessions Daniel controls; the rest are counted under them or shown as asks.
+	return all;
 }
 
 export function homeData(data: MockupHomeData): OwnerHomeSnapshot {

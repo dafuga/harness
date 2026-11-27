@@ -2,6 +2,7 @@
 import type {
 	TrackerModelItem,
 	TrackerTaskKind,
+	TrackerTaskRoute,
 	TrackerTaskSize
 } from './classifyTrackerTask.types';
 
@@ -59,7 +60,50 @@ const database =
 	/\b(databases?|db|schemas?|migrat\w*|sql|d1|sqlite|postgres\w*|mysql|data[ -]?fix(es)?|backfill\w*|alter table|drop table|insert into|delete from|update \w+ set|indexes on|add (a )?column|seed data)\b/i;
 const promotion =
 	/\b(merg(e|es|ed|ing) (the |this |a |my )?(prs?|pull requests?)|merg(e|ing) \S+ (in)?to (main|master|dev|develop|staging|preprod|prod|production)|promot\w*|release tags?|tag (a |the )?release|cut (a |the )?release|git tag|publish (a |the )?release)\b/i;
-const lightKinds = new Set<TrackerTaskKind>(['docs', 'chore', 'triage']);
+const liveEnvironment = String.raw`(?:pre[- ]?prod(?:uction)?|prod(?:uction)?)`;
+const releaseVerb =
+	/^(?:please\s+)?(?:deploy|promote|release|roll out|roll back|ship|publish|merge)\b/i;
+const liveTarget = new RegExp(
+	String.raw`(?:\b(?:to|into|on)\s+|(?:→|->)\s*)(?:the\s+)?${liveEnvironment}\b`,
+	'i'
+);
+const liveAction = new RegExp(
+	String.raw`^${liveEnvironment}\s+(?:deploy(?:ment)?|release|rollout|rollback|promotion)\b(?!\s+(?:plan|checklist|logs?|script|docs?|notes?)\b)|^(?:deploy|release|roll back)\s+${liveEnvironment}(?:\s+from\b|\s*$)`,
+	'i'
+);
+const liveTargetField = new RegExp(
+	String.raw`^(?:target(?: environment)?|environment)\s*:\s*${liveEnvironment}\b`,
+	'im'
+);
+const computerUse =
+	/^\[?computer[- ]use\b|\b(?:use|using|via|requires?)\s+(?:codex\s+)?computer[- ]use\b|^(?:please\s+)?(?:open|visit|navigate|browse|interact|click|tap|use|manually (?:test|verify|check))\b[^.!?\n;]*\b(?:browser|chrome|safari|firefox|edge|desktop app|mobile app|iphone|ipad)\b/i;
+const qaVideo =
+	/\bqa\s+(?:videos?|recordings?)\b|^(?:please\s+)?(?:record|capture|make|produce|create)\b[^.!?\n;]*\b(?:videos?|screen\s+recordings?)\b/i;
+const visualDesign =
+	/^(?:mock[ -]?ups?|wireframes?|designs? for|visual (?:polish|designs?)|screenshot review|review (?:the )?designs)\b|\b(?:design|redesign|build|create|draw|generate|review|revise|prepare|polish|restyle)\b[^.!?\n;]*\b(?:mock[ -]?ups?|wireframes?|visual (?:designs?|polish))\b|\b(?:design|redesign|polish|restyle)\b[^.!?\n;]*\b(?:screens?|ui|dashboard|pages?|views?|layout|components?)\b/i;
+
+export function trackerTaskRoute(item: TrackerModelItem): TrackerTaskRoute {
+	const title = item.title ?? '';
+	const details = title + '\n' + (item.notes ?? '');
+	const actions = details
+		.split(/[\n;]+|,\s*|\band (?:then )?/i)
+		.map((part) => part.replace(/^\s*(?:[-*]\s+|\d+[.)]\s+)?/, '').trim());
+	if (
+		actions.some(
+			(part) => liveAction.test(part) || (releaseVerb.test(part) && liveTarget.test(part))
+		) ||
+		(releaseVerb.test(title.trim()) && liveTargetField.test(details))
+	)
+		return 'live-deploy';
+	if (actions.some((part) => computerUse.test(part) || qaVideo.test(part))) return 'computer-use';
+	if (
+		actions.some((part) => visualDesign.test(part)) ||
+		isVisualInspection(item) ||
+		isVisualInspection({ title: item.notes })
+	)
+		return 'visual';
+	return 'default';
+}
 
 export function classifyTrackerTask(item: TrackerModelItem): TrackerTaskKind {
 	const titleMatch = kindRules.find(([, rule]) => rule.test(item.title ?? ''));
@@ -106,9 +150,30 @@ export function isVisualInspection(item: TrackerModelItem): boolean {
 	);
 }
 
-export function solEffort(kind: TrackerTaskKind, size: TrackerTaskSize): string {
-	if (size === 'large' || kind === 'ops' || kind === 'hard') return 'xhigh';
-	if (size === 'medium' || kind === 'refactor') return 'high';
-	if (lightKinds.has(kind)) return 'low';
-	return 'medium';
+export function solEffort(kind: TrackerTaskKind, _size: TrackerTaskSize): string {
+	return kind === 'hard' ? 'high' : 'medium';
+}
+
+const explicitHard = /\[hard\]|\bhard (?:bug|problem|debugging|design)\b/i;
+
+/** Daniel marked the work hard; a keyword guess does not count. */
+export function isExplicitlyHard(item: TrackerModelItem): boolean {
+	return explicitHard.test(item.title ?? '') || /\[hard\]/i.test(item.notes ?? '');
+}
+
+const watchWork =
+	/^\W*(?:watch|monitor|remind|babysit|poll)\b|\b(?:reminder|watch item)\b|^\W*(?:run|verify|confirm)\b[^.!?\n;]*\b(?:tests?|checks?|ci|lint|typecheck)\b/i;
+
+/** Tests, docs, clear pass/fail checks, small mechanical units and watch items. */
+export function isLightClaudeWork(
+	item: TrackerModelItem,
+	kind: TrackerTaskKind,
+	size: TrackerTaskSize
+): boolean {
+	if (kind === 'docs' || kind === 'test') return true;
+	if (kind === 'chore') return size === 'small';
+	return (
+		(kind === 'triage' || kind === 'feature' || kind === 'bugfix') &&
+		watchWork.test(item.title ?? '')
+	);
 }

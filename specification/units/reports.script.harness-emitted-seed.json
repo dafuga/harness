@@ -12,7 +12,7 @@
 			"packages/reports/scripts/harness-emitted-seed.ts",
 			"packages/reports/scripts/harness-emitted-seed.types.ts"
 		],
-		"symbols": ["seedEmitted", "EmittedSeed", "EmittedSeed"]
+		"symbols": ["seedEmitted", "VerificationSeed", "VerificationSeed"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -25,13 +25,13 @@
 			},
 			{
 				"name": "seedEmitted.verified",
-				"type": "EmittedSeed['verified']",
+				"type": "VerificationSeed['verified']",
 				"required": true,
 				"description": "Callback invoked whenever the seed needs a verification result from the synthetic repository. It receives the same VerifyRepo and resolves to a VerifyOutcome whose record ID is used by budget commands."
 			},
 			{
 				"name": "seedEmitted.explain",
-				"type": "EmittedSeed['explain']",
+				"type": "VerificationSeed['explain']",
 				"required": true,
 				"description": "Callback used to describe the behavior changes added to the unit history. It receives the VerifyRepo and a behavior string, and the awaited return value is ignored."
 			}
@@ -66,13 +66,13 @@
 					},
 					{
 						"name": "seedEmitted.verified",
-						"type": "EmittedSeed['verified']",
+						"type": "VerificationSeed['verified']",
 						"required": true,
 						"description": "Callback invoked whenever the seed needs a verification result from the synthetic repository. It receives the same VerifyRepo and resolves to a VerifyOutcome whose record ID is used by budget commands."
 					},
 					{
 						"name": "seedEmitted.explain",
-						"type": "EmittedSeed['explain']",
+						"type": "VerificationSeed['explain']",
 						"required": true,
 						"description": "Callback used to describe the behavior changes added to the unit history. It receives the VerifyRepo and a behavior string, and the awaited return value is ignored."
 					}

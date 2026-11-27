@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.model.networking-security-sealed-types",
+	"uid": "u_lfrxo3gwh3",
+	"kind": "model",
+	"title": "Sealed sync types",
+	"responsibility": "Declare the scope key, header, device, chain and grant shapes shared by the sealed sync functions.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/models/networking-security/Sealed.types.ts"],
+		"symbols": [
+			"SealedJsonValue",
+			"ScopeKeys",
+			"RawScopeKeys",
+			"SealedRecordHeader",
+			"SealedFrameHeader",
+			"SealedRole",
+			"SealedDeviceKeys",
+			"SealedDevicePublic",
+			"SealedScopeCommitment",
+			"SealedChainBody",
+			"UnsignedChainEntry",
+			"SealedChainEntry",
+			"SealedChainPin",
+			"SealedChainDevice",
+			"SealedChainScope",
+			"SealedChainState",
+			"SealedGrant",
+			"SealedEnrollKeys"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/models/networking-security/Sealed.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/models/networking-security/Sealed.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

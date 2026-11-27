@@ -9,6 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/InvalidProposalError.ts",
 			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/projectProposal.ts",
 			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/projectProposal.types.ts",
 			"packages/desktop/src/services/desktop-run-service/project-run-service/projectProposal.ts",
@@ -16,6 +17,7 @@
 			"packages/desktop/src/utils/agents-providers/projectProposal.ts"
 		],
 		"symbols": [
+			"InvalidProposalError",
 			"projectProposal",
 			"proposalPrompt",
 			"InvalidProposalError",

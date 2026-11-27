@@ -1,3 +1,4 @@
+import { verifyBlockedLaunchCli } from './trackerObservedRunFixture';
 import { mkdirSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { DatabaseSync } from 'node:sqlite';
@@ -5,6 +6,8 @@ import { expect, vi } from 'vitest';
 import { trackerManagedToken } from '../../src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { managedTrackerItemRequest } from './trackerManagedProcessFixture';
+import { fixtureTrackerJson, trackerProcess } from './trackerNodeProcess';
+import type { TrackerNodeFixture } from './trackerNodeProcess.types';
 
 export async function verifyCancelledClaim(
 	runtime: TrackerNativeRuntimeService,
@@ -69,21 +72,25 @@ export async function verifyExpiredClaim(
 	itemId: string
 ) {
 	const tick = () => runtime.scheduler!.tick(new AbortController().signal);
-	for (const action of ['reopen', 'unlaunch', 'launch'])
-		expect((await managedTrackerItemRequest(runtime, itemId, action)).ok).toBe(true);
-	const token = database.prepare('SELECT auto FROM items WHERE id = ?').get(itemId)!.auto;
-	mkdirSync(
-		join(attempts, trackerManagedToken(runtime.store.node, JSON.stringify([itemId, token, 1]))),
-		{
-			mode: 0o700
-		}
-	);
-	await tick();
-	const runs = () =>
-		database.prepare('SELECT id,state,attempt,started_at FROM runs WHERE id >= 6').all();
-	expect(runs()).toEqual([{ id: 6, state: 'queued', attempt: 1, started_at: null }]);
-	const clock = vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 6 * 60_000);
+	const daytime = new Date();
+	daytime.setUTCHours(9, 0, 0, 0);
+	if (daytime.getTime() < Date.now()) daytime.setUTCDate(daytime.getUTCDate() + 1);
+	const clock = vi.spyOn(Date, 'now').mockReturnValue(daytime.getTime());
 	try {
+		for (const action of ['reopen', 'unlaunch', 'schedule-on', 'launch'])
+			expect((await managedTrackerItemRequest(runtime, itemId, action)).ok).toBe(true);
+		const token = database.prepare('SELECT auto FROM items WHERE id = ?').get(itemId)!.auto;
+		mkdirSync(
+			join(attempts, trackerManagedToken(runtime.store.node, JSON.stringify([itemId, token, 1]))),
+			{
+				mode: 0o700
+			}
+		);
+		await tick();
+		const runs = () =>
+			database.prepare('SELECT id,state,attempt,started_at FROM runs WHERE id >= 6').all();
+		expect(runs()).toEqual([{ id: 6, state: 'queued', attempt: 1, started_at: null }]);
+		clock.mockReturnValue(daytime.getTime() + 6 * 60_000);
 		await tick();
 		await tick();
 		expect(runs()).toEqual([
@@ -125,4 +132,71 @@ export async function verifyLegacyQueuedClaim(
 		{ id: 8, state: 'finished', outcome: 'abandoned' },
 		{ id: 9, state: 'running', outcome: null }
 	]);
+}
+
+export async function verifyLaunchCliOptions(spoke: TrackerNodeFixture, id: string) {
+	const short = id.slice(0, 6);
+	const { id: visualId } = await fixtureTrackerJson(spoke, ['add', 'Design a dashboard mockup']);
+	// The Tracker process uses the real clock: Claude Sonnet until the Codex reset, then Sol.
+	const claudeOnly = Date.now() < Date.parse('2026-11-27T10:39:00Z');
+	expect(await fixtureTrackerJson(spoke, ['pick', visualId])).toMatchObject(
+		claudeOnly
+			? {
+					rung: 'sonnet',
+					model: 'claude-sonnet-5-5',
+					cli: 'claude',
+					effort: 'medium',
+					pinned: false
+				}
+			: { rung: 'sol', model: 'gpt-6.2-sol', cli: 'codex', effort: 'medium', pinned: false }
+	);
+	const launch = ['launch', short, '--project', 'Tracker', '--model', 'Fable:high'];
+	const rejected = await trackerProcess(spoke, launch).exited;
+	expect(rejected).toMatchObject({
+		code: 1,
+		stdout: '',
+		stderr: expect.stringContaining('launcher disabled')
+	});
+	const launched = await fixtureTrackerJson(spoke, ['show', short]);
+	expect(launched).toMatchObject({
+		id,
+		auto: expect.stringMatching(/^synthetic-spoke@/),
+		launch_source: 'manual',
+		launch_target: 'synthetic-spoke',
+		project: 'Tracker',
+		model: 'Fable:high'
+	});
+	expect((await trackerProcess(spoke, launch).exited).code).toBe(1);
+	expect(await fixtureTrackerJson(spoke, ['show', short])).toEqual(launched);
+	expect(await fixtureTrackerJson(spoke, ['pick', short])).toMatchObject({
+		rung: 'fable',
+		model: 'claude-fable-5-2',
+		effort: 'high',
+		pinned: true
+	});
+	await verifyBlockedLaunchCli(spoke, short, launched.auto);
+	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
+		1
+	);
+	await verifyLaunchCliTimeout(spoke, short, id);
+	expect(await fixtureTrackerJson(spoke, ['launch', 'on', short])).toMatchObject({
+		id,
+		schedule_off: false
+	});
+}
+
+async function verifyLaunchCliTimeout(spoke: TrackerNodeFixture, short: string, id: string) {
+	const clear = ['launch', 'off', short];
+	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({
+		id,
+		auto: null,
+		schedule_off: true
+	});
+	const waiting = await trackerProcess(spoke, ['launch', short, '--computer', 'grok-box']).exited;
+	expect(waiting).toMatchObject({
+		code: 1,
+		stdout: '',
+		stderr: expect.stringContaining('no run confirmation within 20 seconds on grok-box')
+	});
+	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({ id, auto: null });
 }

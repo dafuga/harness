@@ -17,6 +17,11 @@ import { relayError } from '../../../utils/networking-security/relayResponse';
 import type { HostLinkService } from './HostLinkService';
 import type { RateLimitService } from './RateLimitService';
 
+const upgrades = (request: Request) =>
+	request.headers.get('Upgrade')?.toLowerCase() === 'websocket';
+
+const upgradeRequired = () => relayError(426, 'upgrade-required', { Upgrade: 'websocket' });
+
 /** Decides whether a connect request becomes a socket, and of whom. */
 export class SocketAcceptService {
 	constructor(
@@ -32,9 +37,7 @@ export class SocketAcceptService {
 	 * computer so that a rotated or revoked credential still opens nothing.
 	 */
 	async accept(request: Request, index: (host: HostRecord) => Promise<boolean>): Promise<Response> {
-		if (request.headers.get('Upgrade')?.toLowerCase() !== 'websocket') {
-			return relayError(426, 'upgrade-required', { Upgrade: 'websocket' });
-		}
+		if (!upgrades(request)) return upgradeRequired();
 		const claims = connectClaims(request.headers);
 		const hostId = this.store.host()?.hostId;
 		if (!claims || !hostId) return relayError(401, 'credential-invalid');
@@ -44,11 +47,26 @@ export class SocketAcceptService {
 		if (!host || !safeEqual(hash, this.expected(host, claims))) return this.refuse(host);
 		if (role === 'host') {
 			await index(host);
-			const latest = this.store.host();
-			if (!latest || latest.credentialHash !== host.credentialHash) return this.refuse(latest);
+			const refused = this.rotated(host);
+			if (refused) return refused;
 		}
 		const client = role === 'host' ? this.host(host) : this.device(deviceId);
 		return new Response(null, { status: 101, webSocket: client });
+	}
+
+	/** The same-origin Hub verified the browser session and the device is bound to it. */
+	account(request: Request, holder: string, deviceId: string): Response {
+		if (!upgrades(request)) return upgradeRequired();
+		if (this.store.revokedHolder(holder) || this.store.device(deviceId)?.holder !== holder)
+			return relayError(403, 'forbidden');
+		return new Response(null, { status: 101, webSocket: this.device(deviceId) });
+	}
+
+	/** The refusal for a host whose credential changed while it was indexed. */
+	private rotated(indexed: HostRecord): Response | undefined {
+		const latest = this.store.host();
+		if (latest?.credentialHash === indexed.credentialHash) return undefined;
+		return this.refuse(latest);
 	}
 
 	private expected(host: HostRecord, claims: ConnectClaims): string {

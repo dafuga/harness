@@ -1,6 +1,7 @@
 // @harness-uid u_ocykouvtlq
 import { canonicalJson } from '../../../../../src/utils/development-tooling/canonicalJson';
 import { HarnessArtifactUnavailableError } from './hubJson.types';
+import type { HubJsonValue } from './hubJson.types';
 export function hubJson(bytes: Uint8Array): unknown {
 	try {
 		return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)) as unknown;
@@ -16,13 +17,6 @@ export async function hubHash(value: Uint8Array | string): Promise<string> {
 		.map((b) => b.toString(16).padStart(2, '0'))
 		.join('');
 }
-type HubJsonValue =
-	| null
-	| boolean
-	| number
-	| string
-	| HubJsonValue[]
-	| { [key: string]: HubJsonValue };
 export async function hubContractHash(value: HubJsonValue) {
 	return hubHash(canonicalJson(value));
 }

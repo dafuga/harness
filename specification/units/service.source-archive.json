@@ -17,7 +17,6 @@
 			"SourceArchiveService",
 			"SourceArchiveService.constructor",
 			"SourceArchiveService.archive",
-			"Unit",
 			"associatedTests",
 			"testImporters"
 		]
@@ -48,7 +47,7 @@
 			},
 			{
 				"name": "SourceArchiveService.archive.units",
-				"type": "Unit[]",
+				"type": "RevisionUnit[]",
 				"required": true,
 				"description": "Registry units to enrich; inactive units archive no source.",
 				"examples": [
@@ -138,7 +137,7 @@
 			},
 			{
 				"name": "associatedTests.unit",
-				"type": "Unit",
+				"type": "RevisionUnit",
 				"required": true,
 				"description": "The revision registry unit whose id and scenario ids select authored coverage; its owned files determine direct-import matches when tests are associated with that unit.",
 				"examples": [
@@ -329,7 +328,7 @@
 					},
 					{
 						"name": "SourceArchiveService.archive.units",
-						"type": "Unit[]",
+						"type": "RevisionUnit[]",
 						"required": true,
 						"description": "Registry units to enrich; inactive units archive no source.",
 						"examples": [
@@ -452,7 +451,7 @@
 				"inputs": [
 					{
 						"name": "associatedTests.unit",
-						"type": "Unit",
+						"type": "RevisionUnit",
 						"required": true,
 						"description": "The revision registry unit whose id and scenario ids select authored coverage; its owned files determine direct-import matches when tests are associated with that unit.",
 						"examples": [

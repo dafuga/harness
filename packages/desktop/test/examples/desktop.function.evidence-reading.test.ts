@@ -3,10 +3,14 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { evidenceReading } from '../../src/utils/verification-evidence/evidenceReading';
 import type { EvidenceRead } from '../../src/utils/verification-evidence/evidenceReading.types';
-
-type Bridge = Parameters<typeof evidenceReading>[0];
-type Result = Parameters<typeof evidenceReading>[1];
-type Scope = Parameters<typeof evidenceReading>[2];
+import type {
+	Result,
+	Scope,
+	Captured,
+	Row,
+	Side,
+	Bridge
+} from './desktop.function.evidence-reading.test.types';
 
 const commit = '64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab';
 const entityId = 'desktop.function.evidence-reading';
@@ -72,10 +76,6 @@ function scopeQuery(): Scope {
 		mode: 'current'
 	};
 }
-
-type Side = NonNullable<Result['evidence']['after']>;
-type Captured = Side['captures'][number];
-type Row = Result['behavior']['rows'][number];
 
 /** An answer whose `after` side lists one stored screenshot, which one behaviour row also names. */
 function storedCapture(): Result {

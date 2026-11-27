@@ -248,7 +248,7 @@
 				"outputs": [
 					{
 						"name": "benchmarkMetrics",
-						"type": "ReturnType<typeof benchmarkMetrics>",
+						"type": "BenchmarkCandidateMetrics[]",
 						"description": "An array of one summary per configured candidate for benchmark reporting, preserving the candidate object as configuration. A rate is null with no trials, successful duration is null without passed trials, and each usage total or reported cost is null when required data is missing or a trial has status error, timeout, interrupted, or running.",
 						"examples": [
 							[

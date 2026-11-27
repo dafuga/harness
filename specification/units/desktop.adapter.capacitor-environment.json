@@ -25,6 +25,7 @@
 			"CapacitorEnvironmentAdapter",
 			"remotePluginName",
 			"accountPluginName",
+			"vaultPluginName",
 			"CapacitorEnvironmentAdapter",
 			"CapacitorEnvironmentAdapter.constructor",
 			"CapacitorEnvironmentAdapter.connect",
@@ -67,9 +68,15 @@
 				"examples": ["HarnessAccount"]
 			},
 			{
+				"name": "vaultPluginName",
+				"type": "\"HarnessVault\"",
+				"description": "The exported constant 'HarnessVault', the name connect's environment checks with Capacitor.isPluginAvailable before it offers `phone.openVault`. It is a const, so its value does not change at runtime.",
+				"examples": ["HarnessVault"]
+			},
+			{
 				"name": "CapacitorEnvironmentAdapter.connect",
 				"type": "Environment",
-				"description": "The Environment that connect() returns: `kind` is always 'capacitor', `local` is always false, and `phone` holds status, scan, disconnect and onStatus for the remote plugin, with each status passed to the computer bridge's allow before the caller receives it and a rejection from the plugin's status, scan or disconnect call reaching the caller unchanged. `bridge` is the computer connection, or with a configured account the CapacitorProjectsService that joins that account with the computer, and `account: true` is present only in that case."
+				"description": "The Environment that connect() returns: `kind` is always 'capacitor', `local` is always false, and `phone` holds status, scan, disconnect and onStatus for the remote plugin, with each status passed to the computer bridge's allow before the caller receives it and a rejection from the plugin's status, scan or disconnect call reaching the caller unchanged. `phone.openVault` is present only where Capacitor reports the 'HarnessVault' plugin available, and opens the native Vault. `bridge` is the computer connection, or with a configured account the CapacitorProjectsService that joins that account with the computer, and `account: true` is present only in that case."
 			}
 		],
 		"errors": [],
@@ -82,7 +89,7 @@
 					{
 						"name": "CapacitorEnvironmentAdapter.connect",
 						"type": "Environment",
-						"description": "The Environment that connect() returns: `kind` is always 'capacitor', `local` is always false, and `phone` holds status, scan, disconnect and onStatus for the remote plugin, with each status passed to the computer bridge's allow before the caller receives it and a rejection from the plugin's status, scan or disconnect call reaching the caller unchanged. `bridge` is the computer connection, or with a configured account the CapacitorProjectsService that joins that account with the computer, and `account: true` is present only in that case."
+						"description": "The Environment that connect() returns: `kind` is always 'capacitor', `local` is always false, and `phone` holds status, scan, disconnect and onStatus for the remote plugin, with each status passed to the computer bridge's allow before the caller receives it and a rejection from the plugin's status, scan or disconnect call reaching the caller unchanged. `phone.openVault` is present only where Capacitor reports the 'HarnessVault' plugin available, and opens the native Vault. `bridge` is the computer connection, or with a configured account the CapacitorProjectsService that joins that account with the computer, and `account: true` is present only in that case."
 					}
 				],
 				"errors": [],
@@ -152,6 +159,11 @@
 		},
 		{
 			"unit": "desktop.service.capacitor-projects",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -20,7 +20,6 @@
 			"RemotePorts",
 			"Environment",
 			"EnvironmentHost",
-			"ScanInput",
 			"RemoteNativeStatus",
 			"RemoteNativeAnswer",
 			"RemoteNativeEvent",
@@ -40,7 +39,6 @@
 			"RemoteHostStatus",
 			"RemoteMobileControl",
 			"RemoteMobileStatus",
-			"RemotePairingOffer",
 			"RemotePairingRequest",
 			"remoteContext",
 			"RemoteBinary",
@@ -53,7 +51,6 @@
 			"RemoteHostStatus",
 			"RemoteMobileControl",
 			"RemoteMobileStatus",
-			"RemotePairingOffer",
 			"RemotePairingRequest",
 			"remoteContext",
 			"nativeAccountContext",
@@ -103,6 +100,11 @@
 		},
 		{
 			"unit": "remote.model.remote-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -2,10 +2,10 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { permissionProfileLocation } from '../../src/components/networking-security/explorer-permissions-screen/permissionProfileLocation';
+import type { Route } from './reports.function.networking-security-permission-profile-location.test.types';
 
 const UNIT_ID = 'reports.function.networking-security-permission-profile-location';
 const PERMISSIONS_KEYS = ['branch', 'commit', 'category', 'screen'];
-type Route = Parameters<typeof permissionProfileLocation>[0];
 
 function makeRoute(fields: object): Route {
 	return fields as Route;

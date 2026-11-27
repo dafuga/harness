@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/scripts/RemoteFixtureRequestTooLargeError.ts",
 			"packages/desktop/scripts/remote-fixture-control.ts",
 			"packages/desktop/scripts/remote-fixture-control.types.ts"
 		],
 		"symbols": [
+			"RemoteFixtureRequestTooLargeError",
 			"remoteFixtureControl",
 			"FixtureAction",
 			"RemoteFixtureRequestTooLargeError",

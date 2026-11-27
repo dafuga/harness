@@ -1,3 +1,1 @@
-export class SiteReportNotFoundError extends Error {
-	override name = 'SiteReportNotFoundError';
-}
+export { SiteReportNotFoundError } from './SiteReportNotFoundError';

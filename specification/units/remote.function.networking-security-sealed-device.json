@@ -1,0 +1,142 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-device",
+	"uid": "u_pb736ppmc5",
+	"kind": "function",
+	"title": "Create sealed device keys",
+	"responsibility": "Create a device's P-256 key-agreement and signing pairs and its public chain view.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedDevice.ts"],
+		"symbols": ["sealedDevice", "sealedDevicePublic", "sealedKemCurve", "sealedSigningCurve"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sealedDevice.options",
+				"type": "{ extractable?: boolean }",
+				"required": false,
+				"default": {},
+				"description": "Key extractability option. Defaults to non-extractable private keys."
+			},
+			{
+				"name": "sealedDevicePublic.keys",
+				"type": "SealedDeviceKeys",
+				"required": true,
+				"description": "Device ID and key pairs to represent in the chain."
+			},
+			{
+				"name": "sealedDevicePublic.role",
+				"type": "SealedRole",
+				"required": true,
+				"description": "Role to record for the device."
+			},
+			{
+				"name": "sealedDevicePublic.scopes",
+				"type": "string[]",
+				"required": true,
+				"description": "Scope identifiers to record for the device."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedDevice",
+				"type": "Promise<SealedDeviceKeys>",
+				"description": "Fresh device identity, key-agreement and signing pairs, and raw public keys."
+			},
+			{
+				"name": "sealedDevicePublic",
+				"type": "SealedDevicePublic",
+				"description": "Chain-ready public record with encoded public keys and sorted scopes."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedDevice",
+				"inputs": [
+					{
+						"name": "sealedDevice.options",
+						"type": "{ extractable?: boolean }",
+						"required": false,
+						"default": {},
+						"description": "Key extractability option. Defaults to non-extractable private keys."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedDevice",
+						"type": "Promise<SealedDeviceKeys>",
+						"description": "Fresh device identity, key-agreement and signing pairs, and raw public keys."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedDevicePublic",
+				"inputs": [
+					{
+						"name": "sealedDevicePublic.keys",
+						"type": "SealedDeviceKeys",
+						"required": true,
+						"description": "Device ID and key pairs to represent in the chain."
+					},
+					{
+						"name": "sealedDevicePublic.role",
+						"type": "SealedRole",
+						"required": true,
+						"description": "Role to record for the device."
+					},
+					{
+						"name": "sealedDevicePublic.scopes",
+						"type": "string[]",
+						"required": true,
+						"description": "Scope identifiers to record for the device."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedDevicePublic",
+						"type": "SealedDevicePublic",
+						"description": "Chain-ready public record with encoded public keys and sorted scopes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedDevice.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedDevice.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

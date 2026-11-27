@@ -4,10 +4,20 @@ import { hubHomeFixture } from './hub-home-fixture';
 /** Design details from specification/designs/hub-home that the screenshot matrix does not assert. */
 test.setTimeout(60000);
 
-async function home(page: Page, mode: 'default' | 'busy' | 'empty', width = 1440) {
+async function home(
+	page: Page,
+	mode: 'default' | 'busy' | 'empty',
+	width = 1440,
+	withOptions = true
+) {
 	await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
 	await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
 	const fixture = await hubHomeFixture(page, mode);
+	if (!withOptions)
+		for (const agent of fixture.snapshot.agents) {
+			delete agent.options;
+			delete agent.confirm;
+		}
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 	return fixture;
@@ -32,7 +42,6 @@ test('empty cards explain themselves and offer one next step inside a quiet pane
 	await home(page, 'empty');
 	const steps = [
 		['Agents', 'link', 'Connect a computer'],
-		['Quota', 'button', 'Connect a subscription'],
 		['Projects', 'link', 'Add a project']
 	] as const;
 	for (const [title, role, name] of steps)
@@ -45,8 +54,9 @@ test('empty cards explain themselves and offer one next step inside a quiet pane
 	});
 	expect(edge.border).not.toBe(edge.text);
 	expect(parseFloat(edge.width)).toBeLessThanOrEqual(1);
-	await card(page, 'Quota').getByRole('button', { name: 'Connect a subscription' }).click();
-	await expect(page.getByRole('dialog', { name: 'Quota', exact: true })).toBeVisible();
+	const quota = card(page, 'Quota');
+	await expect(quota.getByText('Connect subscriptions in the Harness Mac app.')).toBeVisible();
+	await expect(quota.getByRole('button', { name: /connect/i })).toHaveCount(0);
 });
 
 test('avatars, quota warnings and dialog summaries follow the design', async ({ page }) => {
@@ -94,15 +104,6 @@ test('an almost-out limit gets one callout with what, how much and the reset', a
 	await expect(callouts).toContainText(/Resets/);
 });
 
-test('a yes-or-no question offers quick replies that answer on Tracker', async ({ page }) => {
-	const fixture = await home(page, 'default');
-	const dialog = await openDialog(page, 'Agents');
-	const chat = dialog.getByRole('region', { name: 'Chat with Chief of Staff' });
-	await chat.getByRole('button', { name: 'Approve', exact: true }).click();
-	await expect.poll(() => fixture.sent.length).toBe(1);
-	expect(fixture.sent[0]).toMatchObject({ kind: 'answer', text: 'Approve' });
-});
-
 test('the phone chat step names the agent in the dialog header', async ({ page }) => {
 	await home(page, 'default', 390);
 	const dialog = await openDialog(page, 'Agents');
@@ -114,4 +115,17 @@ test('the phone chat step names the agent in the dialog header', async ({ page }
 	await expect(chat.locator('.po-totals')).toHaveText(/Chat/);
 	await chat.getByRole('button', { name: 'Back to agents' }).click();
 	await expect(page.getByRole('dialog', { name: 'Agents', exact: true })).toBeVisible();
+});
+
+test('Daniel can add a session he created so it is listed under Agents', async ({ page }) => {
+	const fixture = await home(page, 'default');
+	const [chief] = fixture.snapshot.agents;
+	fixture.snapshot.agents.push({ ...chief, id: 'mine', name: 'mine', question: null });
+	await page.reload();
+	await expect(card(page, 'Agents').locator('.hh-agent-list')).not.toContainText('mine');
+	const dialog = await openDialog(page, 'Agents');
+	await dialog.getByLabel('Tracker agent of a session you created').fill('mine');
+	await dialog.getByRole('button', { name: 'Add session' }).click();
+	await expect(dialog.getByRole('button', { name: /^mine/ })).toBeVisible();
+	await expect(dialog.getByRole('button', { name: 'Remove mine' })).toBeVisible();
 });

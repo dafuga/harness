@@ -1,0 +1,196 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.script.package-mac-app",
+	"uid": "u_gxxwi43nxg",
+	"kind": "script",
+	"title": "package-mac-app",
+	"responsibility": "Assemble the unsigned Harness.app from the installed Electron distribution under a Harness-named executable with no group or other write access, and refuse bundles that break either rule.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/scripts/package-mac-app.ts",
+			"packages/desktop/scripts/package-mac-app.types.ts"
+		],
+		"symbols": [
+			"bundleId",
+			"migrationBinary",
+			"assembleMacApp",
+			"restrictBundleModes",
+			"verifyMacAppLayout",
+			"MacAppSources"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "assembleMacApp.output",
+				"type": "string",
+				"required": true,
+				"description": "Path of the Harness.app bundle to create."
+			},
+			{
+				"name": "assembleMacApp.sources",
+				"type": "MacAppSources",
+				"required": true,
+				"description": "Built main and preload bundle directory, built renderer directory, and the source revision stamped into the app."
+			},
+			{
+				"name": "restrictBundleModes.app",
+				"type": "string",
+				"required": true,
+				"description": "App bundle whose files and directories lose group and other write access; symbolic links are not followed."
+			},
+			{
+				"name": "verifyMacAppLayout.app",
+				"type": "string",
+				"required": true,
+				"description": "App bundle to check."
+			}
+		],
+		"outputs": [
+			{
+				"name": "bundleId",
+				"type": "string",
+				"description": "Bundle identifier of the Harness Mac release."
+			},
+			{
+				"name": "migrationBinary",
+				"type": "string",
+				"description": "Bundle-relative path of the Keychain migration helper."
+			},
+			{
+				"name": "assembleMacApp",
+				"type": "Promise<void>",
+				"description": "Resolves when the unsigned bundle, its helpers and the bundled Tracker are staged."
+			},
+			{
+				"name": "restrictBundleModes",
+				"type": "void",
+				"description": "Returns after the modes are changed."
+			},
+			{
+				"name": "verifyMacAppLayout",
+				"type": "void",
+				"description": "Returns when the executable is named Harness, exists, and nothing is group or world writable."
+			}
+		],
+		"errors": [
+			{
+				"name": "MacPackageError",
+				"type": "thrown",
+				"description": "The executable is missing or not named Harness, or a bundle entry is writable by group or others."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "assembleMacApp",
+				"inputs": [
+					{
+						"name": "assembleMacApp.output",
+						"type": "string",
+						"required": true,
+						"description": "Path of the Harness.app bundle to create."
+					},
+					{
+						"name": "assembleMacApp.sources",
+						"type": "MacAppSources",
+						"required": true,
+						"description": "Built main and preload bundle directory, built renderer directory, and the source revision stamped into the app."
+					}
+				],
+				"outputs": [
+					{
+						"name": "assembleMacApp",
+						"type": "Promise<void>",
+						"description": "Resolves when the unsigned bundle, its helpers and the bundled Tracker are staged."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "restrictBundleModes",
+				"inputs": [
+					{
+						"name": "restrictBundleModes.app",
+						"type": "string",
+						"required": true,
+						"description": "App bundle whose files and directories lose group and other write access; symbolic links are not followed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "restrictBundleModes",
+						"type": "void",
+						"description": "Returns after the modes are changed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "verifyMacAppLayout",
+				"inputs": [
+					{
+						"name": "verifyMacAppLayout.app",
+						"type": "string",
+						"required": true,
+						"description": "App bundle to check."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyMacAppLayout",
+						"type": "void",
+						"description": "Returns when the executable is named Harness, exists, and nothing is group or world writable."
+					}
+				],
+				"errors": [
+					{
+						"name": "MacPackageError",
+						"type": "thrown",
+						"description": "The executable is missing or not named Harness, or a bundle entry is writable by group or others."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.script.mac-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.script.package-mac",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.script.package-mac-tracker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/scripts/package-mac-app.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/scripts/package-mac-app.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -14,7 +14,6 @@
 	import { grantSummary, remoteLabels } from './remoteLabels';
 	import { identityLabel } from '../../../helpers/networking-security/identityLabel';
 	let { store, compact = false }: { store: RemotePhone; compact?: boolean } = $props();
-	let deviceName = $state('iPhone');
 	let connection = $state(false);
 	const account = getContext<NativeAccountContext | undefined>(nativeAccountContext);
 	const status = $derived(store.status);
@@ -48,7 +47,7 @@
 		};
 	});
 	const labels = $derived(status ? remoteLabels(status) : null);
-	const actions = { 'pending-approval': 'Cancel', pairing: 'Cancel', revoked: 'Connect again' };
+	const actions = { 'pending-approval': 'Cancel', pairing: 'Cancel', revoked: 'Back to computers' };
 	const action = $derived(
 		(status && actions[status.state as keyof typeof actions]) || 'Disconnect'
 	);
@@ -58,7 +57,6 @@
 			? `${labels.title} · ${status.device.name}`
 			: labels.title;
 	});
-	const how = 'Turn on phone access, choose Pair a phone, then scan the QR code.';
 	const fixture = 'Debug build for a test fixture: a relay on this machine is accepted.';
 </script>
 
@@ -129,7 +127,7 @@
 								<hx-small class="muted">Could not find your computers.</hx-small>
 							{:else}
 								<hx-small class="muted"
-									>No computers found. Turn on phone access in Harness on your computer.</hx-small
+									>No computers found. Sign in to Harness on your Mac.</hx-small
 								>
 							{/if}
 						{/each}
@@ -140,27 +138,6 @@
 						{/if}
 					</hx-div>
 				{/if}
-				<hx-details class="connection-options">
-					<hx-summary>Other connection options</hx-summary>
-					<hx-p class="muted">{how}</hx-p>
-					<hx-form
-						onsubmit={(event) => {
-							event.preventDefault();
-							void store.scan(deviceName);
-						}}
-					>
-						<hx-label
-							>Name of this phone<hx-input
-								type="text"
-								bind:value={deviceName}
-								maxlength="80"
-							/></hx-label
-						>
-						<hx-button class="primary" disabled={store.busy}
-							>{store.scanFailure ? 'Scan again' : 'Scan QR code'}</hx-button
-						>
-					</hx-form>
-				</hx-details>
 			{:else}
 				{#if labels.detail}<hx-p class="muted">{labels.detail}</hx-p>{/if}
 				<hx-button type="button" disabled={store.busy} onclick={() => void store.disconnect()}
@@ -189,13 +166,6 @@
 	.refresh {
 		justify-self: center;
 		min-height: 44px;
-	}
-	.connection-options {
-		width: 100%;
-	}
-	.connection-options summary {
-		padding: var(--hx-space-12);
-		cursor: pointer;
 	}
 	.remote-chip {
 		min-height: 44px;

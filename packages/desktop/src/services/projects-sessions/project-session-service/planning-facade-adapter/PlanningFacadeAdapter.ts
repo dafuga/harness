@@ -23,34 +23,41 @@ import {
 	approvePlanDesign
 } from './planningWrites';
 import { planningMessage } from './planningMessage';
+import type { PlanRecord } from '../../../../models/planning-collaboration/PlanningPort.types';
+import type { DesignVersion } from '../../../../models/planning-collaboration/DesignVersion.types';
+import type {
+	ThreadInfo,
+	ThreadMessage,
+	ApprovalInfo
+} from '../../../../models/development-tooling/Desktop.types';
 
 export class PlanningFacadeAdapter implements PlanningPort {
 	private constructor(private context: { root: string; api: PlanningApi }) {}
 	static async open(root: string) {
 		return new PlanningFacadeAdapter({ root, api: await createPlanning(root) });
 	}
-	plans(revision: string) {
+	plans(revision: string): Promise<PlanRecord[]> {
 		return planningReads(this.context, revision);
 	}
-	createPlan(draft: PlanDraft) {
+	createPlan(draft: PlanDraft): Promise<PlanRecord> {
 		return planningWrites(this.context, draft);
 	}
-	ensurePlan(unit: ComponentManifest) {
+	ensurePlan(unit: ComponentManifest): Promise<PlanRecord> {
 		return ensurePlan(this.context, unit);
 	}
-	addDesign(draft: DesignDraft) {
+	addDesign(draft: DesignDraft): Promise<DesignVersion> {
 		return addPlanDesign(this.context, draft);
 	}
-	openThread(draft: ThreadDraft) {
+	openThread(draft: ThreadDraft): Promise<ThreadInfo> {
 		return openPlanThread(this.context, draft);
 	}
-	messages(entityId: string, threadId: string, revision: string) {
+	messages(entityId: string, threadId: string, revision: string): Promise<ThreadMessage[]> {
 		return readPlanMessages(this.context, { entityId, threadId, revision });
 	}
-	appendMessage(draft: MessageDraft) {
+	appendMessage(draft: MessageDraft): Promise<ThreadMessage> {
 		return planningMessage(this.context, draft);
 	}
-	approve(draft: ApprovalDraft) {
+	approve(draft: ApprovalDraft): Promise<ApprovalInfo> {
 		return approvePlanDesign(this.context, draft);
 	}
 	image(query: PlanImageQuery) {

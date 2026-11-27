@@ -20,6 +20,7 @@
 			"packages/desktop/src/initializers/initializeDesktop.ts",
 			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/guardDesktopNavigation.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.types.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/macSafeStorage.ts"
@@ -28,6 +29,7 @@
 			"initializeDesktop",
 			"initializeDesktop",
 			"initializeDesktop",
+			"guardDesktopNavigation",
 			"initializeDesktop",
 			"desktopBackend",
 			"Backend",
@@ -38,6 +40,11 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "guardDesktopNavigation.contents",
+				"type": "WebContents",
+				"required": true
+			},
 			{
 				"name": "preserveMacProfile.app",
 				"type": "App",
@@ -68,6 +75,24 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "guardDesktopNavigation",
+				"inputs": [
+					{
+						"name": "guardDesktopNavigation.contents",
+						"type": "WebContents",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "guardDesktopNavigation",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "initializeDesktop",
 				"inputs": [],
@@ -155,26 +180,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.adapter.native-session",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.adapter.relay-socket",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.adapter.remote-host-store",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.adapter.remote-registration",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.function.desktop-ipc",
 			"via": "import",
 			"origin": "derived"
@@ -190,12 +195,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.initializer.start-tracker-bundle",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.module.development-tooling-desktop-initialization-initialize-desktop-choose-project",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-initialize-desktop-desktop-remote",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.module.development-tooling-desktop-initialization-initialize-desktop-remote-control",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-realtime-start-tracker-realtime",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -250,22 +270,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.service.remote-host",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.service.remote-lifecycle",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.service.repository-arbiter",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.validator.navigation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
 		},

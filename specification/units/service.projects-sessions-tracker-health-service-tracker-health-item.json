@@ -1,0 +1,168 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-health-service-tracker-health-item",
+	"uid": "u_s4ztf7hn2i",
+	"kind": "service",
+	"title": "trackerHealthItem",
+	"responsibility": "Owns the trackerHealthItem service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-health-service/trackerHealthItem.ts"],
+		"symbols": ["raiseTrackerHealthItem", "recoverTrackerHealthItem"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "raiseTrackerHealthItem.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "raiseTrackerHealthItem.report",
+				"type": "TrackerHealthReport",
+				"required": true
+			},
+			{
+				"name": "raiseTrackerHealthItem.state",
+				"type": "TrackerHealthState",
+				"required": true
+			},
+			{
+				"name": "recoverTrackerHealthItem.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "recoverTrackerHealthItem.report",
+				"type": "TrackerHealthReport",
+				"required": true
+			},
+			{
+				"name": "recoverTrackerHealthItem.state",
+				"type": "TrackerHealthState",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "raiseTrackerHealthItem",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "recoverTrackerHealthItem",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "raiseTrackerHealthItem",
+				"inputs": [
+					{
+						"name": "raiseTrackerHealthItem.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					},
+					{
+						"name": "raiseTrackerHealthItem.report",
+						"type": "TrackerHealthReport",
+						"required": true
+					},
+					{
+						"name": "raiseTrackerHealthItem.state",
+						"type": "TrackerHealthState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "raiseTrackerHealthItem",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoverTrackerHealthItem",
+				"inputs": [
+					{
+						"name": "recoverTrackerHealthItem.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					},
+					{
+						"name": "recoverTrackerHealthItem.report",
+						"type": "TrackerHealthReport",
+						"required": true
+					},
+					{
+						"name": "recoverTrackerHealthItem.state",
+						"type": "TrackerHealthState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoverTrackerHealthItem",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-health",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-health-service/trackerHealthItem.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-health-service/trackerHealthItem.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

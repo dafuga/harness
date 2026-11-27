@@ -8,7 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomePresentation.ts"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeStatusText.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeTime.ts"
+		],
 		"symbols": [
 			"sections",
 			"agentLabels",
@@ -18,26 +22,42 @@
 			"providerNames",
 			"usageLinks",
 			"count",
+			"agentSessions",
+			"isWorking",
+			"agentActivity",
 			"homeHeadline",
 			"currentAgent",
 			"soonestWork",
 			"workSummary",
+			"creditsLabel",
 			"warningFor",
 			"lowestLimit",
 			"staleReading",
 			"missingQuotaProviders",
 			"warningLabel",
-			"runDay",
-			"runTime",
-			"when",
-			"quotaReset",
+			"messageStatusText",
+			"pastDueLabel",
+			"pastDueSummary",
 			"initials",
 			"overviewTone",
 			"summaryLine",
 			"relativeWhen",
 			"workEta",
+			"lowSummary",
 			"quotaSummary",
-			"quickReplies"
+			"quotaReset",
+			"runDay",
+			"runTime",
+			"when",
+			"pastDueLabel",
+			"pastDueSummary",
+			"messageStatusText",
+			"runDay",
+			"runTime",
+			"runMoment",
+			"when",
+			"quotaReset",
+			"resetClock"
 		]
 	},
 	"contract": {
@@ -62,10 +82,42 @@
 				"description": "Plural label. Defaults to the singular label followed by s."
 			},
 			{
+				"name": "agentSessions.agent",
+				"type": "HomeAgent",
+				"required": true,
+				"description": "The agent whose live sessions are counted: its own plus those of its sub-agents."
+			},
+			{
+				"name": "isWorking.agent",
+				"type": "HomeAgent",
+				"required": true,
+				"description": "One agent with its live session count; it is working when at least one session is running now."
+			},
+			{
+				"name": "agentActivity.agent",
+				"type": "HomeAgent",
+				"required": true,
+				"description": "One agent with its live session count, live tasks and current Tracker task, summarised as one activity line."
+			},
+			{
 				"name": "homeHeadline.agents",
 				"type": "HomeAgent[]",
 				"required": true,
 				"description": "Agents and their current Tracker context. A null value indicates loading where supported."
+			},
+			{
+				"name": "homeHeadline.liveSessions",
+				"type": "number",
+				"required": false,
+				"default": 0,
+				"description": "Sessions the Tracker reports running. They name the headline when no agent card exists. Defaults to 0."
+			},
+			{
+				"name": "homeHeadline.needs",
+				"type": "number",
+				"required": false,
+				"default": 0,
+				"description": "How many open asks need the owner. Defaults to zero."
 			},
 			{
 				"name": "currentAgent.agents",
@@ -84,6 +136,12 @@
 				"type": "ReturnType<typeof soonestWork>",
 				"required": true,
 				"description": "In-progress and blocked work items enriched with project labels and due dates."
+			},
+			{
+				"name": "creditsLabel.balance",
+				"type": "string",
+				"required": true,
+				"description": "Credit balance as the provider sent it: a number in text, or a word such as Unlimited."
 			},
 			{
 				"name": "warningFor.left",
@@ -126,42 +184,6 @@
 				"type": "HomeLimit",
 				"required": true,
 				"description": "Provider allowance window to label."
-			},
-			{
-				"name": "runDay.at",
-				"type": "string",
-				"required": true,
-				"description": "ISO timestamp of a scheduled run."
-			},
-			{
-				"name": "runDay.now",
-				"type": "number",
-				"required": true,
-				"description": "Current time in milliseconds since the Unix epoch."
-			},
-			{
-				"name": "runTime.at",
-				"type": "string",
-				"required": true,
-				"description": "ISO timestamp of a scheduled run."
-			},
-			{
-				"name": "when.time",
-				"type": "string",
-				"required": true,
-				"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
-			},
-			{
-				"name": "quotaReset.time",
-				"type": "string | null",
-				"required": true,
-				"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
-			},
-			{
-				"name": "quotaReset.now",
-				"type": "number",
-				"required": true,
-				"description": "Current time in milliseconds since the Unix epoch."
 			},
 			{
 				"name": "initials.name",
@@ -212,6 +234,12 @@
 				"description": "Current time in milliseconds since the Unix epoch."
 			},
 			{
+				"name": "lowSummary.limits",
+				"type": "HomeLimit[]",
+				"required": true,
+				"description": "Limits that already carry a warning; those with nothing left are counted as out of quota."
+			},
+			{
 				"name": "quotaSummary.subscriptions",
 				"type": "HomeSubscription[]",
 				"required": true,
@@ -224,10 +252,82 @@
 				"description": "Observation time in milliseconds; stale readings are not counted as low."
 			},
 			{
-				"name": "quickReplies.question",
+				"name": "pastDueLabel.run",
+				"type": "Pick<HomePastDue, 'state' | 'position'>",
+				"required": true,
+				"description": "The state and optional queue position of one past-due run."
+			},
+			{
+				"name": "pastDueSummary.runs",
+				"type": "HomePastDue[]",
+				"required": true,
+				"description": "The past-due runs to total by state."
+			},
+			{
+				"name": "messageStatusText.message",
+				"type": "Pick<HomeMessage, 'status' | 'reason'>",
+				"required": true,
+				"description": "A thread entry's status and refusal reason."
+			},
+			{
+				"name": "messageStatusText.name",
+				"type": "string",
+				"required": true,
+				"description": "The receiving session, as Daniel knows it."
+			},
+			{
+				"name": "runDay.at",
+				"type": "string",
+				"required": true,
+				"description": "ISO timestamp of a scheduled run."
+			},
+			{
+				"name": "runDay.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
+			},
+			{
+				"name": "runTime.at",
+				"type": "string",
+				"required": true,
+				"description": "ISO timestamp of a scheduled run."
+			},
+			{
+				"name": "runMoment.at",
+				"type": "string",
+				"required": true,
+				"description": "ISO time to write as a day, month and clock time in Europe/Lisbon."
+			},
+			{
+				"name": "when.time",
+				"type": "string",
+				"required": true,
+				"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
+			},
+			{
+				"name": "quotaReset.time",
 				"type": "string | null",
 				"required": true,
-				"description": "Open Tracker question for the agent, or null when none is open."
+				"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
+			},
+			{
+				"name": "quotaReset.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
+			},
+			{
+				"name": "resetClock.time",
+				"type": "string | null",
+				"required": true,
+				"description": "ISO timestamp when the limit resets, or null when the reset time is unavailable."
+			},
+			{
+				"name": "resetClock.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
 			}
 		],
 		"outputs": [
@@ -274,7 +374,7 @@
 			{
 				"name": "homeHeadline",
 				"type": "unknown",
-				"description": "Dashboard headline summarizing working agents and outstanding questions."
+				"description": "Dashboard headline leading with live sessions, then the agents they run for and outstanding questions."
 			},
 			{
 				"name": "currentAgent",
@@ -393,6 +493,63 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "agentSessions",
+				"inputs": [
+					{
+						"name": "agentSessions.agent",
+						"type": "HomeAgent",
+						"required": true,
+						"description": "The agent whose live sessions are counted."
+					}
+				],
+				"outputs": [
+					{
+						"name": "agentSessions",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "isWorking",
+				"inputs": [
+					{
+						"name": "isWorking.agent",
+						"type": "HomeAgent",
+						"required": true,
+						"description": "One agent with its live session count; it is working when at least one session is running now."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isWorking",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "agentActivity",
+				"inputs": [
+					{
+						"name": "agentActivity.agent",
+						"type": "HomeAgent",
+						"required": true,
+						"description": "One agent with its live session count, live tasks and current Tracker task, summarised as one activity line."
+					}
+				],
+				"outputs": [
+					{
+						"name": "agentActivity",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "homeHeadline",
 				"inputs": [
 					{
@@ -400,13 +557,27 @@
 						"type": "HomeAgent[]",
 						"required": true,
 						"description": "Agents and their current Tracker context. A null value indicates loading where supported."
+					},
+					{
+						"name": "homeHeadline.liveSessions",
+						"type": "number",
+						"required": false,
+						"default": 0,
+						"description": "Sessions the Tracker reports running. They name the headline when no agent card exists. Defaults to 0."
+					},
+					{
+						"name": "homeHeadline.needs",
+						"type": "number",
+						"required": false,
+						"default": 0,
+						"description": "How many open asks need the owner. Defaults to zero."
 					}
 				],
 				"outputs": [
 					{
 						"name": "homeHeadline",
 						"type": "unknown",
-						"description": "Dashboard headline summarizing working agents and outstanding questions."
+						"description": "Dashboard headline leading with live sessions, then the agents they run for and outstanding questions."
 					}
 				],
 				"errors": [],
@@ -467,6 +638,25 @@
 						"name": "workSummary",
 						"type": "unknown",
 						"description": "Number of active tasks and unique projects."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "creditsLabel",
+				"inputs": [
+					{
+						"name": "creditsLabel.balance",
+						"type": "string",
+						"required": true,
+						"description": "Credit balance as the provider sent it: a number in text, or a word such as Unlimited."
+					}
+				],
+				"outputs": [
+					{
+						"name": "creditsLabel",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -579,98 +769,6 @@
 						"name": "warningLabel",
 						"type": "unknown",
 						"description": "Short label for the severity of a quota warning."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "runDay",
-				"inputs": [
-					{
-						"name": "runDay.at",
-						"type": "string",
-						"required": true,
-						"description": "ISO timestamp of a scheduled run."
-					},
-					{
-						"name": "runDay.now",
-						"type": "number",
-						"required": true,
-						"description": "Current time in milliseconds since the Unix epoch."
-					}
-				],
-				"outputs": [
-					{
-						"name": "runDay",
-						"type": "unknown",
-						"description": "Today, Tomorrow or the calendar date in Lisbon."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "runTime",
-				"inputs": [
-					{
-						"name": "runTime.at",
-						"type": "string",
-						"required": true,
-						"description": "ISO timestamp of a scheduled run."
-					}
-				],
-				"outputs": [
-					{
-						"name": "runTime",
-						"type": "unknown",
-						"description": "Scheduled time in Lisbon in 24-hour notation."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "when",
-				"inputs": [
-					{
-						"name": "when.time",
-						"type": "string",
-						"required": true,
-						"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
-					}
-				],
-				"outputs": [
-					{
-						"name": "when",
-						"type": "unknown",
-						"description": "Local short calendar date."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "quotaReset",
-				"inputs": [
-					{
-						"name": "quotaReset.time",
-						"type": "string | null",
-						"required": true,
-						"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
-					},
-					{
-						"name": "quotaReset.now",
-						"type": "number",
-						"required": true,
-						"description": "Current time in milliseconds since the Unix epoch."
-					}
-				],
-				"outputs": [
-					{
-						"name": "quotaReset",
-						"type": "unknown",
-						"description": "Rounded countdown or current availability of the reset time."
 					}
 				],
 				"errors": [],
@@ -795,6 +893,25 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "lowSummary",
+				"inputs": [
+					{
+						"name": "lowSummary.limits",
+						"type": "HomeLimit[]",
+						"required": true,
+						"description": "Limits that already carry a warning; those with nothing left are counted as out of quota."
+					}
+				],
+				"outputs": [
+					{
+						"name": "lowSummary",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "quotaSummary",
 				"inputs": [
 					{
@@ -821,20 +938,199 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "quickReplies",
+				"name": "pastDueLabel",
 				"inputs": [
 					{
-						"name": "quickReplies.question",
-						"type": "string | null",
+						"name": "pastDueLabel.run",
+						"type": "Pick<HomePastDue, 'state' | 'position'>",
 						"required": true,
-						"description": "Open Tracker question for the agent, or null when none is open."
+						"description": "The state and optional queue position of one past-due run."
 					}
 				],
 				"outputs": [
 					{
-						"name": "quickReplies",
+						"name": "pastDueLabel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "pastDueSummary",
+				"inputs": [
+					{
+						"name": "pastDueSummary.runs",
+						"type": "HomePastDue[]",
+						"required": true,
+						"description": "The past-due runs to total by state."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pastDueSummary",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "messageStatusText",
+				"inputs": [
+					{
+						"name": "messageStatusText.message",
+						"type": "Pick<HomeMessage, 'status' | 'reason'>",
+						"required": true,
+						"description": "A thread entry's status and refusal reason."
+					},
+					{
+						"name": "messageStatusText.name",
+						"type": "string",
+						"required": true,
+						"description": "The receiving session, as Daniel knows it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "messageStatusText",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "runDay",
+				"inputs": [
+					{
+						"name": "runDay.at",
+						"type": "string",
+						"required": true,
+						"description": "ISO timestamp of a scheduled run."
+					},
+					{
+						"name": "runDay.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in milliseconds since the Unix epoch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runDay",
 						"type": "unknown",
-						"description": "Two one-tap answers for a yes-or-no question; empty for any other question."
+						"description": "Today, Tomorrow or the calendar date in Lisbon."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runTime",
+				"inputs": [
+					{
+						"name": "runTime.at",
+						"type": "string",
+						"required": true,
+						"description": "ISO timestamp of a scheduled run."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runTime",
+						"type": "unknown",
+						"description": "Scheduled time in Lisbon in 24-hour notation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runMoment",
+				"inputs": [
+					{
+						"name": "runMoment.at",
+						"type": "string",
+						"required": true,
+						"description": "ISO time to write as a day, month and clock time in Europe/Lisbon."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runMoment",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "when",
+				"inputs": [
+					{
+						"name": "when.time",
+						"type": "string",
+						"required": true,
+						"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
+					}
+				],
+				"outputs": [
+					{
+						"name": "when",
+						"type": "unknown",
+						"description": "Local short calendar date."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "quotaReset",
+				"inputs": [
+					{
+						"name": "quotaReset.time",
+						"type": "string | null",
+						"required": true,
+						"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
+					},
+					{
+						"name": "quotaReset.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in milliseconds since the Unix epoch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "quotaReset",
+						"type": "unknown",
+						"description": "Rounded countdown or current availability of the reset time."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resetClock",
+				"inputs": [
+					{
+						"name": "resetClock.time",
+						"type": "string | null",
+						"required": true,
+						"description": "ISO timestamp when the limit resets, or null when the reset time is unavailable."
+					},
+					{
+						"name": "resetClock.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in milliseconds since the Unix epoch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resetClock",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -862,11 +1158,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts"
 			}
 		]
 	},

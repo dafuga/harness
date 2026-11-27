@@ -1,7 +1,13 @@
 import { allStatesSnapshot, NOW } from '../projectOverviewFixture';
-import { soonestWork } from '../../../../../hub/src/components/projects-sessions/hubHomePresentation';
-import type { HomeView } from '../../../../../hub/src/components/projects-sessions/hubHomeView.types';
-import type { OwnerHomeSnapshot } from '../../../../src/lib/projects-sessions/hub-home/hubHome.types';
+import { soonestWork } from '../../../../src/components/projects-sessions/hub-home/hubHomePresentation';
+import type { HomeView } from '../../../../src/components/projects-sessions/hub-home/hubHomeView.types';
+import type { LinkedHome } from '../../../../../hub/src/services/networking-security/LinkedHomeService';
+import type { HomeWorkProject } from '../../../../src/lib/projects-sessions/hub-home/homeLive.types';
+import type {
+	OwnerHomeSnapshot,
+	TrackerHomeSource
+} from '../../../../src/lib/projects-sessions/hub-home/hubHome.types';
+import { previewAnswerOptions } from './shared';
 
 const prefix = 'hub.component.projects-sessions-hub-';
 export function isHubHomePreview(id: string) {
@@ -19,6 +25,9 @@ const snapshot: OwnerHomeSnapshot = {
 			id: 'atlas',
 			name: 'Atlas',
 			state: 'needs-you',
+			sessions: 0,
+			tasks: [],
+			subAgents: { sessions: 0, tasks: [] },
 			itemId: 'ITEM-A1',
 			task: 'Choose the export column names',
 			machine: 'preview-mac',
@@ -31,6 +40,9 @@ const snapshot: OwnerHomeSnapshot = {
 			id: 'cinder',
 			name: 'Cinder',
 			state: 'working',
+			sessions: 1,
+			tasks: [{ itemId: 'ITEM-LIVE', title: 'Live task', machine: 'preview-mac' }],
+			subAgents: { sessions: 0, tasks: [] },
 			itemId: 'ITEM-C3',
 			task: 'Write the upstream timeout test',
 			machine: 'preview-mac',
@@ -46,6 +58,16 @@ const snapshot: OwnerHomeSnapshot = {
 			title: 'Prepare the export cutover',
 			project: 'Atlas',
 			state: 'in-progress',
+			stage: 'design',
+			planning: {
+				promotions: [],
+				artifacts: {
+					design: {
+						summary: 'Review the export columns and empty states.',
+						links: [{ label: 'Export design canvas', url: 'https://design.example.test/export' }]
+					}
+				}
+			},
 			updatedAt: stamp(-1),
 			total: 2,
 			done: 1,
@@ -89,20 +111,109 @@ const snapshot: OwnerHomeSnapshot = {
 	}
 };
 
+export const catalogWorkProject: HomeWorkProject = {
+	agent: 'Atlas',
+	running: 1,
+	counts: { open: 2, in_progress: 1, blocked: 1, done: 4 },
+	updatedAt: stamp(-0.1),
+	rows: [
+		{
+			key: 'run:preview-mac:1',
+			itemId: 'ITEM-LIVE',
+			title: 'Prepare the export cutover',
+			state: 'running',
+			outcome: null,
+			status: 'in_progress',
+			stage: 'build',
+			now: 'PR open; full check running, merge follows a pass.',
+			owner: 'Export session',
+			computer: 'preview-mac',
+			model: 'sample-model:high',
+			startedAt: stamp(-0.2),
+			updatedAt: stamp(-0.1)
+		}
+	]
+};
+
+/** One linked computer that answered with the live overview. */
+const catalogComputers: LinkedHome = {
+	linked: 1,
+	answered: 1,
+	snapshot: {
+		...snapshot,
+		liveOverview: {
+			readAt: stamp(0),
+			projects: [catalogWorkProject],
+			machines: [],
+			hiddenRuns: 0,
+			omittedRows: 0
+		}
+	}
+};
+
 export const catalogHome = { granted: true, snapshot };
+
+export const catalogDesktopHome: OwnerHomeSnapshot = {
+	overview: { status: 'ready', projects: [], machines: [], liveSessions: 0 },
+	projectDirectory: [
+		{ name: 'Orders', state: 'needs-you', needsYou: 1 },
+		{ name: 'Atlas', state: 'quiet', needsYou: 0 }
+	],
+	openAsks: [
+		{
+			itemId: 'ITEM-A1',
+			agentId: 'orders',
+			agentName: 'Orders',
+			title: 'Review the export headings',
+			question: 'Which column names should we use?',
+			options: previewAnswerOptions,
+			since: stamp(-1)
+		}
+	],
+	agents: [],
+	plans: snapshot.plans,
+	scheduled: [],
+	providers: { routines: [], quota: snapshot.providers.quota }
+};
+
+/** Browser notifications offered, with no browser subscribed yet. */
+export const catalogPush = {
+	available: true,
+	publicKey: 'sample-public-key',
+	quiet: { enabled: true, start: '22:00', end: '08:00' },
+	browsers: []
+};
 
 export const catalogHomeView: HomeView = {
 	overview: snapshot.overview,
 	agents: snapshot.agents,
+	openAsks: [],
+	controlled: [],
 	plans: snapshot.plans,
 	schedule: snapshot.scheduled,
 	quota: snapshot.providers.quota,
 	projects: [],
+	projectsFailed: false,
+	trackerProjects: null,
 	projectSnapshots: {},
 	work: soonestWork(snapshot.overview),
 	owner: true,
+	needsMac: false,
+	linkedComputers: 1,
+	computers: catalogComputers,
 	trackerConnected: true,
-	routinesConnected: true,
+	pastDue: [],
 	quotaConnected: true,
 	now: NOW
+};
+
+export const catalogTrackerHomeSource: TrackerHomeSource = {
+	read: async () => ({
+		...snapshot,
+		scheduled: snapshot.scheduled.map((run) => ({
+			...run,
+			at: new Date(Date.now() + 8 * 3_600_000).toISOString()
+		}))
+	}),
+	send: async ({ id }) => ({ id, status: 'sent' })
 };

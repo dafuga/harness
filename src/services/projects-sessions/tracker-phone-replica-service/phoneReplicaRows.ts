@@ -1,7 +1,16 @@
 // @harness-uid u_st4dufvqxm
+import { phoneAskAttachments } from './phoneAskAttachments';
+import { trackerStructuredAsk } from '../../../utils/projects-sessions/trackerStructuredAsk';
+import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { createHash } from 'node:crypto';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
+import {
+	trackerPlanning,
+	trackerPlanningArtifactFields,
+	trackerPlanningPromotionFields,
+	trackerPlanningStage
+} from '../../../utils/projects-sessions/trackerPlanning';
 import type {
 	PhoneItemSource,
 	PhoneNoteSource,
@@ -37,7 +46,16 @@ export function readPhoneReplicaItem(db: SqliteDatabase, id: string, now: number
 /** An opaque revision changes on a replacement question, flag or answer. */
 export function attentionRevision(item: PhoneItemSource): string {
 	return createHash('sha256')
-		.update(JSON.stringify([item.attention_clock, item.question, item.needs_daniel, item.resolved]))
+		.update(
+			JSON.stringify([
+				item.attention_clock,
+				item.question,
+				item.needs_daniel,
+				item.resolved,
+				...(item.options ? [item.options] : []),
+				...(item.attachments ? [item.attachments] : [])
+			])
+		)
 		.digest('hex');
 }
 
@@ -51,6 +69,8 @@ function projectItem(
 		title: excerpt(item.title, 240),
 		project: excerpt(item.project, 120),
 		status: item.status,
+		stage: trackerPlanningStage(item),
+		planning: trackerPlanning(item),
 		updatedAt: phoneDate(item.updated_at),
 		dueAt: phoneDate(item.due),
 		attentionRevision: attentionRevision(item),
@@ -65,7 +85,9 @@ function projectItem(
 				? {
 						state: item.resolved ? 'resolved' : 'open',
 						at: clockTime(item.flag_clock),
-						question: excerpt(item.question, 512)
+						question: excerpt(item.question, 512),
+						...phoneAskChoices(item),
+						...(trackerStructuredAsk(item) && phoneAskAttachments(item))
 					}
 				: null,
 		runs: runs.map((run) => ({
@@ -77,6 +99,20 @@ function projectItem(
 			startedAt: run.started_at,
 			endedAt: run.ended_at
 		}))
+	};
+}
+
+/** Choices travel only on a structured ask: the phone counts and offers exactly those. */
+function phoneAskChoices(item: PhoneItemSource) {
+	if (!trackerStructuredAsk(item)) return {};
+	const options = trackerAskOptions(item.options);
+	return {
+		options: options.map(({ label, effect, recommended }) => ({
+			label: excerpt(label, 80),
+			effect: excerpt(effect, 400),
+			...(recommended && { recommended: true as const })
+		})),
+		...(item.confirm && { confirm: item.confirm })
 	};
 }
 
@@ -105,7 +141,12 @@ const itemSql = `
 		CASE WHEN length(coalesce(nullif(project, ''), agent)) <= 1024
 			THEN coalesce(nullif(project, ''), agent) END AS project,
 		updated_at, due, needs_daniel, resolved,
+		${[...trackerPlanningArtifactFields, ...trackerPlanningPromotionFields].join(', ')},
 		CASE WHEN length(question) <= 16384 THEN question END AS question,
+		CASE WHEN length(options) <= 4096 THEN options END AS options, confirm,
+		CASE WHEN length(attachments) <= 8192 THEN attachments END AS attachments,
+		CASE WHEN needs_daniel = 1 AND resolved = 0 AND length(attachment_docs) <= 524288
+			THEN attachment_docs END AS attachment_docs,
 		coalesce(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel')) AS flag_clock,
 		json_array(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel'),
 			json_extract(clocks, '$.resolved'), json_extract(clocks, '$.answered_at'),

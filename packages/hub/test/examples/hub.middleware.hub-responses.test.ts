@@ -2,6 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { HubResponsesMiddleware } from '../../src/lib/development-tooling/server-hooks/HubResponsesMiddleware';
+import type { RecordedCases } from './hub.middleware.hub-responses.test.types';
 
 const UNIT_ID = 'hub.middleware.hub-responses';
 const SUMMARISED_HEADERS = [
@@ -12,8 +13,6 @@ const SUMMARISED_HEADERS = [
 	'Cache-Control',
 	'X-Trace'
 ];
-
-type RecordedCases = Parameters<typeof recordExampleCases>[1];
 
 function summarise(response: Response) {
 	return {

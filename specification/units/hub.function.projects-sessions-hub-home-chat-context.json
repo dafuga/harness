@@ -1,0 +1,100 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-chat-context",
+	"uid": "u_7j4igv6rwg",
+	"kind": "function",
+	"title": "hubHomeChatContext",
+	"responsibility": "Lets a Home action open and close the shared Chief of Staff widget, optionally with Tracker context.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts"
+		],
+		"symbols": ["provideHomeCosChat", "homeCosChat"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "provideHomeCosChat.refreshAsk",
+				"type": "() => void",
+				"required": false,
+				"description": "Refreshes the open-ask list on demand when a question is opened."
+			}
+		],
+		"outputs": [
+			{
+				"name": "provideHomeCosChat",
+				"type": "unknown",
+				"description": "Installs and returns one widget controller for this Home or native work view."
+			},
+			{
+				"name": "homeCosChat",
+				"type": "unknown",
+				"description": "Returns the nearest widget controller from Svelte context, or undefined outside its provider."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "provideHomeCosChat",
+				"inputs": [
+					{
+						"name": "provideHomeCosChat.refreshAsk",
+						"type": "() => void",
+						"required": false,
+						"description": "Refreshes the open-ask list on demand when a question is opened."
+					}
+				],
+				"outputs": [
+					{
+						"name": "provideHomeCosChat",
+						"type": "unknown",
+						"description": "Installs and returns one widget controller for this Home or native work view."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "homeCosChat",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "homeCosChat",
+						"type": "unknown",
+						"description": "Returns the nearest widget controller from Svelte context, or undefined outside its provider."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

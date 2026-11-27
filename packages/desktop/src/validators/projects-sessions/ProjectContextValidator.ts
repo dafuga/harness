@@ -1,8 +1,13 @@
 // @harness-uid u_cx6ay75f2w
-import { ipcFields, textField, commitPattern } from '../../utils/ipc-payload/ipcFields';
-import { threadPayload } from '../../utils/ipc-payload/ipcPayload';
+import {
+	ipcFields,
+	textField,
+	commitPattern
+} from '../../utils/execution-runtimes/ipc-payload/ipcFields';
+import { threadPayload } from '../../utils/execution-runtimes/ipc-payload/ipcPayload';
 import { ExplicitProjectRequiredError } from './ProjectContextValidator.types';
 const projectPattern = /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$/;
+const canvasPattern = /^[a-z0-9][a-z0-9-]*$/;
 const uuidPattern = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 export class ProjectContextValidator {
 	operation(channel: string, input: unknown): unknown {
@@ -14,6 +19,7 @@ export class ProjectContextValidator {
 			return parsed;
 		}
 		if (channel === 'thread:comment') return this.comment(input);
+		if (channel === 'design:canvases') return canvasRequest(this.context(input), input);
 		if (['thread:pending', 'project:capabilities', 'project:agents'].includes(channel))
 			return this.context(input ?? {});
 
@@ -42,4 +48,10 @@ export class ProjectContextValidator {
 			text: textField(value.text, 20000)
 		};
 	}
+}
+
+/** A canvas read names one canvas folder, or null for the first. */
+function canvasRequest(context: { projectId?: string }, input: unknown) {
+	const { canvas } = ipcFields(input);
+	return { ...context, canvas: canvas === null ? null : textField(canvas, 64, canvasPattern) };
 }

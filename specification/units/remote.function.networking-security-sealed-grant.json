@@ -1,0 +1,221 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-grant",
+	"uid": "u_ucn5pcoljj",
+	"kind": "function",
+	"title": "Wrap scope keys for devices",
+	"responsibility": "Wrap scope keys for one device with HPKE and unwrap them only when the verified device chain grants the scope and records a matching commitment.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedGrant.ts"],
+		"symbols": ["sealedGrantInfo", "sealedGrant", "openSealedGrant"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sealedGrantInfo.grant",
+				"type": "Pick<SealedGrant, 'account' | 'scope' | 'epoch' | 'device'>",
+				"required": true,
+				"description": "Grant metadata to bind to encryption and decryption."
+			},
+			{
+				"name": "sealedGrant.account",
+				"type": "string",
+				"required": true,
+				"description": "Account identifier to bind to the grant."
+			},
+			{
+				"name": "sealedGrant.raw",
+				"type": "RawScopeKeys",
+				"required": true,
+				"description": "Scope identifier, epoch, and raw key bytes to wrap."
+			},
+			{
+				"name": "sealedGrant.device",
+				"type": "Pick<SealedDevicePublic, 'deviceId' | 'kemPublic'>",
+				"required": true,
+				"description": "Recipient device identifier and public key-agreement key."
+			},
+			{
+				"name": "openSealedGrant.grant",
+				"type": "SealedGrant",
+				"required": true,
+				"description": "Encrypted grant to validate and unwrap."
+			},
+			{
+				"name": "openSealedGrant.self",
+				"type": "SealedDeviceKeys",
+				"required": true,
+				"description": "Receiving device identity and private key-agreement key."
+			},
+			{
+				"name": "openSealedGrant.chain",
+				"type": "SealedChainState",
+				"required": true,
+				"description": "Verified chain state supplying the account, scope grant, and key commitment."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedGrantInfo",
+				"type": "Uint8Array",
+				"description": "Bytes that bind the grant metadata to the encrypted keys."
+			},
+			{
+				"name": "sealedGrant",
+				"type": "Promise<SealedGrant>",
+				"description": "Wrapped scope keys and the metadata required to identify their recipient and epoch."
+			},
+			{
+				"name": "openSealedGrant",
+				"type": "Promise<ScopeKeys>",
+				"description": "Imported scope keys whose commitment matches the verified chain."
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown",
+				"description": "The recipient, scope, epoch, authentication, key size, or commitment fails validation."
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedGrantInfo",
+				"inputs": [
+					{
+						"name": "sealedGrantInfo.grant",
+						"type": "Pick<SealedGrant, 'account' | 'scope' | 'epoch' | 'device'>",
+						"required": true,
+						"description": "Grant metadata to bind to encryption and decryption."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedGrantInfo",
+						"type": "Uint8Array",
+						"description": "Bytes that bind the grant metadata to the encrypted keys."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedGrant",
+				"inputs": [
+					{
+						"name": "sealedGrant.account",
+						"type": "string",
+						"required": true,
+						"description": "Account identifier to bind to the grant."
+					},
+					{
+						"name": "sealedGrant.raw",
+						"type": "RawScopeKeys",
+						"required": true,
+						"description": "Scope identifier, epoch, and raw key bytes to wrap."
+					},
+					{
+						"name": "sealedGrant.device",
+						"type": "Pick<SealedDevicePublic, 'deviceId' | 'kemPublic'>",
+						"required": true,
+						"description": "Recipient device identifier and public key-agreement key."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedGrant",
+						"type": "Promise<SealedGrant>",
+						"description": "Wrapped scope keys and the metadata required to identify their recipient and epoch."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openSealedGrant",
+				"inputs": [
+					{
+						"name": "openSealedGrant.grant",
+						"type": "SealedGrant",
+						"required": true,
+						"description": "Encrypted grant to validate and unwrap."
+					},
+					{
+						"name": "openSealedGrant.self",
+						"type": "SealedDeviceKeys",
+						"required": true,
+						"description": "Receiving device identity and private key-agreement key."
+					},
+					{
+						"name": "openSealedGrant.chain",
+						"type": "SealedChainState",
+						"required": true,
+						"description": "Verified chain state supplying the account, scope grant, and key commitment."
+					}
+				],
+				"outputs": [
+					{
+						"name": "openSealedGrant",
+						"type": "Promise<ScopeKeys>",
+						"description": "Imported scope keys whose commitment matches the verified chain."
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-chain-entry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-scope-keys",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedGrant.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedGrant.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

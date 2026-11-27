@@ -1,11 +1,12 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
+import { randomId } from '../../../remote/src/index';
 import {
 	connectHost,
 	connectUrl,
 	deviceHeaders,
 	newRequest,
 	openDevice,
-	openPairing,
+	submitPairing,
 	ownerOf,
 	pairDevice,
 	pairingPath,
@@ -75,9 +76,9 @@ test.concurrent(
 		const socket = await connectHost(relay, host);
 		const device = await pairDevice(relay, host, socket);
 		const phone = await openDevice(relay, host, { device, socket });
-		const pairingId = await openPairing(socket);
+		const pairingId = randomId();
 		const request = await newRequest(pairingId);
-		await relay.post(pairingPath(host, pairingId, 'request'), request.body);
+		await submitPairing(relay, host, request);
 		await socket.until('pairing-request');
 		await sleep();
 		const poll = await relay.post(pairingPath(host, pairingId, 'poll'), {});
@@ -108,16 +109,22 @@ test.concurrent(
 		const socket = await connectHost(relay, host);
 		const device = await pairDevice(relay, host, socket);
 		const phone = await openDevice(relay, host, { device, socket });
-		const pairingId = await openPairing(socket);
+		const pairingId = randomId();
 		const request = await newRequest(pairingId);
-		await relay.post(pairingPath(host, pairingId, 'request'), request.body);
+		await submitPairing(relay, host, request);
 		socket.close();
 		expect(await phone.socket.next()).toEqual({ type: 'relay', event: 'host-offline' });
 		await sleep();
 		const back = await connectHost(relay, host);
 		expect(await back.drain()).toEqual([
 			{ type: 'device-open', deviceId: device.deviceId, connectionId: phone.connectionId },
-			{ type: 'pairing-request', pairingId, ...request.body }
+			{
+				type: 'pairing-request',
+				pairingId,
+				account: true,
+				expiresAt: expect.any(String),
+				...request.body
+			}
 		]);
 		expect(await phone.socket.next()).toEqual({ type: 'relay', event: 'host-online' });
 	},

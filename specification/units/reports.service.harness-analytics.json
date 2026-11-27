@@ -6,7 +6,11 @@
 	"title": "HarnessAnalyticsService",
 	"responsibility": "Owns the HarnessAnalyticsService service workflow.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Retired in deferred plan wave 4: no live consumer (qjv47y).",
+		"at": "2026-11-25T16:19:27.432Z"
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/services/explorer-ui/HarnessAnalyticsService.ts",

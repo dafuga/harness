@@ -22,7 +22,7 @@ export function monitorRun(
 	const { item } = snapshot;
 	if (item?.deleted) return abandon(run, 'item deleted', clock.now);
 	if (item?.status === 'done') return monitorDone(snapshot, run, event, clock);
-	if (event.session === 'lost') return abandon(run, 'Managed tmux session disappeared', clock.now);
+	if (event.session === 'lost') return abandonLost(run, clock.now);
 	if (run.state === 'verifying') {
 		if (!item) return skip('held', 'item missing during verification');
 		return recordRun(reviseRun(run, { state: 'running' }));
@@ -49,7 +49,7 @@ function monitorDone(
 	snapshot: TrackerDispatchSnapshot,
 	run: TrackerRunReceipt,
 	event: Extract<TrackerDispatchEvent, { type: 'monitor' }>,
-	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
+	{ now }: { policy: TrackerDispatchPolicy; now: number }
 ): TrackerDispatchDecision {
 	if (snapshot.item?.closedBySource) return abandon(run, 'linked source closed the item', now);
 	const verificationFor = snapshot.item?.completionVersion;
@@ -58,7 +58,7 @@ function monitorDone(
 	}
 	if (event.verify || run.state === 'verifying')
 		return recordRun(reviseRun(run, { state: 'verifying', verificationFor }));
-	return completeRun(snapshot, run, { policy, now, usage: event.usage });
+	return completeRun(snapshot, run, { now, usage: event.usage });
 }
 
 function monitorRunning(
@@ -86,16 +86,12 @@ function monitorRunning(
 	}
 	if (event.session === 'exited' || event.exitCode != null)
 		return finishExitedRun(snapshot, run, event, clock);
-	const timeout = timeoutReason(run, item, event, clock);
-	if (timeout)
-		return failRun(
-			snapshot,
-			run,
-			{ outcome: 'timed_out', reason: timeout, usage: event.usage },
-			clock
-		);
-	return skip('held', 'run still active');
+	// The session is still alive here, so ending the run could start a second one beside it.
+	const overdue = overdueReason(run, item, event, clock);
+	return skip('held', overdue ? overdue + liveOverdueSuffix : 'run still active');
 }
+
+export const liveOverdueSuffix = '; its session is still alive';
 
 function finishExitedRun(
 	snapshot: TrackerDispatchSnapshot,
@@ -104,14 +100,15 @@ function finishExitedRun(
 	clock: { policy: TrackerDispatchPolicy; now: number }
 ) {
 	const code = event.exitCode;
-	const reason = `session exited without tracker done${code == null ? '' : ` (exit ${code})`}`;
+	const exit = `session exited without tracker done${code == null ? '' : ` (exit ${code})`}`;
+	const reason = event.diagnostic ? `${exit}: ${event.diagnostic}` : exit;
 	const failure = { outcome: 'failed', reason, exitCode: code, usage: event.usage } as const;
 	if (snapshot.item?.status === 'in_progress' && clock.policy.recoverDroppedSessions)
 		return recordRun(finishRun(run, { ...failure, now: clock.now }));
 	return failRun(snapshot, run, failure, clock);
 }
 
-function timeoutReason(
+function overdueReason(
 	run: TrackerRunReceipt,
 	item: TrackerDispatchItem,
 	event: Extract<TrackerDispatchEvent, { type: 'monitor' }>,
@@ -126,7 +123,7 @@ function timeoutReason(
 		now - activity <= (policy.stallMinutes ?? 45) * minute
 	)
 		return null;
-	return `stalled past its ETA (no activity for ${Math.round((now - activity) / minute)} min)`;
+	return `stalled past its ETA (no activity for over ${policy.stallMinutes ?? 45} min)`;
 }
 
 function lastActivity(run: TrackerRunReceipt, item: TrackerDispatchItem, activityAt = 0) {
@@ -141,6 +138,18 @@ function pastRunCap(run: TrackerRunReceipt, policy: TrackerDispatchPolicy, now: 
 	return now - activeSince(run) > (policy.maxRunMinutes ?? 480) * minute;
 }
 
+function abandonLost(run: TrackerRunReceipt, now: number): TrackerDispatchDecision {
+	const lost = finishRun(run, {
+		outcome: 'abandoned',
+		reason: 'Managed tmux session disappeared',
+		now
+	});
+	return {
+		result: { status: 'recorded', run: lost },
+		writes: { runs: [lost], failedRunId: run.id }
+	};
+}
+
 function abandon(run: TrackerRunReceipt, reason: string, now: number) {
 	return recordRun(finishRun(run, { outcome: 'abandoned', reason, now }));
 }
@@ -148,17 +157,9 @@ function abandon(run: TrackerRunReceipt, reason: string, now: number) {
 export function completeRun(
 	snapshot: TrackerDispatchSnapshot,
 	run: TrackerRunReceipt,
-	{
-		policy,
-		now,
-		usage
-	}: { policy: TrackerDispatchPolicy; now: number; usage?: TrackerReceiptUsage }
+	{ now, usage }: { now: number; usage?: TrackerReceiptUsage }
 ): TrackerDispatchDecision {
-	const keep = run.launch_source === 'due' ? 0 : (policy.keepSessionMinutes ?? 30) * minute;
-	const finished = {
-		...finishRun(run, { outcome: 'done', reason: null, now, usage }),
-		kill_at: now + keep
-	};
+	const finished = finishRun(run, { outcome: 'done', reason: null, now, usage });
 	const redone = snapshot.runs
 		.filter((prior) => canCredit(prior, run))
 		.map((prior) => reviseRun(prior, { redone_by: run.rung }));

@@ -9,10 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/projects-sessions/DeploymentReviewBlockedError.ts",
 			"packages/desktop/src/utils/projects-sessions/enqueueChangeDeployments.ts",
 			"packages/desktop/src/utils/projects-sessions/enqueueChangeDeployments.types.ts"
 		],
-		"symbols": ["enqueueChangeDeployments", "DeploymentReviewBlockedError"]
+		"symbols": [
+			"DeploymentReviewBlockedError",
+			"enqueueChangeDeployments",
+			"DeploymentReviewBlockedError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -157,7 +162,7 @@
 				"outputs": [
 					{
 						"name": "enqueueChangeDeployments",
-						"type": "Promise<import(\"../../models/development-tooling/Deployment.types\").DeploymentActivity[]>",
+						"type": "Promise<DeploymentActivity[]>",
 						"description": "The activity records returned by activities.schedule, in the order selected by changeEnvironment. The function returns after scheduling and chains each later activity on the previous activity’s wait promise; it does not await completed deployments.",
 						"examples": [
 							[

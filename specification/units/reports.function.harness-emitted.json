@@ -30,7 +30,6 @@
 			"emittedTargets",
 			"EmittedLine",
 			"EmittedChange",
-			"Measurement",
 			"EmittedLine",
 			"EmittedChange",
 			"emittedChange",
@@ -613,7 +612,7 @@
 				"outputs": [
 					{
 						"name": "built",
-						"type": "Measurement | undefined",
+						"type": "HarnessMeasurement | undefined",
 						"description": "Returns the first matching build measurement, or undefined when the record is null or has no match. The returned measurement must match the unit, artifact-bytes metric, target, and falsy workload and profile fields.",
 						"examples": [
 							{

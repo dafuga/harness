@@ -14,6 +14,7 @@ export interface TrackerManagedReceipt {
 	token: string;
 	tmux: string;
 	issuedAt: number;
+	checkClaudeStartup?: true;
 }
 
 export interface TrackerManagedCommand {
@@ -23,6 +24,13 @@ export interface TrackerManagedCommand {
 	image?: string;
 }
 
+export interface TrackerNativeLaunch {
+	prompt: string;
+	itemId: string;
+	claudeSession?: string;
+	sessionName?: string;
+}
+
 export type TrackerManagedProfiles = Pick<TrackerManagedLaunchConfig, 'native' | 'docker'>;
 
 export interface TrackerManagedTarget {
@@ -30,12 +38,15 @@ export interface TrackerManagedTarget {
 	trackerBin: string;
 	trackerExecutable: string;
 	worktree: string;
+	/** Human-readable tmux window name. */
+	windowName?: string;
 }
 
 export interface TrackerManagedExec {
 	script: string;
 	command: TrackerManagedCommand;
 	clientPath: string;
+	cpuBudget?: number;
 	guestAuthFile?: string;
 }
 
@@ -43,4 +54,14 @@ export interface TrackerManagedLauncherOptions {
 	client: TrackerWorkerClient;
 	platform?: typeof process.platform;
 	transcriptRoots?: readonly string[];
+}
+
+export interface TrackerManagedStartBindings {
+	directory: string;
+	tmux: string;
+	trackerBin: string;
+	trackerExecutable: string;
+	profiles: TrackerManagedProfiles;
+	platform: typeof process.platform;
+	client: TrackerWorkerClient;
 }

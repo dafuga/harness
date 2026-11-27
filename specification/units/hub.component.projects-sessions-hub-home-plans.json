@@ -20,11 +20,12 @@
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-ol",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomePlans.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte"],
 		"symbols": ["HubHomePlans"]
 	},
 	"contract": {
@@ -51,6 +52,12 @@
 				"type": "(id: string) => void",
 				"required": true,
 				"description": "Opens the conversation for the agent associated with the selected plan."
+			},
+			{
+				"name": "HubHomePlans.openPlan",
+				"type": "(id: string, trigger: HTMLElement) => void",
+				"required": true,
+				"description": "Opens the selected plan and retains the activated button for focus restoration."
 			}
 		],
 		"outputs": [
@@ -127,6 +134,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
@@ -134,11 +146,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomePlans.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomePlans.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte"
 			}
 		]
 	},

@@ -11,20 +11,26 @@
 		"source": [
 			"src/services/projects-sessions/TrackerDispatchSchedulerService.ts",
 			"src/services/projects-sessions/TrackerDispatchSchedulerService.types.ts",
-			"src/services/projects-sessions/trackerDispatchObservations.ts"
+			"src/services/projects-sessions/trackerDispatchObservations.ts",
+			"src/services/projects-sessions/trackerDispatchQueue.ts"
 		],
 		"symbols": [
 			"TrackerDispatchSchedulerService",
 			"TrackerDispatchSchedulerService.constructor",
 			"TrackerDispatchSchedulerService.status",
 			"TrackerDispatchSchedulerService.runnerStatus",
+			"TrackerDispatchSchedulerService.stop",
 			"TrackerDispatchSchedulerService.tick",
 			"TrackerReservedStart",
 			"TrackerDispatchRunner",
 			"TrackerDispatchSchedulerOptions",
 			"schedulerWaits",
 			"observeReservedRun",
-			"reconcileLegacyRuns"
+			"reconcileLegacyRuns",
+			"TrackerDispatchQueue",
+			"TrackerDispatchQueue.constructor",
+			"TrackerDispatchQueue.retry",
+			"TrackerDispatchQueue.claim"
 		]
 	},
 	"contract": {
@@ -46,10 +52,25 @@
 				"required": true
 			},
 			{
+				"name": "TrackerDispatchSchedulerService.status.minimumAge",
+				"type": "number",
+				"required": false
+			},
+			{
 				"name": "TrackerDispatchSchedulerService.runnerStatus.limit",
 				"type": "number",
 				"required": false,
 				"default": 100
+			},
+			{
+				"name": "TrackerDispatchSchedulerService.stop.reference",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchSchedulerService.stop.signal",
+				"type": "AbortSignal",
+				"required": true
 			},
 			{
 				"name": "TrackerDispatchSchedulerService.tick.signal",
@@ -95,6 +116,46 @@
 				"name": "reconcileLegacyRuns.signal",
 				"type": "AbortSignal",
 				"required": true
+			},
+			{
+				"name": "TrackerDispatchQueue.constructor.repository",
+				"type": "TrackerDispatchRepository",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchQueue.constructor.dispatcher",
+				"type": "TrackerDispatcherService",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchQueue.constructor.options",
+				"type": "TrackerDispatchSchedulerOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchQueue.constructor.waits",
+				"type": "Map<string, { token: string; reason: string }>",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchQueue.retry.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchQueue.retry.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchQueue.claim.candidate",
+				"type": "TrackerDispatchCandidate",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchQueue.claim.signal",
+				"type": "AbortSignal",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -104,6 +165,10 @@
 			},
 			{
 				"name": "TrackerDispatchSchedulerService.runnerStatus",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerDispatchSchedulerService.stop",
 				"type": "unknown"
 			},
 			{
@@ -121,6 +186,14 @@
 			{
 				"name": "reconcileLegacyRuns",
 				"type": "Promise<void>"
+			},
+			{
+				"name": "TrackerDispatchQueue.retry",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerDispatchQueue.claim",
+				"type": "Promise<boolean>"
 			}
 		],
 		"errors": [],
@@ -128,7 +201,13 @@
 		"operations": [
 			{
 				"name": "TrackerDispatchSchedulerService.status",
-				"inputs": [],
+				"inputs": [
+					{
+						"name": "TrackerDispatchSchedulerService.status.minimumAge",
+						"type": "number",
+						"required": false
+					}
+				],
 				"outputs": [
 					{
 						"name": "TrackerDispatchSchedulerService.status",
@@ -151,6 +230,29 @@
 				"outputs": [
 					{
 						"name": "TrackerDispatchSchedulerService.runnerStatus",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchSchedulerService.stop",
+				"inputs": [
+					{
+						"name": "TrackerDispatchSchedulerService.stop.reference",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatchSchedulerService.stop.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatchSchedulerService.stop",
 						"type": "unknown"
 					}
 				],
@@ -253,6 +355,52 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchQueue.retry",
+				"inputs": [
+					{
+						"name": "TrackerDispatchQueue.retry.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatchQueue.retry.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatchQueue.retry",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchQueue.claim",
+				"inputs": [
+					{
+						"name": "TrackerDispatchQueue.claim.candidate",
+						"type": "TrackerDispatchCandidate",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatchQueue.claim.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatchQueue.claim",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -283,10 +431,48 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerDispatchQueue.constructor",
+				"inputs": [
+					{
+						"name": "TrackerDispatchQueue.constructor.repository",
+						"type": "TrackerDispatchRepository",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatchQueue.constructor.dispatcher",
+						"type": "TrackerDispatcherService",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatchQueue.constructor.options",
+						"type": "TrackerDispatchSchedulerOptions",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatchQueue.constructor.waits",
+						"type": "Map<string, { token: string; reason: string }>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatchQueue.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "repository.projects-sessions-tracker-dispatch",
 			"via": "import",
@@ -294,6 +480,16 @@
 		},
 		{
 			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-start-error",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -1,6 +1,9 @@
 // @harness-uid u_bl6xl2h4a3
 import { isAbsolute } from 'node:path';
 import { z } from 'zod';
+import { trackerEgressPolicy } from '../../../utils/projects-sessions/trackerEgressPolicy';
+import { trackerRunLimits } from './trackerHostRunLimits';
+import { hostVerify, hostWorktrees, noVerify } from './trackerHostVerifyPolicy';
 
 const absolutePath = z.string().refine(isAbsolute);
 const driver = absolutePath;
@@ -10,6 +13,10 @@ const adapterPolicy = {
 		.strictObject({
 			target: z.string().regex(/^[a-z0-9][a-z0-9-]*\/[a-z0-9_.-]+$/),
 			author: z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}$/),
+			additionalAuthors: z
+				.array(z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}$/))
+				.max(10)
+				.optional(),
 			titlePrefix: z.string().trim().min(1).max(80),
 			issueInstructions: z.string().trim().min(1).max(6000),
 			instructions: z.string().trim().min(1).max(6000),
@@ -26,6 +33,7 @@ const adapterPolicy = {
 const transcriptRoots = z.array(absolutePath).min(1).max(12);
 const watchdogPolicy = {
 	chiefOfStaff: z.literal(true).optional(),
+	idleWorkMinutes: z.int().positive().max(1440).optional(),
 	transcriptRoots: transcriptRoots.optional()
 };
 const checkpoint = z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/);
@@ -33,12 +41,39 @@ const checkpoint = z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/);
 const launchPolicy = {
 	maxConcurrent: z.int().positive().max(500).optional(),
 	legacyRunDirectory: absolutePath.optional(),
+	...trackerRunLimits,
+	minAvailableMemMB: z.int().positive().optional(),
+	minFreeDiskGB: z.number().positive().optional(),
 	repositories: z.record(
 		z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/),
-		z.strictObject({ repo: absolutePath, platform: z.enum(['linux', 'macos']) })
+		z.strictObject({
+			repo: absolutePath,
+			platform: z.enum(['linux', 'macos']),
+			verify: z.string().trim().min(1).max(2000).optional(),
+			worktree: z.boolean().optional()
+		})
 	),
-	due: z.literal(true).optional()
+	due: z.boolean().optional(),
+	codexPausedUntil: z.iso.datetime({ offset: true }).optional()
 };
+const egressHost = z.string().trim().min(1).max(253);
+const egressPilot = z
+	.strictObject({
+		items: z
+			.array(z.string().regex(/^[a-z0-9]{10}$/))
+			.min(1)
+			.max(20),
+		trackerHosts: z.array(egressHost).min(1).max(20),
+		projectHosts: z.array(egressHost).max(50).optional()
+	})
+	.transform(({ items, ...hosts }, ctx) => {
+		try {
+			return { items, policy: trackerEgressPolicy(hosts) };
+		} catch (error) {
+			ctx.addIssue({ code: 'custom', message: (error as Error).message });
+			return z.NEVER;
+		}
+	});
 const managedLauncher = z
 	.strictObject({
 		tmux: absolutePath,
@@ -46,7 +81,12 @@ const managedLauncher = z
 		trackerBinDirectory: absolutePath,
 		opsWorkdir: absolutePath.optional(),
 		native: z
-			.strictObject({ codex: absolutePath, claude: absolutePath, profile: absolutePath })
+			.strictObject({
+				codex: absolutePath,
+				claude: absolutePath,
+				profile: absolutePath,
+				egress: egressPilot.optional()
+			})
 			.optional(),
 		docker: z
 			.strictObject({
@@ -68,8 +108,14 @@ export const trackerHostEffectsSchema = z.discriminatedUnion('mode', [
 		checkpoint,
 		launch: z
 			.union([
-				z.strictObject({ driver, ...launchPolicy }),
-				z.strictObject({ managed: managedLauncher, ...launchPolicy })
+				z
+					.strictObject({ driver, ...launchPolicy })
+					.refine(...noVerify)
+					.refine(...hostWorktrees),
+				z
+					.strictObject({ managed: managedLauncher, ...launchPolicy })
+					.refine(...hostVerify)
+					.refine(...hostWorktrees)
 			])
 			.optional(),
 		watchdog: z

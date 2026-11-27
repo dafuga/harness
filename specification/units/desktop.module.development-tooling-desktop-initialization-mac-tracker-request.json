@@ -1,0 +1,211 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-mac-tracker-request",
+	"uid": "u_ziucb423ne",
+	"kind": "module",
+	"title": "macTrackerRequest",
+	"responsibility": "Owns the macTrackerRequest library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/macTrackerRequest.ts"
+		],
+		"symbols": ["trackerRequest", "readReply", "writeError", "liveState", "current", "unavailable"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerRequest.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerRequest.init",
+				"type": "RequestInit",
+				"required": false
+			},
+			{
+				"name": "readReply.response",
+				"type": "Response",
+				"required": true
+			},
+			{
+				"name": "writeError.response",
+				"type": "Response",
+				"required": true
+			},
+			{
+				"name": "current.result",
+				"type": "{ value?: T; code?: string }",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerRequest",
+				"type": "Promise<Response>"
+			},
+			{
+				"name": "readReply",
+				"type": "Promise<T>"
+			},
+			{
+				"name": "writeError",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "liveState",
+				"type": "Promise<InboxReply<never>>"
+			},
+			{
+				"name": "current",
+				"type": "InboxReply<T>"
+			},
+			{
+				"name": "unavailable",
+				"type": "InboxReply<never>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerRequest",
+				"inputs": [
+					{
+						"name": "trackerRequest.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerRequest.init",
+						"type": "RequestInit",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRequest",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readReply",
+				"inputs": [
+					{
+						"name": "readReply.response",
+						"type": "Response",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readReply",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeError",
+				"inputs": [
+					{
+						"name": "writeError.response",
+						"type": "Response",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeError",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "liveState",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "liveState",
+						"type": "Promise<InboxReply<never>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "current",
+				"inputs": [
+					{
+						"name": "current.result",
+						"type": "{ value?: T; code?: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "current",
+						"type": "InboxReply<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "unavailable",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "unavailable",
+						"type": "InboxReply<never>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/macTrackerRequest.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/macTrackerRequest.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -15,14 +15,6 @@ export type RelayErrorCode =
 
 export type RelayPairingState = 'open' | 'requested' | 'approved' | 'denied' | 'expired';
 
-export interface RelayPairingInfo {
-	hostId: string;
-	pairingId: string;
-	hostKey: string;
-	state: RelayPairingState;
-	expiresAt: string;
-}
-
 /** `challenge` = base64url(SHA-256(utf8(verifier))). */
 export interface RelayPairingRequest {
 	ephemeralKey: string;
@@ -62,6 +54,7 @@ export type RelayHostFrame =
 			type: 'pairing-request';
 			pairingId: string;
 			account?: true;
+			holder?: string;
 			expiresAt?: string;
 	  } & RelayPairingRequest)
 	| { type: 'device-revoked'; deviceId: string }
@@ -70,7 +63,6 @@ export type RelayHostFrame =
 /** Host to relay. Every command with a `ref` is answered by one `ack`. */
 export type RelayHostCommand =
 	| { type: 'packet'; deviceId: string; connectionId: string; packet: SecurePacket }
-	| { type: 'pairing-open'; ref: string; pairingId: string; expiresAt: string }
 	/** `challenge` names the one request the host approved; an approval without it is refused. */
 	| {
 			type: 'pairing-approve';
@@ -81,7 +73,6 @@ export type RelayHostCommand =
 			challenge: string;
 	  }
 	| { type: 'pairing-deny'; ref: string; pairingId: string }
-	| { type: 'pairing-close'; ref: string; pairingId: string }
 	| { type: 'device-revoke'; ref: string; deviceId: string }
 	| { type: 'device-drop'; deviceId: string; connectionId: string; code: number };
 
@@ -90,12 +81,15 @@ export interface RelayManageOwner {
 	/** The verified hosted identity of the caller. Never taken from a request body. */
 	owner: { id: string };
 	hostId: string;
+	/** A verified Hub session reference, never a client-supplied identity. */
+	holder?: string;
 }
 
 export interface RelayManageRegister extends RelayManageOwner {
 	hostKey: string;
 	credentialHash: string;
 	name: string;
+	accountLinked?: true;
 }
 
 export interface RelayManageDevice extends RelayManageOwner {
@@ -115,6 +109,7 @@ export interface RemoteHostRegistration extends RelayRegistered {
 
 /** Hub `POST /api/remote/hosts` body. */
 export interface RemoteHostRegisterInput {
+	accountLinked?: true;
 	hostId: string;
 	hostKey: string;
 	credentialHash: string;
@@ -122,6 +117,7 @@ export interface RemoteHostRegisterInput {
 }
 
 export interface RemoteHostSummary {
+	accountLinked?: true;
 	hostId: string;
 	name: string;
 	online: boolean;
@@ -130,3 +126,8 @@ export interface RemoteHostSummary {
 	devices: { deviceId: string; online: boolean; createdAt: string; lastSeenAt: string | null }[];
 }
 export { relayCloseCodes, relayHeaders } from './RemoteRelayValues';
+
+export interface RemoteDeviceAddress {
+	deviceId: string;
+	connectionId: string;
+}

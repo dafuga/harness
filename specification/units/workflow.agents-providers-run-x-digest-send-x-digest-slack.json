@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.agents-providers-run-x-digest-send-x-digest-slack",
+	"uid": "u_vnrjbevch3",
+	"kind": "workflow",
+	"title": "xDigestSlack",
+	"responsibility": "Bind the Slack adapter send-only to one direct message.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/agents-providers/run-x-digest-send/xDigestSlack.ts"],
+		"symbols": ["xDigestSlack"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "xDigestSlack.config",
+				"type": "XDigestSenderConfig['slack']",
+				"required": true
+			},
+			{
+				"name": "xDigestSlack.auditPath",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "xDigestSlack.token",
+				"type": "() => Promise<string>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "xDigestSlack",
+				"type": "(text: string)"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "xDigestSlack",
+				"inputs": [
+					{
+						"name": "xDigestSlack.config",
+						"type": "XDigestSenderConfig['slack']",
+						"required": true
+					},
+					{
+						"name": "xDigestSlack.auditPath",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "xDigestSlack.token",
+						"type": "() => Promise<string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "xDigestSlack",
+						"type": "(text: string)"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-slack",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-platform-adapter-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-x-digest-send-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-platform-audit-log",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/agents-providers/run-x-digest-send/xDigestSlack.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/agents-providers/run-x-digest-send/xDigestSlack.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

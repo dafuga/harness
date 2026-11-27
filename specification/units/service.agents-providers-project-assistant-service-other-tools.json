@@ -1,0 +1,170 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-project-assistant-service-other-tools",
+	"uid": "u_kg5hqk6hij",
+	"kind": "service",
+	"title": "otherTools",
+	"responsibility": "Owns the otherTools service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/project-assistant-service/otherTools.ts"],
+		"symbols": ["trackerReadTools", "healthTool", "writeTools"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerReadTools.tracker",
+				"type": "TrackerCliAdapter",
+				"required": true
+			},
+			{
+				"name": "healthTool.health",
+				"type": "HealthProbeAdapter",
+				"required": true
+			},
+			{
+				"name": "writeTools.github",
+				"type": "GitHubAppAdapter",
+				"required": true
+			},
+			{
+				"name": "writeTools.tracker",
+				"type": "TrackerCliAdapter",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerReadTools",
+				"type": "AssistantToolDefinition[]"
+			},
+			{
+				"name": "healthTool",
+				"type": "AssistantToolDefinition[]"
+			},
+			{
+				"name": "writeTools",
+				"type": "AssistantToolDefinition[]"
+			}
+		],
+		"errors": [
+			{
+				"name": "ProjectAssistantError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerReadTools",
+				"inputs": [
+					{
+						"name": "trackerReadTools.tracker",
+						"type": "TrackerCliAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerReadTools",
+						"type": "AssistantToolDefinition[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "healthTool",
+				"inputs": [
+					{
+						"name": "healthTool.health",
+						"type": "HealthProbeAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "healthTool",
+						"type": "AssistantToolDefinition[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeTools",
+				"inputs": [
+					{
+						"name": "writeTools.github",
+						"type": "GitHubAppAdapter",
+						"required": true
+					},
+					{
+						"name": "writeTools.tracker",
+						"type": "TrackerCliAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeTools",
+						"type": "AssistantToolDefinition[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-git-hub-app",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-health-probe",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-tracker-cli",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-tool-definition",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/project-assistant-service/otherTools.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/project-assistant-service/otherTools.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

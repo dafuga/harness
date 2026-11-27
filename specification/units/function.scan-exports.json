@@ -13,7 +13,15 @@
 			"src/utils/development-tooling/scanExports.types.ts",
 			"src/utils/development-tooling/scanSymbolErrors.ts"
 		],
-		"symbols": ["scanExports", "ExportScan", "ExportScan", "Source", "Located", "scanSymbolErrors"]
+		"symbols": [
+			"scanExports",
+			"ExportScan",
+			"ExportScan",
+			"Source",
+			"Located",
+			"scanSymbolErrors",
+			"callsCliFail"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -32,7 +40,7 @@
 				"name": "scanSymbolErrors.code",
 				"type": "string",
 				"required": true,
-				"description": "TypeScript source parsed using the latest target; top-level function declarations, function-valued variables, and class methods are mapped by name. Only mapped declaration bodies are inspected, and nested function-like bodies are skipped.",
+				"description": "TypeScript source parsed using the latest target; top-level function declarations, function-valued variables, and class methods are mapped by name. Only mapped declaration bodies are inspected, and nested function-like bodies are skipped. A call named `fail` is the CLI error only when imported from a module named `errors`; a same-file `fail` contributes what its own body throws, and any other `fail` stays unclassified.",
 				"examples": [
 					"export function read(): string { throw new TypeError('missing'); }",
 					"export const load = (): void => { fail('missing'); };"
@@ -45,6 +53,15 @@
 				"description": "Previously discovered symbols matched to declaration bodies by name; matching entries are copied with syntactically identified errors and an errorStatus. Entries without a matching declaration remain unchanged.",
 				"examples": [
 					[]
+				]
+			},
+			{
+				"name": "callsCliFail.code",
+				"type": "string",
+				"required": true,
+				"description": "TypeScript source parsed using the latest target. Only a call to the name that imports `fail` from a module named `errors` counts; aliases are followed, and a parameter or local of the same name, `this.fail`, and a `fail` from any other module do not.",
+				"examples": [
+					"import { fail } from '../core/errors';\nexport function run(): void { fail('missing'); }"
 				]
 			}
 		],
@@ -101,7 +118,7 @@
 						"name": "scanSymbolErrors.code",
 						"type": "string",
 						"required": true,
-						"description": "TypeScript source parsed using the latest target; top-level function declarations, function-valued variables, and class methods are mapped by name. Only mapped declaration bodies are inspected, and nested function-like bodies are skipped.",
+						"description": "TypeScript source parsed using the latest target; top-level function declarations, function-valued variables, and class methods are mapped by name. Only mapped declaration bodies are inspected, and nested function-like bodies are skipped. A call named `fail` is the CLI error only when imported from a module named `errors`; a same-file `fail` contributes what its own body throws, and any other `fail` stays unclassified.",
 						"examples": [
 							"export function read(): string { throw new TypeError('missing'); }",
 							"export const load = (): void => { fail('missing'); };"
@@ -125,6 +142,30 @@
 						"examples": [
 							[]
 						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "callsCliFail",
+				"inputs": [
+					{
+						"name": "callsCliFail.code",
+						"type": "string",
+						"required": true,
+						"description": "TypeScript source parsed using the latest target. Only a call to the name that imports `fail` from a module named `errors` counts; aliases are followed, and a parameter or local of the same name, `this.fail`, and a `fail` from any other module do not.",
+						"examples": [
+							"import { fail } from '../core/errors';\nexport function run(): void { fail('missing'); }"
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "callsCliFail",
+						"type": "boolean",
+						"description": "True when the source calls the CLI `fail` through its import binding, so file-level errors include ExpectedCliError; false for unbound, shadowed, member or other-module `fail` calls.",
+						"examples": [true]
 					}
 				],
 				"errors": [],

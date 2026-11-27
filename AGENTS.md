@@ -27,7 +27,7 @@ Lookup reloads stored unit/scenario JSON; diff/log/last read raw unit JSON snaps
 - Ownership review follows ledger membership, including bridge factories and initializers in `shared-service-ownership`. When their behavior changes, preserve earlier reviews, record the new committed definition, regenerate the review object pack and run the same unit-index guard even when full CLI/native suites are deferred.
 - When adding, editing or regenerating unit registry manifests or contracts, review the real responsibility and every field description against the implementation. Run `harness units check` and the unchanged `bun x vitest run test/readable-unit-contracts.test.ts`, even when broad CLI/native suites are deferred. Keep the guard assertions intact. Reindex to zero pending updates and run the unchanged shared-alias, shared-select and shared-search impact tests. Reviewed operation errors use `errorStatus: "declared"`; inferred statuses allow reindexing to replace them.
 - When widening shared catalog or search categories, run desktop typecheck and the existing workspace-search and workspace-route tests. Shared categories must not silently expand a consumer's supported routes.
-- Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
+- Submit the committed candidate with `bun run check --item <tracker-id>` before handing it back. The host queue selects affected tests plus smoke and scoped static checks. Submit a combined release with `bun run check --release`. Full checks must go through the queue.
 - An agent that works here says so: `harness activity register --label <who> --task <what> --units <ids>`, then `harness activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `harness activity finish <id>` at the end. `harness info activity` has the rules.
 
 When projecting provenance-rich dependencies into query indexes, preserve raw records and cover repeated logical edges, distinct relation types and rollback in the existing catalog boundary tests.
@@ -125,8 +125,13 @@ visible marker; a later passing DOM assertion cannot validate pixels recorded ea
 
 Read `harness info ui-design` before designing or changing a screen.
 
+Plans for new or changed screens show them first on a design canvas: author artboards in `designs/<canvas>/` with `harness design` (see `harness info design`), check them with `harness design render`, and land them in a pull request.
+
 - One main piece per screen. A screen has one main UI piece (a list, a board, a form or a canvas). Everything else is a primary action above it or quiet status below it. Two main pieces need two screens, tabs or a dialog.
 - Forms never sit inline on an overview. Create, edit, connect and settings forms open from a button in a dialog (the shared Modal) or on their own page. Mark overview screens with <!-- @harness-view overview -->; harness audit reports overview-inline-form for a form control or form component outside a dialog there. A search field inside a role="search" landmark only narrows the main piece and is allowed.
+- List cards never contain forms. Show one-line option chips with a small Recommended badge, and put explanations, text fields, selectors and confirmation steps in the item’s detail panel, sheet or dialog.
+- Agent cards show status and an Open chat button. Open the conversation in a bottom-right overlay on desktop and a full-screen sheet on phone.
+- Render explicit HTTP and HTTPS URLs in item text, questions, choices and notes as links. Open them in a new tab with rel="noopener noreferrer", allow long URLs to wrap, and keep links separate from item and choice buttons.
 - Primary actions are buttons in one short row above the main piece. A screen has at most one filled primary button (harness audit reports overview-single-primary); the rest are secondary buttons. Labels are short verbs in sentence case, such as New project.
 - Status is quiet. Connection, sync and account state is one short muted line or a small chip beside or below the main piece. Its details and settings open in a dialog; never stack full status panels on a landing screen.
 - Group by job, in this order: primary actions, the main piece, quiet status. Keep to about three groups and let spacing, not borders or headings, separate them.

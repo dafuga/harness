@@ -1,0 +1,256 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-tracker-planning",
+	"uid": "u_l5iouygbhe",
+	"kind": "function",
+	"title": "trackerPlanning",
+	"responsibility": "Validate Tracker planning documents and project the current stage, stage artifacts and promotion receipts from item fields.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/trackerPlanning.ts",
+			"src/utils/projects-sessions/trackerPlanning.types.ts"
+		],
+		"symbols": [
+			"trackerStages",
+			"trackerStageLabels",
+			"trackerPromotionStages",
+			"trackerPlanningArtifactFields",
+			"trackerPlanningPromotionFields",
+			"trackerStageSchema",
+			"trackerArtifactUrlSchema",
+			"trackerArtifactSchema",
+			"trackerPlanningSchema",
+			"trackerArtifactMaxBytes",
+			"trackerStage",
+			"trackerPlanningStage",
+			"trackerPlanningStageSql",
+			"encodeTrackerArtifact",
+			"trackerPlanning",
+			"TrackerStage",
+			"TrackerArtifact",
+			"TrackerPlanningFields",
+			"TrackerPromotion",
+			"TrackerPlanning"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "trackerStage.value",
+				"type": "unknown",
+				"required": true,
+				"description": "Stage token from the local API or CLI.",
+				"unknownReason": "The request value is unchecked until the planning schema validates it."
+			},
+			{
+				"name": "trackerPlanningStage.fields",
+				"type": "TrackerPlanningFields",
+				"required": true,
+				"description": "Independent receipts for the entered planning stages."
+			},
+			{
+				"name": "encodeTrackerArtifact.input",
+				"type": "unknown",
+				"required": true,
+				"description": "A proposed stage document, or null to clear it.",
+				"unknownReason": "The request value is unchecked until the planning schema validates it."
+			},
+			{
+				"name": "trackerPlanning.fields",
+				"type": "TrackerPlanningFields",
+				"required": true,
+				"description": "Stored promotion and artifact fields, which may be absent on older rows."
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerStages",
+				"type": "unknown",
+				"description": "Canonical planning stages in promotion order."
+			},
+			{
+				"name": "trackerPromotionStages",
+				"type": "unknown",
+				"description": "Stages an explicit promotion can enter."
+			},
+			{
+				"name": "trackerPlanningArtifactFields",
+				"type": "unknown",
+				"description": "Journal fields for the stage artifact documents."
+			},
+			{
+				"name": "trackerPlanningPromotionFields",
+				"type": "unknown",
+				"description": "Journal fields for the attributed promotion receipts."
+			},
+			{
+				"name": "trackerStageSchema",
+				"type": "unknown",
+				"description": "Validates a canonical stage token."
+			},
+			{
+				"name": "trackerArtifactUrlSchema",
+				"type": "unknown",
+				"description": "Validates a credential-free HTTPS artifact link."
+			},
+			{
+				"name": "trackerArtifactSchema",
+				"type": "unknown",
+				"description": "Validates a stage document with a summary, pages, states and links."
+			},
+			{
+				"name": "trackerPlanningSchema",
+				"type": "unknown",
+				"description": "Validates the planning projection received by an inbox source."
+			},
+			{
+				"name": "trackerArtifactMaxBytes",
+				"type": "unknown",
+				"description": "Maximum encoded UTF-8 size of one stage document."
+			},
+			{
+				"name": "trackerStage",
+				"type": "TrackerStage",
+				"description": "The canonical stage token."
+			},
+			{
+				"name": "trackerPlanningStage",
+				"type": "TrackerStage",
+				"description": "The highest recorded stage, with Idea as the default."
+			},
+			{
+				"name": "trackerPlanningStageSql",
+				"type": "unknown",
+				"description": "SQLite stage projection for applying the filter before the row limit."
+			},
+			{
+				"name": "encodeTrackerArtifact",
+				"type": "string | null",
+				"description": "Validated JSON for the stage artifact field, or null to clear it."
+			},
+			{
+				"name": "trackerPlanning",
+				"type": "TrackerPlanning",
+				"description": "Valid artifacts and attributed promotions in stage order."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerStage",
+				"inputs": [
+					{
+						"name": "trackerStage.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Stage token from the local API or CLI.",
+						"unknownReason": "The request value is unchecked until the planning schema validates it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerStage",
+						"type": "TrackerStage",
+						"description": "The canonical stage token."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerPlanningStage",
+				"inputs": [
+					{
+						"name": "trackerPlanningStage.fields",
+						"type": "TrackerPlanningFields",
+						"required": true,
+						"description": "Independent receipts for the entered planning stages."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerPlanningStage",
+						"type": "TrackerStage",
+						"description": "The highest recorded stage, with Idea as the default."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "encodeTrackerArtifact",
+				"inputs": [
+					{
+						"name": "encodeTrackerArtifact.input",
+						"type": "unknown",
+						"required": true,
+						"description": "A proposed stage document, or null to clear it.",
+						"unknownReason": "The request value is unchecked until the planning schema validates it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "encodeTrackerArtifact",
+						"type": "string | null",
+						"description": "Validated JSON for the stage artifact field, or null to clear it."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerPlanning",
+				"inputs": [
+					{
+						"name": "trackerPlanning.fields",
+						"type": "TrackerPlanningFields",
+						"required": true,
+						"description": "Stored promotion and artifact fields, which may be absent on older rows."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerPlanning",
+						"type": "TrackerPlanning",
+						"description": "Valid artifacts and attributed promotions in stage order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-sanitize-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/trackerPlanning.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/trackerPlanning.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

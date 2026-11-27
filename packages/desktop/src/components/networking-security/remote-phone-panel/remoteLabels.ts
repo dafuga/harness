@@ -5,7 +5,6 @@ import {
 	awakeNote,
 	lockedNote,
 	unlockedNote,
-	approveNote,
 	awayNote,
 	revokedNote
 } from '../../../utils/networking-security/remoteLabels';
@@ -30,8 +29,8 @@ const words: Record<RemoteMobileStatus['state'], Words> = {
 	unpaired: () => ({ title: 'Connect to computer', detail: '' }),
 	pairing: () => ({ title: 'Contacting the relay…', detail: '' }),
 	'pending-approval': (host) => ({
-		title: `Waiting for approval on ${host}…`,
-		detail: approveNote
+		title: `Connecting to ${host}…`,
+		detail: ''
 	}),
 	connecting: (host) => ({ title: `Connecting to ${host}…`, detail: '' }),
 	online: (host, status) => ({ title: `Connected to ${host}`, detail: awake(status) }),

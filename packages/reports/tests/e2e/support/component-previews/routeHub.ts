@@ -19,6 +19,10 @@ export function hubRoute(
 			route: '/projects/[projectId]/harness/[...path]',
 			path: hostedAddress
 		},
+		'hub.page.projects-project-id-designs-canvas': {
+			route: '/projects/[projectId]/designs/[canvas]',
+			path: `/projects/${project}/designs/checkout`
+		},
 		'hub.page.projects-project-id-members': {
 			route: '/projects/[projectId]/members',
 			path: `/projects/${project}/members`

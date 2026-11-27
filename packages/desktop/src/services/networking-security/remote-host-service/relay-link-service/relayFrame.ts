@@ -20,15 +20,20 @@ const device = (frame: Fields) => matches(frame.deviceId, remotePatterns.deviceI
 const connection = (frame: Fields) =>
 	device(frame) && matches(frame.connectionId, remotePatterns.connectionId);
 
+/** An account request names its expiry and may name its session; any other names none. */
+const origin = (frame: Fields) =>
+	(frame.account === undefined && frame.expiresAt === undefined && frame.holder === undefined) ||
+	(frame.account === true &&
+		(frame.holder === undefined || matches(frame.holder, /^[a-f0-9]{64}$/)) &&
+		typeof frame.expiresAt === 'string' &&
+		Number.isFinite(Date.parse(frame.expiresAt)));
+
 const pairing = (frame: Fields) =>
 	matches(frame.pairingId, remotePatterns.pairingId) &&
 	matches(frame.ephemeralKey, remotePatterns.key) &&
 	matches(frame.sealed, remotePatterns.sealed) &&
 	matches(frame.challenge, remotePatterns.challenge) &&
-	((frame.account === undefined && frame.expiresAt === undefined) ||
-		(frame.account === true &&
-			typeof frame.expiresAt === 'string' &&
-			Number.isFinite(Date.parse(frame.expiresAt))));
+	origin(frame);
 
 const checks: Record<string, (frame: Fields) => boolean> = {
 	ready: (frame) => matches(frame.hostId, remotePatterns.hostId) && Array.isArray(frame.devices),

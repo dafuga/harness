@@ -20,6 +20,7 @@ export interface HostScope {
 export interface HostRecord {
 	hostId: string;
 	ownerId: string;
+	accountLinked?: true;
 	hostKey: string;
 	credentialHash: string;
 	name: string;
@@ -27,6 +28,7 @@ export interface HostRecord {
 	registeredAt: string;
 }
 export interface DeviceRecord {
+	holder?: string;
 	deviceId: string;
 	credentialHash: string;
 	generation: number;
@@ -41,6 +43,7 @@ export interface PairingRecord {
 	attempts: number;
 	request?: { ephemeralKey: string; sealed: string };
 	account?: true;
+	holder?: string;
 	challenge?: string;
 	deviceId?: string;
 	approval?: string;
@@ -65,7 +68,7 @@ export type SocketAttachment =
 	| { role: 'device'; deviceId: string; connectionId: string; closed: boolean };
 export type DeviceAttachment = Extract<SocketAttachment, { role: 'device' }>;
 
-export type PairingAction = 'info' | 'request' | 'poll' | 'exchange';
+export type PairingAction = 'poll' | 'exchange';
 /** The whole public surface. `path` is rebuilt from validated parts, never copied from a request. */
 export type PublicRoute =
 	| { kind: 'health'; path: string }

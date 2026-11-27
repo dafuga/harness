@@ -9,7 +9,7 @@ import { recordCapture } from '../../../../src/utils/reports-media/record-captur
 export async function pageWorkload(
 	page: Page,
 	scenario: ScenarioManifest,
-	capture: { state: string; name: string; viewport: string; buildId: string }
+	capture: { state: string; name: string; viewport: string; buildId: string; target?: string }
 ): Promise<void> {
 	const navigation = await page.evaluate(() => {
 		const item = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
@@ -31,7 +31,7 @@ export async function pageWorkload(
 		units,
 		{
 			workload: `${capture.state}-${size.width}x${size.height}`,
-			target: 'http',
+			target: capture.target ?? 'http',
 			samples: 1,
 			...size,
 			buildId: capture.buildId

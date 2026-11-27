@@ -12,10 +12,9 @@
 		"symbols": [
 			"PairingAccessService",
 			"PairingAccessService.constructor",
-			"PairingAccessService.info",
 			"PairingAccessService.poll",
-			"PairingAccessService.requestAccount",
-			"PairingAccessService.request"
+			"PairingAccessService.heldBy",
+			"PairingAccessService.requestAccount"
 		]
 	},
 	"contract": {
@@ -40,17 +39,6 @@
 				"description": "The HostLinkService that request uses, through toHost, to send the pairing-request frame to the host; the boolean that toHost returns is ignored. The constructor stores it without checking it."
 			},
 			{
-				"name": "PairingAccessService.info.pairingId",
-				"type": "string",
-				"required": true,
-				"description": "The id of the pairing offer, which is the key of the stored record pairing:<pairingId>. The host generates it as 32 lowercase hex characters and the public route checks that format before this call; the service does not check it.",
-				"examples": [
-					"7c1f04e9a2b35d86e0f4c7a19b2d3e58",
-					"b0d6a3f51e8c94027a6db1c3f9e5d812",
-					"4e92a7c0d18f3b65e0a9c47d2f61b83a"
-				]
-			},
-			{
 				"name": "PairingAccessService.poll.pairingId",
 				"type": "string",
 				"required": true,
@@ -60,6 +48,16 @@
 					"b0d6a3f51e8c94027a6db1c3f9e5d812",
 					"4e92a7c0d18f3b65e0a9c47d2f61b83a"
 				]
+			},
+			{
+				"name": "PairingAccessService.heldBy.pairingId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PairingAccessService.heldBy.holder",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PairingAccessService.requestAccount.pairingId",
@@ -72,33 +70,9 @@
 				"required": true
 			},
 			{
-				"name": "PairingAccessService.request.pairingId",
+				"name": "PairingAccessService.requestAccount.holder",
 				"type": "string",
-				"required": true,
-				"description": "The id of the pairing that the phone sends a request for, which is the key of the stored record pairing:<pairingId>. The public route checks it as 32 lowercase hex characters before this call; the service does not check it.",
-				"examples": [
-					"7c1f04e9a2b35d86e0f4c7a19b2d3e58",
-					"b0d6a3f51e8c94027a6db1c3f9e5d812",
-					"4e92a7c0d18f3b65e0a9c47d2f61b83a"
-				]
-			},
-			{
-				"name": "PairingAccessService.request.request",
-				"type": "RelayPairingRequest",
-				"required": true,
-				"description": "The phone's pairing request: ephemeralKey, sealed and challenge are stored with the pairing and sent to the host as they are, unopened and unchecked by this service. PairingController checks the body first, as exactly these three base64url fields: ephemeralKey 87 characters, sealed 22 to 8192, challenge 43.",
-				"examples": [
-					{
-						"ephemeralKey": "BPw3dLk8EarZ1nQv7sGxoT4yCm0uJhKi9WbF2pNe5RtaXzD-MlHqY6gVe0ScwU3jLb8nAoPd7fMtKr2ivE1xZyQ",
-						"sealed": "Qx7vL0aTnE9hWcR3pKbYuZ5sGd2MfJoI8eBlN4QrtV1kXyH6wAPm-jC0sUzd7LnfKqR3Eob2YtHi9VgMeS4cWx0DluNaJ8zP5mRk3GyTfO1hQvIuB6sE-wLcZo9dKr2nVt4pXqMi7AyGlH0jUe8bWsRf3EkT6oDncYv1gQ-5PzwL2hNa9KxBmS7rJb4Ue0TdZ8iVo3FqyA6pCs1lGwkM-0NxRh7EfQ5uPw2cTiLd9bOa4ySmgX3nZv8JrU2WeKt6YmlpHoC1sAq7DhvR4iEb9-FnjP0wGxN5Tk8Ms2yLcUoaIe6t",
-						"challenge": "Yx3bq9R0kVZp2nLs8TcWmD4eHfJa7uGoEi1Ny6CpQ5w"
-					},
-					{
-						"ephemeralKey": "BQx8Ld3VmTa0KpYw7sNeHj5ZgR2oUciFb9TxE4Mql1SwA-6nVyPk3rOu8DzJtG0hXmB7eC9qWsZ2iLfNaYv5KnQ",
-						"sealed": "Ae3nYqU0bRsK7vHm-tPlWz2gDc9FoJiN5xRa1TyE0LuMj8BqSvhC4kOe6ZwGdXr-pI3fNs7aVtQy2mKbElR9oUcJ0xwP8hTg5LzYqS1bNi4DvMFk6eAs-XoCrG0mJy7ULt3nZhWd8pQibV5cEf2RxToY9lKa6sMguI-4tBw1HnPjD7zqS3OvgA2yRe0NkXmF8iVb5LcQtW3sUo9ZhExK6pGd-4JyCnO1aMr7fBsQ2eTi8VlHyL5wNc3UpR0Gb9hXk6DzjE4oSm1-WtNrI7qYf2uAlB8vKd0TgC5MzPe3RsOnUh2a",
-						"challenge": "k4VdR8tQ1sXo0Lm3NhZbE6yWcJ2pAu9gFiDv5TrHe7Q"
-					}
-				]
+				"required": false
 			}
 		],
 		"outputs": [
@@ -166,53 +140,6 @@
 		"errorStatus": "declared",
 		"operations": [
 			{
-				"name": "PairingAccessService.info",
-				"inputs": [
-					{
-						"name": "PairingAccessService.info.pairingId",
-						"type": "string",
-						"required": true,
-						"description": "The id of the pairing offer, which is the key of the stored record pairing:<pairingId>. The host generates it as 32 lowercase hex characters and the public route checks that format before this call; the service does not check it.",
-						"examples": [
-							"7c1f04e9a2b35d86e0f4c7a19b2d3e58",
-							"b0d6a3f51e8c94027a6db1c3f9e5d812",
-							"4e92a7c0d18f3b65e0a9c47d2f61b83a"
-						]
-					}
-				],
-				"outputs": [
-					{
-						"name": "PairingAccessService.info",
-						"type": "RelayPairingInfo | undefined",
-						"description": "The host id, the pairing id, the host's public key (hostKey), the offer's state and its expiry as an ISO 8601 string. It is undefined when there is no host record or no live offer for pairingId.",
-						"examples": [
-							{
-								"hostId": "9a41c7e0d2f85b36a1c04e7d9b2f35a86c1e0d4f",
-								"pairingId": "7c1f04e9a2b35d86e0f4c7a19b2d3e58",
-								"hostKey": "BMz4kQ0rVaL7xT2pNf9whC5eYbJg1oUaR8mWd3ZTqK0vXc6Hs2nPe9FyAlJio5bM8tSu4Dx-GkWr1ZcV7ePqN0M",
-								"state": "open",
-								"expiresAt": "2026-11-15T18:05:00.000Z"
-							},
-							{
-								"hostId": "3d07f5b2e9c41a86d0f3b7e25c9a1f640e8d27b1",
-								"pairingId": "b0d6a3f51e8c94027a6db1c3f9e5d812",
-								"hostKey": "BKq3Wv8ZsEr0YhNcT6LdUaP2xGm9FoeI5jBw1KtR7MnSz4QyVhDl0XcAe8WupH6iOgF3NbkT-9RmZ2sJvC4Ly0E",
-								"state": "requested",
-								"expiresAt": "2026-11-15T18:10:00.000Z"
-							}
-						]
-					}
-				],
-				"errors": [
-					{
-						"name": "RangeError",
-						"type": "thrown",
-						"description": "Thrown by the iso helper when the live offer's expiresAt is not a valid time, after the host record and the offer were read."
-					}
-				],
-				"errorStatus": "declared"
-			},
-			{
 				"name": "PairingAccessService.poll",
 				"inputs": [
 					{
@@ -258,6 +185,29 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "PairingAccessService.heldBy",
+				"inputs": [
+					{
+						"name": "PairingAccessService.heldBy.pairingId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PairingAccessService.heldBy.holder",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingAccessService.heldBy",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "PairingAccessService.requestAccount",
 				"inputs": [
 					{
@@ -269,6 +219,11 @@
 						"name": "PairingAccessService.requestAccount.request",
 						"type": "RelayPairingRequest",
 						"required": true
+					},
+					{
+						"name": "PairingAccessService.requestAccount.holder",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -279,63 +234,6 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
-			},
-			{
-				"name": "PairingAccessService.request",
-				"inputs": [
-					{
-						"name": "PairingAccessService.request.pairingId",
-						"type": "string",
-						"required": true,
-						"description": "The id of the pairing that the phone sends a request for, which is the key of the stored record pairing:<pairingId>. The public route checks it as 32 lowercase hex characters before this call; the service does not check it.",
-						"examples": [
-							"7c1f04e9a2b35d86e0f4c7a19b2d3e58",
-							"b0d6a3f51e8c94027a6db1c3f9e5d812",
-							"4e92a7c0d18f3b65e0a9c47d2f61b83a"
-						]
-					},
-					{
-						"name": "PairingAccessService.request.request",
-						"type": "RelayPairingRequest",
-						"required": true,
-						"description": "The phone's pairing request: ephemeralKey, sealed and challenge are stored with the pairing and sent to the host as they are, unopened and unchecked by this service. PairingController checks the body first, as exactly these three base64url fields: ephemeralKey 87 characters, sealed 22 to 8192, challenge 43.",
-						"examples": [
-							{
-								"ephemeralKey": "BPw3dLk8EarZ1nQv7sGxoT4yCm0uJhKi9WbF2pNe5RtaXzD-MlHqY6gVe0ScwU3jLb8nAoPd7fMtKr2ivE1xZyQ",
-								"sealed": "Qx7vL0aTnE9hWcR3pKbYuZ5sGd2MfJoI8eBlN4QrtV1kXyH6wAPm-jC0sUzd7LnfKqR3Eob2YtHi9VgMeS4cWx0DluNaJ8zP5mRk3GyTfO1hQvIuB6sE-wLcZo9dKr2nVt4pXqMi7AyGlH0jUe8bWsRf3EkT6oDncYv1gQ-5PzwL2hNa9KxBmS7rJb4Ue0TdZ8iVo3FqyA6pCs1lGwkM-0NxRh7EfQ5uPw2cTiLd9bOa4ySmgX3nZv8JrU2WeKt6YmlpHoC1sAq7DhvR4iEb9-FnjP0wGxN5Tk8Ms2yLcUoaIe6t",
-								"challenge": "Yx3bq9R0kVZp2nLs8TcWmD4eHfJa7uGoEi1Ny6CpQ5w"
-							},
-							{
-								"ephemeralKey": "BQx8Ld3VmTa0KpYw7sNeHj5ZgR2oUciFb9TxE4Mql1SwA-6nVyPk3rOu8DzJtG0hXmB7eC9qWsZ2iLfNaYv5KnQ",
-								"sealed": "Ae3nYqU0bRsK7vHm-tPlWz2gDc9FoJiN5xRa1TyE0LuMj8BqSvhC4kOe6ZwGdXr-pI3fNs7aVtQy2mKbElR9oUcJ0xwP8hTg5LzYqS1bNi4DvMFk6eAs-XoCrG0mJy7ULt3nZhWd8pQibV5cEf2RxToY9lKa6sMguI-4tBw1HnPjD7zqS3OvgA2yRe0NkXmF8iVb5LcQtW3sUo9ZhExK6pGd-4JyCnO1aMr7fBsQ2eTi8VlHyL5wNc3UpR0Gb9hXk6DzjE4oSm1-WtNrI7qYf2uAlB8vKd0TgC5MzPe3RsOnUh2a",
-								"challenge": "k4VdR8tQ1sXo0Lm3NhZbE6yWcJ2pAu9gFiDv5TrHe7Q"
-							}
-						]
-					}
-				],
-				"outputs": [
-					{
-						"name": "PairingAccessService.request",
-						"type": "RelayPairingPoll | RelayErrorCode",
-						"description": "The state 'requested' with the offer's expiry once the request is stored, which the host receives at once or when it reconnects if it is away. Otherwise it is the RelayErrorCode that refused the request: 'not-found' when no live offer exists, or 'pairing-unavailable' when the offer is neither open nor requested, or its attempts have reached remoteLimits.pairingAttempts (5).",
-						"examples": [
-							{
-								"state": "requested",
-								"expiresAt": "2026-11-15T18:05:00.000Z"
-							},
-							"pairing-unavailable",
-							"not-found"
-						]
-					}
-				],
-				"errors": [
-					{
-						"name": "RangeError",
-						"type": "thrown",
-						"description": "Thrown by the iso helper when the offer's expiresAt is not a valid time, after the request was saved and passed to the host link."
-					}
-				],
-				"errorStatus": "declared"
 			}
 		],
 		"initialization": [

@@ -1,5 +1,6 @@
 import { expect, afterEach, beforeEach, onTestFinished, test, vi } from 'vitest';
 import { rmSync } from 'node:fs';
+import { verifyArtifactCommand } from '../../support/trackerPlanningAssertions';
 import { createTempDirectory } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
 import { TrackerCommand } from '../../../src/commands/projects-sessions/TrackerCommand';
@@ -123,6 +124,7 @@ test('native show prints the full human item and returns the enriched JSON for a
 		runs: [{ id: 1, model: 'fixture-model', outcome: 'done' }],
 		launch_status: null
 	});
+	await verifyArtifactCommand(run);
 	vi.stubEnv('TRACKER_RUN_ID', '42');
 	const started = await run('start', 'taskfi', '--json');
 	expect(started.code).toBe(0);
@@ -137,7 +139,7 @@ test('native show prints the full human item and returns the enriched JSON for a
 	});
 });
 
-test('native remind schedules a decision without changing its state and filters attention until it wakes', async () => {
+test('native remind holds delivery and keeps the ask visible in the digest', async () => {
 	const { runtime, run } = await compatibilityFixture();
 	runtime.store.appendLocal({
 		itemId: fixtureItem,
@@ -147,7 +149,7 @@ test('native remind schedules a decision without changing its state and filters 
 	expect(JSON.parse((await run('list', '--flagged', '--json')).out)).toEqual([]);
 	expect(JSON.parse((await run('digest', '--json')).out)).toMatchObject({
 		blocked: [],
-		needs_daniel: []
+		needs_daniel: [{ id: 'taskfixture', remind_at: at, waiting_minutes: 0 }]
 	});
 	expect(JSON.parse((await run('list', '--status', 'all', '--json')).out)).toEqual(
 		expect.arrayContaining([expect.objectContaining({ id: fixtureItem, remind_at: at })])

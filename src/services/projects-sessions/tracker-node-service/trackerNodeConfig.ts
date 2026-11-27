@@ -11,6 +11,7 @@ import {
 import { isAbsolute } from 'node:path';
 import { z } from 'zod';
 import { trackerHostEffectsSchema } from '../tracker-native-runtime-service/trackerHostEffectsSchema';
+import { trackerRoutingSchema } from './trackerRoutingSchema';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
 
 const absolutePath = z.string().refine(isAbsolute);
@@ -27,18 +28,25 @@ const configFields = {
 	syncSecretFile: absolutePath,
 	backupDirectory: absolutePath.optional(),
 	hostEffects: trackerHostEffectsSchema.optional(),
+	autolaunch: z.strictObject({ enabled: z.boolean() }).optional(),
+	routing: trackerRoutingSchema.optional(),
 	notifications: z
 		.strictObject({
 			targets: z.record(
 				id,
-				z.strictObject({
-					url: z.string(),
-					bearerFile: absolutePath.optional()
-				})
+				z.union([
+					z.strictObject({ url: z.string(), bearerFile: absolutePath.optional() }),
+					z.strictObject({
+						cli: z.enum(['claude', 'codex']),
+						session: id.regex(/^[^.]+$/),
+						tmux: absolutePath
+					})
+				])
 			),
 			itemCallbacks: z.array(id).optional(),
 			chiefOfStaff: id.optional(),
-			webhook: id.optional()
+			webhook: id.optional(),
+			suggestions: z.array(z.string().min(1).max(120)).max(30).optional()
 		})
 		.optional()
 };

@@ -8,6 +8,7 @@ import {
 	type Operation
 } from './LocalOperationsService.types';
 import { remoteMethods } from '../../../../../remote/src/index';
+import { homeMethods } from '../../../../../remote/src/models/networking-security/RemoteValues';
 import type { RemoteMethod, WireRequest } from '../../../../../remote/src/index';
 import { readProjectOverview } from '$reports/lib/projects-sessions/project-overview/readProjectOverview';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
@@ -15,13 +16,12 @@ import { channels } from '../../../models/development-tooling/DesktopBridge.type
 import type { EvidenceArtifactResult as Artifact } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { binaryAnswer } from '../../../utils/reports-media/binaryAnswer';
 import { IpcRequestValidator } from '../../../validators/development-tooling/IpcRequestValidator';
+import { MacTrackerInboxService } from './MacTrackerInboxService';
 import { UnexpectedOverviewFieldsError } from './UnexpectedOverviewFieldsError';
 const controls: Record<string, keyof LocalControl> = {
 	'remote.status': 'status',
 	'remote.enable': 'enable',
 	'remote.disable': 'disable',
-	'remote.createPairing': 'createPairing',
-	'remote.closePairing': 'closePairing',
 	'remote.approvePairing': 'approvePairing',
 	'remote.denyPairing': 'denyPairing',
 	'remote.revokeDevice': 'revokeDevice'
@@ -48,6 +48,7 @@ function overview(
  */
 export class LocalOperationsService {
 	private readonly payloads = new IpcRequestValidator();
+	private readonly tracker = new MacTrackerInboxService();
 	constructor(private readonly options: LocalOperationsOptions) {}
 	methods(): RemoteMethod[] {
 		return [...remoteMethods];
@@ -57,6 +58,9 @@ export class LocalOperationsService {
 			input: Fields = { ...request.input };
 		delete input.epoch;
 		if (method === 'projectOverview') return overview(input, this.options.hubOverview);
+		if (homeMethods.some((name) => name === method)) return this.home(method, input);
+		if (method === 'trackerInboxRead') return this.tracker.read(input);
+		if (method === 'trackerInboxWrite') return this.tracker.write(input);
 		if (Object.hasOwn(controls, method)) return this.control(controls[method], input);
 		const payload = this.payloads.parse(channels[method as keyof typeof channels], input),
 			operation = (this.options.bridge as Fields)[method];
@@ -66,6 +70,12 @@ export class LocalOperationsService {
 		if (method === 'artifact')
 			return binaryAnswer((value as Artifact).bytes, (value as Artifact).mediaType);
 		return method === 'image' ? binaryAnswer(value as Uint8Array) : value;
+	}
+	private home(method: RemoteMethod, input: Fields) {
+		if (method === 'homeChat' && this.options.homeChat) return this.options.homeChat(input);
+		if (method === 'homeSnapshot' && this.options.home && !Object.keys(input).length)
+			return this.options.home();
+		throw new DesktopOperationUnavailableError('Desktop Home operation unavailable.');
 	}
 	/** The services behind the control port validate what they are given. */
 	private control(name: keyof LocalControl, input: Fields): Promise<unknown> {

@@ -39,6 +39,12 @@ export class HostStorageAdapter {
 	saveHost(record: HostRecord): void {
 		this.write('host', record);
 	}
+	revokedHolder(holder: string): boolean {
+		return this.read(`revoked-holder:${holder}`) === true;
+	}
+	blockHolder(holder: string): void {
+		this.write(`revoked-holder:${holder}`, true);
+	}
 	device(deviceId: string): DeviceRecord | undefined {
 		return this.read(`device:${deviceId}`);
 	}
@@ -78,9 +84,9 @@ export class HostStorageAdapter {
 
 	/** Deletes every record and the alarm. */
 	async clear(): Promise<void> {
-		await this.storage.deleteAlarm();
-		await this.storage.deleteAll();
+		this.storage.sql.exec('DROP TABLE IF EXISTS records');
 		this.created = false;
+		await this.storage.deleteAlarm();
 	}
 
 	private exists(): boolean {

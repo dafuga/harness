@@ -2,10 +2,11 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { githubHistoryPage } from '../../src/utils/git-source-history/create-git-hub-source/githubHistoryPage';
-
-type Context = Parameters<typeof githubHistoryPage>[0];
-type Repository = Parameters<typeof githubHistoryPage>[1];
-type FakeResponse = { data: unknown; hasNext: boolean };
+import type {
+	Repository,
+	FakeResponse,
+	Context
+} from './collaboration.function.github-history-page.test.types';
 
 const repository: Repository = {
 	id: 418260917,

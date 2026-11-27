@@ -1,0 +1,235 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-home-direct-agents",
+	"uid": "u_qhdifpyhqs",
+	"kind": "module",
+	"title": "homeDirectAgents",
+	"responsibility": "Owns the homeDirectAgents library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts",
+			"packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.types.ts"
+		],
+		"symbols": [
+			"HomeLists",
+			"directAgentNames",
+			"controlledIdPattern",
+			"noSubAgents",
+			"isDirectAgent",
+			"listHomeAgents",
+			"completeHomeSnapshot",
+			"listedHomeSnapshot",
+			"HomeLists"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "isDirectAgent.agent",
+				"type": "Pick<HomeAgent, 'id' | 'name'>",
+				"required": true
+			},
+			{
+				"name": "isDirectAgent.added",
+				"type": "readonly string[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "listHomeAgents.agents",
+				"type": "HomeAgent[]",
+				"required": true
+			},
+			{
+				"name": "listHomeAgents.added",
+				"type": "readonly string[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "completeHomeSnapshot.snapshot",
+				"type": "OwnerHomeSnapshot",
+				"required": true
+			},
+			{
+				"name": "listedHomeSnapshot.snapshot",
+				"type": "OwnerHomeSnapshot",
+				"required": true
+			},
+			{
+				"name": "listedHomeSnapshot.added",
+				"type": "readonly string[]",
+				"required": false,
+				"default": []
+			}
+		],
+		"outputs": [
+			{
+				"name": "directAgentNames",
+				"type": "Readonly<Record<string, string>>"
+			},
+			{
+				"name": "controlledIdPattern",
+				"type": "unknown"
+			},
+			{
+				"name": "noSubAgents",
+				"type": "HomeAgent['subAgents']"
+			},
+			{
+				"name": "isDirectAgent",
+				"type": "boolean"
+			},
+			{
+				"name": "listHomeAgents",
+				"type": "HomeLists"
+			},
+			{
+				"name": "completeHomeSnapshot",
+				"type": "OwnerHomeSnapshot & { openAsks: HomeOpenAsk[] }"
+			},
+			{
+				"name": "listedHomeSnapshot",
+				"type": "OwnerHomeSnapshot & HomeLists & { openAsks: HomeOpenAsk[] }"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "noSubAgents",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "noSubAgents",
+						"type": "HomeAgent['subAgents']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "isDirectAgent",
+				"inputs": [
+					{
+						"name": "isDirectAgent.agent",
+						"type": "Pick<HomeAgent, 'id' | 'name'>",
+						"required": true
+					},
+					{
+						"name": "isDirectAgent.added",
+						"type": "readonly string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "isDirectAgent",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "listHomeAgents",
+				"inputs": [
+					{
+						"name": "listHomeAgents.agents",
+						"type": "HomeAgent[]",
+						"required": true
+					},
+					{
+						"name": "listHomeAgents.added",
+						"type": "readonly string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "listHomeAgents",
+						"type": "HomeLists"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "completeHomeSnapshot",
+				"inputs": [
+					{
+						"name": "completeHomeSnapshot.snapshot",
+						"type": "OwnerHomeSnapshot",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "completeHomeSnapshot",
+						"type": "OwnerHomeSnapshot & { openAsks: HomeOpenAsk[] }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "listedHomeSnapshot",
+				"inputs": [
+					{
+						"name": "listedHomeSnapshot.snapshot",
+						"type": "OwnerHomeSnapshot",
+						"required": true
+					},
+					{
+						"name": "listedHomeSnapshot.added",
+						"type": "readonly string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "listedHomeSnapshot",
+						"type": "OwnerHomeSnapshot & HomeLists & { openAsks: HomeOpenAsk[] }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

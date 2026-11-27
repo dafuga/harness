@@ -10,7 +10,6 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/networking-security/remote-host-panel/remoteLabels.ts",
-			"packages/desktop/src/components/networking-security/remote-offer-code/remoteLabels.ts",
 			"packages/desktop/src/components/networking-security/remote-phone-panel/remoteLabels.ts",
 			"packages/desktop/src/components/networking-security/remote-phone-panel/remoteLabels.types.ts",
 			"packages/desktop/src/components/remote-host-panel/remoteLabels.ts",
@@ -23,7 +22,6 @@
 			"relayName",
 			"hostLine",
 			"hostSummary",
-			"timeLeft",
 			"grantSummary",
 			"remoteLabels",
 			"Words",
@@ -44,7 +42,6 @@
 			"relayName",
 			"hostLine",
 			"hostSummary",
-			"timeLeft",
 			"grantSummary",
 			"remoteLabels",
 			"plural",
@@ -52,7 +49,6 @@
 			"relayName",
 			"hostLine",
 			"hostSummary",
-			"timeLeft",
 			"grantSummary",
 			"remoteLabels",
 			"lockNote",
@@ -165,13 +161,6 @@
 				]
 			},
 			{
-				"name": "timeLeft.milliseconds",
-				"type": "number",
-				"required": true,
-				"description": "Milliseconds remaining for an offer. The value is rounded up to whole seconds and clamped at zero, with no upper limit.",
-				"examples": [61001, 0]
-			},
-			{
 				"name": "grantSummary.grant",
 				"type": "RemoteGrant",
 				"required": true,
@@ -212,20 +201,6 @@
 				"examples": ["0123456789abcde"]
 			},
 			{
-				"name": "plural.count",
-				"type": "number",
-				"required": true,
-				"description": "The number printed before the word. Only the numeric value 1 keeps the word singular; every other number gets an appended s.",
-				"examples": [1, 2, 0]
-			},
-			{
-				"name": "plural.word",
-				"type": "string",
-				"required": true,
-				"description": "The singular word printed after the count. The helper appends s unless the count is exactly 1.",
-				"examples": ["phone", "project"]
-			},
-			{
 				"name": "keyLabel.deviceId",
 				"type": "string",
 				"required": true,
@@ -258,7 +233,7 @@
 				"type": "string",
 				"description": "Fixed guidance that approved phones work while the computer is locked and awake, and that a sleeping computer is offline.",
 				"examples": [
-					"Approved phones keep working while this Mac is locked and awake. A sleeping Mac is offline."
+					"Linked devices keep working while this Mac is locked and awake. A sleeping Mac is offline."
 				]
 			},
 			{
@@ -295,7 +270,7 @@
 				"name": "revokedNote",
 				"type": "string",
 				"description": "Fixed instruction shown after the computer removes the phone’s access.",
-				"examples": ["Pair again from your computer to continue."]
+				"examples": ["Sign in again to request access."]
 			},
 			{
 				"name": "relayName",
@@ -338,15 +313,15 @@
 				"type": "string",
 				"description": "A phone-access-on line containing the relay host and, for registering, connecting, or offline states, the corresponding fixed suffix.",
 				"examples": [
-					"Phone access is on · relay.example:8443 · registering…",
-					"Phone access is on · relay.example:8443 · relay unreachable"
+					"This Mac is linked · relay.example:8443 · registering…",
+					"This Mac is linked · relay.example:8443 · relay unreachable"
 				]
 			},
 			{
 				"name": "hostSummary",
 				"type": "string",
-				"description": "Disabled access returns Phone access off. Enabled access reports the device count as phones, or no phone when the list is empty.",
-				"examples": ["Phone access off", "Phone access on · 1 phone"]
+				"description": "Disabled access returns Mac unlinked. Enabled access reports the device count as phones, or no phone when the list is empty.",
+				"examples": ["Mac unlinked", "Phone access on · 1 phone"]
 			},
 			{
 				"name": "remoteLabels",
@@ -363,7 +338,7 @@
 					},
 					{
 						"title": "This phone’s access was removed on the computer.",
-						"detail": "Pair again from your computer to continue."
+						"detail": "Sign in again to request access."
 					}
 				]
 			}
@@ -446,8 +421,8 @@
 						"type": "string",
 						"description": "A phone-access-on line containing the relay host and, for registering, connecting, or offline states, the corresponding fixed suffix.",
 						"examples": [
-							"Phone access is on · relay.example:8443 · registering…",
-							"Phone access is on · relay.example:8443 · relay unreachable"
+							"This Mac is linked · relay.example:8443 · registering…",
+							"This Mac is linked · relay.example:8443 · relay unreachable"
 						]
 					}
 				],
@@ -505,30 +480,8 @@
 					{
 						"name": "hostSummary",
 						"type": "string",
-						"description": "Disabled access returns Phone access off. Enabled access reports the device count as phones, or no phone when the list is empty.",
-						"examples": ["Phone access off", "Phone access on · 1 phone"]
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "timeLeft",
-				"inputs": [
-					{
-						"name": "timeLeft.milliseconds",
-						"type": "number",
-						"required": true,
-						"description": "Milliseconds remaining for an offer. The value is rounded up to whole seconds and clamped at zero, with no upper limit.",
-						"examples": [61001, 0]
-					}
-				],
-				"outputs": [
-					{
-						"name": "timeLeft",
-						"type": "string",
-						"description": "Remaining time formatted as unbounded whole minutes, a colon, and two-digit seconds after rounding milliseconds up and clamping at zero.",
-						"examples": ["1:02", "0:00"]
+						"description": "Disabled access returns Mac unlinked. Enabled access reports the device count as phones, or no phone when the list is empty.",
+						"examples": ["Mac unlinked", "Phone access on · 1 phone"]
 					}
 				],
 				"errors": [],
@@ -605,7 +558,7 @@
 							},
 							{
 								"title": "This phone’s access was removed on the computer.",
-								"detail": "Pair again from your computer to continue."
+								"detail": "Sign in again to request access."
 							}
 						]
 					}
@@ -630,35 +583,6 @@
 						"type": "string",
 						"description": "The full device identity grouped in consecutive groups of up to four characters, retaining the final partial group.",
 						"examples": ["0123 4567 89ab cde"]
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "plural",
-				"inputs": [
-					{
-						"name": "plural.count",
-						"type": "number",
-						"required": true,
-						"description": "The number printed before the word. Only the numeric value 1 keeps the word singular; every other number gets an appended s.",
-						"examples": [1, 2, 0]
-					},
-					{
-						"name": "plural.word",
-						"type": "string",
-						"required": true,
-						"description": "The singular word printed after the count. The helper appends s unless the count is exactly 1.",
-						"examples": ["phone", "project"]
-					}
-				],
-				"outputs": [
-					{
-						"name": "plural",
-						"type": "string",
-						"description": "The count followed by the supplied word, with s appended unless count is exactly 1.",
-						"examples": ["1 phone", "2 phones"]
 					}
 				],
 				"errors": [],
@@ -728,6 +652,11 @@
 			"unit": "desktop.model.environment-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.activity-display",
+			"via": "reexport",
+			"origin": "derived"
 		}
 	],
 	"helperContracts": [
@@ -763,51 +692,6 @@
 				},
 				{
 					"unit": "desktop.component.remote-phone-panel"
-				}
-			]
-		},
-		{
-			"name": "plural",
-			"source": "packages/desktop/src/helpers/strings/plural.ts",
-			"inputs": [
-				{
-					"name": "plural.count",
-					"type": "number",
-					"required": true
-				},
-				{
-					"name": "plural.word",
-					"type": "string",
-					"required": true
-				}
-			],
-			"output": "unknown",
-			"pure": true,
-			"examples": [
-				{
-					"name": "Keep the singular word for one item",
-					"call": "plural(1, \"task\")",
-					"input": [1, "task"],
-					"output": "1 task"
-				},
-				{
-					"name": "Add s for other counts",
-					"call": "plural(2, \"task\")",
-					"input": [2, "task"],
-					"output": "2 tasks"
-				}
-			],
-			"consumers": [
-				{
-					"unit": "desktop.component.agents-providers-chat-agents"
-				},
-				{
-					"unit": "desktop.function.remote-labels",
-					"symbol": "grantSummary"
-				},
-				{
-					"unit": "desktop.function.remote-labels",
-					"symbol": "hostSummary"
 				}
 			]
 		}

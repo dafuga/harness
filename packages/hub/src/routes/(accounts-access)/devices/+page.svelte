@@ -3,6 +3,7 @@
 <!-- @harness-uid u_xzmlyw4yjt -->
 <!-- @harness-view overview -->
 <script lang="ts">
+	import LinkedComputers from '../../../components/accounts-access/LinkedComputers.svelte';
 	import { formatTime } from '$reports/helpers/strings/formatTime';
 	import LoginPanel from '../../../components/accounts-access/login-panel/LoginPanel.svelte';
 	import HubFrame from '../../../components/shared-primitives/HubFrame.svelte';
@@ -100,5 +101,6 @@
 			{/if}
 			{#if error}<hx-p class="hub-list-empty" role="alert">{error}</hx-p>{/if}
 		</hx-section>
+		<LinkedComputers />
 	{/if}
 </HubFrame>

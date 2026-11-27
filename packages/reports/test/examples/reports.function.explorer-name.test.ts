@@ -3,9 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { explorerAppRoute, explorerName } from '../../src/utils/explorer-ui/explorerName';
 import type { Named } from '../../src/utils/explorer-ui/explorerName.types';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
-type Route = Parameters<typeof explorerAppRoute>[0];
+import type { Cases, Route } from './reports.function.explorer-name.test.types';
 const unitId = 'reports.function.explorer-name';
 const record = (symbol: string, state: string, cases: Cases) => {
 	const file = `${state}.json`;

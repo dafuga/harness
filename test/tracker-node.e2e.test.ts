@@ -24,6 +24,7 @@ import {
 import type { TrackerNodeFixture } from './support/trackerNodeProcess.types';
 import { withTempDir } from './support/temporary';
 import { verifyTrackerRollback } from './support/verifyTrackerRollback';
+import { proveTrackerJobCommands } from './support/trackerBoxJobCli';
 
 test('foreground hub and spoke converge over signed loopback and route compatibility commands and notifications', async () => {
 	await withTempDir('hnt-', async (temporary) => {
@@ -44,6 +45,11 @@ test('foreground hub and spoke converge over signed loopback and route compatibi
 			...fixtureConfig(root, 'synthetic-spoke', spokeApi),
 			role: 'spoke',
 			upstream: { url: loopback(hubSync) },
+			hostEffects: {
+				mode: 'active',
+				checkpoint: 'fixture-migration-01',
+				watchdog: { transcriptRoots: [join(root, 'fixture-transcripts')] }
+			},
 			notifications: {
 				targets: { callback: { url: sink.base + '/callback' } },
 				itemCallbacks: ['callback']
@@ -124,6 +130,8 @@ test('startup refuses an unfenced role or competing API, sync or journal owner a
 		expect(existsSync(join(root, 'legacy-used'))).toBe(false);
 	});
 }, 25_000);
+
+test('the hub CLI manages box jobs and a spoke is refused', proveTrackerJobCommands, 40_000);
 
 async function verifyCompetingOwners(
 	root: string,

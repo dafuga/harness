@@ -18,15 +18,10 @@ test('publicRoute knows the connect route of a host', () => {
 	});
 });
 
-test('publicRoute knows the four pairing calls', () => {
-	expect(publicRoute('GET', pairing)).toEqual({
-		kind: 'pairing',
-		path: pairing,
-		hostId,
-		pairingId,
-		action: 'info'
-	});
-	for (const action of ['request', 'poll', 'exchange'] as const) {
+test('publicRoute knows the two public pairing calls and no public request or info', () => {
+	expect(publicRoute('GET', pairing)).toBeUndefined();
+	expect(publicRoute('POST', `${pairing}/request`)).toBeUndefined();
+	for (const action of ['poll', 'exchange'] as const) {
 		expect(publicRoute('POST', `${pairing}/${action}`)).toEqual({
 			kind: 'pairing',
 			path: `${pairing}/${action}`,
@@ -44,7 +39,6 @@ test('publicRoute refuses a route under another verb', () => {
 		['POST', `${host}/connect`],
 		['POST', pairing],
 		['DELETE', pairing],
-		['GET', `${pairing}/request`],
 		['GET', `${pairing}/poll`],
 		['PUT', `${pairing}/exchange`],
 		['OPTIONS', `${pairing}/exchange`]

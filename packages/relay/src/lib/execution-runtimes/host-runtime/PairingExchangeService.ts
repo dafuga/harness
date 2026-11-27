@@ -28,16 +28,20 @@ export class PairingExchangeService {
 	 */
 	async exchange(
 		pairingId: string,
-		verifier: string | undefined
+		verifier: string | undefined,
+		holder?: string
 	): Promise<RelayPairingExchange | undefined> {
 		const proof = verifier ? await pkceChallenge(verifier) : '';
-		const hostId = this.store.host()?.hostId ?? '';
-		const deviceId = this.store.pairing(pairingId)?.deviceId ?? '';
+		const hostId = this.hostId();
+		const device = this.store.pairing(pairingId);
+		if (holder && device?.holder !== holder) return undefined;
+		const deviceId = device?.deviceId ?? '';
 		const credential = randomCredential();
 		const hash = await credentialHash({ role: 'device', hostId, deviceId, credential });
+		if (this.replaced(pairingId, device)) return undefined;
 		const sealed = this.consume(pairingId, { proof, deviceId });
 		if (sealed === undefined) return undefined;
-		this.enroll(deviceId, hash);
+		this.enroll(deviceId, hash, device?.holder);
 		return { deviceId, credential, sealed };
 	}
 
@@ -52,10 +56,26 @@ export class PairingExchangeService {
 	): string | undefined {
 		const pairing = this.store.pairing(pairingId);
 		this.store.removePairing(pairingId);
-		if (!pairing || !this.store.host()) return undefined;
+		if (!pairing || !this.admitted(pairing)) return undefined;
 		if (pairing.state !== 'approved' || pairing.expiresAt <= Date.now()) return undefined;
 		if (!claim.deviceId || pairing.deviceId !== claim.deviceId) return undefined;
 		return this.proven(pairing, claim.proof) ? pairing.approval : undefined;
+	}
+
+	/** The pairing under this id is no longer the one the credential was prepared for. */
+	private replaced(pairingId: string, prepared: PairingRecord | undefined): boolean {
+		return this.store.pairing(pairingId)?.challenge !== prepared?.challenge;
+	}
+
+	private hostId(): string {
+		return this.store.host()?.hostId ?? '';
+	}
+
+	/** A registered host, a session that is not revoked, and one at all when account linked. */
+	private admitted(pairing: PairingRecord): boolean {
+		if (!this.store.host()) return false;
+		if (pairing.holder && this.store.revokedHolder(pairing.holder)) return false;
+		return !(this.store.host()?.accountLinked && !pairing.holder);
 	}
 
 	private proven(pairing: PairingRecord, proof: string): boolean {
@@ -63,7 +83,8 @@ export class PairingExchangeService {
 	}
 
 	/** Stores the hash of the new credential. A credential the device had before ends here. */
-	private enroll(deviceId: string, hash: string): void {
+	private enroll(deviceId: string, hash: string, holder?: string): void {
+		if (holder) this.replaceHolderDevice(holder, deviceId);
 		const generation = (this.store.device(deviceId)?.generation ?? 0) + 1;
 		for (const socket of this.sockets.device(deviceId)) {
 			this.link.drop(socket, relayCloseCodes.unauthorized);
@@ -74,7 +95,17 @@ export class PairingExchangeService {
 			credentialHash: hash,
 			generation,
 			createdAt,
-			lastSeenAt: null
+			lastSeenAt: null,
+			...(holder && { holder })
 		});
+	}
+	private replaceHolderDevice(holder: string, replacement: string): void {
+		for (const { deviceId, holder: current } of this.store.devices()) {
+			if (current !== holder || deviceId === replacement) continue;
+			this.store.removeDevice(deviceId);
+			for (const socket of this.sockets.device(deviceId))
+				this.link.drop(socket, relayCloseCodes.replaced);
+			this.link.toHost({ type: 'device-revoked', deviceId });
+		}
 	}
 }

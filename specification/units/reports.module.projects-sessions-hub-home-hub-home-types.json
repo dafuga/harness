@@ -14,16 +14,28 @@
 			"HomePlanState",
 			"HomeSection",
 			"HomeMessage",
+			"HomeAgentTask",
+			"HomeAskInput",
+			"HomeAskOption",
+			"HomeAskConfirm",
 			"HomeAgent",
+			"HomeOpenAsk",
 			"HomePlan",
 			"HomeRun",
+			"HomeWhenDue",
+			"HomePastDue",
 			"HomeLimit",
 			"HomeSubscription",
 			"HomeProviderReadings",
+			"HomeTrackerProject",
 			"OwnerHomeSnapshot",
 			"HomeChatInput",
 			"HomeChatStatus",
-			"HomeChatReceipt"
+			"HomeChatReceipt",
+			"TrackerHomeSource",
+			"OpenHomeSection",
+			"SendHomeChat",
+			"HomePlannableView"
 		]
 	},
 	"contract": {
@@ -36,6 +48,26 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-hub-session-messages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
 			"via": "import",

@@ -104,7 +104,16 @@ export const outboxTable: QueueTable<OutboxRow, StoredOutbox> = {
 
 export const reminderTable: QueueTable<ReminderRow, StoredReminder> = {
 	name: 'reminders',
-	columns: ['item_id', 'kind', 'status', 'created_at', 'next_at', 'pings', 'last_ping'],
+	columns: [
+		'item_id',
+		'kind',
+		'status',
+		'created_at',
+		'next_at',
+		'pings',
+		'last_ping',
+		'first_ping'
+	],
 	read: (row) => ({
 		key: row.queue_key,
 		itemId: row.item_id,
@@ -113,7 +122,8 @@ export const reminderTable: QueueTable<ReminderRow, StoredReminder> = {
 		createdAt: row.created_at,
 		nextAt: row.next_at,
 		pings: row.pings,
-		lastPing: row.last_ping ?? undefined
+		lastPing: row.last_ping ?? undefined,
+		firstPing: row.first_ping ?? undefined
 	}),
 	values: (row) => [
 		row.itemId,
@@ -122,7 +132,8 @@ export const reminderTable: QueueTable<ReminderRow, StoredReminder> = {
 		row.createdAt,
 		row.nextAt,
 		row.pings,
-		row.lastPing ?? null
+		row.lastPing ?? null,
+		row.firstPing ?? null
 	]
 };
 

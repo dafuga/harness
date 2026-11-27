@@ -12,58 +12,28 @@ const announce = (page: Page, state: string) =>
 const computer = (page: Page) => page.getByRole('region', { name: 'Computer connection' });
 const projects = (page: Page) => page.getByRole('button', { name: /^Open / });
 const message = (page: Page) => page.getByRole('textbox', { name: 'Message', exact: true });
-const field = (page: Page, name: string) =>
-	computer(page).getByRole('textbox', { name, exact: true });
 const fits = (page: Page) =>
 	page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
-const kept = (page: Page) =>
-	page.evaluate(() =>
-		[document.cookie, ...Object.values(localStorage), ...Object.values(sessionStorage)].join(' ')
-	);
-
 test.use({ viewport: { width: 390, height: 844 } });
 
-test('the Capacitor environment pairs by scanning: no link, code or address is ever typed', async ({
+test('the signed-in iPhone shows both Macs without a scanner, code, or address', async ({
 	page
 }, testInfo) => {
 	await remotePhoneFixture(page);
 	await page.goto('/');
-	await expect(page.locator('html')).toHaveAttribute('data-environment', 'capacitor');
 	const panel = computer(page);
-	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
+	await expect(page.locator('html')).toHaveAttribute('data-environment', 'capacitor');
+	await expect(panel.getByRole('button', { name: `Connect to ${hostName}` })).toBeVisible();
+	await expect(panel.getByRole('button', { name: 'Connect to Studio Mac' })).toBeVisible();
 	await remoteEvidence(page, testInfo, 'phone-start');
-	await expect(panel.getByRole('button', { name: 'Scan QR code', exact: true })).toBeHidden();
-	await panel.getByText('Other connection options', { exact: true }).click();
-	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toHaveCount(0);
-	await expect(page.getByRole('region', { name: 'Phone access' })).toHaveCount(0);
-	await expect(page.getByRole('region', { name: 'Shared projects' })).toHaveCount(0);
-	await expect(projects(page)).toHaveCount(0);
-	await expect(panel.getByRole('textbox')).toHaveCount(1);
-	await expect(field(page, 'Name of this phone')).toHaveValue('iPhone');
-	for (const name of ['Pairing link', 'Pairing code'])
-		await expect(field(page, name)).toHaveCount(0);
-	await expect(panel.getByRole('button', { name: 'Connect', exact: true })).toHaveCount(0);
-	const scan = panel.getByRole('button', { name: 'Scan QR code', exact: true });
-	await field(page, 'Name of this phone').fill('   ');
-	await scan.click();
-	await expect(panel.getByRole('alert')).toContainText('Give this phone a name');
-	expect(await made(page, 'native.scan')).toEqual([]);
-	await field(page, 'Name of this phone').fill(deviceName);
-	await scan.click();
-	expect(await made(page, 'native.scan')).toEqual([
-		{ op: 'native.scan', deviceName, outcome: 'ok' }
-	]);
-	await expect(panel.getByText(/Waiting for approval/)).toBeVisible();
-	await expect(panel.getByText('Approve this phone in Harness on your computer.')).toBeVisible();
+	await expect(panel.getByText('Other connection options', { exact: true })).toHaveCount(0);
 	await expect(panel.getByRole('textbox')).toHaveCount(0);
+	await expect(panel.getByRole('button', { name: /Scan|QR code/ })).toHaveCount(0);
 	await expect(projects(page)).toHaveCount(0);
-	expect(await made(page, 'native.request')).toEqual([]);
-	expect(await kept(page)).not.toMatch(/harness-pair|KQ7M/i);
 	expect(await fits(page)).toBe(true);
-	await remoteEvidence(page, testInfo, 'phone-pending');
 });
 
-test('approval on the desktop connects the phone and lists only what it was granted', async ({
+test('a signed-in iPhone connects directly and shows the selected Mac’s projects', async ({
 	page
 }, testInfo) => {
 	await remotePhoneFixture(page);
@@ -71,8 +41,11 @@ test('approval on the desktop connects the phone and lists only what it was gran
 	const panel = computer(page);
 	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
 	await remoteEvidence(page, testInfo, 'phone-account-discovery');
+	await expect(panel.getByText('Other connection options', { exact: true })).toHaveCount(0);
 	await panel.getByRole('button', { name: `Connect to ${hostName}`, exact: true }).click();
-	await expect(panel.getByText(/Waiting for approval/)).toBeVisible();
+	await expect(panel.getByText(`Connecting to ${hostName}…`)).toBeVisible();
+	await remoteEvidence(page, testInfo, 'phone-connecting');
+	await expect(panel.getByText(/Waiting for approval/)).toHaveCount(0);
 	await expect(projects(page)).toHaveCount(0);
 	expect(await made(page, 'native.scan')).toEqual([]);
 	expect(await made(page, 'native.connectAccountComputer')).toHaveLength(1);
@@ -89,9 +62,12 @@ test('approval on the desktop connects the phone and lists only what it was gran
 	await expect(panel.getByText(/access was removed on the computer/)).toBeVisible();
 	await expect(projects(page)).toHaveCount(0);
 	await remoteEvidence(page, testInfo, 'phone-revoked');
-	await panel.getByRole('button', { name: 'Connect again', exact: true }).click();
+	await panel.getByRole('button', { name: 'Back to computers', exact: true }).click();
 	expect((await made(page, 'native.disconnect')).length).toBe(1);
 	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
+	await panel.getByRole('button', { name: 'Connect to Studio Mac', exact: true }).click();
+	await announce(page, 'online');
+	await expect(panel.getByRole('button', { name: 'Connected to Studio Mac' })).toBeVisible();
 });
 
 for (const width of [320, 390]) {

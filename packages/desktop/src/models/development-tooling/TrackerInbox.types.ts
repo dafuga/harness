@@ -1,6 +1,17 @@
 // @harness-uid u_xh7uht2d3a
+import type { TrackerChangeEvent } from '$reports/lib/projects-sessions/realtime/realtime.types';
+
+import type {
+	TrackerPlanning,
+	TrackerStage
+} from '../../../../../src/utils/projects-sessions/trackerPlanning.types';
 
 /** The buckets an item can sit in. Needs you comes first: an open flag always wins. */
+import type {
+	TrackerAttachment,
+	TrackerAttachmentDocument
+} from '../../../../../src/utils/projects-sessions/trackerAttachment.types';
+
 export type InboxBucket = 'needs-you' | 'blocked' | 'active' | 'quiet' | 'done';
 export type InboxFilter = 'all' | InboxBucket;
 
@@ -12,14 +23,31 @@ export interface InboxHeader {
 	title: string;
 	project: string;
 	status: string;
+	stage?: TrackerStage;
 	updatedAt: string | null;
 	dueAt: string | null;
 }
+
+/** One tappable answer to an open ask. `recommended` is the one the asking session suggests. */
+export interface InboxOption {
+	label: string;
+	effect: string;
+	recommended?: true;
+}
+
+export type InboxConfirmKind = 'deploy' | 'money' | 'secret';
+
+export type InboxAttachment = TrackerAttachment & { content?: TrackerAttachmentDocument };
 
 export interface InboxFlag {
 	state: string;
 	at: string | null;
 	question: string;
+	options?: InboxOption[];
+	/** Deploy, money and secret asks need an extra confirm step (Face ID on the phone). */
+	confirm?: InboxConfirmKind;
+	/** Specs and documents behind "View spec". */
+	attachments?: InboxAttachment[];
 }
 
 export interface InboxNote {
@@ -43,10 +71,15 @@ export interface InboxRun {
 export interface InboxRow {
 	header: InboxHeader;
 	bucket: InboxBucket;
+	/** The open structured ask of a Needs you row: its question and when it was raised. */
+	ask?: { question: string; since: string | null };
+	/** The item behind a Needs you row, read for its choices. Its revision is what a tap answers. */
+	review?: InboxDetail;
 }
 
 export interface InboxDetail {
 	header: InboxHeader;
+	planning?: TrackerPlanning;
 	notes: InboxNote[];
 	flag: InboxFlag | null;
 	runs: InboxRun[];
@@ -88,6 +121,13 @@ export interface ConfirmedWrite {
 	id: string;
 	text: string;
 	revision: string | null;
+	/** The 1-based number of the tapped option; `text` is then that option's label. */
+	option?: number;
+}
+
+export interface InboxWriteReceipt {
+	intentId?: string;
+	status: string;
 }
 
 export type InboxFreshness = 'current' | 'stale' | 'unavailable';
@@ -109,12 +149,16 @@ export interface InboxOverview {
 	needsYouCapped: boolean;
 }
 
-/** What the inbox page needs from a phone replica. The phone adapter implements it over the tools. */
+/** The reads and confirmed writes supplied by the Mac bridge or the phone replica. */
 export interface TrackerInboxSource {
 	overview(): Promise<InboxReply<InboxOverview>>;
 	search(query: string): Promise<InboxReply<InboxRow[]>>;
 	detail(id: string): Promise<InboxReply<InboxDetail>>;
-	write(write: ConfirmedWrite): Promise<InboxReply<{ intentId: string; status: string }>>;
+	/** One document of the open ask, where `detail` does not already carry the text (the phone). */
+	document?(itemId: string, attachmentId: string): Promise<InboxReply<TrackerAttachmentDocument>>;
+	write(write: ConfirmedWrite): Promise<InboxReply<InboxWriteReceipt>>;
 	writes(): Promise<InboxReply<InboxWrite[]>>;
 	discard(intentId: string): Promise<InboxReply<unknown>>;
+	/** Pushed tracker changes. Absent where a source cannot push; the screen then reads on demand. */
+	watch?(listener: (event: TrackerChangeEvent) => void): () => void;
 }

@@ -1,0 +1,244 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-tracker-ask-options",
+	"uid": "u_liy3gizotu",
+	"kind": "function",
+	"title": "trackerAskOptions",
+	"responsibility": "Validates and decodes tracker ask options, confirmation requirements, and selected answers.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/trackerAskOptions.ts",
+			"src/utils/projects-sessions/trackerAskOptions.types.ts"
+		],
+		"symbols": [
+			"trackerAskConfirmKinds",
+			"trackerAskOptionFromWord",
+			"normalizeTrackerAskOptions",
+			"trackerAskOptions",
+			"normalizeTrackerAskConfirm",
+			"chosenTrackerAskOption",
+			"trackerAskNormalizers",
+			"TrackerAskOption",
+			"TrackerAskConfirm"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "trackerAskOptionFromWord.word",
+				"type": "string",
+				"required": true,
+				"description": "CLI word containing the option label and, optionally, its effect after an equals sign."
+			},
+			{
+				"name": "normalizeTrackerAskOptions.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "List or serialized list of candidate options. Empty input clears the options."
+			},
+			{
+				"name": "trackerAskOptions.stored",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "Stored JSON text for the available answer options."
+			},
+			{
+				"name": "normalizeTrackerAskConfirm.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Confirmation kind supplied with an ask. Empty input and none clear the requirement."
+			},
+			{
+				"name": "chosenTrackerAskOption.stored",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "Stored JSON options against which the selection is resolved."
+			},
+			{
+				"name": "chosenTrackerAskOption.choice",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Option number in the original order, starting at one."
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerAskConfirmKinds",
+				"type": "readonly TrackerAskConfirm[]",
+				"description": "Confirmation kinds that require an explicit user confirmation."
+			},
+			{
+				"name": "trackerAskOptionFromWord",
+				"type": "{ label: string; effect: string }",
+				"description": "Parsed label and effect with surrounding whitespace removed."
+			},
+			{
+				"name": "normalizeTrackerAskOptions",
+				"type": "string | null",
+				"description": "Validated, serialized options or null when the options are cleared."
+			},
+			{
+				"name": "trackerAskOptions",
+				"type": "TrackerAskOption[]",
+				"description": "Decoded option list, or an empty list for absent or unreadable text."
+			},
+			{
+				"name": "normalizeTrackerAskConfirm",
+				"type": "string | null",
+				"description": "Accepted confirmation kind or null when the requirement is cleared."
+			},
+			{
+				"name": "chosenTrackerAskOption",
+				"type": "{ index: number; option: TrackerAskOption }",
+				"description": "Selected option and its zero-based position in the stored list."
+			},
+			{
+				"name": "trackerAskNormalizers",
+				"type": "unknown",
+				"description": "Normalizers for the options, confirmation kind, and chosen option fields."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerAskOptionFromWord",
+				"inputs": [
+					{
+						"name": "trackerAskOptionFromWord.word",
+						"type": "string",
+						"required": true,
+						"description": "CLI word containing the option label and, optionally, its effect after an equals sign."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAskOptionFromWord",
+						"type": "{ label: string; effect: string }",
+						"description": "Parsed label and effect with surrounding whitespace removed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "normalizeTrackerAskOptions",
+				"inputs": [
+					{
+						"name": "normalizeTrackerAskOptions.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "List or serialized list of candidate options. Empty input clears the options."
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeTrackerAskOptions",
+						"type": "string | null",
+						"description": "Validated, serialized options or null when the options are cleared."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerAskOptions",
+				"inputs": [
+					{
+						"name": "trackerAskOptions.stored",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "Stored JSON text for the available answer options."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAskOptions",
+						"type": "TrackerAskOption[]",
+						"description": "Decoded option list, or an empty list for absent or unreadable text."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "normalizeTrackerAskConfirm",
+				"inputs": [
+					{
+						"name": "normalizeTrackerAskConfirm.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Confirmation kind supplied with an ask. Empty input and none clear the requirement."
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeTrackerAskConfirm",
+						"type": "string | null",
+						"description": "Accepted confirmation kind or null when the requirement is cleared."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "chosenTrackerAskOption",
+				"inputs": [
+					{
+						"name": "chosenTrackerAskOption.stored",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "Stored JSON options against which the selection is resolved."
+					},
+					{
+						"name": "chosenTrackerAskOption.choice",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Option number in the original order, starting at one."
+					}
+				],
+				"outputs": [
+					{
+						"name": "chosenTrackerAskOption",
+						"type": "{ index: number; option: TrackerAskOption }",
+						"description": "Selected option and its zero-based position in the stored list."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/trackerAskOptions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/trackerAskOptions.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

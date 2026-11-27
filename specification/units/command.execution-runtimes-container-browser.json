@@ -1,0 +1,88 @@
+{
+	"schemaVersion": 1,
+	"id": "command.execution-runtimes-container-browser",
+	"uid": "u_rned43uh4z",
+	"kind": "command",
+	"title": "ContainerBrowserCommand",
+	"responsibility": "Register harness container-browser and its setup, run, viewer and approval actions.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/commands/execution-runtimes/ContainerBrowserCommand.ts",
+			"src/commands/execution-runtimes/ContainerBrowserCommand.types.ts"
+		],
+		"symbols": [
+			"ContainerBrowserCommand",
+			"ContainerBrowserCommand.register",
+			"ContainerBrowserCommandOptions"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ContainerBrowserCommand.register.program",
+				"type": "Command",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ContainerBrowserCommand.register",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "InvalidArgumentError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ContainerBrowserCommand.register",
+				"inputs": [
+					{
+						"name": "ContainerBrowserCommand.register.program",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContainerBrowserCommand.register",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "workflow.execution-runtimes-run-container-browser",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/execution-runtimes/ContainerBrowserCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/execution-runtimes/ContainerBrowserCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

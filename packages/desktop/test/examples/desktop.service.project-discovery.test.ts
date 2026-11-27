@@ -3,8 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { ProjectDiscoveryService } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService';
 import type { SnapshotPort } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.types';
-
-type Ports = ConstructorParameters<typeof ProjectDiscoveryService>;
+import type { Fixture, Ports } from './desktop.service.project-discovery.test.types';
 
 const credential = {
 	origin: 'https://hub.example.test',
@@ -21,12 +20,6 @@ const authorityMessage = 'Hosted authority changed during project discovery.';
 const projection: SnapshotPort = {
 	snapshot: () => Promise.reject(new Error('snapshot is not used without a cache'))
 };
-
-interface Fixture {
-	list: unknown[];
-	offline?: boolean;
-	credentials?: () => Promise<unknown>;
-}
 
 function subject(fixture: Fixture) {
 	const http = {

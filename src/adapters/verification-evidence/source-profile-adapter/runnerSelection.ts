@@ -3,8 +3,11 @@ import { existsSync, readFileSync, readdirSync, realpathSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { componentManifestSchema } from '../../../core/development-tooling/unitTypes';
+import type { ComponentManifest } from '../../../core/development-tooling/unitTypes.types';
 
-export function profileSelection(root: string) {
+export function profileSelection(
+	root: string
+): { root: string; directory: string; units: ComponentManifest[] } | null {
 	if (process.env.HARNESS_COLLECT_FILES) return null;
 	const explicit = process.env.HARNESS_RUNTIME_PROFILE_DIR;
 	const evidence =

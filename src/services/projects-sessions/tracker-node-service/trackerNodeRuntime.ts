@@ -1,5 +1,8 @@
 // @harness-uid u_gvqtr5mdwv
+import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
+import { TrackerJobProcessAdapter } from '../../../adapters/projects-sessions/TrackerJobProcessAdapter';
+import { TrackerMachineSamplerAdapter } from '../../../adapters/projects-sessions/TrackerMachineSamplerAdapter';
 import { TrackerSyncAuthService } from '../../networking-security/TrackerSyncAuthService';
 import {
 	canonicalNode,
@@ -15,7 +18,7 @@ import { trackerItemError } from '../../../utils/projects-sessions/trackerItemEr
 import { trackerFleetMachineStore } from '../tracker-native-runtime-service/nativeTrackerLinks';
 import type { TrackerGuestAuthWriter } from '../tracker-native-runtime-service/nativeTrackerHostEffects.types';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
-import { readPrivateText, trackerSyncPort } from './trackerNodeConfig';
+import { readPrivateJson, readPrivateText, trackerSyncPort } from './trackerNodeConfig';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
 import { trackerNodeNotifications } from './trackerNodeNotifications';
 import { trackerUpstreamLink } from './trackerUpstreamLink';
@@ -28,23 +31,74 @@ export function trackerNodeRuntime(
 	if (secret.length < 16) throw new TypeError('Tracker sync key is too short');
 	const hostEffectsHeld = config.hostEffects?.mode === 'held';
 	const notification = hostEffectsHeld ? undefined : trackerNodeNotifications(config);
-	const ladder = ladderFrom();
+	const ladderConfig = { autolaunch: config.routing };
+	const ladder = ladderFrom(ladderConfig);
 	return {
 		node: config.node,
 		role: config.role,
 		phoneWrite: configuredPhoneWrite(),
 		backupDirectory: config.backupDirectory,
+		backup: configuredTrackerBackups(config),
 		notification,
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,
+		// Held and effect-free rehearsal nodes never notify anyone.
+		webPush: config.hostEffects?.mode === 'active' ? { database: config.database } : undefined,
 		manualLaunch: true,
+		ladderConfig,
+		automaticEnabled: trackerAutomaticSetting(config),
+		machineSampler: new TrackerMachineSamplerAdapter(config.node, configuredTmux(config)),
 		syncResponder: configuredSyncResponder(config, secret),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
-		...(config.role === 'hub' && notification?.webhook && { recurring: {} }),
+		...(config.role === 'hub' && notification?.webhook && { recurring: boxJobs(config) }),
 		validateModel(model) {
 			parseTrackerModelSpec(String(model), ladder);
 		},
-		planLaunch: (fields, current) => planNativeLaunch(fields, current, config.node)
+		planLaunch: (fields, current, source) => planNativeLaunch(fields, current, config.node, source)
+	};
+}
+
+/** The sampler labels agent sessions with their tmux names when it knows the executable. */
+function configuredTmux(config: TrackerNodeConfig): string | undefined {
+	const effects = config.hostEffects;
+	if (effects?.mode !== 'active' || !effects.launch || !('managed' in effects.launch))
+		return undefined;
+	return effects.launch.managed.tmux;
+}
+
+/** Box job state and receipts live beside the journal that owns the job definitions. */
+function boxJobs({ database }: TrackerNodeConfig) {
+	return { jobs: new TrackerJobProcessAdapter(join(dirname(database), 'jobs')) };
+}
+
+/** A live hub backs itself up. Held and effect-free rehearsal nodes never write backups. */
+function configuredTrackerBackups(config: TrackerNodeConfig) {
+	if (config.role !== 'hub' || config.hostEffects?.mode !== 'active') return undefined;
+	const shared = join(homedir(), 'backups', 'tracker');
+	return {
+		directory: config.backupDirectory ?? join(shared, 'native'),
+		externalDirectory: config.backupDirectory ? undefined : shared,
+		stateFile: join(dirname(config.database), 'tracker-backup.json')
+	};
+}
+
+function trackerAutomaticSetting(config: TrackerNodeConfig): () => boolean {
+	const native = config.autolaunch;
+	if (native) return () => native.enabled;
+	const path = join(homedir(), '.config/tracker/config.json');
+	let enabled = false;
+	let refreshAt = 0;
+	return () => {
+		const now = Date.now();
+		if (now < refreshAt) return enabled;
+		refreshAt = now + 1000;
+		try {
+			const legacy = readPrivateJson(path) as { autolaunch?: { enabled?: boolean } };
+			enabled = legacy.autolaunch?.enabled !== false;
+		} catch (error) {
+			enabled = error instanceof Error && 'code' in error && error.code === 'ENOENT';
+		}
+		return enabled;
 	};
 }
 
@@ -95,7 +149,8 @@ function spokeLinks(config: Extract<TrackerNodeConfig, { role: 'spoke' }>, secre
 function planNativeLaunch(
 	fields: TrackerItemInput,
 	current: TrackerItemSnapshot | undefined,
-	node: string
+	node: string,
+	source: 'manual' | 'automatic'
 ) {
 	const desired = String(fields.computer ?? current?.computer ?? 'auto');
 	const target = launchTarget(desired, node);
@@ -106,7 +161,7 @@ function planNativeLaunch(
 		...fields,
 		computer: target,
 		launch_target: target,
-		launch_source: 'manual',
+		launch_source: source,
 		launch_pick: null
 	};
 }

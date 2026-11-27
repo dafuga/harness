@@ -32,22 +32,12 @@
 			"randomId",
 			"randomCredential",
 			"normalizeCode",
-			"pairingCode",
 			"requestDigest",
 			"SessionKeyInput",
 			"sessionKeys",
 			"SealContext",
 			"sealPacket",
 			"openPacket",
-			"PairingOffer",
-			"OfferEnvironment",
-			"OfferRefusal",
-			"OfferReading",
-			"OfferRead",
-			"offerRules",
-			"offerEnvironment",
-			"pairingOffer",
-			"readPairingOffer",
 			"WireDispatchContext",
 			"wireDispatch",
 			"WireMessageValidator",
@@ -59,15 +49,23 @@
 			"WireLink",
 			"WireSessionService",
 			"HostPairingOptions",
-			"HostPairingOffer",
 			"HostPairingFrame",
 			"HostPairingApproved",
 			"HostPairingService",
 			"DevicePairingInput",
-			"ScanningDevice",
 			"PendingPairing",
 			"DeviceCredentials",
-			"DevicePairingService"
+			"DevicePairingService",
+			"sealedPadding",
+			"sealedRecord",
+			"sealedFrame",
+			"sealedScopeKeys",
+			"sealedGrant",
+			"sealedDevice",
+			"sealedChainEntry",
+			"sealedChain",
+			"sealedSas",
+			"sealedRecovery"
 		]
 	},
 	"contract": {
@@ -81,12 +79,57 @@
 	},
 	"dependencies": [
 		{
-			"unit": "remote.function.pairing-envelope",
+			"unit": "remote.function.networking-security-sealed-chain",
 			"via": "reexport",
 			"origin": "derived"
 		},
 		{
-			"unit": "remote.function.pairing-offer",
+			"unit": "remote.function.networking-security-sealed-chain-entry",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-device",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-frame",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-grant",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-padding",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-record",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-recovery",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-sas",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-scope-keys",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.pairing-envelope",
 			"via": "reexport",
 			"origin": "derived"
 		},

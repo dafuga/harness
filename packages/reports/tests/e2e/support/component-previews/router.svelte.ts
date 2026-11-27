@@ -55,3 +55,8 @@ export async function goto(path: string, options: { replaceState?: boolean } = {
 	if (options.replaceState) history.replaceState({}, '', page.url);
 	else history.pushState({}, '', page.url);
 }
+/** As in SvelteKit, the address is replaced without a navigation, so no guard is asked. */
+export function replaceState(path: string | URL, state: unknown) {
+	place(new URL(path, location.origin));
+	history.replaceState(state, '', page.url);
+}

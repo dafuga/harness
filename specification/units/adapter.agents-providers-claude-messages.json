@@ -1,0 +1,152 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-claude-messages",
+	"uid": "u_kg5hqg2wxy",
+	"kind": "adapter",
+	"title": "ClaudeMessagesAdapter",
+	"responsibility": "Owns the ClaudeMessagesAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/ClaudeMessagesAdapter.ts",
+			"src/adapters/agents-providers/ClaudeMessagesAdapter.types.ts"
+		],
+		"symbols": [
+			"ClaudeMessagesAdapter",
+			"ClaudeMessagesAdapter.constructor",
+			"ClaudeMessagesAdapter.turn",
+			"ClaudeBlock",
+			"ClaudeMessage",
+			"ClaudeMessagesAdapterConfig",
+			"ClaudeToolSpec",
+			"ClaudeTurn",
+			"ClaudeBlock",
+			"ClaudeMessage",
+			"ClaudeToolSpec",
+			"ClaudeTurn",
+			"ClaudeMessagesAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ClaudeMessagesAdapter.constructor.config",
+				"type": "ClaudeMessagesAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "ClaudeMessagesAdapter.turn.system",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ClaudeMessagesAdapter.turn.messages",
+				"type": "readonly ClaudeMessage[]",
+				"required": true
+			},
+			{
+				"name": "ClaudeMessagesAdapter.turn.tools",
+				"type": "readonly ClaudeToolSpec[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ClaudeMessagesAdapter.turn",
+				"type": "Promise<ClaudeTurn>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ProjectAssistantError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ClaudeMessagesAdapter.turn",
+				"inputs": [
+					{
+						"name": "ClaudeMessagesAdapter.turn.system",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ClaudeMessagesAdapter.turn.messages",
+						"type": "readonly ClaudeMessage[]",
+						"required": true
+					},
+					{
+						"name": "ClaudeMessagesAdapter.turn.tools",
+						"type": "readonly ClaudeToolSpec[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeMessagesAdapter.turn",
+						"type": "Promise<ClaudeTurn>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProjectAssistantError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ClaudeMessagesAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ClaudeMessagesAdapter.constructor.config",
+						"type": "ClaudeMessagesAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeMessagesAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/ClaudeMessagesAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/ClaudeMessagesAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

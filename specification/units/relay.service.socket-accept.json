@@ -12,7 +12,8 @@
 		"symbols": [
 			"SocketAcceptService",
 			"SocketAcceptService.constructor",
-			"SocketAcceptService.accept"
+			"SocketAcceptService.accept",
+			"SocketAcceptService.account"
 		]
 	},
 	"contract": {
@@ -52,6 +53,21 @@
 				"name": "SocketAcceptService.accept.index",
 				"type": "(host: HostRecord) => Promise<boolean>",
 				"required": true
+			},
+			{
+				"name": "SocketAcceptService.account.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "SocketAcceptService.account.holder",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SocketAcceptService.account.deviceId",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -88,6 +104,34 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "SocketAcceptService.account",
+				"inputs": [
+					{
+						"name": "SocketAcceptService.account.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "SocketAcceptService.account.holder",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SocketAcceptService.account.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SocketAcceptService.account",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [

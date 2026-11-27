@@ -4,6 +4,7 @@ import type { PlanningPort } from '../../../../models/planning-collaboration/Pla
 import type { GitSourceAdapter } from '../git-source-adapter/GitSourceAdapter';
 import { catalogListed, catalogUnit, planCatalog } from '../../../../utils/explorer-ui/catalogUnit';
 import { catalogDetail } from './catalogDetail';
+import type { EntityDetail } from '../../../../models/development-tooling/DesktopEntity.types';
 
 export class CatalogService {
 	constructor(
@@ -15,7 +16,7 @@ export class CatalogService {
 		const { units, items } = await this.held(revision);
 		return catalogListed(units, items);
 	}
-	async entity(id: string, revision: string) {
+	async entity(id: string, revision: string): Promise<EntityDetail> {
 		const { units, items, plans } = await this.held(revision);
 		return catalogDetail(
 			{ source: this.source, planning: this.planning },

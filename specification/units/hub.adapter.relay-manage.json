@@ -18,12 +18,15 @@
 			"RelayManageAdapter.register",
 			"RelayManageAdapter.pairingKey",
 			"RelayManageAdapter.requestPairing",
+			"RelayManageAdapter.browserPairing",
+			"RelayManageAdapter.browserSocket",
 			"RelayManageAdapter.computers",
 			"RelayManageAdapter.summary",
 			"RelayManageAdapter.revokeDevice",
 			"RelayManageAdapter.unregister",
 			"RelayManageAdapterConfig",
 			"RelayManageAdapterConfig",
+			"BrowserPairingCall",
 			"Operation"
 		]
 	},
@@ -69,9 +72,30 @@
 				"required": true
 			},
 			{
+				"name": "RelayManageAdapter.browserPairing.input",
+				"type": "RelayManageOwner",
+				"required": true
+			},
+			{
+				"name": "RelayManageAdapter.browserPairing.call",
+				"type": "BrowserPairingCall",
+				"required": true
+			},
+			{
+				"name": "RelayManageAdapter.browserSocket.input",
+				"type": "RelayManageDevice",
+				"required": true
+			},
+			{
 				"name": "RelayManageAdapter.computers.owner",
 				"type": "RelayManageOwner['owner']",
 				"required": true
+			},
+			{
+				"name": "RelayManageAdapter.computers.accountOnly",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			},
 			{
 				"name": "RelayManageAdapter.summary.input",
@@ -304,12 +328,59 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "RelayManageAdapter.browserPairing",
+				"inputs": [
+					{
+						"name": "RelayManageAdapter.browserPairing.input",
+						"type": "RelayManageOwner",
+						"required": true
+					},
+					{
+						"name": "RelayManageAdapter.browserPairing.call",
+						"type": "BrowserPairingCall",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayManageAdapter.browserPairing",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RelayManageAdapter.browserSocket",
+				"inputs": [
+					{
+						"name": "RelayManageAdapter.browserSocket.input",
+						"type": "RelayManageDevice",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayManageAdapter.browserSocket",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "RelayManageAdapter.computers",
 				"inputs": [
 					{
 						"name": "RelayManageAdapter.computers.owner",
 						"type": "RelayManageOwner['owner']",
 						"required": true
+					},
+					{
+						"name": "RelayManageAdapter.computers.accountOnly",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [
@@ -527,6 +598,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "hub.function.hub-http",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.function.hub-json",
 			"via": "import",

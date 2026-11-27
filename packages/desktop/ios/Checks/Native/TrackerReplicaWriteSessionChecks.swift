@@ -49,6 +49,11 @@ func trackerWriteSessionChecks() {
     check(retry?["intentId"] as? String == review.intent.intentId && retry?["epoch"] as? String == "epoch-2",
           "tracker write: an interrupted write replays after relaunch with its original identity")
     restarted.answer(restarted.link, push, value: ["intentId": review.intent.intentId, "status": "accepted"])
+    trackerAcceptedReceiptCheck(restarted)
+    restarted.disconnect()
+}
+
+private func trackerAcceptedReceiptCheck(_ restarted: Bench) {
     var pending: [[String: String]]?
     restarted.session.trackerTool("tracker_write_status", input: [:]) {
         pending = ($0["data"] as? [String: Any])?["writes"] as? [[String: String]]
@@ -56,5 +61,60 @@ func trackerWriteSessionChecks() {
     restarted.settle()
     check(pending?.count == 1 && pending?.first?["status"] == "accepted",
           "tracker write: the accepted receipt is kept as acknowledged, not pending")
-    restarted.disconnect()
+}
+
+func trackerOptionChecks() {
+    let root = temporary("tracker-write-options")
+    defer { try? FileManager.default.removeItem(at: root) }
+    let pull = "trackerReplicaPull", push = "trackerReplicaPush"
+    let bench = Bench(trackerRoot: root)
+    bench.start()
+    bench.attach(Bench.Answer(methods: Bench.methods + [pull, push]))
+    let stamp = "2026-11-25T12:00:00Z"
+    let revision = String(repeating: "b", count: 64)
+    let flag: [String: Any] = [
+        "state": "open", "at": stamp, "question": "Deploy now?", "confirm": "deploy",
+        "options": [
+            ["label": "Deploy", "effect": "Ship to production"],
+            ["label": "Hold", "effect": "Wait a day", "recommended": true]
+        ]
+    ]
+    bench.answer(bench.link, pull, value: [
+        "kind": "snapshot", "snapshotId": "stage", "hubTime": stamp, "partial": true,
+        "rows": [["id": "fixture001", "title": "Release gate", "project": "Harness", "status": "open",
+                  "notes": [], "runs": [], "attentionRevision": revision, "flag": flag]],
+        "cursor": "seq-1", "continuation": NSNull(), "requestContinuation": NSNull()
+    ])
+    var shown: [String: Any]?
+    bench.session.trackerTool("tracker_show", input: ["id": "fixture001"]) { shown = $0["data"] as? [String: Any] }
+    bench.settle()
+    let options = (shown?["flag"] as? [String: Any])?["options"] as? [[String: Any]]
+    check(options?.count == 2 && options?.last?["recommended"] as? Bool == true,
+          "tracker options: the phone copy keeps the ask's options and the recommendation")
+    var review: TrackerReplicaConfirmation?
+    var refused: [TrackerReplicaWriteError] = []
+    func prepare(_ input: [String: Any]) {
+        bench.session.prepareTrackerWrite("answer", input: input) {
+            switch $0 {
+            case .success(let value): review = value
+            case .failure(let error): refused.append(error)
+            }
+        }
+        bench.settle()
+    }
+    let base: [String: Any] = ["id": "fixture001", "text": "Hold", "revision": revision]
+    prepare(base.merging(["option": 3]) { $1 })
+    prepare(base.merging(["option": true]) { $1 })
+    check(refused == [.invalidInput, .invalidInput], "tracker options: a number outside the shown options is refused")
+    prepare(base.merging(["option": 2]) { $1 })
+    check(review?.intent.option == 2 && review?.intent.text == "Hold" && review?.intent.confirmed == true
+            && review?.confirm == "deploy",
+          "tracker options: a tap names its option, label and confirm kind for the native check")
+    guard let review = review else { return }
+    bench.session.confirmTrackerWrite(review) { _ in }
+    bench.settle()
+    let sent = bench.link.asked(push).last?["input"] as? [String: Any]
+    check(sent?["option"] as? Int == 2 && sent?["confirmed"] as? Bool == true && sent?["revision"] as? String == revision,
+          "tracker options: the queued intent sends the option number under the reviewed revision")
+    bench.disconnect()
 }

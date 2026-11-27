@@ -1,0 +1,23 @@
+// @harness-uid u_dlnkn6pc2p
+const formatters = new Map<string, Intl.DateTimeFormat>();
+
+/** Format an instant as 'YYYY-MM-DD HH:MM' on the given time zone's clock. */
+export function stampTrackerTime(ms: number, timeZone: string): string {
+	let formatter = formatters.get(timeZone);
+	if (!formatter) {
+		formatter = new Intl.DateTimeFormat('en-US', {
+			timeZone,
+			hourCycle: 'h23',
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+			hour: '2-digit',
+			minute: '2-digit'
+		});
+		formatters.set(timeZone, formatter);
+	}
+	const { year, month, day, hour, minute } = Object.fromEntries(
+		formatter.formatToParts(ms).map(({ type, value }) => [type, value])
+	);
+	return `${year}-${month}-${day} ${hour}:${minute}`;
+}

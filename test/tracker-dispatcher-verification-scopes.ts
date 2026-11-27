@@ -46,6 +46,10 @@ export const trackerDispatcherVerificationScopes: Record<string, VerificationSco
 				'missing items preserve active sessions until recovery; closing the linked source abandons cleanly':
 					'run-outcomes',
 				'a pinned model stays pinned when a completed result is rejected': 'run-outcomes'
+			},
+			'test/services/agents-providers/tracker-dispatcher-review.test.ts': {
+				'a failed verification or rejection reopens the item even when no retry follows':
+					'run-outcomes'
 			}
 		},
 		playwright: {}

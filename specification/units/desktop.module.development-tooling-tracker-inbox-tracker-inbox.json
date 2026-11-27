@@ -10,6 +10,7 @@
 	"owns": {
 		"source": ["packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInbox.ts"],
 		"symbols": [
+			"trackerStageLabels",
 			"inboxFilters",
 			"bucketLabels",
 			"itemBucket",
@@ -19,7 +20,10 @@
 			"writeView",
 			"writeGate",
 			"flagQuestion",
-			"confirmedWrite"
+			"confirmedWrite",
+			"orderedOptions",
+			"writtenAnswer",
+			"optionWrite"
 		]
 	},
 	"contract": {
@@ -87,16 +91,55 @@
 			},
 			{
 				"name": "confirmedWrite.draft",
-				"type": "{ action: WriteAction; id: string; text: string; revision: string | null }",
+				"type": "{ action: WriteAction; id: string; text: string; revision: string | null; option?: number; }",
 				"required": true
 			},
 			{
 				"name": "confirmedWrite.confirmed",
 				"type": "boolean",
 				"required": true
+			},
+			{
+				"name": "orderedOptions.flag",
+				"type": "InboxFlag | null",
+				"required": true
+			},
+			{
+				"name": "writtenAnswer.detail",
+				"type": "InboxDetail",
+				"required": true
+			},
+			{
+				"name": "writtenAnswer.reviewed",
+				"type": "InboxReview",
+				"required": true
+			},
+			{
+				"name": "writtenAnswer.answer",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "optionWrite.detail",
+				"type": "InboxDetail",
+				"required": true
+			},
+			{
+				"name": "optionWrite.reviewed",
+				"type": "{ revision: string | null } | null",
+				"required": true
+			},
+			{
+				"name": "optionWrite.number",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
+			{
+				"name": "trackerStageLabels",
+				"type": "Record<TrackerStage, string>"
+			},
 			{
 				"name": "inboxFilters",
 				"type": "readonly InboxFilter[]"
@@ -135,6 +178,18 @@
 			},
 			{
 				"name": "confirmedWrite",
+				"type": "ConfirmedWrite | null"
+			},
+			{
+				"name": "orderedOptions",
+				"type": "{ number: number; option: InboxOption }[]"
+			},
+			{
+				"name": "writtenAnswer",
+				"type": "ConfirmedWrite | null"
+			},
+			{
+				"name": "optionWrite",
 				"type": "ConfirmedWrite | null"
 			}
 		],
@@ -297,7 +352,7 @@
 				"inputs": [
 					{
 						"name": "confirmedWrite.draft",
-						"type": "{ action: WriteAction; id: string; text: string; revision: string | null }",
+						"type": "{ action: WriteAction; id: string; text: string; revision: string | null; option?: number; }",
 						"required": true
 					},
 					{
@@ -314,6 +369,80 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "orderedOptions",
+				"inputs": [
+					{
+						"name": "orderedOptions.flag",
+						"type": "InboxFlag | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "orderedOptions",
+						"type": "{ number: number; option: InboxOption }[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writtenAnswer",
+				"inputs": [
+					{
+						"name": "writtenAnswer.detail",
+						"type": "InboxDetail",
+						"required": true
+					},
+					{
+						"name": "writtenAnswer.reviewed",
+						"type": "InboxReview",
+						"required": true
+					},
+					{
+						"name": "writtenAnswer.answer",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writtenAnswer",
+						"type": "ConfirmedWrite | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "optionWrite",
+				"inputs": [
+					{
+						"name": "optionWrite.detail",
+						"type": "InboxDetail",
+						"required": true
+					},
+					{
+						"name": "optionWrite.reviewed",
+						"type": "{ revision: string | null } | null",
+						"required": true
+					},
+					{
+						"name": "optionWrite.number",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "optionWrite",
+						"type": "ConfirmedWrite | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -321,6 +450,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
 		}

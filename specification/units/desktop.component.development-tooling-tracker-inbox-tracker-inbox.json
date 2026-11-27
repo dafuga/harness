@@ -14,6 +14,7 @@
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
 			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-form",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-h2",
@@ -27,9 +28,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte"
+			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
+			"packages/desktop/src/components/development-tooling/tracker-inbox/tracker-inbox.css"
 		],
-		"symbols": ["TrackerInbox", "reload"]
+		"symbols": ["TrackerInbox", "reload", "TrackerInbox.rows"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -39,6 +41,20 @@
 				"type": "TrackerInboxSource",
 				"required": true,
 				"description": "Tracker read and confirmed-write operations supplied by the host environment."
+			},
+			{
+				"name": "TrackerInbox.mode",
+				"type": "'phone' | 'mac'",
+				"required": false,
+				"default": "phone",
+				"description": "Chooses direct Mac status or phone sync and outbox status."
+			},
+			{
+				"name": "TrackerInbox.project",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "When supplied in the Mac project view, restricts the inbox and search to this exact Tracker project and initially shows all of its items."
 			}
 		],
 		"outputs": [
@@ -70,9 +86,28 @@
 				"errorStatus": "unknown"
 			}
 		],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "TrackerInbox.rows",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerInbox.rows",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
 			"via": "import",
@@ -94,12 +129,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-follow-tracker-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-with-row-choices",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -145,6 +195,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-spec-document",
+	"uid": "u_s53zhfyepg",
+	"kind": "function",
+	"title": "hubSpecDocument",
+	"responsibility": "Gives the ask cards under Hub Home a way to load the signed-in owner's attached documents.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts"],
+		"symbols": ["hubSpecDocumentKey", "provideHubSpecDocuments", "hubSpecDocuments"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "provideHubSpecDocuments.load",
+				"type": "LoadSpecDocument",
+				"required": true,
+				"description": "Loads the requested attachment for the signed-in account through the host app."
+			}
+		],
+		"outputs": [
+			{
+				"name": "provideHubSpecDocuments",
+				"type": "void",
+				"description": "Sets the document loader in the current Svelte component context."
+			},
+			{
+				"name": "hubSpecDocuments",
+				"type": "LoadSpecDocument",
+				"description": "The loader set by an ancestor; it requests a document by attachment id."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "provideHubSpecDocuments",
+				"inputs": [
+					{
+						"name": "provideHubSpecDocuments.load",
+						"type": "LoadSpecDocument",
+						"required": true,
+						"description": "Loads the requested attachment for the signed-in account through the host app."
+					}
+				],
+				"outputs": [
+					{
+						"name": "provideHubSpecDocuments",
+						"type": "void",
+						"description": "Sets the document loader in the current Svelte component context."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "hubSpecDocuments",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "hubSpecDocuments",
+						"type": "LoadSpecDocument",
+						"description": "The loader set by an ancestor; it requests a document by attachment id."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-spec-document-view",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

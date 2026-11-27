@@ -1,0 +1,182 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-recovery",
+	"uid": "u_s5yfdrdvhw",
+	"kind": "function",
+	"title": "Seal the recovery device",
+	"responsibility": "Seal the recovery device's private keys under the recovery secret and open them again as non-extractable keys.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/remote/src/utils/networking-security/sealedRecovery.ts",
+			"packages/remote/src/utils/networking-security/sealedRecovery.types.ts"
+		],
+		"symbols": ["newRecoverySecret", "sealedRecovery", "openSealedRecovery", "RecoveryMaterial"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sealedRecovery.secret",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Recovery secret used to encrypt the recovery device's private keys."
+			},
+			{
+				"name": "sealedRecovery.device",
+				"type": "SealedDeviceKeys",
+				"required": true,
+				"description": "Recovery device identity and extractable private keys."
+			},
+			{
+				"name": "openSealedRecovery.secret",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Recovery secret used when the blob was created."
+			},
+			{
+				"name": "openSealedRecovery.blob",
+				"type": "string",
+				"required": true,
+				"description": "Encrypted recovery blob to authenticate and open."
+			}
+		],
+		"outputs": [
+			{
+				"name": "newRecoverySecret",
+				"type": "Uint8Array",
+				"description": "Fresh random 32-byte recovery secret."
+			},
+			{
+				"name": "sealedRecovery",
+				"type": "Promise<string>",
+				"description": "Encrypted recovery device payload and the metadata needed to open it."
+			},
+			{
+				"name": "openSealedRecovery",
+				"type": "Promise<SealedDeviceKeys>",
+				"description": "Recovered device identity with private keys imported as non-extractable."
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown",
+				"description": "The secret length is invalid, the recovery keys are unavailable for export, or the secret cannot authenticate the blob."
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "newRecoverySecret",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "newRecoverySecret",
+						"type": "Uint8Array",
+						"description": "Fresh random 32-byte recovery secret."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedRecovery",
+				"inputs": [
+					{
+						"name": "sealedRecovery.secret",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Recovery secret used to encrypt the recovery device's private keys."
+					},
+					{
+						"name": "sealedRecovery.device",
+						"type": "SealedDeviceKeys",
+						"required": true,
+						"description": "Recovery device identity and extractable private keys."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedRecovery",
+						"type": "Promise<string>",
+						"description": "Encrypted recovery device payload and the metadata needed to open it."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openSealedRecovery",
+				"inputs": [
+					{
+						"name": "openSealedRecovery.secret",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Recovery secret used when the blob was created."
+					},
+					{
+						"name": "openSealedRecovery.blob",
+						"type": "string",
+						"required": true,
+						"description": "Encrypted recovery blob to authenticate and open."
+					}
+				],
+				"outputs": [
+					{
+						"name": "openSealedRecovery",
+						"type": "Promise<SealedDeviceKeys>",
+						"description": "Recovered device identity with private keys imported as non-extractable."
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-device",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedRecovery.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedRecovery.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

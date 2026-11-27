@@ -89,6 +89,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.projects-sessions-tracker-structured-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-project-overview-project-overview-privacy",
 			"via": "import",
 			"origin": "derived"

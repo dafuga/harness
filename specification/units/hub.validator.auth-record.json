@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/hub/src/validators/accounts-access/AuthRecordCorruptError.ts",
 			"packages/hub/src/validators/accounts-access/AuthRecordValidator.ts",
 			"packages/hub/src/validators/accounts-access/AuthRecordValidator.types.ts"
 		],
 		"symbols": [
+			"AuthRecordCorruptError",
 			"accountDevice",
 			"AuthRecordValidator",
 			"AuthRecordValidator.challenge",

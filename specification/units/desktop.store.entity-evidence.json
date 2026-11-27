@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/lib/stores/explorer-ui/EvidenceCaptureUnavailableError.ts",
 			"packages/desktop/src/lib/stores/explorer-ui/entityEvidence.svelte.ts",
 			"packages/desktop/src/lib/stores/explorer-ui/entityEvidence.svelte.types.ts"
 		],
 		"symbols": [
+			"EvidenceCaptureUnavailableError",
 			"createEntityEvidenceStore",
 			"EvidenceTarget",
 			"EntityEvidence",

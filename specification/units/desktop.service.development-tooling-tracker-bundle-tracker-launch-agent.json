@@ -1,0 +1,342 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.development-tooling-tracker-bundle-tracker-launch-agent",
+	"uid": "u_tb3pw6ksvh",
+	"kind": "service",
+	"title": "trackerLaunchAgent",
+	"responsibility": "Owns the trackerLaunchAgent service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/services/development-tooling/tracker-bundle/trackerLaunchAgent.ts",
+			"packages/desktop/src/services/development-tooling/tracker-bundle/trackerLaunchAgent.types.ts"
+		],
+		"symbols": [
+			"readAgentProgram",
+			"isTrackerServe",
+			"setAgentExecutable",
+			"configuredRole",
+			"createAgent",
+			"agentLoaded",
+			"reloadAgent",
+			"NewAgent"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readAgentProgram.agent",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readAgentProgram.host",
+				"type": "TrackerBundleHost",
+				"required": true
+			},
+			{
+				"name": "isTrackerServe.program",
+				"type": "string[] | null",
+				"required": true
+			},
+			{
+				"name": "setAgentExecutable.agent",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "setAgentExecutable.executable",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "setAgentExecutable.host",
+				"type": "TrackerBundleHost",
+				"required": true
+			},
+			{
+				"name": "configuredRole.config",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "createAgent.input",
+				"type": "NewAgent",
+				"required": true
+			},
+			{
+				"name": "createAgent.host",
+				"type": "TrackerBundleHost",
+				"required": true
+			},
+			{
+				"name": "agentLoaded.host",
+				"type": "TrackerBundleHost",
+				"required": true
+			},
+			{
+				"name": "reloadAgent.agent",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "reloadAgent.host",
+				"type": "TrackerBundleHost",
+				"required": true
+			},
+			{
+				"name": "reloadAgent.attempts",
+				"type": "number",
+				"required": false,
+				"default": 5
+			}
+		],
+		"outputs": [
+			{
+				"name": "readAgentProgram",
+				"type": "Promise<string[] | null>"
+			},
+			{
+				"name": "isTrackerServe",
+				"type": "program is string[]"
+			},
+			{
+				"name": "setAgentExecutable",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "configuredRole",
+				"type": "Promise<'hub' | 'spoke' | null>"
+			},
+			{
+				"name": "createAgent",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "agentLoaded",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "reloadAgent",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerBundleError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readAgentProgram",
+				"inputs": [
+					{
+						"name": "readAgentProgram.agent",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readAgentProgram.host",
+						"type": "TrackerBundleHost",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readAgentProgram",
+						"type": "Promise<string[] | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isTrackerServe",
+				"inputs": [
+					{
+						"name": "isTrackerServe.program",
+						"type": "string[] | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerServe",
+						"type": "program is string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "setAgentExecutable",
+				"inputs": [
+					{
+						"name": "setAgentExecutable.agent",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "setAgentExecutable.executable",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "setAgentExecutable.host",
+						"type": "TrackerBundleHost",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "setAgentExecutable",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerBundleError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "configuredRole",
+				"inputs": [
+					{
+						"name": "configuredRole.config",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "configuredRole",
+						"type": "Promise<'hub' | 'spoke' | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "createAgent",
+				"inputs": [
+					{
+						"name": "createAgent.input",
+						"type": "NewAgent",
+						"required": true
+					},
+					{
+						"name": "createAgent.host",
+						"type": "TrackerBundleHost",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createAgent",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerBundleError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "agentLoaded",
+				"inputs": [
+					{
+						"name": "agentLoaded.host",
+						"type": "TrackerBundleHost",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "agentLoaded",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reloadAgent",
+				"inputs": [
+					{
+						"name": "reloadAgent.agent",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "reloadAgent.host",
+						"type": "TrackerBundleHost",
+						"required": true
+					},
+					{
+						"name": "reloadAgent.attempts",
+						"type": "number",
+						"required": false,
+						"default": 5
+					}
+				],
+				"outputs": [
+					{
+						"name": "reloadAgent",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerBundleError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-layout",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-service-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/trackerLaunchAgent.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/trackerLaunchAgent.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

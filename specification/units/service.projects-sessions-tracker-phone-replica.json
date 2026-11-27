@@ -4,7 +4,7 @@
 	"uid": "u_st4dufvqxm",
 	"kind": "service",
 	"title": "TrackerPhoneReplicaService",
-	"responsibility": "Serve a cursor-based read-only projection of eligible Tracker items, notes, flags and runs for a paired phone.",
+	"responsibility": "Build bounded, scoped iPhone Tracker replica pages and carry planning data with the visible items.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"documentation": "specification/features/planned/phone-tracker-replica.md",
@@ -592,12 +592,32 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-structured-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-phone-replica-service-phone-ask-attachments",
 			"via": "import",
 			"origin": "derived"
 		},

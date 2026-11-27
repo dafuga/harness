@@ -1,4 +1,5 @@
 // @harness-uid u_4pgfvaopdt
+import { isTrackerPing, isTrackerCosMessage } from './isTrackerPing';
 import type { TrackerItemInput, TrackerItemValue } from './normalizeTrackerItemFields.types';
 import type {
 	TrackerItemAction,
@@ -10,15 +11,21 @@ import type {
 import {
 	normalizeTrackerDue,
 	normalizeTrackerReminder,
-	trackerIsoTime,
-	trackerLocalStamp,
-	trackerTimeZone
+	trackerIsoTime
 } from './normalizeTrackerDue';
+import { trackerReminderLaunchFields } from './trackerItemLaunchFields';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
-import { guardTrackerDuplicate } from './trackerItemInput';
+import { trackerAskTransitions } from './trackerAskTransitions';
+import {
+	guardTrackerDuplicate,
+	trackerMoveOn,
+	trackerNextStepFields,
+	trackerParkNextStep,
+	trackerResolveItem
+} from './trackerItemInput';
+import { finishTrackerOccurrence } from './finishTrackerOccurrence';
 const start = { status: 'in_progress' };
-const resolved = { resolved: 1, needs_daniel: 0 };
 
 export const trackerItemTransitions: Record<
 	Exclude<TrackerItemAction, 'update'>,
@@ -32,42 +39,32 @@ export const trackerItemTransitions: Record<
 	progress: (_, body) => appendText('progress', body.text, start),
 	note: (_, body) => appendText('note', body.text, {}),
 	flag: flagItem,
+	chase: (_, body) => ({ fields: { 'chase+': body.note ?? null } }),
+	park: trackerParkNextStep,
+	'move-on': trackerMoveOn,
+	priority: (_, body) => ({ fields: { priority: body.priority ?? null } }),
 	remind: (item, body, context) => {
 		if (item.status === 'done' || item.status === 'ignored')
 			throw trackerItemError('only active items can be reminded', 409);
-		return { fields: { remind_at: normalizeTrackerReminder(body.at, context.now) } };
+		const remind_at = normalizeTrackerReminder(body.at, context.now);
+		if (!body.reminder) return { fields: { remind_at } };
+		if (item.every) throw trackerItemError('a reminder uses a scheduled time');
+		return { fields: { remind_at, kind: 'reminder', ...trackerReminderLaunchFields } };
 	},
-	answer: (_, body, context) => {
-		if (!body.answer) throw trackerItemError('answer text required');
-		return resolveItem(body, context);
-	},
+	answer: trackerAskTransitions.answer,
 	unflag: () => ({ fields: { needs_daniel: 0 } }),
-	resolve: (_, body, context) => resolveItem(body, context),
+	resolve: trackerResolveItem,
 	done: finishItem,
 	ignore: ignoreItem,
 	unignore: unignoreItem
 };
-
-function blockItem(
-	item: TrackerItemSnapshot,
-	body: TrackerItemInput,
-	context: TrackerItemMutationContext
-): TrackerItemChange {
+/** A block records a dependency. Only `flag` asks Daniel, so blocking never does. */
+function blockItem(_: TrackerItemSnapshot, body: TrackerItemInput): TrackerItemChange {
 	const reason = String(trackerItemValueOr(body.reason, '')).trim();
 	if (!reason) throw trackerItemError('block reason required');
-	const fields = { status: 'blocked', blocked_reason: reason };
-	const appendNote = `blocked: ${reason}`;
-	if (body.needs_daniel === false) return { fields, appendNote };
-	guardTrackerDuplicate(context, {
-		text: `${item.title} ${reason}`,
-		agent: item.agent,
-		excludeId: item.id,
-		force: body.force,
-		askingDaniel: true
-	});
 	return {
-		fields: { ...fields, needs_daniel: 1, resolved: 0, question: `Blocked: ${reason}` },
-		appendNote
+		fields: { status: 'blocked', blocked_reason: reason },
+		appendNote: `blocked: ${reason}`
 	};
 }
 
@@ -79,7 +76,7 @@ function unblockItem(item: TrackerItemSnapshot, body: TrackerItemInput): Tracker
 		);
 	}
 	return {
-		fields: { ...start, needs_daniel: 0 },
+		fields: start,
 		appendNote: body.note ? `unblocked: ${body.note}` : 'unblocked'
 	};
 }
@@ -98,6 +95,8 @@ function flagItem(
 	body: TrackerItemInput,
 	context: TrackerItemMutationContext
 ): TrackerItemChange {
+	if (body.question && isTrackerCosMessage(String(body.question)))
+		return { fields: {}, appendNote: `for Chief of Staff: ${body.question}` };
 	guardTrackerDuplicate(context, {
 		text: `${item.title} ${trackerItemValueOr(body.question, item.question) ?? ''}`,
 		agent: item.agent,
@@ -109,22 +108,8 @@ function flagItem(
 		fields: {
 			needs_daniel: 1,
 			resolved: 0,
-			...(body.question ? { question: body.question } : {})
-		}
-	};
-}
-
-function resolveItem(
-	body: TrackerItemInput,
-	context: TrackerItemMutationContext
-): TrackerItemChange {
-	return {
-		fields: {
-			...resolved,
-			answered_at: trackerIsoTime(context.now),
-			answered_by: trackerItemValueOr(body.by, 'daniel'),
-			...(body.answer ? { answer: body.answer } : {}),
-			...(body.done ? { status: 'done' } : {})
+			...(body.question ? { question: body.question } : {}),
+			...trackerAskTransitions.choiceFields(item, body)
 		}
 	};
 }
@@ -134,43 +119,24 @@ function finishItem(
 	body: TrackerItemInput,
 	context: TrackerItemMutationContext
 ): TrackerItemChange {
-	if (item.every) return finishOccurrence(item, body, context);
+	if (item.every && body.next_step !== undefined)
+		throw trackerItemError('recurring items cannot have a next step');
+	if (item.every) return finishTrackerOccurrence(item, body, context);
 	if (body.failed) throw trackerItemError('--failed is only for recurring items');
-	return { fields: { status: 'done' }, appendNote: body.note };
+	guardOpenDecision(item, body);
+	const decision = body.next_step === undefined ? {} : trackerNextStepFields(body.next_step);
+	return { fields: { status: 'done', ...decision }, appendNote: body.note };
 }
 
-function finishOccurrence(
-	item: TrackerItemSnapshot,
-	body: TrackerItemInput,
-	context: TrackerItemMutationContext
-): TrackerItemChange {
-	const occurrence = body.occurrence ? parseOccurrence(body.occurrence) : item.occurrence;
-	if (!occurrence) {
-		throw trackerItemError('no occurrence of this recurring item has come due yet');
-	}
-	const stamp = trackerLocalStamp(
-		Date.parse(occurrence),
-		trackerItemValueOr(item.every_tz, trackerTimeZone)
+/** A finished item must not bury a question Daniel has not answered; pings and an explicit next step for Daniel do not count. */
+function guardOpenDecision(item: TrackerItemSnapshot, body: TrackerItemInput): void {
+	const open = Boolean(item.needs_daniel) && !item.resolved;
+	const handsOff = body.next_step !== undefined || Boolean(item.next_step);
+	if (!open || handsOff || body.force || isTrackerPing(item.question)) return;
+	throw trackerItemError(
+		'item has an unanswered flag for Daniel: answer, resolve or unflag it first (or pass --force to finish it and keep the flag in the digest)',
+		409
 	);
-	const status = body.failed ? 'failed' : 'done';
-	const result = {
-		occurrence,
-		status,
-		at: trackerIsoTime(context.now),
-		by: trackerItemValueOr(body.by, context.node),
-		note: trackerItemValueOr(body.note, null)
-	};
-	const reopen = item.status === 'in_progress' || item.status === 'done';
-	return {
-		fields: { last_result: result, ...(reopen ? { status: 'open' } : {}) },
-		appendNote: `occurrence ${stamp} ${status}${body.note ? `: ${body.note}` : ''}`
-	};
-}
-
-function parseOccurrence(value: unknown): string {
-	const time = Date.parse(value as string);
-	if (Number.isNaN(time)) throw trackerItemError(`bad occurrence time "${value}"`);
-	return trackerIsoTime(time);
 }
 
 function ignoreItem(

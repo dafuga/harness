@@ -1,0 +1,224 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-git-hub-app",
+	"uid": "u_kg5hqd5nop",
+	"kind": "adapter",
+	"title": "GitHubAppAdapter",
+	"responsibility": "Owns the GitHubAppAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/GitHubAppAdapter.ts",
+			"src/adapters/agents-providers/GitHubAppAdapter.types.ts"
+		],
+		"symbols": [
+			"GitHubAppAdapter",
+			"GitHubAppAdapter.constructor",
+			"GitHubAppAdapter.repoPath",
+			"GitHubAppAdapter.repoQualifier",
+			"GitHubAppAdapter.read",
+			"GitHubAppAdapter.createIssue",
+			"GitHubAppAdapterConfig",
+			"GitHubIssueInput",
+			"GitHubKeyAccess",
+			"GitHubTokenScope",
+			"GitHubKeyAccess",
+			"GitHubAppAdapterConfig",
+			"GitHubTokenScope",
+			"GitHubIssueInput"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GitHubAppAdapter.constructor.config",
+				"type": "GitHubAppAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "GitHubAppAdapter.read.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "GitHubAppAdapter.read.query",
+				"type": "Readonly<Record<string, string>>",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "GitHubAppAdapter.createIssue.input",
+				"type": "GitHubIssueInput",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "GitHubAppAdapter.repoPath",
+				"type": "string"
+			},
+			{
+				"name": "GitHubAppAdapter.repoQualifier",
+				"type": "string"
+			},
+			{
+				"name": "GitHubAppAdapter.read",
+				"type": "Promise<UntrustedValue>"
+			},
+			{
+				"name": "GitHubAppAdapter.createIssue",
+				"type": "Promise<{ number: number; url: string }>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ProjectAssistantError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GitHubAppAdapter.repoPath",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "GitHubAppAdapter.repoPath",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitHubAppAdapter.repoQualifier",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "GitHubAppAdapter.repoQualifier",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitHubAppAdapter.read",
+				"inputs": [
+					{
+						"name": "GitHubAppAdapter.read.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "GitHubAppAdapter.read.query",
+						"type": "Readonly<Record<string, string>>",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitHubAppAdapter.read",
+						"type": "Promise<UntrustedValue>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProjectAssistantError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitHubAppAdapter.createIssue",
+				"inputs": [
+					{
+						"name": "GitHubAppAdapter.createIssue.input",
+						"type": "GitHubIssueInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitHubAppAdapter.createIssue",
+						"type": "Promise<{ number: number; url: string }>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProjectAssistantError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GitHubAppAdapter.constructor",
+				"inputs": [
+					{
+						"name": "GitHubAppAdapter.constructor.config",
+						"type": "GitHubAppAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitHubAppAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProjectAssistantError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-github-app-adapter-github-app-jwt",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-github-app-adapter-github-permissions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/GitHubAppAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/GitHubAppAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

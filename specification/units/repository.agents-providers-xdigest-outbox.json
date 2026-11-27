@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.agents-providers-xdigest-outbox",
+	"uid": "u_ybg7mk7jxe",
+	"kind": "repository",
+	"title": "XDigestOutboxRepository",
+	"responsibility": "Write owner-only daily outbox files and keep one week.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/agents-providers/XDigestOutboxRepository.ts"],
+		"symbols": [
+			"XDigestOutboxRepository",
+			"XDigestOutboxRepository.constructor",
+			"XDigestOutboxRepository.write"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "XDigestOutboxRepository.constructor.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "XDigestOutboxRepository.write.entry",
+				"type": "XDigestOutbox",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "XDigestOutboxRepository.write",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "XDigestOutboxRepository.write",
+				"inputs": [
+					{
+						"name": "XDigestOutboxRepository.write.entry",
+						"type": "XDigestOutbox",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestOutboxRepository.write",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "XDigestOutboxRepository.constructor",
+				"inputs": [
+					{
+						"name": "XDigestOutboxRepository.constructor.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestOutboxRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-x-digest-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/agents-providers/XDigestOutboxRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/agents-providers/XDigestOutboxRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

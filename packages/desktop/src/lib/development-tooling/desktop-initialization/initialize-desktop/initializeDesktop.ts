@@ -4,32 +4,19 @@ import { NativeConnectionService } from '../NativeConnectionService';
 import { ProjectRegistryService } from '../../../../services/projects-sessions/ProjectRegistryService';
 import { CommentOutboxService } from '../../../../services/projects-sessions/CommentOutboxService';
 import { ProjectionCacheService } from '../projection-cache-service/ProjectionCacheService';
+import { startTrackerRealtime } from '../tracker-realtime/startTrackerRealtime';
 import { createTrackerOverviewPublisher } from '../tracker-overview-publisher/createTrackerOverviewPublisher';
-import {
-	app,
-	BrowserWindow,
-	dialog,
-	ipcMain,
-	powerMonitor,
-	protocol,
-	safeStorage,
-	shell
-} from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, protocol, safeStorage, shell } from 'electron';
 import type { IpcMainInvokeEvent } from 'electron';
 import { resolve } from 'node:path';
 import type { LocalBootstrap } from '../../../../../../remote/src/index';
 import { LocalClientService } from '../LocalClientService';
 import { LocalTransportService } from '../../../../services/LocalTransportService';
 import { ProviderDiscoveryService } from '../../../../services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
-import { RemoteHostService } from '../../../../services/networking-security/remote-host-service/RemoteHostService';
-import { RemoteLifecycleService } from '../RemoteLifecycleService';
 import { RepositoryArbiterService } from '../../../../services/projects-sessions/RepositoryArbiterService';
 import { CodexAppServerAdapter } from '../../../../adapters/agents-providers/codex-app-server-adapter/CodexAppServerAdapter';
 import { ClaudeCliAdapter } from '../../../../adapters/agents-providers/claude-cli-adapter/ClaudeCliAdapter';
-import { NativeSessionAdapter } from '../../../../adapters/networking-security/NativeSessionAdapter';
-import { RelaySocketAdapter } from '../../../../adapters/networking-security/RelaySocketAdapter';
-import { RemoteHostStoreAdapter } from '../../../../adapters/networking-security/RemoteHostStoreAdapter';
-import { RemoteRegistrationAdapter } from '../RemoteRegistrationAdapter';
+import { desktopRemote } from './desktopRemote';
 import { chooseProject } from './chooseProject';
 import { confirmUnload } from './confirmUnload';
 import { desktopIpc } from './desktopIpc';
@@ -38,7 +25,7 @@ import { remoteControl } from './remoteControl';
 import { rendererAssets } from './rendererAssets';
 import { trustedSender } from './trustedSender';
 import { prepareDesktopStorage, preserveMacProfile } from './macSafeStorage';
-import { NavigationValidator } from '../../../../validators/explorer-ui/NavigationValidator';
+import { guardDesktopNavigation } from './guardDesktopNavigation';
 
 protocol.registerSchemesAsPrivileged([
 	{ scheme: 'harness', privileges: { standard: true, secure: true, supportFetchAPI: true } }
@@ -71,7 +58,7 @@ export async function initializeDesktop(): Promise<BrowserWindow | null> {
 	desktopIpc(ipcMain, (event) => bootstrap(backend, event));
 	vaultSetupIpc(() => windows.current?.window);
 	appLifecycle(backend);
-	await backend.remote.start();
+
 	return openWindow(backend);
 }
 
@@ -94,9 +81,23 @@ function desktopBackend() {
 		registry = new ProjectRegistryService(resolve(directory, 'projects.json')),
 		outbox = new CommentOutboxService(resolve(directory, 'outbox/comments.json')),
 		arbiter = new RepositoryArbiterService();
+	const codex = new CodexAppServerAdapter(),
+		providers = new ProviderDiscoveryService({ codex, claude: new ClaudeCliAdapter() }),
+		stores = { registry, outbox, arbiter, providers, cache };
+	const { remote, lifecycle, home, homeChat } = desktopRemote({
+		directory,
+		origin,
+		sessionFile,
+		stores,
+		onStatus: (status) =>
+			windows.current?.client.emit('connection', { kind: 'remote-status', status }),
+		cancelLocal: () => windows.current?.client.cancel()
+	});
 	const { authority, ...connection } = new NativeConnectionService().create(
 		{
 			origin,
+			onSignIn: (ownerId) => remote.linkAccount(ownerId),
+			onDisconnect: () => remote.account.end(),
 			onCacheStatus: (status) => windows.current?.client.emit('cache', status),
 			file: sessionFile,
 			cache,
@@ -104,49 +105,27 @@ function desktopBackend() {
 		},
 		safeStorage
 	);
-	const codex = new CodexAppServerAdapter(),
-		providers = new ProviderDiscoveryService({ codex, claude: new ClaudeCliAdapter() }),
-		stores = { registry, outbox, arbiter, providers, cache };
-	const hosted = new NativeSessionAdapter(sessionFile, safeStorage),
-		registration = new RemoteRegistrationAdapter({ origin, credentials: () => hosted.read() }),
-		sockets = new RelaySocketAdapter(),
-		screen: { locked?: boolean } = {};
-	const phoneWriteDevice = process.env.HARNESS_TRACKER_PHONE_WRITE_DEVICE?.trim();
-	const phoneWriteToken = process.env.HARNESS_TRACKER_PHONE_WRITE_TOKEN;
-	const remote = new RemoteHostService({
-		store: new RemoteHostStoreAdapter({
-			file: resolve(directory, 'remote.enc'),
-			encryption: safeStorage
-		}),
-		register: (input) => registration.register(input),
-		open: (url, headers) => sockets.open(url, headers),
-		shared: {
-			...stores,
-			trackerPhone: process.env.HARNESS_TRACKER_PHONE_DEVICE?.trim(),
-			trackerWrite:
-				phoneWriteDevice && phoneWriteToken
-					? { device: phoneWriteDevice, token: phoneWriteToken }
-					: undefined
-		},
-		locked: () => screen.locked
-	});
-	remote.onStatus((status) =>
-		windows.current?.client.emit('connection', { kind: 'remote-status', status })
-	);
-	const lifecycle = new RemoteLifecycleService({
-		power: { on: (event, listener) => powerMonitor.on(event as 'suspend', listener) },
-		host: remote,
-		cancelLocal: () => windows.current?.client.cancel(),
-		screen: (locked) => {
-			screen.locked = locked;
-			remote.screen(locked);
-		}
-	});
-	lifecycle.start();
 	const transport = new LocalTransportService();
 	const publisher = createTrackerOverviewPublisher({ authority, env: process.env });
 	publisher?.start();
-	return { shared: { ...stores, ...connection }, remote, lifecycle, transport, publisher };
+	const stopRealtime = startTrackerRealtime({
+		publisher,
+		authority,
+		env: process.env,
+		emit: (event) => windows.current?.client.emit('tracker', event)
+	});
+	const refreshAccount = () => void connection.auth?.status().catch(() => undefined);
+	refreshAccount();
+	const accountTimer = connection.auth ? setInterval(refreshAccount, 60_000).unref() : undefined;
+	return {
+		shared: { ...stores, ...connection, home, homeChat },
+		remote,
+		lifecycle,
+		transport,
+		publisher,
+		stopRealtime,
+		accountTimer
+	};
 }
 
 /**
@@ -166,6 +145,8 @@ function appLifecycle(backend: Backend): void {
 		quitting = true;
 		event.preventDefault();
 		backend.publisher?.stop();
+		backend.stopRealtime();
+		clearInterval(backend.accountTimer);
 		void backend.lifecycle
 			.quit()
 			.then(() => backend.transport.close())
@@ -188,13 +169,8 @@ async function openWindow(backend: Backend): Promise<BrowserWindow> {
 			nodeIntegration: false
 		}
 	});
-	window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+	guardDesktopNavigation(window.webContents);
 	confirmUnload(window, dialog);
-	const gate = new NavigationValidator();
-	window.webContents.on('will-navigate', (event, url) => {
-		if (!gate.validate(url)) event.preventDefault();
-	});
-	window.webContents.on('will-attach-webview', (event) => event.preventDefault());
 	const choose = () => chooseProject(window, dialog);
 	/* The window's own client: its session and runs, served over the loopback socket. */
 	const control = remoteControl(backend.remote),

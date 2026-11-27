@@ -72,6 +72,11 @@
 						"action": "exchange"
 					}
 				]
+			},
+			{
+				"name": "PairingController.handle.holder",
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -121,6 +126,11 @@
 								"action": "exchange"
 							}
 						]
+					},
+					{
+						"name": "PairingController.handle.holder",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [

@@ -1,9 +1,12 @@
+import type {
+	HarnessScenarioResult,
+	HarnessRecord,
+	HarnessCapture
+} from '../../src/models/explorer-ui/Harness.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { captureProvenance, scenarioOrigin } from '../../src/utils/reports-media/captureProvenance';
-import type { Scenario } from '../../src/utils/reports-media/captureProvenance.types';
-import type { HarnessRecord, HarnessCapture } from '../../src/models/explorer-ui/Harness.types';
 
 const revision = '0123456789abcdef0123456789abcdef01234567';
 const record = {
@@ -28,7 +31,7 @@ const scenario = {
 	inherited: false,
 	origin: { record: record.id, commit: '89abcdef0123456789abcdef0123456789abcdef' },
 	states: []
-} satisfies Scenario;
+} satisfies HarnessScenarioResult;
 const capture = {
 	evidence: 'capture-provenance-screenshot',
 	kind: 'screenshot',
@@ -70,7 +73,7 @@ test('Scenario origin summarizes tested and captured revisions', () => {
 		...scenario,
 		status: 'failed',
 		states: [{ id: 'overview', coverage: 'complete', captures: [capture] }]
-	} satisfies Scenario;
+	} satisfies HarnessScenarioResult;
 	const result = scenarioOrigin(failed);
 	expect(result).toContain('Failed attempt at 0123456');
 	const input = {

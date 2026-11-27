@@ -1,7 +1,11 @@
 // @harness-uid u_eoyh5uy273
+import type {
+	HarnessScenarioResult,
+	HarnessCapture,
+	HarnessRecord
+} from '../../models/explorer-ui/Harness.types';
 import { shortCommit } from '../../helpers/strings/shortCommit';
-import type { Scenario, CaptureStanding, CaptureProvenance } from './captureProvenance.types';
-import type { HarnessCapture, HarnessRecord } from '../../models/explorer-ui/Harness.types';
+import type { CaptureStanding, CaptureProvenance } from './captureProvenance.types';
 
 const brief = (id: string) => id.slice(0, 12);
 const kinds: Record<string, string> = {
@@ -14,13 +18,21 @@ function needsStamp(capture: HarnessCapture): boolean {
 	return capture.kind === 'screenshot' || capture.provenance === 'actual-capture';
 }
 
-function standingOf(record: HarnessRecord, scenario: Scenario, capture: HarnessCapture) {
+function standingOf(
+	record: HarnessRecord,
+	scenario: HarnessScenarioResult,
+	capture: HarnessCapture
+) {
 	if (!record.valid) return 'unvalidated' as const;
 	if (capture.status === 'failed') return 'rejected' as const;
 	return scenario.inherited ? ('inherited' as const) : ('fresh' as const);
 }
 
-function labelOf(standing: CaptureStanding, scenario: Scenario, capture: HarnessCapture): string {
+function labelOf(
+	standing: CaptureStanding,
+	scenario: HarnessScenarioResult,
+	capture: HarnessCapture
+): string {
 	if (standing === 'unvalidated') return 'Unvalidated capture';
 	if (standing === 'inherited') return 'Inherited capture';
 	if (standing === 'fresh') return 'Fresh capture';
@@ -35,7 +47,7 @@ function labelOf(standing: CaptureStanding, scenario: Scenario, capture: Harness
 function verdict(
 	standing: CaptureStanding,
 	record: HarnessRecord,
-	scenario: Scenario,
+	scenario: HarnessScenarioResult,
 	stamped: boolean
 ) {
 	const target = record.source.commit;
@@ -65,7 +77,7 @@ function verdict(
  */
 export function captureProvenance(
 	record: HarnessRecord,
-	scenario: Scenario,
+	scenario: HarnessScenarioResult,
 	capture: HarnessCapture
 ): CaptureProvenance {
 	const standing = standingOf(record, scenario, capture);
@@ -107,7 +119,7 @@ export function captureProvenance(
 }
 
 /** Where a scenario's result comes from; a failed attempt is never called tested. */
-export function scenarioOrigin(scenario: Scenario): string {
+export function scenarioOrigin(scenario: HarnessScenarioResult): string {
 	if (scenario.inherited) return `Inherited from ${shortCommit(scenario.origin.commit)}`;
 	if (scenario.status === 'passed') return `Tested at ${shortCommit(scenario.testedRevision)}`;
 	const builds = scenario.states.flatMap((state) =>

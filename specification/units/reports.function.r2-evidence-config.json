@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/utils/verification-evidence/EvidenceStorageConfigError.ts",
 			"packages/reports/src/utils/verification-evidence/r2EvidenceConfig.ts",
 			"packages/reports/src/utils/verification-evidence/r2EvidenceConfig.types.ts"
 		],
-		"symbols": ["r2EvidenceConfig", "EvidenceStorageConfigError"]
+		"symbols": ["EvidenceStorageConfigError", "r2EvidenceConfig", "EvidenceStorageConfigError"]
 	},
 	"contract": {
 		"origin": "declared",

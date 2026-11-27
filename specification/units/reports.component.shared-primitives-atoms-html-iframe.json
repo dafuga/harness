@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-html-iframe",
+	"uid": "u_htmlifrmzq",
+	"kind": "component",
+	"title": "HtmlIframe",
+	"responsibility": "Provides the native iframe element atom.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "iframe",
+		"uses": []
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/HtmlIframe.svelte"],
+		"symbols": ["HtmlIframe"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HtmlIframe.children",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Fallback frame content."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HtmlIframe",
+				"type": "markup",
+				"description": "Renders: Provides the native iframe element atom."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlIframe.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlIframe.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

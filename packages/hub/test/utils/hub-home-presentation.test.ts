@@ -1,11 +1,11 @@
 import { expect, test } from 'vitest';
 import {
 	initials,
-	quickReplies,
 	quotaReset,
 	quotaSummary,
 	runDay
-} from '../../src/components/projects-sessions/hubHomePresentation';
+} from '../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+import { quotaPills } from '../../../reports/src/components/projects-sessions/hub-home/hubQuotaPills';
 import type { HomeSubscription } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 
 const now = Date.parse('2026-11-21T22:30:00Z');
@@ -21,7 +21,7 @@ function subscription(left: number[], readAt = new Date(now - 120_000).toISOStri
 			id: `limit-${index}`,
 			label: 'Weekly',
 			left: value,
-			resetsAt: null
+			resetsAt: null as string | null
 		})),
 		credits: null,
 		history: [],
@@ -56,16 +56,46 @@ test('the quota dialog summary counts subscriptions and readable low limits', ()
 		'2 subscriptions · 1 running low'
 	);
 	expect(quotaSummary([subscription([64])], now)).toBe('1 subscription · all OK');
+	expect(quotaSummary([subscription([0, 18])], now)).toBe(
+		'1 subscription · 1 out of quota · 1 running low'
+	);
 	expect(quotaSummary([subscription([5], stale)], now)).toBe('1 subscription · all OK');
 	expect(quotaSummary([], now)).toBe('No subscriptions yet');
 });
 
-test('quick replies are offered only for yes-or-no questions', () => {
-	expect(quickReplies('Approve the Nudge production window, Sat 09:00?')).toEqual([
-		'Approve',
-		'Not yet'
-	]);
-	expect(quickReplies('Should I merge the release PR?')).toEqual(['Yes', 'No']);
-	expect(quickReplies('Which provider should Hub read quota from?')).toEqual([]);
-	expect(quickReplies(null)).toEqual([]);
+test('an empty limit names its Lisbon reset, in summer time too, or says it is unknown', () => {
+	const summer = Date.parse('2026-07-01T08:00:00Z');
+	const pill = (resetsAt: string | null) => {
+		const codex = subscription([0], new Date(summer - 120_000).toISOString());
+		codex.limits = [{ ...codex.limits[0], resetsAt }];
+		return quotaPills([codex], summer).find((entry) => entry.id === codex.id)!;
+	};
+	expect(pill('2026-07-01T09:39:00Z')).toMatchObject({
+		level: 'out',
+		text: 'Codex weekly · resets Wed 1 Jul 10:39 Lisbon'
+	});
+	expect(pill(null).text).toBe('Codex weekly · reset time unknown');
+	expect(pill('2026-07-01T07:00:00Z').text).toBe('Codex weekly · reset due');
+});
+
+test('model limits stay out of a pill until they run low, and then lead it', () => {
+	const claude = {
+		...subscription([]),
+		id: 'claude',
+		provider: 'claude' as const,
+		limits: [
+			{ id: 'session', label: '5-hour window', left: 62, resetsAt: null },
+			{ id: 'weekly-opus', label: 'Weekly Opus', left: 4, resetsAt: null },
+			{ id: 'weekly-sonnet', label: 'Weekly Sonnet', left: 90, resetsAt: null }
+		]
+	};
+	const [pill, codex] = quotaPills([claude], now);
+	expect(pill).toMatchObject({
+		level: 'critical',
+		text: 'Claude weekly Opus 4% left · 5h 62% left'
+	});
+	expect(pill.meaning).toContain(
+		'Claude weekly Opus: Anthropic Claude Code subscription weekly limit for Opus.'
+	);
+	expect(codex).toMatchObject({ level: null, text: 'Codex usage unknown' });
 });

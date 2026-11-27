@@ -9,7 +9,7 @@ import type {
 } from '../../models/networking-security/Remote.types';
 import type { RemoteApprovalInput } from '../../models/networking-security/RemoteControl.types';
 import { remotePatterns } from '../../utils/networking-security/remoteIdentity';
-const kinds = ['electron', 'ios', 'test'];
+const kinds = ['electron', 'ios', 'web', 'test'];
 const commit = /^[a-f0-9]{40}$/;
 
 function fields(value: unknown): Fields | null {

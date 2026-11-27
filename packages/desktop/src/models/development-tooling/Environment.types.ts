@@ -6,6 +6,7 @@ import type {
 	RemoteMobileControl
 } from '../../../../remote/src/models/networking-security/RemoteControl.types';
 import type { RemoteMobileStatus } from '../../../../remote/src/models/networking-security/RemoteControl.types';
+import type { TrackerHomeSource } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { DesktopBridge } from './DesktopBridge.types';
 import type { RemoteMethod } from '../../../../remote/src/models/Remote.types';
 import type { WireChannel } from '../../../../remote/src/models/Remote.types';
@@ -18,6 +19,7 @@ export { nativeAccountContext } from './EnvironmentValues';
 export interface NativeAccountContext {
 	readonly environment?: Environment;
 	readonly signedIn: boolean;
+	readonly accountName?: string;
 	signOut(): void;
 }
 
@@ -42,6 +44,7 @@ export interface Environment extends RemotePorts {
 	account?: boolean;
 	/** Capacitor only: local Tracker reads and an independent app refresh control. */
 	tracker?: PhoneTrackerTools;
+	trackerHome?: TrackerHomeSource;
 }
 
 /** What a page can see of its host besides the document. */
@@ -50,9 +53,6 @@ export interface EnvironmentHost {
 	harnessRemote?: Partial<RemoteDesktopControl>;
 	Capacitor?: { isNativePlatform?: () => boolean };
 }
-
-/** All the page hands the scanner: the name of this phone. It never holds an offer. */
-export type ScanInput = Parameters<RemoteMobileControl['scan']>[0];
 
 /**
  * What the plugin reports: the published status, and beside it what the computer said when it
@@ -92,8 +92,6 @@ export interface RemoteNativePlugin {
 	computers?(): Promise<{ computers: RemoteAccountComputer[] }>;
 	connectAccountComputer?(input: RemoteAccountComputerInput): Promise<RemoteNativeStatus>;
 	status(): Promise<RemoteNativeStatus>;
-	/** Rejects with one of `remoteScanFailures` as its code when a scan ends without an offer. */
-	scan(input: ScanInput): Promise<RemoteNativeStatus>;
 	disconnect(): Promise<RemoteNativeStatus>;
 	request(call: { method: string; input: Record<string, unknown> }): Promise<RemoteNativeAnswer>;
 	trackerTool?(call: {
@@ -146,7 +144,6 @@ export {
 	type RemoteHostStatus,
 	type RemoteMobileControl,
 	type RemoteMobileStatus,
-	type RemotePairingOffer,
 	type RemotePairingRequest,
 	remoteContext
 } from './EnvironmentValues';

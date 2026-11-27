@@ -4,7 +4,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { IpcRequestValidator } from '../src/validators/development-tooling/IpcRequestValidator';
 import { NavigationValidator } from '../src/validators/explorer-ui/NavigationValidator';
-import { scrubEnvironment } from '../src/utils/cli-environment/scrubEnvironment';
+import { scrubEnvironment } from '../src/utils/execution-runtimes/cli-environment/scrubEnvironment';
 import { publicCliEvents } from '../src/adapters/agents-providers/claude-cli-adapter/publicCliEvents';
 
 test('remote pages and child frames cannot use the project bridge', () => {
@@ -13,6 +13,24 @@ test('remote pages and child frames cannot use the project bridge', () => {
 	expect(gate.validate('https://example.com')).toBe(false);
 	expect(gate.validate('harness://evil/harness')).toBe(false);
 	expect(gate.validate('file:///tmp/unknown.html')).toBe(false);
+});
+
+test('only the packaged Tracker and Projects screens can open HTTP and HTTPS text links', () => {
+	const gate = new NavigationValidator();
+	const web = 'https://example.invalid/item';
+	expect(gate.allowsTrackerTextLink('harness://app/projects', web, '_blank')).toBe(true);
+	expect(gate.allowsTrackerTextLink('harness://app/tracker', 'http://example.invalid/', '')).toBe(
+		true
+	);
+	expect(gate.allowsTrackerTextLink('harness://app/settings', web, '_blank')).toBe(false);
+	expect(gate.allowsTrackerTextLink('https://example.invalid/projects', web, '_blank')).toBe(false);
+	expect(gate.allowsTrackerTextLink('harness://app/projects', web, 'named')).toBe(false);
+	expect(gate.allowsTrackerTextLink('harness://app/projects', 'file:///tmp/item', '_blank')).toBe(
+		false
+	);
+	expect(gate.allowsTrackerTextLink('harness://app/projects', 'javascript:void(0)', '_blank')).toBe(
+		false
+	);
 });
 
 test('IPC refuses unknown operations, invalid regions and unapproved changes', () => {
@@ -84,7 +102,12 @@ function sources(directory: string): string[] {
 test('portable workspace sources must not depend on the Hub app', () => {
 	const desktop = resolve(import.meta.dirname, '..');
 	const hub = resolve(desktop, '../hub');
-	const dependencies = sources(resolve(desktop, 'src')).flatMap((path) => {
+	const reports = resolve(desktop, '../reports');
+	const portable = [
+		...sources(resolve(desktop, 'src')),
+		...sources(resolve(reports, 'src/components/projects-sessions/hub-home'))
+	];
+	const dependencies = portable.flatMap((path) => {
 		const imports = [
 			...readFileSync(path, 'utf8').matchAll(
 				/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*)['"]([^'"]+)['"]/g
@@ -95,9 +118,11 @@ test('portable workspace sources must not depend on the Hub app', () => {
 				const target = resolve(dirname(path), specifier);
 				return target === hub || target.startsWith(`${hub}/`) || /^hub(?:\/|$)/.test(specifier);
 			})
-			.map(([, specifier]) => `${path.slice(desktop.length + 1)} -> ${specifier}`);
+			.map(([, specifier]) => `${path.slice(dirname(desktop).length + 1)} -> ${specifier}`);
 	});
-	const aliases = readFileSync(resolve(desktop, 'svelte.config.js'), 'utf8');
+	const aliases = [desktop, reports]
+		.map((root) => readFileSync(resolve(root, 'svelte.config.js'), 'utf8'))
+		.join('\n');
 	const upwardAliases = [...aliases.matchAll(/['"]([^'"]*\.\.\/hub(?:\/[^'"]*)?)['"]/g)].map(
 		([, target]) => `Svelte alias -> ${target}`
 	);

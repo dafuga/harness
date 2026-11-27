@@ -9,6 +9,8 @@ class SessionState {
 	busy = $state(false);
 	/** Counts the questions asked; an answer to an earlier one is older than what is shown. */
 	private asked = 0;
+	/** The newest question, so that a caller who was overtaken can wait for its answer. */
+	private newest = { turn: 0, answered: Promise.resolve() };
 	constructor(private auth: BrowserAuth) {}
 	get actor() {
 		return this.status?.actor ?? null;
@@ -17,8 +19,10 @@ class SessionState {
 	get emailProof() {
 		return this.actor ? null : (this.status?.emailProof ?? null);
 	}
-	async refresh() {
-		const turn = ++this.asked;
+	refresh() {
+		return this.ask((turn) => this.readAfresh(turn));
+	}
+	private async readAfresh(turn: number) {
 		try {
 			const status = await this.auth.status();
 			if (turn === this.asked) this.status = status;
@@ -33,8 +37,19 @@ class SessionState {
 	 * that cannot be read now leaves the last answer, and the next focus or interval asks again.
 	 * The same answer keeps its object, so nothing that shows it is rendered or asked again.
 	 */
-	async check() {
+	check() {
+		return this.ask((turn) => this.readAgain(turn));
+	}
+	/** Resolves only once no newer question is waiting, so the caller sees the current account. */
+	private ask(read: (turn: number) => Promise<void>): Promise<void> {
 		const turn = ++this.asked;
+		const answered = read(turn).then(() =>
+			this.newest.turn > turn ? this.newest.answered : undefined
+		);
+		this.newest = { turn, answered };
+		return answered;
+	}
+	private async readAgain(turn: number) {
 		try {
 			const status = await this.auth.status();
 			if (turn !== this.asked || JSON.stringify(status) === JSON.stringify(this.status)) return;

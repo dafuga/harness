@@ -1,11 +1,11 @@
 // @harness-uid u_rptchqt5ts
-export type Point = { x: number; y: number };
+export type ZoomPoint = { x: number; y: number };
 
 export type ZoomControls = {
 	current: number;
 	minimum: number;
 	maximum: number;
-	apply: (next: number | null, point: Point) => void;
+	apply: (next: number | null, point: ZoomPoint) => void;
 };
 
 export type Gesture = Event & { scale?: number; clientX?: number; clientY?: number };

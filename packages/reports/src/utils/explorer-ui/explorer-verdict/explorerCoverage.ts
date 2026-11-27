@@ -1,15 +1,16 @@
 // @harness-uid u_fw3beua6vw
-import { shortCommit } from '../../../helpers/strings/shortCommit';
-import type { Result } from './explorerCoverage.types';
 import type {
-	ExplorerScenarioCoverage,
-	ExplorerStateCoverage
-} from '../../../models/explorer-ui/Explorer.types';
-import type {
+	HarnessScenarioResult,
 	HarnessRecord,
 	HarnessRevision,
 	HarnessScenario
 } from '../../../models/explorer-ui/Harness.types';
+import { shortCommit } from '../../../helpers/strings/shortCommit';
+
+import type {
+	ExplorerScenarioCoverage,
+	ExplorerStateCoverage
+} from '../../../models/explorer-ui/Explorer.types';
 import { coverageWorst, scenarioFor, type Judged, type Told } from '../explorerState';
 import { explorerState } from './explorerState';
 
@@ -65,7 +66,11 @@ function lineage(judged: Judged, commit: string, affected: boolean | null): Told
  * inherited result, in the record it came from. Checks that did not run again here are not
  * asked of this record; an origin whose checks the history does not keep proves none of them.
  */
-function tests(declared: HarnessScenario, record: HarnessRecord | null, result?: Result) {
+function tests(
+	declared: HarnessScenario,
+	record: HarnessRecord | null,
+	result?: HarnessScenarioResult
+) {
 	const inherited = result?.inherited === true;
 	const ran = inherited ? result?.originTests : record?.tests;
 	const list = declared.tests.map((test) => {
@@ -184,7 +189,11 @@ function standsFor(detail: HarnessRevision, judged: Judged, unit: string): Told 
 }
 
 /** A result with its record and the commit its captures must be of: its origin when inherited. */
-function bind(declared: HarnessScenario, result: Result, record: HarnessRecord): Judged {
+function bind(
+	declared: HarnessScenario,
+	result: HarnessScenarioResult,
+	record: HarnessRecord
+): Judged {
 	const bound = result.inherited ? result.origin.commit : record.source.commit;
 	return { declared, result, record, bound };
 }

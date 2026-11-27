@@ -4,6 +4,9 @@ import { PublicRelayController } from './lib/networking-security/relay/PublicRel
 import type { RelayEnv } from './models/networking-security/RelayHost.types';
 import { hostRuntime, type HostRuntime } from './lib/execution-runtimes/host-runtime/hostRuntime';
 
+/** The fan-out of the sealed account sync; the Hub reaches it through a namespace binding only. */
+export { AccountSyncObject } from './lib/networking-security/sync/AccountSyncObject';
+
 /**
  * One per host (`env.REMOTE_HOSTS.idFromName(hostId)`): its registration, its devices, its
  * pairings and its sockets. Sockets are hibernatable; everything else is in storage, so the

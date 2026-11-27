@@ -94,3 +94,20 @@ h1 {
 	color: var(--muted);
 	font-size: 0.95rem;
 }
+
+/* The viewer's parts are sized by the canvas around them; alone, this host stands for it. */
+.design-preview-host {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	min-height: 280px;
+}
+.design-preview-host[data-design='frame'] {
+	width: 320px;
+	min-height: 264px;
+	margin-top: 24px;
+}
+.design-preview-host[data-design='canvas'] {
+	height: 460px;
+}

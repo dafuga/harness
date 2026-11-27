@@ -2,16 +2,15 @@
 import { statfsSync } from 'node:fs';
 import type { TrackerDispatchPolicy } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import { trackerProviderHold } from './trackerProviderHolds';
 import type {
 	TrackerHostAdapterConfig,
 	TrackerHostLaunchConfig
 } from './nativeTrackerHostEffects.types';
-import type {
-	TrackerHostRoute,
-	TrackerHostSession,
-	TrackerHostTarget
-} from './trackerHostLaunch.types';
-import { finishedTrackerSession } from './trackerHostInventory';
+import type { TrackerHostRoute, TrackerHostTarget } from './trackerHostLaunch.types';
+import type { TrackerOccupiedRun } from './trackerHostAdmission.types';
+import type { TrackerHostResources } from '../../../utils/projects-sessions/trackerHostResources.types';
+import { trackerHostResourceAdmission } from './trackerHostResourceAdmission';
 
 export const trackerHostCapacityHold = 'Tracker host is at session capacity';
 
@@ -20,64 +19,65 @@ export function trackerHostAdmission(
 	{
 		config,
 		adapter,
-		routeFor
+		routeFor,
+		hostResources,
+		now = Date.now
 	}: {
 		config: TrackerHostLaunchConfig;
 		adapter?: TrackerHostAdapterConfig;
 		routeFor: TrackerHostRoute;
-	},
-	inventory: () => readonly TrackerHostSession[]
+		hostResources?: TrackerHostResources;
+		now?: () => number;
+	}
 ): TrackerDispatchPolicy['admit'] {
 	const cap = config.maxConcurrent ?? 2;
+	const hostHold = trackerHostResourceAdmission(store, config, {
+		resources: hostResources,
+		occupied: () => occupiedHostRuns(store)
+	});
 	return (item, intent, rung) => {
 		const route = routeFor(item);
 		if (!route || !configuredLane(config, route.platform))
 			return 'no approved Tracker repository or platform for this node';
-		if (occupiedHostSlots(store, inventory()) >= cap) return trackerHostCapacityHold;
-		if (rung && !['codex', 'claude'].includes(rung.cli)) return 'no supported Tracker provider';
-		if (adapter?.dueDisk && intent.source === 'due' && item.adapterDueOwner === store.node)
-			return adapterDueDiskHold({
-				config,
-				route,
-				dueDisk: adapter.dueDisk
-			});
-		return null;
+		if (occupiedHostSlots(store) >= cap) return trackerHostCapacityHold;
+		const unavailable = rung && providerAdmissionHold(store, rung.cli, now());
+		if (unavailable) return unavailable;
+		const shortage = hostHold(item, route);
+		if (shortage) return shortage;
+		const adapterDue = intent.source === 'due' && item.adapterDueOwner === store.node;
+		return adapterDue ? adapterDueDiskHold({ config, route, dueDisk: adapter?.dueDisk }) : null;
 	};
 }
 
-function occupiedHostSlots(
-	store: TrackerPersistenceService,
-	sessions: readonly TrackerHostSession[]
-): number {
-	const reserved = store.database
+function providerAdmissionHold(store: TrackerPersistenceService, cli: string, now: number) {
+	if (cli !== 'codex' && cli !== 'claude') return 'no supported Tracker provider';
+	return trackerProviderHold(store, cli, now);
+}
+
+/** Only runs the launcher is truly running hold a slot; leftover tmux sessions never do. */
+const slotRuns = `FROM runs r
+	LEFT JOIN meta m ON m.k = 'harness_dispatch_run:' || r.id
+	LEFT JOIN items i ON i.id = r.item_id
+	WHERE r.state IN ('running','verifying')
+	OR (r.state = 'queued' AND json_extract(m.v, '$.dispatch_at') IS NOT NULL)`;
+
+export function occupiedHostSlots(store: TrackerPersistenceService): number {
+	const { count } = store.database.prepare(`SELECT count(*) AS count ${slotRuns}`).get() as {
+		count: number;
+	};
+	return count;
+}
+
+/** The runs behind that count, for the watchdog's slot report. */
+export function occupiedHostRuns(store: TrackerPersistenceService): TrackerOccupiedRun[] {
+	return store.database
 		.prepare(
-			`SELECT r.id, r.item_id, r.auto_token, r.attempt FROM runs r
-		LEFT JOIN meta m ON m.k = 'harness_dispatch_run:' || r.id
-		WHERE r.state IN ('running','verifying')
-		OR (r.state = 'queued' AND json_extract(m.v, '$.dispatch_at') IS NOT NULL)`
+			`SELECT r.id, r.item_id AS itemId, r.state, r.cli, r.tmux, r.watch_pane AS watchPane,
+			r.started_at AS startedAt, r.resumed_at AS resumedAt, i.status, i.deleted,
+			(i.needs_daniel = 1 AND coalesce(i.resolved, 0) = 0) AS waiting
+			${slotRuns} ORDER BY r.id`
 		)
-		.all() as {
-		id: number;
-		item_id: string;
-		auto_token: string;
-		attempt: number;
-	}[];
-	const runIds = new Set(reserved.map(({ id }) => id));
-	const keys = new Set(
-		reserved.map(({ item_id, auto_token, attempt }) =>
-			JSON.stringify([item_id, auto_token, attempt])
-		)
-	);
-	const independent = sessions.filter((session) => {
-		const { state, key, legacyRunId } = session;
-		return (
-			state === 'live' &&
-			!keys.has(key) &&
-			(legacyRunId === undefined || !runIds.has(legacyRunId)) &&
-			!finishedTrackerSession(store, session)
-		);
-	});
-	return reserved.length + independent.length;
+		.all() as unknown as TrackerOccupiedRun[];
 }
 
 function trackerAdapterDiskHold(
@@ -112,8 +112,9 @@ function adapterDueDiskHold({
 }: {
 	config: TrackerHostLaunchConfig;
 	route: TrackerHostTarget;
-	dueDisk: NonNullable<TrackerHostAdapterConfig['dueDisk']>;
+	dueDisk: TrackerHostAdapterConfig['dueDisk'];
 }) {
+	if (!dueDisk) return null;
 	const repoHold = trackerAdapterDiskHold('workdir' in route ? route.workdir : route.repo, dueDisk);
 	if (repoHold || 'driver' in config) return repoHold;
 	return trackerAdapterDiskHold(config.managed.stateDirectory, dueDisk);

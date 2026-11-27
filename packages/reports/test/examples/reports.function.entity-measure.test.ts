@@ -1,22 +1,14 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
-import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import * as measures from '../../src/utils/explorer-ui/entityMeasure';
 import { entityMeasure } from '../../src/components/explorer-ui/entity-sections/entityMeasure';
 import type * as harness from '../../src/models/explorer-ui/Harness.types';
 import { record as fixtureRecord } from '../entityFixture';
 import { commits } from '../entityUnits';
-
-type Measurement = harness.HarnessRecord['measurements'][number];
-type Budget = harness.HarnessUnit['budgets']['performance'][number];
-type Cases = Parameters<typeof recordExampleCases>[1];
-
-type Patch = Partial<harness.HarnessUnit>;
+import type { Patch, Budget, Measurement } from './reports.function.entity-measure.test.types';
+import { save } from './reports.function.entity-measure.cases';
 
 const subject = 'app.function.filter-orders';
-const base = { unitId: 'reports.function.entity-measure', evidence: 'examples-cases' };
-const save = (symbol: string, state: string, cases: Cases) =>
-	recordExampleCases({ ...base, symbol, state, file: `${state}.json` }, cases);
 
 const unitOf = (patch: Patch = {}, performance: Budget[] = []): harness.HarnessUnit => ({
 	id: subject,
@@ -49,19 +41,6 @@ const withRecord = (measurements: Measurement[]): harness.HarnessRecord => ({
 });
 const wasmUnit = () =>
 	unitOf({ runtime: { kind: 'module', targets: [{ kind: 'wasm', entry: 'a.wasm' }] } });
-
-test('A byte count reads as B, KB or MB by its magnitude and keeps its sign', () => {
-	const counts = [800, -2400, 1_000, 999_999, 1_000_000, -3_400_000, 0];
-	const texts = ['800 B', '-2.4 KB', '1 KB', '1000 KB', '1 MB', '-3.4 MB', '0 B'];
-	const outputs = counts.map((count) => measures.byteSize(count));
-	expect(outputs).toEqual(texts);
-	const cases = counts.map((count, index) => ({
-		name: `count ${count}`,
-		input: { count },
-		output: outputs[index]
-	}));
-	save('byteSize', 'byte-size-scales-and-keeps-sign', cases);
-});
 
 test('A unit with nothing recorded shows Not measured for each size and timing, never zero', () => {
 	const unit = unitOf({}, [{ workload: 'thousand-orders', metric: 'p95-ms', tolerance: 0.05 }]);

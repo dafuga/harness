@@ -4,8 +4,8 @@
 	"uid": "u_ymhr4iqr7u",
 	"kind": "module",
 	"title": "phoneTrackerInboxParse",
-	"responsibility": "Owns the phoneTrackerInboxParse library module.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Validate Tracker inbox replies from the iPhone replica, including optional planning data from upgraded peers.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -144,6 +144,21 @@
 	"dependencies": [
 		{
 			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-attachments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
 		}

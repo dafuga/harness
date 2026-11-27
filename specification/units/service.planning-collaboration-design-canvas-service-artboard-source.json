@@ -1,0 +1,132 @@
+{
+	"schemaVersion": 1,
+	"id": "service.planning-collaboration-design-canvas-service-artboard-source",
+	"uid": "u_wd5jkouu2k",
+	"kind": "service",
+	"title": "artboardSource",
+	"responsibility": "Produces the validated HTML an artboard is saved as, or a starter page.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/planning-collaboration/design-canvas-service/artboardSource.ts"],
+		"symbols": ["artboardSource"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "artboardSource.html",
+				"type": "string | undefined",
+				"required": true,
+				"description": "Artboard HTML; a starter page is used when saving without it."
+			},
+			{
+				"name": "artboardSource.size",
+				"type": "ArtboardSize | undefined",
+				"required": true,
+				"description": "Fixed artboard size to apply."
+			},
+			{
+				"name": "artboardSource.title",
+				"type": "string",
+				"required": false,
+				"default": "Artboard",
+				"description": "Title shown for the canvas or artboard."
+			}
+		],
+		"outputs": [
+			{
+				"name": "artboardSource",
+				"type": "string",
+				"description": "Result: Produces the validated HTML an artboard is saved as, or a starter page."
+			}
+		],
+		"errors": [
+			{
+				"name": "DesignCanvasError",
+				"type": "thrown",
+				"description": "A canvas, artboard, option or prerequisite is not usable; the message says why."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "artboardSource",
+				"inputs": [
+					{
+						"name": "artboardSource.html",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Artboard HTML; a starter page is used when saving without it."
+					},
+					{
+						"name": "artboardSource.size",
+						"type": "ArtboardSize | undefined",
+						"required": true,
+						"description": "Fixed artboard size to apply."
+					},
+					{
+						"name": "artboardSource.title",
+						"type": "string",
+						"required": false,
+						"default": "Artboard",
+						"description": "Title shown for the canvas or artboard."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artboardSource",
+						"type": "string",
+						"description": "Result: Produces the validated HTML an artboard is saved as, or a starter page."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-artboard-size",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-artboard-violations",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-design-canvas",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-starter-artboard",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/planning-collaboration/design-canvas-service/artboardSource.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/planning-collaboration/design-canvas-service/artboardSource.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

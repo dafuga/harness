@@ -1,7 +1,7 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { planPayload } from '../../src/utils/ipc-payload/planPayload';
+import { planPayload } from '../../src/utils/execution-runtimes/ipc-payload/planPayload';
 
 const COMPONENT = {
 	category: 'components',

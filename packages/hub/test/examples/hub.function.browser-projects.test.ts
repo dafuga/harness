@@ -3,12 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { invitationLink } from '../../src/components/projects-sessions/invitation-form/browserProjects';
 import { browserProjects } from '../../src/routes/browserProjects';
-import type { BrowserProjects } from '../../src/utils/projects-sessions/browserProjects';
-
-type Api = Parameters<typeof browserProjects>[0];
-type Call = { method: string; path: string; body?: unknown };
-type Invite = Parameters<typeof invitationLink>[1];
-type InviteInput = Parameters<BrowserProjects['invite']>[1];
+import type { Invite, Call, Api, InviteInput } from './hub.function.browser-projects.test.types';
 
 const PROJECT = '0d8f3c2e-7a61-4b5d-9c0e-2e4f6a8b1c3d';
 const INVITE_ID = '5b1e7d2a-3c4f-4a9b-8e6d-1f2a3b4c5d6e';

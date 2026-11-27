@@ -59,7 +59,7 @@ function seedPausedAttention(f: ReturnType<typeof notificationFixture>, night: n
 	});
 }
 
-test('pause and resume release one relevant Chief of Staff batch, with recurring agent wake-ups outside quiet hours', async () => {
+test('pause and resume release one relevant Chief of Staff batch, with recurring agent wake-ups while paused', async () => {
 	let uncertain = true;
 	const f = notificationFixture({
 		send: async (request) => {
@@ -90,7 +90,9 @@ test('pause and resume release one relevant Chief of Staff batch, with recurring
 		catch_up: true,
 		window_minutes: 30,
 		counts: { needs_daniel: 0, blocked: 1, done: 1 },
-		text: 'BLOCKED: Fixture b - Fixture blocker (needs Daniel)\nDONE: Fixture a - Fixture result'
+		items: expect.arrayContaining([
+			expect.objectContaining({ event: 'blocked', item_id: 'b', needs_daniel: true })
+		])
 	});
 	expect(f.queue.read().attention.get(`flag|c|${clock(night)}`)?.status).toBe('dropped');
 	await f.service.pause('fixture-operator');
@@ -102,7 +104,7 @@ test('pause and resume release one relevant Chief of Staff batch, with recurring
 	expect(f.calls).toHaveLength(3);
 });
 
-test('tick keeps a delayed window out of quiet hours and retries the attention batch on the next window', async () => {
+test('tick sends an overnight ask to Chief of Staff and retries the batch on the next window', async () => {
 	let rejected = false;
 	const f = notificationFixture({
 		send: async () => {
@@ -122,19 +124,15 @@ test('tick keeps a delayed window out of quiet hours and retries the attention b
 		fields: { needs_daniel: 1 }
 	});
 	await f.service.tick();
-	f.at(start + 180 * minute);
-	await f.service.tick();
-	expect(f.calls).toHaveLength(0);
-
-	const release = Date.parse('2026-02-03T08:00:00Z');
-	f.at(release);
+	const night = start + 180 * minute;
+	f.at(night);
 	await f.restart().tick();
 	expect(f.queue.read().lastAttentionError).toBe('HTTP 503');
-	f.at(release + 29 * minute);
+	f.at(night + 29 * minute);
 	await f.service.tick();
 	expect(f.calls).toHaveLength(1);
 
-	f.at(release + 30 * minute);
+	f.at(night + 30 * minute);
 	await measureTick(f.restart(), 'quiet-hour-batch');
 	const id = eventId(`flag|a|${clock()}`);
 	expect(f.calls.map((call) => call.id)).toEqual([id, id]);

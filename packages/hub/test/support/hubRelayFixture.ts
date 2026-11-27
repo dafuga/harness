@@ -51,11 +51,12 @@ async function bundle(): Promise<string> {
 /** A request to `/api/remote…` of one hub Worker, with a test session or with none. */
 function caller(worker: { fetch(url: string, init?: RequestInit): Promise<Response> }): Call {
 	return (session, method, path, body) => {
-		const headers: Record<string, string> = {};
+		const headers: Record<string, string> = { Origin: 'http://localhost' };
+		if (method === 'GET' && path.includes('/connect/')) headers.Upgrade = 'websocket';
 		if (session) headers['x-test-session'] = session;
 		if (body !== undefined) headers['Content-Type'] = 'application/json';
 		const init = { method, headers, body: body === undefined ? undefined : JSON.stringify(body) };
-		const url = `https://hub.fixture.example/api/remote${path}`;
+		const url = `http://localhost/api/remote${path}`;
 		/* The test's own connection to workerd is sometimes reset; that is not an answer. */
 		return worker.fetch(url, init).catch(() => worker.fetch(url, init));
 	};

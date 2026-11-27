@@ -6,11 +6,7 @@ import { explorerEntities } from '../../src/utils/explorer-ui/explorerEntities';
 import { record, revision } from '../entityFixture';
 import { withFocused } from '../entityStates';
 import { commits, ids } from '../entityUnits';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
-type Shown = Parameters<typeof entityShown>[0];
-type Entity = Parameters<typeof entityShown>[1];
-type Head = ReturnType<typeof revision>;
+import type { Cases, Head, Shown, Entity } from './reports.function.entity-shown.test.types';
 
 const unitId = 'reports.function.entity-shown';
 const symbol = 'entityShown';

@@ -2,7 +2,8 @@
 import type { RemoteHostRegisterInput, RemoteHostRegistration } from '../../../../remote/src/index';
 
 export type RegisterRemoteHost = (
-	input: RemoteHostRegisterInput
+	input: RemoteHostRegisterInput,
+	ownerId?: string
 ) => Promise<RemoteHostRegistration>;
 
 export {

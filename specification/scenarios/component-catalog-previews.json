@@ -26,10 +26,12 @@
 		"desktop.component.design-panel",
 		"desktop.component.details-panel",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-record",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
+		"desktop.component.development-tooling-tracker-work",
 		"desktop.component.entity-card",
 		"desktop.component.entity-view",
 		"desktop.component.environment-picker",
@@ -66,6 +68,7 @@
 		"desktop.component.project-agent",
 		"desktop.component.project-gate",
 		"desktop.component.project-switcher",
+		"desktop.component.projects-sessions-desktop-home",
 		"desktop.component.recorded-preview",
 		"desktop.component.reference-text",
 		"desktop.component.relationships-panel",
@@ -73,7 +76,6 @@
 		"desktop.component.remote-connection",
 		"desktop.component.remote-devices",
 		"desktop.component.remote-host-panel",
-		"desktop.component.remote-offer-code",
 		"desktop.component.remote-phone-panel",
 		"desktop.component.revision-picker",
 		"desktop.component.runtime-artifact",
@@ -93,6 +95,7 @@
 		"desktop.component.workspace-link",
 		"desktop.component.workspace-shell",
 		"desktop.layout.root",
+		"desktop.page.designs",
 		"desktop.page.game",
 		"desktop.page.harness-path",
 		"desktop.page.projects",
@@ -101,6 +104,7 @@
 		"desktop.page.settings",
 		"desktop.page.tracker",
 		"hub.component.account-menu",
+		"hub.component.accounts-access-linked-computers",
 		"hub.component.email-proof-panel",
 		"hub.component.hosted-workspace",
 		"hub.component.hub-frame",
@@ -109,18 +113,35 @@
 		"hub.component.login-panel",
 		"hub.component.members-panel",
 		"hub.component.native-approval",
+		"hub.component.planning-collaboration-designs-header",
+		"hub.component.planning-collaboration-hosted-designs",
 		"hub.component.project-create",
 		"hub.component.project-list",
 		"hub.component.projects-sessions-hub-home",
+		"hub.component.projects-sessions-hub-home-add-session",
 		"hub.component.projects-sessions-hub-home-agents",
+		"hub.component.projects-sessions-hub-home-ask",
 		"hub.component.projects-sessions-hub-home-card",
 		"hub.component.projects-sessions-hub-home-cards",
+		"hub.component.projects-sessions-hub-home-choices",
 		"hub.component.projects-sessions-hub-home-composer",
+		"hub.component.projects-sessions-hub-home-cos-chat",
 		"hub.component.projects-sessions-hub-home-dialogs",
+		"hub.component.projects-sessions-hub-home-directory",
 		"hub.component.projects-sessions-hub-home-header",
+		"hub.component.projects-sessions-hub-home-live",
+		"hub.component.projects-sessions-hub-home-live-project",
+		"hub.component.projects-sessions-hub-home-needs-you",
+		"hub.component.projects-sessions-hub-home-not-started",
+		"hub.component.projects-sessions-hub-home-notification-settings",
+		"hub.component.projects-sessions-hub-home-notifications",
+		"hub.component.projects-sessions-hub-home-plan-detail",
+		"hub.component.projects-sessions-hub-home-plannable",
 		"hub.component.projects-sessions-hub-home-plans",
+		"hub.component.projects-sessions-hub-home-project-card",
 		"hub.component.projects-sessions-hub-home-projects",
 		"hub.component.projects-sessions-hub-home-quota",
+		"hub.component.projects-sessions-hub-home-quota-pills",
 		"hub.component.projects-sessions-hub-home-row",
 		"hub.component.projects-sessions-hub-home-schedule",
 		"hub.component.projects-sessions-hub-home-skeleton",
@@ -136,6 +157,7 @@
 		"hub.page.invite-project-id-invitation-id",
 		"hub.page.native-handoff-id",
 		"hub.page.projects",
+		"hub.page.projects-project-id-designs-canvas",
 		"hub.page.projects-project-id-harness-path",
 		"hub.page.projects-project-id-members",
 		"hub.page.public-site-about",
@@ -168,6 +190,9 @@
 		"reports.component.explorer-ui-explorer-kit-empty-state",
 		"reports.component.explorer-ui-explorer-kit-notice",
 		"reports.component.explorer-ui-explorer-kit-pill",
+		"reports.component.explorer-ui-explorer-kit-spec-document-view",
+		"reports.component.explorer-ui-explorer-kit-view-spec-buttons",
+		"reports.component.explorer-ui-explorer-kit-view-spec-modal",
 		"reports.component.explorer-ui-explorer-module-card",
 		"reports.component.explorer-ui-explorer-platform-details",
 		"reports.component.explorer-ui-explorer-platforms",
@@ -230,10 +255,16 @@
 		"reports.component.module-system-plugins-plugin-state-pills",
 		"reports.component.module-system-plugins-plugin-steps",
 		"reports.component.networking-security-explorer-permissions-screen",
+		"reports.component.planning-collaboration-design-canvas-artboard-frame",
+		"reports.component.planning-collaboration-design-canvas-artboard-full",
+		"reports.component.planning-collaboration-design-canvas-canvas-toolbar",
+		"reports.component.planning-collaboration-design-canvas-design-canvas",
+		"reports.component.planning-collaboration-design-canvas-sandboxed-artboard",
 		"reports.component.projects-sessions-project-overview-project-overview",
 		"reports.component.projects-sessions-project-overview-project-overview-card",
 		"reports.component.projects-sessions-project-overview-project-overview-item",
 		"reports.component.projects-sessions-project-overview-project-overview-state",
+		"reports.component.projects-sessions-tracker-planning-details",
 		"reports.component.provider-picker",
 		"reports.component.provider-picker-cards",
 		"reports.component.recorded-value",
@@ -266,6 +297,7 @@
 		"reports.component.shared-primitives-atoms-html-h5",
 		"reports.component.shared-primitives-atoms-html-header",
 		"reports.component.shared-primitives-atoms-html-i",
+		"reports.component.shared-primitives-atoms-html-iframe",
 		"reports.component.shared-primitives-atoms-html-img",
 		"reports.component.shared-primitives-atoms-html-input",
 		"reports.component.shared-primitives-atoms-html-input-button",
@@ -336,6 +368,7 @@
 		"reports.component.shared-primitives-compare-panes",
 		"reports.component.shared-primitives-data-table",
 		"reports.component.shared-primitives-detail-list",
+		"reports.component.shared-primitives-linkified-text",
 		"reports.component.shared-primitives-loading-state",
 		"reports.component.source-code-action",
 		"reports.component.source-content",
@@ -828,6 +861,12 @@
 			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox"]
 		},
 		{
+			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-choices",
+			"title": "Tracker ask choices",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices"]
+		},
+		{
 			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-detail",
 			"title": "Tracker item review",
 			"coverage": "required",
@@ -850,6 +889,12 @@
 			"title": "Tracker write states",
 			"coverage": "required",
 			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes"]
+		},
+		{
+			"id": "desktop-component-development-tooling-tracker-work",
+			"title": "Tracker work",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-work"]
 		},
 		{
 			"id": "desktop-component-entity-card",
@@ -1650,6 +1695,12 @@
 			"units": ["desktop.component.project-switcher"]
 		},
 		{
+			"id": "desktop-component-projects-sessions-desktop-home",
+			"title": "DesktopHome",
+			"coverage": "required",
+			"units": ["desktop.component.projects-sessions-desktop-home"]
+		},
+		{
 			"id": "desktop-component-recorded-preview",
 			"title": "RecordedPreview",
 			"coverage": "required",
@@ -1720,12 +1771,6 @@
 			"title": "Remote host panel",
 			"coverage": "required",
 			"units": ["desktop.component.remote-host-panel"]
-		},
-		{
-			"id": "desktop-component-remote-offer-code",
-			"title": "Remote offer code",
-			"coverage": "required",
-			"units": ["desktop.component.remote-offer-code"]
 		},
 		{
 			"id": "desktop-component-remote-phone-panel",
@@ -2028,6 +2073,12 @@
 			"units": ["desktop.layout.root"]
 		},
 		{
+			"id": "desktop-page-designs",
+			"title": "/designs",
+			"coverage": "required",
+			"units": ["desktop.page.designs"]
+		},
+		{
 			"id": "desktop-page-game",
 			"title": "/game",
 			"coverage": "required",
@@ -2074,6 +2125,12 @@
 			"title": "Account menu",
 			"coverage": "required",
 			"units": ["hub.component.account-menu"]
+		},
+		{
+			"id": "hub-component-accounts-access-linked-computers",
+			"title": "Linked computers",
+			"coverage": "required",
+			"units": ["hub.component.accounts-access-linked-computers"]
 		},
 		{
 			"id": "hub-component-email-proof-panel",
@@ -2124,6 +2181,18 @@
 			"units": ["hub.component.native-approval"]
 		},
 		{
+			"id": "hub-component-planning-collaboration-designs-header",
+			"title": "DesignsHeader",
+			"coverage": "required",
+			"units": ["hub.component.planning-collaboration-designs-header"]
+		},
+		{
+			"id": "hub-component-planning-collaboration-hosted-designs",
+			"title": "HostedDesigns",
+			"coverage": "required",
+			"units": ["hub.component.planning-collaboration-hosted-designs"]
+		},
+		{
 			"id": "hub-component-project-create",
 			"title": "Project create",
 			"coverage": "required",
@@ -2142,10 +2211,22 @@
 			"units": ["hub.component.projects-sessions-hub-home"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home-add-session",
+			"title": "HubHomeAddSession",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-add-session"]
+		},
+		{
 			"id": "hub-component-projects-sessions-hub-home-agents",
 			"title": "HubHomeAgents",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-agents"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-ask",
+			"title": "HubHomeAsk",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-ask"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-card",
@@ -2160,10 +2241,22 @@
 			"units": ["hub.component.projects-sessions-hub-home-cards"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home-choices",
+			"title": "HubHomeChoices",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-choices"]
+		},
+		{
 			"id": "hub-component-projects-sessions-hub-home-composer",
 			"title": "HubHomeComposer",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-composer"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-cos-chat",
+			"title": "HubHomeCosChat",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-cos-chat"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-dialogs",
@@ -2172,16 +2265,76 @@
 			"units": ["hub.component.projects-sessions-hub-home-dialogs"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home-directory",
+			"title": "HubHomeDirectory",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-directory"]
+		},
+		{
 			"id": "hub-component-projects-sessions-hub-home-header",
 			"title": "HubHomeHeader",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-header"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home-live",
+			"title": "HubHomeLive",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-live"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-live-project",
+			"title": "HubHomeLiveProject",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-live-project"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-needs-you",
+			"title": "HubHomeNeedsYou",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-needs-you"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-not-started",
+			"title": "HubHomeNotStarted",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-not-started"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-notification-settings",
+			"title": "HubHomeNotificationSettings",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-notification-settings"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-notifications",
+			"title": "HubHomeNotifications",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-notifications"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-plan-detail",
+			"title": "Hub plan detail",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-plan-detail"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-plannable",
+			"title": "Hub plans and schedule",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-plannable"]
+		},
+		{
 			"id": "hub-component-projects-sessions-hub-home-plans",
 			"title": "HubHomePlans",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-plans"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-project-card",
+			"title": "HubHomeProjectCard",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-project-card"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-projects",
@@ -2194,6 +2347,12 @@
 			"title": "HubHomeQuota",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-quota"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-quota-pills",
+			"title": "HubHomeQuotaPills",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-quota-pills"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-row",
@@ -2284,6 +2443,12 @@
 			"title": "Private Hub projects and Google sign-in",
 			"coverage": "required",
 			"units": ["hub.page.projects"]
+		},
+		{
+			"id": "hub-page-projects-project-id-designs-canvas",
+			"title": "/projects/[projectId]/designs/[[canvas]]",
+			"coverage": "required",
+			"units": ["hub.page.projects-project-id-designs-canvas"]
 		},
 		{
 			"id": "hub-page-projects-project-id-harness-path",
@@ -4006,6 +4171,24 @@
 			"title": "pill: attributes",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-spec-document-view",
+			"title": "Spec document view",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-spec-document-view"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-view-spec-buttons",
+			"title": "View spec buttons",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-view-spec-buttons"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-view-spec-modal",
+			"title": "View spec modal",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-view-spec-modal"]
 		},
 		{
 			"id": "reports-component-explorer-ui-explorer-module-card",
@@ -6486,6 +6669,36 @@
 			"units": ["reports.component.networking-security-explorer-permissions-screen"]
 		},
 		{
+			"id": "reports-component-planning-collaboration-design-canvas-artboard-frame",
+			"title": "ArtboardFrame",
+			"coverage": "required",
+			"units": ["reports.component.planning-collaboration-design-canvas-artboard-frame"]
+		},
+		{
+			"id": "reports-component-planning-collaboration-design-canvas-artboard-full",
+			"title": "ArtboardFull",
+			"coverage": "required",
+			"units": ["reports.component.planning-collaboration-design-canvas-artboard-full"]
+		},
+		{
+			"id": "reports-component-planning-collaboration-design-canvas-canvas-toolbar",
+			"title": "CanvasToolbar",
+			"coverage": "required",
+			"units": ["reports.component.planning-collaboration-design-canvas-canvas-toolbar"]
+		},
+		{
+			"id": "reports-component-planning-collaboration-design-canvas-design-canvas",
+			"title": "DesignCanvas",
+			"coverage": "required",
+			"units": ["reports.component.planning-collaboration-design-canvas-design-canvas"]
+		},
+		{
+			"id": "reports-component-planning-collaboration-design-canvas-sandboxed-artboard",
+			"title": "SandboxedArtboard",
+			"coverage": "required",
+			"units": ["reports.component.planning-collaboration-design-canvas-sandboxed-artboard"]
+		},
+		{
 			"id": "reports-component-projects-sessions-project-overview-project-overview",
 			"title": "ProjectOverview",
 			"coverage": "required",
@@ -6508,6 +6721,12 @@
 			"title": "ProjectOverviewState",
 			"coverage": "required",
 			"units": ["reports.component.projects-sessions-project-overview-project-overview-state"]
+		},
+		{
+			"id": "reports-component-projects-sessions-tracker-planning-details",
+			"title": "Tracker planning details",
+			"coverage": "required",
+			"units": ["reports.component.projects-sessions-tracker-planning-details"]
 		},
 		{
 			"id": "reports-component-provider-picker",
@@ -7204,6 +7423,12 @@
 			"title": "HtmlI",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-i"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-iframe",
+			"title": "HtmlIframe",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-atoms-html-iframe"]
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-img",
@@ -7924,6 +8149,12 @@
 			"title": "DetailList: attributes",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-detail-list"]
+		},
+		{
+			"id": "reports-component-shared-primitives-linkified-text",
+			"title": "Tracker text with a web link",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-linkified-text"]
 		},
 		{
 			"id": "reports-component-shared-primitives-loading-state",
@@ -8680,10 +8911,12 @@
 				"desktop-component-design-panel-long",
 				"desktop-component-details-panel",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox",
+				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-choices",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-detail",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-record",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-rows",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-writes",
+				"desktop-component-development-tooling-tracker-work",
 				"desktop-component-entity-card",
 				"desktop-component-entity-view",
 				"desktop-component-entity-view-source",
@@ -8797,6 +9030,7 @@
 				"desktop-component-project-switcher-empty",
 				"desktop-component-project-switcher-busy",
 				"desktop-component-project-switcher-long",
+				"desktop-component-projects-sessions-desktop-home",
 				"desktop-component-recorded-preview",
 				"desktop-component-reference-text",
 				"desktop-component-relationships-panel",
@@ -8809,7 +9043,6 @@
 				"desktop-component-remote-connection",
 				"desktop-component-remote-devices",
 				"desktop-component-remote-host-panel",
-				"desktop-component-remote-offer-code",
 				"desktop-component-remote-phone-panel",
 				"desktop-component-revision-picker",
 				"desktop-component-revision-picker-branch-open",
@@ -8860,6 +9093,7 @@
 				"desktop-component-workspace-link",
 				"desktop-component-workspace-shell",
 				"desktop-layout-root",
+				"desktop-page-designs",
 				"desktop-page-game",
 				"desktop-page-harness-path",
 				"desktop-page-projects",
@@ -8868,6 +9102,7 @@
 				"desktop-page-settings",
 				"desktop-page-tracker",
 				"hub-component-account-menu",
+				"hub-component-accounts-access-linked-computers",
 				"hub-component-email-proof-panel",
 				"hub-component-hosted-workspace",
 				"hub-component-hub-frame",
@@ -8876,18 +9111,35 @@
 				"hub-component-login-panel",
 				"hub-component-members-panel",
 				"hub-component-native-approval",
+				"hub-component-planning-collaboration-designs-header",
+				"hub-component-planning-collaboration-hosted-designs",
 				"hub-component-project-create",
 				"hub-component-project-list",
 				"hub-component-projects-sessions-hub-home",
+				"hub-component-projects-sessions-hub-home-add-session",
 				"hub-component-projects-sessions-hub-home-agents",
+				"hub-component-projects-sessions-hub-home-ask",
 				"hub-component-projects-sessions-hub-home-card",
 				"hub-component-projects-sessions-hub-home-cards",
+				"hub-component-projects-sessions-hub-home-choices",
+				"hub-component-projects-sessions-hub-home-cos-chat",
 				"hub-component-projects-sessions-hub-home-composer",
 				"hub-component-projects-sessions-hub-home-dialogs",
+				"hub-component-projects-sessions-hub-home-directory",
 				"hub-component-projects-sessions-hub-home-header",
+				"hub-component-projects-sessions-hub-home-live",
+				"hub-component-projects-sessions-hub-home-live-project",
+				"hub-component-projects-sessions-hub-home-needs-you",
+				"hub-component-projects-sessions-hub-home-not-started",
+				"hub-component-projects-sessions-hub-home-notification-settings",
+				"hub-component-projects-sessions-hub-home-notifications",
+				"hub-component-projects-sessions-hub-home-plan-detail",
+				"hub-component-projects-sessions-hub-home-plannable",
 				"hub-component-projects-sessions-hub-home-plans",
+				"hub-component-projects-sessions-hub-home-project-card",
 				"hub-component-projects-sessions-hub-home-projects",
 				"hub-component-projects-sessions-hub-home-quota",
+				"hub-component-projects-sessions-hub-home-quota-pills",
 				"hub-component-projects-sessions-hub-home-row",
 				"hub-component-projects-sessions-hub-home-schedule",
 				"hub-component-projects-sessions-hub-home-skeleton",
@@ -8903,6 +9155,7 @@
 				"hub-page-invite-project-id-invitation-id",
 				"hub-page-native-handoff-id",
 				"hub-page-projects",
+				"hub-page-projects-project-id-designs-canvas",
 				"hub-page-projects-project-id-harness-path",
 				"hub-page-projects-project-id-members",
 				"hub-page-public-site-about",
@@ -9190,6 +9443,9 @@
 				"reports-component-explorer-ui-explorer-kit-pill-compact",
 				"reports-component-explorer-ui-explorer-kit-pill-chip",
 				"reports-component-explorer-ui-explorer-kit-pill-attributes",
+				"reports-component-explorer-ui-explorer-kit-spec-document-view",
+				"reports-component-explorer-ui-explorer-kit-view-spec-buttons",
+				"reports-component-explorer-ui-explorer-kit-view-spec-modal",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
 				"reports-component-explorer-ui-explorer-module-card-image-error",
@@ -9603,10 +9859,16 @@
 				"reports-component-networking-security-explorer-permissions-screen-index-link-focused",
 				"reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
 				"reports-component-networking-security-explorer-permissions-screen-data-focused",
+				"reports-component-planning-collaboration-design-canvas-artboard-frame",
+				"reports-component-planning-collaboration-design-canvas-artboard-full",
+				"reports-component-planning-collaboration-design-canvas-canvas-toolbar",
+				"reports-component-planning-collaboration-design-canvas-design-canvas",
+				"reports-component-planning-collaboration-design-canvas-sandboxed-artboard",
 				"reports-component-projects-sessions-project-overview-project-overview",
 				"reports-component-projects-sessions-project-overview-project-overview-card",
 				"reports-component-projects-sessions-project-overview-project-overview-item",
 				"reports-component-projects-sessions-project-overview-project-overview-state",
+				"reports-component-projects-sessions-tracker-planning-details",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-loading",
 				"reports-component-provider-picker-connection-error",
@@ -9723,6 +9985,7 @@
 				"reports-component-shared-primitives-atoms-html-header",
 				"reports-component-shared-primitives-atoms-html-header-long",
 				"reports-component-shared-primitives-atoms-html-i",
+				"reports-component-shared-primitives-atoms-html-iframe",
 				"reports-component-shared-primitives-atoms-html-img",
 				"reports-component-shared-primitives-atoms-html-img-alt-only",
 				"reports-component-shared-primitives-atoms-html-input",
@@ -9843,6 +10106,7 @@
 				"reports-component-shared-primitives-detail-list-duplicate-labels",
 				"reports-component-shared-primitives-detail-list-flat",
 				"reports-component-shared-primitives-detail-list-attributes",
+				"reports-component-shared-primitives-linkified-text",
 				"reports-component-shared-primitives-loading-state",
 				"reports-component-shared-primitives-loading-state-default-label",
 				"reports-component-shared-primitives-loading-state-long",

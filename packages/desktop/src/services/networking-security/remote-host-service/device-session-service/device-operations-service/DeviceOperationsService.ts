@@ -41,7 +41,8 @@ export class DeviceOperationsService {
 			agents =
 				this.options.grant().agents && this.options.grant().comments !== false ? agentMethods : [];
 		const comments = this.options.grant().comments === false ? [] : commentMethods;
-		const tracker: RemoteMethod[] = [];
+		const tracker: RemoteMethod[] = this.options.home ? ['homeSnapshot'] : [];
+		if (this.options.homeChat) tracker.push('homeChat');
 		if (this.options.trackerPull) tracker.push('trackerReplicaPull');
 		if (this.options.trackerPush) tracker.push('trackerReplicaPush');
 		return [attachMethod, ...reads, ...comments, ...agents, ...tracker];
@@ -52,6 +53,13 @@ export class DeviceOperationsService {
 			{ agents, projects } = this.options.grant();
 		if (method === 'listProjects')
 			return projects.map(({ id, name }) => ({ id, name, kind: 'local' }));
+		if (method === 'homeSnapshot') return await this.trackerCall(this.options.home, input);
+		if (method === 'homeChat') {
+			// The wire adds its session epoch to every write; the message itself does not carry it.
+			const message = { ...input };
+			delete message.epoch;
+			return await this.trackerCall(this.options.homeChat, message);
+		}
 		if (method === 'trackerReplicaPull')
 			return await this.trackerCall(this.options.trackerPull, input);
 		if (method === 'trackerReplicaPush')

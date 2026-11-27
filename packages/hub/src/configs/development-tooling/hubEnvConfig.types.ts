@@ -18,8 +18,15 @@ export interface HubEnv {
 	HARNESS_RELAY_ORIGIN?: string;
 	/** The canonical Hub actor ID of the one owner allowed to read or publish the Project Overview. Unset disables it. */
 	HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID?: string;
+	/**
+	 * The public half of the Tracker hub's application server key, from `tracker web-push setup`.
+	 * Not a secret. Unset hides browser notifications and refuses the sender.
+	 */
+	HARNESS_PUSH_PUBLIC_KEY?: string;
 	DB?: D1Database;
 	CACHE?: R2Bucket;
 	/** The relay's host objects, reachable through this binding only. */
 	REMOTE_HOSTS?: DurableObjectNamespace;
+	/** The relay's account sync objects: live fan-out and sign-in mailboxes of the sealed account sync. */
+	ACCOUNT_SYNC?: DurableObjectNamespace;
 }

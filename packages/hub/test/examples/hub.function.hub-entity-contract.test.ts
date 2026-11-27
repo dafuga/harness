@@ -2,9 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { hubEntityContract } from '../../src/routes/api/[...path]/hub-projection-service/hubEntityContract';
-
-type UnitArg = NonNullable<Parameters<typeof hubEntityContract>[0]>;
-type PlanArg = NonNullable<Parameters<typeof hubEntityContract>[1]>;
+import type { UnitArg, PlanArg } from './hub.function.hub-entity-contract.test.types';
 
 const fileNameUnit: UnitArg = {
 	contract: {

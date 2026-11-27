@@ -1,5 +1,5 @@
 // @harness-uid u_jucgsgpmih
-export interface EntityFileInput {
+export interface ClassEntityTemplateInput {
 	folder: string;
 	fileName: string;
 	className: string;

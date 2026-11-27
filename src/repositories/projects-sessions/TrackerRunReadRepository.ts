@@ -30,11 +30,13 @@ export class TrackerRunReadRepository {
 		return runs.sort((left, right) => compareQueue(right, left)).slice(0, cap);
 	}
 
-	launchConsumed(itemId: string, token: string): boolean {
+	launchConsumed(itemId: string, token: string, replaceBlocked = false): boolean {
 		const attempts = this.list({ itemId }).filter(({ auto_token }) => auto_token === token);
 		return (
 			attempts.length > 0 &&
-			attempts.every(({ state, outcome }) => state === 'finished' && outcome !== 'blocked')
+			attempts.every(
+				({ state, outcome }) => state === 'finished' && (replaceBlocked || outcome !== 'blocked')
+			)
 		);
 	}
 
@@ -77,7 +79,8 @@ export class TrackerRunReadRepository {
 		);
 	}
 
-	importHubHistory(rows: readonly TrackerWireValue[]): void {
+	/** Import a hub or Mac peer reply, which names the node that owns each run. */
+	importLinkHistory(rows: readonly TrackerWireValue[]): void {
 		new SqliteAdapter(this.database, []).transaction(() =>
 			importTrackerRunHistory(this.database, rows, ({ node }) =>
 				typeof node === 'string' && node !== this.node ? node : undefined

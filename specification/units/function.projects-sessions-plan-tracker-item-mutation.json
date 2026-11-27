@@ -12,6 +12,7 @@
 			"src/utils/projects-sessions/planTrackerItemMutation.ts",
 			"src/utils/projects-sessions/planTrackerItemMutation.types.ts",
 			"src/utils/projects-sessions/trackerItemInput.ts",
+			"src/utils/projects-sessions/trackerItemLaunchFields.ts",
 			"src/utils/projects-sessions/trackerItemTransitions.ts"
 		],
 		"symbols": [
@@ -29,7 +30,13 @@
 			"TrackerItemTransition",
 			"TrackerDuplicateProbe",
 			"trackerItemInput",
+			"trackerNextStepFields",
+			"trackerMoveOn",
+			"trackerParkNextStep",
+			"trackerResolveItem",
 			"guardTrackerDuplicate",
+			"trackerReminderLaunchFields",
+			"trackerItemLaunchFields",
 			"trackerItemTransitions"
 		]
 	},
@@ -67,6 +74,54 @@
 				"description": "Existing item when updating, omitted for creation."
 			},
 			{
+				"name": "trackerNextStepFields.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Decision text supplied when an item is waiting for Daniel’s next step."
+			},
+			{
+				"name": "trackerMoveOn.item",
+				"type": "TrackerItemSnapshot",
+				"required": true,
+				"description": "Tracked item with an open next step."
+			},
+			{
+				"name": "trackerParkNextStep.item",
+				"type": "TrackerItemSnapshot",
+				"required": true,
+				"description": "Tracked item with an open next step."
+			},
+			{
+				"name": "trackerParkNextStep.body",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "The future ISO timestamp or Lisbon date from --until."
+			},
+			{
+				"name": "trackerParkNextStep.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "Current time for validating the requested hold."
+			},
+			{
+				"name": "trackerResolveItem.item",
+				"type": "TrackerItemSnapshot",
+				"required": true,
+				"description": "Current item, including any next step that must remain open."
+			},
+			{
+				"name": "trackerResolveItem.body",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "Answer, optional attribution and requested work status."
+			},
+			{
+				"name": "trackerResolveItem.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "Current clock used for the answer timestamp."
+			},
+			{
 				"name": "guardTrackerDuplicate.context",
 				"type": "TrackerItemMutationContext",
 				"required": true,
@@ -77,6 +132,24 @@
 				"type": "TrackerDuplicateProbe",
 				"required": true,
 				"description": "Duplicate search text, scope, and optional force setting."
+			},
+			{
+				"name": "trackerItemLaunchFields.fields",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "Item fields collected from the command or API, including kind, placement options, and an optional reminder time."
+			},
+			{
+				"name": "trackerItemLaunchFields.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "Clock, explicit launch state and approved placement callback for this item mutation."
+			},
+			{
+				"name": "trackerItemLaunchFields.current",
+				"type": "TrackerItemSnapshot",
+				"required": false,
+				"description": "Existing item used for updates. Missing when this request creates an item."
 			}
 		],
 		"outputs": [
@@ -149,12 +222,129 @@
 						"type": "TrackerItemInput"
 					}
 				],
-				"errors": [
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerNextStepFields",
+				"inputs": [
 					{
-						"name": "TypeError",
-						"type": "thrown"
+						"name": "trackerNextStepFields.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Decision text supplied when an item is waiting for Daniel’s next step."
 					}
 				],
+				"outputs": [
+					{
+						"name": "trackerNextStepFields",
+						"type": "TrackerItemInput",
+						"description": "Trimmed decision text, its prompt and an open needs-Daniel flag."
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemRequestError",
+						"type": "TrackerItemRequestError",
+						"description": "HTTP 400 when the decision text is missing or blank."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerMoveOn",
+				"inputs": [
+					{
+						"name": "trackerMoveOn.item",
+						"type": "TrackerItemSnapshot",
+						"required": true,
+						"description": "Tracked item with an open next step."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMoveOn",
+						"type": "TrackerItemChange",
+						"description": "Completion fields that clear the next step and parking, plus a journal note."
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemRequestError",
+						"type": "TrackerItemRequestError",
+						"description": "HTTP 409 when the item has no open next step."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerParkNextStep",
+				"inputs": [
+					{
+						"name": "trackerParkNextStep.item",
+						"type": "TrackerItemSnapshot",
+						"required": true,
+						"description": "Tracked item with an open next step."
+					},
+					{
+						"name": "trackerParkNextStep.body",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "The future ISO timestamp or Lisbon date from --until."
+					},
+					{
+						"name": "trackerParkNextStep.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "Current time for validating the requested hold."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerParkNextStep",
+						"type": "TrackerItemChange",
+						"description": "Parking timestamp without clearing the open decision."
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemRequestError",
+						"type": "TrackerItemRequestError",
+						"description": "HTTP 400 for an invalid or past date and HTTP 409 when no next step is open."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerResolveItem",
+				"inputs": [
+					{
+						"name": "trackerResolveItem.item",
+						"type": "TrackerItemSnapshot",
+						"required": true,
+						"description": "Current item, including any next step that must remain open."
+					},
+					{
+						"name": "trackerResolveItem.body",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "Answer, optional attribution and requested work status."
+					},
+					{
+						"name": "trackerResolveItem.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "Current clock used for the answer timestamp."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerResolveItem",
+						"type": "TrackerItemChange",
+						"description": "Answer fields and a completion status when requested."
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
@@ -181,6 +371,42 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemLaunchFields",
+				"inputs": [
+					{
+						"name": "trackerItemLaunchFields.fields",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "Item fields collected from the command or API, including kind, placement options, and an optional reminder time."
+					},
+					{
+						"name": "trackerItemLaunchFields.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "Clock, explicit launch state and approved placement callback for this item mutation."
+					},
+					{
+						"name": "trackerItemLaunchFields.current",
+						"type": "TrackerItemSnapshot",
+						"required": false,
+						"description": "Existing item used for updates. Missing when this request creates an item."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemLaunchFields",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -192,7 +418,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-finish-tracker-occurrence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-is-tracker-ping",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-ask-transitions",
 			"via": "import",
 			"origin": "derived"
 		}

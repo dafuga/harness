@@ -1,5 +1,6 @@
 // @harness-uid u_g7kdpz7bel
-import { randomBytes } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
+import { dispatchLaunchSource } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type {
@@ -8,8 +9,12 @@ import type {
 } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type {
 	TrackerItemAction,
-	TrackerItemMutation
+	TrackerItemMutationContext,
+	TrackerItemMutation,
+	TrackerItemSnapshot
 } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
+import type { TrackerLocalApiOptions } from '../TrackerLocalApiService.types';
+import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { trackerItemTransitions } from '../../../utils/projects-sessions/trackerItemTransitions';
 
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
@@ -26,6 +31,40 @@ export function itemMutation(
 	return action === 'add'
 		? { action, itemId: newItemId(), body }
 		: { action, item: items.resolve(id), body };
+}
+
+export function trackerMutationBody(
+	body: TrackerItemInput,
+	action: TrackerItemAction | 'add' | undefined,
+	actor: string | null,
+	canLaunch: boolean
+): TrackerItemInput {
+	if ((action === 'park' || action === 'move-on') && !isDaniel(actor))
+		throw trackerItemError('only Daniel can park or close a next step', 403);
+	if (action !== 'add' || !canLaunch || !isDanielOrChief(actor)) return body;
+	if (body.later || body.auto !== undefined || !launchableCreation(body)) return body;
+	return { ...body, auto: true };
+}
+
+function isDanielOrChief(actor: string | null) {
+	return isDaniel(actor) || /^(?:cos|chief[-_ ]of[-_ ]staff)$/i.test(actorName(actor));
+}
+
+function isDaniel(actor: string | null) {
+	return /^(?:daniel(?: fugere)?|danielfugere)$/i.test(actorName(actor));
+}
+
+function actorName(actor: string | null) {
+	return actor?.split('@')[0]?.trim() ?? '';
+}
+
+function launchableCreation(body: TrackerItemInput) {
+	return (
+		(body.kind ?? 'task') === 'task' &&
+		!body.every &&
+		![body.flag, body.question, body.needs_daniel, body.next_step].some(Boolean) &&
+		(!body.status || body.status === 'open' || body.status === 'in_progress')
+	);
 }
 
 export function itemAction(
@@ -100,4 +139,50 @@ function parseItemBody(text: string): TrackerItemInput {
 		throw trackerItemError('JSON body must be an object');
 	}
 	return value as TrackerItemInput;
+}
+
+/** Resolve the clock, duplicate candidates and launch policy used for one local write. */
+export function itemMutationContext(
+	store: TrackerPersistenceService,
+	items: TrackerItemReadRepository,
+	options: TrackerLocalApiOptions,
+	explicitLaunch = false
+): TrackerItemMutationContext {
+	const { planLaunch, runs } = options;
+	return {
+		node: store.node,
+		now: options.now?.() ?? Date.now(),
+		timeZone: options.timeZone,
+		launchNonce: randomUUID(),
+		candidates: items.candidates(),
+		validateModel: options.validateModel,
+		planLaunch:
+			planLaunch &&
+			((fields, current) =>
+				planLaunch(
+					fields,
+					current && canReplaceLaunch(store, current, runs, explicitLaunch)
+						? { ...current, auto: null }
+						: current,
+					explicitLaunch ? 'manual' : 'automatic'
+				))
+	};
+}
+
+function canReplaceLaunch(
+	store: TrackerPersistenceService,
+	item: TrackerItemSnapshot,
+	runs: TrackerLocalApiOptions['runs'],
+	explicitLaunch: boolean
+): boolean {
+	const { id, auto } = item;
+	if (!auto) return false;
+	const replaceBlocked = explicitLaunch && (Boolean(item.resolved) || !item.needs_daniel);
+	if (runs?.launchConsumed(id, auto, replaceBlocked)) return true;
+	if (!explicitLaunch || runs?.list({ itemId: id }).some(({ auto_token }) => auto_token === auto))
+		return false;
+	const origin = store.database
+		.prepare(`SELECT ${dispatchLaunchSource} AS source FROM items i WHERE i.id = ?`)
+		.get(id) as { source: string };
+	return origin.source !== 'manual';
 }

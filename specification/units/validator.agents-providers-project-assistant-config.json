@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.agents-providers-project-assistant-config",
+	"uid": "u_kg5hqo2pqr",
+	"kind": "validator",
+	"title": "ProjectAssistantConfigValidator",
+	"responsibility": "Owns the ProjectAssistantConfigValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/validators/agents-providers/ProjectAssistantConfigValidator.ts"],
+		"symbols": ["ProjectAssistantConfigValidator", "ProjectAssistantConfigValidator.parse"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProjectAssistantConfigValidator.parse.value",
+				"type": "UntrustedValue",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectAssistantConfigValidator.parse",
+				"type": "ProjectAssistantConfig"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectAssistantConfigValidator.parse",
+				"inputs": [
+					{
+						"name": "ProjectAssistantConfigValidator.parse.value",
+						"type": "UntrustedValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectAssistantConfigValidator.parse",
+						"type": "ProjectAssistantConfig"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/agents-providers/ProjectAssistantConfigValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/agents-providers/ProjectAssistantConfigValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,13 +1,8 @@
-import { mkdirSync } from 'node:fs';
-import { join } from 'node:path';
-import { buildStamp } from '../../../../src/utils/buildStamp';
-import {
-	evidenceRequested,
-	recordCapture
-} from '../../../../src/utils/reports-media/record-capture/recordCapture';
-import { expect, test, type Page } from '../../../../test/support/browserTest';
-import { hubHomeFixture } from './hub-home-fixture';
+import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
+import { fit, hubHomeFixture, unavailableHome } from './hub-home-fixture';
 import type { CapturePosition, HomeFixture } from './hub-home-fixture.types';
+import { capture, fullDialog } from './hub-home-capture';
+import { planClickThrough, scheduledClickThrough } from './hub-home-click-through';
 import manifest from '../../../../specification/scenarios/hub-home.json' with { type: 'json' };
 const screens = [
 	{ id: 'agents', title: 'Agents' },
@@ -20,11 +15,20 @@ const screens = [
 test.setTimeout(90000);
 for (const viewport of manifest.viewports) {
 	for (const scheme of ['dark', 'light'] as const) {
-		for (const mode of ['default', 'busy', 'empty', 'loading'] as const) {
-			test(`Hub home ${viewport.id} ${scheme} ${mode}`, async ({ page }) => {
+		for (const mode of ['default', 'busy', 'empty', 'loading', 'unavailable'] as const) {
+			test(`Hub home ${viewport.id} ${scheme} ${mode}`, async ({
+				page,
+				baseURL,
+				browserErrors
+			}) => {
 				await page.setViewportSize({ width: viewport.width, height: viewport.height });
 				await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
 				const fixture = await hubHomeFixture(page, mode);
+				const path = [viewport.id, scheme, mode] as const;
+				if (mode === 'unavailable')
+					return unavailableHome({ page, baseURL, browserErrors }, fixture, (screen) =>
+						capture(page, path, screen)
+					);
 				await page.goto('/');
 				await expect(page).toHaveTitle('Harness · Home');
 				await expect(page.getByRole('heading', { level: 1 })).toHaveText(
@@ -32,21 +36,28 @@ for (const viewport of manifest.viewports) {
 						? 'Loading your home…'
 						: mode === 'empty'
 							? 'Nothing is running yet'
-							: /working, .* need[s]? you/
+							: /running.*, .* need[s]? you/
 				);
 				if (mode === 'default' || mode === 'busy') {
 					await expect(page.locator('.hh-projects .hh-change').first()).toBeVisible();
+					const agents = page.getByRole('region', { name: 'Agents', exact: true });
+					await expect(agents.locator('.hh-agent-list > *')).toHaveCount(1);
+					await expect(agents.locator('.hh-agent-list')).toContainText('Chief of Staff');
+					await expect(agents.locator('.hh-agent-list')).toContainText('sub-agent session');
 				}
 				await fit(page, viewport.width);
-				const path = [viewport.id, scheme, mode] as const;
 				await capture(page, path, 'root');
 				const fullMatrix =
 					mode === 'default' || (scheme === 'dark' && ['phone', 'laptop'].includes(viewport.id));
 				if (fullMatrix) await dialogs(page, path, fixture);
+				if (mode === 'default') {
+					await planClickThrough(page, path, fixture);
+					await scheduledClickThrough(page, path, fixture);
+				}
 				if (mode === 'loading') {
 					fixture.release();
 					await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-						/working, .* need[s]? you/
+						/running.*, .* need[s]? you/
 					);
 				}
 			});
@@ -86,11 +97,11 @@ async function dialogs(page: Page, position: CapturePosition, fixture: HomeFixtu
 			await expect(dialog.getByText('Almost out', { exact: true }).first()).toBeVisible();
 		}
 		if (screen.id === 'quota' && position[2] === 'empty')
-			await expect(dialog.getByText('Provider quota is unknown.')).toBeVisible();
+			await expect(dialog.getByText('Connect subscriptions in the Harness Mac app.')).toBeVisible();
 		if (screen.id === 'scheduled' && position[2] === 'busy') {
 			const routine = fixture.snapshot.scheduled.find((run) => run.source === 'claude')!;
 			const tracker = fixture.snapshot.scheduled.find((run) => run.source === 'tracker')!;
-			await expect(dialog.getByText('Claude routine dates are unknown.')).toBeVisible();
+			await expect(dialog.getByText(/routine dates are unknown/)).toHaveCount(0);
 			await expect(dialog.getByText(routine.title, { exact: true })).toHaveCount(0);
 			await expect(dialog.getByText(tracker.title, { exact: true })).toBeVisible();
 		}
@@ -101,6 +112,10 @@ async function dialogs(page: Page, position: CapturePosition, fixture: HomeFixtu
 
 async function agentChat(page: Page, position: CapturePosition, fixture: HomeFixture) {
 	const dialog = page.getByRole('dialog'); // titled by the agent once the phone chat opens
+	if (fixture.snapshot.overview.status === 'ready')
+		await expect(dialog.getByText(/live sessions? across Tracker/)).toContainText(
+			String(fixture.snapshot.overview.liveSessions)
+		);
 	await dialog
 		.getByRole('button', { name: /Chief of Staff/ })
 		.first()
@@ -108,24 +123,59 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 	const chat = dialog.getByRole('region', { name: 'Chat with Chief of Staff' });
 	await expect(chat.getByText('Yes, voicemail and carrier-busy passed.')).toBeVisible();
 	await capture(page, position, 'agent-chat');
-	await chat.getByRole('textbox', { name: 'Message', exact: true }).fill('Synthetic Tracker note');
-	await chat.getByRole('button', { name: 'Send', exact: true }).click();
-	await expect(chat.getByText('sent', { exact: true })).toBeVisible();
+	const opener = chat.getByRole('button', { name: 'Open chat', exact: true });
+	await opener.click();
+	const widget = page
+		.getByRole('dialog', { name: 'Chief of Staff', exact: true })
+		.filter({ has: page.getByRole('textbox', { name: 'Message Chief of Staff' }) });
+	await widget
+		.getByRole('textbox', { name: 'Message Chief of Staff' })
+		.fill('Synthetic Hub message');
+	await widget.getByRole('button', { name: 'Send', exact: true }).click();
+	await expect(widget.getByRole('status')).toHaveText('Queued for Tracker');
+	await page.keyboard.press('Escape');
+	await expect(opener).toBeFocused();
+	// Chief of Staff messages go to the Tracker channel.
 	expect(fixture.sent).toMatchObject([
-		{ itemId: 'item-0', kind: 'note', text: 'Synthetic Tracker note' }
+		{ agentId: 'cos', itemId: 'cos', kind: 'message', text: 'Synthetic Hub message' }
 	]);
-	await chat
-		.getByRole('textbox', { name: 'Answer to open question' })
-		.fill('Synthetic Tracker answer');
-	await chat.getByRole('button', { name: 'Answer', exact: true }).click();
+	await dialog.getByRole('button', { name: 'Back to agents' }).click();
+	await expect(chat).toBeHidden();
+	await page.keyboard.press('Escape');
+	await page.getByRole('button', { name: 'Talk to Chief of Staff', exact: true }).first().click();
+	await optionTap(widget, fixture);
+	await page.keyboard.press('Escape');
+	await page.getByRole('button', { name: 'See all agents' }).click();
+}
+
+/** Option buttons list the recommended choice first; a deploy ask needs its confirm step. */
+async function optionTap(chat: Locator, fixture: HomeFixture) {
+	const choices = chat.getByRole('group', { name: 'Choose an answer' });
+	const buttons = choices.getByRole('button');
+	// The two choices, then Other.
+	await expect(buttons).toHaveCount(3);
+	await expect(buttons.last()).toContainText('Other');
+	await expect(buttons.first()).toContainText('Approve Saturday 09:00');
+	await expect(buttons.first()).toContainText('Recommended');
+	await buttons.first().click();
+	const confirm = chat.getByRole('group', { name: 'Confirm this deploy answer' });
+	await expect(confirm).toBeVisible();
+	expect(fixture.sent).toHaveLength(1);
+	await confirm.getByRole('button', { name: 'Cancel' }).click();
+	await expect(confirm).toBeHidden();
+	await buttons.first().click();
+	await confirm.getByRole('button', { name: 'Confirm answer' }).click();
+	await expect(
+		chat.getByRole('status').filter({ hasText: /^Chief of Staff: Answer/ })
+	).toBeVisible();
+	await expect(confirm).toBeHidden();
 	expect(fixture.sent[1]).toMatchObject({
 		itemId: 'item-0',
 		kind: 'answer',
-		question: 'Approve the Nudge production window, Sat 09:00?',
-		text: 'Synthetic Tracker answer'
+		text: 'Approve Saturday 09:00',
+		option: 1,
+		confirmed: true
 	});
-	await dialog.getByRole('button', { name: 'Back to agents' }).click();
-	await expect(chat).toBeHidden();
 }
 
 async function workByProject(page: Page, position: CapturePosition) {
@@ -138,82 +188,5 @@ async function workByProject(page: Page, position: CapturePosition) {
 		const toggle = dialog.getByRole('button', { name: 'Show done' });
 		await toggle.click();
 		await expect(dialog.getByRole('heading', { name: 'iOS pairing', exact: true })).toBeVisible();
-	}
-}
-
-async function fullDialog(page: Page, position: CapturePosition, screen: string) {
-	const [id, scheme, state] = position;
-	if (
-		process.env.TAKE_SCREENSHOT !== 'true' ||
-		state !== 'default' ||
-		scheme !== 'dark' ||
-		!['phone', 'laptop'].includes(id)
-	)
-		return;
-	const viewport = page.viewportSize()!;
-	const height = await page.getByRole('dialog').evaluate((element) => {
-		const body = element.querySelector('.hh-dialog-body')!;
-		const chrome = element.clientHeight - body.clientHeight;
-		return body.scrollHeight + chrome;
-	});
-	await page.setViewportSize({
-		width: viewport.width,
-		height: Math.max(viewport.height, height + (id === 'phone' ? 0 : 84))
-	});
-	try {
-		await capture(page, position, screen, true);
-	} finally {
-		await page.setViewportSize(viewport);
-	}
-}
-
-async function fit(page: Page, width: number) {
-	const bounds = await page.evaluate(() => ({
-		width: document.documentElement.scrollWidth,
-		columns: getComputedStyle(document.querySelector('.hh-grid')!).gridTemplateColumns.split(' ')
-			.length
-	}));
-	expect(bounds.width).toBeLessThanOrEqual(width);
-	expect(bounds.columns).toBe(width === 390 ? 1 : width === 834 ? 2 : width === 1440 ? 3 : 4);
-}
-
-async function capture(page: Page, position: CapturePosition, screen: string, full = false) {
-	const [size, scheme, state] = position;
-	const registryCapture = screen === 'root' && scheme === 'dark' && evidenceRequested();
-	if (process.env.TAKE_SCREENSHOT !== 'true' && !registryCapture) return;
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		await Promise.all(Array.from(document.images, (image) => image.decode()));
-		await new Promise<void>((resolve) =>
-			requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
-		);
-	});
-	const options = { fullPage: screen === 'root', animations: 'disabled', caret: 'hide' } as const;
-	if (registryCapture) {
-		const stamp = await page.locator('meta[name="harness-build"]').getAttribute('content');
-		const buildId = buildStamp(stamp ?? undefined);
-		const revision = process.env.HARNESS_VERIFY_REVISION;
-		if (!buildId || !revision) throw new Error('Hub home captures need the verified build stamp.');
-		recordCapture(
-			{
-				evidence: 'home-screen',
-				kind: 'screenshot',
-				state,
-				viewport: size,
-				file: `hub-home-${state}-${size}.png`,
-				mediaType: 'image/png',
-				provenance: 'actual-capture',
-				server: { buildId, revision }
-			},
-			await page.screenshot(options)
-		);
-	}
-	if (process.env.TAKE_SCREENSHOT === 'true') {
-		const directory = join(process.env.SCREENSHOT_DIR ?? '/tmp/harness-hub-home', size);
-		mkdirSync(directory, { recursive: true });
-		await page.screenshot({
-			...options,
-			path: join(directory, `${screen}--${state}--${scheme}${full ? '--full' : ''}.png`)
-		});
 	}
 }

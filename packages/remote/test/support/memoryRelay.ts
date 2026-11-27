@@ -27,23 +27,20 @@ async function exchange(state: RelayState, entry: Entry, route: Route) {
 async function post(state: RelayState, entry: Entry, route: Route) {
 	if (route.operation === 'poll') return json({ state: entry.state, expiresAt: entry.expiresAt });
 	if (route.operation === 'exchange') return exchange(state, entry, route);
-	const request = parsed(route.body) as unknown as RelayPairingRequest;
-	entry.state = 'requested';
-	entry.challenge = request.challenge;
-	state.received.push(await state.input.host.receive({ pairingId: route.pairingId, ...request }));
-	return json({ state: 'requested', expiresAt: entry.expiresAt }, 202);
+	return json({ error: 'not-found' }, 404);
 }
 async function serve(state: RelayState, route: Route) {
 	state.calls.push(`${route.method} ${route.path}`);
 	if (route.body !== null) state.bodies.push(route.body);
 	const entry = route.hostId === state.input.hostId ? state.pairings.get(route.pairingId) : null;
 	if (!entry) return json({ error: 'not-found' }, 404);
-	if (route.method !== 'GET') return post(state, entry, route);
-	const { hostId, pairingId } = route;
-	return json({ hostId, pairingId, hostKey: state.relay.hostKey, ...entry, challenge: undefined });
+	return post(state, entry, route);
 }
 
-/** The public pairing routes of a relay, in memory, forwarding requests to one host. */
+/**
+ * The pairing routes of a relay, in memory. A request arrives as a verified account request
+ * (`submit`); poll and exchange are the public routes. It forwards requests to one host.
+ */
 export function memoryRelay(input: RelayInput) {
 	const state: RelayState = {
 		input,
@@ -61,12 +58,22 @@ export function memoryRelay(input: RelayInput) {
 		calls: state.calls,
 		bodies: state.bodies,
 		received: state.received,
-		open: (offer: { pairingId: string; expiresAt: string }) =>
-			state.pairings.set(offer.pairingId, { state: 'open', expiresAt: offer.expiresAt }),
+		/** A verified account request, as the relay hands it to the host. */
+		submit: async (pairingId: string, request: RelayPairingRequest) => {
+			const expiresAt = new Date(Date.now() + 300000).toISOString();
+			state.pairings.set(pairingId, {
+				state: 'requested',
+				expiresAt,
+				challenge: request.challenge
+			});
+			state.received.push(
+				await input.host.receive({ pairingId, account: true, expiresAt, ...request })
+			);
+		},
 		approve: (pairingId: string, approval: { deviceId: string; sealed: string }) =>
 			Object.assign(state.pairings.get(pairingId)!, { state: 'approved', approval }),
 		deny: (pairingId: string) => Object.assign(state.pairings.get(pairingId)!, { state: 'denied' }),
-		/** The host withdrew the offer: the relay no longer knows it. */
+		/** The host withdrew the request: the relay no longer knows it. */
 		close: (pairingId: string) => state.pairings.delete(pairingId)
 	};
 }

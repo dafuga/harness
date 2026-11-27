@@ -40,15 +40,47 @@ Home follows the OS color scheme and uses the approved design in
   answer action for an open question. A phone uses separate list and chat steps.
 - Plans are Tracker plan items. Progress and next steps come from their child items.
 - Scheduled combines Tracker due dates and Claude scheduled routines. Box cron is deferred.
-- Projects use the signed-in member's Hub projects and the project's authorized catalog
-  and commit history.
+- Projects use the signed-in member's Hub projects and their authorized catalog and commit
+  history. When Shared Projects cannot be read, the configured owner can see the already
+  authorized, fresh Tracker projects and open Project Overview. A failed first read ends
+  loading, and the Projects dialog can retry. A successful shared list takes precedence.
 - Work in progress orders open tasks by due date. By project uses the existing overview
   and only includes done projects when Show done is selected.
 - Quota shows provider-reported remaining allowance, reset times, stale readings, and up
-  to seven days of observations. Low means below 25 percent and Almost out means below
-  10 percent. These are display warnings.
+  to seven days of observations. Low means below 25 percent, Almost out means below
+  10 percent and Out of quota means nothing is left. These are display warnings.
+- The header has one quota pill per subscription, Claude first, with its 5-hour and weekly
+  room left. A used-up limit names its reset day and Lisbon time instead. A provider with no
+  reading from the last hour says its usage is unknown. Hover or tap explains each limit.
 - Empty and loading views keep the section structure. Busy views clamp previews and long
   titles. Owner data is cleared when the verified account changes.
+- When the verified owner has no usable Tracker snapshot, Home asks them to open Harness on
+  their Mac and sign in with the same Google account. The existing refresh shows fresh data
+  when it arrives. An account without owner access receives no owner data or linking prompt.
+
+### Live sessions from linked computers
+
+Signing in is enough. Home asks every online computer linked to the signed-in Google account
+for its Home view (running agents and sessions, plans, schedule, quota) over the same
+end-to-end encrypted device connection as Devices, with no click and no stored copy on the
+Hub. The Mac answers the read-only `homeSnapshot` wire method, and takes Home's answers and
+notes through `homeChat` (see `specification/features/implemented/needs-you-row-answers.md`). Each browser keeps one device
+key pair per computer, so a reload is the same device and adds no new one. Views from several
+computers are merged: work the Tracker syncs between them appears once. The headline counts
+running sessions. Quota stays Unknown until a computer reports it. `Connect a computer`
+appears only when the account has no linked computer. The owner snapshot below remains a
+fallback.
+
+### Scheduled shows only the future
+
+Scheduled lists only runs whose time is still ahead. Work whose time has passed is Running,
+Queued with its launch position (urgent first, then oldest due) or Blocked with a reason. It
+appears in Work in progress, and what has not started sits under "Past due, not started".
+A due time on in-progress or blocked work is an ETA, not a scheduled start. Past and future
+work are bounded separately. Hub applies the same rule to a published run whose time passes
+later, and to snapshots from older Mac apps. Personal and family agents, including the Chief
+of Staff's list, never appear in Scheduled or in past-due work. Hub shows no line about Claude
+routine dates when it has no current reading of them.
 
 ### Owner-host data
 

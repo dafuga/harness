@@ -1,0 +1,131 @@
+/* @harness-uid u_vpwhxgexn3 */
+/* Quota modal panels: meters | history chart | top agents across on laptop and wider, stacked on
+   phones. The chart is one series in tertiary blue (never the warning amber), grid and axes recessive. */
+.hh-home .hh-q-panels {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-20);
+}
+.hh-home .hh-q-plan {
+	margin-left: var(--hx-space-6);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-regular);
+	letter-spacing: var(--hx-style-tracking-normal);
+}
+.hh-home .hh-q-panel-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 0.8fr);
+	gap: var(--hx-space-28);
+	align-items: start;
+}
+.hh-home .hh-q-top {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-6);
+}
+.hh-home .hh-q-top-row {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--hx-space-10);
+	padding: var(--hx-space-8) 0;
+	overflow-wrap: anywhere;
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+	font-size: var(--hx-type-size-compact);
+}
+.hh-home .hh-q-top-value {
+	color: var(--hx-color-text-muted);
+	font-variant-numeric: var(--hx-style-numeric-tabular);
+	white-space: nowrap;
+}
+.hh-home .hh-q-stale {
+	align-items: center;
+	color: var(--hx-color-text-supporting);
+}
+.hh-home .hh-q-add-title {
+	display: block;
+}
+.hh-home .hh-q-add {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+@media (max-width: 1000px) {
+	.hh-home .hh-q-panel-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.hh-home .hh-q-agents {
+		grid-column: span 2;
+	}
+}
+@media (max-width: 560px) {
+	.hh-home .hh-q-panel-grid {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--hx-space-20);
+	}
+	.hh-home .hh-q-agents {
+		grid-column: auto;
+	}
+	.hh-home .hh-q-add {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+.hh-home .hh-q-chart {
+	--hh-plot-height: var(--hx-space-76);
+	--hh-chart-grid: linear-gradient(var(--hx-color-border), var(--hx-color-border));
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	column-gap: var(--hx-space-8);
+	padding-top: var(--hx-space-6);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-2xs);
+}
+
+.hh-home .hh-q-axis {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: space-between;
+	height: calc(var(--hh-plot-height) + 1lh);
+	margin-top: -0.5lh;
+	font-variant-numeric: var(--hx-style-numeric-tabular);
+}
+
+.hh-home .hh-q-series {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: minmax(0, 1fr);
+	gap: var(--hx-space-6);
+	background-image: var(--hh-chart-grid), var(--hh-chart-grid), var(--hh-chart-grid);
+	background-position:
+		top,
+		center calc(var(--hh-plot-height) / 2),
+		center var(--hh-plot-height);
+	background-repeat: no-repeat;
+	background-size: 100% var(--hx-border-thin);
+}
+
+.hh-home .hh-q-history-col {
+	display: grid;
+	grid-template-rows: var(--hh-plot-height) auto;
+	justify-items: center;
+	align-items: end;
+	gap: var(--hx-space-4);
+}
+
+.hh-home .hh-q-history-col > span {
+	width: 85%;
+	border-radius: var(--hx-radius-compact) var(--hx-radius-compact) 0 0;
+	background: var(--hx-color-tertiary);
+}
+
+.hh-home .hh-q-day {
+	white-space: nowrap;
+}
+.hh-home .hh-q-plan > .hh-q-sub-head {
+	flex-wrap: nowrap;
+	align-items: flex-start;
+	justify-content: space-between;
+}

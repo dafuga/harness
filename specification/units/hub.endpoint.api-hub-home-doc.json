@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.endpoint.api-hub-home-doc",
+	"uid": "u_og6ec5gl47",
+	"kind": "endpoint",
+	"title": "/api/hub-home/doc",
+	"responsibility": "Owns the /api/hub-home/doc HTTP endpoint.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/routes/api/hub-home/doc/+server.ts"],
+		"symbols": ["GET", "POST", "PUT"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "GET",
+				"type": "unknown"
+			},
+			{
+				"name": "POST",
+				"type": "unknown"
+			},
+			{
+				"name": "PUT",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/api/hub-home/doc/+server.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/api/hub-home/doc/+server.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

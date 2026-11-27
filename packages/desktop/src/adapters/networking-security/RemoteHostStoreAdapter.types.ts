@@ -20,6 +20,8 @@ export interface RemoteHostDevice {
 /** Everything this computer keeps for remote access. It exists on disk only encrypted. */
 export interface RemoteHostState {
 	enabled: boolean;
+	/** The verified Hub account under which this Mac was linked. */
+	ownerId?: string;
 	origin: string | null;
 	hostId: string;
 	keys: StoredRemoteKeys;
@@ -36,8 +38,4 @@ export interface RemoteHostStoreAdapterConfig {
 	encryption: NativeEncryption;
 	platform?: NodeJS.Platform;
 }
-
-/** Remote host state cannot be stored or read: OS encryption is unavailable, or the stored state is unreadable. */
-export class RemoteHostStoreError extends Error {
-	override name = 'RemoteHostStoreError';
-}
+export { RemoteHostStoreError } from './RemoteHostStoreError';

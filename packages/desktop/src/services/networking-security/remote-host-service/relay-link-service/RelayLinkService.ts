@@ -6,7 +6,12 @@ import type {
 	RelayLinkOptions,
 	RelayCommandInput
 } from './RelayLinkService.types';
-import { randomId, relayHeaders, relaySocketUrl } from '../../../../../../remote/src/index';
+import {
+	randomId,
+	relayCloseCodes,
+	relayHeaders,
+	relaySocketUrl
+} from '../../../../../../remote/src/index';
 import type { RelayHostCommand, RemoteSocket } from '../../../../../../remote/src/index';
 import { relayFrame } from './relayFrame';
 
@@ -62,7 +67,7 @@ export class RelayLinkService {
 			socket = this.options.open(relaySocketUrl(origin, hostId), headers);
 		this.socket = socket;
 		socket.onMessage((text) => this.receive(socket, text));
-		socket.onClose(() => this.lost(socket));
+		socket.onClose((code) => this.lost(socket, code));
 		socket.opened.then(
 			() => this.opened(socket),
 			() => this.lost(socket)
@@ -89,10 +94,14 @@ export class RelayLinkService {
 			return this.settle(frame.ref, frame.ok ? undefined : (frame.error ?? 'refused'));
 		if (frame) this.options.onFrame(frame);
 	}
-	private lost(socket: RemoteSocket): void {
+	private lost(socket: RemoteSocket, code?: number): void {
 		if (socket !== this.socket) return;
 		this.socket = null;
 		this.down();
+		if (code === relayCloseCodes.unauthorized && this.options.onUnlinked) {
+			this.running = false;
+			return this.options.onUnlinked();
+		}
 		if (!this.running) return;
 		const delays = this.options.retryMs ?? [1000, 2000, 5000, 15000, 30000],
 			delay = delays[Math.min(this.attempt++, delays.length - 1)];

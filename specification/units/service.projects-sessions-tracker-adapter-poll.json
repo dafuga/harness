@@ -14,8 +14,12 @@
 			"src/services/projects-sessions/tracker-adapter-poll-service/applyTrackerIntakeEvents.ts",
 			"src/services/projects-sessions/tracker-adapter-poll-service/commitTrackerIntake.ts",
 			"src/services/projects-sessions/tracker-adapter-poll-service/githubIntakeRecord.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/manageTrackerAdapterSource.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/manageTrackerAdapterSource.types.ts",
 			"src/services/projects-sessions/tracker-adapter-poll-service/readTrackerIntake.ts",
-			"src/services/projects-sessions/tracker-adapter-poll-service/trackerAdapterPollError.ts"
+			"src/services/projects-sessions/tracker-adapter-poll-service/trackerAdapterPollError.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/trackerAdapterSourceInput.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/trackerAdapterSourceInput.types.ts"
 		],
 		"symbols": [
 			"TrackerAdapterIntakePolicy",
@@ -31,6 +35,8 @@
 			"TrackerAdapterPollService",
 			"TrackerAdapterPollService.constructor",
 			"TrackerAdapterPollService.status",
+			"TrackerAdapterPollService.owner",
+			"TrackerAdapterPollService.preview",
 			"TrackerAdapterPollService.tick",
 			"TrackerAdapterPollService.poll",
 			"TrackerGithubIssue",
@@ -47,26 +53,34 @@
 			"TrackerAdapterWriteError",
 			"TrackerAdapterPollResult",
 			"TrackerAdapterEvent",
+			"TrackerAdapterPriorityEvent",
 			"TrackerAdapterIntakeRecord",
 			"TrackerAdapterCommentEvent",
 			"TrackerAdapterIntakeContext",
 			"applyTrackerIntakeEvents",
 			"applyTrackerIntakeEvent",
+			"recordIssueAcceptance",
 			"planTrackerIntake",
 			"commitTrackerIntake",
 			"trackerEventFields",
-			"recordIssueAcceptance",
 			"readGithubIntakeRecord",
 			"githubCommentEvent",
 			"matchesGithubIssue",
 			"followUpInstructions",
 			"planGithubFollowUp",
 			"hasFollowUpRequest",
+			"addTrackerAdapterSource",
+			"changeTrackerAdapterSource",
+			"unlinkedRepository",
+			"TrackerAdapterOwner",
 			"readTrackerIssues",
 			"readTrackerComments",
+			"trackerTesterLogin",
 			"TrackerAdapterPollError",
 			"TrackerAdapterPollError.constructor",
-			"assertTrackerPollActive"
+			"assertTrackerPollActive",
+			"trackerAdapterSourceInput",
+			"TrackerAdapterSourceFields"
 		]
 	},
 	"contract": {
@@ -80,6 +94,16 @@
 			{
 				"name": "TrackerAdapterPollService.constructor.dependencies",
 				"type": "TrackerAdapterPollDependencies",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterPollService.preview.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterPollService.preview.query",
+				"type": "TrackerAdapterReadQuery",
 				"required": true
 			},
 			{
@@ -139,6 +163,21 @@
 				"required": true
 			},
 			{
+				"name": "recordIssueAcceptance.context",
+				"type": "TrackerAdapterIntakeContext",
+				"required": true
+			},
+			{
+				"name": "recordIssueAcceptance.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "recordIssueAcceptance.record",
+				"type": "TrackerAdapterIntakeRecord",
+				"required": true
+			},
+			{
 				"name": "planTrackerIntake.context",
 				"type": "TrackerAdapterIntakeContext",
 				"required": true
@@ -186,21 +225,6 @@
 			{
 				"name": "trackerEventFields.event",
 				"type": "Omit<TrackerAdapterEvent, 'id' | 'time'> & { id?: string }",
-				"required": true
-			},
-			{
-				"name": "recordIssueAcceptance.context",
-				"type": "TrackerAdapterIntakeContext",
-				"required": true
-			},
-			{
-				"name": "recordIssueAcceptance.source",
-				"type": "TrackerAdapterSource",
-				"required": true
-			},
-			{
-				"name": "recordIssueAcceptance.record",
-				"type": "TrackerAdapterIntakeRecord",
 				"required": true
 			},
 			{
@@ -289,6 +313,36 @@
 				"required": true
 			},
 			{
+				"name": "addTrackerAdapterSource.owner",
+				"type": "TrackerAdapterOwner",
+				"required": true
+			},
+			{
+				"name": "addTrackerAdapterSource.source",
+				"type": "TrackerAdapterSource & { enabled_at: number }",
+				"required": true
+			},
+			{
+				"name": "changeTrackerAdapterSource.owner",
+				"type": "TrackerAdapterOwner",
+				"required": true
+			},
+			{
+				"name": "changeTrackerAdapterSource.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "changeTrackerAdapterSource.action",
+				"type": "TrackerAdapterSourceAction",
+				"required": true
+			},
+			{
+				"name": "unlinkedRepository.repository",
+				"type": "TrackerAdapterRepository",
+				"required": true
+			},
+			{
 				"name": "readTrackerIssues.context",
 				"type": "TrackerAdapterIntakeContext",
 				"required": true
@@ -329,6 +383,16 @@
 				"required": true
 			},
 			{
+				"name": "trackerTesterLogin.rule",
+				"type": "TrackerGithubFollowUpPolicy",
+				"required": true
+			},
+			{
+				"name": "trackerTesterLogin.actor",
+				"type": "string",
+				"required": false
+			},
+			{
 				"name": "TrackerAdapterPollError.constructor.message",
 				"type": "string",
 				"required": true
@@ -337,12 +401,30 @@
 				"name": "assertTrackerPollActive.signal",
 				"type": "AbortSignal",
 				"required": true
+			},
+			{
+				"name": "trackerAdapterSourceInput.input",
+				"type": "TrackerAdapterSourceFields",
+				"required": true
+			},
+			{
+				"name": "trackerAdapterSourceInput.now",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerAdapterPollService.status",
 				"type": "{ runner: string; active: boolean }"
+			},
+			{
+				"name": "TrackerAdapterPollService.owner",
+				"type": "TrackerAdapterOwner"
+			},
+			{
+				"name": "TrackerAdapterPollService.preview",
+				"type": "Promise<{ actions: TrackerAdapterAction[]; events: number }>"
 			},
 			{
 				"name": "TrackerAdapterPollService.tick",
@@ -361,6 +443,10 @@
 				"type": "boolean"
 			},
 			{
+				"name": "recordIssueAcceptance",
+				"type": "void"
+			},
+			{
 				"name": "planTrackerIntake",
 				"type": "TrackerAdapterAction"
 			},
@@ -371,10 +457,6 @@
 			{
 				"name": "trackerEventFields",
 				"type": "Record<string, unknown>"
-			},
-			{
-				"name": "recordIssueAcceptance",
-				"type": "void"
 			},
 			{
 				"name": "readGithubIntakeRecord",
@@ -401,6 +483,18 @@
 				"type": "boolean"
 			},
 			{
+				"name": "addTrackerAdapterSource",
+				"type": "unknown"
+			},
+			{
+				"name": "changeTrackerAdapterSource",
+				"type": "unknown"
+			},
+			{
+				"name": "unlinkedRepository",
+				"type": "TrackerAdapterRepository"
+			},
+			{
 				"name": "readTrackerIssues",
 				"type": "unknown"
 			},
@@ -409,8 +503,16 @@
 				"type": "unknown"
 			},
 			{
+				"name": "trackerTesterLogin",
+				"type": "boolean"
+			},
+			{
 				"name": "assertTrackerPollActive",
 				"type": "void"
+			},
+			{
+				"name": "trackerAdapterSourceInput",
+				"type": "TrackerAdapterSource & { enabled_at: number }"
 			}
 		],
 		"errors": [
@@ -436,6 +538,41 @@
 					{
 						"name": "TrackerAdapterPollService.status",
 						"type": "{ runner: string; active: boolean }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterPollService.owner",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerAdapterPollService.owner",
+						"type": "TrackerAdapterOwner"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerAdapterPollService.preview",
+				"inputs": [
+					{
+						"name": "TrackerAdapterPollService.preview.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterPollService.preview.query",
+						"type": "TrackerAdapterReadQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterPollService.preview",
+						"type": "Promise<{ actions: TrackerAdapterAction[]; events: number }>"
 					}
 				],
 				"errors": [],
@@ -555,6 +692,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "recordIssueAcceptance",
+				"inputs": [
+					{
+						"name": "recordIssueAcceptance.context",
+						"type": "TrackerAdapterIntakeContext",
+						"required": true
+					},
+					{
+						"name": "recordIssueAcceptance.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "recordIssueAcceptance.record",
+						"type": "TrackerAdapterIntakeRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordIssueAcceptance",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "planTrackerIntake",
 				"inputs": [
 					{
@@ -638,34 +803,6 @@
 					{
 						"name": "trackerEventFields",
 						"type": "Record<string, unknown>"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "recordIssueAcceptance",
-				"inputs": [
-					{
-						"name": "recordIssueAcceptance.context",
-						"type": "TrackerAdapterIntakeContext",
-						"required": true
-					},
-					{
-						"name": "recordIssueAcceptance.source",
-						"type": "TrackerAdapterSource",
-						"required": true
-					},
-					{
-						"name": "recordIssueAcceptance.record",
-						"type": "TrackerAdapterIntakeRecord",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "recordIssueAcceptance",
-						"type": "void"
 					}
 				],
 				"errors": [],
@@ -835,6 +972,75 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "addTrackerAdapterSource",
+				"inputs": [
+					{
+						"name": "addTrackerAdapterSource.owner",
+						"type": "TrackerAdapterOwner",
+						"required": true
+					},
+					{
+						"name": "addTrackerAdapterSource.source",
+						"type": "TrackerAdapterSource & { enabled_at: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "addTrackerAdapterSource",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "changeTrackerAdapterSource",
+				"inputs": [
+					{
+						"name": "changeTrackerAdapterSource.owner",
+						"type": "TrackerAdapterOwner",
+						"required": true
+					},
+					{
+						"name": "changeTrackerAdapterSource.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "changeTrackerAdapterSource.action",
+						"type": "TrackerAdapterSourceAction",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "changeTrackerAdapterSource",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "unlinkedRepository",
+				"inputs": [
+					{
+						"name": "unlinkedRepository.repository",
+						"type": "TrackerAdapterRepository",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "unlinkedRepository",
+						"type": "TrackerAdapterRepository"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "readTrackerIssues",
 				"inputs": [
 					{
@@ -901,6 +1107,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerTesterLogin",
+				"inputs": [
+					{
+						"name": "trackerTesterLogin.rule",
+						"type": "TrackerGithubFollowUpPolicy",
+						"required": true
+					},
+					{
+						"name": "trackerTesterLogin.actor",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTesterLogin",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "assertTrackerPollActive",
 				"inputs": [
 					{
@@ -922,6 +1151,29 @@
 					}
 				],
 				"errorStatus": "found"
+			},
+			{
+				"name": "trackerAdapterSourceInput",
+				"inputs": [
+					{
+						"name": "trackerAdapterSourceInput.input",
+						"type": "TrackerAdapterSourceFields",
+						"required": true
+					},
+					{
+						"name": "trackerAdapterSourceInput.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAdapterSourceInput",
+						"type": "TrackerAdapterSource & { enabled_at: number }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -969,6 +1221,16 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "helper.planning-collaboration-plan-github-issue-intake",
 			"via": "import",

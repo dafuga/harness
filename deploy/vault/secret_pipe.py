@@ -14,6 +14,7 @@ JSON_FIELDS = {
     'openai-service-account-key': ('value',),
     'twilio-key': ('secret',),
     'npm-token': ('token',),
+    'slack-bot-token': ('token',),
 }
 
 

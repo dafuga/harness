@@ -6,7 +6,11 @@
 	"title": "Activity refresh client",
 	"responsibility": "Refreshes site activity while a browser page is visible and reports missing readings.",
 	"responsibilityOrigin": "declared",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Retired in deferred plan wave 4: no live consumer (qjv47y).",
+		"at": "2026-11-25T16:20:00.204Z"
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/projects-sessions/site-activity/activityClient.ts",

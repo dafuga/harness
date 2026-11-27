@@ -47,6 +47,14 @@ export class ManageController {
 		const body = await readJsonBody(request, false);
 		if (operation === 'register') return this.register(body);
 		if (operation.startsWith('directory-')) return this.directory(operation, body);
+		return this.hosted(operation, body);
+	}
+
+	/** An operation on the registered host, for the owner who keeps it. */
+	private async hosted(
+		operation: string,
+		body: Record<string, unknown> | undefined
+	): Promise<Response> {
 		const call =
 			operation === 'revoke-device' ? this.validator.device(body) : this.validator.owner(body);
 		if (!call) return relayError(400, 'invalid-input');
@@ -55,16 +63,28 @@ export class ManageController {
 		if (host.ownerId !== call.owner.id) return relayError(403, 'forbidden');
 		if (operation === 'pairing-key')
 			return relayResponse(200, { hostId: host.hostId, hostKey: host.hostKey });
-		if (operation === 'pairing-request') return this.accountRequest(body);
+		if (operation === 'pairing-request') return this.accountRequest(body, host, call.holder);
 		return this.run(operation, call, host);
 	}
 
-	private async accountRequest(body: Record<string, unknown> | undefined): Promise<Response> {
+	ownsAccount(hostId: string, ownerId: string): boolean {
+		const host = this.store.host();
+		return host?.accountLinked === true && host.hostId === hostId && host.ownerId === ownerId;
+	}
+
+	private async accountRequest(
+		body: Record<string, unknown> | undefined,
+		host: HostRecord,
+		holder?: string
+	): Promise<Response> {
+		const linked = host.accountLinked ? holder : undefined;
+		if (host.accountLinked && (!linked || this.store.revokedHolder(linked)))
+			return relayError(403, 'forbidden');
 		const { pairingId, request } = body ?? {};
 		const input = new PairingBodyValidator().request(request);
 		if (typeof pairingId !== 'string' || !remotePatterns.pairingId.test(pairingId) || !input)
 			return relayError(400, 'invalid-input');
-		const pending = await this.services.pairing.requestAccount(pairingId, input);
+		const pending = await this.services.pairing.requestAccount(pairingId, input, linked);
 		return pending ? relayResponse(200, pending) : relayError(409, 'pairing-unavailable');
 	}
 

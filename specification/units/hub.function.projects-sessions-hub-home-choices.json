@@ -1,0 +1,83 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-choices",
+	"uid": "u_jnjcxmplge",
+	"kind": "function",
+	"title": "hubHomeChoices",
+	"responsibility": "Places recommended Hub answer options first while preserving their original tracker option numbers.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeChoices.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeChoices.types.ts"
+		],
+		"symbols": ["orderedChoices", "HomeChoice"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "orderedChoices.agent",
+				"type": "Pick<HomeAgent, 'options'>",
+				"required": true,
+				"description": "Agent payload containing an optional list of answer options."
+			}
+		],
+		"outputs": [
+			{
+				"name": "orderedChoices",
+				"type": "HomeChoice[]",
+				"description": "Options in display order with each original one-based number."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "orderedChoices",
+				"inputs": [
+					{
+						"name": "orderedChoices.agent",
+						"type": "Pick<HomeAgent, 'options'>",
+						"required": true,
+						"description": "Agent payload containing an optional list of answer options."
+					}
+				],
+				"outputs": [
+					{
+						"name": "orderedChoices",
+						"type": "HomeChoice[]",
+						"description": "Options in display order with each original one-based number."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChoices.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChoices.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

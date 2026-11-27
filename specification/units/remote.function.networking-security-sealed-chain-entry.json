@@ -1,0 +1,244 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-chain-entry",
+	"uid": "u_fefwhwbqf5",
+	"kind": "function",
+	"title": "Sign device chain entries",
+	"responsibility": "Write canonical JSON, sign and verify device chain entries with ECDSA P-256, and hash them for the next entry.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedChainEntry.ts"],
+		"symbols": [
+			"sealedCanonical",
+			"chainEntryBytes",
+			"sealedChainEntry",
+			"verifyChainEntry",
+			"chainEntryHash"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sealedCanonical.value",
+				"type": "SealedJsonValue",
+				"required": true,
+				"description": "JSON value to serialize with consistently ordered object keys."
+			},
+			{
+				"name": "chainEntryBytes.entry",
+				"type": "UnsignedChainEntry",
+				"required": true,
+				"description": "Unsigned device chain entry to serialize for signing."
+			},
+			{
+				"name": "sealedChainEntry.signer",
+				"type": "SealedDeviceKeys",
+				"required": true,
+				"description": "Device signing key and signer identity for the new entry."
+			},
+			{
+				"name": "sealedChainEntry.entry",
+				"type": "UnsignedChainEntry",
+				"required": true,
+				"description": "Unsigned chain entry whose signer and signature will be attached."
+			},
+			{
+				"name": "verifyChainEntry.entry",
+				"type": "SealedChainEntry",
+				"required": true,
+				"description": "Signed entry to verify."
+			},
+			{
+				"name": "verifyChainEntry.signingPublic",
+				"type": "string",
+				"required": true,
+				"description": "Base64url-encoded P-256 public signing key expected for the signer."
+			},
+			{
+				"name": "chainEntryHash.entry",
+				"type": "SealedChainEntry",
+				"required": true,
+				"description": "Signed chain entry to hash."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedCanonical",
+				"type": "string",
+				"description": "Canonical JSON string for the supplied value."
+			},
+			{
+				"name": "chainEntryBytes",
+				"type": "Uint8Array",
+				"description": "UTF-8 bytes used as the signature input."
+			},
+			{
+				"name": "sealedChainEntry",
+				"type": "Promise<SealedChainEntry>",
+				"description": "Chain entry with signer identity and signature attached."
+			},
+			{
+				"name": "verifyChainEntry",
+				"type": "Promise<boolean>",
+				"description": "Whether the supplied public key verifies the entry signature."
+			},
+			{
+				"name": "chainEntryHash",
+				"type": "Promise<string>",
+				"description": "Hex digest referenced by the next chain entry."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedCanonical",
+				"inputs": [
+					{
+						"name": "sealedCanonical.value",
+						"type": "SealedJsonValue",
+						"required": true,
+						"description": "JSON value to serialize with consistently ordered object keys."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedCanonical",
+						"type": "string",
+						"description": "Canonical JSON string for the supplied value."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "chainEntryBytes",
+				"inputs": [
+					{
+						"name": "chainEntryBytes.entry",
+						"type": "UnsignedChainEntry",
+						"required": true,
+						"description": "Unsigned device chain entry to serialize for signing."
+					}
+				],
+				"outputs": [
+					{
+						"name": "chainEntryBytes",
+						"type": "Uint8Array",
+						"description": "UTF-8 bytes used as the signature input."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedChainEntry",
+				"inputs": [
+					{
+						"name": "sealedChainEntry.signer",
+						"type": "SealedDeviceKeys",
+						"required": true,
+						"description": "Device signing key and signer identity for the new entry."
+					},
+					{
+						"name": "sealedChainEntry.entry",
+						"type": "UnsignedChainEntry",
+						"required": true,
+						"description": "Unsigned chain entry whose signer and signature will be attached."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedChainEntry",
+						"type": "Promise<SealedChainEntry>",
+						"description": "Chain entry with signer identity and signature attached."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifyChainEntry",
+				"inputs": [
+					{
+						"name": "verifyChainEntry.entry",
+						"type": "SealedChainEntry",
+						"required": true,
+						"description": "Signed entry to verify."
+					},
+					{
+						"name": "verifyChainEntry.signingPublic",
+						"type": "string",
+						"required": true,
+						"description": "Base64url-encoded P-256 public signing key expected for the signer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyChainEntry",
+						"type": "Promise<boolean>",
+						"description": "Whether the supplied public key verifies the entry signature."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "chainEntryHash",
+				"inputs": [
+					{
+						"name": "chainEntryHash.entry",
+						"type": "SealedChainEntry",
+						"required": true,
+						"description": "Signed chain entry to hash."
+					}
+				],
+				"outputs": [
+					{
+						"name": "chainEntryHash",
+						"type": "Promise<string>",
+						"description": "Hex digest referenced by the next chain entry."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-device",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedChainEntry.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedChainEntry.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

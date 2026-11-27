@@ -13,6 +13,7 @@
 			"ManageController",
 			"ManageController.constructor",
 			"ManageController.handle",
+			"ManageController.ownsAccount",
 			"ManageController.index"
 		]
 	},
@@ -56,6 +57,16 @@
 				"examples": ["register", "revoke-device", "unregister"]
 			},
 			{
+				"name": "ManageController.ownsAccount.hostId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ManageController.ownsAccount.ownerId",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "ManageController.index.host",
 				"type": "HostRecord",
 				"required": true
@@ -97,6 +108,29 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "ManageController.ownsAccount",
+				"inputs": [
+					{
+						"name": "ManageController.ownsAccount.hostId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ManageController.ownsAccount.ownerId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ManageController.ownsAccount",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "ManageController.index",

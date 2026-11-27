@@ -199,6 +199,8 @@
 			"TrackerDispatchRepository",
 			"TrackerDispatchSchedulerService",
 			"TrackerSupervisorService",
+			"trackerStructuredAsk",
+			"hubSessionMessages",
 			"VaultSetupCommand"
 		]
 	},
@@ -533,7 +535,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-hub-session-messages",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-structured-ask",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -714,6 +726,11 @@
 		},
 		{
 			"unit": "model.provider-switch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "module.agents-providers-project-assistant",
 			"via": "reexport",
 			"origin": "derived"
 		},

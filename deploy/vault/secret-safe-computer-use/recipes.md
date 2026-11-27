@@ -69,13 +69,38 @@ the Vault; if the CLI needs model-visible interaction or cannot return machine-r
 output for that version, use the reviewed browser route. Verify metadata and target
 access privately before revoking an old token. [npm token](https://docs.npmjs.com/cli/v11/commands/npm-token/)
 
+## Slack bot token (BuildFlexity Alerts)
+
+Pinned binding `harness/slack-smoke/buildflexity-alerts/bot@1`: app `A0CM4RZ3508`, workspace
+`T0CHRK2DS0M`, destination channel `C0CL8D6PCLS`. Run `deploy/vault/slack_bot_token.py` as the
+producer and `deploy/vault/slack_binding.py store` as the writer through `secret_pipe.transfer`
+with recipe `slack-bot-token`. The producer reads one private 0600 packet file (the bot token
+from the app's approved OAuth install, as either the `oauth.v2.access` result or `{"token"}`),
+deletes it, and checks the app, workspace, `bot` token type, `chat:write` grant and, through
+`auth.test`, the bot ID and bot-user ID. A bare token needs `--expect-bot-id` and
+`--expect-bot-user-id` because `auth.test` does not return the app ID. With `groups:read` it also
+checks that the bot is a member of the private channel. Without it the receipt says
+`unverified-no-groups-read`, and the one send fails safe with `not_in_channel` if the bot was
+never invited. The producer writes only IDs, the grant and PASS or FAIL to `--receipt` (0600).
+The writer refuses any receipt that is not a PASS for the pinned app, workspace and channel.
+
+The store keeps `bot.token` and `bot.receipt.json` at mode 0600 under
+`<root>/harness/slack-smoke/buildflexity-alerts/` (an owner-only directory). The smoke
+consumer reads `python3 deploy/vault/slack_binding.py emit <root>`, which re-checks the receipt and
+prints the `{"token"}` packet for a private pipe. Obtaining the token live (OAuth install and
+reveal) needs Daniel's approval and a reviewed live recipe. The synthetic tests cover only
+the producer, the pins and the store.
+[Slack OAuth exchange](https://docs.slack.dev/reference/methods/oauth.v2.access/)
+· [auth.test](https://docs.slack.dev/reference/methods/auth.test/)
+
 ## Bind the destination
 
 - Run the reviewed producer and writer through `deploy/vault/secret_pipe.py` from the
   trusted executor. It waits for successful production before feeding the writer's
   stdin. Pass the recipe name to select a single credential field from a private
   JSON response. Accepted names are `google-oauth-web-client`, `stripe-webhook`,
-  `cloudflare-token`, `openai-service-account-key`, `twilio-key`, and `npm-token`.
+  `cloudflare-token`, `openai-service-account-key`, `twilio-key`, `npm-token`, and
+  `slack-bot-token`.
   For a reviewed raw producer omit the recipe and emit exactly the bytes the writer expects.
 - For a Worker use `wrangler secret put NAME --env ENV` through the correct account
   profile. For GitHub use `gh secret set NAME --repo OWNER/REPO --env ENV` with stdin.

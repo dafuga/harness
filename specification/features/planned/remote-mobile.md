@@ -10,7 +10,7 @@ reviewedAt: null
 
 Use the same Svelte workspace, routes, image threads, and controls in Electron and Capacitor iOS. Environment adapters provide the typed DesktopBridge; web collaboration remains human comments only.
 
-An awake desktop keeps its main-process backend and outbound WebSocket connection running while its screen is locked. Pairing requires desktop approval of a specific phone and project grants. Only the desktop executes installed Codex/Claude CLIs. Internet connections use a relay without opening an inbound desktop port.
+An awake desktop keeps its main-process backend and outbound WebSocket connection running while its screen is locked. Google sign-in links the Mac to its verified Hub account and starts its outbound relay connection. Only the desktop executes installed Codex/Claude CLIs. Internet connections use a relay without opening an inbound desktop port.
 
 Require explicit project/revision context, isolated connection state, shared repository write locks, device-owned runs, bounded protocol messages, replay protection, revocation, reconnect without replaying mutations, and native credential storage. Remote callers cannot open folders or manage the desktop's hosted credentials.
 
@@ -18,11 +18,13 @@ Prove real socket transport, cross-device isolation, unauthorized/revoked access
 
 ## Connect with the same Google account
 
-After Google sign-in, the unpaired phone shows computers registered for phone access under the same Hub account. The Hub derives the owner from the session and checks the relay's current registration before showing a computer. A Mac registered before the directory was added becomes discoverable when it next authenticates its relay connection. Show only the computer name, connection state and the identifier needed to select it. An empty or unavailable list keeps Other connection options available.
+The Mac registers after the Hub verifies its Google session. The Hub derives ownership from the authenticated Google subject and ignores any caller-supplied owner. The Mac keeps host credentials in OS-encrypted storage. On sign-out it stops serving remote sessions. On an account change it uses a fresh host identity. A user can unlink the Mac in settings, which closes all its connections and removes it from the account directory.
 
-Selecting an online computer sends a short-lived, account-authenticated pairing request for that host. The phone creates and keeps its pairing proof in the native shell. The Mac still approves the specific phone and chooses the projects to grant. Until then, the phone has no access to projects from that computer. Denying, expiring, or disconnecting a request cannot grant access. Account changes discard outstanding phone requests and results. QR scanning remains an explicit fallback.
+The Hub Devices page and signed-in iPhone show the same account’s linked computers, including their online status. Selecting an online Mac opens access immediately without a QR code, typed code, camera, or approval on the Mac. Selecting another Mac changes the connection. The browser can read projects directly from the selected Mac. The first automatic grant is read-only and covers projects opened on that Mac. Hub project collaboration retains its existing permissions.
 
-The existing renderer scan case covers QR and the pending state but has no account-host fixture or discovery assertion. Extend the existing pending-to-approved case to select the account's computer first and show that its projects appear only after approval. Extend the Hub controller cases to show that an unsigned or different account cannot discover the host and that unregistering it removes it from discovery.
+The Hub binds each connection request to its authenticated session and exact host. The relay forwards only verified account requests for automatic admission. Clients still prove possession of their device key and the one-time exchange verifier. The browser’s socket uses its same-origin Hub session. Device credentials never travel in URLs. Unlinking or revoking a device in settings closes its sockets and denies new connections under the revoked session. The account path admits no QR request or approval left from a legacy registration, and no QR pairing exists. See `google-device-linking.md`.
+
+Prove automatic registration and access for two Macs, isolation with a second Google subject, sign-out, host unlink, device revocation, and denial of unauthenticated or replayed exchanges. Exercise the account computer picker on iPhone and the Hub Devices page in an isolated app on harbor-mbp-2. Production deployment and app releases require separate approval.
 
 ## Decision notifications
 

@@ -17,8 +17,4 @@ export interface DetailData {
 	units: ComponentManifest[];
 	plan: PlanRecord | undefined;
 }
-
-/** The requested entity has no catalog item at this revision. */
-export class EntityNotFoundError extends Error {
-	override name = 'EntityNotFoundError';
-}
+export { EntityNotFoundError } from './EntityNotFoundError';

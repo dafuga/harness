@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedAuthorityChangedError.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.types.ts"
 		],
 		"symbols": [
+			"HostedAuthorityChangedError",
 			"ProjectDiscoveryService",
 			"ProjectDiscoveryService.constructor",
 			"ProjectDiscoveryService.projects",

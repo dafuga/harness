@@ -61,6 +61,12 @@
 				"required": true
 			},
 			{
+				"name": "TrackerSpokeSyncService.permitDue.scope",
+				"type": "'due' | 'automatic'",
+				"required": false,
+				"default": "due"
+			},
+			{
 				"name": "TrackerSpokeSyncService.exchangeMachine.sample",
 				"type": "TrackerWireValue | undefined",
 				"required": true
@@ -197,6 +203,12 @@
 						"name": "TrackerSpokeSyncService.permitDue.token",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "TrackerSpokeSyncService.permitDue.scope",
+						"type": "'due' | 'automatic'",
+						"required": false,
+						"default": "due"
 					}
 				],
 				"outputs": [

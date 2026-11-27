@@ -14,6 +14,7 @@
 			"src/utils/projects-sessions/normalizeTrackerDue.ts",
 			"src/utils/projects-sessions/normalizeTrackerItemFields.ts",
 			"src/utils/projects-sessions/normalizeTrackerItemFields.types.ts",
+			"src/utils/projects-sessions/trackerItemPriority.ts",
 			"src/utils/projects-sessions/trackerItemValueOr.ts"
 		],
 		"symbols": [
@@ -28,6 +29,7 @@
 			"trackerLocalStamp",
 			"normalizeTrackerDue",
 			"normalizeTrackerReminder",
+			"normalizeTrackerParkUntil",
 			"trackerIsoTime",
 			"validateTrackerTimeZone",
 			"normalizeTrackerItemFields",
@@ -37,6 +39,8 @@
 			"TrackerItemValue",
 			"TrackerItemInput",
 			"TrackerItemFields",
+			"TrackerItemPriority",
+			"trackerItemPriority",
 			"trackerItemValueOr"
 		]
 	},
@@ -128,6 +132,18 @@
 				"description": "Current epoch time in milliseconds for future-time validation."
 			},
 			{
+				"name": "normalizeTrackerParkUntil.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "A Lisbon calendar date or an ISO timestamp with an explicit time zone."
+			},
+			{
+				"name": "normalizeTrackerParkUntil.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in epoch milliseconds for validation."
+			},
+			{
 				"name": "trackerIsoTime.epoch",
 				"type": "number",
 				"required": true,
@@ -162,6 +178,18 @@
 				"type": "TrackerItemValue",
 				"required": true,
 				"description": "Requested auto-launch value to check for a launch request."
+			},
+			{
+				"name": "trackerItemPriority.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Stored or supplied priority string. Accepted values are urgent, normal and low."
+			},
+			{
+				"name": "trackerItemPriority.fallback",
+				"type": "TrackerItemPriority",
+				"required": false,
+				"description": "Priority returned for absent or unrecognized legacy data when the caller supplies a default."
 			},
 			{
 				"name": "trackerItemValueOr.value",
@@ -369,6 +397,38 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "normalizeTrackerParkUntil",
+				"inputs": [
+					{
+						"name": "normalizeTrackerParkUntil.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "A Lisbon calendar date or an ISO timestamp with an explicit time zone."
+					},
+					{
+						"name": "normalizeTrackerParkUntil.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in epoch milliseconds for validation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeTrackerParkUntil",
+						"type": "string",
+						"description": "Validated UTC timestamp for resuming follow-ups."
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemRequestError",
+						"type": "TrackerItemRequestError",
+						"description": "HTTP 400 when the parking date is invalid or has already passed."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "trackerIsoTime",
 				"inputs": [
 					{
@@ -471,6 +531,31 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerItemPriority",
+				"inputs": [
+					{
+						"name": "trackerItemPriority.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Stored or supplied priority string. Accepted values are urgent, normal and low."
+					},
+					{
+						"name": "trackerItemPriority.fallback",
+						"type": "TrackerItemPriority",
+						"required": false,
+						"description": "Priority returned for absent or unrecognized legacy data when the caller supplies a default."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemPriority",
+						"type": "TrackerItemPriority"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerItemValueOr",
 				"inputs": [
 					{
@@ -501,6 +586,16 @@
 	"dependencies": [
 		{
 			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -151,7 +151,6 @@ export { ModuleCatalogService } from './services/module-system/ModuleCatalogServ
 export { ModuleCommand } from './commands/module-system/ModuleCommand';
 export { ModuleInstallService } from './services/module-system/ModuleInstallService';
 export { ModuleResourceService } from './services/module-system/ModuleResourceService';
-
 export type {
 	ModuleDefinition,
 	ModuleResource,
@@ -215,4 +214,7 @@ export { TrackerAdapterLeaseAdapter } from './adapters/projects-sessions/Tracker
 export { TrackerDispatchRepository } from './repositories/projects-sessions/TrackerDispatchRepository';
 export { TrackerDispatchSchedulerService } from './services/projects-sessions/TrackerDispatchSchedulerService';
 export { TrackerSupervisorService } from './services/projects-sessions/TrackerSupervisorService';
+export * from './lib/agents-providers/projectAssistant';
+export { trackerStructuredAsk } from './utils/projects-sessions/trackerStructuredAsk';
+export { hubSessionMessages } from './utils/projects-sessions/hubSessionMessages';
 export { VaultSetupCommand } from './commands/accounts-access/VaultSetupCommand';

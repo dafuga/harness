@@ -143,7 +143,7 @@ test('a revoked computer pairing leaves the signed-in Hub overview available', a
 	await page.getByRole('link', { name: 'Back to Harness' }).click();
 	const inbox = page.getByRole('link', { name: 'Needs you', exact: true });
 	if (process.env.TAKE_SCREENSHOT === 'true') {
-		await expect(page.getByRole('heading', { name: 'Harness', exact: true })).toBeVisible();
+		await expect(page.getByRole('img', { name: 'Harness', exact: true })).toBeVisible();
 		await page.evaluate(() => document.fonts.ready);
 		await page.screenshot({
 			path: `/tmp/harness-ios-inbox-home-${process.env.SCREENSHOT_LABEL}.png`
@@ -151,8 +151,20 @@ test('a revoked computer pairing leaves the signed-in Hub overview available', a
 	}
 	await inbox.click({ timeout: 5000 });
 	await expect(page).toHaveURL(/\/tracker$/);
-	await expect(page.getByRole('heading', { name: 'Needs you' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Needs you', exact: true })).toBeVisible();
 	await expect(page.getByText('Showing the last copy. It may be out of date.')).toBeVisible();
+	await page.getByRole('button', { name: /Fixture planning item/ }).click();
+	await expect(page.getByRole('heading', { name: 'Fixture planning item' })).toBeVisible();
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(() => document.fonts.ready);
+		await page.screenshot({ path: `/tmp/harness-y3y889-${process.env.SCREENSHOT_LABEL}.png` });
+	}
+	await expect(page.getByText('Detailed idea', { exact: true }).first()).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Main page design' })).toHaveAttribute(
+		'href',
+		'https://example.test/design.png'
+	);
+	await expect(page.getByText(/Fixture Planner/)).toBeVisible();
 	await page.getByRole('link', { name: 'Home', exact: true }).click();
 	await expect(page).toHaveURL(/\/$/);
 });

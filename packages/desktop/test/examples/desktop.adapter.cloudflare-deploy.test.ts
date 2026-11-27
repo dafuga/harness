@@ -10,10 +10,7 @@ import type { Options } from '../../src/adapters/development-tooling/CloudflareD
 import { CloudflareProductionBranchConflictError } from '../../src/adapters/development-tooling/CloudflareProductionBranchConflictError';
 import { CloudflareProductionBranchUnknownError } from '../../src/adapters/development-tooling/CloudflareProductionBranchUnknownError';
 import { CloudflareTargetAccessVerificationError } from '../../src/adapters/development-tooling/CloudflareTargetAccessVerificationError';
-
-type Target = Parameters<CloudflareDeployAdapter['deploy']>[0];
-type Command = Parameters<NonNullable<Options['execute']>>[0];
-type Log = { commands: unknown[]; urls: string[] };
+import type { Target, Log, Command } from './desktop.adapter.cloudflare-deploy.test.types';
 
 const ACCOUNT_ID = '4f1c9a0d7b2e4c8a9d3f6e1b0a5c7d28';
 const COMMIT = '3c1e8f2a9b7d4e60a5c2f1d8e9b3a7c4d0f2e6b1';

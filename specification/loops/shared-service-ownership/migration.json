@@ -1572,15 +1572,33 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "bfb968bf1f6be6d145e5102bbb4dda6eae49318f75e356b50d5e2b4a9bb6020a",
+			"definition": "92cb865bf80f1479b16816f6e1d9c230970da5f4b26e51fae70e09c81ac905e0",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "9a8b98a7e403c518f4fdc5d5ba56797ff1d58273",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "bfb968bf1f6be6d145e5102bbb4dda6eae49318f75e356b50d5e2b4a9bb6020a",
-				"reason": "Registers local Vault status and privileged actions for the trusted desktop window."
+				"definition": "92cb865bf80f1479b16816f6e1d9c230970da5f4b26e51fae70e09c81ac905e0",
+				"reason": "Pass the existing Tracker Home read and chat services to the signed-in local window."
 			},
 			"previousReviews": [
+				{
+					"commit": "e336491c115d614e5ae5fcc45deb3fb031b27b09",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "2d4af23868ccb155011ea1d04fbf7259bfe2a0e39353c1a2ff0ea9cced89c33b",
+					"reason": "Hand off approved Tracker links in a named target while declining the Electron popup."
+				},
+				{
+					"commit": "51bc1b1aebb9ec1c947bdd6a3a204013d8da83e9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "6cad9e43667099bae96bbeef9fe137964d33559dc9650c5c4078b93637177a9e",
+					"reason": "Open validated Tracker artifact links in the system browser while keeping the privileged renderer in Harness."
+				},
+				{
+					"commit": "0ca8d9573fd317da3589a4d4e81cdebda5e3d958",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "c23a9f77b3ec7aae8079517932436745a3d1952c9cef9da4011fbb9ea786f9cb",
+					"reason": "Prepare app-owned macOS Safe Storage after Electron is ready and before opening the desktop backend."
+				},
 				{
 					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
@@ -1624,10 +1642,28 @@
 					"reason": "Passes the approved phone device settings and the dedicated write grant to the private device service."
 				},
 				{
-					"commit": "0ca8d9573fd317da3589a4d4e81cdebda5e3d958",
+					"commit": "2ee196aab6f5c7cce9891ff981c31e36d11c6ac0",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-					"definition": "c23a9f77b3ec7aae8079517932436745a3d1952c9cef9da4011fbb9ea786f9cb",
-					"reason": "Prepare app-owned macOS Safe Storage after Electron is ready and before opening the desktop backend."
+					"definition": "9cb27a1f849ef82ea7c420cc3b26ab94f203afb42d2bf97dd411ece1cd99b6e6",
+					"reason": "Give the privileged window an explicit owner for its navigation and Tracker artifact link handling."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "1559cbae8e29818bfc65058faf896ee98d34e2ad378e002a3ab6d3f1f19c28ad",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				},
+				{
+					"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "63b9b0f3eec6864d368081bbc5e4177e42b78d882cc51baa0a2ce960016b54a8",
+					"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
+				},
+				{
+					"commit": "9a8b98a7e403c518f4fdc5d5ba56797ff1d58273",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "bfb968bf1f6be6d145e5102bbb4dda6eae49318f75e356b50d5e2b4a9bb6020a",
+					"reason": "Registers local Vault status and privileged actions for the trusted desktop window."
 				}
 			]
 		},
@@ -1635,13 +1671,13 @@
 			"unit": "desktop.service.native-connection",
 			"from": "packages/desktop/src/services/NativeConnectionService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
-			"definition": "f95a39e59fd26b8ff9fc17f70cf265ecef85c0481be8a4eeee6443ef7e27abbe",
+			"definition": "99886d91cc045a453995ebcd6230348e48ac82f4c90d267d0893d55007cc44f9",
 			"relocationDefinition": "d2e47f584c82ec1dc1ee8b2633bfda9fd0b18e23c0d7bea61f4d3eccc4347133",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
-				"definition": "f95a39e59fd26b8ff9fc17f70cf265ecef85c0481be8a4eeee6443ef7e27abbe",
-				"reason": "Exposes the fixed Tracker overview operation through native session authority."
+				"definition": "99886d91cc045a453995ebcd6230348e48ac82f4c90d267d0893d55007cc44f9",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -1649,6 +1685,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
 					"definition": "35091df5a8f74b97d97a0396da7d31c5fe8b14aa38a812d54d8c8ee3129f0b81",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
+					"definition": "f95a39e59fd26b8ff9fc17f70cf265ecef85c0481be8a4eeee6443ef7e27abbe",
+					"reason": "Exposes the fixed Tracker overview operation through native session authority."
 				}
 			]
 		},
@@ -1656,13 +1698,13 @@
 			"unit": "desktop.service.native-auth",
 			"from": "packages/desktop/src/services/NativeAuthService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-			"definition": "dbb0bc320b5f033457136f31c50f5bdf20042f3800c8e70e737093484be823d7",
+			"definition": "63ba90535b06b8ac3b2a83415d17cd3d045ad739c83dbd72dc94c87b7eee48ff",
 			"relocationDefinition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-				"definition": "dbb0bc320b5f033457136f31c50f5bdf20042f3800c8e70e737093484be823d7",
-				"reason": "Enroll and refresh the native account through the Hub while preserving typed-code fallback."
+				"definition": "63ba90535b06b8ac3b2a83415d17cd3d045ad739c83dbd72dc94c87b7eee48ff",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -1688,6 +1730,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
 					"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
 					"reason": "Reads the Tracker overview through the current native account and rejects stale sessions."
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+					"definition": "dbb0bc320b5f033457136f31c50f5bdf20042f3800c8e70e737093484be823d7",
+					"reason": "Enroll and refresh the native account through the Hub while preserving typed-code fallback."
 				}
 			]
 		},
@@ -1953,15 +2001,21 @@
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "4abf8d2bbc284cab704efcd97b00193b913f511b786d138bab725f773258b25e",
+			"definition": "a3c46c8c0cac2df97918d8e725bf07fbadcf19b58c034609ed8e604556e7337e",
 			"relocationDefinition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "src/cli/program/AnalyticsService.ts",
-				"definition": "4abf8d2bbc284cab704efcd97b00193b913f511b786d138bab725f773258b25e",
-				"reason": "Retains typed command errors and limits task registry records to task analytics."
+				"definition": "a3c46c8c0cac2df97918d8e725bf07fbadcf19b58c034609ed8e604556e7337e",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "4abf8d2bbc284cab704efcd97b00193b913f511b786d138bab725f773258b25e",
+					"reason": "Retains typed command errors and limits task registry records to task analytics."
+				},
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
 					"path": "src/cli/program/AnalyticsService.ts",
@@ -2010,8 +2064,14 @@
 			"unit": "workflow.analytics-metrics",
 			"from": "src/workflows/analyticsMetrics.ts",
 			"to": "src/cli/program/analyticsMetrics.ts",
-			"definition": "f92d3831ea48a7773152fb293f66f0365d51d7b35749870b09044dc4926bb983",
+			"definition": "fb620494c87eb88bcef8f68cc9807b44cab460e0716a35959cd0621a845b826d",
 			"previousReviews": [
+				{
+					"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
+					"path": "src/cli/program/analyticsMetrics.ts",
+					"definition": "f92d3831ea48a7773152fb293f66f0365d51d7b35749870b09044dc4926bb983",
+					"reason": "Join reviews to provider runs and add task difficulty, cost and model-choice metrics."
+				},
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
 					"path": "src/cli/program/analyticsMetrics.ts",
@@ -2032,10 +2092,10 @@
 				}
 			],
 			"review": {
-				"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "src/cli/program/analyticsMetrics.ts",
-				"definition": "f92d3831ea48a7773152fb293f66f0365d51d7b35749870b09044dc4926bb983",
-				"reason": "Join reviews to provider runs and add task difficulty, cost and model-choice metrics."
+				"definition": "fb620494c87eb88bcef8f68cc9807b44cab460e0716a35959cd0621a845b826d",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"relocationDefinition": "ec2621dc9a41ead5584d56839f61c0d5c65a534d0c6e915a8b59c4b2f2d9d044"
 		},
@@ -2049,13 +2109,13 @@
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-			"definition": "84e78ecc79be02be789388ac16a3cbbf9b89d2910638306b453970724dffe75d",
+			"definition": "70246ca346ca80c2d5107a1f0cad76945d020aa2f0c3d1fbfa61d549f38b30bf",
 			"relocationDefinition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "fb1cb346cdef500b9df0e604cde58a67b7cfb806",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-				"definition": "84e78ecc79be02be789388ac16a3cbbf9b89d2910638306b453970724dffe75d",
-				"reason": "Forward the requested Google or typed-code sign-in mode to the desktop main process."
+				"definition": "70246ca346ca80c2d5107a1f0cad76945d020aa2f0c3d1fbfa61d549f38b30bf",
+				"reason": "Adds the local read of the open checkout’s design canvases to the bridge factory."
 			},
 			"previousReviews": [
 				{
@@ -2099,6 +2159,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 					"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
 					"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
+					"definition": "84e78ecc79be02be789388ac16a3cbbf9b89d2910638306b453970724dffe75d",
+					"reason": "Forward the requested Google or typed-code sign-in mode to the desktop main process."
 				}
 			]
 		},
@@ -2148,19 +2214,26 @@
 			"unit": "desktop.service.desktop-bridge",
 			"from": "packages/desktop/src/services/DesktopBridgeService.ts",
 			"to": "packages/desktop/src/services/development-tooling/desktop-bridge-service/DesktopBridgeService.ts",
-			"definition": "85580aa8406bf97a489d1d7122e00ad2014549c874e9571c1134568df0b58145"
+			"definition": "3316fee69b35089498d085b38f9ec0e386163a6549349b38cf90e0c1ddd54a66",
+			"relocationDefinition": "85580aa8406bf97a489d1d7122e00ad2014549c874e9571c1134568df0b58145",
+			"review": {
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
+				"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/DesktopBridgeService.ts",
+				"definition": "3316fee69b35089498d085b38f9ec0e386163a6549349b38cf90e0c1ddd54a66",
+				"reason": "Forward local and Hub listing health to the owning window."
+			}
 		},
 		{
 			"unit": "desktop.service.hosted-project",
 			"from": "packages/desktop/src/services/HostedProjectService.ts",
 			"to": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
-			"definition": "fc2c288b4be9cc433ccc193e61060c5abff69cea783550f12b3f810a802fb4de",
+			"definition": "ba7f9bdca924b527a8f808aba63f2746b2f85b2d6bdcbd77282fbf78806d4520",
 			"relocationDefinition": "b9917f0449c6e3eb571196e41e9ddf074be9c3abfeedfe0a221bd7e7e496059d",
 			"review": {
-				"commit": "7a370a71ae36914a6274621151a9d0fcef37e518",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
-				"definition": "fc2c288b4be9cc433ccc193e61060c5abff69cea783550f12b3f810a802fb4de",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.hosted-project, written by luna); messages and behavior unchanged."
+				"definition": "ba7f9bdca924b527a8f808aba63f2746b2f85b2d6bdcbd77282fbf78806d4520",
+				"reason": "Keep successful project results when either independent source fails."
 			},
 			"previousReviews": [
 				{
@@ -2174,6 +2247,12 @@
 					"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
 					"definition": "d4080b409d5b35aa9aa3d9725c6fe10a6bed4746f65af05fec89bf99ca1e4e1d",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "7a370a71ae36914a6274621151a9d0fcef37e518",
+					"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
+					"definition": "fc2c288b4be9cc433ccc193e61060c5abff69cea783550f12b3f810a802fb4de",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.hosted-project, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -2305,26 +2384,34 @@
 			"unit": "desktop.service.remote-host-runtime",
 			"from": "packages/desktop/src/services/RemoteHostRuntimeService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts",
-			"definition": "e07bc9a43531cb70496d2dd330cd0e3ed4e934084bb6b80b375539cd6f542997",
+			"definition": "8949f90edc7485164c0b85df3e4516502fa4e0116a7e87b56e12da9a0c9d2587",
 			"relocationDefinition": "a051c6220e08e2287a7067ad22e9c2703627421b10f5d8b400a169581376c7e7",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts",
-				"definition": "e07bc9a43531cb70496d2dd330cd0e3ed4e934084bb6b80b375539cd6f542997",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "8949f90edc7485164c0b85df3e4516502fa4e0116a7e87b56e12da9a0c9d2587",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts",
+					"definition": "e07bc9a43531cb70496d2dd330cd0e3ed4e934084bb6b80b375539cd6f542997",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.remote-device-sessions",
 			"from": "packages/desktop/src/services/RemoteDeviceSessionsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-			"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
+			"definition": "d011665237c13879fb24e68725d83a6f34b664fd0b931866c34a01b6016dec74",
 			"relocationDefinition": "53acfdf80eaf7aadf2fd5badff05ee77c037c0d9cea8eb0fe415bb39a0f79653",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "2044fbbf0da5e5e33fc50f875bc3d6fde1634d80",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-				"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
-				"reason": "Derives the Tracker scope from the host, device and pairing generation and offers writes only to the separately approved phone."
+				"definition": "d011665237c13879fb24e68725d83a6f34b664fd0b931866c34a01b6016dec74",
+				"reason": "Merge of the shared RemoteDeviceAddress type rename with the file-local connection detach routine. Detach order and revoke conditions are unchanged."
 			},
 			"previousReviews": [
 				{
@@ -2338,6 +2425,24 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
 					"definition": "304ec40005d70807352f970b2f87fdc7357629b98cf212b75d3ae33cbac9dee3",
 					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.remote-device-sessions, written by haiku); behavior unchanged."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
+					"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
+					"reason": "Derives the Tracker scope from the host, device and pairing generation and offers writes only to the separately approved phone."
+				},
+				{
+					"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
+					"definition": "40e046dba953b85b037acbe99c986536dd1607eaae587f21e4a6fe6e3feec2f6",
+					"reason": "Keep the same detach sequence in a file-local helper so the service class meets the audit limit."
+				},
+				{
+					"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
+					"definition": "32da3c225b2c24de54f8c178ea35af5ba12aabcbfd1672d46a0328ff2f5900e5",
+					"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
 				}
 			]
 		},
@@ -2345,13 +2450,13 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
+			"definition": "d11e938271fccb670af2f039d3f6630e37bec09b5de424dde1d44e54d8e5f1ec",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-				"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
-				"reason": "Exposes immutable project registry reads behind the existing authenticated project boundary."
+				"definition": "d11e938271fccb670af2f039d3f6630e37bec09b5de424dde1d44e54d8e5f1ec",
+				"reason": "Let the verified Hub owner discover the empty collection when collaboration is disabled."
 			},
 			"previousReviews": [
 				{
@@ -2371,6 +2476,24 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
 					"definition": "a23cd83c2d144ca80865a2a6235e3848dd6375d25edb1f0aee4faf4366c11098",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+					"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
+					"reason": "Exposes immutable project registry reads behind the existing authenticated project boundary."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+					"definition": "2ad24503f433feb3473dc1b938a84a38f860fed8d9afb33fecc8c4e23124bee7",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				},
+				{
+					"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+					"definition": "4a8a0a9180b998371222496404d1673bb38ce6db474bf578cdd21f4b13d2235c",
+					"reason": "Adds the authenticated read of a revision’s design canvases behind the project boundary."
 				}
 			]
 		},
@@ -2437,13 +2560,13 @@
 			"unit": "hub.controller.hub-remote",
 			"from": "packages/hub/src/controllers/HubRemoteController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
-			"definition": "72bb6aded5ebd01c24422c3168f34c4a389a60e5f6a6ebe99484c0b17940c8f4",
+			"definition": "1fb7f21d703747a416d5de11590eada81b75336fd1c72ea1e8f4690377e880d0",
 			"relocationDefinition": "69949fa0a61ff7bc03b458c831cc2500e441bad89a146faab9191123f86bbbfc",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
-				"definition": "72bb6aded5ebd01c24422c3168f34c4a389a60e5f6a6ebe99484c0b17940c8f4",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "1fb7f21d703747a416d5de11590eada81b75336fd1c72ea1e8f4690377e880d0",
+				"reason": "Keep the same accepted path shapes while extracting browser route matching."
 			},
 			"previousReviews": [
 				{
@@ -2451,6 +2574,18 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
 					"definition": "568871fa63ff61e5b24d72dedd89947269410a8242f0c4def23667d56e4354f8",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
+					"definition": "72bb6aded5ebd01c24422c3168f34c4a389a60e5f6a6ebe99484c0b17940c8f4",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
+					"definition": "9fa3a98cb5d8061b3a675b277710d5eeb44b295b8f9ffaacf3c95e2200c46e98",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -2537,14 +2672,28 @@
 			"unit": "relay.service.host-command",
 			"from": "packages/relay/src/services/HostCommandService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
-			"definition": "7886b9ebda454f4fe75ba68ddaa4dcabcf0a237acd74e5a57a007e3a2ea42128",
+			"definition": "dae993139db6510b4e91a1c3197c57045a04ab9a8a2c4b05eaefad22fa4d936a",
 			"relocationDefinition": "f3976fc69c97ec44e8772db4c1ec91d10df896931b8e453967641bff17098e7b",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
-				"definition": "7886b9ebda454f4fe75ba68ddaa4dcabcf0a237acd74e5a57a007e3a2ea42128",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "dae993139db6510b4e91a1c3197c57045a04ab9a8a2c4b05eaefad22fa4d936a",
+				"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
+					"definition": "7886b9ebda454f4fe75ba68ddaa4dcabcf0a237acd74e5a57a007e3a2ea42128",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
+					"definition": "4e30a2821c2a8b54f89c97fdf94b82776cc7721c3608cfaf820660c284b0dd78",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.select-environment",
@@ -2556,14 +2705,34 @@
 			"unit": "desktop.adapter.electron-environment",
 			"from": "packages/desktop/src/adapters/ElectronEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
-			"definition": "8d7d82daa9134114f57743b33f4405f0e7860762a6cc5a972d24eb778565a4e7",
+			"definition": "b6e8709201c6fb7079be4112819f711ad44c97affe48d13d2d95621adb53f5dd",
 			"relocationDefinition": "da0290089728366cb117aeb9d8c013df801f3ad2bdc391ed95872f71b3af03ce",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "a834c24e86afe2206ce7435350b59d0f5d7c739a",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
-				"definition": "8d7d82daa9134114f57743b33f4405f0e7860762a6cc5a972d24eb778565a4e7",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "b6e8709201c6fb7079be4112819f711ad44c97affe48d13d2d95621adb53f5dd",
+				"reason": "Exposes the local Home reader and message writer together through the Electron environment."
+			},
+			"previousReviews": [
+				{
+					"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
+					"definition": "52bf1aec33561c92aa67f56253d4ed3170b3129b461fc4531f30c38b15db1bac",
+					"reason": "Exposes the local Tracker Home reader and writer through the existing Electron environment."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
+					"definition": "0149130bfc1ac68ce8ab3b8ec84ed48e7a2182a0737765b560e98ce7219d5dca",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
+					"definition": "8d7d82daa9134114f57743b33f4405f0e7860762a6cc5a972d24eb778565a4e7",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.service.installation-token",
@@ -2708,20 +2877,32 @@
 			"unit": "hub.service.hub-projection",
 			"from": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-			"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
+			"definition": "3170b74d1391ba919bb9d945fb40d7df348ded7da013f4575119d95dab6d639c",
 			"relocationDefinition": "84da7c7af64f93f2bd137180aebff1745bde5b7c5e57f33231705205f8710ea4",
 			"review": {
-				"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-				"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
-				"reason": "Reads every declared unit kind from the authorized project and selected source commit."
+				"definition": "3170b74d1391ba919bb9d945fb40d7df348ded7da013f4575119d95dab6d639c",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+					"definition": "4616832b0b2db4403c5992af0dec0b06903052248b44d2473ff9e54e87fcaa3a",
+					"reason": "Reads committed design canvases after the membership check; thread messages moved to a module function."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
 					"definition": "c009664809133b58455ea2c96288b8da196751d6fbf522f29e28291f1cac6824",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+					"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
+					"reason": "Reads every declared unit kind from the authorized project and selected source commit."
 				}
 			]
 		},
@@ -2777,7 +2958,14 @@
 			"unit": "hub.function.hub-snapshot",
 			"from": "packages/hub/src/services/hub-projection-service/hubSnapshot.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSnapshot.ts",
-			"definition": "3db9a1e79c45309976d0889bf6fdc9c5a489c37362d54ab8b87f518085678a6a"
+			"definition": "ca3c37f942b11914dbd1d82edd30cc27282ba186025b3045f37c0f96a9213399",
+			"review": {
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSnapshot.ts",
+				"definition": "ca3c37f942b11914dbd1d82edd30cc27282ba186025b3045f37c0f96a9213399",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"relocationDefinition": "3db9a1e79c45309976d0889bf6fdc9c5a489c37362d54ab8b87f518085678a6a"
 		},
 		{
 			"unit": "hub.function.hub-threads",
@@ -2821,13 +3009,13 @@
 			"unit": "service.kernel-benchmark",
 			"from": "src/services/kernel-benchmark-service/KernelBenchmarkService.ts",
 			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-			"definition": "3fea65612225e8dbba3359c5f0638e73b047fa142b75aaaf73edfb21792436d6",
+			"definition": "fa3c4eff99cc702d64ddb916f74baa64a91a3962c4eef2e6f1a68cd57ca1435d",
 			"relocationDefinition": "31eb00cde9c6e7f351bd776bfd29d8e3db6c5e2952ac5c3d0320b7a7d7aaa28f",
 			"review": {
-				"commit": "a5832fa2f6ee605b13d105b70f5e5245ad2471b5",
+				"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
 				"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-				"definition": "3fea65612225e8dbba3359c5f0638e73b047fa142b75aaaf73edfb21792436d6",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.kernel-benchmark, written by haiku); messages and behavior unchanged."
+				"definition": "fa3c4eff99cc702d64ddb916f74baa64a91a3962c4eef2e6f1a68cd57ca1435d",
+				"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
 			},
 			"previousReviews": [
 				{
@@ -2853,6 +3041,12 @@
 					"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
 					"definition": "0b7506528bdf23937d0b9a65fffd7ca72fa97f6d4274b3c75d85e15788b2faa5",
 					"reason": "Retain bounded process execution, bounded nested runtime lifetimes and asynchronous cold kernel samples."
+				},
+				{
+					"commit": "a5832fa2f6ee605b13d105b70f5e5245ad2471b5",
+					"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
+					"definition": "3fea65612225e8dbba3359c5f0638e73b047fa142b75aaaf73edfb21792436d6",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.kernel-benchmark, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
@@ -2887,14 +3081,28 @@
 			"unit": "desktop.adapter.remote-http-project",
 			"from": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-			"definition": "730683f6700bea18354561f796af8ee23a08cf57cfde91d43a4ee0529fe0ef01",
+			"definition": "abe86d2da7026c6c5e3021458319f91650c18a3a60f972a689c858156d303b00",
 			"relocationDefinition": "56523dcc7e317b6acacd6394fa67dd5a8ab6fcd02336c1e564b9f5ad972c41fa",
 			"review": {
-				"commit": "b8d18e06358ab516eb0c5af4062a424e1df2a524",
+				"commit": "3f638101fe3cfedaa0bd481767c9cf5b86948e83",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-				"definition": "730683f6700bea18354561f796af8ee23a08cf57cfde91d43a4ee0529fe0ef01",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.remote-http-project, written by luna); messages and behavior unchanged."
-			}
+				"definition": "abe86d2da7026c6c5e3021458319f91650c18a3a60f972a689c858156d303b00",
+				"reason": "Names the Wave 5 contract types within existing file and class limits, preserving JavaScript output."
+			},
+			"previousReviews": [
+				{
+					"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+					"definition": "d28df1770b6cc54d871a01c538728317890df1c0ebbb532c5acfcb5c9df3efbe",
+					"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				},
+				{
+					"commit": "b8d18e06358ab516eb0c5af4062a424e1df2a524",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+					"definition": "730683f6700bea18354561f796af8ee23a08cf57cfde91d43a4ee0529fe0ef01",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.remote-http-project, written by luna); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.hosted-image",
@@ -2913,39 +3121,61 @@
 			"unit": "desktop.service.hosted-evidence",
 			"from": "packages/desktop/src/services/HostedEvidenceService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
-			"definition": "26c83a998335153a6811dc253db0648a712d26444acf2d5610b3b3d43ef689bf",
+			"definition": "98b5a43610ede43e46c02564793793fc6d2d939fc36f0346c07b3092ed391313",
 			"relocationDefinition": "3e00646f73cc3637b2bfe2472711b4aadc2854340bd792eee4568d195b083fec",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
-				"definition": "26c83a998335153a6811dc253db0648a712d26444acf2d5610b3b3d43ef689bf",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "98b5a43610ede43e46c02564793793fc6d2d939fc36f0346c07b3092ed391313",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
+					"definition": "8bd4a100b7da2ea584c90cde6af9d5a9f170eb8499bd126894b8dac15de0be5e",
+					"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
+					"definition": "26c83a998335153a6811dc253db0648a712d26444acf2d5610b3b3d43ef689bf",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.relay-link",
 			"from": "packages/desktop/src/services/relay-link-service/RelayLinkService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/RelayLinkService.ts",
-			"definition": "e2f64cb89192d7646c2d6d144735f6ec4ef5ee62b6fb9e91de735cee1db7ed50",
+			"definition": "752ca8162bc0a91f80942f1465aca4858cb093add00dff9335c963b2fc2a0a36",
 			"relocationDefinition": "001bc6336fe43c5f2ba0a17caa6c00c55fa2ef254a9089931ef3bfd8773d22d3",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/RelayLinkService.ts",
-				"definition": "e2f64cb89192d7646c2d6d144735f6ec4ef5ee62b6fb9e91de735cee1db7ed50",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "752ca8162bc0a91f80942f1465aca4858cb093add00dff9335c963b2fc2a0a36",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/RelayLinkService.ts",
+					"definition": "e2f64cb89192d7646c2d6d144735f6ec4ef5ee62b6fb9e91de735cee1db7ed50",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.relay-frame",
 			"from": "packages/desktop/src/services/relay-link-service/relayFrame.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
-			"definition": "da403987e099b1b3b6d4678f91ad7da1f5ba076c4eeede6fd369bcc393cbeef2",
+			"definition": "349cd2ad842d559df000d2575546c93866b30c6f8ccc5b3f63c87707b1c9a615",
 			"relocationDefinition": "c73bfca3686cc759002345ef1fc8b27750c7cb3ad6e44628483fbd48a8da992a",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
-				"definition": "da403987e099b1b3b6d4678f91ad7da1f5ba076c4eeede6fd369bcc393cbeef2",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "349cd2ad842d559df000d2575546c93866b30c6f8ccc5b3f63c87707b1c9a615",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
 			},
 			"previousReviews": [
 				{
@@ -2953,6 +3183,18 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
 					"definition": "a514558bdfc54e7528760fe6651f143fd7d6582d2aea2911c8b65a5afeb8fe1f",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
+					"definition": "da403987e099b1b3b6d4678f91ad7da1f5ba076c4eeede6fd369bcc393cbeef2",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
+					"definition": "90000782bb56f08c67e0d4a59c7b0183ab8f7d99a40bef6336055695e235a75f",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -3459,14 +3701,22 @@
 			"unit": "reports.function.report-cleanup-log",
 			"from": "packages/reports/src/services/report-retention-service/reportCleanupLog.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
-			"definition": "4b15ab64d65f137e1ecbbc167fc3784adf08bb743623ad71f226d9adc220bebe",
+			"definition": "6c1d4a6b865cab4688720e1b28c09ddf06877d2041d5e7e75d68dd71f0671d92",
 			"relocationDefinition": "f990585337ff82846ecf52563a07087274b1985f0bb5efecad806929ecb4d8a1",
 			"review": {
-				"commit": "1a95df8cade8484c9bc5084bf3f6be73e0476e19",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
-				"definition": "4b15ab64d65f137e1ecbbc167fc3784adf08bb743623ad71f226d9adc220bebe",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-cleanup-log, written by haiku); behavior unchanged."
-			}
+				"definition": "6c1d4a6b865cab4688720e1b28c09ddf06877d2041d5e7e75d68dd71f0671d92",
+				"reason": "Keep the cleanup log fields and move the exported type into its companion file."
+			},
+			"previousReviews": [
+				{
+					"commit": "1a95df8cade8484c9bc5084bf3f6be73e0476e19",
+					"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
+					"definition": "4b15ab64d65f137e1ecbbc167fc3784adf08bb743623ad71f226d9adc220bebe",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-cleanup-log, written by haiku); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "reports.function.report-local-cleanup",
@@ -3611,20 +3861,32 @@
 			"unit": "desktop.service.project-session",
 			"from": "packages/desktop/src/services/ProjectSessionService.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
-			"definition": "2da1880fbb37c5df1f6d27651c116d9bc643386dc6ce3320044ba995ce8c1d65",
+			"definition": "60e1c8625c7b0bc5748ec9c6d410e1523b893953003b54f85f3d112bd3c2faca",
 			"relocationDefinition": "0d0e15a7a7474cac77d924f1b80a3a0198d40d983f1f6f4db3086dec6a43609e",
 			"review": {
-				"commit": "928dbd0877bbe55f75bb4b060551d1c5fa3c884d",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
-				"definition": "2da1880fbb37c5df1f6d27651c116d9bc643386dc6ce3320044ba995ce8c1d65",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-session, written by luna); messages and behavior unchanged."
+				"definition": "60e1c8625c7b0bc5748ec9c6d410e1523b893953003b54f85f3d112bd3c2faca",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
+					"definition": "bb297bdc3d467bd12e175b4a4c33da49fc6c702871a14b50da7cc742fe16395f",
+					"reason": "Share the existing writable-tip predicate between the snapshot and the session mutation gate."
+				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/services/ProjectSessionService.ts",
 					"definition": "b682426cdf8ec2c96946aa9725037009973fff0487cff89abdd4695052f6b0be",
 					"reason": "Retain the game branch’s selection state and game project identity."
+				},
+				{
+					"commit": "928dbd0877bbe55f75bb4b060551d1c5fa3c884d",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
+					"definition": "2da1880fbb37c5df1f6d27651c116d9bc643386dc6ce3320044ba995ce8c1d65",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-session, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -3632,7 +3894,14 @@
 			"unit": "desktop.service.catalog",
 			"from": "packages/desktop/src/services/catalog-service/CatalogService.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts",
-			"definition": "3df627190d28e960cd8ca1480b90cab4f6913ad08b0ef9ae7500bd8920b29b97"
+			"definition": "ae6dca66847336ec80f2b94caa275480379ab3497beb5d50352824f9dd723d93",
+			"review": {
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts",
+				"definition": "ae6dca66847336ec80f2b94caa275480379ab3497beb5d50352824f9dd723d93",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"relocationDefinition": "3df627190d28e960cd8ca1480b90cab4f6913ad08b0ef9ae7500bd8920b29b97"
 		},
 		{
 			"unit": "desktop.function.catalog-detail",
@@ -3698,14 +3967,22 @@
 			"unit": "relay.controller.public-relay",
 			"from": "packages/relay/src/controllers/PublicRelayController.ts",
 			"to": "packages/relay/src/lib/networking-security/relay/PublicRelayController.ts",
-			"definition": "5e9d9987854743aa6412593a073c007ada35a1c9151f975599ddda0ed37354c8",
+			"definition": "49c87a2afdeb9334aa46ce10c87a613a6745c2caf66fe098af865f3c8ab43ea9",
 			"relocationDefinition": "312fda1bbc8e913bb9972dbb7598d7ab2ed09a616b07cf1d9a44ebb77697120a",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/relay/src/lib/networking-security/relay/PublicRelayController.ts",
-				"definition": "5e9d9987854743aa6412593a073c007ada35a1c9151f975599ddda0ed37354c8",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "49c87a2afdeb9334aa46ce10c87a613a6745c2caf66fe098af865f3c8ab43ea9",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/relay/src/lib/networking-security/relay/PublicRelayController.ts",
+					"definition": "5e9d9987854743aa6412593a073c007ada35a1c9151f975599ddda0ed37354c8",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "relay.middleware.connect-guard",
@@ -3816,7 +4093,22 @@
 			"unit": "relay.service.host-registry",
 			"from": "packages/relay/src/services/HostRegistryService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostRegistryService.ts",
-			"definition": "69de43d51c22d8b417cf4aa274ff4b0f4ceced25ff4562a850aa1392f9b28706"
+			"definition": "9de1e63b42b29cde3562a305ac01eaeb5735d2b5b09800f04df0d170c5f40856",
+			"relocationDefinition": "69de43d51c22d8b417cf4aa274ff4b0f4ceced25ff4562a850aa1392f9b28706",
+			"review": {
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostRegistryService.ts",
+				"definition": "9de1e63b42b29cde3562a305ac01eaeb5735d2b5b09800f04df0d170c5f40856",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostRegistryService.ts",
+					"definition": "d6057ad874e9ec173e6eac3291ef53f1d5ecb0c8f5e13002fde811f723267743",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "workflow.build-history",
@@ -3939,14 +4231,22 @@
 			"unit": "relay.adapter.host-storage",
 			"from": "packages/relay/src/adapters/HostStorageAdapter.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostStorageAdapter.ts",
-			"definition": "27218e35b4d1f75b0961f5ead2bdd1e16e177c523f0a6a2fc6a16ad1a67b0d5a",
+			"definition": "2beacf4d33f9e98117833434d15f5922cd40cd1ba11f97645122107ea1ada028",
 			"relocationDefinition": "45aaedb5d41741a10415019233bae813cd5414dd8fa7ff1fc05f810c369b8506",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostStorageAdapter.ts",
-				"definition": "27218e35b4d1f75b0961f5ead2bdd1e16e177c523f0a6a2fc6a16ad1a67b0d5a",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "2beacf4d33f9e98117833434d15f5922cd40cd1ba11f97645122107ea1ada028",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostStorageAdapter.ts",
+					"definition": "27218e35b4d1f75b0961f5ead2bdd1e16e177c523f0a6a2fc6a16ad1a67b0d5a",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				}
+			]
 		},
 		{
 			"unit": "command.info",
@@ -3958,14 +4258,22 @@
 			"unit": "relay.service.host-link",
 			"from": "packages/relay/src/services/HostLinkService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostLinkService.ts",
-			"definition": "ac83c49f97ea12b07e983bd5cf616075820e17e3f9603ad378c602eb7d572ee4",
+			"definition": "705f44680322a36581ec016c6e9483924a1fd130954b54b6a5415826f596f857",
 			"relocationDefinition": "41c2d0283b52598883d5e8d3f4e97cd8804bcb9102bee337b1ac799a881b2276",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostLinkService.ts",
-				"definition": "ac83c49f97ea12b07e983bd5cf616075820e17e3f9603ad378c602eb7d572ee4",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "705f44680322a36581ec016c6e9483924a1fd130954b54b6a5415826f596f857",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostLinkService.ts",
+					"definition": "ac83c49f97ea12b07e983bd5cf616075820e17e3f9603ad378c602eb7d572ee4",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				}
+			]
 		},
 		{
 			"unit": "hub.service.google-identity",
@@ -4049,27 +4357,49 @@
 			"unit": "hub.service.hub-evidence",
 			"from": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
-			"definition": "eafd716cc1f661e23d7d16bb94afe2aa70bcfd9feceb040d7267803f29ddeb27",
+			"definition": "01746d96178828c67eaae0f5364635e24bc1c750bd657f75011572579b0b4f12",
 			"relocationDefinition": "b8b70551bd974df12b8d8bc33ada984bf1caa9395a519226df7aa5865651a69f",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
-				"path": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
-				"definition": "eafd716cc1f661e23d7d16bb94afe2aa70bcfd9feceb040d7267803f29ddeb27",
-				"reason": "Retain main’s focused screenshot evidence reads."
-			}
+				"commit": "269686f1db6350c0a6583aa1e8162e3a0a7b59b0",
+				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
+				"definition": "01746d96178828c67eaae0f5364635e24bc1c750bd657f75011572579b0b4f12",
+				"reason": "Names the Wave 5 contract types within existing file and class limits, preserving JavaScript output."
+			},
+			"previousReviews": [
+				{
+					"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
+					"definition": "7d99ab9e0e7ecd8be89402dbc8a6e2e2edcfd3d62b74d685597b6403717255f9",
+					"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				},
+				{
+					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+					"path": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
+					"definition": "eafd716cc1f661e23d7d16bb94afe2aa70bcfd9feceb040d7267803f29ddeb27",
+					"reason": "Retain main’s focused screenshot evidence reads."
+				}
+			]
 		},
 		{
 			"unit": "hub.function.hub-evidence-scope",
 			"from": "packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
-			"definition": "ec114305e153af3e9d6899c121b5f5128fa7b0df7a9aef2059d0f01dfda056f6",
+			"definition": "21c9b49426e8a93976c07fb776d80e1912e89d49d98a1c60d806c55cd0fe7622",
 			"relocationDefinition": "6ca680340adfdaf2b2b0cf008429abbb7d040c4a3919aceb8c31594b888a1f0b",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
-				"definition": "ec114305e153af3e9d6899c121b5f5128fa7b0df7a9aef2059d0f01dfda056f6",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "21c9b49426e8a93976c07fb776d80e1912e89d49d98a1c60d806c55cd0fe7622",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
+					"definition": "ec114305e153af3e9d6899c121b5f5128fa7b0df7a9aef2059d0f01dfda056f6",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.function.hub-notes",
@@ -4081,15 +4411,21 @@
 			"unit": "hub.service.hub-attached",
 			"from": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
 			"to": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
-			"definition": "fd5a2ff5e9f21cbc47cd79f401193e8f08ea173b4ed7d310c18976cc689bcdfb",
+			"definition": "5f3025b09b54bcf5dee60d32a7716890d7464013380afb1e6aef51020e15dd6b",
 			"relocationDefinition": "74a581a9942c2de9e8539b9e6b0805da00738aea18fcc599b6ad93c366407a66",
 			"review": {
-				"commit": "f29b931cb13cc0bf1867dcbf03f6bccfcfec9329",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
-				"definition": "fd5a2ff5e9f21cbc47cd79f401193e8f08ea173b4ed7d310c18976cc689bcdfb",
-				"reason": "Use the canonical commit formatter while preserving the service operations and their original reviews."
+				"definition": "5f3025b09b54bcf5dee60d32a7716890d7464013380afb1e6aef51020e15dd6b",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "f29b931cb13cc0bf1867dcbf03f6bccfcfec9329",
+					"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
+					"definition": "fd5a2ff5e9f21cbc47cd79f401193e8f08ea173b4ed7d310c18976cc689bcdfb",
+					"reason": "Use the canonical commit formatter while preserving the service operations and their original reviews."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
@@ -4134,15 +4470,27 @@
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-			"definition": "ce6d36c3ba09207e29ea0c473ec1e6f253e2ea87063f2c1de0205fe6eedb7c6b",
+			"definition": "0f7d724ac9ead0302768c7f4142342f7c346de569e5f6d3878b27ee4c379ce9d",
 			"relocationDefinition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "e5d8b2e82ca0d521f40127e94e074203e6c0a0fa",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-				"definition": "ce6d36c3ba09207e29ea0c473ec1e6f253e2ea87063f2c1de0205fe6eedb7c6b",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "0f7d724ac9ead0302768c7f4142342f7c346de569e5f6d3878b27ee4c379ce9d",
+				"reason": "Reads Tracker Home and sends contextual Chief of Staff messages through the paired Mac connection."
 			},
 			"previousReviews": [
+				{
+					"commit": "baa2b466cabe1faec79b19112b0bde7b6cb40cc9",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+					"definition": "d6fb0ad223bb2b23164c34dad8f3692f6848f080ed26ab32a9c7e127f9e938d8",
+					"reason": "Offers the native Vault to the phone page only where the shell ships its HarnessVault plugin."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+					"definition": "8a52d9f479af802a12f8fd155a2bf6575bbf9530a42b27e7f4b0e728f3ae948c",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
 				{
 					"commit": "caea83354142413dd97edae29bdd055924c9847b",
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
@@ -4166,6 +4514,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
 					"definition": "9e641f72cb9223152e16c2edaa1f9e93dcf97f813bb1ca55943a0216e8b748d8",
 					"reason": "Supplies the local Tracker tool port alongside the Capacitor account and paired-host bridge."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+					"definition": "ce6d36c3ba09207e29ea0c473ec1e6f253e2ea87063f2c1de0205fe6eedb7c6b",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
 				}
 			]
 		},
@@ -4259,13 +4613,13 @@
 			"unit": "desktop.adapter.hosted-evidence",
 			"from": "packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-			"definition": "67ad5c6feb42d3b0475662a67904c8c4174cbb6c5e90e3f9c32dd43cdedc0ce2",
+			"definition": "0ff87f9ce481bb5d6e5509fb0bf0a0257bf59113c2e36b5e5689bf3b3de736fa",
 			"relocationDefinition": "fde061067f0730945bc7cc76edcb411ee62318daa9bd504164739b5c53e32039",
 			"review": {
-				"commit": "c6d8e7b38fab9a0e9a579917054309013a8ff606",
+				"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-				"definition": "67ad5c6feb42d3b0475662a67904c8c4174cbb6c5e90e3f9c32dd43cdedc0ce2",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.hosted-evidence, written by luna); messages and behavior unchanged."
+				"definition": "0ff87f9ce481bb5d6e5509fb0bf0a0257bf59113c2e36b5e5689bf3b3de736fa",
+				"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
 			},
 			"previousReviews": [
 				{
@@ -4273,6 +4627,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 					"definition": "d3d5a3e4682b4d5aa9bc11aebeb6b78b267ede76d6af855804a055c43b2ec5b7",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "c6d8e7b38fab9a0e9a579917054309013a8ff606",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
+					"definition": "67ad5c6feb42d3b0475662a67904c8c4174cbb6c5e90e3f9c32dd43cdedc0ce2",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.hosted-evidence, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -4306,13 +4666,13 @@
 			"unit": "desktop.service.device-session",
 			"from": "packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
-			"definition": "3ecdbe1cd559752425a2c066dad60cf9dccafc44419f9fb0391ab5feffbcb423",
+			"definition": "4558e1455cff66946adad049fb222a550f0c6630e6d370ab91c224529e4edbb2",
 			"relocationDefinition": "b7d6fcb27f7bddb260c21675238683b8dd638ab0e3360df590dd1a39a8c7a51f",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "d5357e3db97f2f17b744bba4de9e351da2d8cac0",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
-				"definition": "3ecdbe1cd559752425a2c066dad60cf9dccafc44419f9fb0391ab5feffbcb423",
-				"reason": "Advertises granted Tracker operations and cancels in-flight writes when the device session ends."
+				"definition": "4558e1455cff66946adad049fb222a550f0c6630e6d370ab91c224529e4edbb2",
+				"reason": "Adds the homeChat device method: a signed-in account device answers an open Tracker ask or notes a listed item over the encrypted device channel, because the Hub queue needs the Home upload that is off."
 			},
 			"previousReviews": [
 				{
@@ -4320,6 +4680,18 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
 					"definition": "35a8cc71a4e882dbc3f2c662a0d0228eaed1f28d785dfbf3a069e06861145745",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
+					"definition": "3ecdbe1cd559752425a2c066dad60cf9dccafc44419f9fb0391ab5feffbcb423",
+					"reason": "Advertises granted Tracker operations and cancels in-flight writes when the device session ends."
+				},
+				{
+					"commit": "32f91c2f702b2f1ec6652b91124f368be40639a2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
+					"definition": "b74a8ec0ea8e41df0c368608faccb8c9d71dca30b9ca254048239083c66a7a9a",
+					"reason": "Answers the read-only homeSnapshot method so the signed-in Hub Home can read this computer over the encrypted device channel."
 				}
 			]
 		},
@@ -4447,13 +4819,13 @@
 			"unit": "desktop.service.remote-pairing-control",
 			"from": "packages/desktop/src/services/RemotePairingControlService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
-			"definition": "1fcf3e365bcd0aff9aac864c40e7b955d8c3433ccab7668a8f1bddae74b62b5f",
+			"definition": "4cba2dbc4acff7dd1411d766ce953308b0772484a431cac726c7ddf575e777c3",
 			"relocationDefinition": "387180118bceee12a21e4a25d91232047e1844acc24e79528c4902816fd1df06",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
-				"definition": "1fcf3e365bcd0aff9aac864c40e7b955d8c3433ccab7668a8f1bddae74b62b5f",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "4cba2dbc4acff7dd1411d766ce953308b0772484a431cac726c7ddf575e777c3",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 			},
 			"previousReviews": [
 				{
@@ -4467,6 +4839,18 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
 					"definition": "08ddc6ce251aade3c8593921d8044da50ddf93a66ca49f8742005b895efc0ba7",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.remote-pairing-control, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
+					"definition": "1fcf3e365bcd0aff9aac864c40e7b955d8c3433ccab7668a8f1bddae74b62b5f",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
+					"definition": "ccd542c5d7a8701b7e9800c6559c0df58bc333a297b5d4cc044748f45cf32819",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -4534,7 +4918,22 @@
 			"unit": "relay.controller.pairing",
 			"from": "packages/relay/src/controllers/PairingController.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingController.ts",
-			"definition": "b29d4ffd67bbd63067c9444a8c092596f5543dde219be6ba3d2109137756b6f3"
+			"definition": "53cf177720bfa9955358e9c28183095f09d13dd132d19e10c82d9b99321c926e",
+			"relocationDefinition": "b29d4ffd67bbd63067c9444a8c092596f5543dde219be6ba3d2109137756b6f3",
+			"review": {
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingController.ts",
+				"definition": "53cf177720bfa9955358e9c28183095f09d13dd132d19e10c82d9b99321c926e",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+			},
+			"previousReviews": [
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingController.ts",
+					"definition": "8273a8be374c129d3a6415998e305173b1ccbff6b26803837e83eb9559b4e4c0",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "service.history-status",
@@ -4594,13 +4993,13 @@
 			"unit": "desktop.service.project-run",
 			"from": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-			"definition": "cedffe6f388707b039beea1a66a9703fccfd930591625766fe40a80654e4f553",
+			"definition": "b15a1eece6254f09218f3d857fbc261fa943e1f0760ffcd304acf4ac99ddc62b",
 			"relocationDefinition": "1c852abd6f52c52c7ce29c47f3b8477eb7c958547321a94cfef241083068e502",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-				"definition": "cedffe6f388707b039beea1a66a9703fccfd930591625766fe40a80654e4f553",
-				"reason": "Preserves named source guards while separating unit proposal and visual authoring providers."
+				"definition": "b15a1eece6254f09218f3d857fbc261fa943e1f0760ffcd304acf4ac99ddc62b",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
 			},
 			"previousReviews": [
 				{
@@ -4620,6 +5019,12 @@
 					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
 					"reason": "Use the selected agent for the new unit proposal, then send visual authoring to Sonnet.",
 					"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c"
+				},
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+					"definition": "cedffe6f388707b039beea1a66a9703fccfd930591625766fe40a80654e4f553",
+					"reason": "Preserves named source guards while separating unit proposal and visual authoring providers."
 				}
 			]
 		},
@@ -4699,15 +5104,27 @@
 			"unit": "desktop.adapter.git-source",
 			"from": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-			"definition": "71f9745718eab0c3bc0eba541ed44628bdbbc6c5eaf4b3779d1caa64fd7fa277",
+			"definition": "5ba735e78352af00edf0fa390787fe2e62390fd7e900738197555aeee1298dd6",
 			"relocationDefinition": "01decde5581e75ca571d6f0156881dd2b9e059ef55127d28b366b3b64713cf90",
 			"review": {
-				"commit": "856fccb0aecf758bed1250f6a20c54ff31348e7c",
+				"commit": "3f638101fe3cfedaa0bd481767c9cf5b86948e83",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-				"definition": "71f9745718eab0c3bc0eba541ed44628bdbbc6c5eaf4b3779d1caa64fd7fa277",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.git-source, written by haiku); messages and behavior unchanged."
+				"definition": "5ba735e78352af00edf0fa390787fe2e62390fd7e900738197555aeee1298dd6",
+				"reason": "Names the Wave 5 contract types within existing file and class limits, preserving JavaScript output."
 			},
 			"previousReviews": [
+				{
+					"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+					"definition": "c8bcd4e129cd8d5b7d2a9ab40075867e690336de8918bcd4069062cf23178a23",
+					"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				},
+				{
+					"commit": "856fccb0aecf758bed1250f6a20c54ff31348e7c",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+					"definition": "71f9745718eab0c3bc0eba541ed44628bdbbc6c5eaf4b3779d1caa64fd7fa277",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.git-source, written by haiku); messages and behavior unchanged."
+				},
 				{
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
@@ -4761,26 +5178,40 @@
 			"unit": "relay.controller.manage",
 			"from": "packages/relay/src/controllers/ManageController.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
-			"definition": "4bef6043008b147cdd84be05837bc3faeb08ec539f45a0332f252d039d7030d8",
+			"definition": "6ad6f4791af99ee6ac6c4715ea4c5588fc0ec1c9b6c1f2e8dfdcce91494a33e7",
 			"relocationDefinition": "19f3865289625f04165dce6082558f633a40500c264a6d15e47ca519fbf5b8ee",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
-				"definition": "4bef6043008b147cdd84be05837bc3faeb08ec539f45a0332f252d039d7030d8",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "6ad6f4791af99ee6ac6c4715ea4c5588fc0ec1c9b6c1f2e8dfdcce91494a33e7",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
+					"definition": "4bef6043008b147cdd84be05837bc3faeb08ec539f45a0332f252d039d7030d8",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
+					"definition": "40c6e95cbd8944a8532aabd479867a61fd5948cea154fc9ab3fa1ce43faa3482",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "desktop.adapter.remote-registration",
 			"from": "packages/desktop/src/adapters/RemoteRegistrationAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
-			"definition": "4e285fb9ef37f065ba3270b9c7ce7f3154c93a049a3a605f9bc0b6f277e375eb",
+			"definition": "755d00b74c27519040293afb2412cda77e5a6af85de949c3ea2586047bcb8fa4",
 			"relocationDefinition": "0b6b8fd1d9cbd054a71db55cd499d6ad412a4e65d86ea520e3ab8bf6414549a5",
 			"review": {
-				"commit": "f3e39664e1ffc6da75a8706534891256ed85d362",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
-				"definition": "4e285fb9ef37f065ba3270b9c7ce7f3154c93a049a3a605f9bc0b6f277e375eb",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.remote-registration, written by haiku); messages and behavior unchanged."
+				"definition": "755d00b74c27519040293afb2412cda77e5a6af85de949c3ea2586047bcb8fa4",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -4788,6 +5219,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
 					"definition": "0a9926f6641d205003dc13959832bf6c59ba9bf7d74a03183e08ac3d9888d1e4",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "f3e39664e1ffc6da75a8706534891256ed85d362",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
+					"definition": "4e285fb9ef37f065ba3270b9c7ce7f3154c93a049a3a605f9bc0b6f277e375eb",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.remote-registration, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
@@ -5078,7 +5515,14 @@
 			"unit": "workflow.analytics-html",
 			"from": "src/workflows/analyticsHtml.ts",
 			"to": "src/cli/program/analyticsHtml.ts",
-			"definition": "13caf2eac7315dde69296bd9702bad39c7546c2413f0d2f074c90ed43d6c490a"
+			"definition": "aed2eca6d037cc965726b832e5a11dd9d33a4c1f9f66f2fe9a60b28013f93776",
+			"review": {
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"path": "src/cli/program/analyticsHtml.ts",
+				"definition": "aed2eca6d037cc965726b832e5a11dd9d33a4c1f9f66f2fe9a60b28013f93776",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"relocationDefinition": "13caf2eac7315dde69296bd9702bad39c7546c2413f0d2f074c90ed43d6c490a"
 		},
 		{
 			"unit": "hub.controller.hub-agent",
@@ -5158,19 +5602,26 @@
 			"unit": "hub.middleware.hub-responses",
 			"from": "packages/hub/src/middleware/HubResponsesMiddleware.ts",
 			"to": "packages/hub/src/lib/development-tooling/server-hooks/HubResponsesMiddleware.ts",
-			"definition": "b277bdb93533368ac620de101aea1dbea180dbb933a7d346265624358f4e72ae"
+			"definition": "57692f3c0adc1b841871ea27259802b52b8fe760ff2d26b024b2e4a848469578",
+			"relocationDefinition": "b277bdb93533368ac620de101aea1dbea180dbb933a7d346265624358f4e72ae",
+			"review": {
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"path": "packages/hub/src/lib/development-tooling/server-hooks/HubResponsesMiddleware.ts",
+				"definition": "57692f3c0adc1b841871ea27259802b52b8fe760ff2d26b024b2e4a848469578",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			}
 		},
 		{
 			"unit": "desktop.service.device-operations",
 			"from": "packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
-			"definition": "a1bdbfed3868e6803dfaa7f7b8c4d96db4b7472d73f1d563cdd504623ca51942",
+			"definition": "7c6005e51c451ca772f1b253d9b31556843d5fe412b6ae8d9bd0a4ab90af6d30",
 			"relocationDefinition": "6af0c5d46f2451c29e1730ba56ac45579308fe38681e82c0a939181c136a54db",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "d5357e3db97f2f17b744bba4de9e351da2d8cac0",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
-				"definition": "a1bdbfed3868e6803dfaa7f7b8c4d96db4b7472d73f1d563cdd504623ca51942",
-				"reason": "Requires a granted callback and a live encrypted session when dispatching Tracker pulls and pushes."
+				"definition": "7c6005e51c451ca772f1b253d9b31556843d5fe412b6ae8d9bd0a4ab90af6d30",
+				"reason": "Adds the homeChat device method: a signed-in account device answers an open Tracker ask or notes a listed item over the encrypted device channel, because the Hub queue needs the Home upload that is off."
 			},
 			"previousReviews": [
 				{
@@ -5178,6 +5629,18 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
 					"definition": "784d078f78fda8536a0c75c96171242770e87a91e28a752b0216454dd34e7811",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
+					"definition": "a1bdbfed3868e6803dfaa7f7b8c4d96db4b7472d73f1d563cdd504623ca51942",
+					"reason": "Requires a granted callback and a live encrypted session when dispatching Tracker pulls and pushes."
+				},
+				{
+					"commit": "32f91c2f702b2f1ec6652b91124f368be40639a2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
+					"definition": "fbde4a5560b9777c1b7499ffe81f114e9619e132120b19f89bf2a1dbc7b0205e",
+					"reason": "Answers the read-only homeSnapshot method so the signed-in Hub Home can read this computer over the encrypted device channel."
 				}
 			]
 		},
@@ -5191,54 +5654,84 @@
 			"unit": "desktop.adapter.planning-facade",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
-			"definition": "9ac0c7c803504e36b3f86bdf38c2d192a6076e8e10429f7141a96e6014aa031a",
+			"definition": "4c477080c37f7c7ed47bc954462b23b27a51842421b342d90686ca0adc9b3577",
 			"relocationDefinition": "afff4002416783534f5046ec92099d8a29b37ef726ad3bfdef6e4529d145b47b",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
-				"reason": "Resolve the approved option’s screenshots together under one pinned version read.",
-				"definition": "9ac0c7c803504e36b3f86bdf38c2d192a6076e8e10429f7141a96e6014aa031a"
-			}
+				"definition": "4c477080c37f7c7ed47bc954462b23b27a51842421b342d90686ca0adc9b3577",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
+					"reason": "Resolve the approved option’s screenshots together under one pinned version read.",
+					"definition": "9ac0c7c803504e36b3f86bdf38c2d192a6076e8e10429f7141a96e6014aa031a"
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.planning-message",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningMessage.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
-			"definition": "46ddbce8632bb178ef27ce80cae44433f455b7e6385c4b4bb74e10b990a2c985",
+			"definition": "957d5cd563e8cdc3e1086720bab677798917022d5bb19b5db9d1fca4cffc644b",
 			"relocationDefinition": "be9626e715b55eb2dfb7159373284e12e01f21a0933995ac5316380d0fc7cb7b",
 			"review": {
-				"commit": "ea98a0daf1790475bd214f53387e2b8c81e26288",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
-				"definition": "46ddbce8632bb178ef27ce80cae44433f455b7e6385c4b4bb74e10b990a2c985",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-message, written by luna); messages and behavior unchanged."
-			}
+				"definition": "957d5cd563e8cdc3e1086720bab677798917022d5bb19b5db9d1fca4cffc644b",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "ea98a0daf1790475bd214f53387e2b8c81e26288",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
+					"definition": "46ddbce8632bb178ef27ce80cae44433f455b7e6385c4b4bb74e10b990a2c985",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-message, written by luna); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.planning-reads",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningReads.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.ts",
-			"definition": "0c069ab1501e5199088f670db9e4af61c2c97b8c319384e8a3df445054759c9b",
+			"definition": "9cd93befc66ee1c19033857b467b513c7034734d0ed94f6fc559bff49630c633",
 			"relocationDefinition": "0fdd6df349103602a1edd9fc62dc32ffe1a41fecf315c0de75a532bef0aae255",
 			"review": {
-				"commit": "9e877aacd0ee365f1c643321e119a78de3b22545",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.ts",
-				"definition": "0c069ab1501e5199088f670db9e4af61c2c97b8c319384e8a3df445054759c9b",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-reads, written by luna); messages and behavior unchanged."
-			}
+				"definition": "9cd93befc66ee1c19033857b467b513c7034734d0ed94f6fc559bff49630c633",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "9e877aacd0ee365f1c643321e119a78de3b22545",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.ts",
+					"definition": "0c069ab1501e5199088f670db9e4af61c2c97b8c319384e8a3df445054759c9b",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-reads, written by luna); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.planning-writes",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-			"definition": "e68d409bd479c7b619f875b249b78f903d282d1d24c3ec74773655562dd7dbd6",
+			"definition": "ef00e9dd75e70be92fa6dbf5589d263581804b74a84029d125f97eb45fe8c345",
 			"relocationDefinition": "26c1fa6ed92d6361d09e0804f6eff2b034e8b9315c575142fe22f0a0d30933ac",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-				"definition": "e68d409bd479c7b619f875b249b78f903d282d1d24c3ec74773655562dd7dbd6",
-				"reason": "Preserves named planning errors while storing responsive mockup versions together."
+				"definition": "ef00e9dd75e70be92fa6dbf5589d263581804b74a84029d125f97eb45fe8c345",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
+					"definition": "e68d409bd479c7b619f875b249b78f903d282d1d24c3ec74773655562dd7dbd6",
+					"reason": "Preserves named planning errors while storing responsive mockup versions together."
+				},
 				{
 					"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
 					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
@@ -5263,13 +5756,13 @@
 			"unit": "desktop.adapter.capacitor-bridge",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-			"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
+			"definition": "84e98062cdce91cc3b331c2f7e49aa29be686b8a1cc23327f563ace1bde4a8e2",
 			"relocationDefinition": "d508581532d44b290e7f920f2d540eb35ef9f9a804e77db0496990c21ef291f2",
 			"review": {
-				"commit": "14bd3bb172886986a597b0499cd7c86b50c942b7",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-				"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.capacitor-bridge, written by haiku); messages and behavior unchanged."
+				"definition": "84e98062cdce91cc3b331c2f7e49aa29be686b8a1cc23327f563ace1bde4a8e2",
+				"reason": "Move the existing bridge event listener binding into a file-local helper."
 			},
 			"previousReviews": [
 				{
@@ -5277,6 +5770,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 					"definition": "7b03459af4ed88c4eca953c6fd318aa93ed94f99c9becfea6d1609deaa43be58",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "14bd3bb172886986a597b0499cd7c86b50c942b7",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+					"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.capacitor-bridge, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
@@ -5309,15 +5808,27 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "df95563712d1fd1fe2f1fbcd11b0ce97637195fce76face12391fbee050a5eb4",
+			"definition": "be6f3dfd585e20feec8f1ef35fa66b10c5c2a6f63ffbedaa4a69369fbbf3b361",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "9a8b98a7e403c518f4fdc5d5ba56797ff1d58273",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "df95563712d1fd1fe2f1fbcd11b0ce97637195fce76face12391fbee050a5eb4",
-				"reason": "Exposes only fixed Vault status, setup and remove requests through the isolated preload."
+				"definition": "be6f3dfd585e20feec8f1ef35fa66b10c5c2a6f63ffbedaa4a69369fbbf3b361",
+				"reason": "Expose the fixed Home read and chat operations over the existing loopback bridge."
 			},
 			"previousReviews": [
+				{
+					"commit": "fb1cb346cdef500b9df0e604cde58a67b7cfb806",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
+					"reason": "Exposes the local design canvas read through the isolated preload bridge."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
+					"reason": "Includes the fixed project overview call on the preload bridge."
+				},
 				{
 					"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
@@ -5355,10 +5866,40 @@
 					"reason": "Exposes gameLevelGenerate through the existing isolated preload while preserving its location, registered identity and previous bridge methods."
 				},
 				{
-					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-					"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
-					"reason": "Includes the fixed project overview call on the preload bridge."
+					"definition": "4e266fae4801302d332ef70b02859478d7e9be6adafcb09e731056d0f54c237c",
+					"reason": "Exposes the direct Mac inbox source through the isolated preload and local transport."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "ae79a481e190d61e11dffd390c8b4ff9b0e22e7a33b49de285bb30274e7d0f5c",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
+				{
+					"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "6d524a94c1507162a776534c85e2e8c0e26232971a57721679b533594a07f135",
+					"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
+				},
+				{
+					"commit": "fb1cb346cdef500b9df0e604cde58a67b7cfb806",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
+					"reason": "Exposes the local design canvas read through the isolated preload bridge."
+				},
+				{
+					"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "4dea83f1f6823d4ce73d4541049d46eaa76004274441e6fedb65c86821cd6df5",
+					"reason": "Exposes the two fixed Home operations over the isolated Mac preload bridge."
+				},
+				{
+					"commit": "9a8b98a7e403c518f4fdc5d5ba56797ff1d58273",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "df95563712d1fd1fe2f1fbcd11b0ce97637195fce76face12391fbee050a5eb4",
+					"reason": "Exposes only fixed Vault status, setup and remove requests through the isolated preload."
 				}
 			]
 		},
@@ -5481,13 +6022,13 @@
 			"unit": "remote.service.host-pairing",
 			"from": "packages/remote/src/services/host-pairing-service/HostPairingService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
-			"definition": "d53b256a7547dd55930612f628edc1c7596dfc2ba4092b93a0cac46399960016",
+			"definition": "74ea9966a939dca22dcac76f0d33b02fe27275b79c638a44dceb71dd9af00712",
 			"relocationDefinition": "4a40e61e9dd41177d106b1e6d73e1040b90d29be5ecaba311a76a91c200e708e",
 			"review": {
-				"commit": "5ee7dddd9750c6b8f5ac5323e639aaec400d3a9e",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
-				"definition": "d53b256a7547dd55930612f628edc1c7596dfc2ba4092b93a0cac46399960016",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "74ea9966a939dca22dcac76f0d33b02fe27275b79c638a44dceb71dd9af00712",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 			},
 			"previousReviews": [
 				{
@@ -5501,6 +6042,18 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
 					"definition": "04b3c301f20c04f16d7d6407b9c6fa55855f1c2f360a36ce71b8e24b6c154040",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-remote.service.host-pairing, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "5ee7dddd9750c6b8f5ac5323e639aaec400d3a9e",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
+					"definition": "d53b256a7547dd55930612f628edc1c7596dfc2ba4092b93a0cac46399960016",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
+					"definition": "8525549e0f84f7df0b8a8dabc2b83483dd4e0055bc75808915d2ebdbe0fab422",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -5641,14 +6194,28 @@
 			"unit": "relay.service.socket-accept",
 			"from": "packages/relay/src/services/SocketAcceptService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
-			"definition": "e082352d563473f0720e10ef1fb107d943037339c8867efb4dd325afefc7497b",
+			"definition": "84742cf8cb13fa0a665a0628071bfecf5f4cf629ef6ed8e576c9f5dfb1f489bf",
 			"relocationDefinition": "ba7aed08b415ca4ad794733e064241bb1f2895ffa5130175c371293a4498e539",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
-				"definition": "e082352d563473f0720e10ef1fb107d943037339c8867efb4dd325afefc7497b",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "84742cf8cb13fa0a665a0628071bfecf5f4cf629ef6ed8e576c9f5dfb1f489bf",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
+					"definition": "e082352d563473f0720e10ef1fb107d943037339c8867efb4dd325afefc7497b",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
+					"definition": "c258b98191c03fde1343c8652509bd91b54f76d8d36775ad123bc688908992c3",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "workflow.loop-next",
@@ -5763,7 +6330,22 @@
 			"unit": "relay.service.device-revocation",
 			"from": "packages/relay/src/services/DeviceRevocationService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/DeviceRevocationService.ts",
-			"definition": "627c57b9882dd21b7415d799c30bef537f4d1d95e1c4c81c9132d8c3520339ae"
+			"definition": "3bee7072cecb0119edbda096ecd1d9d22e3d3480d1890528887d36977932b76c",
+			"relocationDefinition": "627c57b9882dd21b7415d799c30bef537f4d1d95e1c4c81c9132d8c3520339ae",
+			"review": {
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/DeviceRevocationService.ts",
+				"definition": "3bee7072cecb0119edbda096ecd1d9d22e3d3480d1890528887d36977932b76c",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/DeviceRevocationService.ts",
+					"definition": "2689bd500d067c3f101f452a14d76e9e615fe8781eba9bfd56144b3d7d2b7759",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "hub.adapter.github-api",
@@ -5931,13 +6513,13 @@
 			"unit": "relay.service.pairing-offer",
 			"from": "packages/relay/src/services/PairingOfferService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
-			"definition": "2b9b448ceb003dc7f79239c63844d95604204ce8034f3a6e7cd8996c7f59aead",
+			"definition": "2b203f9c78de7d2788ba5ef9a464bc5e256d9159381a9638951dcc8e00bda2cd",
 			"relocationDefinition": "445fee03b5c60d9fcaed7dd87b6aac01ff99f0c4d466b5c773277c30f850a2cf",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
-				"definition": "2b9b448ceb003dc7f79239c63844d95604204ce8034f3a6e7cd8996c7f59aead",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "2b203f9c78de7d2788ba5ef9a464bc5e256d9159381a9638951dcc8e00bda2cd",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 			},
 			"previousReviews": [
 				{
@@ -5945,6 +6527,18 @@
 					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
 					"definition": "82b37373fbde6ba0e24b105c49e8f3f089578d39496dac61e478c8bffc2cdcf8",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
+					"definition": "2b9b448ceb003dc7f79239c63844d95604204ce8034f3a6e7cd8996c7f59aead",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
+					"definition": "4c9709b19997d87bf4bd552ff818566474bf455d1a8e271d15247230826d4cc6",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -6006,15 +6600,21 @@
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-			"definition": "990ebaf94ffcdfdccf44a497662eb6c965450877dd190387b0c40540676ab707",
+			"definition": "13da4d4e03ac9b99ca144231296ef0adfe7a14a9e4cb4e87f81712f74b5b8a68",
 			"relocationDefinition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695",
 			"review": {
-				"commit": "92086cbaa5061cec445e557889b28a4578bdd30e",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-				"definition": "990ebaf94ffcdfdccf44a497662eb6c965450877dd190387b0c40540676ab707",
-				"reason": "Use the integrated Desktop run event callback and its default visual mockup renderer."
+				"definition": "13da4d4e03ac9b99ca144231296ef0adfe7a14a9e4cb4e87f81712f74b5b8a68",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "92086cbaa5061cec445e557889b28a4578bdd30e",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "990ebaf94ffcdfdccf44a497662eb6c965450877dd190387b0c40540676ab707",
+					"reason": "Use the integrated Desktop run event callback and its default visual mockup renderer."
+				},
 				{
 					"commit": "1c1dcda3a2eb571c83c291ce370c2b9cec4f2f64",
 					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
@@ -6132,15 +6732,21 @@
 			"unit": "planning.function.plan-design",
 			"from": "packages/planning/src/services/planning-service/planDesign.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
-			"definition": "a54e042d79b4fe604bb06c59a4c0ce2026d9850bc167ed8ddd9e176df6a402b7",
+			"definition": "9da5324be14b75b99d9ab72550233648572274dd01c8adae4feea4028996e82d",
 			"relocationDefinition": "802e22cb4d88e4925e9f496afe4ff18f479eed8f2ae40f0d9b7f300b164ae1fe",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
-				"reason": "Validate sized captures and require all the bytes an exact design approval binds.",
-				"definition": "a54e042d79b4fe604bb06c59a4c0ce2026d9850bc167ed8ddd9e176df6a402b7"
+				"definition": "9da5324be14b75b99d9ab72550233648572274dd01c8adae4feea4028996e82d",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
+					"reason": "Validate sized captures and require all the bytes an exact design approval binds.",
+					"definition": "a54e042d79b4fe604bb06c59a4c0ce2026d9850bc167ed8ddd9e176df6a402b7"
+				},
 				{
 					"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
 					"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
@@ -6153,7 +6759,14 @@
 			"unit": "planning.function.plan-history",
 			"from": "packages/planning/src/services/planning-service/planHistory.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planHistory.ts",
-			"definition": "1d1338613341131dbdefec2c2324370a11a401e3f7b889f9ff1eff2b7b55b4cf"
+			"definition": "cba9de0ca8016e2e4889bcadccfdda23b20464c1f534a6ec3b4426503f3d08b2",
+			"review": {
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planHistory.ts",
+				"definition": "cba9de0ca8016e2e4889bcadccfdda23b20464c1f534a6ec3b4426503f3d08b2",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"relocationDefinition": "1d1338613341131dbdefec2c2324370a11a401e3f7b889f9ff1eff2b7b55b4cf"
 		},
 		{
 			"unit": "planning.function.plan-options",
@@ -6184,14 +6797,22 @@
 			"unit": "planning.function.plan-thread",
 			"from": "packages/planning/src/services/planning-service/planThread.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planThread.ts",
-			"definition": "474f9d9504da5422268d9a072524b5d8612ad6526c6bc3cb102b411d21ec0e0c",
+			"definition": "e3694f21d63269961822c489c1c65943061b83ba09bf0f04b9dc244f0ab61bb1",
 			"relocationDefinition": "0a13f3b5a49de66de9dbc81704035afa1b07304ce676f8c71965b29da872292f",
 			"review": {
-				"commit": "f99a4dd918922d2644a677644ded1398a4136627",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planThread.ts",
-				"reason": "Retain the planning thread validation and reference binding already committed on main.",
-				"definition": "474f9d9504da5422268d9a072524b5d8612ad6526c6bc3cb102b411d21ec0e0c"
-			}
+				"definition": "e3694f21d63269961822c489c1c65943061b83ba09bf0f04b9dc244f0ab61bb1",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "f99a4dd918922d2644a677644ded1398a4136627",
+					"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planThread.ts",
+					"reason": "Retain the planning thread validation and reference binding already committed on main.",
+					"definition": "474f9d9504da5422268d9a072524b5d8612ad6526c6bc3cb102b411d21ec0e0c"
+				}
+			]
 		},
 		{
 			"unit": "planning.function.plan-write",
@@ -6426,7 +7047,22 @@
 			"unit": "relay.service.pairing-exchange",
 			"from": "packages/relay/src/services/PairingExchangeService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingExchangeService.ts",
-			"definition": "b28c17e09c6f5ce8283c1d279470f18f04d146de0163ab966dca1dee630e759f"
+			"definition": "0d1428f3e8457f901e2744890c7f0ed97bc34db76fad5f68fac48e43b109b4ea",
+			"relocationDefinition": "b28c17e09c6f5ce8283c1d279470f18f04d146de0163ab966dca1dee630e759f",
+			"review": {
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingExchangeService.ts",
+				"definition": "0d1428f3e8457f901e2744890c7f0ed97bc34db76fad5f68fac48e43b109b4ea",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingExchangeService.ts",
+					"definition": "72b853b7646440d814e408ee760c1a2e3c30df8d8e4fd4f5d84a7348d9db0bb5",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "service.hook-run",
@@ -6576,13 +7212,13 @@
 			"unit": "hub.adapter.relay-manage",
 			"from": "packages/hub/src/adapters/RelayManageAdapter.ts",
 			"to": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
-			"definition": "2e0c540f89c0812a2ccc68f3ba15a9f5cdc31565b0c33e2be4cc791bccf6dd5b",
+			"definition": "f6a8c3dfcaa21a538ca8f0e281dd58c85e05118c80e5cbb54e01fac4b3f000bd",
 			"relocationDefinition": "0c67bdcde714a6f787737cc23805ec2b4431d89c4c5bb50343f3ce050778635b",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
-				"definition": "2e0c540f89c0812a2ccc68f3ba15a9f5cdc31565b0c33e2be4cc791bccf6dd5b",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "f6a8c3dfcaa21a538ca8f0e281dd58c85e05118c80e5cbb54e01fac4b3f000bd",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -6590,6 +7226,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
 					"definition": "f4c6d6ef0af020d40bf86958136a919cb614ff040ca45404a4c19aab58c9f35a",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
+					"definition": "2e0c540f89c0812a2ccc68f3ba15a9f5cdc31565b0c33e2be4cc791bccf6dd5b",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
 				}
 			]
 		},
@@ -6597,27 +7239,43 @@
 			"unit": "desktop.service.remote-host-switch",
 			"from": "packages/desktop/src/services/remote-host-switch-service/RemoteHostSwitchService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
-			"definition": "b14ed3ff42222595be4b2ac0f64fd812ee9e82b2a21c7dd74a98806ebc487f96",
+			"definition": "7bac662e8d9c60ac094621b9440e832a503331282170a955eb0f7dc15b8ddd13",
 			"relocationDefinition": "e59ff23491834c18f7a944895835a6ecbf1feaac050bc2fdc4093317eac99e3f",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
-				"definition": "b14ed3ff42222595be4b2ac0f64fd812ee9e82b2a21c7dd74a98806ebc487f96",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "7bac662e8d9c60ac094621b9440e832a503331282170a955eb0f7dc15b8ddd13",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
+					"definition": "b14ed3ff42222595be4b2ac0f64fd812ee9e82b2a21c7dd74a98806ebc487f96",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.remote-host-identity",
 			"from": "packages/desktop/src/services/remote-host-switch-service/remoteHostIdentity.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
-			"definition": "20ad420e59bb9bcdff11ef246a28e3b5c9a088a244339374dcc009616235f6b7",
+			"definition": "bd671d625191e0ebbbbce663cf47a48249a0b084c2d9ab50ca91f66de1a43f8b",
 			"relocationDefinition": "dd1ca75e359a546992a7f79e13d4a296479b5d83feaa14e9f18b2b480e5ef630",
 			"review": {
-				"commit": "259888fc1e51b3f0248c53bac14ee7e1b5d6d1c2",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
-				"definition": "20ad420e59bb9bcdff11ef246a28e3b5c9a088a244339374dcc009616235f6b7",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.remote-host-identity, written by haiku); messages and behavior unchanged."
-			}
+				"definition": "bd671d625191e0ebbbbce663cf47a48249a0b084c2d9ab50ca91f66de1a43f8b",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "259888fc1e51b3f0248c53bac14ee7e1b5d6d1c2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
+					"definition": "20ad420e59bb9bcdff11ef246a28e3b5c9a088a244339374dcc009616235f6b7",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.remote-host-identity, written by haiku); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "hub.service.github-grant",
@@ -6736,13 +7394,13 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
+			"definition": "a12bbd4ecfd0e0ae2012498b6d7198988c4cc859d0d9565914347fb5321e1115",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
-				"reason": "Carry native browser callback and device metadata through desktop initialization."
+				"definition": "a12bbd4ecfd0e0ae2012498b6d7198988c4cc859d0d9565914347fb5321e1115",
+				"reason": "Require an admitted account for the Home operations on the local socket."
 			},
 			"previousReviews": [
 				{
@@ -6780,6 +7438,18 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
 					"reason": "Give local windows the same headless rendering workflow as remote clients.",
 					"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0"
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
+					"reason": "Carry native browser callback and device metadata through desktop initialization."
+				},
+				{
+					"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "9eed54fcd36a86a4b63fe78b70ea46765b3610e53725ea1c319dae650add1746",
+					"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 				}
 			]
 		},
@@ -6787,15 +7457,33 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
+			"definition": "be6de368744e50a61cec354458a827359174b094d205f3cc391731cb866c691f",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "46be4288fc3844395376ec289b249c1efd41cf46",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
-				"reason": "Names the rejection for unexpected project overview fields while preserving its message and Error compatibility."
+				"definition": "be6de368744e50a61cec354458a827359174b094d205f3cc391731cb866c691f",
+				"reason": "Dispatch Home reads and writes to the fixed Tracker services with bounded inputs."
 			},
 			"previousReviews": [
+				{
+					"commit": "5c2602ebf47d18da1f91dfb7dfcfdfd0292bed8c",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "58abe7d8f66580aa71d34ae6894ae660661f893f668edecf91ffa142a9970fc4",
+					"reason": "Handles fixed Home reads and validates contextual chat writes before delivering them to the local Tracker."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
+				{
+					"commit": "46be4288fc3844395376ec289b249c1efd41cf46",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
+					"reason": "Names the rejection for unexpected project overview fields while preserving its message and Error compatibility."
+				},
 				{
 					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
@@ -6819,6 +7507,24 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
 					"reason": "Dispatches the zero-argument project overview operation."
+				},
+				{
+					"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "9a008bdaf9829a21478c0d7ed710d34201077f1630a455a178adf8739131994f",
+					"reason": "Dispatches the Mac inbox read and confirmed write over the authenticated local transport."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
+				{
+					"commit": "748ebb4b5cf50a7bca6ff14023d70d41fb5622d9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "b8e4551fb63e5f769b042759547b4180707504d96a676d85780c5d667e93737d",
+					"reason": "Resolves the platform fetch function at Home chat delivery so the Mac local and paired-device paths use the active transport with compatible types."
 				}
 			]
 		},
@@ -6898,27 +7604,55 @@
 			"unit": "relay.service.pairing-access",
 			"from": "packages/relay/src/services/PairingAccessService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
-			"definition": "62fb3d875f784d58cefbbdc4b0ca0463940be2a5247839dadff1a2bf52c84e0a",
+			"definition": "eeb0c6a586994d2670daf891fb92220f8ca04c1e3a457b43cc3597eaba0bff6c",
 			"relocationDefinition": "b056388ba66ef3c9d73956b73ee81b46521c717be7bc3cb703029f503625153e",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
-				"definition": "62fb3d875f784d58cefbbdc4b0ca0463940be2a5247839dadff1a2bf52c84e0a",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "eeb0c6a586994d2670daf891fb92220f8ca04c1e3a457b43cc3597eaba0bff6c",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
+					"definition": "62fb3d875f784d58cefbbdc4b0ca0463940be2a5247839dadff1a2bf52c84e0a",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
+					"definition": "51d8f8a7aa532bb9b79bd66cd5926e815f9cb13e1f72d0aa5e964280a74296a6",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "relay.controller.host-object",
 			"from": "packages/relay/src/controllers/HostObjectController.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
-			"definition": "b9950ca1e247d8c9e097881010aef61ec9e42eb695f6d0ee7d214e832aedd14c",
+			"definition": "b415bb25b9d75a46a8c032960fa99ad0d07fde162fc72827d82f659e5f997695",
 			"relocationDefinition": "32c9ce541f85805628b326ae3c56805974d8b6d463531ba47d9f7f4edcdf0064",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
-				"definition": "b9950ca1e247d8c9e097881010aef61ec9e42eb695f6d0ee7d214e832aedd14c",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "b415bb25b9d75a46a8c032960fa99ad0d07fde162fc72827d82f659e5f997695",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
+					"definition": "b9950ca1e247d8c9e097881010aef61ec9e42eb695f6d0ee7d214e832aedd14c",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
+					"definition": "5db5f0a2d814f0c3fdc8583858e54dc56093379531a23c2df155e1782e36db58",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "reports.repository.site-report",
@@ -6970,15 +7704,21 @@
 			"unit": "reports.service.screenshot-upload",
 			"from": "packages/reports/src/services/ScreenshotUploadService.ts",
 			"to": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
-			"definition": "e02315d7aaff38f9024ac43318fa24b717d5ba1c0c91c95e84bc306f9d4c29dd",
+			"definition": "e93a441d73ceca8be489f3b79137b68cc5c1fc482fc3e00b93c538970f3adb3f",
 			"relocationDefinition": "e19472c2cbf4000653bedf229be0e2df9fa8a390db23a9ba052e446cc5648ac8",
 			"review": {
-				"commit": "4715ce5a9e2775c1728d3e89beba2fd144ec6c0c",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
-				"definition": "e02315d7aaff38f9024ac43318fa24b717d5ba1c0c91c95e84bc306f9d4c29dd",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.screenshot-upload, written by haiku); messages and behavior unchanged."
+				"definition": "e93a441d73ceca8be489f3b79137b68cc5c1fc482fc3e00b93c538970f3adb3f",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "4715ce5a9e2775c1728d3e89beba2fd144ec6c0c",
+					"path": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
+					"definition": "e02315d7aaff38f9024ac43318fa24b717d5ba1c0c91c95e84bc306f9d4c29dd",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.screenshot-upload, written by haiku); messages and behavior unchanged."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
@@ -7108,14 +7848,22 @@
 			"unit": "desktop.service.remote-host-record",
 			"from": "packages/desktop/src/services/RemoteHostRecordService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRecordService.ts",
-			"definition": "5186a27daa908f9fc2615ecdbcb41ef317013084269298b89d30eb491962e4b6",
+			"definition": "ba606f330258c5c5f7ecba9748c660fc264a14adbf5745a5941c20d8ea4fe9e7",
 			"relocationDefinition": "f7513cb284eebfa427a14af5bacf7f5cb61c58162b6a1e7a5073f03eaf7c9672",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRecordService.ts",
-				"definition": "5186a27daa908f9fc2615ecdbcb41ef317013084269298b89d30eb491962e4b6",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "ba606f330258c5c5f7ecba9748c660fc264a14adbf5745a5941c20d8ea4fe9e7",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRecordService.ts",
+					"definition": "5186a27daa908f9fc2615ecdbcb41ef317013084269298b89d30eb491962e4b6",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.project-task",
@@ -7195,7 +7943,14 @@
 			"unit": "desktop.store.agent-settings",
 			"from": "packages/desktop/src/lib/stores/agentSettings.svelte.ts",
 			"to": "packages/desktop/src/lib/agents-providers/agent-settings/agentSettings.svelte.ts",
-			"definition": "65a81c6bf1c85d67a516fa0dcb2f2f43db09b926430a2dab676c45d00fa99403"
+			"definition": "8cf06ee3d3d73f28e272b296fafeb4612af50df3fd704a96e4f1b9c113c75b1e",
+			"review": {
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"path": "packages/desktop/src/lib/agents-providers/agent-settings/agentSettings.svelte.ts",
+				"definition": "8cf06ee3d3d73f28e272b296fafeb4612af50df3fd704a96e4f1b9c113c75b1e",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"relocationDefinition": "65a81c6bf1c85d67a516fa0dcb2f2f43db09b926430a2dab676c45d00fa99403"
 		}
 	],
 	"services": [
@@ -7203,121 +7958,161 @@
 			"id": "desktop.service.native-auth",
 			"owner": "desktop.service.native-connection",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": ["packages/desktop/src/lib/desktop-initialization/NativeAuthService.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-initialization/NativeAuthService.ts"
+			]
 		},
 		{
 			"id": "workflow.export-plans",
 			"owner": "workflow.generate-code",
 			"ownerFolder": "src/workflows/projects-sessions/generate-code",
-			"source": ["src/workflows/generate-code/exportPlans.ts"]
+			"source": [
+				"src/workflows/generate-code/exportPlans.ts"
+			]
 		},
 		{
 			"id": "service.regression-proof",
 			"owner": "function.record-regression",
 			"ownerFolder": "src/workflows/verification-evidence/record-regression",
-			"source": ["src/workflows/record-regression/RegressionProofService.ts"]
+			"source": [
+				"src/workflows/record-regression/RegressionProofService.ts"
+			]
 		},
 		{
 			"id": "service.unit-index",
 			"owner": "workflow.load-units",
 			"ownerFolder": "src/workflows/development-tooling/load-units/unit-index-service",
-			"source": ["src/workflows/load-units/unit-index-service/UnitIndexService.ts"]
+			"source": [
+				"src/workflows/load-units/unit-index-service/UnitIndexService.ts"
+			]
 		},
 		{
 			"id": "workflow.analytics-jev-metrics",
 			"owner": "workflow.analytics-metrics",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/analyticsJevMetrics.ts"]
+			"source": [
+				"src/cli/program/analyticsJevMetrics.ts"
+			]
 		},
 		{
 			"id": "desktop.adapter.evidence-refs",
 			"owner": "desktop.service.recorded-evidence",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-bridge",
-			"source": ["packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts"
+			]
 		},
 		{
 			"id": "desktop.service.hosted-project",
 			"owner": "desktop.service.desktop-bridge",
 			"ownerFolder": "packages/desktop/src/services/development-tooling/desktop-bridge-service",
-			"source": ["packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts"]
+			"source": [
+				"packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts"
+			]
 		},
 		{
 			"id": "workflow.loop-evaluate",
 			"owner": "command.loop",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/loopEvaluate.ts"]
+			"source": [
+				"src/cli/program/loopEvaluate.ts"
+			]
 		},
 		{
 			"id": "adapter.desktop-archive",
 			"owner": "script.prepare-desktop-experiment",
 			"ownerFolder": "scripts/prepare-desktop-experiment",
-			"source": ["scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts"]
+			"source": [
+				"scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts"
+			]
 		},
 		{
 			"id": "command.generate",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/generate.ts"]
+			"source": [
+				"src/cli/program/generate.ts"
+			]
 		},
 		{
 			"id": "desktop.service.remote-device-sessions",
 			"owner": "desktop.service.remote-host-runtime",
 			"ownerFolder": "packages/desktop/src/services/networking-security/remote-host-service",
-			"source": ["packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts"]
+			"source": [
+				"packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts"
+			]
 		},
 		{
 			"id": "hub.controller.hub-api",
 			"owner": "hub.endpoint.api-path",
 			"ownerFolder": "packages/hub/src/routes/api/[...path]/hub-api-controller",
-			"source": ["packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts"]
+			"source": [
+				"packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts"
+			]
 		},
 		{
 			"id": "adapter.desktop-integrity",
 			"owner": "script.prepare-desktop-experiment",
 			"ownerFolder": "scripts/prepare-desktop-experiment",
-			"source": ["scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts"]
+			"source": [
+				"scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts"
+			]
 		},
 		{
 			"id": "hub.controller.hub-remote",
 			"owner": "hub.controller.hub-api",
 			"ownerFolder": "packages/hub/src/routes/api/[...path]/hub-api-controller",
-			"source": ["packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts"]
+			"source": [
+				"packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts"
+			]
 		},
 		{
 			"id": "reports.adapter.vitest-report",
 			"owner": "reports.service.report-import",
 			"ownerFolder": "packages/reports/src/services/reports-media/report-command-service",
-			"source": ["packages/reports/src/services/report-command-service/VitestReportAdapter.ts"]
+			"source": [
+				"packages/reports/src/services/report-command-service/VitestReportAdapter.ts"
+			]
 		},
 		{
 			"id": "remote.service.event-log",
 			"owner": "remote.service.wire-session",
 			"ownerFolder": "packages/remote/src/services/networking-security/wire-session-service",
-			"source": ["packages/remote/src/services/wire-session-service/EventLogService.ts"]
+			"source": [
+				"packages/remote/src/services/wire-session-service/EventLogService.ts"
+			]
 		},
 		{
 			"id": "command.impact",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/ImpactCommand.ts"]
+			"source": [
+				"src/cli/program/ImpactCommand.ts"
+			]
 		},
 		{
 			"id": "repository.agent-registry",
 			"owner": "service.agent-activity",
 			"ownerFolder": "src/services/agents-providers/agent-activity-service",
-			"source": ["src/services/agent-activity-service/AgentRegistryRepository.ts"]
+			"source": [
+				"src/services/agent-activity-service/AgentRegistryRepository.ts"
+			]
 		},
 		{
 			"id": "relay.service.host-command",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/HostCommandService.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/HostCommandService.ts"
+			]
 		},
 		{
 			"id": "desktop.adapter.electron-environment",
 			"owner": "desktop.function.select-environment",
 			"ownerFolder": "packages/desktop/src/lib/verification-evidence/select-environment",
-			"source": ["packages/desktop/src/lib/select-environment/ElectronEnvironmentAdapter.ts"]
+			"source": [
+				"packages/desktop/src/lib/select-environment/ElectronEnvironmentAdapter.ts"
+			]
 		},
 		{
 			"id": "hub.service.installation-token",
@@ -7331,31 +8126,41 @@
 			"id": "workflow.import-reports",
 			"owner": "command.history",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/importReports.ts"]
+			"source": [
+				"src/cli/program/importReports.ts"
+			]
 		},
 		{
 			"id": "command.history",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/HistoryCommand.ts"]
+			"source": [
+				"src/cli/program/HistoryCommand.ts"
+			]
 		},
 		{
 			"id": "service.unit-benchmark",
 			"owner": "workflow.run-budget",
 			"ownerFolder": "src/workflows/verification-evidence/run-budget",
-			"source": ["src/workflows/run-budget/UnitBenchmarkService.ts"]
+			"source": [
+				"src/workflows/run-budget/UnitBenchmarkService.ts"
+			]
 		},
 		{
 			"id": "workflow.sign-budget",
 			"owner": "command.budget",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/signBudget.ts"]
+			"source": [
+				"src/cli/program/signBudget.ts"
+			]
 		},
 		{
 			"id": "command.new",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/new.ts"]
+			"source": [
+				"src/cli/program/new.ts"
+			]
 		},
 		{
 			"id": "hub.service.hub-projection",
@@ -7393,13 +8198,17 @@
 			"id": "desktop.service.native-account-status",
 			"owner": "desktop.service.native-auth",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": ["packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts"
+			]
 		},
 		{
 			"id": "workflow.inspect-units",
 			"owner": "command.units",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/inspectUnits.ts"]
+			"source": [
+				"src/cli/program/inspectUnits.ts"
+			]
 		},
 		{
 			"id": "service.record-assembly",
@@ -7413,25 +8222,33 @@
 			"id": "desktop.adapter.agent-settings",
 			"owner": "desktop.store.agent-settings",
 			"ownerFolder": "packages/desktop/src/lib/agents-providers/agent-settings",
-			"source": ["packages/desktop/src/lib/agent-settings/AgentSettingsAdapter.ts"]
+			"source": [
+				"packages/desktop/src/lib/agent-settings/AgentSettingsAdapter.ts"
+			]
 		},
 		{
 			"id": "hub.controller.hub-auth",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": ["packages/hub/src/lib/server/auth/HubAuthController.ts"]
+			"source": [
+				"packages/hub/src/lib/server/auth/HubAuthController.ts"
+			]
 		},
 		{
 			"id": "desktop.service.remote-lifecycle",
 			"owner": "desktop.initializer.initialize-desktop",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": ["packages/desktop/src/lib/desktop-initialization/RemoteLifecycleService.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-initialization/RemoteLifecycleService.ts"
+			]
 		},
 		{
 			"id": "command.codex",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/CodexCommand.ts"]
+			"source": [
+				"src/cli/program/CodexCommand.ts"
+			]
 		},
 		{
 			"id": "reports.adapter.report-pages-retention",
@@ -7445,25 +8262,33 @@
 			"id": "workflow.built-in-loop-templates",
 			"owner": "workflow.loop-templates",
 			"ownerFolder": "src/workflows/development-tooling/loop-templates",
-			"source": ["src/workflows/loop-templates/builtInLoopTemplates.ts"]
+			"source": [
+				"src/workflows/loop-templates/builtInLoopTemplates.ts"
+			]
 		},
 		{
 			"id": "reports.adapter.playwright-report",
 			"owner": "reports.service.report-import",
 			"ownerFolder": "packages/reports/src/services/reports-media/report-command-service",
-			"source": ["packages/reports/src/services/report-command-service/PlaywrightReportAdapter.ts"]
+			"source": [
+				"packages/reports/src/services/report-command-service/PlaywrightReportAdapter.ts"
+			]
 		},
 		{
 			"id": "workflow.manage-units",
 			"owner": "command.units",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/manageUnits.ts"]
+			"source": [
+				"src/cli/program/manageUnits.ts"
+			]
 		},
 		{
 			"id": "command.explain",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/ExplainCommand.ts"]
+			"source": [
+				"src/cli/program/ExplainCommand.ts"
+			]
 		},
 		{
 			"id": "desktop.service.catalog",
@@ -7477,25 +8302,33 @@
 			"id": "desktop.service.project-operations",
 			"owner": "desktop.function.desktop-bridge",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-bridge",
-			"source": ["packages/desktop/src/lib/desktop-bridge/ProjectOperationsService.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-bridge/ProjectOperationsService.ts"
+			]
 		},
 		{
 			"id": "relay.middleware.connect-guard",
 			"owner": "relay.controller.public-relay",
 			"ownerFolder": "packages/relay/src/lib/networking-security/relay",
-			"source": ["packages/relay/src/lib/relay/ConnectGuardMiddleware.ts"]
+			"source": [
+				"packages/relay/src/lib/relay/ConnectGuardMiddleware.ts"
+			]
 		},
 		{
 			"id": "hub.adapter.resend-email",
 			"owner": "hub.module.server-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": ["packages/hub/src/lib/server/auth/ResendEmailAdapter.ts"]
+			"source": [
+				"packages/hub/src/lib/server/auth/ResendEmailAdapter.ts"
+			]
 		},
 		{
 			"id": "hub.controller.email-proof",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": ["packages/hub/src/lib/server/auth/EmailProofController.ts"]
+			"source": [
+				"packages/hub/src/lib/server/auth/EmailProofController.ts"
+			]
 		},
 		{
 			"id": "reports.service.replay-video",
@@ -7509,7 +8342,9 @@
 			"id": "command.budget",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/BudgetCommand.ts"]
+			"source": [
+				"src/cli/program/BudgetCommand.ts"
+			]
 		},
 		{
 			"id": "desktop.service.remote-artifact-cache",
@@ -7523,97 +8358,129 @@
 			"id": "command.console",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/ConsoleCommand.ts"]
+			"source": [
+				"src/cli/program/ConsoleCommand.ts"
+			]
 		},
 		{
 			"id": "workflow.install-console",
 			"owner": "command.console",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/installConsole.ts"]
+			"source": [
+				"src/cli/program/installConsole.ts"
+			]
 		},
 		{
 			"id": "relay.service.host-registry",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/HostRegistryService.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/HostRegistryService.ts"
+			]
 		},
 		{
 			"id": "workflow.build-history",
 			"owner": "command.history",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/buildHistory.ts"]
+			"source": [
+				"src/cli/program/buildHistory.ts"
+			]
 		},
 		{
 			"id": "relay.service.socket-frame",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service",
-			"source": ["packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts"
+			]
 		},
 		{
 			"id": "service.trusted-base",
 			"owner": "workflow.run-verify",
 			"ownerFolder": "src/workflows/verification-evidence/run-verify",
-			"source": ["src/workflows/run-verify/TrustedBaseService.ts"]
+			"source": [
+				"src/workflows/run-verify/TrustedBaseService.ts"
+			]
 		},
 		{
 			"id": "relay.adapter.host-sockets",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts"
+			]
 		},
 		{
 			"id": "desktop.service.local-transport",
 			"owner": "desktop.initializer.initialize-desktop",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": ["packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts"
+			]
 		},
 		{
 			"id": "reports.adapter.console-bridge",
 			"owner": "reports.store.console-workspace",
 			"ownerFolder": "packages/reports/src/lib/projects-sessions/console-workspace",
-			"source": ["packages/reports/src/lib/console-workspace/ConsoleBridgeAdapter.ts"]
+			"source": [
+				"packages/reports/src/lib/console-workspace/ConsoleBridgeAdapter.ts"
+			]
 		},
 		{
 			"id": "relay.adapter.host-storage",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/HostStorageAdapter.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/HostStorageAdapter.ts"
+			]
 		},
 		{
 			"id": "command.info",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/info.ts"]
+			"source": [
+				"src/cli/program/info.ts"
+			]
 		},
 		{
 			"id": "relay.service.host-link",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/HostLinkService.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/HostLinkService.ts"
+			]
 		},
 		{
 			"id": "hub.service.google-identity",
 			"owner": "hub.module.server-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": ["packages/hub/src/lib/server/auth/GoogleIdentityService.ts"]
+			"source": [
+				"packages/hub/src/lib/server/auth/GoogleIdentityService.ts"
+			]
 		},
 		{
 			"id": "command.scenarios",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/ScenariosCommand.ts"]
+			"source": [
+				"src/cli/program/ScenariosCommand.ts"
+			]
 		},
 		{
 			"id": "workflow.response-check-input",
 			"owner": "workflow.run-response-check",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/responseCheckInput.ts"]
+			"source": [
+				"src/cli/program/responseCheckInput.ts"
+			]
 		},
 		{
 			"id": "service.gateway-events",
 			"owner": "serializer.claude-tools",
 			"ownerFolder": "src/serializers/agents-providers/claude-tools-serializer",
-			"source": ["src/serializers/claude-tools-serializer/GatewayEventsService.ts"]
+			"source": [
+				"src/serializers/claude-tools-serializer/GatewayEventsService.ts"
+			]
 		},
 		{
 			"id": "hub.service.hub-evidence",
@@ -7635,25 +8502,33 @@
 			"id": "desktop.adapter.capacitor-environment",
 			"owner": "desktop.function.select-environment",
 			"ownerFolder": "packages/desktop/src/lib/verification-evidence/select-environment",
-			"source": ["packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts"]
+			"source": [
+				"packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts"
+			]
 		},
 		{
 			"id": "desktop.service.capacitor-projects",
 			"owner": "desktop.adapter.capacitor-environment",
 			"ownerFolder": "packages/desktop/src/lib/verification-evidence/select-environment",
-			"source": ["packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts"]
+			"source": [
+				"packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts"
+			]
 		},
 		{
 			"id": "service.console-install",
 			"owner": "workflow.install-console",
 			"ownerFolder": "src/cli/program/console-install-service",
-			"source": ["src/cli/program/console-install-service/ConsoleInstallService.ts"]
+			"source": [
+				"src/cli/program/console-install-service/ConsoleInstallService.ts"
+			]
 		},
 		{
 			"id": "command.hooks",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/HooksCommand.ts"]
+			"source": [
+				"src/cli/program/HooksCommand.ts"
+			]
 		},
 		{
 			"id": "desktop.adapter.hosted-evidence",
@@ -7667,7 +8542,9 @@
 			"id": "command.activity",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/ActivityCommand.ts"]
+			"source": [
+				"src/cli/program/ActivityCommand.ts"
+			]
 		},
 		{
 			"id": "desktop.service.device-session",
@@ -7681,7 +8558,9 @@
 			"id": "repository.legacy-report",
 			"owner": "service.legacy-import",
 			"ownerFolder": "src/cli/program/legacy-import-service",
-			"source": ["src/cli/program/legacy-import-service/LegacyReportRepository.ts"]
+			"source": [
+				"src/cli/program/legacy-import-service/LegacyReportRepository.ts"
+			]
 		},
 		{
 			"id": "desktop.service.projection-cache",
@@ -7695,43 +8574,57 @@
 			"id": "service.desktop-experiment",
 			"owner": "script.prepare-desktop-experiment",
 			"ownerFolder": "scripts/prepare-desktop-experiment",
-			"source": ["scripts/prepare-desktop-experiment/DesktopExperimentService.ts"]
+			"source": [
+				"scripts/prepare-desktop-experiment/DesktopExperimentService.ts"
+			]
 		},
 		{
 			"id": "desktop.service.remote-pairing-control",
 			"owner": "desktop.service.remote-host",
 			"ownerFolder": "packages/desktop/src/services/networking-security/remote-host-service",
-			"source": ["packages/desktop/src/services/remote-host-service/RemotePairingControlService.ts"]
+			"source": [
+				"packages/desktop/src/services/remote-host-service/RemotePairingControlService.ts"
+			]
 		},
 		{
 			"id": "hub.service.hub-record-status",
 			"owner": "hub.function.hub-evidence-scope",
 			"ownerFolder": "packages/hub/src/services/verification-evidence/hub-evidence-service",
-			"source": ["packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts"]
+			"source": [
+				"packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts"
+			]
 		},
 		{
 			"id": "adapter.handler-runtime",
 			"owner": "function.side-impact",
 			"ownerFolder": "packages/reports/src/components/explorer-ui/harness-compare",
-			"source": ["packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter.ts"]
+			"source": [
+				"packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter.ts"
+			]
 		},
 		{
 			"id": "workflow.generate-unit",
 			"owner": "command.generate",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/generateUnit.ts"]
+			"source": [
+				"src/cli/program/generateUnit.ts"
+			]
 		},
 		{
 			"id": "reports.adapter.mira-report",
 			"owner": "reports.service.report-import",
 			"ownerFolder": "packages/reports/src/services/reports-media/report-command-service",
-			"source": ["packages/reports/src/services/report-command-service/MiraReportAdapter.ts"]
+			"source": [
+				"packages/reports/src/services/report-command-service/MiraReportAdapter.ts"
+			]
 		},
 		{
 			"id": "relay.controller.pairing",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/PairingController.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/PairingController.ts"
+			]
 		},
 		{
 			"id": "service.attached-record",
@@ -7753,7 +8646,9 @@
 			"id": "workflow.run-hooks",
 			"owner": "command.hooks",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/runHooks.ts"]
+			"source": [
+				"src/cli/program/runHooks.ts"
+			]
 		},
 		{
 			"id": "desktop.adapter.remote-http-project",
@@ -7767,7 +8662,9 @@
 			"id": "service.history-sync",
 			"owner": "workflow.sync-history",
 			"ownerFolder": "src/cli/program/history-sync-service",
-			"source": ["src/cli/program/history-sync-service/HistorySyncService.ts"]
+			"source": [
+				"src/cli/program/history-sync-service/HistorySyncService.ts"
+			]
 		},
 		{
 			"id": "desktop.adapter.git-source",
@@ -7781,25 +8678,33 @@
 			"id": "workflow.inspect-scenarios",
 			"owner": "command.scenarios",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/inspectScenarios.ts"]
+			"source": [
+				"src/cli/program/inspectScenarios.ts"
+			]
 		},
 		{
 			"id": "relay.controller.manage",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/ManageController.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/ManageController.ts"
+			]
 		},
 		{
 			"id": "desktop.adapter.remote-registration",
 			"owner": "desktop.initializer.initialize-desktop",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": ["packages/desktop/src/lib/desktop-initialization/RemoteRegistrationAdapter.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-initialization/RemoteRegistrationAdapter.ts"
+			]
 		},
 		{
 			"id": "command.response-check",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/ResponseCheckCommand.ts"]
+			"source": [
+				"src/cli/program/ResponseCheckCommand.ts"
+			]
 		},
 		{
 			"id": "service.check-run",
@@ -7814,13 +8719,17 @@
 			"id": "workflow.sync-history",
 			"owner": "command.history",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/syncHistory.ts"]
+			"source": [
+				"src/cli/program/syncHistory.ts"
+			]
 		},
 		{
 			"id": "reports.service.report-storage-sync",
 			"owner": "reports.service.report-command",
 			"ownerFolder": "packages/reports/src/services/reports-media/report-command-service",
-			"source": ["packages/reports/src/services/report-command-service/ReportStorageSyncService.ts"]
+			"source": [
+				"packages/reports/src/services/report-command-service/ReportStorageSyncService.ts"
+			]
 		},
 		{
 			"id": "hub.service.request-session",
@@ -7834,61 +8743,81 @@
 			"id": "desktop.service.recorded-evidence",
 			"owner": "desktop.function.desktop-bridge",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-bridge",
-			"source": ["packages/desktop/src/lib/desktop-bridge/RecordedEvidenceService.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-bridge/RecordedEvidenceService.ts"
+			]
 		},
 		{
 			"id": "desktop.service.remote-host-runtime",
 			"owner": "desktop.service.remote-host",
 			"ownerFolder": "packages/desktop/src/services/networking-security/remote-host-service",
-			"source": ["packages/desktop/src/services/remote-host-service/RemoteHostRuntimeService.ts"]
+			"source": [
+				"packages/desktop/src/services/remote-host-service/RemoteHostRuntimeService.ts"
+			]
 		},
 		{
 			"id": "desktop.service.native-connection",
 			"owner": "desktop.initializer.initialize-desktop",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": ["packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts"
+			]
 		},
 		{
 			"id": "command.verify",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/VerifyCommand.ts"]
+			"source": [
+				"src/cli/program/VerifyCommand.ts"
+			]
 		},
 		{
 			"id": "workflow.analytics-html",
 			"owner": "service.analytics",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/analyticsHtml.ts"]
+			"source": [
+				"src/cli/program/analyticsHtml.ts"
+			]
 		},
 		{
 			"id": "reports.service.report-import",
 			"owner": "reports.service.report-command",
 			"ownerFolder": "packages/reports/src/services/reports-media/report-command-service",
-			"source": ["packages/reports/src/services/report-command-service/ReportImportService.ts"]
+			"source": [
+				"packages/reports/src/services/report-command-service/ReportImportService.ts"
+			]
 		},
 		{
 			"id": "hub.controller.hub-agent",
 			"owner": "hub.controller.hub-api",
 			"ownerFolder": "packages/hub/src/routes/api/[...path]/hub-api-controller",
-			"source": ["packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts"]
+			"source": [
+				"packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts"
+			]
 		},
 		{
 			"id": "command.report",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/ReportCommand.ts"]
+			"source": [
+				"src/cli/program/ReportCommand.ts"
+			]
 		},
 		{
 			"id": "workflow.run-report",
 			"owner": "command.report",
 			"ownerFolder": "src/cli/program/run-report",
-			"source": ["src/cli/program/run-report/runReport.ts"]
+			"source": [
+				"src/cli/program/run-report/runReport.ts"
+			]
 		},
 		{
 			"id": "hub.middleware.hub-responses",
 			"owner": "hub.entry.hooks-server",
 			"ownerFolder": "packages/hub/src/lib/development-tooling/server-hooks",
-			"source": ["packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts"]
+			"source": [
+				"packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts"
+			]
 		},
 		{
 			"id": "desktop.service.device-operations",
@@ -7918,31 +8847,41 @@
 			"id": "workflow.run-kernel-bench",
 			"owner": "command.kernel",
 			"ownerFolder": "src/cli/program/run-kernel-bench",
-			"source": ["src/cli/program/run-kernel-bench/runKernelBench.ts"]
+			"source": [
+				"src/cli/program/run-kernel-bench/runKernelBench.ts"
+			]
 		},
 		{
 			"id": "desktop.service.local-transport-client",
 			"owner": "desktop.initializer.initialize-preload",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/preload-initialization",
-			"source": ["packages/desktop/src/lib/preload-initialization/LocalTransportClientService.ts"]
+			"source": [
+				"packages/desktop/src/lib/preload-initialization/LocalTransportClientService.ts"
+			]
 		},
 		{
 			"id": "workflow.run-kernel-boundary",
 			"owner": "command.kernel",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/runKernelBoundary.ts"]
+			"source": [
+				"src/cli/program/runKernelBoundary.ts"
+			]
 		},
 		{
 			"id": "workflow.manage-loop",
 			"owner": "command.loop",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/manageLoop.ts"]
+			"source": [
+				"src/cli/program/manageLoop.ts"
+			]
 		},
 		{
 			"id": "service.legacy-history",
 			"owner": "workflow.build-history",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/LegacyHistoryService.ts"]
+			"source": [
+				"src/cli/program/LegacyHistoryService.ts"
+			]
 		},
 		{
 			"id": "service.source-impact",
@@ -7964,37 +8903,49 @@
 			"id": "workflow.response-check-evaluate",
 			"owner": "workflow.run-response-check",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/responseCheckEvaluate.ts"]
+			"source": [
+				"src/cli/program/responseCheckEvaluate.ts"
+			]
 		},
 		{
 			"id": "adapter.cpu-process",
 			"owner": "service.cpu-usage",
 			"ownerFolder": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter",
-			"source": ["src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts"]
+			"source": [
+				"src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts"
+			]
 		},
 		{
 			"id": "adapter.claude-gateway",
 			"owner": "service.codex-gateway",
 			"ownerFolder": "src/cli/program/codex-gateway-service",
-			"source": ["src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts"]
+			"source": [
+				"src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts"
+			]
 		},
 		{
 			"id": "reports.controller.console-agent",
 			"owner": "reports.entry.hooks-server",
 			"ownerFolder": "packages/reports/src/lib/development-tooling/server-hooks",
-			"source": ["packages/reports/src/lib/server-hooks/ConsoleAgentController.ts"]
+			"source": [
+				"packages/reports/src/lib/server-hooks/ConsoleAgentController.ts"
+			]
 		},
 		{
 			"id": "relay.service.socket-accept",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/SocketAcceptService.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/SocketAcceptService.ts"
+			]
 		},
 		{
 			"id": "workflow.loop-next",
 			"owner": "command.loop",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/loopNext.ts"]
+			"source": [
+				"src/cli/program/loopNext.ts"
+			]
 		},
 		{
 			"id": "desktop.service.project-discovery",
@@ -8008,43 +8959,57 @@
 			"id": "workflow.review-clean-code",
 			"owner": "audit.audit",
 			"ownerFolder": "src/audit/development-tooling",
-			"source": ["src/audit/reviewCleanCode.ts"]
+			"source": [
+				"src/audit/reviewCleanCode.ts"
+			]
 		},
 		{
 			"id": "desktop.service.plan-run",
 			"owner": "desktop.service.desktop-run",
 			"ownerFolder": "packages/desktop/src/services/agents-providers/desktop-run-service",
-			"source": ["packages/desktop/src/services/desktop-run-service/PlanRunService.ts"]
+			"source": [
+				"packages/desktop/src/services/desktop-run-service/PlanRunService.ts"
+			]
 		},
 		{
 			"id": "relay.service.device-revocation",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/DeviceRevocationService.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/DeviceRevocationService.ts"
+			]
 		},
 		{
 			"id": "hub.adapter.github-api",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": ["packages/hub/src/lib/server/auth/GithubApiAdapter.ts"]
+			"source": [
+				"packages/hub/src/lib/server/auth/GithubApiAdapter.ts"
+			]
 		},
 		{
 			"id": "service.codex-gateway",
 			"owner": "command.codex",
 			"ownerFolder": "src/cli/program/codex-gateway-service",
-			"source": ["src/cli/program/codex-gateway-service/CodexGatewayService.ts"]
+			"source": [
+				"src/cli/program/codex-gateway-service/CodexGatewayService.ts"
+			]
 		},
 		{
 			"id": "command.analytics",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/AnalyticsCommand.ts"]
+			"source": [
+				"src/cli/program/AnalyticsCommand.ts"
+			]
 		},
 		{
 			"id": "command.units",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/UnitsCommand.ts"]
+			"source": [
+				"src/cli/program/UnitsCommand.ts"
+			]
 		},
 		{
 			"id": "hub.adapter.d1-auth-store",
@@ -8074,61 +9039,81 @@
 			"id": "relay.service.pairing-offer",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/PairingOfferService.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/PairingOfferService.ts"
+			]
 		},
 		{
 			"id": "adapter.process-identity",
 			"owner": "service.agent-activity",
 			"ownerFolder": "src/services/agents-providers/agent-activity-service",
-			"source": ["src/services/agent-activity-service/ProcessIdentityAdapter.ts"]
+			"source": [
+				"src/services/agent-activity-service/ProcessIdentityAdapter.ts"
+			]
 		},
 		{
 			"id": "remote.service.response-ledger",
 			"owner": "remote.service.wire-session",
 			"ownerFolder": "packages/remote/src/services/networking-security/wire-session-service",
-			"source": ["packages/remote/src/services/wire-session-service/ResponseLedgerService.ts"]
+			"source": [
+				"packages/remote/src/services/wire-session-service/ResponseLedgerService.ts"
+			]
 		},
 		{
 			"id": "service.console-uninstall",
 			"owner": "workflow.install-console",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/ConsoleUninstallService.ts"]
+			"source": [
+				"src/cli/program/ConsoleUninstallService.ts"
+			]
 		},
 		{
 			"id": "reports.service.console-agent",
 			"owner": "reports.controller.console-agent",
 			"ownerFolder": "packages/reports/src/lib/development-tooling/server-hooks",
-			"source": ["packages/reports/src/lib/server-hooks/ConsoleAgentService.ts"]
+			"source": [
+				"packages/reports/src/lib/server-hooks/ConsoleAgentService.ts"
+			]
 		},
 		{
 			"id": "service.claude-query",
 			"owner": "adapter.claude-gateway",
 			"ownerFolder": "src/cli/program/codex-gateway-service/claude-query-service",
-			"source": ["src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts"]
+			"source": [
+				"src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts"
+			]
 		},
 		{
 			"id": "service.picker-preview",
 			"owner": "command.codex-picker",
 			"ownerFolder": "src/cli/program/codex-picker-command",
-			"source": ["src/cli/program/codex-picker-command/PickerPreviewService.ts"]
+			"source": [
+				"src/cli/program/codex-picker-command/PickerPreviewService.ts"
+			]
 		},
 		{
 			"id": "planning.service.planning",
 			"owner": "planning.entry.index",
 			"ownerFolder": "packages/planning/src/lib/planning-collaboration/planning/planning-service",
-			"source": ["packages/planning/src/lib/planning/planning-service/PlanningService.ts"]
+			"source": [
+				"packages/planning/src/lib/planning/planning-service/PlanningService.ts"
+			]
 		},
 		{
 			"id": "desktop.adapter.pinned-history",
 			"owner": "desktop.service.recorded-evidence",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-bridge",
-			"source": ["packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts"
+			]
 		},
 		{
 			"id": "service.snapshot-run",
 			"owner": "service.verification",
 			"ownerFolder": "src/workflows/verification-evidence/run-verify/verification-service",
-			"source": ["src/workflows/run-verify/verification-service/SnapshotRunService.ts"]
+			"source": [
+				"src/workflows/run-verify/verification-service/SnapshotRunService.ts"
+			]
 		},
 		{
 			"id": "repository.codex-session",
@@ -8142,7 +9127,9 @@
 			"id": "hub.service.github-owner",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": ["packages/hub/src/lib/server/auth/GithubOwnerService.ts"]
+			"source": [
+				"packages/hub/src/lib/server/auth/GithubOwnerService.ts"
+			]
 		},
 		{
 			"id": "reports.adapter.r2-report-retention",
@@ -8164,25 +9151,33 @@
 			"id": "workflow.persist-reasons",
 			"owner": "command.history",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/persistReasons.ts"]
+			"source": [
+				"src/cli/program/persistReasons.ts"
+			]
 		},
 		{
 			"id": "service.runtime-server",
 			"owner": "workflow.run-kernel",
 			"ownerFolder": "src/cli/program/run-kernel",
-			"source": ["src/cli/program/run-kernel/RuntimeServerService.ts"]
+			"source": [
+				"src/cli/program/run-kernel/RuntimeServerService.ts"
+			]
 		},
 		{
 			"id": "workflow.loop-search",
 			"owner": "command.loop",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/loopSearch.ts"]
+			"source": [
+				"src/cli/program/loopSearch.ts"
+			]
 		},
 		{
 			"id": "command.audit",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/audit.ts"]
+			"source": [
+				"src/cli/program/audit.ts"
+			]
 		},
 		{
 			"id": "reports.service.report-publish",
@@ -8196,31 +9191,41 @@
 			"id": "command.codex-picker",
 			"owner": "command.codex",
 			"ownerFolder": "src/cli/program/codex-picker-command",
-			"source": ["src/cli/program/codex-picker-command/CodexPickerCommand.ts"]
+			"source": [
+				"src/cli/program/codex-picker-command/CodexPickerCommand.ts"
+			]
 		},
 		{
 			"id": "relay.service.pairing-exchange",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/PairingExchangeService.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/PairingExchangeService.ts"
+			]
 		},
 		{
 			"id": "service.hook-run",
 			"owner": "workflow.run-hooks",
 			"ownerFolder": "src/cli/program/hook-run-service",
-			"source": ["src/cli/program/hook-run-service/HookRunService.ts"]
+			"source": [
+				"src/cli/program/hook-run-service/HookRunService.ts"
+			]
 		},
 		{
 			"id": "service.native-picker-defaults",
 			"owner": "service.native-picker-bridge",
 			"ownerFolder": "src/services/development-tooling/native-picker-bridge-service",
-			"source": ["src/services/native-picker-bridge-service/NativePickerDefaultsService.ts"]
+			"source": [
+				"src/services/native-picker-bridge-service/NativePickerDefaultsService.ts"
+			]
 		},
 		{
 			"id": "workflow.run-audit",
 			"owner": "command.audit",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/runAudit.ts"]
+			"source": [
+				"src/cli/program/runAudit.ts"
+			]
 		},
 		{
 			"id": "hub.controller.github-connection",
@@ -8242,13 +9247,17 @@
 			"id": "service.verification",
 			"owner": "workflow.run-verify",
 			"ownerFolder": "src/workflows/verification-evidence/run-verify/verification-service",
-			"source": ["src/workflows/run-verify/verification-service/VerificationService.ts"]
+			"source": [
+				"src/workflows/run-verify/verification-service/VerificationService.ts"
+			]
 		},
 		{
 			"id": "hub.adapter.relay-manage",
 			"owner": "hub.function.hub-remote",
 			"ownerFolder": "packages/hub/src/routes/api/[...path]",
-			"source": ["packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts"]
+			"source": [
+				"packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts"
+			]
 		},
 		{
 			"id": "desktop.service.remote-host-switch",
@@ -8262,13 +9271,17 @@
 			"id": "hub.service.github-grant",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": ["packages/hub/src/lib/server/auth/GithubGrantService.ts"]
+			"source": [
+				"packages/hub/src/lib/server/auth/GithubGrantService.ts"
+			]
 		},
 		{
 			"id": "desktop.service.project-image-cache",
 			"owner": "desktop.function.desktop-bridge",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-bridge",
-			"source": ["packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts"
+			]
 		},
 		{
 			"id": "reports.service.report-server",
@@ -8282,97 +9295,129 @@
 			"id": "adapter.wasm-module-runtime",
 			"owner": "adapter.wasm-runtime",
 			"ownerFolder": "src/adapters/execution-runtimes/wasm-runtime-adapter",
-			"source": ["src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts"]
+			"source": [
+				"src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts"
+			]
 		},
 		{
 			"id": "hub.controller.native-handoff",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": ["packages/hub/src/lib/server/auth/NativeHandoffController.ts"]
+			"source": [
+				"packages/hub/src/lib/server/auth/NativeHandoffController.ts"
+			]
 		},
 		{
 			"id": "desktop.service.local-operations",
 			"owner": "desktop.service.local-client",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": ["packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts"
+			]
 		},
 		{
 			"id": "desktop.service.local-client",
 			"owner": "desktop.initializer.initialize-desktop",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": ["packages/desktop/src/lib/desktop-initialization/LocalClientService.ts"]
+			"source": [
+				"packages/desktop/src/lib/desktop-initialization/LocalClientService.ts"
+			]
 		},
 		{
 			"id": "relay.service.rate-limit",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/RateLimitService.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/RateLimitService.ts"
+			]
 		},
 		{
 			"id": "service.hook-install",
 			"owner": "workflow.run-hooks",
 			"ownerFolder": "src/cli/program/hook-install-service",
-			"source": ["src/cli/program/hook-install-service/HookInstallService.ts"]
+			"source": [
+				"src/cli/program/hook-install-service/HookInstallService.ts"
+			]
 		},
 		{
 			"id": "workflow.analytics-metrics",
 			"owner": "service.analytics",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/analyticsMetrics.ts"]
+			"source": [
+				"src/cli/program/analyticsMetrics.ts"
+			]
 		},
 		{
 			"id": "command.loop",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/loop.ts"]
+			"source": [
+				"src/cli/program/loop.ts"
+			]
 		},
 		{
 			"id": "service.legacy-import",
 			"owner": "workflow.import-reports",
 			"ownerFolder": "src/cli/program/legacy-import-service",
-			"source": ["src/cli/program/legacy-import-service/LegacyImportService.ts"]
+			"source": [
+				"src/cli/program/legacy-import-service/LegacyImportService.ts"
+			]
 		},
 		{
 			"id": "hub.service.native-handoff",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth/native-handoff-service",
-			"source": ["packages/hub/src/lib/server/auth/native-handoff-service/NativeHandoffService.ts"]
+			"source": [
+				"packages/hub/src/lib/server/auth/native-handoff-service/NativeHandoffService.ts"
+			]
 		},
 		{
 			"id": "service.native-picker-switch",
 			"owner": "service.native-picker-bridge",
 			"ownerFolder": "src/services/development-tooling/native-picker-bridge-service",
-			"source": ["src/services/native-picker-bridge-service/NativePickerSwitchService.ts"]
+			"source": [
+				"src/services/native-picker-bridge-service/NativePickerSwitchService.ts"
+			]
 		},
 		{
 			"id": "command.kernel",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/KernelCommand.ts"]
+			"source": [
+				"src/cli/program/KernelCommand.ts"
+			]
 		},
 		{
 			"id": "relay.service.pairing-access",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/PairingAccessService.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/PairingAccessService.ts"
+			]
 		},
 		{
 			"id": "relay.controller.host-object",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": ["packages/relay/src/lib/host-runtime/HostObjectController.ts"]
+			"source": [
+				"packages/relay/src/lib/host-runtime/HostObjectController.ts"
+			]
 		},
 		{
 			"id": "workflow.run-kernel",
 			"owner": "command.kernel",
 			"ownerFolder": "src/cli/program/run-kernel",
-			"source": ["src/cli/program/run-kernel/runKernel.ts"]
+			"source": [
+				"src/cli/program/run-kernel/runKernel.ts"
+			]
 		},
 		{
 			"id": "reports.repository.site-report",
 			"owner": "reports.function.report-http",
 			"ownerFolder": "packages/reports/src/routes/api/health",
-			"source": ["packages/reports/src/routes/api/health/SiteReportRepository.ts"]
+			"source": [
+				"packages/reports/src/routes/api/health/SiteReportRepository.ts"
+			]
 		},
 		{
 			"id": "desktop.service.client-projects",
@@ -8411,37 +9456,49 @@
 			"id": "workflow.create-project",
 			"owner": "command.new",
 			"ownerFolder": "src/cli/program/create-project",
-			"source": ["src/cli/program/create-project/createProject.ts"]
+			"source": [
+				"src/cli/program/create-project/createProject.ts"
+			]
 		},
 		{
 			"id": "workflow.run-response-check",
 			"owner": "command.response-check",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/runResponseCheck.ts"]
+			"source": [
+				"src/cli/program/runResponseCheck.ts"
+			]
 		},
 		{
 			"id": "service.history-index",
 			"owner": "workflow.build-history",
 			"ownerFolder": "src/cli/program/history-index-service",
-			"source": ["src/cli/program/history-index-service/HistoryIndexService.ts"]
+			"source": [
+				"src/cli/program/history-index-service/HistoryIndexService.ts"
+			]
 		},
 		{
 			"id": "relay.controller.public-relay",
 			"owner": "relay.entry.index",
 			"ownerFolder": "packages/relay/src/lib/networking-security/relay",
-			"source": ["packages/relay/src/lib/relay/PublicRelayController.ts"]
+			"source": [
+				"packages/relay/src/lib/relay/PublicRelayController.ts"
+			]
 		},
 		{
 			"id": "desktop.service.remote-host-record",
 			"owner": "desktop.service.remote-host",
 			"ownerFolder": "packages/desktop/src/services/networking-security/remote-host-service",
-			"source": ["packages/desktop/src/services/remote-host-service/RemoteHostRecordService.ts"]
+			"source": [
+				"packages/desktop/src/services/remote-host-service/RemoteHostRecordService.ts"
+			]
 		},
 		{
 			"id": "service.analytics",
 			"owner": "command.analytics",
 			"ownerFolder": "src/cli/program",
-			"source": ["src/cli/program/AnalyticsService.ts"]
+			"source": [
+				"src/cli/program/AnalyticsService.ts"
+			]
 		},
 		{
 			"id": "desktop.service.project-task",
@@ -8515,31 +9572,45 @@
 	"unowned": [
 		{
 			"id": "reports.endpoint.api-report-audio-comparison",
-			"source": ["packages/reports/src/routes/api/report-audio-comparison/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/api/report-audio-comparison/+server.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.api-report-screenshot-upload",
-			"source": ["packages/reports/src/routes/api/report-screenshot-upload/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/api/report-screenshot-upload/+server.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.api-report-audio-upload",
-			"source": ["packages/reports/src/routes/api/report-audio-upload/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/api/report-audio-upload/+server.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.api-replay-video",
-			"source": ["packages/reports/src/routes/api/replay-video/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/api/replay-video/+server.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.api-health",
-			"source": ["packages/reports/src/routes/api/health/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/api/health/+server.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.harness-media-file",
-			"source": ["packages/reports/src/routes/harness/media/[file]/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/harness/media/[file]/+server.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.harness-data-path",
-			"source": ["packages/reports/src/routes/harness/data/[...path]/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/harness/data/[...path]/+server.ts"
+			]
 		},
 		{
 			"id": "desktop.adapter.ios-remote",
@@ -8578,47 +9649,69 @@
 		},
 		{
 			"id": "reports.command.report",
-			"source": ["packages/reports/src/commands/ReportCommand.ts"]
+			"source": [
+				"packages/reports/src/commands/ReportCommand.ts"
+			]
 		},
 		{
 			"id": "reports.service.harness-analytics",
-			"source": ["packages/reports/src/services/HarnessAnalyticsService.ts"]
+			"source": [
+				"packages/reports/src/services/HarnessAnalyticsService.ts"
+			]
 		},
 		{
 			"id": "service.provider-switch-apply",
-			"source": ["src/services/ProviderSwitchApplyService.ts"]
+			"source": [
+				"src/services/ProviderSwitchApplyService.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.api-project-activity",
-			"source": ["packages/reports/src/routes/api/project-activity/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/api/project-activity/+server.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.api-analytics-cpu",
-			"source": ["packages/reports/src/routes/api/analytics-cpu/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/api/analytics-cpu/+server.ts"
+			]
 		},
 		{
 			"id": "remote.service.device-pairing",
-			"source": ["packages/remote/src/services/device-pairing-service/DevicePairingService.ts"]
+			"source": [
+				"packages/remote/src/services/device-pairing-service/DevicePairingService.ts"
+			]
 		},
 		{
 			"id": "reports.service.screenshot-retention",
-			"source": ["packages/reports/src/services/ScreenshotRetentionService.ts"]
+			"source": [
+				"packages/reports/src/services/ScreenshotRetentionService.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.harness-export-commit",
-			"source": ["packages/reports/src/routes/harness/export/[commit]/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/harness/export/[commit]/+server.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.api-reports-id-type-file",
-			"source": ["packages/reports/src/routes/api/reports/[id]/[type]/[file]/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/api/reports/[id]/[type]/[file]/+server.ts"
+			]
 		},
 		{
 			"id": "desktop.service.remote-image-cache",
-			"source": ["packages/desktop/src/services/RemoteImageCacheService.ts"]
+			"source": [
+				"packages/desktop/src/services/RemoteImageCacheService.ts"
+			]
 		},
 		{
 			"id": "service.native-picker-bridge",
-			"source": ["src/services/NativePickerBridgeService.ts"]
+			"source": [
+				"src/services/NativePickerBridgeService.ts"
+			]
 		},
 		{
 			"id": "desktop.adapter.ios-account",
@@ -8633,19 +9726,27 @@
 		},
 		{
 			"id": "hub.endpoint.api-path",
-			"source": ["packages/hub/src/routes/api/[...path]/+server.ts"]
+			"source": [
+				"packages/hub/src/routes/api/[...path]/+server.ts"
+			]
 		},
 		{
 			"id": "remote.service.device-connection",
-			"source": ["packages/remote/src/services/DeviceConnectionService.ts"]
+			"source": [
+				"packages/remote/src/services/DeviceConnectionService.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.api-reports-id",
-			"source": ["packages/reports/src/routes/api/reports/[id]/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/api/reports/[id]/+server.ts"
+			]
 		},
 		{
 			"id": "reports.endpoint.api-reports",
-			"source": ["packages/reports/src/routes/api/reports/+server.ts"]
+			"source": [
+				"packages/reports/src/routes/api/reports/+server.ts"
+			]
 		}
 	],
 	"originalProof": "16ab6fdf66c235918411bf42bb02e39653653a05",
@@ -8653,6 +9754,7 @@
 		"reports.service.report-publish",
 		"reports.function.report-pages",
 		"reports.function.report-publication",
-		"reports.function.report-publication-verify"
+		"reports.function.report-publication-verify",
+		"remote.function.remote-identity"
 	]
 }

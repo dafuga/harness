@@ -1,22 +1,43 @@
 // @harness-uid u_g7kdpz7bel
-import { randomUUID } from 'node:crypto';
+import { cancelQueuedDispatchRuns } from '../../repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl';
 import type { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
 import { checkTrackerItem } from '../../utils/projects-sessions/checkTrackerItem';
 import { planTrackerItemMutation } from '../../utils/projects-sessions/planTrackerItemMutation';
-import type { TrackerItemMutationContext } from '../../utils/projects-sessions/planTrackerItemMutation.types';
 import {
 	itemAction,
 	itemMutation,
+	itemMutationContext,
 	readItemBody,
-	recordTrackerSessionItem
+	recordTrackerSessionItem,
+	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
-import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
+import { trackerHostWorkEndpoint } from './tracker-local-api-service/trackerHostWorkEndpoint';
+import { readTrackerMachineEndpoint } from './tracker-local-api-service/readTrackerMachineEndpoint';
+import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
+import { trackerJobResponse } from './tracker-local-api-service/trackerLocalJobResponse';
+import { trackerMessageEndpoint } from './tracker-local-api-service/trackerLocalMessages';
+import {
+	trackerFailureResponse,
+	trackerResponse
+} from './tracker-local-api-service/trackerLocalResponse';
+import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
+import { trackerRejectItem } from './tracker-local-api-service/trackerLocalRejection';
+import {
+	isTrackerAlert,
+	trackerAlertResponse
+} from './tracker-local-api-service/trackerLocalAlert';
+import { phoneReplicaResponse } from './tracker-local-api-service/trackerPhoneReplicaResponse';
+import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
+import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
+import type {
+	TrackerLocalApiDependencies,
+	TrackerLocalApiOptions
+} from './TrackerLocalApiService.types';
 import {
 	readTrackerItemDetail,
 	readTrackerRunEndpoint
 } from './tracker-local-api-service/readTrackerRunEndpoint';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
-import type { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import {
 	isTrackerManualLaunch,
 	planTrackerManualLaunch
@@ -34,8 +55,17 @@ export class TrackerLocalApiService {
 		try {
 			const url = new URL(request.url);
 			const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
-			const phone = phoneReplicaResponse(request, url, this.options.phoneReplica);
+			const phone = phoneReplicaResponse(request, url, {
+				replica: this.options.phoneReplica,
+				respond: trackerResponse
+			});
 			if (phone) return await phone;
+			const special = trackerSpecialResponse(request, parts, {
+				store: this.store,
+				items: this.items,
+				options: this.options
+			});
+			if (special) return await special;
 			if (request.method === 'GET') {
 				const read = this.read(parts, Object.fromEntries(url.searchParams));
 				if (read) return read;
@@ -47,7 +77,7 @@ export class TrackerLocalApiService {
 			return trackerResponse(404, { error: `no route ${request.method} ${url.pathname}` });
 		} catch (error) {
 			if (error instanceof URIError) return trackerResponse(400, { error: 'invalid item path' });
-			return failureResponse(error);
+			return trackerFailureResponse(error);
 		}
 	}
 
@@ -73,6 +103,8 @@ export class TrackerLocalApiService {
 				return trackerResponse(200, digest);
 			}
 		}
+		const machine = readTrackerMachineEndpoint(parts, query, this.options.machines);
+		if (machine) return trackerResponse(machine.status, machine.body);
 		const run = readTrackerRunEndpoint(parts, query, { ...this.options, items: this.items });
 		return run === undefined ? undefined : trackerResponse(200, run);
 	}
@@ -81,6 +113,8 @@ export class TrackerLocalApiService {
 			return trackerResponse(200, this.items.list(query, this.options.now?.()));
 		if (parts.length === 2)
 			return trackerResponse(200, readTrackerItemDetail(this.items.get(parts[1]), this.options));
+		const attached = readTrackerAttachmentEndpoint(this.items, parts);
+		if (attached) return trackerResponse(attached.status, attached.body);
 		if (parts.length === 3 && parts[2] === 'history' && this.options.recurring)
 			return this.readHistory(parts[1], query.limit);
 		return undefined;
@@ -104,65 +138,74 @@ export class TrackerLocalApiService {
 		const manual =
 			this.options.manualLaunch && request.method === 'POST' && id && isTrackerManualLaunch(verb);
 		if (!action && !manual) return undefined;
-		const body = await readItemBody(request);
+		const input = await readItemBody(request);
 		request.signal.throwIfAborted();
-		const context = this.mutationContext();
+		const actor = readActor(request.headers);
+		const context = itemMutationContext(this.store, this.items, this.options, verb === 'launch');
+		const body = trackerMutationBody(input, action, actor, Boolean(context.planLaunch));
 		const plan = action
 			? planTrackerItemMutation(itemMutation(action, id, body, this.items), context)
 			: planTrackerManualLaunch(verb, this.items.resolve(id), body, context);
-		const persist =
-			action === 'start'
-				? () => recordTrackerSessionItem(this.store.database, plan.itemId, body.session_run)
-				: undefined;
+		const persist = () => {
+			if (action === 'start')
+				recordTrackerSessionItem(this.store.database, plan.itemId, body.session_run);
+			if (manual && verb === 'unlaunch')
+				cancelQueuedDispatchRuns(this.store, plan.itemId, context.now);
+		};
 		if (plan.fields)
-			this.store.appendLocal(
-				{ itemId: plan.itemId, fields: plan.fields, actor: readActor(request.headers) },
-				persist
-			);
+			this.store.appendLocal({ itemId: plan.itemId, fields: plan.fields, actor }, persist);
+		const flag = { itemId: plan.itemId, action, question: body.question };
+		recordCosFlag(this.store, flag, context.now);
 		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
 	}
-
-	private mutationContext(): TrackerItemMutationContext {
-		const { planLaunch, runs } = this.options;
-		return {
-			node: this.store.node,
-			now: this.options.now?.() ?? Date.now(),
-			timeZone: this.options.timeZone,
-			launchNonce: randomUUID(),
-			candidates: this.items.candidates(),
-			validateModel: this.options.validateModel,
-			planLaunch:
-				planLaunch &&
-				((fields, current) =>
-					planLaunch(
-						fields,
-						current?.auto && runs?.launchConsumed(current.id, current.auto)
-							? { ...current, auto: null }
-							: current
-					))
-		};
-	}
 }
 
-function phoneReplicaResponse(request: Request, url: URL, replica?: TrackerPhoneReplicaService) {
-	if (!replica) return undefined;
-	if (request.method === 'GET' && url.pathname === '/phone-replica/v1')
-		return replica.pull(url.searchParams);
-	if (request.method === 'POST' && url.pathname === '/phone-replica/v1/write')
-		return phoneWrite(request, replica);
-	return undefined;
-}
-
-async function phoneWrite(
+function trackerSpecialResponse(
 	request: Request,
-	replica: TrackerPhoneReplicaService
-): Promise<Response> {
-	const { writer } = replica;
-	const scope = writer?.scope(request.headers);
-	if (!writer || !scope) return trackerResponse(403, { status: 'denied' });
-	const body = await readItemBody(request, 4096);
-	request.signal.throwIfAborted();
-	return trackerResponse(200, writer.push(scope, body));
+	parts: string[],
+	dependencies: TrackerLocalApiDependencies
+) {
+	if (parts.length === 1 && parts[0] === 'host-work' && dependencies.options.machines)
+		return trackerHostWorkEndpoint(request, dependencies.options.machines);
+	if (parts[0] === 'jobs') return trackerJobResponse(request, parts, dependencies);
+	if (isTrackerAlert(request, parts)) return trackerAlertResponse(request, parts[1], dependencies);
+	if (parts[0] === 'messages')
+		return trackerMessageEndpoint(request, parts, {
+			...dependencies,
+			actor: readActor(request.headers)
+		}).then((result) =>
+			result
+				? trackerResponse(result.status, result.body)
+				: trackerResponse(404, { error: `no route ${request.method} /${parts.join('/')}` })
+		);
+	return trackerItemSpecialResponse(request, parts, dependencies);
+}
+
+function trackerItemSpecialResponse(
+	request: Request,
+	parts: string[],
+	dependencies: TrackerLocalApiDependencies
+): Promise<Response> | undefined {
+	if (!/^items\/[^/]+\/(?:inbox|stage|artifact|reject)$/.test(parts.join('/'))) return undefined;
+	const [, id, verb] = parts;
+	const actor = readActor(request.headers);
+	if (verb === 'inbox')
+		return trackerInboxItem(request, id, { ...dependencies, actor }).then((item) =>
+			trackerResponse(200, item)
+		);
+	if (request.method === 'POST' && verb === 'reject')
+		return trackerRejectItem(request, id, { ...dependencies, actor }).then((item) =>
+			trackerResponse(200, item)
+		);
+	if (request.method !== 'POST' || (verb !== 'stage' && verb !== 'artifact')) return undefined;
+	return writeTrackerPlanning(
+		request,
+		{ id, verb, actor },
+		{
+			...dependencies,
+			now: dependencies.options.now?.() ?? Date.now()
+		}
+	).then((item) => trackerResponse(200, item));
 }
 
 function readActor(headers: Headers): string | null {
@@ -173,26 +216,4 @@ function readActor(headers: Headers): string | null {
 		.slice(0, 80);
 	if (!actor) return null;
 	return actor;
-}
-
-function failureResponse(error: unknown): Response {
-	if (
-		error instanceof Error &&
-		'status' in error &&
-		typeof error.status === 'number' &&
-		error.status >= 400 &&
-		error.status < 500
-	) {
-		const extra = 'body' in error && typeof error.body === 'object' ? error.body : {};
-		return trackerResponse(error.status, { error: error.message, ...extra });
-	}
-	return trackerResponse(500, { error: 'internal server error' });
-}
-
-function trackerResponse(status: number, body: unknown): Response {
-	const isText = typeof body === 'string';
-	return new Response(isText ? body + '\n' : JSON.stringify(body, null, 2), {
-		status,
-		headers: { 'content-type': isText ? 'text/plain; charset=utf-8' : 'application/json' }
-	});
 }

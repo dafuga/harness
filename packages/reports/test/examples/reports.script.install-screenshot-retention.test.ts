@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
+import type { Options, Run, Facts } from './reports.script.install-screenshot-retention.test.types';
 
 const SCRIPT = fileURLToPath(
 	new URL('../../scripts/install_screenshot_retention.py', import.meta.url)
@@ -46,22 +47,6 @@ const FAKE_TOOLS: Record<string, string> = {
 	plutil: '[ "$FAIL" = plutil ] && exit 1\nexit 0',
 	launchctl: 'echo "$1" >> "$CALLS"\n[ "$1" = "$FAIL" ] && exit 1\nexit 0'
 };
-
-type Options = { bun: boolean; fail?: string };
-type Facts = {
-	error?: { type: string; message?: string; returncode?: number };
-	plistCount: number;
-	plist?: {
-		label: string;
-		calendar: { Hour: number; Minute: number };
-		runAtLoad: boolean;
-		mode: string;
-		args: string[];
-		entrypointIsIndex: boolean;
-	};
-	calls: string[];
-};
-type Run = Facts & { stdout: string };
 
 function writeExecutable(path: string, body: string): void {
 	writeFileSync(path, `#!/bin/sh\n${body}\n`, { mode: 0o755 });

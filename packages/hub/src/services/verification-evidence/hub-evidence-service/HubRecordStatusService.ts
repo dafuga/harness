@@ -1,5 +1,6 @@
 // @harness-uid u_kdcxpa2qb2
-import type { Context, VerificationNote } from './HubRecordStatusService.types';
+import type { VerificationNote } from '../../../../../../src/core/git-source-history/historyTypes.types';
+import type { Context } from './HubRecordStatusService.types';
 import { verificationNoteIdentity } from '../../../../../../src/utils/verification-evidence/verificationNoteIdentity';
 import type { VerificationRecord } from '../../../../../../src/core/verificationTypes';
 import type { ReadNote } from '../../../../../../src/utils/git-source-history/note-lines/noteCommit';

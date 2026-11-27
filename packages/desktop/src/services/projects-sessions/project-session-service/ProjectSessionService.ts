@@ -18,6 +18,17 @@ import { ProjectNotOpenError } from './ProjectNotOpenError';
 import { ProjectNotSelectedError } from './ProjectNotSelectedError';
 import { ProjectRevisionReadOnlyError } from './ProjectRevisionReadOnlyError';
 import { ProjectSwitchBlockedError } from './ProjectSwitchBlockedError';
+import type { Revision } from '../../../models/development-tooling/Desktop.types';
+
+function isWritableTip(
+	revision: Pick<ProjectSnapshot['revision'], 'branch' | 'atTip'>,
+	checkedOutBranch: string | undefined
+): boolean {
+	return (
+		revision.branch === checkedOutBranch && revision.atTip && revision.branch !== 'harness-evidence'
+	);
+}
+
 export class ProjectSessionService {
 	root: string | null = null;
 	projectId: string | null = null;
@@ -104,11 +115,7 @@ export class ProjectSessionService {
 			branches,
 			commits: await source.commits(revision.branch),
 			entities,
-			writable:
-				query.commit === null &&
-				revision.branch === current?.name &&
-				revision.atTip &&
-				revision.branch !== 'harness-evidence'
+			writable: query.commit === null && isWritableTip(revision, current?.name)
 		};
 	}
 	requireProject() {
@@ -116,16 +123,17 @@ export class ProjectSessionService {
 			throw new ProjectNotOpenError('Open a project first.');
 		return { root: this.root, source: this.source, planning: this.planning, catalog: this.catalog };
 	}
-	async mutable() {
+	async mutable(): Promise<{
+		revision: Revision;
+		root: string;
+		source: GitSourceAdapter;
+		planning: PlanningFacadeAdapter;
+		catalog: CatalogService;
+	}> {
 		const project = this.requireProject(),
 			revision = await project.source.revision(this.query);
 		const current = (await project.source.branches()).find((b) => b.current);
-		if (
-			this.query.commit ||
-			revision.branch !== current?.name ||
-			!revision.atTip ||
-			revision.branch === 'harness-evidence'
-		)
+		if (this.query.commit || !isWritableTip(revision, current?.name))
 			throw new ProjectRevisionReadOnlyError(
 				'Historical views and other branches are read-only. View the checked-out branch tip to make changes.'
 			);

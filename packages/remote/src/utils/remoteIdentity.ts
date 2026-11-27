@@ -1,5 +1,5 @@
 // @harness-uid u_sl6jhpdbx4
-export { pairingCode, requestDigest } from './networking-security/remoteIdentity';
+export { requestDigest } from './networking-security/remoteIdentity';
 export {
 	remotePatterns,
 	remoteIdentity,

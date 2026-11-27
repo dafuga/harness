@@ -1,0 +1,164 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-needs-you",
+	"uid": "u_kncvbfcpto",
+	"kind": "component",
+	"title": "HubHomeNeedsYou",
+	"responsibility": "Lists the open structured asks that need Daniel as compact rows that open the asking session.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-ask",
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-linkified-text"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeNeedsYou.svelte"],
+		"symbols": ["HubHomeNeedsYou"]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
+		"inputs": [
+			{
+				"name": "HubHomeNeedsYou.asks",
+				"type": "HomeOpenAsk[]",
+				"required": true,
+				"description": "The open structured asks, in the order to show them."
+			},
+			{
+				"name": "HubHomeNeedsYou.now",
+				"type": "number",
+				"required": true,
+				"description": "The current time in milliseconds, used for how long each ask has waited."
+			},
+			{
+				"name": "HubHomeNeedsYou.send",
+				"type": "SendHomeChat",
+				"required": true,
+				"description": "Sends an answer tapped on a row and returns what became of it."
+			},
+			{
+				"name": "HubHomeNeedsYou.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true,
+				"description": "Reads the later outcome of an answer the Hub queued."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeNeedsYou",
+				"type": "markup",
+				"description": "Compact rows of the asks that need Daniel."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeNeedsYou.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeNeedsYou.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

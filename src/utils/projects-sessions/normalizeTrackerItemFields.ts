@@ -6,6 +6,8 @@ import {
 	trackerTimeZone,
 	validateTrackerTimeZone
 } from './normalizeTrackerDue';
+import { trackerAskNormalizers } from './trackerAskOptions';
+import { trackerItemPriority } from './trackerItemPriority';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 import type {
@@ -15,7 +17,7 @@ import type {
 	TrackerItemValue
 } from './normalizeTrackerItemFields.types';
 
-const kinds = ['task', 'plan', 'goal', 'recurring'];
+const kinds = ['task', 'plan', 'goal', 'recurring', 'reminder'];
 const statuses = ['open', 'in_progress', 'blocked', 'done', 'ignored'];
 const recurringClearValues = new Set<TrackerItemValue>([null, '', 'none']);
 
@@ -25,6 +27,7 @@ const textFields = new Set([
 	'notes',
 	'parent',
 	'question',
+	'next_step',
 	'answer',
 	'answered_at',
 	'answered_by',
@@ -44,7 +47,8 @@ const textFields = new Set([
 	'ignored_prev_status',
 	'adapter_notice',
 	'adapter_instructions',
-	'adapter_due_owner'
+	'adapter_due_owner',
+	'chase+'
 ]);
 const flagFields = new Set([
 	'needs_daniel',
@@ -64,10 +68,12 @@ const normalizeFlag = (value: TrackerItemValue): number =>
 
 const normalizers = {
 	kind: normalizeKind,
+	priority: (value: TrackerItemValue) => trackerItemPriority(value),
 	status: normalizeStatus,
 	title: normalizeTitle,
 	due: normalizeTrackerDue,
 	remind_at: normalizeInstant,
+	parked_until: normalizeInstant,
 	ignored_until: normalizeTrackerDue,
 	callback: normalizeCallback,
 	repo: normalizeRepo,
@@ -76,7 +82,8 @@ const normalizers = {
 	occurrence: normalizeInstant,
 	missed: normalizeInstant,
 	last_result: normalizeResult,
-	auto: normalizeLaunchToken
+	auto: normalizeLaunchToken,
+	...trackerAskNormalizers
 };
 
 export function normalizeTrackerItemFields(
@@ -98,10 +105,8 @@ function normalizeField(
 ): string | number | null {
 	if (textFields.has(key)) return normalizeText(value);
 	if (flagFields.has(key)) return normalizeFlag(value);
-	if (Object.hasOwn(normalizers, key)) {
-		return normalizers[key as keyof typeof normalizers](value, clock, input);
-	}
-	throw trackerItemError(`unknown field "${key}"`);
+	if (!Object.hasOwn(normalizers, key)) throw trackerItemError(`unknown field "${key}"`);
+	return normalizers[key as keyof typeof normalizers](value, clock, input);
 }
 
 function normalizeKind(value: TrackerItemValue): string {

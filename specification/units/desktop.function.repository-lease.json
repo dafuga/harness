@@ -9,10 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/projects-sessions/RepositoryLeaseError.ts",
 			"packages/desktop/src/utils/projects-sessions/repositoryLease.ts",
 			"packages/desktop/src/utils/projects-sessions/repositoryLease.types.ts"
 		],
-		"symbols": ["repositoryLease", "RepositoryLease", "RepositoryLease", "RepositoryLeaseError"]
+		"symbols": [
+			"RepositoryLeaseError",
+			"repositoryLease",
+			"RepositoryLease",
+			"RepositoryLease",
+			"RepositoryLeaseError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

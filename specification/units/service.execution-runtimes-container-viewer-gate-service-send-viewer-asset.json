@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-container-viewer-gate-service-send-viewer-asset",
+	"uid": "u_a765656xhd",
+	"kind": "service",
+	"title": "sendViewerAsset",
+	"responsibility": "Serve one noVNC client file without leaving its directory.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/container-viewer-gate-service/sendViewerAsset.ts"],
+		"symbols": ["sendViewerAsset"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sendViewerAsset.response",
+				"type": "ServerResponse",
+				"required": true
+			},
+			{
+				"name": "sendViewerAsset.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "sendViewerAsset.pathname",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "sendViewerAsset",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sendViewerAsset",
+				"inputs": [
+					{
+						"name": "sendViewerAsset.response",
+						"type": "ServerResponse",
+						"required": true
+					},
+					{
+						"name": "sendViewerAsset.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "sendViewerAsset.pathname",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sendViewerAsset",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.execution-runtimes-container-viewer-gate-service-viewer-pages",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/container-viewer-gate-service/sendViewerAsset.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/container-viewer-gate-service/sendViewerAsset.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

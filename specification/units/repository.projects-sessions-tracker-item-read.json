@@ -4,7 +4,7 @@
 	"uid": "u_xba7ieg4je",
 	"kind": "repository",
 	"title": "TrackerItemReadRepository",
-	"responsibility": "Reads Tracker items and digests from injected SQLite using the legacy public response shape.",
+	"responsibility": "Read Tracker items and digests from SQLite with stage projection and stage filters.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -37,13 +37,19 @@
 			"TrackerItem",
 			"TrackerDigestItem",
 			"TrackerRecurringProblem",
+			"TrackerDigestGroups",
+			"TrackerProjectStatus",
 			"TrackerDigest",
 			"TrackerItemReadError",
 			"TrackerItemReadError.constructor",
 			"buildTrackerDigest",
 			"StoredRecurringResult",
+			"TrackerDigestSources",
 			"formatTrackerDigest",
 			"serializeTrackerItem",
+			"trackerChaseFields",
+			"trackerAskAge",
+			"trackerAskFields",
 			"StoredTrackerNote",
 			"StoredTrackerCallback"
 		]
@@ -79,7 +85,7 @@
 				"name": "TrackerItemReadRepository.list.nowMs",
 				"type": "number",
 				"required": false,
-				"description": "Clock in milliseconds for filtering future reminders from flagged lists. Defaults to the current time."
+				"description": "Clock in milliseconds for filtering future reminders and parked decisions from flagged lists. Defaults to the current time."
 			},
 			{
 				"name": "TrackerItemReadRepository.digest.nowMs",
@@ -139,6 +145,16 @@
 				"required": true
 			},
 			{
+				"name": "buildTrackerDigest.runs",
+				"type": "TrackerRunReadRepository",
+				"required": true
+			},
+			{
+				"name": "buildTrackerDigest.projects",
+				"type": "TrackerProjectStatus[]",
+				"required": true
+			},
+			{
 				"name": "formatTrackerDigest.digest",
 				"type": "TrackerDigest",
 				"required": true
@@ -151,6 +167,38 @@
 			{
 				"name": "serializeTrackerItem.notes",
 				"type": "SqliteStatement",
+				"required": true
+			},
+			{
+				"name": "trackerChaseFields.row",
+				"type": "TrackerItemRow",
+				"required": true
+			},
+			{
+				"name": "trackerAskAge.row",
+				"type": "TrackerItemRow",
+				"required": true,
+				"description": "Materialized item row with the journal clock for the open decision."
+			},
+			{
+				"name": "trackerAskAge.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in epoch milliseconds."
+			},
+			{
+				"name": "trackerAskFields.row",
+				"type": "TrackerItemRow",
+				"required": true
+			},
+			{
+				"name": "trackerAskFields.open",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "trackerAskFields.now",
+				"type": "number",
 				"required": true
 			}
 		],
@@ -292,7 +340,7 @@
 						"name": "TrackerItemReadRepository.list.nowMs",
 						"type": "number",
 						"required": false,
-						"description": "Clock in milliseconds for filtering future reminders from flagged lists. Defaults to the current time."
+						"description": "Clock in milliseconds for filtering future reminders and parked decisions from flagged lists. Defaults to the current time."
 					}
 				],
 				"outputs": [
@@ -434,6 +482,16 @@
 						"name": "buildTrackerDigest.timeZone",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "buildTrackerDigest.runs",
+						"type": "TrackerRunReadRepository",
+						"required": true
+					},
+					{
+						"name": "buildTrackerDigest.projects",
+						"type": "TrackerProjectStatus[]",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -507,6 +565,78 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerChaseFields",
+				"inputs": [
+					{
+						"name": "trackerChaseFields.row",
+						"type": "TrackerItemRow",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerChaseFields",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerAskAge",
+				"inputs": [
+					{
+						"name": "trackerAskAge.row",
+						"type": "TrackerItemRow",
+						"required": true,
+						"description": "Materialized item row with the journal clock for the open decision."
+					},
+					{
+						"name": "trackerAskAge.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAskAge",
+						"type": "unknown",
+						"description": "The original ask time and elapsed whole minutes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerAskFields",
+				"inputs": [
+					{
+						"name": "trackerAskFields.row",
+						"type": "TrackerItemRow",
+						"required": true
+					},
+					{
+						"name": "trackerAskFields.open",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "trackerAskFields.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAskFields",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -562,7 +692,77 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-is-tracker-phase4-worker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-attachments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-structured-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read-repository-clip-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read-repository-format-tracker-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read-repository-split-tracker-asks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read-repository-stamp-tracker-time",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read-repository-summarize-tracker-projects",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
 			"via": "import",
 			"origin": "derived"
 		}

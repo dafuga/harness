@@ -43,6 +43,11 @@
 				"type": "() => Promise<string | null>",
 				"required": true,
 				"description": "Asynchronous choice callback passed to desktopBridge and made available to the returned bridge. It resolves to a string or null, and this class does not invoke it or alter its result."
+			},
+			{
+				"name": "DesktopBridgeService.bridge.onCacheStatus",
+				"type": "(event: CacheStatus) => void",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -57,7 +62,13 @@
 		"operations": [
 			{
 				"name": "DesktopBridgeService.bridge",
-				"inputs": [],
+				"inputs": [
+					{
+						"name": "DesktopBridgeService.bridge.onCacheStatus",
+						"type": "(event: CacheStatus) => void",
+						"required": false
+					}
+				],
 				"outputs": [
 					{
 						"name": "DesktopBridgeService.bridge",
@@ -113,6 +124,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.function.desktop-bridge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,14 +1,20 @@
 import { DatabaseSync } from 'node:sqlite';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import { TrackerSyncAuthService } from '../../../src/services/networking-security/TrackerSyncAuthService';
-import type { TrackerHubSyncService } from '../../../src/services/projects-sessions/TrackerHubSyncService';
 import type { TrackerLocalApiService } from '../../../src/services/projects-sessions/TrackerLocalApiService';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import type { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import { TrackerSpokeSyncService } from '../../../src/services/projects-sessions/TrackerSpokeSyncService';
 import type { TrackerSpokeTransport } from '../../../src/services/projects-sessions/TrackerSpokeSyncService.types';
 
-const fixtureSecret = 'synthetic-tracker-wire-secret';
+import { primary, secondary } from '../../support/trackerDispatcherFixture';
+import type { TrackerDispatchRunner } from '../../../src/services/projects-sessions/TrackerDispatchSchedulerService.types';
+
+import {
+	configuredIntakePair,
+	fixtureSecret,
+	wire
+} from '../../support/trackerDispatchQueueFixture';
 
 function nativeStore(node: string, role: 'hub' | 'spoke' = 'spoke') {
 	const database = new DatabaseSync(':memory:');
@@ -24,24 +30,6 @@ function nativeStore(node: string, role: 'hub' | 'spoke' = 'spoke') {
 		syncResponder: role === 'hub' ? { auth: new TrackerSyncAuthService(fixtureSecret) } : undefined
 	});
 	return { api, database, store, sync };
-}
-
-function wire(hub: TrackerHubSyncService): TrackerSpokeTransport {
-	return async (request) => {
-		const data = new Request('http://tracker-fixture.invalid' + request.pathAndQuery, {
-			method: request.method,
-			headers: request.headers,
-			body: request.body
-		});
-		const response = await hub.handle({
-			method: request.method,
-			pathAndQuery: request.pathAndQuery,
-			headers: data.headers,
-			body: data.body
-		});
-		if (!response.ok) throw new Error(`Fixture sync failed with status ${response.status}`);
-		return await response.json();
-	};
 }
 
 function spoke(store: TrackerPersistenceService, transport: TrackerSpokeTransport) {
@@ -109,9 +97,65 @@ test('native hub and two native spokes converge after a lost receipt and offline
 				]
 			});
 		}
+		await proveAdapterDelegation();
 	} finally {
 		alpha.database.close();
 		beta.database.close();
 		central.database.close();
 	}
 });
+
+async function proveAdapterDelegation() {
+	const hubDb = new DatabaseSync(':memory:');
+	const peerDb = new DatabaseSync(':memory:');
+	const now = () => Date.parse('2026-11-25T08:05:00Z');
+	const started = vi.fn<TrackerDispatchRunner['start']>(async ({ run, key }) => ({
+		type: 'session',
+		session: { id: run.item_id, key, state: 'live', startedAt: now() }
+	}));
+	const hubStart = vi.fn<TrackerDispatchRunner['start']>();
+	const { hub, peer, transport } = configuredIntakePair(
+		{ hubDb, peerDb, now },
+		{ hubStart, started }
+	);
+	const signal = new AbortController().signal;
+	const id = 'tester1234';
+	try {
+		await peer.scheduler!.tick(signal);
+		await peer.telemetry!(signal);
+		hub.store.appendLocal({
+			itemId: id,
+			fields: {
+				title: 'Tester follow-up',
+				project: 'BuildFlexity',
+				kind: 'task',
+				status: 'open',
+				adapter_due_owner: primary,
+				computer: primary,
+				created_by: primary,
+				due: new Date(now()).toISOString()
+			}
+		});
+		await hub.scheduler!.tick(signal);
+		const path = '/items/' + id;
+		const item = await (await local(hub.items, path)).json();
+		expect(item).toMatchObject({ launch_source: 'due', launch_target: secondary });
+		expect(hubStart).not.toHaveBeenCalled();
+		const link = spoke(peer.store, transport);
+		expect(await link.permitDue(id, 'wrong-token')).toBe(false);
+		await link.pull();
+		await peer.scheduler!.tick(signal);
+		expect(started).toHaveBeenCalledExactlyOnceWith(
+			expect.objectContaining({
+				run: expect.objectContaining({ item_id: id, node: secondary, model: 'gpt-6.2-sol' })
+			}),
+			signal,
+			expect.any(String)
+		);
+		await hub.scheduler!.tick(signal);
+		expect(hubStart).not.toHaveBeenCalled();
+	} finally {
+		hubDb.close();
+		peerDb.close();
+	}
+}

@@ -1,4 +1,5 @@
 // @harness-uid u_wlip653voz
+import type { TrackerItemPriority } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type { TrackerAdapterRepository } from '../../repositories/projects-sessions/TrackerAdapterRepository';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
 import type {
@@ -73,6 +74,10 @@ export interface TrackerAdapterLease {
 
 /** Optional source-specific Tracker presentation and manual adoption rules. */
 export interface TrackerAdapterIntakePolicy {
+	priority?(
+		item: Readonly<TrackerAdapterIntakeRecord>,
+		event: Readonly<TrackerAdapterPriorityEvent>
+	): TrackerItemPriority;
 	titlePrefix?: string;
 	matchesItem?: (item: Readonly<TrackerAdapterCandidate>) => boolean;
 	instructions?: string;
@@ -81,6 +86,7 @@ export interface TrackerAdapterIntakePolicy {
 
 export interface TrackerGithubFollowUpPolicy {
 	author: string;
+	additionalAuthors?: string[];
 	instructions: string;
 	coveredComments?: Record<string, string>;
 }
@@ -105,6 +111,7 @@ export interface TrackerAdapterPollOptions {
 }
 
 export interface TrackerAdapterAction {
+	priority?: TrackerItemPriority;
 	action: 'create' | 'link' | 'covered';
 	external_id: string;
 	item_id?: string;
@@ -138,7 +145,13 @@ export interface TrackerAdapterEvent {
 	nudge?: boolean;
 }
 
+export interface TrackerAdapterPriorityEvent {
+	actor?: string;
+	kind: 'issue' | 'comment';
+}
+
 export interface TrackerAdapterIntakeRecord {
+	actor?: string;
 	externalId: string;
 	key: string;
 	title: string;
@@ -155,6 +168,7 @@ export interface TrackerAdapterIntakeRecord {
 }
 
 export interface TrackerAdapterCommentEvent extends TrackerAdapterEvent {
+	actor?: string;
 	key: string;
 }
 

@@ -6,6 +6,9 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
+// Allow Node startup under a full test run. Dedicated runtime tests cover deadline enforcement.
+const responseTimeoutMs = 6000;
+
 function installRuntime(directory: string): string {
 	const executable = join(directory, 'runtime');
 	writeFileSync(
@@ -45,7 +48,7 @@ test('invoke sends a JSON request to a one-shot runtime', async () => {
 			command: installRuntime(directory),
 			args: [],
 			persistent: false,
-			timeoutMs: 1000
+			timeoutMs: responseTimeoutMs
 		});
 		const request = { operation: 'render', input: { path: 'src/index.ts' } };
 		const output = await adapter.invoke(request);
@@ -74,7 +77,7 @@ test('invokeText returns one-shot stdout unchanged', async () => {
 		const adapter = new ProcessRuntimeAdapter({
 			command: installRuntime(directory),
 			args: [],
-			timeoutMs: 1000
+			timeoutMs: responseTimeoutMs
 		});
 		const input = '{"operation":"render","input":{"path":"src/index.ts"}}';
 		const output = await adapter.invokeText(input);
@@ -106,7 +109,7 @@ test('close stops the persistent runtime after a line exchange', async () => {
 			command: installRuntime(directory),
 			args: [],
 			persistent: true,
-			timeoutMs: 1000
+			timeoutMs: responseTimeoutMs
 		});
 		const request = '{"operation":"render","input":{"path":"src/index.ts"}}';
 		const response = await adapter.invokeText(request);

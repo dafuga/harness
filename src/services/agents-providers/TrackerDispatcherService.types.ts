@@ -9,7 +9,7 @@ export type {
 	TrackerSessionEvidence
 } from './tracker-dispatcher-service/runReceipt.types';
 
-export type TrackerLaunchSource = 'manual' | 'due' | 'recovery';
+export type TrackerLaunchSource = 'manual' | 'automatic' | 'due' | 'recovery';
 export type TrackerItemStatus = 'open' | 'in_progress' | 'blocked' | 'done' | 'ignored';
 export type TrackerDispatchOutcome =
 	| 'done'
@@ -49,6 +49,7 @@ export interface TrackerDispatchItem extends TrackerLaunchOptions {
 	scheduleOff?: boolean;
 	deleted?: boolean;
 	awaitingAnswer?: boolean;
+	parkedUntil?: number;
 	question?: string | null;
 	/** The item journal has confirmed this answer wins over the current question and block. */
 	answeredCurrentBlock?: boolean;
@@ -80,6 +81,9 @@ export interface TrackerDispatchPolicy {
 	hub?: boolean;
 	enabled?: boolean;
 	recoverDroppedSessions?: boolean;
+	/** Live operator setting for unattended launches. Explicit launches use the host safety setting. */
+	automaticEnabled?(): boolean;
+	allowDelegatedAdapterDue?: boolean;
 	timezone: string;
 	now(): number;
 	/** Resolve custom aliases and known nodes. Built-in fleet aliases are resolved locally. */
@@ -97,13 +101,14 @@ export interface TrackerDispatchPolicy {
 		intent: TrackerLaunchIntent,
 		rung: TrackerLaunchRung | null
 	): string | null;
+	/** Why this computer may not start the provider now. */
+	providerHold?(cli: string): string | null;
 	pickModel(item: TrackerDispatchItem): TrackerLaunchPick | { error: string };
 	retryModel(item: TrackerDispatchItem, run: TrackerRunReceipt): TrackerLaunchRung | null;
 	maxRetries?: number;
 	maxRunMinutes?: number;
 	stallMinutes?: number;
 	defaultEtaMinutes?: number;
-	keepSessionMinutes?: number;
 	dueIntervalMs?: number;
 }
 
@@ -136,9 +141,11 @@ export interface TrackerDispatchSnapshot {
 }
 
 export interface TrackerDispatchWrites {
-	item?: Partial<Omit<TrackerDispatchItem, 'id'>>;
+	item?: Partial<Omit<TrackerDispatchItem, 'id'>> & { appendNote?: string };
 	runs?: readonly TrackerRunReceipt[];
 	lastDueStartAt?: number;
+	/** A run abandoned by a launch failure, rather than a cancellation, which is announced. */
+	failedRunId?: number;
 }
 
 export type TrackerDispatchResult =
@@ -167,7 +174,12 @@ export interface TrackerDispatchStore {
 }
 
 export type TrackerLaunchRequest =
-	| { source: 'manual'; token: string; options?: TrackerLaunchOptions }
+	| {
+			source: 'manual';
+			token: string;
+			options?: TrackerLaunchOptions;
+	  }
+	| { source: 'automatic'; token: string; unchangedSince: number }
 	| { source: 'due'; token: string }
 	| { source: 'recovery'; token: string; expectedAuto: string | null; rung?: TrackerLaunchRung };
 

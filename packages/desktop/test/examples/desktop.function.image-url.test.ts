@@ -3,13 +3,12 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { imageUrl } from '../../src/utils/reports-media/imageUrl';
 import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
+import type { Applied } from './desktop.function.image-url.test.types';
 
 const request = { entityId: 'design-image-42', version: 'v3', sha256: 'ba7816bf'.padEnd(64, '0') };
 const commit = 'a'.repeat(40);
 const context = { projectId: 'project-7' };
 const PNG_BYTES = new Uint8Array([137, 80, 78, 71]);
-
-type Applied = [url: string, error: string];
 
 /** Lets the bridge promise and Svelte tick settle; expectations stay outside retry loops. */
 const settle = () => new Promise((done) => setTimeout(done, 5));

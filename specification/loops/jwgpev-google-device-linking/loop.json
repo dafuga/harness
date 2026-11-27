@@ -1,0 +1,45 @@
+{
+	"name": "jwgpev-google-device-linking",
+	"goal": "Google sign-in registers the Mac, web and iPhone reach only computers under the verified account without pairing prompts, and revocation denies access",
+	"createdAt": "2026-11-24T23:09:55.091Z",
+	"updatedAt": "2026-11-24T23:33:37.507Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T23:12:19.062Z",
+			"evidence": "Remote companion spec defines Google-session authority, sign-out, account changes, two computers, read-only grants, QR removal, revocation and deployment gates."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-24T23:33:34.371Z",
+			"evidence": "Google-native registration starts the Mac host connection. Account-scoped Hub discovery and protected browser relay transport share the native sealed exchange. Mac and iPhone settings no longer expose QR or approval; unlink and revoke remain available."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-24T23:33:37.507Z",
+			"evidence": "Native sign-in red had no verified-subject callback and green passed. Before iPhone regression on 2cc0df7bd7 showed the QR fallback. MB2 feature patch passed 14 Desktop renderer and 11 Hub renderer cases. Workerd fixture verified two Macs, same-account read, different-account denial, exact session, one-time exchange, revoke and unlink."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

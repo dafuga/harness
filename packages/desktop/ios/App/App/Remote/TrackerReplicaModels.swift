@@ -17,6 +17,8 @@ struct TrackerItemHeader: Codable {
     let updatedAt: String?
     let dueAt: String?
 
+    let stage: String?
+
     static let statuses = ["open", "in_progress", "blocked", "done", "ignored"]
 }
 
@@ -30,9 +32,21 @@ struct TrackerReplicaItem: Codable {
     }
 
     struct Flag: Codable {
+        /// One tappable answer. The server sends at most four, recommended or not.
+        struct Option: Codable {
+            let label: String
+            let effect: String
+            let recommended: Bool?
+        }
+
         let state: String
         let at: String?
         let question: String
+        var options: [Option]? = nil
+        /// deploy, money or secret: the answer needs the device owner's Face ID or passcode.
+        var confirm: String? = nil
+        /// Specs and documents behind "View spec". Older Macs send none.
+        var attachments: [TrackerReplicaAttachment]? = nil
     }
 
     struct Run: Codable {
@@ -55,15 +69,18 @@ struct TrackerReplicaItem: Codable {
     let flag: Flag?
     let runs: [Run]
     let attentionRevision: String?
+    let stage: String?
+    let planning: TrackerReplicaPlanning?
 
     var header: TrackerItemHeader {
-        TrackerItemHeader(id: id, title: title, project: project, status: status, updatedAt: updatedAt, dueAt: dueAt)
+        TrackerItemHeader(id: id, title: title, project: project, status: status, updatedAt: updatedAt, dueAt: dueAt, stage: stage)
     }
 
     var valid: Bool {
         Self.short(id, 80) && Self.short(title, 240) && Self.short(project, 120)
             && TrackerItemHeader.statuses.contains(status)
             && Self.short(updatedAt ?? "", 40) && Self.short(dueAt ?? "", 40)
+            && (stage.map { ["idea", "detail", "design", "build"].contains($0) } ?? true)
             && notes.count <= 10 && notes.allSatisfy(Self.validNote)
             && (flag.map(Self.validFlag) ?? true)
             && runs.count <= 5 && runs.allSatisfy(Self.validRun)
@@ -76,6 +93,9 @@ struct TrackerReplicaItem: Codable {
 
     private static func validFlag(_ flag: Flag) -> Bool {
         ["open", "resolved"].contains(flag.state) && short(flag.at ?? "", 40) && short(flag.question, 512)
+            && (flag.attachments.map { $0.count <= 4 && $0.allSatisfy(\.valid) } ?? true)
+            && (flag.options.map { $0.count <= 4 && $0.allSatisfy { short($0.label, 80) && short($0.effect, 400) } } ?? true)
+            && (flag.confirm.map { ["deploy", "money", "secret"].contains($0) } ?? true)
     }
 
     private static func validRun(_ run: Run) -> Bool {

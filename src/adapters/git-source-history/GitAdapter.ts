@@ -1,5 +1,6 @@
 // @harness-uid u_pghy4246hw
-import { GitCommandError, type GitRunOptions, type GitResult } from './GitAdapter.types';
+import type { BoundedCommandResult } from '../execution-runtimes/BoundedCommandAdapter.types';
+import { GitCommandError, type GitRunOptions } from './GitAdapter.types';
 import { BoundedCommandAdapter } from '../execution-runtimes/BoundedCommandAdapter';
 import { gitDeadline } from './git-adapter/gitDeadline';
 
@@ -24,7 +25,7 @@ export class GitAdapter {
 		return result.code === 0 ? result.stdout.toString('utf8').trim() : undefined;
 	}
 
-	exec(args: string[], options: GitRunOptions = {}): Promise<GitResult> {
+	exec(args: string[], options: GitRunOptions = {}): Promise<BoundedCommandResult> {
 		return new BoundedCommandAdapter().run('git', args, {
 			...options,
 			cwd: this.root,
@@ -39,7 +40,8 @@ export class GitAdapter {
 	}
 }
 
-export type { GitRunOptions, GitResult } from './GitAdapter.types';
+export type { GitRunOptions } from './GitAdapter.types';
+export type { BoundedCommandResult } from '../execution-runtimes/BoundedCommandAdapter.types';
 
 const gitEnvironmentKeys = new Set([
 	'SSH_AUTH_SOCK',

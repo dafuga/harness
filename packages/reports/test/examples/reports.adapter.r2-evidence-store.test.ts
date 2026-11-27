@@ -10,14 +10,9 @@ import {
 	R2EvidenceStoreAdapter
 } from '../../src/adapters/reports-media/R2EvidenceStoreAdapter';
 import { R2EvidenceStoreError } from '../../src/adapters/reports-media/R2EvidenceStoreAdapter.types';
+import type { Sent, Client, FakeCommand } from './reports.adapter.r2-evidence-store.test.types';
+import { REPORT, PNG } from './reports.adapter.r2-evidence-store.cases';
 
-type Client = NonNullable<ConstructorParameters<typeof R2EvidenceStoreAdapter>[1]>;
-type Sent = { key: string; type: string | undefined };
-type FakeCommand = { input: { Key: string; Body?: Buffer; ContentType?: string } };
-
-const REPORT = '5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a';
-const PNG = '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png';
-const WEBP = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.webp';
 const MP4 = 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4';
 const CONFIG = {
 	accountId: 'local-account',
@@ -75,26 +70,6 @@ async function asyncFailure(promise: Promise<unknown>): Promise<string> {
 		return failure(error);
 	}
 }
-
-test('Builds evidence object keys under the run folder', () => {
-	const png = evidenceObjectKey(REPORT, PNG);
-	const webp = evidenceObjectKey(REPORT, WEBP);
-	expect(png).toBe(`report-evidence/runs/${REPORT}/assets/${PNG}`);
-	expect(webp).toBe(`report-evidence/runs/${REPORT}/assets/${WEBP}`);
-	recordExampleCases(
-		{
-			unitId: 'reports.adapter.r2-evidence-store',
-			symbol: 'evidenceObjectKey',
-			state: 'builds-evidence-object-keys-under-the-run-folder',
-			evidence: 'examples-cases',
-			file: 'builds-evidence-object-keys-under-the-run-folder.json'
-		},
-		[
-			{ name: 'png evidence key', input: { reportId: REPORT, file: PNG }, output: png },
-			{ name: 'webp evidence key', input: { reportId: REPORT, file: WEBP }, output: webp }
-		]
-	);
-});
 
 test('Rejects evidence names and report IDs that fail their checks', () => {
 	const badFile = syncFailure(() => evidenceObjectKey(REPORT, 'bad.png'));

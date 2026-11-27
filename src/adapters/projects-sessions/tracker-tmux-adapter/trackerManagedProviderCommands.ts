@@ -2,12 +2,23 @@
 import { execFileSync } from 'node:child_process';
 import { realpathSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { controlledTrackerExecutable } from '../tracker-host-process-adapter/trackerHostCommand';
-import type { TrackerHostStartRequest } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
+import {
+	controlledTrackerExecutable,
+	runTrackerHostCommand
+} from '../tracker-host-process-adapter/trackerHostCommand';
+import { trackerEgressArguments } from '../../../utils/projects-sessions/trackerEgressPolicy';
+import type {
+	ClaudeStartupFailure,
+	TrackerHostStartRequest
+} from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import type {
 	TrackerManagedCommand,
-	TrackerManagedProfiles
+	TrackerManagedProfiles,
+	TrackerNativeLaunch
 } from './trackerManagedHostLauncher.types';
+import { claudeSessionArguments } from './trackerClaudeSessionArguments';
+import { trackerManagedToken } from './trackerManagedLaunchReceipt';
+import { trackerClaudeSessionId } from '../../../utils/projects-sessions/trackerClaudeSessionId';
 
 export function validateManagedProfiles(profiles: TrackerManagedProfiles): TrackerManagedProfiles {
 	const { native, docker } = profiles;
@@ -43,7 +54,7 @@ export function trackerManagedProviderCommand(
 	host: typeof process.platform
 ): TrackerManagedCommand | undefined {
 	const { native, docker } = profiles;
-	const { platform, backend, itemId, selection } = input;
+	const { platform, backend, itemId, selection, sessionName } = input;
 	if (platform === 'linux' && backend === 'docker' && docker)
 		return {
 			home: docker.profile,
@@ -67,14 +78,22 @@ export function trackerManagedProviderCommand(
 	if (platform !== 'macos' || backend !== 'native' || host !== 'darwin' || !native)
 		return undefined;
 	const prompt = `Read your brief at ${briefPath} and do that work. Your tracker item is ${itemId}.`;
-	return nativeTrackerProviderCommand(native, selection, prompt);
+	const claudeSession = trackerClaudeSessionId(trackerManagedToken(input.node, input.key));
+	return nativeTrackerProviderCommand(native, selection, {
+		prompt,
+		itemId,
+		claudeSession,
+		sessionName
+	});
 }
 
 function nativeTrackerProviderCommand(
 	profile: NonNullable<TrackerManagedProfiles['native']>,
 	{ provider, model, intelligence }: TrackerHostStartRequest['selection'],
-	prompt: string
+	launch: TrackerNativeLaunch
 ): TrackerManagedCommand {
+	const { prompt, itemId } = launch;
+	const egress = profile.egress?.items.includes(itemId) ? profile.egress.policy : undefined;
 	if (provider === 'claude')
 		return {
 			home: homedir(),
@@ -86,7 +105,7 @@ function nativeTrackerProviderCommand(
 			}).trim(),
 			argv: [
 				profile.claude,
-				'--dangerously-skip-permissions',
+				...claudeSessionArguments(model, launch, egress),
 				'--model',
 				model,
 				...(intelligence ? ['--effort', intelligence] : []),
@@ -97,11 +116,47 @@ function nativeTrackerProviderCommand(
 		home: profile.profile,
 		argv: [
 			profile.codex,
-			'--dangerously-bypass-approvals-and-sandbox',
+			...(egress
+				? ['-a', 'never', ...trackerEgressArguments('codex', egress)]
+				: ['--dangerously-bypass-approvals-and-sandbox']),
 			'-m',
 			model,
 			...(intelligence ? ['-c', `model_reasoning_effort=${JSON.stringify(intelligence)}`] : []),
 			prompt
 		]
 	};
+}
+
+export function trackerManagedProviderEnvironment(
+	trackerBin: string,
+	command: TrackerManagedCommand
+): Record<string, string> {
+	const { home, username } = command;
+	return {
+		HOME: home,
+		...(username && { USER: username }),
+		TERM: 'xterm-256color',
+		PATH: `${trackerBin}:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin`
+	};
+}
+
+export async function trackerClaudeAuthProblem(
+	trackerBin: string,
+	command: TrackerManagedCommand,
+	signal: AbortSignal
+): Promise<ClaudeStartupFailure | undefined> {
+	try {
+		const { code, stdout } = await runTrackerHostCommand(
+			command.argv[0],
+			['auth', 'status'],
+			AbortSignal.any([signal, AbortSignal.timeout(8_000)]),
+			{ environment: trackerManagedProviderEnvironment(trackerBin, command) }
+		);
+		const status = JSON.parse(stdout);
+		if (code === 0 && status?.loggedIn === true) return undefined;
+		if (code === 1 && status?.loggedIn === false) return 'claude-sign-in';
+	} catch {
+		signal.throwIfAborted();
+	}
+	return 'claude-auth-unverified';
 }

@@ -1,3 +1,4 @@
+import { verifyReminderItemCadence } from './tracker-notification/reminderItemCadence';
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import {
@@ -8,10 +9,12 @@ import {
 	minute,
 	notificationFixture,
 	start,
-	wire
+	wire,
+	verifyDirectFollowUps,
+	verifyParkedReminderRetry
 } from './tracker-notification/fixture';
 
-test('tick holds direct reminders through quiet hours, groups once, and repeats only active flags after retry', async () => {
+test('tick sends overnight direct reminders, groups once, and repeats only active flags after retry', async () => {
 	let rejected = false;
 	const f = notificationFixture({
 		options: { chiefOfStaff: chief, webhook: undefined },
@@ -21,30 +24,25 @@ test('tick holds direct reminders through quiet hours, groups once, and repeats 
 			return { status: 'rejected', error: 'HTTP 503' };
 		}
 	});
-	const release = Date.parse('2026-02-03T08:00:00Z');
-	f.at(start + 180 * minute);
+	const night = start + 180 * minute;
+	f.at(night);
 	f.rows.set(
 		'flag',
 		fixtureItem('flag', {
 			needs_daniel: 1,
 			question: 'Fixture question',
-			clocks: { needs_daniel: clock(start + 180 * minute) }
+			clocks: { needs_daniel: clock(night) }
 		})
 	);
 	f.rows.set('due', fixtureItem('due', { due: '2026-02-02', clocks: { due: clock() } }));
 	await f.service.tick();
-	expect(f.calls).toHaveLength(0);
-	expect([...f.queue.read().reminders.values()].map((r) => r.nextAt)).toEqual([release, release]);
-
-	f.at(release);
-	await f.restart().tick();
 	expect(f.calls).toHaveLength(1);
 	expect([...f.queue.read().reminders.values()].map((r) => [r.pings, r.nextAt])).toEqual([
-		[0, release + 5 * minute],
-		[0, release + 5 * minute]
+		[0, night + 5 * minute],
+		[0, night + 5 * minute]
 	]);
 
-	f.at(release + 5 * minute);
+	f.at(night + 5 * minute);
 	await measureTick(f.restart(), 'grouped-reminders');
 	expect(f.calls.map((call) => call.id)).toEqual([f.calls[0].id, f.calls[0].id]);
 	expect(wire(f.calls[1])).toMatchObject({
@@ -56,21 +54,21 @@ test('tick holds direct reminders through quiet hours, groups once, and repeats 
 			{ id: 'due', reminder_number: 0, reason: 'due' }
 		]
 	});
-	f.at(release + 65 * minute);
-	await f.service.tick();
-	expect(wire(f.calls[2])).toMatchObject({
-		new: [],
-		reminders: [{ id: 'flag', reminder_number: 1 }]
-	});
-	f.rows.set('flag', { ...f.rows.get('flag')!, resolved: 1 });
-	f.at(release + 125 * minute);
-	await f.service.tick();
-	expect(f.calls).toHaveLength(3);
-	expect([...f.queue.read().reminders.values()].every((r) => r.status === 'closed')).toBe(true);
+	await verifyDirectFollowUps(f, night + 5 * minute);
 });
 
-test('tick delivers the current explicit reminder once at its timestamp across restarts and quiet hours', async () => {
-	const f = notificationFixture({ options: { chiefOfStaff: chief } });
+test('tick delivers the current explicit reminder once at its timestamp across restarts overnight', async () => {
+	let uncertain = true;
+	const f = notificationFixture({
+		options: { chiefOfStaff: chief },
+		send: async () => {
+			if (uncertain) {
+				uncertain = false;
+				throw new Error('synthetic lost acknowledgement');
+			}
+			return { status: 'sent' };
+		}
+	});
 	const night = start + 180 * minute;
 	const wake = night + 2 * minute;
 	const snooze = (at: number) => new Date(at).toISOString();
@@ -104,29 +102,17 @@ test('tick delivers the current explicit reminder once at its timestamp across r
 	await f.restart().tick();
 	expect(f.calls).toHaveLength(0);
 
-	f.at(wake);
-	await measureTick(f.restart(), 'explicit-reminder-at-wake');
-	expect(f.calls).toHaveLength(1);
-	expect(wire(f.calls[0])).toMatchObject({
-		type: 'attention',
-		new: [
-			{
-				id: 'delayed',
-				reason: 'remind_at',
-				remind_at: snooze(wake),
-				question: 'Approve the fixture?'
-			}
-		]
-	});
-	await f.restart().tick();
-	expect(f.calls).toHaveLength(1);
+	await verifyParkedReminderRetry(f, wake);
 });
 
 test('tick sends a scheduled reminder through a webhook when it is the only hub destination', async () => {
 	const f = notificationFixture();
-	const wake = start + minute;
+	const wake = start + 2 * minute;
 	const at = new Date(wake).toISOString();
-	f.rows.set('wake', fixtureItem('wake', { remind_at: at, clocks: { remind_at: clock() } }));
+	f.rows.set(
+		'wake',
+		fixtureItem('wake', { kind: 'reminder', remind_at: at, clocks: { remind_at: clock() } })
+	);
 	await f.service.tick();
 	expect(f.calls).toHaveLength(0);
 	f.at(wake);
@@ -138,9 +124,10 @@ test('tick sends a scheduled reminder through a webhook when it is the only hub 
 		to: 'chief_of_staff',
 		items: [{ item_id: 'wake', reason: 'remind_at', remind_at: at }]
 	});
+	await verifyReminderItemCadence(f, wake);
 });
 
-test('tick coalesces legacy webhook escalations after a block and closes them on answer', async () => {
+test('tick follows up webhook asks on their own cadence and closes them on answer', async () => {
 	const f = notificationFixture();
 	f.options.webhook = { destination: chief, batch: false, coalesceMinutes: 10 };
 	await f.service.tick();
@@ -174,21 +161,25 @@ test('tick coalesces legacy webhook escalations after a block and closes them on
 		{ event: 'needs_daniel', escalation: 0, item_id: 'flag' }
 	]);
 
-	f.at(start + 60 * minute);
+	f.at(start + 119 * minute);
+	await f.restart().tick();
+	expect(f.calls).toHaveLength(2);
+	const morning = Date.parse('2026-02-03T08:00:00Z');
+	f.at(morning);
 	await f.restart().tick();
 	expect(wire(f.calls[2]).items).toMatchObject([
-		{ event: 'needs_daniel', escalation: 1, item_id: 'block' },
-		{ event: 'needs_daniel', escalation: 1, item_id: 'flag' }
+		{ event: 'needs_daniel', escalation: 1, item_id: 'block', waiting_minutes: 720 },
+		{ event: 'needs_daniel', escalation: 1, item_id: 'flag', waiting_minutes: 712 }
 	]);
 	f.rows.set('block', { ...f.rows.get('block')!, resolved: 1 });
 	f.rows.set('flag', { ...f.rows.get('flag')!, resolved: 1 });
-	f.at(start + 120 * minute);
+	f.at(morning + 360 * minute);
 	await f.service.tick();
 	expect(f.calls).toHaveLength(3);
 	expect([...f.queue.read().flags.values()].map((row) => row.status)).toEqual(['closed', 'closed']);
 });
 
-test('tick drops a held flag after answer and schedules the surviving flag at the next configured slot', async () => {
+test('tick sends overnight asks at once and schedules only the surviving flag at the next configured slot', async () => {
 	const f = notificationFixture();
 	f.options.webhook = { destination: chief, batch: false, reminderTimes: ['09:00', '13:00'] };
 	const night = start + 180 * minute;
@@ -197,20 +188,17 @@ test('tick drops a held flag after answer and schedules the surviving flag at th
 		f.rows.set(id, fixtureItem(id, { needs_daniel: 1, clocks: { needs_daniel: clock(night) } }));
 	}
 	await f.service.tick();
-	expect(f.calls).toHaveLength(0);
-
-	f.rows.set('answered', { ...f.rows.get('answered')!, resolved: 1 });
-	const release = Date.parse('2026-02-03T08:00:00Z');
-	f.at(release);
-	await f.restart().tick();
 	expect(wire(f.calls[0]).items).toMatchObject([
+		{ event: 'needs_daniel', item_id: 'answered', escalation: 0 },
 		{ event: 'needs_daniel', item_id: 'waiting', escalation: 0 }
 	]);
-	expect(f.queue.read().flags.get(`waiting|${clock(night)}`)?.nextAt).toBe(release + 60 * minute);
-	expect(f.queue.read().flags.get(`answered|${clock(night)}`)?.status).toBe('closed');
+	const slot = Date.parse('2026-02-03T09:00:00Z');
+	expect(f.queue.read().flags.get(`waiting|${clock(night)}`)?.nextAt).toBe(slot);
 
-	f.at(release + 60 * minute);
+	f.rows.set('answered', { ...f.rows.get('answered')!, resolved: 1 });
+	f.at(slot);
 	await f.restart().tick();
+	expect(f.queue.read().flags.get(`answered|${clock(night)}`)?.status).toBe('closed');
 	expect(wire(f.calls[1]).items).toMatchObject([{ item_id: 'waiting', escalation: 1 }]);
-	expect(f.queue.read().flags.get(`waiting|${clock(night)}`)?.nextAt).toBe(release + 300 * minute);
+	expect(f.queue.read().flags.get(`waiting|${clock(night)}`)?.nextAt).toBe(slot + 240 * minute);
 });

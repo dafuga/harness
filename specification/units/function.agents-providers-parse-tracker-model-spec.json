@@ -4,7 +4,7 @@
 	"uid": "u_b5x7mlx577",
 	"kind": "function",
 	"title": "parseTrackerModelSpec",
-	"responsibility": "Resolve explicit Tracker model pins and preserve the installed catalog and effort defaults.",
+	"responsibility": "List the automatic Tracker models and resolve explicit pins with the applicable effort defaults.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -53,7 +53,7 @@
 			{
 				"name": "ladderFrom",
 				"type": "TrackerModelRung[]",
-				"description": "Default ladder with configured matching overrides and unchanged CLI selections."
+				"description": "Automatic model catalog with eligible matching overrides and fixed Sonnet and Opus defaults."
 			},
 			{
 				"name": "parseTrackerModelSpec",
@@ -84,7 +84,7 @@
 					{
 						"name": "ladderFrom",
 						"type": "TrackerModelRung[]",
-						"description": "Default ladder with configured matching overrides and unchanged CLI selections."
+						"description": "Automatic model catalog with eligible matching overrides and fixed Sonnet and Opus defaults."
 					}
 				],
 				"errors": [],

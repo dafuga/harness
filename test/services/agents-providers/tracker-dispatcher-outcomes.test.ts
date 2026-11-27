@@ -45,7 +45,6 @@ test('a reopened item invalidates the previous verification result and records u
 		outcome: 'done',
 		state: 'finished',
 		ended_at: policy.now(),
-		kill_at: policy.now() + 30 * 60_000,
 		input_tokens: 80,
 		output_tokens: 10,
 		cost_usd: 0.03
@@ -122,35 +121,34 @@ test('a current answer revives only its original live session and preserves the 
 	expect(item()).toMatchObject({ status: 'in_progress', blockedReason: null });
 });
 
-test('pending human review suppresses an ETA timeout until the hard cap, while a deleted item abandons', async () => {
+test('a stalled or over-cap run with a live session stays running and queues no retry', async () => {
 	const fixture = dispatcherFixture({
 		policy: { defaultEtaMinutes: 3, stallMinutes: 2, maxRunMinutes: 10 }
 	});
 	const { run } = await runFixture(fixture);
-	const { service, advance, changeItem } = fixture;
-	changeItem({ awaitingAnswer: true });
-	advance(5 * 60_000);
-	expect(
-		await service.record(sampleId, run, { type: 'monitor', session: 'live', idleReview: true })
-	).toEqual({
+	const { service, advance, changeItem, policy, runs } = fixture;
+	const monitor = { type: 'monitor', session: 'live' } as const;
+	advance(4 * 60_000);
+	changeItem({ updatedAt: policy.now() });
+	advance(60_000);
+	expect(await service.record(sampleId, run, monitor)).toEqual({
 		status: 'held',
 		reason: 'run still active'
 	});
-	advance(6 * 60_000);
-	const result = recorded(
-		await service.record(sampleId, run, { type: 'monitor', session: 'live', idleReview: true })
-	);
-	expect(result.run).toMatchObject({
-		outcome: 'timed_out',
-		failure_reason: 'ran past the 10 min cap'
+	advance(2 * 60_000);
+	expect(await service.record(sampleId, run, monitor)).toEqual({
+		status: 'held',
+		reason: 'stalled past its ETA (no activity for over 2 min); its session is still alive'
 	});
-	changeItem({ deleted: true });
+	advance(4 * 60_000);
+	expect(await service.record(sampleId, run, monitor)).toEqual({
+		status: 'held',
+		reason: 'ran past the 10 min cap; its session is still alive'
+	});
+	expect(runs()).toEqual([run]);
 	expect(
-		await service.record(sampleId, result.retry!, { type: 'monitor', session: 'unknown' })
-	).toMatchObject({
-		status: 'recorded',
-		run: { outcome: 'abandoned' }
-	});
+		recorded(await service.record(sampleId, run, { ...monitor, session: 'exited' })).retry
+	).toMatchObject({ attempt: 2, escalated_from: run.id });
 });
 
 test('missing items preserve active sessions until recovery; closing the linked source abandons cleanly', async () => {

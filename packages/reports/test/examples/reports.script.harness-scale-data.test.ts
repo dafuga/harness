@@ -14,8 +14,7 @@ import {
 	SlugifyTemplateNotFoundError
 } from '../../scripts/harness-scale-data.types';
 import type { Unit, Detail } from '../../scripts/harness-scale-data.types';
-
-type Case = Parameters<typeof recordExampleCases>[1][number];
+import type { Case } from './reports.script.harness-scale-data.test.types';
 
 const UNIT_ID = 'reports.script.harness-scale-data';
 const MAP = '0123456789abcdef0123456789abcdef01234567';

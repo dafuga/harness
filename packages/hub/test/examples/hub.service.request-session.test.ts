@@ -8,6 +8,7 @@ import { AuthFailure } from '../../src/utils/accounts-access/authFail';
 import { memoryAuthStore } from '../support/memoryAuthStore';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
+import type { Call, Example, Outcome } from './hub.service.request-session.test.types';
 
 const hub = 'https://hub.example.com';
 const elsewhere = 'https://evil.example.net';
@@ -27,17 +28,6 @@ function summary(kind: string, resource: string, expiresAt: number) {
 }
 const browserSummary = summary('browser', 'projects', NOW + 7 * DAY);
 const nativeSummary = summary('native', 'project:prj_example_01', NOW + 30 * DAY);
-
-/** A request's credentials are passed in here; a recorded case shows only its channel. */
-interface Call {
-	method: string;
-	path: string;
-	origin: string | null;
-	bearer?: string;
-	cookie?: string;
-}
-type Outcome = { output: unknown } | { error: string };
-type Example = { name: string; call: Call; expected: Outcome };
 
 /** A real repository over the in-memory auth store, with a fixed clock and one live session per channel. */
 async function fixture() {

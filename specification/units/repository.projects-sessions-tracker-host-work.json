@@ -1,0 +1,179 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-host-work",
+	"uid": "u_rhat43dtk7",
+	"kind": "repository",
+	"title": "TrackerHostWorkRepository",
+	"responsibility": "Owns the TrackerHostWorkRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerHostWorkRepository.ts",
+			"src/repositories/projects-sessions/TrackerHostWorkRepository.types.ts"
+		],
+		"symbols": [
+			"TrackerHostWorkRepository",
+			"TrackerHostWorkRepository.constructor",
+			"TrackerHostWorkRepository.renew",
+			"TrackerHostWorkRepository.release",
+			"TrackerHostWorkRepository.active",
+			"TrackerHostWorkClaim"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerHostWorkRepository.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerHostWorkRepository.renew.claim",
+				"type": "TrackerHostWorkClaim",
+				"required": true
+			},
+			{
+				"name": "TrackerHostWorkRepository.renew.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerHostWorkRepository.release.claim",
+				"type": "TrackerHostWorkClaim",
+				"required": true
+			},
+			{
+				"name": "TrackerHostWorkRepository.active.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerHostWorkRepository.renew",
+				"type": "boolean"
+			},
+			{
+				"name": "TrackerHostWorkRepository.release",
+				"type": "void"
+			},
+			{
+				"name": "TrackerHostWorkRepository.active",
+				"type": "TrackerHostWork[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerHostWorkRepository.renew",
+				"inputs": [
+					{
+						"name": "TrackerHostWorkRepository.renew.claim",
+						"type": "TrackerHostWorkClaim",
+						"required": true
+					},
+					{
+						"name": "TrackerHostWorkRepository.renew.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostWorkRepository.renew",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerHostWorkRepository.release",
+				"inputs": [
+					{
+						"name": "TrackerHostWorkRepository.release.claim",
+						"type": "TrackerHostWorkClaim",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostWorkRepository.release",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerHostWorkRepository.active",
+				"inputs": [
+					{
+						"name": "TrackerHostWorkRepository.active.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostWorkRepository.active",
+						"type": "TrackerHostWork[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerHostWorkRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerHostWorkRepository.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostWorkRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-host-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerHostWorkRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerHostWorkRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

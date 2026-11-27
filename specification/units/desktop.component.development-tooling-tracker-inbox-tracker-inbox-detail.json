@@ -30,7 +30,7 @@
 			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxDetail.svelte",
 			"packages/desktop/src/components/development-tooling/tracker-inbox/trackerInboxDetail.css"
 		],
-		"symbols": ["TrackerInboxDetail"]
+		"symbols": ["TrackerInboxDetail", "refresh"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -48,6 +48,13 @@
 				"description": "Full Tracker item ID to read and display."
 			},
 			{
+				"name": "TrackerInboxDetail.mode",
+				"type": "'phone' | 'mac'",
+				"required": false,
+				"default": "phone",
+				"description": "Chooses Mac commit feedback or phone queue feedback for confirmed writes."
+			},
+			{
 				"name": "TrackerInboxDetail.onchanged",
 				"type": "() => Promise<void>",
 				"required": true,
@@ -63,7 +70,20 @@
 		],
 		"errors": [],
 		"errorStatus": "none-found",
-		"operations": [],
+		"operations": [
+			{
+				"name": "refresh",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "refresh",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
 		"initialization": []
 	},
 	"dependencies": [
@@ -74,6 +94,11 @@
 		},
 		{
 			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-inbox-documents",
 			"via": "import",
 			"origin": "derived"
 		},

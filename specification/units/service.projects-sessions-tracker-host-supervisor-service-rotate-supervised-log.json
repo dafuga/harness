@@ -1,0 +1,88 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-host-supervisor-service-rotate-supervised-log",
+	"uid": "u_k4lx7zia6b",
+	"kind": "service",
+	"title": "rotateSupervisedLog",
+	"responsibility": "Owns the rotateSupervisedLog service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-host-supervisor-service/rotateSupervisedLog.ts"
+		],
+		"symbols": ["rotateSupervisedLog"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "rotateSupervisedLog.options",
+				"type": "TrackerHostSupervisorOptions",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "rotateSupervisedLog",
+				"type": "void"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "rotateSupervisedLog",
+				"inputs": [
+					{
+						"name": "rotateSupervisedLog.options",
+						"type": "TrackerHostSupervisorOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "rotateSupervisedLog",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-health-service-rotate-tracker-log",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-appending-tracker-child",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-host-supervisor-service/rotateSupervisedLog.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-host-supervisor-service/rotateSupervisedLog.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-command-run-local-tracker",
+	"uid": "u_tli3kgnifh",
+	"kind": "command",
+	"title": "runLocalTrackerCommand",
+	"responsibility": "Runs the tracker commands that use this computer's own files without the running service.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/tracker-command/runLocalTrackerCommand.ts"],
+		"symbols": ["runLocalTrackerCommand"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "runLocalTrackerCommand.args",
+				"type": "string[]",
+				"required": true,
+				"description": "The tracker command words."
+			},
+			{
+				"name": "runLocalTrackerCommand.config",
+				"type": "TrackerNodeConfig",
+				"required": true,
+				"description": "The loaded native node configuration."
+			}
+		],
+		"outputs": [
+			{
+				"name": "runLocalTrackerCommand",
+				"type": "unknown",
+				"description": "The local command's exit code, or undefined when the service must handle it."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runLocalTrackerCommand",
+				"inputs": [
+					{
+						"name": "runLocalTrackerCommand.args",
+						"type": "string[]",
+						"required": true,
+						"description": "The tracker command words."
+					},
+					{
+						"name": "runLocalTrackerCommand.config",
+						"type": "TrackerNodeConfig",
+						"required": true,
+						"description": "The loaded native node configuration."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runLocalTrackerCommand",
+						"type": "unknown",
+						"description": "The local command's exit code, or undefined when the service must handle it."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-command-run-local-tracker-web-push",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-command-run-tracker-host-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-command/runLocalTrackerCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-command/runLocalTrackerCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

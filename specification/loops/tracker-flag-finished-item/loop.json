@@ -1,0 +1,69 @@
+{
+	"name": "tracker-flag-finished-item",
+	"goal": "A structured flag on a finished (done) tracker item is shown, not dropped: it stays in list --flagged, the digest, the Chief of Staff push and every needs-you view until answered, proven with the real CLI and service",
+	"createdAt": "2026-11-26T21:45:20.289Z",
+	"updatedAt": "2026-11-26T21:47:32.505Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-11-26T21:46:59.694Z",
+			"evidence": "Report (99szpz on 7b36a973a2): flag on a done item exits 0, sets needs_daniel, no needs-you view lists it. Real isolated service + CLI on origin/main a3459b6874: 'tracker list' (hides done by design) omits it and 'needs-attention' returned [] (watchdog alert channel); 'list --flagged' and digest 'To unblock (Daniel)' list it as ITEM DONE, FLAG STILL OPEN. 7b36a973a2 already has that digest tag (e90da92a37). Notification fixture: Chief of Staff gets the ask for a done item at +1m by the direct-reminder path. No product regression reproduced."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-11-26T21:47:01.415Z",
+			"evidence": "No test raised a flag on an already done item through the real CLI, so nothing fixed or protected the behaviour. Added test/commands/projects-sessions/tracker-flag-finished-item.test.ts (in test:unit)."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	],
+	"closed": {
+		"status": "abandoned",
+		"reason": "No red is possible: current main already SHOWS a flag on a done item in every ask view and pushes it to Chief of Staff, so there is no repair. Kept as a guard-only change (j779tm): test/commands/projects-sessions/tracker-flag-finished-item.test.ts; it failed on all 5 single-point mutations in a scratch worktree (digest SQL, list --flagged, trackerStructuredAsk, notification flagged(), flag refused on done) and passed once restored. propose/implement/guard are gated on red and stay pending.",
+		"closedAt": "2026-11-26T21:47:32.505Z"
+	}
+}

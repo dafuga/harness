@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-add-session",
+	"uid": "u_ebjbhjawbq",
+	"kind": "component",
+	"title": "HubHomeAddSession",
+	"responsibility": "Lets Daniel add or remove the Tracker agents of sessions he created himself, which are the only ones listed under Agents.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-form",
+			"reports.component.shared-primitives-atoms-html-input",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeAddSession.svelte"
+		],
+		"symbols": ["HubHomeAddSession"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeAddSession.added",
+				"type": "string[]",
+				"required": true,
+				"description": "Tracker agent values Daniel has added as sessions he controls."
+			},
+			{
+				"name": "HubHomeAddSession.change",
+				"type": "ChangeSession",
+				"required": true,
+				"description": "Adds or removes one session id, rejecting when the Hub cannot store the change."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeAddSession",
+				"type": "markup",
+				"description": "Lets Daniel add or remove the Tracker agents of sessions he created himself, which are the only ones listed under Agents."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-form",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-direct-agents",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAddSession.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAddSession.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

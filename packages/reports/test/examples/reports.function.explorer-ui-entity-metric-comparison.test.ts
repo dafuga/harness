@@ -2,14 +2,14 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { entityMetricComparison } from '../../src/utils/explorer-ui/entityMetricComparison';
-import type { MetricHost } from '../../src/utils/explorer-ui/entityMetricComparison.types';
-
-type Host = MetricHost;
-type Head = Host['head'];
-type Entity = Parameters<typeof entityMetricComparison>[1];
-type Measure = Parameters<typeof entityMetricComparison>[2];
-type Result = ReturnType<typeof entityMetricComparison>;
-type UnitEntry = ReturnType<typeof unitFor>;
+import type {
+	Measure,
+	UnitEntry,
+	Head,
+	Host,
+	Entity,
+	Result
+} from './reports.function.explorer-ui-entity-metric-comparison.test.types';
 
 const PAGE_ID = 'reports.page.harness-branch-branch-at-models';
 const HEAD_COMMIT = 'e4c1a92f7b0d3856ac19f2e47d0b8e61c53a9d07';
@@ -21,7 +21,7 @@ const MEASURE = {
 	performance: []
 } as unknown as Measure;
 
-function unitFor(id: string, status: string, bytes: number, complexity: number) {
+export function unitFor(id: string, status: string, bytes: number, complexity: number) {
 	return {
 		id,
 		kind: 'page',

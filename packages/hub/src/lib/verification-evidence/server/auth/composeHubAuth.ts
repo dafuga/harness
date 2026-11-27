@@ -56,6 +56,7 @@ export function composeHubAuth(parts: HubAuthParts): HubAuth {
 	});
 	const refuse = () => Promise.reject(new AuthFailure('github-disabled'));
 	return {
+		session: (request) => sessions.resolve(request),
 		actor: async (request) => (await sessions.resolve(request))?.actor ?? null,
 		handle: (request) => controller.handle(request),
 		authorizeRepository: (actor, repositoryId) =>

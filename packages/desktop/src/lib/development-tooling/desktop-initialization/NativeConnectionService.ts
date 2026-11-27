@@ -48,9 +48,11 @@ export class NativeConnectionService {
 				http,
 				store,
 				open: options.open,
+				onSignIn: options.onSignIn,
 				clearCache: () => options.cache.clear(),
 				onDisconnect: () => {
 					store.invalidate();
+					options.onDisconnect?.();
 					options.onCacheStatus?.({ projectId: '$projects', status: 'denied' });
 				}
 			})

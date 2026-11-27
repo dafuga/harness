@@ -100,6 +100,7 @@ function read(state: HostedState, project: HostedProject, call: HostedCall): Ans
 
 export function projectAnswer(state: HostedState, call: HostedCall): Answer {
 	if (!state.signedIn) return { status: 401, json: { error: 'session-required' } };
+	if (call.path === '/api/remote/hosts') return { json: { computers: [] } };
 	const projects = state.empty ? [] : state.data.projects;
 	const id = call.path.split('/')[3];
 	if (!id && call.method === 'GET') return { json: projects };

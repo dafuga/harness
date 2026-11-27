@@ -11,23 +11,30 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-agents",
+			"hub.component.projects-sessions-hub-home-directory",
+			"hub.component.projects-sessions-hub-home-plan-detail",
 			"hub.component.projects-sessions-hub-home-plans",
 			"hub.component.projects-sessions-hub-home-projects",
 			"hub.component.projects-sessions-hub-home-quota",
 			"hub.component.projects-sessions-hub-home-schedule",
 			"hub.component.projects-sessions-hub-home-work",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.harness-harness-icon",
 			"reports.component.modal",
+			"reports.component.projects-sessions-project-overview-project-overview",
 			"reports.component.shared-primitives-atoms-html-a",
-			"reports.component.shared-primitives-atoms-html-button"
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte"],
 		"symbols": ["HubHomeDialogs", "HubHomeDialogs.actions"]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeDialogs.selected",
@@ -61,6 +68,13 @@
 				"description": "Submits the agent note or answer to the owner chat queue and returns its receipt."
 			},
 			{
+				"name": "HubHomeDialogs.changeSession",
+				"type": "ChangeSession",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Adds or removes a session Daniel created himself so it is listed under Agents."
+			},
+			{
 				"name": "HubHomeDialogs.receipt",
 				"type": "(id: string) => Promise<HomeChatReceipt>",
 				"required": true,
@@ -69,7 +83,8 @@
 			{
 				"name": "HubHomeDialogs.readProject",
 				"type": "ReadHomeProject",
-				"required": true,
+				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Retrieves a hosted project snapshot by its identifier."
 			},
 			{
@@ -118,6 +133,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.component.projects-sessions-hub-home-directory",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-plan-detail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.projects-sessions-hub-home-plans",
 			"via": "import",
 			"origin": "derived"
@@ -158,12 +183,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-harness-icon",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -178,6 +213,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
@@ -185,11 +230,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte"
 			}
 		]
 	},

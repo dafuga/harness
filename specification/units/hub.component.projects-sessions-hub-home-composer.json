@@ -22,8 +22,19 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeComposer.svelte"],
-		"symbols": ["HubHomeComposer"]
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeMessages.ts"
+		],
+		"symbols": [
+			"HubHomeComposer",
+			"composedMessage",
+			"composerFeedback",
+			"isPending",
+			"receiptText",
+			"homeChatItemSuffix",
+			"scheduledChatItem"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,6 +51,41 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional identifier of the initially selected agent."
+			},
+			{
+				"name": "HubHomeComposer.label",
+				"type": "string",
+				"required": false,
+				"default": "Message",
+				"description": "The accessible name of the message field."
+			},
+			{
+				"name": "HubHomeComposer.draft",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "The message draft, bound to the conversation that owns the composer."
+			},
+			{
+				"name": "HubHomeComposer.pending",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Whether the composer is waiting for the current send to finish."
+			},
+			{
+				"name": "HubHomeComposer.feedback",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "The latest delivery or error text displayed under the composer."
+			},
+			{
+				"name": "HubHomeComposer.itemContext",
+				"type": "HomeChatItemContext",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional Tracker item attached to a message for Chief of Staff."
 			},
 			{
 				"name": "HubHomeComposer.send",
@@ -64,17 +110,146 @@
 		],
 		"errors": [],
 		"errorStatus": "none-found",
-		"operations": [],
+		"operations": [
+			{
+				"name": "composedMessage",
+				"inputs": [
+					{
+						"name": "composedMessage.agent",
+						"type": "HomeAgent",
+						"required": true
+					},
+					{
+						"name": "composedMessage.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "composedMessage",
+						"type": "HomeChatInput | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "composerFeedback",
+				"inputs": [
+					{
+						"name": "composerFeedback.message",
+						"type": "HomeChatInput",
+						"required": true
+					},
+					{
+						"name": "composerFeedback.receipt",
+						"type": "HomeChatReceipt",
+						"required": true
+					},
+					{
+						"name": "composerFeedback.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "composerFeedback",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "isPending",
+				"inputs": [
+					{
+						"name": "isPending.entry",
+						"type": "{ message: HomeChatInput; receipt: HomeChatReceipt }",
+						"required": true
+					},
+					{
+						"name": "isPending.agent",
+						"type": "HomeAgent",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isPending",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "receiptText",
+				"inputs": [
+					{
+						"name": "receiptText.receipt",
+						"type": "HomeChatReceipt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "receiptText",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "homeChatItemSuffix",
+				"inputs": [
+					{
+						"name": "homeChatItemSuffix.item",
+						"type": "HomeChatItemContext",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeChatItemSuffix",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scheduledChatItem",
+				"inputs": [
+					{
+						"name": "scheduledChatItem.run",
+						"type": "HomeRun",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scheduledChatItem",
+						"type": "HomeChatItemContext"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
 		"initialization": []
 	},
 	"dependencies": [
 		{
-			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"unit": "hub.function.projects-sessions-hub-home-chat-context-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -131,11 +306,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeComposer.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeComposer.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte"
 			}
 		]
 	},

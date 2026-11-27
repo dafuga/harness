@@ -3,8 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { wavInfo } from '../../src/utils/reports-media/audio-asset/wavInfo';
 import { InvalidWavError } from '../../src/utils/reports-media/audio-asset/wavInfo.types';
-
-type FormatOptions = { encoding: number; channels: number; sampleRate: number; bits: number };
+import type { FormatOptions } from './reports.function.wav-info.test.types';
 
 const pcm16Mono: FormatOptions = { encoding: 1, channels: 1, sampleRate: 8000, bits: 16 };
 

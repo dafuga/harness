@@ -16,7 +16,7 @@
 		],
 		"symbols": [
 			"RemoteDeviceSessionsService",
-			"DeviceAddress",
+			"RemoteDeviceAddress",
 			"RemoteDeviceSessionsOptions",
 			"RemoteDeviceSessionsService",
 			"RemoteDeviceSessionsService.constructor",
@@ -27,10 +27,9 @@
 			"RemoteDeviceSessionsService.detachAll",
 			"RemoteDeviceSessionsService.announce",
 			"RemoteDeviceSessionsService.end",
-			"DeviceAddress",
 			"RemoteDeviceSessionsOptions",
+			"RemoteDeviceAddress",
 			"TrackerPhoneFetcher",
-			"DeviceAddress",
 			"RemoteDeviceSessionsOptions",
 			"Entry",
 			"phoneTrackerPull",
@@ -55,7 +54,7 @@
 			},
 			{
 				"name": "RemoteDeviceSessionsService.packet.address",
-				"type": "DeviceAddress",
+				"type": "RemoteDeviceAddress",
 				"required": true,
 				"description": "Address containing the remote device ID and connection ID used to select the current session connection. A nonmatching connection is not treated as the current connection for sealed packets.",
 				"examples": [
@@ -88,7 +87,7 @@
 			},
 			{
 				"name": "RemoteDeviceSessionsService.close.address",
-				"type": "DeviceAddress",
+				"type": "RemoteDeviceAddress",
 				"required": true,
 				"description": "Address used to find the session entry to detach. The entry is detached only when both its device ID and current connection ID match.",
 				"examples": [
@@ -259,7 +258,7 @@
 				"inputs": [
 					{
 						"name": "RemoteDeviceSessionsService.packet.address",
-						"type": "DeviceAddress",
+						"type": "RemoteDeviceAddress",
 						"required": true,
 						"description": "Address containing the remote device ID and connection ID used to select the current session connection. A nonmatching connection is not treated as the current connection for sealed packets.",
 						"examples": [
@@ -306,7 +305,7 @@
 				"inputs": [
 					{
 						"name": "RemoteDeviceSessionsService.close.address",
-						"type": "DeviceAddress",
+						"type": "RemoteDeviceAddress",
 						"required": true,
 						"description": "Address used to find the session entry to detach. The entry is detached only when both its device ID and current connection ID match.",
 						"examples": [
@@ -427,7 +426,8 @@
 					{
 						"name": "phoneTrackerPull",
 						"type": "(input: Record<string, unknown>) => Promise<unknown>",
-						"description": "Returns an async reader for the bound device scope. The reader accepts version 1 and at most one cursor or continuation, and resolves to the hub's decoded JSON response of at most 128 KiB."
+						"description": "Returns an async reader for the bound device scope. The reader accepts version 1 and at most one cursor or continuation, and resolves to the hub's decoded JSON response of at most 128 KiB.",
+						"unknownReason": "Parsed Tracker projection JSON forwarded to the device without interpretation."
 					}
 				],
 				"errors": [
@@ -475,7 +475,8 @@
 					{
 						"name": "phoneTrackerPush",
 						"type": "(input: Record<string, unknown>, signal: AbortSignal) => Promise<unknown>",
-						"description": "Returns an async sender that strips the wire epoch, forwards the intent over loopback and decodes its receipt. Closing the device session cancels the request."
+						"description": "Returns an async sender that strips the wire epoch, forwards the intent over loopback and decodes its receipt. Closing the device session cancels the request.",
+						"unknownReason": "Parsed Tracker write answer forwarded to the device without interpretation."
 					}
 				],
 				"errors": [
@@ -534,6 +535,11 @@
 		},
 		{
 			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-relay-types",
 			"via": "import",
 			"origin": "derived"
 		}

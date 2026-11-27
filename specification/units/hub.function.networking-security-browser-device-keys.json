@@ -1,0 +1,92 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.networking-security-browser-device-keys",
+	"uid": "u_k43lg2h23e",
+	"kind": "function",
+	"title": "browserDeviceKeys",
+	"responsibility": "Keeps one device key pair per account and computer in browser storage, so a reload reconnects as the same device.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/networking-security/browserDeviceKeys.ts"],
+		"symbols": ["browserDeviceKeys"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "browserDeviceKeys.actor",
+				"type": "string",
+				"required": true,
+				"description": "Verified account id the keys belong to; another account never reuses them."
+			},
+			{
+				"name": "browserDeviceKeys.hostId",
+				"type": "string",
+				"required": true,
+				"description": "Identifier of the linked computer the browser presents the keys to."
+			}
+		],
+		"outputs": [
+			{
+				"name": "browserDeviceKeys",
+				"type": "Promise<RemoteKeyPair>",
+				"description": "The stored P-256 key pair, or a fresh one when browser storage is unavailable or empty."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "browserDeviceKeys",
+				"inputs": [
+					{
+						"name": "browserDeviceKeys.actor",
+						"type": "string",
+						"required": true,
+						"description": "Verified account id the keys belong to; another account never reuses them."
+					},
+					{
+						"name": "browserDeviceKeys.hostId",
+						"type": "string",
+						"required": true,
+						"description": "Identifier of the linked computer the browser presents the keys to."
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserDeviceKeys",
+						"type": "Promise<RemoteKeyPair>",
+						"description": "The stored P-256 key pair, or a fresh one when browser storage is unavailable or empty."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/networking-security/browserDeviceKeys.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/networking-security/browserDeviceKeys.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

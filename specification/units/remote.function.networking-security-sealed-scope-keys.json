@@ -1,0 +1,256 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-scope-keys",
+	"uid": "u_dnehbxahjv",
+	"kind": "function",
+	"title": "Create and import scope keys",
+	"responsibility": "Create and rotate scope data and index keys, commit to them, import them as non-extractable keys, and derive opaque object ids.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedScopeKeys.ts"],
+		"symbols": [
+			"newScopeKeys",
+			"scopeCommitment",
+			"sealedScopeKeys",
+			"sealedObjectId",
+			"scopeName",
+			"sealedU32"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "newScopeKeys.rotating",
+				"type": "RawScopeKeys",
+				"required": false,
+				"description": "Current scope keys for a rotation. Omit to create a scope at epoch zero."
+			},
+			{
+				"name": "scopeCommitment.raw",
+				"type": "RawScopeKeys",
+				"required": true,
+				"description": "Raw scope keys and epoch to bind to a commitment."
+			},
+			{
+				"name": "sealedScopeKeys.raw",
+				"type": "RawScopeKeys",
+				"required": true,
+				"description": "Raw scope key bytes to import and verify."
+			},
+			{
+				"name": "sealedObjectId.keys",
+				"type": "ScopeKeys",
+				"required": true,
+				"description": "Scope index key used to derive a stable object identifier."
+			},
+			{
+				"name": "sealedObjectId.kind",
+				"type": "string",
+				"required": true,
+				"description": "Object kind used to distinguish identifiers across object types."
+			},
+			{
+				"name": "sealedObjectId.localId",
+				"type": "string",
+				"required": true,
+				"description": "Local identifier of the object within its kind."
+			},
+			{
+				"name": "scopeName.keys",
+				"type": "Pick<ScopeKeys, 'scopeId'>",
+				"required": true,
+				"description": "Keys supplying the scope identifier to encode."
+			}
+		],
+		"outputs": [
+			{
+				"name": "newScopeKeys",
+				"type": "RawScopeKeys",
+				"description": "Raw keys for a fresh scope or a new epoch with the scope identifier and index key preserved."
+			},
+			{
+				"name": "scopeCommitment",
+				"type": "Promise<Uint8Array>",
+				"description": "Digest binding the scope identifier, epoch, and key bytes."
+			},
+			{
+				"name": "sealedScopeKeys",
+				"type": "Promise<ScopeKeys>",
+				"description": "Non-extractable scope keys and the corresponding commitment."
+			},
+			{
+				"name": "sealedObjectId",
+				"type": "Promise<Uint8Array>",
+				"description": "Opaque identifier for the object within its scope."
+			},
+			{
+				"name": "scopeName",
+				"type": "string",
+				"description": "Encoded scope identifier."
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown",
+				"description": "The key sizes or epoch are invalid, or an object kind contains a NUL separator."
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "newScopeKeys",
+				"inputs": [
+					{
+						"name": "newScopeKeys.rotating",
+						"type": "RawScopeKeys",
+						"required": false,
+						"description": "Current scope keys for a rotation. Omit to create a scope at epoch zero."
+					}
+				],
+				"outputs": [
+					{
+						"name": "newScopeKeys",
+						"type": "RawScopeKeys",
+						"description": "Raw keys for a fresh scope or a new epoch with the scope identifier and index key preserved."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scopeCommitment",
+				"inputs": [
+					{
+						"name": "scopeCommitment.raw",
+						"type": "RawScopeKeys",
+						"required": true,
+						"description": "Raw scope keys and epoch to bind to a commitment."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopeCommitment",
+						"type": "Promise<Uint8Array>",
+						"description": "Digest binding the scope identifier, epoch, and key bytes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedScopeKeys",
+				"inputs": [
+					{
+						"name": "sealedScopeKeys.raw",
+						"type": "RawScopeKeys",
+						"required": true,
+						"description": "Raw scope key bytes to import and verify."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedScopeKeys",
+						"type": "Promise<ScopeKeys>",
+						"description": "Non-extractable scope keys and the corresponding commitment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedObjectId",
+				"inputs": [
+					{
+						"name": "sealedObjectId.keys",
+						"type": "ScopeKeys",
+						"required": true,
+						"description": "Scope index key used to derive a stable object identifier."
+					},
+					{
+						"name": "sealedObjectId.kind",
+						"type": "string",
+						"required": true,
+						"description": "Object kind used to distinguish identifiers across object types."
+					},
+					{
+						"name": "sealedObjectId.localId",
+						"type": "string",
+						"required": true,
+						"description": "Local identifier of the object within its kind."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedObjectId",
+						"type": "Promise<Uint8Array>",
+						"description": "Opaque identifier for the object within its scope."
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scopeName",
+				"inputs": [
+					{
+						"name": "scopeName.keys",
+						"type": "Pick<ScopeKeys, 'scopeId'>",
+						"required": true,
+						"description": "Keys supplying the scope identifier to encode."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopeName",
+						"type": "string",
+						"description": "Encoded scope identifier."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedScopeKeys.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedScopeKeys.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

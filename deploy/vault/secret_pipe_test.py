@@ -34,6 +34,7 @@ class SecretPipeTests(unittest.TestCase):
             'openai-service-account-key': {'value': 'fixture', 'id': 'other'},
             'twilio-key': {'secret': 'fixture', 'sid': 'other'},
             'npm-token': {'token': 'fixture', 'key': 'other'},
+            'slack-bot-token': {'token': 'fixture', 'other': 'x'},
         }
         writer = python("import sys; assert sys.stdin.buffer.read() == b'fixture'")
         for recipe, response in structures.items():

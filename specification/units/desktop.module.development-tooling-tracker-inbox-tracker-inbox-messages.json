@@ -11,23 +11,49 @@
 		"source": [
 			"packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInboxMessages.ts"
 		],
-		"symbols": ["writeSentMessage", "writeFailureMessage"]
+		"symbols": ["loadFailureMessage", "writeSentMessage", "writeFailureMessage"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "loadFailureMessage.code",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "loadFailureMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": true
+			},
 			{
 				"name": "writeSentMessage.action",
 				"type": "WriteAction",
 				"required": true
 			},
 			{
+				"name": "writeSentMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": false,
+				"default": "phone"
+			},
+			{
 				"name": "writeFailureMessage.code",
 				"type": "string | undefined",
 				"required": true
+			},
+			{
+				"name": "writeFailureMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": false,
+				"default": "phone"
 			}
 		],
 		"outputs": [
+			{
+				"name": "loadFailureMessage",
+				"type": "string"
+			},
 			{
 				"name": "writeSentMessage",
 				"type": "string"
@@ -41,12 +67,41 @@
 		"errorStatus": "none-found",
 		"operations": [
 			{
+				"name": "loadFailureMessage",
+				"inputs": [
+					{
+						"name": "loadFailureMessage.code",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "loadFailureMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "loadFailureMessage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "writeSentMessage",
 				"inputs": [
 					{
 						"name": "writeSentMessage.action",
 						"type": "WriteAction",
 						"required": true
+					},
+					{
+						"name": "writeSentMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": false,
+						"default": "phone"
 					}
 				],
 				"outputs": [
@@ -65,6 +120,12 @@
 						"name": "writeFailureMessage.code",
 						"type": "string | undefined",
 						"required": true
+					},
+					{
+						"name": "writeFailureMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": false,
+						"default": "phone"
 					}
 				],
 				"outputs": [

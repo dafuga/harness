@@ -45,6 +45,10 @@ test('a blob is allowed for pictures and clips only, and nothing is allowed ever
 	for (const open of ['*', "'unsafe-eval'", 'data:', 'http:', 'https:'])
 		expect(all.filter((source) => source === open)).toEqual(open === 'data:' ? ['data:'] : []);
 	expect(policy.get('img-src')).toEqual(["'self'", 'blob:', 'data:']);
+	const plans = directives(rendererPolicy(page, 'ws://127.0.0.1:8791', true));
+	expect(
+		[...plans].filter(([directive, sources]) => sources.join() !== policy.get(directive)?.join())
+	).toEqual([['img-src', ["'self'", 'blob:', 'data:', 'https:']]]);
 });
 
 test('a page connects to the app and to the one socket it was given', () => {

@@ -2,15 +2,16 @@
 import type {
 	TrackerDispatchDecision,
 	TrackerDispatchEvent,
-	TrackerDispatchItem,
 	TrackerDispatchPolicy,
 	TrackerDispatchSnapshot,
 	TrackerRunReceipt,
 	TrackerSessionEvidence
 } from '../TrackerDispatcherService.types';
-import { attemptKey, hasOpenSession, matchesRequest, skip } from './launchEligibility';
+import { skip } from './launchEligibility';
 import { retireUnstartedRun } from './runClaim';
-import { completeRun, monitorRun } from './runMonitor';
+import { monitorRun } from './runMonitor';
+import { recordVerification, rejectRun } from './runReview';
+import { matchesSession, recordFinalReport, reopenAnswered, resumeRun } from './runResume';
 import { etaFor, failRun, recordRun, reviseRun } from './runReceipt';
 
 export function transitionRun(
@@ -32,6 +33,10 @@ export function transitionRun(
 			return recordVerification(snapshot, run, event, clock);
 		case 'resume':
 			return resumeRun(snapshot, run, event.session, clock);
+		case 'answered-without-session':
+			return reopenAnswered(snapshot, run, clock);
+		case 'final-report':
+			return recordFinalReport(snapshot, run, event, clock.now);
 		case 'reject':
 			return rejectRun(snapshot, run, event.reason, clock);
 	}
@@ -57,18 +62,23 @@ function adoptSession(
 			session_id: session.id,
 			...(session.tmux && { tmux: session.tmux }),
 			started_at: session.startedAt,
+			...(session.sourceRepo && { source_repo: session.sourceRepo }),
+			...(session.sessionName && { session_name: session.sessionName }),
+			failure_reason: null,
 			eta_at: run.eta_at ?? etaFor(snapshot.item, policy, now)
-		})
+		}),
+		recoveryStarted(snapshot.item, run)
 	);
 }
 
-function matchesSession(run: TrackerRunReceipt, session: TrackerSessionEvidence, now: number) {
-	return (
-		session.key === attemptKey(run) &&
-		Boolean(session.id) &&
-		session.startedAt >= run.queued_at &&
-		session.startedAt <= now
-	);
+function recoveryStarted(item: TrackerDispatchSnapshot['item'], run: TrackerRunReceipt) {
+	if (
+		run.launch_source === 'recovery' &&
+		item?.status === 'open' &&
+		item.launch?.token === run.auto_token
+	)
+		return { status: 'in_progress' as const };
+	return undefined;
 }
 
 function recordStartupFailure(
@@ -80,6 +90,7 @@ function recordStartupFailure(
 	if (run.dispatch_at === undefined || (run.state !== 'queued' && run.state !== 'running')) {
 		return skip('ignored', 'attempt is no longer starting');
 	}
+	if (event.pending) return recordPendingCause(run, event.reason);
 	return failRun(
 		snapshot,
 		run,
@@ -93,116 +104,8 @@ function recordStartupFailure(
 	);
 }
 
-function recordVerification(
-	snapshot: TrackerDispatchSnapshot,
-	run: TrackerRunReceipt,
-	event: Extract<TrackerDispatchEvent, { type: 'verified' }>,
-	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
-) {
-	const { item } = snapshot;
-	if (
-		run.state !== 'verifying' ||
-		item?.status !== 'done' ||
-		item.deleted ||
-		item.closedBySource ||
-		run.verificationFor !== item.completionVersion
-	) {
-		return skip('ignored', 'verification no longer applies to this attempt');
-	}
-	if (event.passed) return completeRun(snapshot, run, { policy, now, usage: event.usage });
-	return failRun(
-		snapshot,
-		run,
-		{
-			outcome: 'failed',
-			reason: event.reason ?? 'verification failed',
-			reopen: true,
-			usage: event.usage
-		},
-		{ policy, now }
-	);
-}
-
-function resumeRun(
-	snapshot: TrackerDispatchSnapshot,
-	run: TrackerRunReceipt,
-	session: TrackerSessionEvidence,
-	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
-) {
-	const { item } = snapshot;
-	if (!canResume(snapshot, run, { policy, now }))
-		return skip('ignored', 'no current answer for this blocked attempt');
-	if (
-		!matchesSession(run, session, now) ||
-		session.state !== 'live' ||
-		session.id !== (run.host_session_id ?? run.session_id)
-	) {
-		return skip('ignored', 'the original session is no longer live');
-	}
-	return recordRun(
-		reviseRun(run, {
-			state: 'running',
-			outcome: null,
-			failure_reason: null,
-			ended_at: null,
-			resumed_at: Math.max(now, (run.resumed_at ?? 0) + 1),
-			eta_at: etaFor(item, policy, now)
-		}),
-		{ status: 'in_progress', blockedReason: null }
-	);
-}
-
-function canResume(
-	snapshot: TrackerDispatchSnapshot,
-	run: TrackerRunReceipt,
-	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
-) {
-	const { item, runs } = snapshot;
-	return (
-		run.state === 'finished' &&
-		run.outcome === 'blocked' &&
-		Boolean(run.host_session_id ?? run.session_id) &&
-		answeredBlock(item) &&
-		matchesRequest(item, run, policy) &&
-		!hasOpenSession(snapshot, policy, now, run) &&
-		!runs.some((later) => later.node === run.node && later.id > run.id && later.started_at !== null)
-	);
-}
-
-function answeredBlock(item: TrackerDispatchItem | null) {
-	return (
-		item?.answeredCurrentBlock === true &&
-		!item.awaitingAnswer &&
-		!item.deleted &&
-		(item.status === 'blocked' || item.status === 'in_progress')
-	);
-}
-
-function rejectRun(
-	snapshot: TrackerDispatchSnapshot,
-	run: TrackerRunReceipt,
-	reason: string,
-	clock: { policy: TrackerDispatchPolicy; now: number }
-) {
-	const { item, runs } = snapshot;
-	const latest = !runs.some((later) => later.node === run.node && later.id > run.id);
-	if (
-		run.outcome !== 'done' ||
-		item?.status !== 'done' ||
-		item.deleted ||
-		!latest ||
-		!matchesRequest(item, run, clock.policy)
-	) {
-		return skip('conflict', 'attempt is no longer the current completed launch');
-	}
-	return failRun(
-		snapshot,
-		run,
-		{
-			outcome: 'rejected',
-			reason: reason.trim() || 'rejected by Daniel',
-			reopen: true
-		},
-		clock
-	);
+/** The session may still appear, so the cause waits on the reservation until it expires. */
+function recordPendingCause(run: TrackerRunReceipt, reason: string) {
+	if (run.state !== 'queued') return skip('ignored', 'attempt is no longer starting');
+	return recordRun(reviseRun(run, { failure_reason: reason }));
 }

@@ -4,8 +4,8 @@
 	"uid": "u_xh7uht2d3a",
 	"kind": "model",
 	"title": "TrackerInbox",
-	"responsibility": "Owns the TrackerInbox data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Define the shared Tracker inbox item, planning, decision and write state exchanged by Mac and iPhone sources.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/models/development-tooling/TrackerInbox.types.ts"],
@@ -14,6 +14,9 @@
 			"InboxFilter",
 			"WriteAction",
 			"InboxHeader",
+			"InboxOption",
+			"InboxConfirmKind",
+			"InboxAttachment",
 			"InboxFlag",
 			"InboxNote",
 			"InboxRun",
@@ -25,6 +28,7 @@
 			"InboxWriteView",
 			"ReviewGate",
 			"ConfirmedWrite",
+			"InboxWriteReceipt",
 			"InboxFreshness",
 			"InboxReply",
 			"InboxOverview",
@@ -40,7 +44,23 @@
 		"operations": [],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/models/development-tooling/TrackerInbox.types.ts",

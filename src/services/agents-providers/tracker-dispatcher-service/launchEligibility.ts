@@ -1,12 +1,14 @@
 // @harness-uid u_rzpjc6wqqy
+import {
+	trackerReminderTitle,
+	trackerUnattendedHold
+} from '../../../utils/projects-sessions/trackerUnattendedHold';
 import type {
 	TrackerDispatchDecision,
 	TrackerDispatchItem,
 	TrackerDispatchPolicy,
-	TrackerDispatchSnapshot,
 	TrackerDuePolicy,
-	TrackerLaunchIntent,
-	TrackerRunReceipt
+	TrackerLaunchIntent
 } from '../TrackerDispatcherService.types';
 
 const fleetAliases = new Map([
@@ -25,11 +27,6 @@ export function trackerNodeNames(node: string, hub: boolean): string[] {
 		])
 	];
 }
-
-const nonWorkAgent =
-	/^(?:(?:cos|chief[-_ ]of[-_ ]staff|personal|brainstorm(?:ing)?)(?:$|[-_ ])|(?:daniel|dad|coach|claire|boating|doc|email-router|recruiting)$)/i;
-const operationsAgent = /^(?:cos|chief[-_ ]of[-_ ]staff)(?:$|[-_ ])/i;
-const nonWorkTitle = /^\s*(?:decision|reminder|brainstorm(?:ing)?)(?::|\s+for\b)/i;
 
 export const minute = 60_000;
 
@@ -52,14 +49,7 @@ export function ownsLaunch(intent: TrackerLaunchIntent, policy: TrackerDispatchP
 		: policy.hub === true;
 }
 
-export function activeRun(run: TrackerRunReceipt, policy: TrackerDispatchPolicy, now: number) {
-	if (run.state === 'finished') return false;
-	if (run.node === canonicalNode(policy.node, policy)) return true;
-	const touched = run.resumed_at ?? run.started_at ?? run.queued_at;
-	return now - touched <= (policy.maxRunMinutes ?? 480) * minute;
-}
-
-export function inactive(item: TrackerDispatchItem) {
+export function inactive(item: Pick<TrackerDispatchItem, 'deleted' | 'status'>) {
 	return item.deleted === true || item.status === 'done' || item.status === 'ignored';
 }
 
@@ -75,8 +65,8 @@ export function startable(item: TrackerDispatchItem) {
 		!inactive(item) &&
 		item.kind === 'task' &&
 		(item.status === 'open' || item.status === 'in_progress') &&
-		(!item.awaitingAnswer ||
-			(item.launch?.source === 'recovery' && !trackerFlagBlocksRecovery(item.question)))
+		!item.awaitingAnswer &&
+		!trackerReminderTitle(item.title)
 	);
 }
 
@@ -118,33 +108,66 @@ export function mayScheduleHere(
 
 export function dueItemHold(item: TrackerDispatchItem, policy: TrackerDispatchPolicy, now: number) {
 	return (
-		schedulingHold(item, policy) ??
+		automaticRequestHold(item, policy, now) ??
 		(isDueNow(item.due, policy.timezone, now) ? null : 'item is not due')
 	);
 }
 
-export function schedulingHold(
+export function automaticEnabled(
+	policy: Pick<TrackerDispatchPolicy, 'enabled' | 'automaticEnabled'>
+) {
+	return policy.enabled !== false && policy.automaticEnabled?.() !== false;
+}
+
+export function automaticRequestHold(
 	item: TrackerDispatchItem,
-	policy?: Pick<TrackerDispatchPolicy, 'opsWorkdirAvailable'>
+	policy: TrackerDispatchPolicy,
+	now: number
+) {
+	return (
+		schedulingHold(item, now) ?? (automaticEnabled(policy) ? null : 'automatic launcher disabled')
+	);
+}
+
+export function schedulingHold(
+	item: Pick<
+		TrackerDispatchItem,
+		| 'title'
+		| 'kind'
+		| 'status'
+		| 'agent'
+		| 'owner'
+		| 'deleted'
+		| 'awaitingAnswer'
+		| 'scheduleOff'
+		| 'recurring'
+		| 'parkedUntil'
+	>,
+	now: number
 ): string | null {
+	if (item.deleted || item.status === 'done' || item.status === 'ignored')
+		return 'item is inactive';
 	if (item.scheduleOff) return 'automatic launch opted out';
 	if (item.kind !== 'task') return `item is a ${item.kind}; only tasks can launch`;
 	if (item.recurring) return 'recurring item';
 	if (item.awaitingAnswer) return 'waiting on Daniel';
 	if (item.status === 'blocked') return 'item is blocked';
-	return nonWorkReason(item, policy?.opsWorkdirAvailable);
+	if (Number(item.parkedUntil) > now) return 'item is parked';
+	return trackerUnattendedHold(item);
 }
 
-function nonWorkReason(
-	item: TrackerDispatchItem,
-	opsAvailable?: TrackerDispatchPolicy['opsWorkdirAvailable']
+export const finalReportPrefix = 'Final report:';
+
+/** A session that reported and stopped stays stopped until something changes on its item. */
+export function finalReportHold(
+	run: { outcome?: string | null; failure_reason?: string | null; ended_at?: number | null },
+	changedAt: number
 ): string | null {
-	if (nonWorkTitle.test(item.title) || /^daniel(?: fugere)?$/i.test((item.owner ?? '').trim())) {
-		return 'decision or reminder for Daniel';
-	}
-	const agent = (item.agent ?? '').trim();
-	if (operationsAgent.test(agent) && opsAvailable?.(item)) return null;
-	return nonWorkAgent.test(agent) ? 'personal, brainstorming or Chief of Staff agent' : null;
+	return run.outcome === 'abandoned' &&
+		run.failure_reason?.startsWith(finalReportPrefix) &&
+		changedAt <= (run.ended_at ?? 0)
+		? 'the last session ended with a final report'
+		: null;
 }
 
 export function isDueNow(due: string | null | undefined, timezone: string, now: number): boolean {
@@ -162,27 +185,5 @@ export function isDueNow(due: string | null | undefined, timezone: string, now: 
 	return /^\d{4}-\d{2}-\d{2}$/.test(due) && due <= date.join('-');
 }
 
-export function hasOpenSession(
-	snapshot: TrackerDispatchSnapshot,
-	policy: TrackerDispatchPolicy,
-	now: number,
-	except?: TrackerRunReceipt
-) {
-	return (
-		snapshot.openSession === true ||
-		snapshot.activeSessionKeys?.some((key) => !except || key !== attemptKey(except)) === true ||
-		snapshot.runs.some((run) => run !== except && activeRun(run, policy, now))
-	);
-}
-
-export function attemptKey(run: TrackerRunReceipt): string {
-	return JSON.stringify([run.item_id, run.auto_token, run.attempt]);
-}
-
-export function matchesRequest(
-	item: TrackerDispatchItem | null,
-	run: TrackerRunReceipt,
-	policy: TrackerDispatchPolicy
-) {
-	return Boolean(item?.launch?.token === run.auto_token && ownsLaunch(item.launch, policy));
-}
+export { activeRun, hasOpenSession, attemptKey, matchesRequest } from './runIdentity';
+export { trackerReminderTitle };

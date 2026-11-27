@@ -13,6 +13,7 @@ final class RemoteSession {
 
     let queue = DispatchQueue(label: "com.dafuga.harness.remote")
     let vault: RemoteVault
+    let account: (() -> String?)?
     let cache: RemoteCache
     let makeLink: LinkFactory
     lazy var requests = RemoteRequests(queue: queue)
@@ -23,9 +24,6 @@ final class RemoteSession {
     var locked: Bool?
     var pending: RemotePairing.Input?
     var pairing: RemotePairing?
-    /// The look through the camera that is under way, and how many there have been.
-    var look: RemoteLook?
-    var looks = 0
     var link: RemoteLink?
     var attachId: String?
     var attempts = 0
@@ -43,8 +41,10 @@ final class RemoteSession {
     init(
         vault: RemoteVault = RemoteKeychain(), cache: RemoteCache = RemoteCache(),
         trackerStore: TrackerReplicaStore = TrackerReplicaStore(),
+        account: (() -> String?)? = nil,
         makeLink: @escaping LinkFactory = { RemoteChannel(record: $0, queue: $1) }
     ) {
+        self.account = account
         self.vault = vault
         self.cache = cache
         self.makeLink = makeLink
@@ -56,11 +56,21 @@ final class RemoteSession {
             guard !self.started else { return }
             self.started = true
             self.record = self.vault.load()
+            if let kept = self.record, !self.matchesAccount(kept.accountSubject) {
+                self.forget()
+                return
+            }
             self.authorize()
             if self.record != nil {
                 if self.trackerForeground { self.connect() } else { self.move("offline") }
             }
         }
+    }
+
+    func matchesAccount(_ subject: String?) -> Bool {
+        guard let account = account else { return true }
+        guard let subject = subject else { return false }
+        return account() == subject
     }
 
     func status(_ done: @escaping ([String: Any]) -> Void) {
@@ -77,10 +87,8 @@ final class RemoteSession {
     }
 
     /// Forgets the computer: the credential and the keys leave the Keychain before anything else.
-    /// A scan that is open ends with it: what its camera reads afterwards asks nobody.
     func disconnect(_ done: @escaping ([String: Any]) -> Void) {
         queue.async {
-            self.endLook()
             self.forget()
             self.move("unpaired")
             done(self.snapshot)
@@ -93,13 +101,13 @@ extension RemoteSession {
     /// `RemoteMobileStatus` with what the last attach allowed beside it: public identifiers and
     /// words. No key, credential or code is in it. A lock state is stated only when known.
     var snapshot: [String: Any] {
-        let host: Any = record.map { ["id": $0.hostId, "name": $0.hostName] }
-            ?? pending.map { ["id": $0.hostId, "name": "your computer"] } ?? NSNull()
+        let host = record.map { ["id": $0.hostId, "name": $0.hostName] }
+            ?? pending.map { ["id": $0.hostId, "name": "your computer"] }
         let device: Any = record.map { ["id": $0.deviceId, "name": $0.deviceName] } ?? NSNull()
         var status: [String: Any] = [
             "state": state,
             "origin": record?.origin ?? pending?.origin ?? NSNull(),
-            "host": host,
+            "host": host.map { $0 as Any } ?? NSNull(),
             "device": device,
             "grant": record?.grant.object ?? NSNull(),
             "reason": reason ?? NSNull(),

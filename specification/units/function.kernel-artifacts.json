@@ -15,11 +15,10 @@
 		],
 		"symbols": [
 			"kernelArtifacts",
-			"Environment",
 			"KernelBuild",
 			"KernelFile",
 			"KernelArtifacts",
-			"Environment",
+			"RuntimeEnvironment",
 			"KernelBuild",
 			"KernelFile",
 			"KernelArtifacts",
@@ -31,7 +30,7 @@
 		"inputs": [
 			{
 				"name": "kernelArtifacts.env",
-				"type": "Environment",
+				"type": "RuntimeEnvironment",
 				"required": false,
 				"description": "Environment map, defaulting to process.env; only HARNESS_KERNEL_DIR is read. A non-empty HARNESS_KERNEL_DIR, resolved to an absolute path, is the only directory searched, with no fallback; otherwise ../kernel/, ../../kernel/ and ../../../target/kernel/ relative to the module's import.meta.url are searched in that order.",
 				"examples": [
@@ -167,7 +166,7 @@
 				"inputs": [
 					{
 						"name": "kernelArtifacts.env",
-						"type": "Environment",
+						"type": "RuntimeEnvironment",
 						"required": false,
 						"description": "Environment map, defaulting to process.env; only HARNESS_KERNEL_DIR is read. A non-empty HARNESS_KERNEL_DIR, resolved to an absolute path, is the only directory searched, with no fallback; otherwise ../kernel/, ../../kernel/ and ../../../target/kernel/ relative to the module's import.meta.url are searched in that order.",
 						"examples": [
@@ -302,6 +301,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "kernel.impact-kernel",
 			"via": "wasm",

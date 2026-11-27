@@ -39,7 +39,10 @@ illustrative paths and ports.
 
 A spoke omits `syncPort` and supplies `"upstream": {"url": "https://hub.example.com"}`.
 For direct Mac peer replication, a spoke may also configure `peer.upstream`
-and `peer.listenPort`. Sync endpoints use HTTPS or literal IPv4 loopback HTTP.
+and `peer.listenPort`. The Macs also exchange run history over this link. Each
+link reports on its own, so a hub that is down does not hold back the peer.
+Fleet status still uses only the hub's machine samples.
+Sync endpoints use HTTPS or literal IPv4 loopback HTTP.
 An optional `accessFile` beside an upstream URL supplies `clientId` and
 `clientSecret` for Cloudflare Access over HTTPS. The sync listener routes
 only signed Tracker sync requests. Each spoke sends its local run records to
@@ -98,6 +101,12 @@ operator verifies the stopped database and chooses a rollback.
   Codex receipts persist token counters when one rollout matches the attempt’s
   owned worktree. Older or ambiguous attempts may have no usage.
   `show` includes retained run history and the local schedule preview.
+  Chief of Staff runs `tracker chase ITEM [--note TEXT]` when Daniel had to
+  ask for an overdue update or reports a miss. Each journal entry records
+  its actor, time and optional reason. `show` and `list` display the latest
+  entry and cumulative count, including after `done`. `list --chased`
+  includes completed items. The digest counts distinct items chased in the
+  last seven days.
   `ignore` and `unignore` use journal transitions and retain the actor, notes,
   and prior status. Automatic expiry for `ignore --until` is still pending.
   `sync` wakes the configured spoke links. Native launch writes a durable
@@ -113,6 +122,32 @@ operator verifies the stopped database and chooses a rollback.
   The target owner must reconcile migrated callback mappings and pending
   delivery receipts before enabling sending. Shell command targets and
   legacy custom webhook headers require separate integration.
+- **30-minute digest.** The hub's `webhook` target gets updates and new
+  needs-Daniel asks as one batch, at most once every 30 minutes. Quiet
+  hours apply only to what is meant for Daniel. Chief of Staff and agents
+  get asks, done and blocked lines, due events and reminders at any hour;
+  Chief of Staff holds asks for Daniel until 08:00 Lisbon. A target is a webhook, such as the Grok Bot Chief
+  of Staff, or a local tmux session running Claude Code or Codex:
+
+  ```json
+  "notifications": {
+  	"targets": {
+  		"claude": { "cli": "claude", "session": "cos", "tmux": "/opt/homebrew/bin/tmux" },
+  		"codex": { "cli": "codex", "session": "codex-cos", "tmux": "/opt/homebrew/bin/tmux" },
+  		"grok": { "url": "https://example.invalid/digest", "bearerFile": "/private/token" }
+  	},
+  	"webhook": "claude",
+  	"suggestions": ["play guitar", "practice a language", "just relax"]
+  }
+  ```
+
+  To switch, change `webhook` to another target ID and restart the service.
+  Queued lines go to the new target. Session targets are digest only. Tracker
+  types into one only while its composer is idle; a busy session is retried
+  after two minutes. From 08:00 to 22:00 Lisbon each digest adds the next entry of
+  `suggestions`; an empty list turns them off. Setting `webhook` also starts
+  the hub's recurring scheduler.
+
 - **Watchdog.** Configure `watchdog.tmux` on each fenced node to run a
   local health scan every ten minutes. Tracker reports missing sessions,
   startup pickers, stranded launches, orphan panes, and panes left after
@@ -124,28 +159,144 @@ operator verifies the stopped database and chooses a rollback.
 - **Recovery and handoff.** Tracker alerts on missing sessions and uses its
   normal dispatch path to recover eligible items with briefs after a grace
   period. It rechecks the live pane inventory before requesting recovery.
-  Opt-outs and outstanding flags hold recovery. For active context above
+  Recovery and retry use the same gates as automatic pickup. Tracker holds
+  personal and Chief of Staff work, reminders, non-task items, opted-out,
+  blocked, inactive or parked items, and items waiting on Daniel. Titles
+  containing `PROD DEPLOY` require an explicit launch for every attempt.
+
+  The native `autolaunch.enabled` setting governs unattended launches.
+  When omitted, the node follows the legacy setting in
+  `~/.config/tracker/config.json` if present. Automatic launches run at any
+  hour: quiet hours cover only what is for Daniel. The hub admits up to two
+  automatic launch reservations in any rolling minute across the fleet.
+  Connected spokes wait for a hub slot. If the hub is unreachable, a spoke
+  still starts the due tasks it owns, using the same two-per-minute limit on
+  its own slots. Unreachable means a timeout, a failed DNS lookup or
+  connection, or HTTP 502, 503, 504, 521–524 or 530. A denial, any other HTTP
+  error, a redirect, a certificate error or an unreadable reply holds the
+  launch. A due pause or local-due opt-out that the spoke has already received
+  still applies. Other automatic launches wait for the hub. Explicit launch
+  requests get the first available local slots and bypass the rate limit.
+  Each adapter can classify intake as urgent, normal or low. The configured
+  GitHub tester rule marks issues and comments by its allowed tester logins
+  urgent. Urgent items take the next free slot ahead of normal and low
+  automatic work. If a tester request's primary is full, the hub can
+  delegate the unclaimed request to an online Codex runner with the
+  approved checkout, a free slot and enough disk for the source policy.
+  Chief of Staff gets a queue alert after 15 minutes for urgent work and
+  after 30 minutes for other pending launch requests. Use
+  `tracker priority ITEM urgent|normal|low` to change an item's priority.
+  Lists and digests display the current priority.
+
+  For other open or in-progress tasks, the hub watchdog checks for owner
+  activity, pending launches and active runs or panes before requesting
+  dispatch. It checks at any hour, after two idle hours by default. Configure `hostEffects.watchdog.idleWorkMinutes` to change
+  that threshold. The dispatcher chooses an approved computer, applies
+  normal capacity and retries pending requests. The digest lists queued
+  requests and their wait. If the task has no approved placement, the
+  watchdog alerts Chief of Staff. Ordinary tasks added by Daniel or
+  Chief of Staff queue by default. `tracker add ... --later` records a
+  persistent opt-out. `tracker launch on ITEM` re-enables automatic pickup.
+  For active context above
   150,000 tokens, Tracker requests a short handoff once an owned pane is
   idle. It closes that pane for a fresh launch only after it verifies the
   handoff note and original attempt. Busy, attached, and unowned panes
   require Chief of Staff attention. Transcript roots allow local context
   measurement without including transcript contents in alerts.
+
 - **Chief of Staff.** `tracker needs-attention` and `tracker watchdog alerts`
   show active watchdog alerts with the item, computer, and session.
   `tracker watchdog dry-run` previews idle, startup, and recovery
   decisions without taking action. Set `watchdog.chiefOfStaff` on the
   primary Mac to deliver alerts to its idle CoS tmux pane and include MB2
   alerts over the existing host-key-verified SSH link. Delivery observes
-  Lisbon quiet hours and the thirty-minute cadence. The separate
-  thirty-minute tick continues to read `tracker list --flagged --json` for
-  ordinary decisions that need Daniel.
+  Lisbon quiet hours and the thirty-minute cadence for routine alerts. The hub
+  checks each enabled launcher's last completed tick about once a minute.
+  A heartbeat more than three minutes old prompts a Chief of Staff alert
+  outside the routine cadence during delivery hours. Tracker sends one alert
+  per missed heartbeat and clears it from the active list when polling resumes.
+  The separate tick can still read `tracker list --flagged --json` for decisions.
+
+  CoS dependency messages are delivered once per item and message text.
+  When tmux misses an acceptance, Tracker checks Claude's recorded prompt
+  or queue receipt before retrying. Changes to the dependency text can
+  trigger a new alert. Open blockers continue to appear in the daily digest.
+  CoS batches carry up to four alerts within a 450-byte composer budget. A long alert uses its item ID
+  and a short sentence, with full details available in Tracker. The batch
+  includes the slot summary when it fits.
+
+  Tracker sends the first ask, follows up two and six hours after the first
+  delivery, then repeats at 08:00 Lisbon each morning. These reach Chief of
+  Staff at any hour. If both follow-up times have passed, the next repeat
+  waits for the next 08:00.
+  Each ping includes how long the ask has waited. The digest shows every
+  open ask, including deferred and completed-item asks. Record Daniel's
+  answer with `tracker answer`, or use `unflag` or `ignore` to dismiss an
+  ordinary ask. iPhone push delivery depends on the separate `0wn8nf` rollout.
+
+  A Hub or CLI answer to an assigned task is routed to its current Codex or
+  Claude pane. Tracker waits for an idle composer, records the computer and run
+  once submission is confirmed, and alerts Chief of Staff if delivery stays
+  pending. An answer that releases a finished blocked run allows the watcher to
+  relaunch the task. The answer stays available on the item during recovery.
+
+  Chief of Staff files ideas when Daniel raises them and sets the project.
+  Use `add --next-step` or `update --next-step` to record a decision. Use
+  `done --next-step` when work finishes with a decision outstanding. That
+  completion records the work result while the question stays on the Lisbon
+  follow-up schedule. The digest lists the project, decision and its age even
+  if the project has no active runs. `answer` records a reply and leaves the
+  next step available for an explicit decision to move on.
+
+  Daniel can use `tracker park ITEM --until DATE` to hold pings until 08:00
+  Lisbon on that date, or pass an ISO timestamp with a time zone. The digest
+  shows the hold while the flagged worklist and reminder destinations wait.
+  `tracker move-on ITEM` records his decision and closes the item. These
+  commands use the trusted local Tracker actor and reject managed CLI
+  runners. Chief of Staff may relay Daniel's explicit decision with
+  `--by Daniel`. The actor is a local audit label.
+
 - **Adapter polling.** Only the designated primary Mac can poll retained
   GitHub sources. It uses the existing source owner, cursor, and
   `adapter-runner.lock` beside the journal. The GitHub CLI binding uses an
   explicit, private account directory and the existing `tracked` label.
-- **Other effects.** Fleet telemetry, job execution, and external backup
-  scheduling remain out of the foreground configuration. Recurrence is
-  enabled by a configured hub webhook.
+- **Dispatch watchdog.** A dispatch tick has two minutes to finish.
+  On timeout the scheduler cancels that tick and resumes polling. The
+  next tick reconciles reservations for which a host start may have
+  happened before the reply was lost. Host commands have a separate
+  deadline and settle on child close, with an exit-event fallback when
+  close does not arrive. A partial response is discarded.
+- **Fleet telemetry.** Each node samples itself; see
+  [Computers and placement](#computers-and-placement).
+- **Box jobs.** A recurring item on the hub can run a shell command at each
+  occurrence in place of waking a bot. Use
+  `tracker job set ITEM --cmd 'C' [--wake-on finding|fail|always] [--timeout S]`
+  and `tracker job list`, `rm ITEM` or `test ITEM`. Exit 0 records the
+  occurrence as done. Exit 10 also records it as done and wakes the owner
+  with the output as `finding`. Any other exit or a timeout records it as
+  failed. `wake-on` defaults to `finding`; `fail` adds failures and `always`
+  wakes after every run. `test` runs the command now and records nothing.
+
+  Commands run at low priority under `/bin/sh` on the hub's own computer,
+  two scheduled jobs at a time, in `jobs/state/ITEM` beside the journal. They
+  receive `TRACKER_ITEM_ID`, `TRACKER_OCCURRENCE`, `TRACKER_STATE_DIR` and a
+  limited environment (such as `HOME` and the service's `PATH`) without the
+  service's other variables. Each command's process group is killed on exit,
+  timeout and shutdown. Output keeps the first 8 KB, with obvious secrets
+  redacted. An item with a job still waiting or running skips the next
+  occurrence, which later shows as missed. A job interrupted by shutdown or
+  a crash records a failure and is never rerun; after a crash its processes
+  may still be running. The latest receipt for each item is in
+  `jobs/receipts`.
+
+  Job definitions live in the local, unsynced `box_jobs` table. Only the
+  hub's loopback API can set them. A hub migration must carry those rows to
+  the new journal or set them again, and the commands' scripts and paths must
+  exist on the new hub's computer.
+
+- **Other effects.** External backup scheduling remains out of the
+  foreground configuration. Recurrence and box jobs are enabled
+  by a configured hub webhook.
 
 ## Host-effect configuration
 
@@ -245,6 +396,12 @@ as their homes. Native Claude uses the service account's home and login name
 to find its existing Claude Code session. Point `native.claude` at the
 installed Claude Code executable when using the default account configuration.
 A wrapper that overrides `CLAUDE_CONFIG_DIR` can hide the saved sign-in.
+Tracker runs `claude auth status` in the worker's account environment before
+creating the attempt worktree. It refuses a signed-out or unverifiable CLI.
+New Claude attempts stay queued until the tmux pane reaches its composer.
+A sign-in screen, first-run theme chooser, or two minutes without a composer
+counts as a startup failure and follows Tracker's retry and flag policy.
+Tracker saves the startup verdict without retaining the captured terminal text.
 
 The worker's host-side
 Tracker client only receives the verified loopback role and port. The
@@ -267,6 +424,31 @@ integration. The host-side client binding keeps
 the daemon socket, signing key, and credentials outside guest storage.
 Worker exit alone never completes the Tracker item. Keep the Docker lane
 held on the protected hosts until the production seams pass rehearsal.
+
+### Launch resource guards
+
+The managed launcher reads this computer before every launch, including
+explicit ones. A hold keeps the request queued, reports
+`Tracker host resource hold: <reason>` as its wait reason, and spends no retry
+or recovery attempt. An external driver owns its own host and is not sampled.
+
+- Available RAM must be at least `launch.minAvailableMemMB` (default 2048).
+- The home, repository (or operations workdir) and managed state filesystems
+  need `launch.minFreeDiskGB` (default 5) free, at least 50,000 free inodes
+  and 1% of inodes free. An unreadable filesystem holds the launch.
+- On the primary Mac, MB2 and the box, the home filesystem needs 30 GB free.
+  Disk percentage does not hold a launch.
+- The Macs need at least 25% free memory (unknown holds) and a one-minute load
+  under 15. They also hold when the five-minute load exceeds 1.5 per core. Other
+  hosts use that sustained-load threshold and hold while free memory is under 10%.
+- The shared box also waits while busy: load over 1.0 per core, free memory
+  under 15%, or under 100,000 or 3% free inodes.
+
+On MB2, Harbor is the home project and its requests are considered first. All
+other work gets one session at a time, only while the one-minute load is under 4. Its worker runs under `nice -n 10` with a four-core budget in
+`TRACKER_CPU_BUDGET` and the CMake, Cargo, Make, OpenMP, Rayon and Go
+parallelism variables, and its brief states the budget. These cap
+cooperating build tools; they do not enforce a hard CPU limit.
 
 ### External provider driver protocol
 
@@ -333,7 +515,39 @@ with the computer, closed session and provider resume command. Long-lived
 control sessions fall outside the auto-launch name filter. Pending flagged
 launches report `waiting on Daniel (flagged)` in autolaunch status.
 
-### Scheduled reminders
+### Launch events and waiting requests
+
+The transaction that changes a run also records its launch event: launched, done,
+blocked, failed, escalated, gave up or launch failed. Ten minutes after the oldest
+unsent event, the node settles them as one `autolaunch` summary. Only a hub with a
+webhook queues it. As in the legacy sender, Chief of Staff batch mode drops the
+summary (`webhook.batch: false` delivers it) and sends only its item batch.
+
+A due request adds a note naming its computer and model. Before a request has a
+run, `show` reports `launch_status` with its computer and wait reason. Autolaunch
+status lists unstarted requests as `ready` or `skipped`.
+
+### Stop a managed session
+
+Run `tracker stop <item>` or `tracker stop '#<local run number>'` on the
+computer that owns the run. Tracker clears the launch request and opts the
+item out before terminating the verified tmux session. The run remains in
+history and the task status stays available for follow-up. Use an explicit
+launch to start a new run or `tracker launch on ITEM` to allow unattended
+pickup again.
+
+### Reminder items
+
+Use `tracker add --reminder --at <ISO timestamp with a time zone> "Title"`
+to create an item that only delivers reminders. Use
+`tracker remind <id> --at <time> --reminder` to convert an existing item,
+or `tracker remind <id> --at <time>` to snooze a reminder. Reminder items
+never start or recover a session, including when an explicit launch is
+requested. The hub delivers to Chief of Staff at the scheduled time,
+including overnight, and follows up after two
+hours, six hours, and at 08:00 daily until the item is done or snoozed.
+
+### Scheduled reminders on other items
 
 Use `tracker remind <id> --at <ISO timestamp with a time zone>` for an
 active item. Convert requests such as “remind me tomorrow at 14:30” to an
@@ -378,6 +592,10 @@ The native CLI confirms a manual launch against the run for that exact request.
 It reports the run number, state and computer, or exits non-zero with the
 admission reason. If the target has not reported an outcome within 20 seconds,
 the CLI reports the timeout. A hold or timeout leaves the request pending.
+After an answer, reopen, or unblock releases an item with only finished attempts,
+an explicit launch starts a fresh request and keeps the blocked run in history.
+The CLI points to `tracker show ITEM` for the current outcome and to
+`tracker unlaunch ITEM` if the new request is still pending and should be cancelled.
 `tracker launch on` and `tracker launch off` still set the due-scheduling preference.
 
 The primary watchdog alerts CoS when a request has no matching run after
@@ -385,9 +603,17 @@ The primary watchdog alerts CoS when a request has no matching run after
 and clears the alert when the request is withdrawn or receives a run. Spokes
 send signed updates promptly when their launch holds or run state change.
 
+While an attempt's session is live, crossing its ETA and inactivity limit or its
+run cap raises an overdue alert and preserves its run ID and slot. The activity
+clock includes Tracker item updates, pane output, and a quiet pane reporting a
+background shell or monitor. Use `tracker stop <item>` to end a hung attempt.
+Session check-ins are eligible for delivery while the item is in progress and
+the host observes its session. Completing the linked credential rotation clears
+the exposure alert. A new detection can reopen the rotation.
+
 To replace a pending managed launch, run `tracker unlaunch <item>` and then
-`tracker launch <item>`. The launcher retires a cancelled retry that was never
-dispatched. After five minutes, it also retires an undispatched retry whose item
+`tracker launch <item>`. The local launcher retires an undispatched queued run in the
+same write that cancels the request. After five minutes, it also retires an undispatched retry whose item
 became ineligible, preserving any open question. For a dispatched reservation,
 expiry requires absence of the exact tmux session and all startup or exit
 markers. An eligible request can retry within its existing retry limit. Old
@@ -399,21 +625,243 @@ and the verified legacy run directory and tmux inventory contain no startup evid
 Consumed tokens remain recorded for deduplication and are excluded from the pending
 dispatch scan.
 
-- [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`
-      and `reject`. Verify host admission, launcher limits, `ready/skipped`,
+### Launch holds
+
+`tracker autolaunch pause` and `resume` run on the hub (a spoke returns 409). The
+choice persists, and the hub sends it with every journal pull. A spoke keeps the
+last value it received while the hub is unreachable. The pause stops due launches
+only. A hub with `launch.due: false` does not pause its spokes.
+
+On each scheduler tick the launcher reads the panes of its own runs. A usage-limit
+or empty-credit notice behind the CLI's own glyph holds all new starts of that
+provider on that computer, including manual launches, retries and relaunches. A
+warning that work continues on credits does not. The hold records one watchdog
+alert with a note on the item, and watchdog relaunch attempts are not used up
+while it lasts. It stays until `tracker autolaunch clear-quota <codex|claude>`
+runs on that computer, even after the provider's limit resets. Notices already
+seen cannot restore a cleared hold. Detection needs a tmux executable. Placement
+on another computer does not read these holds.
+
+`hostEffects.launch.codexPausedUntil` (ISO time) holds Codex starts until then.
+Change it in the configuration and restart the node.
+
+### Remaining commands
+
+- [x] Wire `reject` and post-done verification (see Completion review).
+- [x] Wire `autolaunch pause/resume/clear-quota`, quota holds and the Codex pause.
+- [ ] Verify host admission, launcher limits, `ready/skipped`,
       repository mappings and live provider hold data before claiming full
       autolaunch status parity. Persisted quota holds are visible in status.
-- [ ] Reconcile `machines`, `place`, `watchdog dry-run/alerts`, and `health
-[--alert]` with the native host-process integration.
+- [x] Wire `machines`, `place`, resource history and overload alerts (see
+      Computers and placement).
+- [ ] Reconcile `watchdog dry-run/alerts` with the native host-process
+      integration.
+- [x] Wire `health [--alert]`, log rotation and host supervision (see Health,
+      logs and host supervision).
 - [x] Wire `adapter run` and comment preview and backfill through runner ownership.
-- [ ] Wire `adapter add/pause/resume/remove` and issue backfill.
+- [x] Wire `adapter add/pause/resume/remove` and issue backfill. Changes run on the
+      designated runner under the poll lease; a running poll refuses them with a retry
+      message. `adapter add --dry-run` previews on any configured node and writes nothing.
 - [ ] Bind external backup receipts for last result and next run. Qualify
       `backup now` and `restore --yes` with the backup owner and an isolated
       restore rehearsal.
 - [ ] Qualify `agent register/list/rm`, `webhook status/pause/resume/test`,
-      `cos-test`, `job set/list/rm/test`, and local `instructions [--check]`.
+      `cos-test`.
+- [x] Wire local `instructions [--check] [file...]`. It needs no service or config. The
+      canonical block ships with Harness and names only native commands.
+- [x] Print human `history`, `check` and refused-duplicate matches, and the model pick
+      after `add`. `block` accepts `--no-needs-daniel`; `--needs-daniel` points to `flag`.
 - [ ] Schedule ignore expiry on the hub. Compare remaining legacy output for
-      recurring `history`, `check` match details, `rm`, and empty `list`.
+      `rm` and empty `list`.
+
+## Computers and placement
+
+Each node samples its CPU load, memory, swap, disks and agent sessions once a
+minute. Command lines are read only to classify test runners and Playwright
+browsers and never leave the sampler. A spoke adds its sample to the signed
+machine exchange. The hub keeps 30 minutes of per-minute samples and seven
+days of five-minute history in the retained `machines*` tables, and returns
+every computer's latest report to each spoke. Samples stay out of the journal.
+Sampling is read-only, so it also runs while host effects are held.
+
+- `tracker machines [name] [--hours N]` shows each computer as `ok`, `busy`,
+  `overloaded` or `offline` (no sample for five minutes), with its reasons. A
+  name also shows its heaviest sessions and history. A spoke has only the
+  history it received while running.
+- `tracker place [--kind codex|claude|browser-tests|build|general]
+[--needs-ram GB]` ranks computers by headroom and role and names the best
+  one that fits.
+- A computer is overloaded when its 5-minute load exceeds 1.5 per core,
+  available memory is under 10%, macOS reports critical pressure, swap grew
+  more than 512 MB in 10 minutes, or a disk has under 20 GB free. Busy uses 1.0
+  per core, 15%, pressure warnings, 256 MB and 30 GB. Unlike the retained
+  Tracker, a low free percentage alone does not count.
+- When `hostEffects.watchdog.chiefOfStaff` is set on the hub, a computer
+  overloaded for 10 minutes gets one `Computer overloaded: <node>` item and an
+  `overload` watchdog alert with its heaviest sessions and a suggested move.
+  It never asks Daniel. After 10 calm minutes the item closes and the alert
+  clears. An ignored item is not raised again.
+- `--computer auto` picks, among computers whose launcher is polling, maps the
+  task's project and has a free slot, the best one that fits. Heavy work
+  prefers the primary Mac and light work the shared box. A task that names a
+  checkout, or has no known fit, stays on this computer. A request without
+  `--computer` also stays on this computer, and so do due tasks.
+- The hub assigns a queued launch that names no computer to such a peer, with
+  a note, and keeps it otherwise.
+- The hub grants a due start to a peer that reports resources only while its
+  sample is at most 135 seconds old and it is not overloaded. A Mac peer is also
+  held while its latest one-minute load is at least 15. A peer that has never
+  reported resources runs an earlier release and keeps its grant.
+
+### Work sent to another computer
+
+From a managed Tracker run, wrap a foreground remote check or build:
+
+```sh
+tracker host-work ssh mb2 -- ssh harbor-mbp-2 ./run-checks.sh
+tracker host-work colima mb2 -- ssh harbor-mbp-2 ./run-colima-proof.sh
+```
+
+Pass the Tracker computer as the destination. The command can use its usual
+SSH alias. Keep startup, verification, and task-owned teardown inside the
+foreground command for a Colima proof. Raw SSH commands and detached work
+outside its lifetime have no lease.
+
+The local Tracker records the origin run and renews the lease while the
+command runs. The signed fleet exchange carries the destination and expiry.
+The Hub computer chip counts an origin run once per destination even if it
+has multiple leases there. The count clears when the command releases its
+lease or when the run finishes, and expires after 150 seconds without a renewal.
+Launcher admission uses the destination's sampled operating-system load.
+
+## Health, logs and host supervision
+
+`harness tracker health [--alert] [--json] [--config PATH] [--log FILE]...`
+runs in its own process, so it also reports a stopped service. It exits 0 when
+healthy, 1 when a check fails and 2 when it cannot run. It checks the local API;
+on a hub the sync listener, webhook delivery and, once native backups report
+`enabled`, backup freshness; on a spoke the hub link. Every node checks for a
+second long-lived service on the same config, free database disk and load, and
+Linux also checks available memory. Quiet peers, a paused webhook, disabled
+backups and a host that cannot list processes are information only.
+
+With `--alert`, a newly failing check flags one `Tracker health on <node>` item
+and repeats daily while it fails. Backup failures are reported here but asked
+only by the backup service. Once every other check recovers, the item is noted
+and closed, even while the backup alert stays open. An ignored item is never
+raised again. An alerting run waits 20 seconds and asks
+the API again before calling it down. When the Tracker cannot record the alert,
+or the webhook check or a spoke's hub link check fails, it also posts to the URL
+in `health-fallback.url` with the bearer key in `health-fallback.key`. Both are
+private files beside the native config; the URL is HTTPS or literal IPv4 loopback. The fallback waits out
+22:00-08:00 Lisbon unless the Tracker could not take the alert because its API
+is down. Alert state is kept in `<database>.health.json`. Without `--alert`
+nothing is written or sent.
+
+Each `--log` file, and the supervisor log, rotates above 5 MB by copying to
+`<log>.1` and truncating, because the writer keeps the file open for appending.
+
+`harness tracker service print|install|uninstall [--config PATH]
+[--executable PATH]` sets up the current host. `print` changes nothing. A
+launched session's `HARNESS_TRACKER_CONFIG` is a client stub, so `health` and
+`service` refuse it; pass the node's own config with `--config`.
+
+- **Linux with systemd:** user units run `serve` with `Restart=always` and run
+  the health check 5 minutes after the timer starts and every 4 hours Lisbon
+  time. The journal owns log rotation.
+- **Linux without systemd:** a marked `~/.bashrc` line starts `tracker
+supervise`, and install starts it at once. The supervisor holds one lock per
+  database, restarts `serve` with backoff, rotates `<database>.log` and runs the
+  same health schedule. After a container restart it starts with the first new
+  shell.
+- **macOS:** the existing `local.harness.tracker` agent keeps supervising the
+  service. Install adds `local.harness.tracker-health`, which runs every 4 hours
+  in the Mac's time zone, runs whichever executable the service agent names and
+  rotates that agent's log files. The executable must include `tracker health`.
+
+## Completion review
+
+- **Verify.** A managed macOS route may set `verify` to a shell command, for
+  example `"verify": "~/.bun/bin/bun run test"`. After `tracker done`, the run
+  waits in `verifying` while the command runs in that run's worktree under
+  `/bin/bash -lc`, with a clean environment and a 30 minute limit. Its process
+  group is killed on exit, timeout and shutdown. Exit 0 records `done`. Any
+  other exit reopens the item with the last output lines as a note, records
+  `failed` and retries within the normal limit. Output matching a known
+  credential format is withheld from the note. A restart runs an interrupted
+  verify again; reopening the item stops it. Runs record their checkout in
+  `source_repo`, which selects the command, so routes sharing a checkout must
+  agree. Linux (Docker) routes and external launch drivers refuse `verify`:
+  their worktrees must not run on the host. Done notifications and callbacks
+  are still sent when the session reports done, before verification.
+- **Reject.** `tracker reject ITEM [reason...]` reopens a completed item. When
+  this computer's latest attempt produced the completion, that run becomes
+  `rejected` and retries within the normal limit. Otherwise the item is only
+  reopened. It refuses an item that is not done, a run that is still finishing
+  or verifying, a run owned by another computer, and launched runs.
+- **Human redo.** When a done item has failed, rejected or timed-out attempts
+  with no active attempt and no later successful one on any computer, the
+  owning computer records `redone_by` as `human`.
+
+## Launch settings
+
+- **Run limits.** `launch.maxRetries` (default 1), `defaultEtaMinutes` (120),
+  `stallMinutes` (45) and `maxRunMinutes` (480) override the dispatcher on that
+  host. Closing finished sessions has no setting here.
+- **Routing.** The optional top-level `routing` object sets `ladder` (effort and
+  price for the built-in `haiku`, `terra` or `sol` model IDs),
+  `learning.minSamples` (3), `learning.upBelow` (0.5) and `claudeOnlyUntil`.
+  Launch, retry and `tracker pick` share it; run reports list the same ladder.
+- **Learning.** A first launch reads finished runs on similar tasks, local and
+  replicated, as `tracker pick` does. History only moves a task to a stronger
+  rung. Pinned items ignore it, and retries step up the route without it.
+- **In place.** On a managed macOS route, a directory outside git runs in place,
+  as does a route with `"worktree": false`. Sessions there share the directory,
+  and `verify` runs in it. A git failure other than "not a git repository" still
+  rejects the launch, and Docker workers never run in place. In-place Codex runs
+  report no token usage, because a shared directory cannot identify the rollout.
+- **Retired model.** A queued, unstarted `gpt-6.1-sol` run starts on
+  `gpt-6.2-sol`.
+
+These keys are new. An older release rejects a node configuration that sets
+them, so remove them before rolling back.
+
+## Release copy and soak
+
+Stage the release locally under
+`~/.local/state/tracker/harness-releases/<id>/` with its `SHA256SUMS`. Copy it
+to every other computer with the checked-in script, from the release revision.
+Do not copy a previous session's staging script or run `rsync` into the
+releases folder by hand.
+
+```sh
+scripts/tracker-release-copy.sh copy ~/.local/state/tracker/harness-releases/<id> <ssh-host>
+# after activation on every computer; waits 15 minutes, so run it in the background
+scripts/tracker-release-copy.sh soak <id> <ssh-host>...
+```
+
+A failed or timed-out copy can leave an `rsync --server` receiver running on
+the other computer. It keeps a handle on its destination directory, even after
+that directory is renamed. With `--partial` it can later rename a partial file
+over the real one: this truncated a live `harness` binary 11 minutes after a
+release which had passed its checksums. `copy` therefore:
+
+- gives every attempt a fresh directory and never uses `--partial`, so a retry
+  sends the whole release again;
+- kills the release's receivers and confirms none remain before each attempt,
+  after a failed or interrupted one, and before publishing. If it cannot
+  confirm this, it publishes nothing;
+- publishes a local copy, made on that computer, in a directory `rsync` never
+  wrote to, after checking `SHA256SUMS` and the signature.
+
+`soak` checks `SHA256SUMS`, its match with this computer's copy, the signature
+and the absence of receivers on this computer and every named host. A release
+is not done until it exits 0. Treat any `FAILED` line as a broken release: do
+not restart that computer's Tracker until its files verify again.
+
+If the connection is lost altogether, `copy` warns that it could not stop the
+receiver. Run `copy` again once the host is reachable; it stops leftovers first.
+`HARNESS_RELEASE_BWLIMIT` sets the transfer cap in KB/s (default 2000).
 
 ## Rollback evidence
 

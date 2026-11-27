@@ -1,7 +1,7 @@
 // @harness-uid u_bn3rvwai33
 import { ProjectContextValidator } from '../projects-sessions/ProjectContextValidator';
 import { channels } from '../../models/development-tooling/DesktopBridge.types';
-import { ipcPayload } from '../../utils/ipc-payload/ipcPayload';
+import { ipcPayload } from '../../utils/execution-runtimes/ipc-payload/ipcPayload';
 import { gamePayload } from './gamePayload';
 import { UnknownDesktopOperationError } from './IpcRequestValidator.types';
 export class IpcRequestValidator {

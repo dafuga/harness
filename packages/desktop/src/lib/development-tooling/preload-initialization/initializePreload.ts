@@ -1,4 +1,9 @@
 // @harness-uid u_u5ye4kbgg5
+import type {
+	InboxReply,
+	InboxWriteReceipt,
+	TrackerInboxSource
+} from '../../../models/development-tooling/TrackerInbox.types';
 import type { Input } from './initializePreload.types';
 import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
 import { contextBridge, ipcRenderer } from 'electron';
@@ -13,6 +18,7 @@ import type {
 	RemoteDesktopControl,
 	RemoteMethod
 } from '../../../../../remote/src/index';
+import { watchLocalTracker } from './watchLocalTracker';
 import { LocalTransportClientService } from './LocalTransportClientService';
 import type { LocalSocketPort } from './LocalTransportClientService';
 import { binaryArtifact } from '../../../utils/reports-media/binaryArtifact';
@@ -30,6 +36,29 @@ const call =
 	<T>(method: RemoteMethod) =>
 	(input?: Input): Promise<T> =>
 		transport.request<T>(method, { ...input });
+const unavailable: InboxReply<never> = {
+	code: 'unavailable',
+	freshness: 'unavailable',
+	lastSyncedAt: null,
+	partial: true
+};
+const inboxRead = <T>(input: Input): Promise<InboxReply<T>> =>
+	call<InboxReply<T>>('trackerInboxRead')(input).catch(() => unavailable);
+const trackerInbox: TrackerInboxSource = {
+	overview: () => inboxRead({ operation: 'overview' }),
+	search: (query) => inboxRead({ operation: 'search', query }),
+	detail: (id) => inboxRead({ operation: 'detail', id }),
+	write: (write) =>
+		call<InboxReply<InboxWriteReceipt>>('trackerInboxWrite')(write).catch(() => unavailable),
+	writes: async () => ({
+		freshness: 'current',
+		lastSyncedAt: null,
+		partial: false,
+		value: []
+	}),
+	discard: async () => unavailable,
+	watch: (listener) => watchLocalTracker(transport, inboxRead, listener)
+};
 const bridge: DesktopBridge = {
 	gameCreate: call('gameCreate'),
 	gameImageGenerate: call('gameImageGenerate'),
@@ -50,6 +79,9 @@ const bridge: DesktopBridge = {
 	connectHosted: call('connectHosted'),
 	disconnectHosted: call('disconnectHosted'),
 	projectOverview: call('projectOverview'),
+	homeSnapshot: call('homeSnapshot'),
+	homeChat: call('homeChat'),
+	trackerInbox,
 	listProjects: call('listProjects'),
 	selectProject: call('selectProject'),
 	capabilities: call('capabilities'),
@@ -68,6 +100,7 @@ const bridge: DesktopBridge = {
 	approve: call('approve'),
 	providers: call('providers'),
 	agentActivity: call('agentActivity'),
+	designCanvases: call('designCanvases'),
 	startRun: call('startRun'),
 	cancelRun: call('cancelRun'),
 	onRunEvent: (listener) => transport.on('run', (value) => listener(value as RunEvent))
@@ -77,8 +110,6 @@ const remote: RemoteDesktopControl = {
 	status: call('remote.status'),
 	enable: call('remote.enable'),
 	disable: call('remote.disable'),
-	createPairing: call('remote.createPairing'),
-	closePairing: call('remote.closePairing'),
 	approvePairing: call('remote.approvePairing'),
 	denyPairing: call('remote.denyPairing'),
 	revokeDevice: call('remote.revokeDevice'),

@@ -1,5 +1,5 @@
 import type { PreviewCases } from './shared';
-import { stamp, done } from './shared';
+import { stamp, done, previewAnswerOptions } from './shared';
 import { phoneTrackerInboxSource } from '../../../../../desktop/src/lib/development-tooling/tracker-inbox/phoneTrackerInboxSource';
 import { writeView } from '../../../../../desktop/src/lib/development-tooling/tracker-inbox/trackerInbox';
 import type { PhoneTrackerTools } from '../../../../../desktop/src/models/development-tooling/PhoneTracker.types';
@@ -29,14 +29,6 @@ const devices = [
 		online: true
 	}
 ];
-const offer = {
-	pairingId: 'preview-offer',
-	hostId: 'preview-computer',
-	origin: 'https://preview.invalid',
-	code: 'SYNTHETIC',
-	scan: 'harness://pairing/preview-only',
-	expiresAt: '2026-10-20T10:05:05Z'
-};
 export function remotePreview() {
 	const host = $state({
 		busy: false,
@@ -48,13 +40,10 @@ export function remotePreview() {
 			reason: null,
 			host: { id: 'preview-computer', name: 'Ada’s Mac' },
 			origin: 'https://preview.invalid',
-			pairing: offer,
 			requests: [],
 			devices,
 			projects
 		},
-		createPairing: done,
-		closePairing: done,
 		enable: done,
 		disable: done,
 		approve: done,
@@ -86,7 +75,6 @@ export function remotePreview() {
 		},
 		'desktop.component.remote-devices': { devices, projects, store: host },
 		'desktop.component.remote-host-panel': { store: host },
-		'desktop.component.remote-offer-code': { offer, store: host },
 		'desktop.component.remote-phone-panel': { store: phone }
 	};
 	return { host, phone, cases };
@@ -151,13 +139,25 @@ export const previewTracker: PhoneTrackerTools = {
 
 function trackerInboxCases(): PreviewCases {
 	const source = phoneTrackerInboxSource(previewTracker);
+	const answerable = {
+		...trackerDetail,
+		flag: { ...trackerDetail.flag, options: previewAnswerOptions }
+	};
 	const unit = 'desktop.component.development-tooling-tracker-inbox-tracker-inbox';
 	return {
 		[unit]: { source },
+		[`${unit}-choices`]: {
+			flag: { ...trackerDetail.flag, options: previewAnswerOptions },
+			onpick: trackerNoop
+		},
 		[`${unit}-detail`]: { source, id: trackerItem.id, onchanged: trackerNoop },
 		[`${unit}-record`]: { detail: trackerDetail },
 		[`${unit}-rows`]: {
-			rows: [{ header: trackerItem, bucket: 'needs-you' }],
+			source,
+			mode: 'phone',
+			onchanged: trackerNoop,
+			onnotice: trackerNoop,
+			rows: [{ header: trackerItem, bucket: 'needs-you', review: answerable }],
 			selected: null,
 			label: 'Needs you',
 			empty: 'Nothing here right now.',

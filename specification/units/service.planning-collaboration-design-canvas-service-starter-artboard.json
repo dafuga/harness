@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "service.planning-collaboration-design-canvas-service-starter-artboard",
+	"uid": "u_2v74d2zvrm",
+	"kind": "service",
+	"title": "starterArtboard",
+	"responsibility": "Writes the blank themed page a new artboard starts from.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/planning-collaboration/design-canvas-service/starterArtboard.ts"],
+		"symbols": ["starterArtboard"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "starterArtboard.title",
+				"type": "string",
+				"required": true,
+				"description": "Title shown for the canvas or artboard."
+			},
+			{
+				"name": "starterArtboard.sizeMeta",
+				"type": "string",
+				"required": true,
+				"description": "The artboard-size meta element."
+			}
+		],
+		"outputs": [
+			{
+				"name": "starterArtboard",
+				"type": "string",
+				"description": "Result: Writes the blank themed page a new artboard starts from."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "starterArtboard",
+				"inputs": [
+					{
+						"name": "starterArtboard.title",
+						"type": "string",
+						"required": true,
+						"description": "Title shown for the canvas or artboard."
+					},
+					{
+						"name": "starterArtboard.sizeMeta",
+						"type": "string",
+						"required": true,
+						"description": "The artboard-size meta element."
+					}
+				],
+				"outputs": [
+					{
+						"name": "starterArtboard",
+						"type": "string",
+						"description": "Result: Writes the blank themed page a new artboard starts from."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/planning-collaboration/design-canvas-service/starterArtboard.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/planning-collaboration/design-canvas-service/starterArtboard.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

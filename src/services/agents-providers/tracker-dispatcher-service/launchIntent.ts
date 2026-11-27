@@ -9,6 +9,7 @@ import type {
 	TrackerLaunchRequest
 } from '../TrackerDispatcherService.types';
 import {
+	automaticRequestHold,
 	canonicalNode,
 	dueItemHold,
 	dueOwner,
@@ -16,11 +17,11 @@ import {
 	inactive,
 	knownNode,
 	mayScheduleHere,
-	schedulingHold,
 	skip,
-	startable
+	startable,
+	trackerReminderTitle
 } from './launchEligibility';
-import { recoveryIntent } from './recoveryIntent';
+import { recoveryIntent, unattendedIntent } from './recoveryIntent';
 
 export function requestLaunch(
 	snapshot: TrackerDispatchSnapshot,
@@ -33,6 +34,8 @@ export function requestLaunch(
 	if (!request.token.trim()) return skip('conflict', 'launch token is required');
 	if (request.source === 'recovery')
 		return recoveryIntent(snapshot, { item, request }, policy, now);
+	if (request.source === 'automatic')
+		return unattendedIntent(snapshot, { ...request, item }, policy, now);
 	return request.source === 'manual'
 		? manualIntent(snapshot, { ...request, item }, policy, now)
 		: dueIntent(snapshot, { item, token: request.token }, policy, now);
@@ -40,11 +43,13 @@ export function requestLaunch(
 
 function manualIntent(
 	snapshot: TrackerDispatchSnapshot,
-	request: { item: TrackerDispatchItem; token: string; options?: TrackerLaunchOptions },
+	request: Extract<TrackerLaunchRequest, { source: 'manual' }> & { item: TrackerDispatchItem },
 	policy: TrackerDispatchPolicy,
 	now: number
 ): TrackerDispatchDecision {
 	const { item, options, token } = request;
+	if (item.kind === 'reminder' || trackerReminderTitle(item.title))
+		return skip('held', 'reminders cannot launch');
 	const updated = { ...item, ...options };
 	const wanted = (updated.computer ?? 'auto').trim().toLowerCase() || 'auto';
 	const busy = hasOpenSession(snapshot, policy, now);
@@ -143,7 +148,8 @@ export function previewDueLaunch(
 ) {
 	const { item, due } = snapshot;
 	if (!item || inactive(item)) return { reason: 'item is missing or inactive' };
-	const hold = schedulingHold(item, policy) ?? dueIntentHold(snapshot, item, policy, now);
+	const hold =
+		automaticRequestHold(item, policy, now) ?? dueIntentHold(snapshot, item, policy, now);
 	if (hold) return { reason: hold };
 	if (due?.paused) return { reason: 'due scheduling is paused' };
 	if (!due || !mayScheduleHere(item, due, policy))
@@ -169,7 +175,8 @@ function selectDueLaunch(
 		return { reason: 'due launch assigned to a different computer' };
 	const pick = policy.pickModel(item);
 	if ('error' in pick) return { reason: pick.error };
-	return { target, pick, reason: choice.why } as const;
+	const held = target === policy.node ? policy.providerHold?.(pick.rung.cli) : null;
+	return held ? { reason: held } : ({ target, pick, reason: choice.why } as const);
 }
 
 function dueIntentHold(

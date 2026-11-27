@@ -73,11 +73,11 @@ test('Adds a suffix only for registering, connecting and offline host states', (
 	const offline = hostLine(hostStatus('offline'));
 	const online = hostLine(hostStatus('online'));
 	const noOrigin = hostLine(hostStatus('online', null));
-	expect(registering).toBe('Phone access is on · relay.example:8443 · registering…');
-	expect(connecting).toBe('Phone access is on · relay.example:8443 · connecting…');
-	expect(offline).toBe('Phone access is on · relay.example:8443 · relay unreachable');
-	expect(online).toBe('Phone access is on · relay.example:8443');
-	expect(noOrigin).toBe('Phone access is on · ');
+	expect(registering).toBe('This Mac is linked · relay.example:8443 · registering…');
+	expect(connecting).toBe('This Mac is linked · relay.example:8443 · connecting…');
+	expect(offline).toBe('This Mac is linked · relay.example:8443 · relay unreachable');
+	expect(online).toBe('This Mac is linked · relay.example:8443');
+	expect(noOrigin).toBe('This Mac is linked · ');
 	recordCases('hostLine', 'adds-a-suffix-only-for-registering-connecting-and-offline', [
 		{ name: 'registering state', input: { state: 'registering' }, output: registering },
 		{ name: 'connecting state', input: { state: 'connecting' }, output: connecting },
@@ -93,7 +93,7 @@ test('Adds a suffix only for registering, connecting and offline host states', (
 
 test('Uses fixed lock and awake wording for the computer', () => {
 	expect(lockNote).toBe(
-		'Approved phones keep working while this Mac is locked and awake. A sleeping Mac is offline.'
+		'Linked devices keep working while this Mac is locked and awake. A sleeping Mac is offline.'
 	);
 	expect(awakeNote).toBe('Computer awake · works while its screen is locked');
 	expect(publicEntry.lockNote).toBe(lockNote);

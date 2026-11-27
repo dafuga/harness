@@ -1,0 +1,269 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-frame",
+	"uid": "u_yntfc4v6tj",
+	"kind": "function",
+	"title": "Seal session stream frames",
+	"responsibility": "Derive one key per session stream and seal or open output frames with counter nonces and an authenticated header.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedFrame.ts"],
+		"symbols": ["sealedFrameHeader", "sealedStreamKey", "sealedFrame", "openSealedFrame"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sealedFrameHeader.frame",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Encoded frame from which to read the versioned header."
+			},
+			{
+				"name": "sealedStreamKey.keys",
+				"type": "ScopeKeys",
+				"required": true,
+				"description": "Scope keys used to derive the session stream key."
+			},
+			{
+				"name": "sealedStreamKey.streamId",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Identifier of the stream to bind to the derived key."
+			},
+			{
+				"name": "sealedFrame.keys",
+				"type": "ScopeKeys",
+				"required": true,
+				"description": "Scope identity and epoch to bind to the frame header."
+			},
+			{
+				"name": "sealedFrame.streamKey",
+				"type": "CryptoKey",
+				"required": true,
+				"description": "Derived key for this frame's stream."
+			},
+			{
+				"name": "sealedFrame.frame",
+				"type": "{ streamId: Uint8Array; counter: bigint; data: Uint8Array }",
+				"required": true,
+				"description": "Stream identifier, frame counter, and bytes to encrypt."
+			},
+			{
+				"name": "openSealedFrame.keys",
+				"type": "ScopeKeys",
+				"required": true,
+				"description": "Scope identity and epoch expected in the frame header."
+			},
+			{
+				"name": "openSealedFrame.streamKey",
+				"type": "CryptoKey",
+				"required": true,
+				"description": "Derived key for the stream identified by the frame."
+			},
+			{
+				"name": "openSealedFrame.frame",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Encoded frame to authenticate and decrypt."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedFrameHeader",
+				"type": "SealedFrameHeader",
+				"description": "Parsed frame header. Opening the frame authenticates its header."
+			},
+			{
+				"name": "sealedStreamKey",
+				"type": "Promise<CryptoKey>",
+				"description": "Derived symmetric key for the specified stream."
+			},
+			{
+				"name": "sealedFrame",
+				"type": "Promise<Uint8Array>",
+				"description": "Encoded header followed by the authenticated ciphertext."
+			},
+			{
+				"name": "openSealedFrame",
+				"type": "Promise<{ header: SealedFrameHeader; data: Uint8Array }>",
+				"description": "Authenticated header and original output bytes."
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown",
+				"description": "The header, counter, or stream identifier is invalid, the scope does not match, or authentication fails."
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedFrameHeader",
+				"inputs": [
+					{
+						"name": "sealedFrameHeader.frame",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Encoded frame from which to read the versioned header."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedFrameHeader",
+						"type": "SealedFrameHeader",
+						"description": "Parsed frame header. Opening the frame authenticates its header."
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedStreamKey",
+				"inputs": [
+					{
+						"name": "sealedStreamKey.keys",
+						"type": "ScopeKeys",
+						"required": true,
+						"description": "Scope keys used to derive the session stream key."
+					},
+					{
+						"name": "sealedStreamKey.streamId",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Identifier of the stream to bind to the derived key."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedStreamKey",
+						"type": "Promise<CryptoKey>",
+						"description": "Derived symmetric key for the specified stream."
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedFrame",
+				"inputs": [
+					{
+						"name": "sealedFrame.keys",
+						"type": "ScopeKeys",
+						"required": true,
+						"description": "Scope identity and epoch to bind to the frame header."
+					},
+					{
+						"name": "sealedFrame.streamKey",
+						"type": "CryptoKey",
+						"required": true,
+						"description": "Derived key for this frame's stream."
+					},
+					{
+						"name": "sealedFrame.frame",
+						"type": "{ streamId: Uint8Array; counter: bigint; data: Uint8Array }",
+						"required": true,
+						"description": "Stream identifier, frame counter, and bytes to encrypt."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedFrame",
+						"type": "Promise<Uint8Array>",
+						"description": "Encoded header followed by the authenticated ciphertext."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openSealedFrame",
+				"inputs": [
+					{
+						"name": "openSealedFrame.keys",
+						"type": "ScopeKeys",
+						"required": true,
+						"description": "Scope identity and epoch expected in the frame header."
+					},
+					{
+						"name": "openSealedFrame.streamKey",
+						"type": "CryptoKey",
+						"required": true,
+						"description": "Derived key for the stream identified by the frame."
+					},
+					{
+						"name": "openSealedFrame.frame",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Encoded frame to authenticate and decrypt."
+					}
+				],
+				"outputs": [
+					{
+						"name": "openSealedFrame",
+						"type": "Promise<{ header: SealedFrameHeader; data: Uint8Array }>",
+						"description": "Authenticated header and original output bytes."
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-scope-keys",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedFrame.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedFrame.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

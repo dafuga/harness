@@ -8,7 +8,7 @@ extension HubAccountSession {
 
     func computers(_ done: @escaping (Result<[[String: Any]], HubAccountFailure>) -> Void) {
         queue.async {
-            self.computerCall(HubAccountCall(method: "GET", path: Self.hostsPath)) { result in
+            self.computerCall(HubAccountCall(method: "GET", path: Self.hostsPath, query: ["linked": "1"])) { result in
                 done(result.flatMap(Self.computerList))
             }
         }
@@ -27,7 +27,6 @@ extension HubAccountSession {
     }
 
     private static func computerList(_ reply: HubAccountReply) -> Result<[[String: Any]], HubAccountFailure> {
-        // A Hub predating discovery still allows QR pairing.
         if [404, 405].contains(reply.status) { return .success([]) }
         guard reply.status == 200,
             let list = RemoteCoding.object(reply.data)?["computers"] as? [[String: Any]]
@@ -45,11 +44,12 @@ extension HubAccountSession {
     {
         guard reply.status == 200, let info = RemoteCoding.object(reply.data),
             info["hostId"] as? String == hostId, let key = info["hostKey"] as? String,
-            let origin = info["origin"] as? String, RemotePolicy.origin(origin) != nil
+            let origin = info["origin"] as? String, RemotePolicy.origin(origin) != nil,
+            let subject = live()?.subject
         else { return .failure(.failed) }
         let pairingId = RemoteCoding.hex(RemoteCoding.random(16))
         let generation = self.generation
-        let account = RemotePairing.Account(hostKey: key) { body, done in
+        let account = RemotePairing.Account(hostKey: key, subject: subject) { body, done in
             self.queue.async {
                 guard generation == self.generation else { return done(.failure(.failed("Sign in to continue."))) }
                 let data = RemoteCoding.json(body.merging(["pairingId": pairingId]) { value, _ in value })

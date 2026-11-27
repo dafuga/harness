@@ -14,6 +14,10 @@ extension RemoteSession: RemoteLinkDelegate {
 
     func connect() {
         guard trackerForeground || trackerBackground != nil, let record = record else { return }
+        guard matchesAccount(record.accountSubject) else {
+            forget()
+            return move("unpaired")
+        }
         dropLink()
         move("connecting")
         let link = makeLink(record, queue)

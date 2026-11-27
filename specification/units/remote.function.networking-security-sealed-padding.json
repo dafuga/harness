@@ -1,0 +1,153 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-padding",
+	"uid": "u_xjwbsgtokn",
+	"kind": "function",
+	"title": "Pad sealed plaintext",
+	"responsibility": "Pad plaintext to size buckets before sealing and strictly remove that padding after opening, so the server sees only bucketed sizes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedPadding.ts"],
+		"symbols": ["sealedBucket", "sealedPadding", "sealedUnpadding"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sealedBucket.length",
+				"type": "number",
+				"required": true,
+				"description": "Plaintext byte count before adding the length prefix."
+			},
+			{
+				"name": "sealedPadding.bytes",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Plaintext bytes to encode with a length prefix and zero padding."
+			},
+			{
+				"name": "sealedUnpadding.padded",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Decrypted bytes containing a length prefix and trailing padding."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedBucket",
+				"type": "number",
+				"description": "Smallest supported padded size that can hold the length prefix and plaintext."
+			},
+			{
+				"name": "sealedPadding",
+				"type": "Uint8Array",
+				"description": "Bucket-sized buffer containing the length prefix, plaintext, and zero padding."
+			},
+			{
+				"name": "sealedUnpadding",
+				"type": "Uint8Array",
+				"description": "Copy of the original plaintext bytes."
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown",
+				"description": "The length prefix is missing or out of range, or the trailing padding contains nonzero bytes."
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedBucket",
+				"inputs": [
+					{
+						"name": "sealedBucket.length",
+						"type": "number",
+						"required": true,
+						"description": "Plaintext byte count before adding the length prefix."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedBucket",
+						"type": "number",
+						"description": "Smallest supported padded size that can hold the length prefix and plaintext."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedPadding",
+				"inputs": [
+					{
+						"name": "sealedPadding.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Plaintext bytes to encode with a length prefix and zero padding."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedPadding",
+						"type": "Uint8Array",
+						"description": "Bucket-sized buffer containing the length prefix, plaintext, and zero padding."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedUnpadding",
+				"inputs": [
+					{
+						"name": "sealedUnpadding.padded",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Decrypted bytes containing a length prefix and trailing padding."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedUnpadding",
+						"type": "Uint8Array",
+						"description": "Copy of the original plaintext bytes."
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedPadding.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedPadding.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

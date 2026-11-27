@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-tracker-machine-types",
+	"uid": "u_q5ilh2avzz",
+	"kind": "function",
+	"title": "trackerMachine",
+	"responsibility": "Defines the resource sample, computer status and placement shapes shared by Tracker machines.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/projects-sessions/trackerMachine.types.ts"],
+		"symbols": [
+			"TrackerAgentKind",
+			"TrackerProcessGroup",
+			"TrackerDiskSample",
+			"TrackerResourceSample",
+			"TrackerMachineState",
+			"TrackerMachineRow",
+			"TrackerMachineRole",
+			"TrackerWorkKind",
+			"TrackerPlacementRequest",
+			"TrackerPlacementCandidate",
+			"TrackerPlacement"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/trackerMachine.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/trackerMachine.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

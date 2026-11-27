@@ -6,12 +6,11 @@ import { prepareChangeEnvironment } from '../../src/utils/projects-sessions/prom
 import { RunCancelled } from '../../src/models/agents-providers/AgentRunner.types';
 import type { Preparation } from '../../src/utils/agents-providers/prepareRun.types';
 import type { ProjectTaskRequest } from '../../src/models/projects-sessions/ProjectTask.types';
+import type { Revision } from './desktop.function.prepare-project-task.test.types';
 
 vi.mock('../../src/utils/projects-sessions/promoteChange', () => ({
 	prepareChangeEnvironment: vi.fn(async () => undefined)
 }));
-
-type Revision = { branch: string; commit: string };
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const COMMIT = 'a'.repeat(40);

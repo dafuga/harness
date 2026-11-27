@@ -68,7 +68,7 @@ async function accountRequest(
 	expect(await outcome(await f.hub(other, 'POST', path, request))).toBe('403 forbidden');
 	expect(await outcome(await f.hub(owner, 'POST', path, request))).toBe('202 ok');
 	const publicRequest = pairingPath(host, pairingId, 'request');
-	expect(await outcome(await f.relay.post(publicRequest, body))).toBe('409 pairing-unavailable');
+	expect(await outcome(await f.relay.post(publicRequest, body))).toBe('404 not-found');
 	expect((await summaryOf(owner, host.hostId)).devices).toEqual([]);
 	const grant = { projects: [], agents: false };
 	const approval = await approveAccountPairing(
@@ -125,7 +125,7 @@ test(
 		const hidden = await f.hub(other, 'GET', '/hosts');
 		expect([hidden.status, await hidden.json()]).toEqual([200, { computers: [] }]);
 		const listed = await f.hub(owner, 'GET', '/hosts');
-		expect(listed.headers.get('Cache-Control')).toBe('no-store');
+		expect(listed.headers.get('Cache-Control')).toBe('private, no-store');
 		expect([listed.status, await listed.json()]).toEqual([
 			200,
 			{ computers: [{ hostId: host.hostId, name: host.name, online: false }] }
@@ -151,6 +151,7 @@ test(
 		const host = await newHost(),
 			path = `/hosts/${host.hostId}`;
 		expect((await f.hub(owner, 'POST', '/hosts', await registration(host))).status).toBe(201);
+		host.ownerId = 'google:fixture-owner';
 		const socket = await connectHost(f.relay, host),
 			device = await pairDevice(f.relay, host, socket),
 			phone = await connectDevice(f.relay, host, device),

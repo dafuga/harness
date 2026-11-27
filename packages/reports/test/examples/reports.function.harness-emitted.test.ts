@@ -2,9 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { harnessEmitted } from '../../src/utils/harnessEmitted';
-
-type Unit = Parameters<typeof harnessEmitted>[0];
-type Snapshot = NonNullable<Parameters<typeof harnessEmitted>[1]>;
+import type { Unit, Snapshot } from './reports.function.harness-emitted.test.types';
 
 const unitId = 'kernel.impact';
 

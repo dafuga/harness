@@ -5,8 +5,7 @@ import { join } from 'node:path';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { GET } from '../../src/routes/harness/media/[file]/+server';
-
-type Event = Parameters<typeof GET>[0];
+import type { Event } from './reports.endpoint.harness-media-file.test.types';
 
 const unitId = 'reports.endpoint.harness-media-file';
 const symbol = 'GET';

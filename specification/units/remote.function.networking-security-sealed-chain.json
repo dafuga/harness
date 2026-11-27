@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-chain",
+	"uid": "u_7tgdli7pdw",
+	"kind": "function",
+	"title": "Verify the device chain",
+	"responsibility": "Verify a whole device chain from genesis, enforce who may sign what, and refuse forks or rollbacks against a pin.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/remote/src/utils/networking-security/sealedChain.ts",
+			"packages/remote/src/utils/networking-security/sealedChain.types.ts"
+		],
+		"symbols": ["sealedChain", "Body", "ChainExpectation"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sealedChain.entries",
+				"type": "SealedChainEntry[]",
+				"required": true,
+				"description": "Ordered signed entries from genesis to the next state to verify."
+			},
+			{
+				"name": "sealedChain.expect",
+				"type": "ChainExpectation",
+				"required": true,
+				"description": "Expected account identifier and optional previous chain pin."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedChain",
+				"type": "Promise<SealedChainState>",
+				"description": "Verified device membership, scope grants, and latest chain position."
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown",
+				"description": "The chain is empty, invalid, unauthorized, or incompatible with the supplied pin."
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedChain",
+				"inputs": [
+					{
+						"name": "sealedChain.entries",
+						"type": "SealedChainEntry[]",
+						"required": true,
+						"description": "Ordered signed entries from genesis to the next state to verify."
+					},
+					{
+						"name": "sealedChain.expect",
+						"type": "ChainExpectation",
+						"required": true,
+						"description": "Expected account identifier and optional previous chain pin."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedChain",
+						"type": "Promise<SealedChainState>",
+						"description": "Verified device membership, scope grants, and latest chain position."
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-chain-entry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedChain.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedChain.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

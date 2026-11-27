@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "service.planning-collaboration-design-canvas-service-load-chromium",
+	"uid": "u_orfabjtvsq",
+	"kind": "service",
+	"title": "loadChromium",
+	"responsibility": "Finds an installed Playwright Chromium for the designed project or this CLI.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/planning-collaboration/design-canvas-service/loadChromium.ts"],
+		"symbols": ["loadChromium"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "loadChromium.root",
+				"type": "string",
+				"required": true,
+				"description": "Project root folder."
+			}
+		],
+		"outputs": [
+			{
+				"name": "loadChromium",
+				"type": "Promise<BrowserType>",
+				"description": "Result: Finds an installed Playwright Chromium for the designed project or this CLI."
+			}
+		],
+		"errors": [
+			{
+				"name": "DesignCanvasError",
+				"type": "thrown",
+				"description": "A canvas, artboard, option or prerequisite is not usable; the message says why."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "loadChromium",
+				"inputs": [
+					{
+						"name": "loadChromium.root",
+						"type": "string",
+						"required": true,
+						"description": "Project root folder."
+					}
+				],
+				"outputs": [
+					{
+						"name": "loadChromium",
+						"type": "Promise<BrowserType>",
+						"description": "Result: Finds an installed Playwright Chromium for the designed project or this CLI."
+					}
+				],
+				"errors": [
+					{
+						"name": "DesignCanvasError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/planning-collaboration/design-canvas-service/loadChromium.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/planning-collaboration/design-canvas-service/loadChromium.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

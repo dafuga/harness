@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-tracker-attachment-document-bytes",
+	"uid": "u_svvcohckao",
+	"kind": "function",
+	"title": "trackerAttachmentDocumentBytes",
+	"responsibility": "Defines what an attached document may contain and measures the bytes it costs.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/projects-sessions/trackerAttachmentDocumentBytes.ts"],
+		"symbols": ["trackerAttachmentDocumentSchema", "trackerAttachmentDocumentBytes"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "trackerAttachmentDocumentBytes.document",
+				"type": "{ markdown: string; images?: Record<string, string>; }",
+				"required": true,
+				"description": "The markdown and any images as data addresses."
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerAttachmentDocumentSchema",
+				"type": "unknown",
+				"description": "Accepts bounded non-empty markdown and images that are base64 PNG, JPEG, GIF, WebP or SVG data addresses."
+			},
+			{
+				"name": "trackerAttachmentDocumentBytes",
+				"type": "number",
+				"description": "UTF-8 bytes of the markdown plus the length of every image data address."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "trackerAttachmentDocumentBytes",
+				"inputs": [
+					{
+						"name": "trackerAttachmentDocumentBytes.document",
+						"type": "{ markdown: string; images?: Record<string, string>; }",
+						"required": true,
+						"description": "The markdown and any images as data addresses."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAttachmentDocumentBytes",
+						"type": "number",
+						"description": "UTF-8 bytes of the markdown plus the length of every image data address."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-attachment-limits",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/trackerAttachmentDocumentBytes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/trackerAttachmentDocumentBytes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

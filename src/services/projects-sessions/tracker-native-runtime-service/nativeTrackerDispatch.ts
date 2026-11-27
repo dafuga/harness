@@ -1,6 +1,14 @@
+import type { PeerStarts } from './nativeTrackerDispatch.types';
 // @harness-uid u_bl6xl2h4a3
+import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
+import { adapterFailover } from './trackerAdapterFailover';
 import { TrackerDispatchRepository } from '../../../repositories/projects-sessions/TrackerDispatchRepository';
 import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
+import {
+	automaticEnabled,
+	canonicalNode,
+	mayScheduleHere
+} from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { previewDueLaunch } from '../../agents-providers/tracker-dispatcher-service/launchIntent';
 import { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
 import type {
@@ -13,22 +21,42 @@ import type {
 	TrackerNativeRuntimeOptions
 } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { TrackerSpokeSyncService } from '../TrackerSpokeSyncService';
 import { liveTrackerDuePolicy } from './nativeTrackerDuePolicy';
+import { grantsDelegation } from './trackerDueDelegation';
+import { spokeAutomaticPermit, spokeGrant } from './trackerHubPermits';
 
 export function composeTrackerDispatch(
 	store: TrackerPersistenceService,
-	options: TrackerNativeRuntimeOptions
+	options: TrackerNativeRuntimeOptions,
+	machines?: PeerStarts
 ) {
-	if (!options.dispatch)
-		return {
-			dispatch: undefined,
-			scheduler: undefined,
-			duePreview: {
-				timeZone: options.timeZone ?? trackerTimeZone,
-				due: () => liveTrackerDuePolicy(store, { enabled: false, paused: false }, options.role)
-			} satisfies TrackerDuePreviewPolicy
-		};
+	if (!options.dispatch) {
+		if (options.syncResponder || options.links?.length) store.database.exec(trackerRunSchema);
+		return emptyDispatch(store, options);
+	}
+	return nativeDispatch(store, { ...options, dispatch: options.dispatch }, machines);
+}
+
+function emptyDispatch(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
+	return {
+		dispatch: undefined,
+		scheduler: undefined,
+		permitAutomatic: undefined,
+		permitDue: undefined,
+		duePreview: {
+			timeZone: options.timeZone ?? trackerTimeZone,
+			due: () => liveTrackerDuePolicy(store, { enabled: false, paused: false }, options.role)
+		} satisfies TrackerDuePreviewPolicy
+	};
+}
+
+function nativeDispatch(
+	store: TrackerPersistenceService,
+	options: TrackerNativeRuntimeOptions & {
+		dispatch: NonNullable<TrackerNativeRuntimeOptions['dispatch']>;
+	},
+	machines?: PeerStarts
+) {
 	const {
 		policy: supplied,
 		due,
@@ -38,7 +66,14 @@ export function composeTrackerDispatch(
 		grant: configuredGrant
 	} = options.dispatch;
 	const { node, now = Date.now, role } = options;
-	const policy = { ...supplied, node, now, hub: role === 'hub' };
+	const policy = {
+		...supplied,
+		node,
+		now,
+		hub: role === 'hub',
+		allowDelegatedAdapterDue: role === 'spoke' && Boolean(options.links?.length),
+		automaticEnabled: supplied.automaticEnabled ?? options.automaticEnabled
+	};
 	const duePolicy = due && (() => liveTrackerDuePolicy(store, due(), role));
 	const repository = new TrackerDispatchRepository(store, {
 		policy,
@@ -47,16 +82,54 @@ export function composeTrackerDispatch(
 		now
 	});
 	const dispatch = new TrackerDispatcherService(repository, policy);
-	const grant = configuredGrant ?? spokeGrant(store, options);
+	const grant =
+		configuredGrant ??
+		spokeGrant(store, options, (itemId) => {
+			const { item, due: current } = repository.readSnapshot(itemId);
+			return Boolean(item && current && mayScheduleHere(item, current, policy));
+		});
+	const permits = dispatchPermits(repository, { store, options, policy, machines });
 	return {
 		dispatch,
+		permitAutomatic: permits.hubAutomatic,
+		permitDue: permits.permitDue,
 		duePreview: configuredDuePreview(repository, policy, { duePolicy, scheduleDue }),
 		scheduler: new TrackerDispatchSchedulerService(repository, dispatch, {
 			runner,
 			scheduleDue,
 			policy,
-			grant
+			grant,
+			permitAutomatic: permits.automatic,
+			alternateAdapterHost: role === 'hub' ? adapterFailover(options, now) : undefined
 		})
+	};
+}
+
+function dispatchPermits(
+	repository: TrackerDispatchRepository,
+	{
+		store,
+		options,
+		policy,
+		machines
+	}: {
+		store: TrackerPersistenceService;
+		options: TrackerNativeRuntimeOptions;
+		policy: TrackerDispatchPolicy;
+		machines?: PeerStarts;
+	}
+) {
+	const localPermit = () =>
+		automaticEnabled(policy) && repository.launches.reserveAutomaticSlot(policy.now());
+	if (options.role === 'spoke')
+		return { automatic: spokeAutomaticPermit(store, options, localPermit) ?? localPermit };
+	return {
+		automatic: localPermit,
+		hubAutomatic: localPermit,
+		// A due start also needs a fresh, calm reading from a peer that reports its resources.
+		permitDue: (id: string, token: string, target: string) =>
+			!machines?.peerStartHold(canonicalNode(target, policy)) &&
+			grantsDelegation(repository.readSnapshot(id), { token, target }, policy)
 	};
 }
 
@@ -65,8 +138,8 @@ function configuredDuePreview(
 	policy: TrackerDispatchPolicy,
 	{ duePolicy, scheduleDue }: { duePolicy?: () => TrackerDuePolicy; scheduleDue?: boolean }
 ): TrackerDuePreviewPolicy {
-	const enabled = scheduleDue === true && policy.enabled !== false;
 	const due = () => {
+		const enabled = scheduleDue === true && automaticEnabled(policy);
 		const current = duePolicy?.();
 		return {
 			...current,
@@ -80,23 +153,5 @@ function configuredDuePreview(
 		due,
 		preview: (id) =>
 			previewDueLaunch({ ...repository.readSnapshot(id), due: due() }, policy, policy.now())
-	};
-}
-
-function spokeGrant(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
-	const hub = options.links?.find(({ link }) => (link ?? 'hub') === 'hub');
-	if (!hub) return undefined;
-	return async (itemId: string, token: string, signal: AbortSignal) => {
-		const client = new TrackerSpokeSyncService({
-			...hub,
-			store,
-			transport: (request) => hub.transport(request, signal)
-		});
-		const allowed = await client.permitDue(itemId, token);
-		return {
-			token,
-			node: store.node,
-			decision: allowed ? ('granted' as const) : ('denied' as const)
-		};
 	};
 }

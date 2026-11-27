@@ -1,11 +1,6 @@
 // @harness-uid u_mit2du7odn
 import type { RemoteHostStatusInput } from '../../../utils/networking-security/remoteHostStatus';
-import { pairingOffer } from '../../../../../remote/src/index';
-import type {
-	RemoteDeviceInfo,
-	RemoteHostStatus,
-	RemotePairingOffer
-} from '../../../../../remote/src/index';
+import type { RemoteDeviceInfo, RemoteHostStatus } from '../../../../../remote/src/index';
 import type {
 	RemoteHostDevice,
 	RemoteHostState
@@ -24,21 +19,6 @@ function stateOf(input: RemoteHostStatusInput, enabled: boolean): RemoteHostStat
 	if (input.phase !== 'idle') return input.phase;
 	if (!enabled) return 'disabled';
 	return input.runtime ? input.runtime.link.state : 'offline';
-}
-
-function offerOf(
-	state: RemoteHostState,
-	runtime: RemoteHostRuntimeService
-): RemotePairingOffer | null {
-	const offer = runtime.pairing.offer(),
-		{ hostId, origin } = state;
-	if (!offer || !origin) return null;
-	/** What cannot be written as the text of a QR code is not offered at all. */
-	try {
-		return { ...offer, hostId, origin, scan: pairingOffer({ ...offer, hostId, origin }) };
-	} catch {
-		return null;
-	}
 }
 
 function deviceOf(
@@ -64,8 +44,7 @@ function deviceOf(
 /** Pairing, requests and devices, as far as they exist for the host that is on. */
 function viewOf(active: RemoteHostState | null, runtime: RemoteHostRuntimeService | null) {
 	return {
-		pairing: active && runtime ? offerOf(active, runtime) : null,
-		requests: runtime ? runtime.pairing.requests() : [],
+		requests: runtime && !active?.ownerId ? runtime.pairing.requests() : [],
 		devices: active ? active.devices.map((device) => deviceOf(device, runtime)) : []
 	};
 }

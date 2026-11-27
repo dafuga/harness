@@ -1,0 +1,199 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-sas",
+	"uid": "u_knfxwodeve",
+	"kind": "function",
+	"title": "Compute enrollment codes",
+	"responsibility": "Commit to a new device's keys and compute the 6-digit code both devices show during enrollment.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedSas.ts"],
+		"symbols": ["sealedEnrollCommit", "checkEnrollCommit", "sealedSas"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sealedEnrollCommit.keys",
+				"type": "SealedEnrollKeys",
+				"required": true,
+				"description": "New device's public key-agreement and signing keys."
+			},
+			{
+				"name": "sealedEnrollCommit.nonce",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "New device's nonce kept private until it is revealed to the approver."
+			},
+			{
+				"name": "checkEnrollCommit.keys",
+				"type": "SealedEnrollKeys",
+				"required": true,
+				"description": "Public keys presented by the enrolling device."
+			},
+			{
+				"name": "checkEnrollCommit.nonce",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Nonce revealed by the enrolling device."
+			},
+			{
+				"name": "checkEnrollCommit.commitment",
+				"type": "string",
+				"required": true,
+				"description": "Commitment received before the enrolling device revealed its nonce."
+			},
+			{
+				"name": "sealedSas.input",
+				"type": "{ request: SealedEnrollKeys; requestNonce: Uint8Array; approverSigningPublic: Uint8Array; approverNonce: Uint8Array; }",
+				"required": true,
+				"description": "Enrolling device's public keys, approver's public signing key, and both devices' nonces."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedEnrollCommit",
+				"type": "Promise<string>",
+				"description": "Hex commitment to the enrolling device's keys and nonce."
+			},
+			{
+				"name": "checkEnrollCommit",
+				"type": "Promise<boolean>",
+				"description": "Whether the revealed keys and nonce reproduce the received commitment."
+			},
+			{
+				"name": "sealedSas",
+				"type": "Promise<string>",
+				"description": "Zero-padded six-digit enrollment code shown on both devices."
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown",
+				"description": "A supplied enrollment key or nonce has an invalid length."
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedEnrollCommit",
+				"inputs": [
+					{
+						"name": "sealedEnrollCommit.keys",
+						"type": "SealedEnrollKeys",
+						"required": true,
+						"description": "New device's public key-agreement and signing keys."
+					},
+					{
+						"name": "sealedEnrollCommit.nonce",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "New device's nonce kept private until it is revealed to the approver."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedEnrollCommit",
+						"type": "Promise<string>",
+						"description": "Hex commitment to the enrolling device's keys and nonce."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkEnrollCommit",
+				"inputs": [
+					{
+						"name": "checkEnrollCommit.keys",
+						"type": "SealedEnrollKeys",
+						"required": true,
+						"description": "Public keys presented by the enrolling device."
+					},
+					{
+						"name": "checkEnrollCommit.nonce",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Nonce revealed by the enrolling device."
+					},
+					{
+						"name": "checkEnrollCommit.commitment",
+						"type": "string",
+						"required": true,
+						"description": "Commitment received before the enrolling device revealed its nonce."
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkEnrollCommit",
+						"type": "Promise<boolean>",
+						"description": "Whether the revealed keys and nonce reproduce the received commitment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedSas",
+				"inputs": [
+					{
+						"name": "sealedSas.input",
+						"type": "{ request: SealedEnrollKeys; requestNonce: Uint8Array; approverSigningPublic: Uint8Array; approverNonce: Uint8Array; }",
+						"required": true,
+						"description": "Enrolling device's public keys, approver's public signing key, and both devices' nonces."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedSas",
+						"type": "Promise<string>",
+						"description": "Zero-padded six-digit enrollment code shown on both devices."
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedSas.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedSas.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

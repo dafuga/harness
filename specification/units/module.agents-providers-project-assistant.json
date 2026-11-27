@@ -1,0 +1,176 @@
+{
+	"schemaVersion": 1,
+	"id": "module.agents-providers-project-assistant",
+	"uid": "u_kg5hqv2jkl",
+	"kind": "module",
+	"title": "projectAssistant",
+	"responsibility": "Owns the projectAssistant library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/lib/agents-providers/projectAssistant.ts"],
+		"symbols": [
+			"GitHubAppAdapter",
+			"TrackerCliAdapter",
+			"HealthProbeAdapter",
+			"ClaudeMessagesAdapter",
+			"ProjectAssistantService",
+			"assistantTools",
+			"ProjectAssistantConfigValidator",
+			"ProjectAssistantConfig",
+			"QaEligibilityService",
+			"QaThreadService",
+			"QaLedgerRepository",
+			"RunbookCanvasService",
+			"QaLabelEvent",
+			"QaThreadPorts",
+			"RunbookCanvasPorts",
+			"QaSyncService",
+			"QaSyncConfigValidator",
+			"QaSyncStateRepository",
+			"SlackHistoryAdapter",
+			"GitHubIssueLabelAdapter",
+			"TrackerNoteAdapter",
+			"QaSyncConfig",
+			"QaSyncReport",
+			"QaSyncPorts"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-claude-messages",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-git-hub-app",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-git-hub-issue-label",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-health-probe",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-history",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-tracker-cli",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-tracker-note",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-thread-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-runbook-canvas-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-qa-ledger",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-qa-sync-state",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-tools",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-eligibility",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-sync",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-sync-service-qa-run-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-thread",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-runbook-canvas",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-project-assistant-config",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-qa-sync-config",
+			"via": "reexport",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/lib/agents-providers/projectAssistant.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/lib/agents-providers/projectAssistant.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

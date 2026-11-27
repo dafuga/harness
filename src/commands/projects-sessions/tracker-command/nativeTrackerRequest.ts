@@ -1,15 +1,23 @@
 // @harness-uid u_r7qgepnoax
-import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import type { NativeTrackerRequest } from './nativeTrackerCli.types';
+import { nativeTrackerTimedItemRequest } from './nativeTrackerTimedItemRequest';
+import { nativeTrackerPlanningRequest } from './nativeTrackerPlanningRequest';
+import type { NativeTrackerAskValues, NativeTrackerRequest } from './nativeTrackerCli.types';
+import {
+	nativeTrackerAnswerBody,
+	nativeTrackerBlockBody,
+	nativeTrackerFlagBody
+} from './nativeTrackerAskOptions';
 
 import {
 	nativeTrackerCommandOptions,
 	nativeTrackerCommonOptions,
+	itemFields,
 	nativeTrackerIdVerbs,
-	nativeTrackerTimedItemRequest,
-	nativeTrackerInspectionRequest
+	launchAction
 } from './nativeTrackerOptions';
+import { nativeTrackerInspectionRequest } from './nativeTrackerInspectionRequest';
+import { nativeTrackerQuery as query, nativeTrackerRunRequest } from './nativeTrackerRunRequest';
 
 export const nativeTrackerCommands = [...nativeTrackerCommandOptions.keys()].join(', ');
 
@@ -23,7 +31,9 @@ export function nativeTrackerArgs(args: string[]) {
 		allowNegative: true,
 		options: { ...nativeTrackerCommonOptions, ...options }
 	});
-	return { command, values, words, request: nativeTrackerRequest(command, words, values) };
+	const request =
+		command === 'reply' ? replyRequest(words) : nativeTrackerRequest(command, words, values);
+	return { command, values, words, request };
 }
 
 function nativeTrackerRequest(
@@ -33,7 +43,7 @@ function nativeTrackerRequest(
 ): NativeTrackerRequest {
 	const item =
 		itemQuery(command, words, values) ??
-		runReadRequest(command, words, values) ??
+		nativeTrackerRunRequest(command, words, values) ??
 		nativeTrackerInspectionRequest(command, words, values);
 	if (item) return item;
 	if (nativeTrackerIdVerbs.has(command)) return itemAction(command, words, values);
@@ -46,38 +56,14 @@ function nativeTrackerRequest(
 	};
 }
 
-function runReadRequest(
-	command: string,
-	words: string[],
-	values: Record<string, unknown>
-): NativeTrackerRequest | undefined {
-	switch (command) {
-		case 'watchdog':
-			return watchdogRequest(words, values);
-		case 'runs':
-			if (words.length) throw new TypeError('usage: tracker runs [--item ID] [--limit N]');
-			return { method: 'GET', path: '/runs' + query({ item: values.item, limit: values.limit }) };
-		case 'models':
-			if (words.length !== 1 || words[0] !== 'report')
-				throw new TypeError('usage: tracker models report');
-			return { method: 'GET', path: '/models/report' };
-		case 'pick':
-			if (words.length !== 1) throw new TypeError('usage: tracker pick <id>');
-			return { method: 'GET', path: '/items/' + encodeURIComponent(words[0]) + '/pick' };
-		default:
-			return undefined;
-	}
-}
-
-function watchdogRequest(
-	[mode, ...trailing]: string[],
-	{ item }: Record<string, unknown>
-): NativeTrackerRequest {
-	if (!trailing.length && mode === 'alerts' && !item)
-		return { method: 'GET', path: '/watchdog/alerts' };
-	if (!trailing.length && mode === 'dry-run')
-		return { method: 'GET', path: '/watchdog/dry-run' + query({ item }) };
-	throw new TypeError('usage: tracker watchdog alerts|dry-run [--item ID]');
+/** Answers one Hub message; the id carries its thread, so nothing else is needed. */
+function replyRequest([id, ...text]: string[]): NativeTrackerRequest {
+	if (!id || !text.length) throw new TypeError('usage: tracker reply <message id> <text...>');
+	return {
+		method: 'POST',
+		path: '/messages/' + encodeURIComponent(id) + '/reply',
+		body: { text: text.join(' ') }
+	};
 }
 
 function itemQuery(
@@ -97,12 +83,19 @@ function itemQuery(
 			return {
 				method: 'POST',
 				path: '/items',
-				body: { ...body, title, kind: command === 'add' ? fields.kind : command }
+				body: {
+					...body,
+					title,
+					kind: creationKind(command, { ...fields, remind_at: values.at })
+				}
 			};
 		}
 		case 'list':
 			if (words.length) throw new TypeError('usage: tracker list [options]');
 			return { method: 'GET', path: '/items' + query(fields) };
+		case 'stage':
+		case 'artifact':
+			return nativeTrackerPlanningRequest(command, words[0], words.slice(1));
 		case 'check':
 			return {
 				method: 'GET',
@@ -113,10 +106,18 @@ function itemQuery(
 	}
 }
 
+function creationKind(command: string, fields: Record<string, unknown>) {
+	if (command !== 'add') return command;
+	if (fields.reminder) return 'reminder';
+	if (fields.remind_at && fields.kind !== 'reminder')
+		throw new TypeError('tracker add --at requires --reminder');
+	return fields.kind;
+}
+
 function itemAction(
 	command: string,
 	[first, ...rest]: string[],
-	values: Record<string, unknown>
+	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest {
 	if (!first) throw new TypeError(`usage: tracker ${command} <id>`);
 	const id = '/items/' + encodeURIComponent(first);
@@ -135,38 +136,37 @@ function itemAction(
 			};
 		case 'launch':
 			return launchAction(id, [first, ...rest], values);
+		case 'chase':
+			if (rest.length) throw new TypeError('usage: tracker chase <id> [--note text]');
+			return { method: 'POST', path: id + '/chase', body: { note: values.note } };
 		default:
 			return { method: 'POST', path: `${id}/${command}`, body: actionBody(command, rest, values) };
 	}
 }
 
-function launchAction(
-	path: string,
-	[target, ...rest]: string[],
-	values: Record<string, unknown>
-): NativeTrackerRequest {
-	if (target !== 'on' && target !== 'off')
-		return { method: 'POST', path: path + '/launch?outcome=run', body: itemFields(values) };
-	if (rest.length !== 1) throw new TypeError(`usage: tracker launch ${target} <id>`);
-	const verb = target === 'off' ? 'unlaunch' : 'schedule-on';
-	return { method: 'POST', path: `/items/${encodeURIComponent(rest[0])}/${verb}` };
-}
+const textVerbs = new Set(['note', 'progress', 'alert']);
 
 function actionBody(command: string, words: string[], values: Record<string, unknown>) {
 	const text = words.join(' ');
+	if (textVerbs.has(command)) return { text };
 	switch (command) {
-		case 'note':
-		case 'progress':
-			return { text };
+		case 'reject':
+			return { reason: text };
 		case 'flag':
-			return { question: text.length ? text : values.question, force: values.force };
+			return nativeTrackerFlagBody(text, values as NativeTrackerAskValues);
 		case 'block':
-			return blockBody(text, values);
+			return nativeTrackerBlockBody(text, values as NativeTrackerAskValues);
 		case 'answer':
 		case 'resolve':
-			return resolveBody(text, values);
+			return nativeTrackerAnswerBody(text, values as NativeTrackerAskValues);
 		case 'done':
-			return { note: values.note, failed: values.failed, occurrence: values.occurrence };
+			return {
+				note: values.note,
+				failed: values.failed,
+				occurrence: values.occurrence,
+				next_step: values['next-step'],
+				force: values.force
+			};
 		case 'unblock':
 			return { note: values.note };
 		default:
@@ -174,44 +174,8 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 	}
 }
 
-function resolveBody(answer: string, values: Record<string, unknown>) {
-	return { answer: answer.length ? answer : undefined, done: values.done, by: values.by };
-}
-
-function blockBody(reason: string, values: Record<string, unknown>) {
-	return { reason, needs_daniel: values['needs-daniel'] !== false, force: values.force };
-}
-
-function itemFields(input: Record<string, unknown>) {
-	const { tz, repo } = input;
-	const fields = Object.fromEntries(
-		Object.entries(input).filter(
-			([key]) =>
-				!Object.hasOwn(nativeTrackerCommonOptions, key) &&
-				!['callback-url', 'callback-cmd', 'needs-daniel', 'note', 'tz'].includes(key)
-		)
-	);
-	return {
-		...fields,
-		callback_url: input['callback-url'],
-		callback_cmd: input['callback-cmd'],
-		needs_daniel: input['needs-daniel'],
-		every_tz: tz,
-		repo: typeof repo === 'string' && repo ? resolve(repo) : repo
-	};
-}
-
 function requiredText(words: string[], command: string): string {
 	const value = words.join(' ');
 	if (!value) throw new TypeError(`usage: tracker ${command} <text...>`);
 	return value;
-}
-
-function query(fields: Record<string, unknown>): string {
-	const params = new URLSearchParams();
-	for (const [key, value] of Object.entries(fields)) {
-		if (value !== undefined && value !== false)
-			params.set(key, value === true ? '1' : String(value));
-	}
-	return params.size ? '?' + params.toString() : '';
 }

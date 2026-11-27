@@ -50,6 +50,11 @@
 						"emailVerified": true
 					}
 				]
+			},
+			{
+				"name": "HubRemoteController.handle.session",
+				"type": "SessionRecord | null",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -110,6 +115,11 @@
 								"emailVerified": true
 							}
 						]
+					},
+					{
+						"name": "HubRemoteController.handle.session",
+						"type": "SessionRecord | null",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -187,6 +197,11 @@
 		},
 		{
 			"unit": "hub.function.hub-remote",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.model.hub-auth-store-types",
 			"via": "import",
 			"origin": "derived"
 		},

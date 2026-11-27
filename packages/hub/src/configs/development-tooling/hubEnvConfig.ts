@@ -17,7 +17,8 @@ const names = [
 	'HARNESS_EMAIL_API_KEY',
 	'HARNESS_EMAIL_FROM',
 	'HARNESS_RELAY_ORIGIN',
-	'HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID'
+	'HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID',
+	'HARNESS_PUSH_PUBLIC_KEY'
 ] as const;
 /** Only product-dedicated settings are accepted; unrelated host credentials never enter runtime. */
 export function hubEnvConfig(input: Record<string, unknown>): HubEnv {
@@ -27,6 +28,9 @@ export function hubEnvConfig(input: Record<string, unknown>): HubEnv {
 	if (input.DB) env.DB = input.DB as D1Database;
 	if (input.CACHE) env.CACHE = input.CACHE as R2Bucket;
 	if (input.REMOTE_HOSTS) env.REMOTE_HOSTS = input.REMOTE_HOSTS as DurableObjectNamespace;
+	const sync = input.ACCOUNT_SYNC as Partial<DurableObjectNamespace> | undefined;
+	if (typeof sync?.idFromName === 'function' && typeof sync.get === 'function')
+		env.ACCOUNT_SYNC = sync as DurableObjectNamespace;
 	return env;
 }
 

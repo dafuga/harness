@@ -65,7 +65,9 @@
 				{#snippet children(pane: ComparisonPane<Evidence>)}
 					{@const clip = pane.value!}
 					{#await evidence.url(pane.side, clip.file)}
-						<hx-p class="muted">Reading the clip…</hx-p>
+						<hx-p class="muted">Reading the clip…</hx-p>{#if clip.transcript}<hx-p
+								class="runtime-transcript">{clip.transcript}</hx-p
+							>{/if}
 					{:then url}<hx-audio controls src={url} aria-label={clip.title}
 						></hx-audio>{#if clip.transcript}<hx-p class="runtime-transcript"
 								>{clip.transcript}</hx-p

@@ -1,14 +1,8 @@
 // @harness-uid u_fppws53qsn
 import type { AcceptanceRecord } from './ios-acceptance-record';
 import type { SimulatorPage } from './ios-acceptance-page';
-
-export class FixtureControlOriginError extends Error {
-	override name = 'FixtureControlOriginError';
-}
-
-export class FixtureControlRefusedError extends Error {
-	override name = 'FixtureControlRefusedError';
-}
+export { FixtureControlOriginError } from './FixtureControlOriginError';
+export { FixtureControlRefusedError } from './FixtureControlRefusedError';
 
 /** What the control of the TEST ONLY fixture answers about its computer. */
 export interface FixtureView {
@@ -16,14 +10,6 @@ export interface FixtureView {
 	locked: boolean | null;
 	requests: { deviceId: string; deviceName: string }[];
 	devices: { deviceId: string; name: string; online: boolean }[];
-}
-
-/** A one-time offer. Its code and its QR text are hidden by the record as soon as it arrives. */
-export interface PairingOffer {
-	pairingId: string;
-	code: string;
-	/** The text of the QR code: what a camera would read from the computer. */
-	scan: string;
 }
 
 /** TEST ONLY. Everything one phase of the native acceptance run works with. */

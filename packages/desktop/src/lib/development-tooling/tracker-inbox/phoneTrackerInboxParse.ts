@@ -1,9 +1,17 @@
 // @harness-uid u_ymhr4iqr7u
+import type { TrackerAttachmentListingSource } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
+import { trackerAttachments } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
+import {
+	trackerPlanningSchema,
+	trackerStageSchema
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import type {
+	InboxConfirmKind,
 	InboxDetail,
 	InboxFlag,
 	InboxHeader,
 	InboxNote,
+	InboxOption,
 	InboxRun,
 	InboxWrite
 } from '../../../models/development-tooling/TrackerInbox.types';
@@ -31,12 +39,14 @@ export function parseHeader(value: unknown): InboxHeader | null {
 	const title = text(value.title);
 	const project = text(value.project);
 	const status = text(value.status);
+	const stage = trackerStageSchema.safeParse(value.stage);
 	if (id === null || title === null || project === null || status === null) return null;
 	return {
 		id,
 		title,
 		project,
 		status,
+		...(stage.success && { stage: stage.data }),
 		updatedAt: nullableText(value.updatedAt),
 		dueAt: nullableText(value.dueAt)
 	};
@@ -52,7 +62,32 @@ function parseFlag(value: unknown): InboxFlag | null {
 	const state = text(value.state);
 	const question = text(value.question);
 	if (state === null || question === null) return null;
-	return { state, at: nullableText(value.at), question };
+	const options = parseOptions(value.options);
+	const confirm = ['deploy', 'money', 'secret'].find((kind) => kind === value.confirm);
+	return {
+		state,
+		at: nullableText(value.at),
+		question,
+		...(options.length >= 2 && { options }),
+		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind }),
+		...attachmentsOf(value.attachments as TrackerAttachmentListingSource)
+	};
+}
+
+function attachmentsOf(value: TrackerAttachmentListingSource): Pick<InboxFlag, 'attachments'> {
+	const attachments = trackerAttachments(value);
+	return attachments.length ? { attachments } : {};
+}
+
+function parseOptions(value: unknown): InboxOption[] {
+	if (!Array.isArray(value) || value.length > 4) return [];
+	return value.flatMap((entry) => {
+		if (!isRecord(entry)) return [];
+		const label = text(entry.label);
+		const effect = text(entry.effect);
+		if (!label || effect === null) return [];
+		return [{ label, effect, ...(entry.recommended === true && { recommended: true as const }) }];
+	});
 }
 
 function parseNotes(value: unknown): InboxNote[] {
@@ -96,8 +131,10 @@ export function parseDetail(data: unknown): InboxDetail | null {
 	if (!isRecord(data)) return null;
 	const header = parseHeader(data.item);
 	if (header === null) return null;
+	const planning = trackerPlanningSchema.safeParse(data.planning);
 	return {
 		header,
+		...(planning.success && { planning: planning.data }),
 		notes: parseNotes(data.notes),
 		flag: parseFlag(data.flag),
 		runs: parseRuns(data.runs),

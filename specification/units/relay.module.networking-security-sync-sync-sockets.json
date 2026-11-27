@@ -1,0 +1,323 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.module.networking-security-sync-sync-sockets",
+	"uid": "u_q4lqkd522a",
+	"kind": "module",
+	"title": "SyncSockets",
+	"responsibility": "Owns the SyncSockets library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/relay/src/lib/networking-security/sync/SyncSockets.ts",
+			"packages/relay/src/lib/networking-security/sync/SyncSockets.types.ts"
+		],
+		"symbols": [
+			"SyncSockets",
+			"SyncSockets.constructor",
+			"SyncSockets.open",
+			"SyncSockets.subscribe",
+			"SyncSockets.relay",
+			"SyncSockets.poke",
+			"SyncSockets.announce",
+			"SyncSockets.changed",
+			"Attachment"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SyncSockets.constructor.state",
+				"type": "DurableObjectState",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.constructor.ring",
+				"type": "SyncRing",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.open.device",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.subscribe.socket",
+				"type": "WebSocket",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.subscribe.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.subscribe.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.relay.from",
+				"type": "WebSocket",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.relay.frame",
+				"type": "ArrayBuffer",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.relay.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.poke.scope",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.poke.seq",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.poke.kind",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.announce.message",
+				"type": "{ id: string; n: number }",
+				"required": true
+			},
+			{
+				"name": "SyncSockets.changed.topic",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "SyncSockets.open",
+				"type": "WebSocket"
+			},
+			{
+				"name": "SyncSockets.subscribe",
+				"type": "void"
+			},
+			{
+				"name": "SyncSockets.relay",
+				"type": "void"
+			},
+			{
+				"name": "SyncSockets.poke",
+				"type": "void"
+			},
+			{
+				"name": "SyncSockets.announce",
+				"type": "void"
+			},
+			{
+				"name": "SyncSockets.changed",
+				"type": "void"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SyncSockets.open",
+				"inputs": [
+					{
+						"name": "SyncSockets.open.device",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncSockets.open",
+						"type": "WebSocket"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SyncSockets.subscribe",
+				"inputs": [
+					{
+						"name": "SyncSockets.subscribe.socket",
+						"type": "WebSocket",
+						"required": true
+					},
+					{
+						"name": "SyncSockets.subscribe.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SyncSockets.subscribe.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncSockets.subscribe",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SyncSockets.relay",
+				"inputs": [
+					{
+						"name": "SyncSockets.relay.from",
+						"type": "WebSocket",
+						"required": true
+					},
+					{
+						"name": "SyncSockets.relay.frame",
+						"type": "ArrayBuffer",
+						"required": true
+					},
+					{
+						"name": "SyncSockets.relay.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncSockets.relay",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SyncSockets.poke",
+				"inputs": [
+					{
+						"name": "SyncSockets.poke.scope",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SyncSockets.poke.seq",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "SyncSockets.poke.kind",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncSockets.poke",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SyncSockets.announce",
+				"inputs": [
+					{
+						"name": "SyncSockets.announce.message",
+						"type": "{ id: string; n: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncSockets.announce",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SyncSockets.changed",
+				"inputs": [
+					{
+						"name": "SyncSockets.changed.topic",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncSockets.changed",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SyncSockets.constructor",
+				"inputs": [
+					{
+						"name": "SyncSockets.constructor.state",
+						"type": "DurableObjectState",
+						"required": true
+					},
+					{
+						"name": "SyncSockets.constructor.ring",
+						"type": "SyncRing",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncSockets.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "relay.module.networking-security-sync-sync-ring",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.module.networking-security-sync-sync-wire",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/lib/networking-security/sync/SyncSockets.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/lib/networking-security/sync/SyncSockets.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -2,13 +2,12 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { discoverTokens } from '../../src/components/explorer-ui/styleTokenReading';
-
-type Decls = Record<string, string>;
-type RuleData = { selector: string; decls: Decls } | { imports: SheetData } | { group: RuleData[] };
-type SheetData = { crossOrigin: true } | { rules: RuleData[] };
-interface Sheet {
-	cssRules: unknown[];
-}
+import type {
+	Decls,
+	Sheet,
+	RuleData,
+	SheetData
+} from './reports.function.explorer-ui-style-token-reading.test.types';
 
 function fakeStyle(decls: Decls) {
 	const names = Object.keys(decls);

@@ -19,6 +19,7 @@
 			"src/services/projects-sessions/tracker-notification-service/attentionInitialization.ts",
 			"src/services/projects-sessions/tracker-notification-service/attentionTransitions.ts",
 			"src/services/projects-sessions/tracker-notification-service/callbackDelivery.ts",
+			"src/services/projects-sessions/tracker-notification-service/chiefChannel.ts",
 			"src/services/projects-sessions/tracker-notification-service/completeDelivery.ts",
 			"src/services/projects-sessions/tracker-notification-service/deliveryRequest.ts",
 			"src/services/projects-sessions/tracker-notification-service/directReminders.ts",
@@ -35,6 +36,8 @@
 			"src/services/projects-sessions/tracker-notification-service/webhookReminders.ts"
 		],
 		"symbols": [
+			"TrackerChiefChannel",
+			"TrackerChiefMessage",
 			"TrackerDeliveryRequest",
 			"TrackerDeliveryResult",
 			"TrackerDestination",
@@ -50,6 +53,7 @@
 			"TrackerNotificationService",
 			"TrackerNotificationService.constructor",
 			"TrackerNotificationService.status",
+			"TrackerNotificationService.chiefChannel",
 			"TrackerNotificationService.tick",
 			"TrackerNotificationService.enqueue",
 			"TrackerNotificationService.pause",
@@ -63,6 +67,8 @@
 			"TrackerDeliveryRequest",
 			"TrackerDeliveryResult",
 			"TrackerNotificationDestinations",
+			"TrackerChiefMessage",
+			"TrackerChiefChannel",
 			"TrackerWebhookEvent",
 			"TrackerWebhookRoute",
 			"TrackerWebhookOptions",
@@ -81,13 +87,18 @@
 			"queueLaunchWait",
 			"scanCallbacks",
 			"nextCallback",
+			"trackerChiefChannel",
 			"completeDelivery",
+			"flagWebhook",
 			"webhookRequest",
 			"callbackRequest",
 			"scanDirectReminders",
 			"nextDirectReminder",
+			"currentDirectAttempt",
 			"enqueueWebhook",
 			"minute",
+			"danielQuietHours",
+			"nextAskAt",
 			"intervalMs",
 			"isoTime",
 			"clockTime",
@@ -96,8 +107,11 @@
 			"flagged",
 			"dueTime",
 			"localDay",
+			"parkedUntil",
 			"holdRegularReminder",
 			"readyRows",
+			"directReminderDestination",
+			"dueForDirectReminder",
 			"CallbackEvent",
 			"AttentionKind",
 			"ReminderKind",
@@ -106,6 +120,7 @@
 			"WebhookPayload",
 			"OutboxRow",
 			"ReminderRow",
+			"DirectReminderBrief",
 			"FlagRow",
 			"AttentionPayload",
 			"AttentionRow",
@@ -114,13 +129,13 @@
 			"TrackerNotificationState",
 			"WebhookEntryDetails",
 			"runNotificationTick",
-			"quietOutboxEvent",
 			"nextOutbox",
 			"OutboxRecipient",
 			"OutboxGroup",
 			"scanScheduledReminders",
 			"nextScheduledReminder",
 			"currentScheduledAttempt",
+			"isScheduledReminderAttempt",
 			"trackerNotificationStatus",
 			"outboxBatch",
 			"outboxSingle",
@@ -344,6 +359,11 @@
 				"description": "Epoch milliseconds from the injected clock for this scan or send."
 			},
 			{
+				"name": "trackerChiefChannel.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
+			},
+			{
 				"name": "completeDelivery.state",
 				"type": "TrackerNotificationState",
 				"required": true,
@@ -366,6 +386,31 @@
 				"type": "TrackerNotificationOptions",
 				"required": true,
 				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "flagWebhook.destination",
+				"type": "TrackerDestination",
+				"required": true
+			},
+			{
+				"name": "flagWebhook.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "flagWebhook.briefs",
+				"type": "DirectReminderBrief[]",
+				"required": true
+			},
+			{
+				"name": "flagWebhook.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "flagWebhook.now",
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "webhookRequest.destination",
@@ -447,6 +492,21 @@
 				"description": "Epoch milliseconds from the injected clock for this scan or send."
 			},
 			{
+				"name": "currentDirectAttempt.state",
+				"type": "TrackerNotificationState",
+				"required": true
+			},
+			{
+				"name": "currentDirectAttempt.attempt",
+				"type": "DeliveryAttempt",
+				"required": true
+			},
+			{
+				"name": "currentDirectAttempt.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
+			},
+			{
 				"name": "enqueueWebhook.state",
 				"type": "TrackerNotificationState",
 				"required": true,
@@ -463,6 +523,21 @@
 				"type": "TrackerNotificationOptions",
 				"required": true,
 				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "nextAskAt.numberSent",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "nextAskAt.first",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "nextAskAt.now",
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "intervalMs.minutes",
@@ -531,6 +606,12 @@
 				"description": "IANA time zone used for the Lisbon-style calendar rules."
 			},
 			{
+				"name": "parkedUntil.item",
+				"type": "TrackerNotificationItem | undefined",
+				"required": true,
+				"description": "Current item projection, if the referenced item still exists."
+			},
+			{
 				"name": "holdRegularReminder.item",
 				"type": "TrackerNotificationItem",
 				"required": true,
@@ -567,6 +648,26 @@
 				"description": "Predicate selecting rows that still need processing."
 			},
 			{
+				"name": "directReminderDestination.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
+			},
+			{
+				"name": "dueForDirectReminder.item",
+				"type": "TrackerNotificationItem",
+				"required": true
+			},
+			{
+				"name": "dueForDirectReminder.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
+			},
+			{
+				"name": "dueForDirectReminder.today",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "runNotificationTick.options",
 				"type": "TrackerNotificationOptions",
 				"required": true,
@@ -580,12 +681,6 @@
 				"description": "Optional IDs to scan for completion callbacks. Omit to scan all items."
 			},
 			{
-				"name": "quietOutboxEvent.row",
-				"type": "OutboxRow",
-				"required": true,
-				"description": "Durable outbox row with its snapshot of the item event and retry history."
-			},
-			{
 				"name": "nextOutbox.state",
 				"type": "TrackerNotificationState",
 				"required": true,
@@ -595,7 +690,7 @@
 				"name": "nextOutbox.options",
 				"type": "TrackerNotificationOptions",
 				"required": true,
-				"description": "Source and destination adapters, the quiet window and the routing policy."
+				"description": "Source and destination adapters, the clock and the routing policy."
 			},
 			{
 				"name": "nextOutbox.chief",
@@ -662,6 +757,21 @@
 				"type": "TrackerNotificationSource",
 				"required": true,
 				"description": "Notification source used to verify the current reminder."
+			},
+			{
+				"name": "isScheduledReminderAttempt.state",
+				"type": "TrackerNotificationState",
+				"required": true
+			},
+			{
+				"name": "isScheduledReminderAttempt.attempt",
+				"type": "DeliveryAttempt",
+				"required": true
+			},
+			{
+				"name": "isScheduledReminderAttempt.source",
+				"type": "TrackerNotificationSource",
+				"required": true
 			},
 			{
 				"name": "trackerNotificationStatus.options",
@@ -938,7 +1048,7 @@
 			{
 				"name": "nextDirectReminder",
 				"type": "DeliveryAttempt | undefined",
-				"description": "One grouped reminder request, or an empty result after advancing rows held by quiet hours."
+				"description": "One grouped reminder request, or an empty result when no reminder row is ready to send."
 			},
 			{
 				"name": "enqueueWebhook",
@@ -1001,9 +1111,9 @@
 				"description": "Replays any issued receipt, scans current state and drains eligible delivery work."
 			},
 			{
-				"name": "quietOutboxEvent",
+				"name": "attentionOutboxEvent",
 				"type": "boolean",
-				"description": "Whether the event should respect quiet hours and current attention eligibility."
+				"description": "Whether the row is a due event or an ask that needs current attention eligibility."
 			},
 			{
 				"name": "nextOutbox",
@@ -1071,6 +1181,18 @@
 				"outputs": [
 					{
 						"name": "TrackerNotificationService.status",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNotificationService.chiefChannel",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerNotificationService.chiefChannel",
 						"type": "unknown"
 					}
 				],
@@ -1540,6 +1662,24 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "trackerChiefChannel",
+				"inputs": [
+					{
+						"name": "trackerChiefChannel.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerChiefChannel",
+						"type": "TrackerChiefChannel | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "completeDelivery",
 				"inputs": [
 					{
@@ -1578,10 +1718,48 @@
 					{
 						"name": "TrackerNotificationStateError",
 						"type": "thrown",
-						"description": "An issued attempt references a missing queue entry, or the injected clock or quiet-hour calculation fails."
+						"description": "An issued attempt references a missing queue entry, or the injected clock or reminder-time calculation fails."
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "flagWebhook",
+				"inputs": [
+					{
+						"name": "flagWebhook.destination",
+						"type": "TrackerDestination",
+						"required": true
+					},
+					{
+						"name": "flagWebhook.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "flagWebhook.briefs",
+						"type": "DirectReminderBrief[]",
+						"required": true
+					},
+					{
+						"name": "flagWebhook.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "flagWebhook.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "flagWebhook",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "webhookRequest",
@@ -1730,7 +1908,7 @@
 					{
 						"name": "nextDirectReminder",
 						"type": "DeliveryAttempt | undefined",
-						"description": "One grouped reminder request, or an empty result after advancing rows held by quiet hours."
+						"description": "One grouped reminder request, or an empty result when no reminder row is ready to send."
 					}
 				],
 				"errors": [
@@ -1741,6 +1919,34 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "currentDirectAttempt",
+				"inputs": [
+					{
+						"name": "currentDirectAttempt.state",
+						"type": "TrackerNotificationState",
+						"required": true
+					},
+					{
+						"name": "currentDirectAttempt.attempt",
+						"type": "DeliveryAttempt",
+						"required": true
+					},
+					{
+						"name": "currentDirectAttempt.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "currentDirectAttempt",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "enqueueWebhook",
@@ -1779,6 +1985,34 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "nextAskAt",
+				"inputs": [
+					{
+						"name": "nextAskAt.numberSent",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "nextAskAt.first",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "nextAskAt.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextAskAt",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "intervalMs",
@@ -1977,6 +2211,26 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "parkedUntil",
+				"inputs": [
+					{
+						"name": "parkedUntil.item",
+						"type": "TrackerNotificationItem | undefined",
+						"required": true,
+						"description": "Current item projection, if the referenced item still exists."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parkedUntil",
+						"type": "number",
+						"description": "Parking deadline in epoch milliseconds. Zero means there is no valid hold."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "holdRegularReminder",
 				"inputs": [
 					{
@@ -2047,6 +2301,52 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "directReminderDestination",
+				"inputs": [
+					{
+						"name": "directReminderDestination.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "directReminderDestination",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "dueForDirectReminder",
+				"inputs": [
+					{
+						"name": "dueForDirectReminder.item",
+						"type": "TrackerNotificationItem",
+						"required": true
+					},
+					{
+						"name": "dueForDirectReminder.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					},
+					{
+						"name": "dueForDirectReminder.today",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dueForDirectReminder",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "runNotificationTick",
 				"inputs": [
 					{
@@ -2080,26 +2380,6 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "quietOutboxEvent",
-				"inputs": [
-					{
-						"name": "quietOutboxEvent.row",
-						"type": "OutboxRow",
-						"required": true,
-						"description": "Durable outbox row with its snapshot of the item event and retry history."
-					}
-				],
-				"outputs": [
-					{
-						"name": "quietOutboxEvent",
-						"type": "boolean",
-						"description": "Whether the event should respect quiet hours and current attention eligibility."
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
 				"name": "nextOutbox",
 				"inputs": [
 					{
@@ -2112,7 +2392,7 @@
 						"name": "nextOutbox.options",
 						"type": "TrackerNotificationOptions",
 						"required": true,
-						"description": "Source and destination adapters, the quiet window and the routing policy."
+						"description": "Source and destination adapters, the clock and the routing policy."
 					},
 					{
 						"name": "nextOutbox.chief",
@@ -2138,7 +2418,7 @@
 					{
 						"name": "Source, queue or destination failure",
 						"type": "thrown",
-						"description": "Propagates source, destination lookup, quiet-hour and request preparation errors."
+						"description": "Propagates source, destination lookup, reminder-time and request preparation errors."
 					}
 				],
 				"errorStatus": "declared"
@@ -2233,6 +2513,34 @@
 						"name": "currentScheduledAttempt",
 						"type": "boolean",
 						"description": "Whether the issued request still matches the active reminder."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isScheduledReminderAttempt",
+				"inputs": [
+					{
+						"name": "isScheduledReminderAttempt.state",
+						"type": "TrackerNotificationState",
+						"required": true
+					},
+					{
+						"name": "isScheduledReminderAttempt.attempt",
+						"type": "DeliveryAttempt",
+						"required": true
+					},
+					{
+						"name": "isScheduledReminderAttempt.source",
+						"type": "TrackerNotificationSource",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isScheduledReminderAttempt",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -2625,22 +2933,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "helper.attention-timing-attention-timing-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "helper.attention-timing-group-attention-lines",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "helper.attention-timing-next-attention-batch-at",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-next-reminder-at",
 			"via": "import",
 			"origin": "derived"
 		},

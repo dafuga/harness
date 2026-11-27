@@ -4,6 +4,7 @@
 <script lang="ts">
 	import './trackerInboxDetail.css';
 	import type {
+		ConfirmedWrite,
 		InboxDetail,
 		InboxReply,
 		InboxReview,
@@ -12,20 +13,30 @@
 	} from '../../../models/development-tooling/TrackerInbox.types';
 	import {
 		confirmedWrite,
-		flagQuestion,
-		writeGate
+		optionWrite,
+		writeGate,
+		writtenAnswer
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 	import {
+		loadFailureMessage,
 		writeFailureMessage,
 		writeSentMessage
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInboxMessages';
 	import TrackerInboxRecord from './TrackerInboxRecord.svelte';
+	import TrackerInboxAsk from './TrackerInboxAsk.svelte';
+	import { inboxDocuments } from '../../../lib/development-tooling/tracker-inbox/inboxDocuments';
 
 	let {
 		source,
 		id,
+		mode = 'phone',
 		onchanged
-	}: { source: TrackerInboxSource; id: string; onchanged: () => Promise<void> } = $props();
+	}: {
+		source: TrackerInboxSource;
+		id: string;
+		mode?: 'phone' | 'mac';
+		onchanged: () => Promise<void>;
+	} = $props();
 
 	let detail = $state.raw<InboxDetail | null>(null);
 	let loadMessage = $state('');
@@ -36,17 +47,16 @@
 	let text = $state('');
 	let message = $state('');
 	let busy = $state(false);
-
+	const load = $derived(inboxDocuments(source, id));
 	const gate = $derived(
 		action && detail
 			? writeGate(action, detail, reviewed ? { revision: reviewed.revision } : null)
 			: null
 	);
-	const question = $derived(flagQuestion(detail?.flag ?? null));
 
 	function fresh(reply: InboxReply<InboxDetail>) {
 		detail = reply.value ?? null;
-		loadMessage = reply.value ? '' : 'This item is not on the phone copy.';
+		loadMessage = reply.value ? '' : loadFailureMessage(reply.code, mode);
 	}
 
 	/** Opening an item is the review. A refresh after a write does not count as one. */
@@ -59,7 +69,7 @@
 		message = '';
 	}
 
-	async function refresh() {
+	export async function refresh() {
 		fresh(await source.detail(id));
 	}
 
@@ -76,7 +86,7 @@
 	}
 
 	async function send() {
-		if (!detail || !action || !reviewed || busy) return;
+		if (!detail || !action || !reviewed || !confirming || !gate?.allowed || busy) return;
 		const write = confirmedWrite(
 			{ action, id: detail.header.id, text, revision: reviewed.revision },
 			true
@@ -89,11 +99,40 @@
 		try {
 			const sent = action;
 			const reply = await source.write(write);
-			message = reply.value ? writeSentMessage(sent) : writeFailureMessage(reply.code);
+			message = reply.value ? writeSentMessage(sent, mode) : writeFailureMessage(reply.code, mode);
 			if (reply.value) {
 				cancel();
 				text = '';
 			}
+			await onchanged();
+			await refresh();
+		} finally {
+			busy = false;
+		}
+	}
+
+	/** A written answer from the Other modal is sent against the reviewed revision. */
+	async function other(answer: string) {
+		await deliver(detail && reviewed ? writtenAnswer(detail, reviewed, answer) : null);
+	}
+
+	/** A tapped option is the answer. Any confirm step has already happened in the choices. */
+	async function pick(number: number) {
+		await deliver(detail && reviewed ? optionWrite(detail, reviewed, number) : null);
+	}
+
+	async function deliver(write: ConfirmedWrite | null) {
+		if (!write || busy) {
+			message = 'The item changed since you reviewed it. Review it again before you answer.';
+			return;
+		}
+		busy = true;
+		try {
+			const reply = await source.write(write);
+			message = reply.value
+				? writeSentMessage('answer', mode)
+				: writeFailureMessage(reply.code, mode);
+			if (reply.value) cancel();
 			await onchanged();
 			await refresh();
 		} finally {
@@ -114,15 +153,16 @@
 			>
 		</hx-header>
 
-		<TrackerInboxRecord {detail} />
+		<TrackerInboxRecord {detail} {mode} />
+
+		{#if detail.flag}
+			<TrackerInboxAsk flag={detail.flag} {busy} {load} onpick={pick} onother={other} />
+		{/if}
 
 		<hx-section class="actions" aria-label="Confirm a write">
 			<hx-div class="buttons">
 				<hx-button type="button" onclick={() => start('note')}>Add note</hx-button>
-				<hx-button type="button" onclick={() => start('flag')}>Flag for you</hx-button>
-				{#if detail.flag?.state === 'open'}
-					<hx-button type="button" onclick={() => start('answer')}>Answer flag</hx-button>
-				{/if}
+				<hx-button type="button" onclick={() => start('flag')}>Flag for follow-up</hx-button>
 				<hx-button type="button" class="quiet" onclick={() => open(id)}>Review again</hx-button>
 			</hx-div>
 
@@ -141,7 +181,7 @@
 			{:else if action}
 				{#if !confirming}
 					<hx-label class="draft">
-						<hx-span>{action === 'answer' ? `Your answer to: ${question}` : 'Your text'}</hx-span>
+						<hx-span>Your text</hx-span>
 						<hx-textarea
 							maxlength="512"
 							rows="3"

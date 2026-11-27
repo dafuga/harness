@@ -1,0 +1,134 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-not-started",
+	"uid": "u_ufkzhmhxgn",
+	"kind": "component",
+	"title": "HubHomeNotStarted",
+	"responsibility": "Lists past-due Tracker work that is queued or blocked and not already shown as work, with the reason.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-row",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeNotStarted.svelte"
+		],
+		"symbols": ["HubHomeNotStarted", "HubHomeNotStarted.trailing"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeNotStarted.pastDue",
+				"type": "HomePastDue[]",
+				"required": true,
+				"description": "Past-due Tracker runs with their queued, running or blocked state."
+			},
+			{
+				"name": "HubHomeNotStarted.work",
+				"type": "{ id: string }[]",
+				"required": true,
+				"description": "Work already listed, whose ids are left out here."
+			},
+			{
+				"name": "HubHomeNotStarted.limit",
+				"type": "number",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The most rows to show. Defaults to showing all of them."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeNotStarted",
+				"type": "markup",
+				"description": "Rows of past-due work that has not started, with a summary."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeNotStarted.trailing",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeNotStarted.trailing",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-row",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeNotStarted.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeNotStarted.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

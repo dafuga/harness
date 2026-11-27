@@ -1,0 +1,38 @@
+export interface RecordedTrackerItem {
+	id: string;
+	title: string;
+	status: string;
+	stage: string | null;
+	agent: string | null;
+	owner: string | null;
+	computer: string | null;
+	model: string | null;
+	updated_at: string;
+	created_at: string;
+	due: string | null;
+	auto: string | null;
+	sensitive: boolean;
+	deleted: boolean;
+	blocked_reason?: string | null;
+}
+
+export interface RecordedTrackerRun {
+	id: number;
+	node: string;
+	item_id: string;
+	state: string;
+	outcome: string | null;
+	failure_reason?: string | null;
+	model: string;
+	effort: string | null;
+	queued_at: number | null;
+	started_at: number | null;
+	ended_at: number | null;
+}
+
+export interface RecordedTracker {
+	recordedAt: string;
+	items: RecordedTrackerItem[];
+	runs: RecordedTrackerRun[];
+	machines: { node: string; status: string }[];
+}

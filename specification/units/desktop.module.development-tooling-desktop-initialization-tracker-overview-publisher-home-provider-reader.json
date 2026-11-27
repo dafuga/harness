@@ -20,6 +20,12 @@
 				"name": "createHomeProviderReader.file",
 				"type": "string",
 				"required": false
+			},
+			{
+				"name": "createHomeProviderReader.sources",
+				"type": "QuotaSource[]",
+				"required": false,
+				"default": []
 			}
 		],
 		"outputs": [
@@ -38,6 +44,12 @@
 						"name": "createHomeProviderReader.file",
 						"type": "string",
 						"required": false
+					},
+					{
+						"name": "createHomeProviderReader.sources",
+						"type": "QuotaSource[]",
+						"required": false,
+						"default": []
 					}
 				],
 				"outputs": [
@@ -53,6 +65,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-codex-quota-source",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-hub-home-home-provider-payload",
 			"via": "import",

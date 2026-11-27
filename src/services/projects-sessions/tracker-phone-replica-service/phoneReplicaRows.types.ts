@@ -1,5 +1,11 @@
 // @harness-uid u_st4dufvqxm
-export interface PhoneItemSource {
+import type {
+	TrackerPlanning,
+	TrackerPlanningFields,
+	TrackerStage
+} from '../../../utils/projects-sessions/trackerPlanning.types';
+
+export interface PhoneItemSource extends TrackerPlanningFields {
 	id: string;
 	title: string;
 	status: string;
@@ -9,6 +15,10 @@ export interface PhoneItemSource {
 	needs_daniel: number;
 	resolved: number;
 	question: string | null;
+	options: string | null;
+	confirm: string | null;
+	attachments?: string | null;
+	attachment_docs?: string | null;
 	flag_clock: string | null;
 	attention_clock: string;
 }
@@ -31,6 +41,8 @@ export interface PhoneRunSource {
 }
 
 export interface PhoneTrackerRow {
+	stage: TrackerStage;
+	planning: TrackerPlanning;
 	id: string;
 	title: string;
 	project: string;
@@ -39,7 +51,13 @@ export interface PhoneTrackerRow {
 	dueAt: string | null;
 	attentionRevision: string;
 	notes: { id: string; author: string; at: string; text: string }[];
-	flag: { state: 'open' | 'resolved'; at: string | null; question: string } | null;
+	flag: {
+		state: 'open' | 'resolved';
+		at: string | null;
+		question: string;
+		options?: { label: string; effect: string; recommended?: true }[];
+		confirm?: string;
+	} | null;
 	runs: {
 		id: string;
 		origin: string;

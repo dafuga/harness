@@ -1,0 +1,65 @@
+{
+	"name": "mj359d-cos-dependency-dedupe",
+	"goal": "Replay the recorded CoS queue and deliver a dependency update once per item and text change.",
+	"createdAt": "2026-11-27T16:07:26.454Z",
+	"updatedAt": "2026-11-27T16:26:12.906Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:08:49.914Z",
+			"evidence": "Primary Mac CoS transcript shows repeated watchdog deliveries for eight alert rows from 15:30Z onward. Their ids remain unsent. Expect one delivery per item text and digest visibility for open blockers."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:08:51.496Z",
+			"evidence": "The existing delivery test retries only the same alert ids. Extend it with a sanitized recorded eight-row queue and replay a new id for unchanged text; keep no-receipt retry coverage."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:18:52.631Z",
+			"evidence": "At 98193e2938 the unchanged Tracker delivery suite failed because the replay sent two eight-item batches instead of one. Red checkpoint retained by loop record."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:19:14.642Z",
+			"evidence": "Persist receipts per item and full CoS message text. Recover missed tmux acknowledgements from bounded same-project Claude prompt or queue receipts."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:26:12.906Z",
+			"evidence": "Frozen test corpus and one command failed at 98193e2938 and passed at ea99e155f1. The PR also exercises transcript receipt recovery in a second test."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

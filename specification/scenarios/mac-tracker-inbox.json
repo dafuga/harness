@@ -1,0 +1,110 @@
+{
+	"schemaVersion": 1,
+	"id": "mac-tracker-inbox",
+	"title": "Mac Tracker decision inbox",
+	"kind": "ui",
+	"units": [
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-record",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
+		"desktop.page.tracker"
+	],
+	"states": [
+		{
+			"id": "list",
+			"title": "Local Tracker Needs you list",
+			"coverage": "required",
+			"units": [
+				"desktop.page.tracker",
+				"desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+				"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows"
+			]
+		},
+		{
+			"id": "detail",
+			"title": "Reviewed flag, run history and notes",
+			"coverage": "required",
+			"units": [
+				"desktop.page.tracker",
+				"desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+				"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
+				"desktop.component.development-tooling-tracker-inbox-tracker-inbox-record"
+			]
+		},
+		{
+			"id": "confirm-note",
+			"title": "Review a note before sending",
+			"coverage": "required",
+			"units": [
+				"desktop.page.tracker",
+				"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail"
+			]
+		},
+		{
+			"id": "confirm-flag",
+			"title": "Review a flag before sending",
+			"coverage": "required",
+			"units": [
+				"desktop.page.tracker",
+				"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail"
+			]
+		},
+		{
+			"id": "confirm-answer",
+			"title": "Write another answer to the question in the Other modal",
+			"coverage": "required",
+			"units": [
+				"desktop.page.tracker",
+				"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail"
+			]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 900
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"builds": ["desktop-main", "desktop-renderer"],
+	"tests": [
+		{
+			"id": "mac-tracker-inbox",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/mac-tracker-inbox.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "mac-inbox-screens",
+			"kind": "screenshot",
+			"states": ["list", "detail", "confirm-note", "confirm-flag", "confirm-answer"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true,
+			"build": "desktop-renderer",
+			"provenance": "actual-capture",
+			"capture": "viewport"
+		},
+		{
+			"id": "mac-inbox-page-workload",
+			"kind": "benchmark",
+			"states": ["list"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true
+		}
+	]
+}

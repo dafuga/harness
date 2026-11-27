@@ -1,0 +1,103 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-host-supervisor-service-maintain-tracker-host",
+	"uid": "u_w5ihdujq42",
+	"kind": "service",
+	"title": "maintainTrackerHost",
+	"responsibility": "Owns the maintainTrackerHost service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-host-supervisor-service/maintainTrackerHost.ts"
+		],
+		"symbols": ["maintainTrackerHost"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "maintainTrackerHost.options",
+				"type": "TrackerHostSupervisorOptions",
+				"required": true
+			},
+			{
+				"name": "maintainTrackerHost.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "maintainTrackerHost",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "maintainTrackerHost",
+				"inputs": [
+					{
+						"name": "maintainTrackerHost.options",
+						"type": "TrackerHostSupervisorOptions",
+						"required": true
+					},
+					{
+						"name": "maintainTrackerHost.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "maintainTrackerHost",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-appending-tracker-child",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-next-tracker-health-at",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-rotate-supervised-log",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-host-supervisor-service/maintainTrackerHost.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-host-supervisor-service/maintainTrackerHost.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

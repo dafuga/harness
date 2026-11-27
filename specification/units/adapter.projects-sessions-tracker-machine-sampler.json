@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-machine-sampler",
+	"uid": "u_fnfvgcje7d",
+	"kind": "adapter",
+	"title": "TrackerMachineSamplerAdapter",
+	"responsibility": "Owns the TrackerMachineSamplerAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/projects-sessions/TrackerMachineSamplerAdapter.ts"],
+		"symbols": [
+			"TrackerMachineSamplerAdapter",
+			"TrackerMachineSamplerAdapter.constructor",
+			"TrackerMachineSamplerAdapter.sample"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerMachineSamplerAdapter.constructor.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerMachineSamplerAdapter.constructor.tmux",
+				"type": "string",
+				"required": false,
+				"default": "tmux"
+			},
+			{
+				"name": "TrackerMachineSamplerAdapter.sample.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerMachineSamplerAdapter.sample",
+				"type": "Promise<TrackerResourceSample>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerMachineSamplerAdapter.sample",
+				"inputs": [
+					{
+						"name": "TrackerMachineSamplerAdapter.sample.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerMachineSamplerAdapter.sample",
+						"type": "Promise<TrackerResourceSample>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerMachineSamplerAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerMachineSamplerAdapter.constructor.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerMachineSamplerAdapter.constructor.tmux",
+						"type": "string",
+						"required": false,
+						"default": "tmux"
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerMachineSamplerAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-machine-sampler-adapter-read-tracker-memory",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-group-tracker-processes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/TrackerMachineSamplerAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/TrackerMachineSamplerAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

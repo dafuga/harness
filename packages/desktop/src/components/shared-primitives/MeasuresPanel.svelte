@@ -2,13 +2,9 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_ttl26nd5p5 -->
 <script lang="ts">
+	import type { MeasuresPanelRow } from './MeasuresPanel.types';
 	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import type { Measure } from '../../models/development-tooling/Desktop.types';
-	/** One panel row: its name, and the measure whose text and availability it shows. */
-	interface MeasuresPanelRow {
-		name: string;
-		measure: Measure;
-	}
 	let { size, performance }: { size: Measure; performance: Measure } = $props();
 </script>
 

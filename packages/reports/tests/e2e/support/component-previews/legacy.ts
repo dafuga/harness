@@ -14,6 +14,9 @@ const navbar = {
 };
 export const legacyCases: PreviewCases = {
 	'reports.layout.explorer-layout': { base: '/harness', problem: '', missing: null, navbar },
+	'reports.component.shared-primitives-linkified-text': {
+		text: 'Review https://example.invalid/tracker/decisions/a-long-link-that-wraps-on-a-narrow-screen, then record the answer.'
+	},
 	'reports.component.shared-primitives-loading-state': { label: 'Loading page data…' },
 	'reports.component.harness-harness-action': {
 		children: children,

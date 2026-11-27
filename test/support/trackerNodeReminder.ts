@@ -17,7 +17,9 @@ export async function verifyReminder(
 	});
 	await expect.poll(() => fixtureTrackerJson(hub, ['show', id])).toMatchObject({ remind_at: far });
 	expect(await fixtureTrackerJson(hub, ['list', '--flagged'])).toEqual([]);
-	expect(await fixtureTrackerJson(hub, ['digest'])).toMatchObject({ needs_daniel: [] });
+	expect(await fixtureTrackerJson(hub, ['digest'])).toMatchObject({
+		needs_daniel: [{ id, remind_at: far, waiting_minutes: expect.any(Number) }]
+	});
 	verifyCosDryRun(hub, id, false);
 	const at = new Date(Date.now() + 2_500).toISOString();
 	await fixtureTrackerJson(spoke, ['remind', id, '--at', at]);
@@ -51,4 +53,32 @@ export async function verifyReminder(
 		needs_daniel: [{ id, remind_at: at }]
 	});
 	verifyCosDryRun(hub, id);
+}
+
+export async function verifyProjectFollowUp(hub: TrackerNodeFixture, spoke: TrackerNodeFixture) {
+	const { id } = await fixtureTrackerJson(spoke, [
+		'add',
+		'Synthetic Elan decision',
+		'--project',
+		'elan',
+		'--next-step',
+		'Choose pilot scope'
+	]);
+	expect(await fixtureTrackerJson(spoke, ['done', id])).toMatchObject({
+		id,
+		status: 'done',
+		needs_daniel: true,
+		next_step: 'Choose pilot scope'
+	});
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['digest']), { timeout: 8_000 })
+		.toMatchObject({ needs_daniel: [{ id, project: 'elan', next_step: 'Choose pilot scope' }] });
+	await fixtureTrackerJson(spoke, ['park', id, '--until', '2099-11-25', '--by', 'Daniel']);
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['list', '--flagged']), { timeout: 8_000 })
+		.toEqual([]);
+	await fixtureTrackerJson(spoke, ['move-on', id, '--by', 'Daniel']);
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['digest']), { timeout: 8_000 })
+		.toMatchObject({ needs_daniel: [] });
 }

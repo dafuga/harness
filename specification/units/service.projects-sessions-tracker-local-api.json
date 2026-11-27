@@ -4,31 +4,63 @@
 	"uid": "u_g7kdpz7bel",
 	"kind": "service",
 	"title": "TrackerLocalApiService",
-	"responsibility": "Owns the TrackerLocalApiService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Serve the local Tracker item API, including stage promotion artifact writes and result rejection through the item journal.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/TrackerLocalApiService.ts",
 			"src/services/projects-sessions/TrackerLocalApiService.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/readTrackerRunEndpoint.ts",
+			"src/services/projects-sessions/tracker-local-api-service/recordCosFlag.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalAlert.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalAlert.types.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.ts",
-			"src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts"
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalJobResponse.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalMessages.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalMessages.types.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalPlanning.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalRejection.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerPhoneReplicaResponse.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerPhoneReplicaResponse.types.ts"
 		],
 		"symbols": [
 			"TrackerLocalApiService",
 			"TrackerLocalApiService.constructor",
 			"TrackerLocalApiService.handle",
 			"TrackerLocalApiOptions",
+			"TrackerLocalApiDependencies",
 			"readTrackerItemDetail",
 			"readTrackerRunEndpoint",
+			"recordCosFlag",
+			"isTrackerAlert",
+			"trackerAlertResponse",
+			"TrackerAlertDependencies",
+			"trackerInboxItem",
+			"TrackerInboxReview",
+			"TrackerInboxRoute",
+			"TrackerInboxResult",
 			"itemMutation",
+			"trackerMutationBody",
 			"itemAction",
 			"trackerSessionItemPrefix",
 			"recordTrackerSessionItem",
 			"readItemBody",
+			"itemMutationContext",
+			"trackerJobResponse",
+			"cosChatTitle",
+			"trackerMessageEndpoint",
+			"MessageDependencies",
+			"RequestTarget",
+			"writeTrackerPlanning",
+			"trackerRejectItem",
 			"isTrackerManualLaunch",
-			"planTrackerManualLaunch"
+			"planTrackerManualLaunch",
+			"phoneReplicaResponse",
+			"Respond"
 		]
 	},
 	"contract": {
@@ -81,6 +113,61 @@
 				"required": true
 			},
 			{
+				"name": "recordCosFlag.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordCosFlag.flag",
+				"type": "{ itemId: string; action: string | undefined; question: TrackerItemValue }",
+				"required": true
+			},
+			{
+				"name": "recordCosFlag.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "isTrackerAlert.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "isTrackerAlert.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerAlertResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerAlertResponse.target",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerAlertResponse.dependencies",
+				"type": "TrackerAlertDependencies",
+				"required": true
+			},
+			{
+				"name": "trackerInboxItem.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerInboxItem.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerInboxItem.ports",
+				"type": "TrackerInboxRoute",
+				"required": true
+			},
+			{
 				"name": "itemMutation.action",
 				"type": "TrackerItemAction | 'add'",
 				"required": true
@@ -98,6 +185,26 @@
 			{
 				"name": "itemMutation.items",
 				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerMutationBody.body",
+				"type": "TrackerItemInput",
+				"required": true
+			},
+			{
+				"name": "trackerMutationBody.action",
+				"type": "TrackerItemAction | 'add' | undefined",
+				"required": true
+			},
+			{
+				"name": "trackerMutationBody.actor",
+				"type": "string | null",
+				"required": true
+			},
+			{
+				"name": "trackerMutationBody.canLaunch",
+				"type": "boolean",
 				"required": true
 			},
 			{
@@ -141,6 +248,107 @@
 				"required": false
 			},
 			{
+				"name": "itemMutationContext.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "itemMutationContext.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "itemMutationContext.options",
+				"type": "TrackerLocalApiOptions",
+				"required": true
+			},
+			{
+				"name": "itemMutationContext.explicitLaunch",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "trackerJobResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.options",
+				"type": "TrackerLocalApiOptions",
+				"required": true
+			},
+			{
+				"name": "trackerMessageEndpoint.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerMessageEndpoint.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerMessageEndpoint.dependencies",
+				"type": "MessageDependencies",
+				"required": true
+			},
+			{
+				"name": "writeTrackerPlanning.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "writeTrackerPlanning.target",
+				"type": "{ id: string; verb: 'stage' | 'artifact'; actor: string | null }",
+				"required": true
+			},
+			{
+				"name": "writeTrackerPlanning.dependencies",
+				"type": "{ store: TrackerPersistenceService; items: TrackerItemReadRepository; now: number }",
+				"required": true
+			},
+			{
+				"name": "trackerRejectItem.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerRejectItem.reference",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerRejectItem.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerRejectItem.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerRejectItem.options",
+				"type": "TrackerLocalApiOptions",
+				"required": true
+			},
+			{
+				"name": "trackerRejectItem.actor",
+				"type": "string | null",
+				"required": true
+			},
+			{
 				"name": "isTrackerManualLaunch.verb",
 				"type": "string | undefined",
 				"required": true
@@ -164,6 +372,26 @@
 				"name": "planTrackerManualLaunch.context",
 				"type": "TrackerItemMutationContext",
 				"required": true
+			},
+			{
+				"name": "phoneReplicaResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "phoneReplicaResponse.url",
+				"type": "URL",
+				"required": true
+			},
+			{
+				"name": "phoneReplicaResponse.replica",
+				"type": "TrackerPhoneReplicaService",
+				"required": false
+			},
+			{
+				"name": "phoneReplicaResponse.respond",
+				"type": "Respond",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -180,8 +408,28 @@
 				"type": "unknown"
 			},
 			{
+				"name": "recordCosFlag",
+				"type": "void"
+			},
+			{
+				"name": "isTrackerAlert",
+				"type": "boolean"
+			},
+			{
+				"name": "trackerAlertResponse",
+				"type": "Promise<Response>"
+			},
+			{
+				"name": "trackerInboxItem",
+				"type": "Promise<TrackerInboxResult>"
+			},
+			{
 				"name": "itemMutation",
 				"type": "TrackerItemMutation"
+			},
+			{
+				"name": "trackerMutationBody",
+				"type": "TrackerItemInput"
 			},
 			{
 				"name": "itemAction",
@@ -200,11 +448,39 @@
 				"type": "Promise<TrackerItemInput>"
 			},
 			{
+				"name": "itemMutationContext",
+				"type": "TrackerItemMutationContext"
+			},
+			{
+				"name": "trackerJobResponse",
+				"type": "Promise<Response>"
+			},
+			{
+				"name": "cosChatTitle",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerMessageEndpoint",
+				"type": "Promise<{ status: number; body: object } | undefined>"
+			},
+			{
+				"name": "writeTrackerPlanning",
+				"type": "Promise<TrackerItem>"
+			},
+			{
+				"name": "trackerRejectItem",
+				"type": "unknown"
+			},
+			{
 				"name": "isTrackerManualLaunch",
 				"type": "boolean"
 			},
 			{
 				"name": "planTrackerManualLaunch",
+				"type": "unknown"
+			},
+			{
+				"name": "phoneReplicaResponse",
 				"type": "unknown"
 			}
 		],
@@ -281,6 +557,113 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "recordCosFlag",
+				"inputs": [
+					{
+						"name": "recordCosFlag.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordCosFlag.flag",
+						"type": "{ itemId: string; action: string | undefined; question: TrackerItemValue }",
+						"required": true
+					},
+					{
+						"name": "recordCosFlag.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordCosFlag",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isTrackerAlert",
+				"inputs": [
+					{
+						"name": "isTrackerAlert.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "isTrackerAlert.parts",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerAlert",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerAlertResponse",
+				"inputs": [
+					{
+						"name": "trackerAlertResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerAlertResponse.target",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerAlertResponse.dependencies",
+						"type": "TrackerAlertDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAlertResponse",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerInboxItem",
+				"inputs": [
+					{
+						"name": "trackerInboxItem.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerInboxItem.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerInboxItem.ports",
+						"type": "TrackerInboxRoute",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerInboxItem",
+						"type": "Promise<TrackerInboxResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "itemMutation",
 				"inputs": [
 					{
@@ -308,6 +691,39 @@
 					{
 						"name": "itemMutation",
 						"type": "TrackerItemMutation"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerMutationBody",
+				"inputs": [
+					{
+						"name": "trackerMutationBody.body",
+						"type": "TrackerItemInput",
+						"required": true
+					},
+					{
+						"name": "trackerMutationBody.action",
+						"type": "TrackerItemAction | 'add' | undefined",
+						"required": true
+					},
+					{
+						"name": "trackerMutationBody.actor",
+						"type": "string | null",
+						"required": true
+					},
+					{
+						"name": "trackerMutationBody.canLaunch",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMutationBody",
+						"type": "TrackerItemInput"
 					}
 				],
 				"errors": [],
@@ -393,6 +809,172 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "itemMutationContext",
+				"inputs": [
+					{
+						"name": "itemMutationContext.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "itemMutationContext.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "itemMutationContext.options",
+						"type": "TrackerLocalApiOptions",
+						"required": true
+					},
+					{
+						"name": "itemMutationContext.explicitLaunch",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "itemMutationContext",
+						"type": "TrackerItemMutationContext"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerJobResponse",
+				"inputs": [
+					{
+						"name": "trackerJobResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.parts",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.options",
+						"type": "TrackerLocalApiOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerJobResponse",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerMessageEndpoint",
+				"inputs": [
+					{
+						"name": "trackerMessageEndpoint.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerMessageEndpoint.parts",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "trackerMessageEndpoint.dependencies",
+						"type": "MessageDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMessageEndpoint",
+						"type": "Promise<{ status: number; body: object } | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeTrackerPlanning",
+				"inputs": [
+					{
+						"name": "writeTrackerPlanning.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "writeTrackerPlanning.target",
+						"type": "{ id: string; verb: 'stage' | 'artifact'; actor: string | null }",
+						"required": true
+					},
+					{
+						"name": "writeTrackerPlanning.dependencies",
+						"type": "{ store: TrackerPersistenceService; items: TrackerItemReadRepository; now: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeTrackerPlanning",
+						"type": "Promise<TrackerItem>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRejectItem",
+				"inputs": [
+					{
+						"name": "trackerRejectItem.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerRejectItem.reference",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerRejectItem.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerRejectItem.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "trackerRejectItem.options",
+						"type": "TrackerLocalApiOptions",
+						"required": true
+					},
+					{
+						"name": "trackerRejectItem.actor",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRejectItem",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "isTrackerManualLaunch",
 				"inputs": [
 					{
@@ -442,6 +1024,39 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "phoneReplicaResponse",
+				"inputs": [
+					{
+						"name": "phoneReplicaResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "phoneReplicaResponse.url",
+						"type": "URL",
+						"required": true
+					},
+					{
+						"name": "phoneReplicaResponse.replica",
+						"type": "TrackerPhoneReplicaService",
+						"required": false
+					},
+					{
+						"name": "phoneReplicaResponse.respond",
+						"type": "Respond",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "phoneReplicaResponse",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -478,17 +1093,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "function.agents-providers-classify-tracker-task",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.agents-providers-parse-tracker-model-spec",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "function.agents-providers-pick-tracker-model",
+			"unit": "function.agents-providers-pick-tracker-model-from-runs",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -503,6 +1113,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-hub-session-messages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-is-tracker-ping",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-normalize-tracker-item-fields",
 			"via": "import",
 			"origin": "derived"
@@ -513,7 +1133,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-dispatch",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -533,6 +1163,46 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api-service-read-tracker-attachment-endpoint",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api-service-read-tracker-machine-endpoint",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api-service-tracker-host-work-endpoint",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api-service-tracker-local-jobs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api-service-tracker-local-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-persistence",
 			"via": "import",
 			"origin": "derived"
@@ -544,6 +1214,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-phone-replica-service-phone-replica-write",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-recurring-service-tracker-box-job-admin",
 			"via": "import",
 			"origin": "derived"
 		}

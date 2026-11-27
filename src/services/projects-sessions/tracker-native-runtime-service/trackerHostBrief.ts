@@ -1,33 +1,51 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 
+import { trackerAskOptionsRule } from './trackerAskOptionsRule';
+import { trackerAutomationBrowserRule } from './trackerAutomationBrowserRule';
+import { trackerDoneProofRule } from './trackerDoneProofRule';
 import { trackerSecretSafetyRule } from './trackerSecretSafetyRule';
+import { trackerCpuBudgetRule } from '../../../utils/projects-sessions/trackerCpuBudget';
 
 export function formatTrackerHostBrief(
 	item: TrackerItem,
 	completion: string,
-	recovery = false
+	{ recovery = false, cpuBudget }: { recovery?: boolean; cpuBudget?: number } = {}
 ): string {
 	const id = item.id.slice(0, 6);
 	const notes = item.notes_log.slice(-10).map(({ at, text }) => `- ${at} ${text.slice(0, 1200)}`);
 	return [
 		trackerSecretSafetyRule,
 		'',
+		trackerAskOptionsRule,
+		'',
+		trackerAutomationBrowserRule,
+		'',
+		'## Work on another computer',
+		'Wrap remote checks and builds in `tracker host-work ssh <computer> -- ssh <host> <command>` so their load appears on the executing computer.',
+		'Use `tracker host-work colima <computer> -- ssh <host> <proof-script>` for Colima proofs. Keep VM startup, verification and task-owned teardown within the foreground script.',
+		'',
 		`# ${item.title}`,
 		'',
 		`Tracker item ${id} (full ID ${item.id}).`,
 		'',
+		cpuBudget && trackerCpuBudgetRule(cpuBudget),
+		item.agent === 'harness' &&
+			`Submit commits with \`bun run check --item ${id}\` for affected checks. Use the same host queue with \`--release\` for the combined release and never start the full check directly.`,
 		item.sensitive &&
 			'Keep credentials out of output and obtain approval before any irreversible action.',
 		item.adapter_instructions && `## Source instructions\n\n${item.adapter_instructions}`,
 		item.notes && `## Task\n\n${item.notes.slice(0, 32000)}`,
 		notes.length > 0 && `## Recent notes\n\n${notes.join('\n')}`,
 		...trackerResumeLines(item, recovery),
+		trackerAnswerBrief(item),
 		`Start by running \`tracker start ${id}\`.`,
 		'Keep working through verification. Pause only when the task is done or a true blocker prevents further work.',
 		'At 150,000 active context tokens, leave a short Tracker handoff with the exact worktree, branch, completed work, pending checks and next step.',
 		'',
-		completion
+		completion,
+		'',
+		trackerDoneProofRule
 	]
 		.filter((line) => line !== null && line !== undefined && line !== false)
 		.join('\n');
@@ -43,4 +61,9 @@ function trackerResumeLines(item: TrackerItem, recovery: boolean) {
 			!item.resolved &&
 			'An unanswered Tracker question remains open. Continue independent work and preserve any approval gates.'
 	];
+}
+
+function trackerAnswerBrief(item: TrackerItem) {
+	if (!item.resolved || item.needs_daniel || !item.answered_at) return undefined;
+	return 'A Tracker answer is recorded. Read the current answer on the item and continue as directed. Handle credentials through the approved private path.';
 }

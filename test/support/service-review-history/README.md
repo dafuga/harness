@@ -19,6 +19,12 @@ planning writes and immutable formatter ignores.
 The level planning review retains implementation commit `f6a7a2129` for the desktop bridge
 factory and isolated preload.
 
+The design canvas review retains the committed Hub API controller and projection service that
+read a revision's canvases.
+
+The Mac design canvas review retains the committed bridge factory and isolated preload that read
+the checkout's canvases.
+
 ## Regenerating it
 
 Regenerate it when a review names another commit or path. Run this from a checkout whose Git
@@ -88,3 +94,27 @@ The sibling bug sweep retains implementation commit `6a64ad413` for the loop sib
 Verified artifact retention retains implementation commit `4c5ed1baf` for retention and cancellation beside Lite verification, plus the earlier artifact, cancellation and reconciliation reviews.
 Google sign-in retains implementation commit `58700be943` for the native account bridge, the
 Hub handoff and device storage changes, and the iOS account adapter.
+
+Hub Home live sessions retains implementation commit `32f91c2f7` for the read-only homeSnapshot device method in the desktop device session and operations services.
+
+The shared verification baseline lint repair retains the reviews of the desktop relay frame check,
+project run service and relay host services at the commit that extracted their helpers.
+
+Realtime tracker pushes retain implementation commit `68fcb43a67` for the desktop initializer, preload and local client.
+
+Shared type consolidation retains implementation commit `6c9252a51` for the five moved services whose type references now name the one shared owner.
+
+Home row answers retain the commit that adds the `homeChat` device method to the desktop device session
+and operations services; the earlier `homeSnapshot` reviews remain present.
+
+The Harness Vault entry retains implementation commit `baa2b466c` for the phone adapter that
+offers the native Vault.
+
+Deferred plan wave 5 retains implementation commit `2d80b045b7` for the moved sources whose operations now name their return and parameter types.
+
+The Wave 5 desktop audit follow-up retains commit `3f638101fe` for the compact source signatures.
+
+The Wave 5 Hub lint follow-up retains commit `269686f1db` for the compact source signatures.
+
+Plan and schedule click-through retains implementation commits `8713ce6311`, `5c2602ebf4` and
+`e5d8b2e82c` for the fixed Home read and chat paths through the Mac preload and paired phone.

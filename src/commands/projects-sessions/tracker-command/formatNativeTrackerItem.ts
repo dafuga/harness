@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import { trackerClaudeSessionId } from '../../../utils/projects-sessions/trackerClaudeSessionId';
 import type {
 	NativeTrackerItem,
 	NativeTrackerListedRun,
@@ -6,27 +7,53 @@ import type {
 	NativeTrackerRunRead,
 	NativeTrackerRunReport
 } from './nativeTrackerCli.types';
+import { trackerFlagKind } from '../../../utils/projects-sessions/trackerStructuredAsk';
 
 export function formatNativeTrackerItem(item: NativeTrackerItem): string {
 	const flags = [
 		itemStatus(item),
-		item.needs_daniel && !item.resolved && 'NEEDS DANIEL',
-		item.resolved && 'resolved'
+		flagLabel(item),
+		item.resolved && 'resolved',
+		item.chased_count && `CHASED ×${item.chased_count}`
 	].filter(Boolean);
 	const meta = trackerItemMetadata(item);
 	return `[${item.id.slice(0, 6)}] ${item.title}  (${flags.join(', ')}; ${meta.join(' | ')})`;
 }
 
+const flagLabels = {
+	ask: 'NEEDS DANIEL',
+	ping: 'PING for Chief of Staff',
+	'needs-options': 'NEEDS OPTIONS (Chief of Staff; not shown to Daniel)'
+};
+
+function flagLabel(item: NativeTrackerItem) {
+	const kind = trackerFlagKind(item);
+	return kind && flagLabels[kind];
+}
+
 function trackerItemMetadata(item: NativeTrackerItem) {
 	return [
 		item.kind,
+		item.stage,
+		item.priority && `priority ${item.priority}`,
 		item.every && `every '${item.every}' ${item.every_tz}`,
 		item.due && `${item.every ? 'next' : 'due'} ${item.due}`,
 		item.remind_at && `reminder ${item.remind_at}`,
 		item.owner && `owner ${item.owner}`,
 		item.agent && `agent ${item.agent}`,
-		item.auto && 'auto-launch'
+		item.auto && 'auto-launch',
+		...trackerFollowThroughMetadata(item)
 	].filter(Boolean);
+}
+
+function trackerFollowThroughMetadata(item: NativeTrackerItem) {
+	return [
+		item.next_step && `next step: ${item.next_step}`,
+		item.parked_until && `parked until ${item.parked_until}`,
+		item.chased_at && `chased ${item.chased_at}`,
+		item.chased_by && `by ${item.chased_by}`,
+		item.chased_reason
+	];
 }
 
 function itemStatus(item: NativeTrackerItem): string {
@@ -52,11 +79,21 @@ const commandPrefixes = new Map([
 	['ignore', 'ignored: '],
 	['unignore', 'unignored: '],
 	['flag', 'flagged: '],
+	['chase', 'chased: '],
 	['answer', 'resolved: '],
 	['resolve', 'resolved: '],
 	['update', 'updated '],
-	['unlaunch', 'auto-launch off: ']
+	['unlaunch', 'auto-launch off: '],
+	['reject', 'rejected: ']
 ]);
+
+export function nativeItemSuffix(command: string, item: NativeTrackerItem) {
+	const run = item.rejected_run;
+	if (command !== 'reject') return '';
+	return run
+		? `\n  run ${run.id} (${run.rung}) now counts as a failure`
+		: '\n  (no auto-run to charge it to)';
+}
 
 export function nativeItemPrefix(
 	command: string,
@@ -101,8 +138,15 @@ export function formatListedRun(run: NativeTrackerListedRun): string {
 		run.failure_reason ? ` - ${run.failure_reason}` : '',
 		run.redone_by ? ` (redone by ${run.redone_by})` : '',
 		session,
+		claudeResumeHint(run),
 		run.idle_nudges ? `  idle nudges: ${run.idle_nudges}` : ''
 	].join('');
+}
+
+/** Only runs launched with a derived session id have a session name. */
+function claudeResumeHint({ cli, session_name, session_id }: NativeTrackerListedRun) {
+	const id = cli === 'claude' && session_name && trackerClaudeSessionId(session_id ?? '');
+	return id ? `  claude session ${id}` : '';
 }
 
 function formatModelPick(pick: NativeTrackerPick): string {

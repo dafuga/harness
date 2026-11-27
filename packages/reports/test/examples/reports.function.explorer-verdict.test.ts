@@ -13,8 +13,7 @@ import {
 } from '../explorerFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.explorer-verdict.test.types';
 
 const unitId = 'reports.function.explorer-verdict';
 const subject = unit(unitId, 'function', { title: 'explorerVerdict' });

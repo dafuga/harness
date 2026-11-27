@@ -1,11 +1,11 @@
 // @harness-uid u_375c7frogd
-import type { HarnessRecord } from '../../../models/explorer-ui/Harness.types';
-import type { HarnessCapture } from '../../../models/explorer-ui/Harness.types';
-
-export type Scenario = HarnessRecord['scenarios'][number];
+import type {
+	HarnessScenarioResult,
+	HarnessCapture
+} from '../../../models/explorer-ui/Harness.types';
 
 export interface Found {
-	scenario: Scenario;
+	scenario: HarnessScenarioResult;
 	state: string;
 	capture: HarnessCapture;
 }

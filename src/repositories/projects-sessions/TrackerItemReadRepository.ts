@@ -1,8 +1,11 @@
 // @harness-uid u_xba7ieg4je
 import type { SqliteDatabase, SqliteStatement } from '../../core/development-tooling/sqliteTypes';
+import { TrackerRunReadRepository } from './TrackerRunReadRepository';
 import { TrackerItemReadError } from './tracker-item-read-repository/TrackerItemReadError';
 import { buildTrackerDigest } from './tracker-item-read-repository/buildTrackerDigest';
 import { formatTrackerDigest } from './tracker-item-read-repository/formatTrackerDigest';
+import { summarizeTrackerProjects } from './tracker-item-read-repository/summarizeTrackerProjects';
+import type { TrackerProjectNoteRow } from './tracker-item-read-repository/summarizeTrackerProjects.types';
 import { serializeTrackerItem } from './tracker-item-read-repository/serializeTrackerItem';
 import type {
 	TrackerDigest,
@@ -11,6 +14,12 @@ import type {
 	TrackerItemRow
 } from './TrackerItemReadRepository.types';
 
+import {
+	trackerPlanningStageSql,
+	trackerStage
+} from '../../utils/projects-sessions/trackerPlanning';
+
+const itemChases = 'items LEFT JOIN tracker_item_chases ON chase_item_id = id';
 const activeStatus = "status NOT IN ('done', 'ignored')";
 const visibleItems = 'deleted = 0 AND title IS NOT NULL';
 const visibleAttention = '(remind_at IS NULL OR remind_at <= ?)';
@@ -37,7 +46,10 @@ export class TrackerItemReadRepository {
 	/** Read rows needed by duplicate probing and mutation planning. */
 	candidates(): TrackerItemRow[] {
 		return this.database
-			.prepare(`SELECT * FROM items WHERE ${visibleItems} AND status <> 'done'`)
+			.prepare(
+				`SELECT * FROM items WHERE ${visibleItems} AND
+				 (status <> 'done' OR (next_step IS NOT NULL AND needs_daniel = 1 AND resolved = 0))`
+			)
 			.all() as TrackerItemRow[];
 	}
 
@@ -45,25 +57,21 @@ export class TrackerItemReadRepository {
 	list(filters: TrackerItemListFilters = {}, nowMs: number = Date.now()): TrackerItem[] {
 		const where = [visibleItems];
 		const values: string[] = [];
-		if (!filters.status) where.push(activeStatus);
-		else if (filters.status !== 'all') {
-			where.push('status = ?');
-			values.push(normalizeStatus(filters.status));
-		}
-		for (const column of filterColumns) {
-			const value = filters[column];
-			if (!value) continue;
-			where.push(`${column} = ?`);
-			values.push(String(value));
-		}
+		addStatusFilter(filters, where, values);
+		addFieldFilters(filters, where, values);
 		if (queryFlag(filters.flagged)) {
-			where.push('needs_daniel = 1 AND resolved = 0', visibleAttention);
-			values.push(new Date(nowMs).toISOString());
+			where.push(
+				'needs_daniel = 1 AND resolved = 0',
+				visibleAttention,
+				'(parked_until IS NULL OR parked_until <= ?)'
+			);
+			const now = new Date(nowMs).toISOString();
+			values.push(now, now);
 		}
 		if (queryFlag(filters.recurring)) where.push('every IS NOT NULL');
 		const rows = this.database
 			.prepare(
-				`SELECT * FROM items WHERE ${where.join(' AND ')}
+				`SELECT * FROM ${itemChases} WHERE ${where.join(' AND ')}
 				 ORDER BY (due IS NULL), due, created_at LIMIT ?`
 			)
 			.all(...values, Number(filters.limit) || 500) as TrackerItemRow[];
@@ -75,10 +83,32 @@ export class TrackerItemReadRepository {
 	digest(nowMs: number, timeZone: string = defaultTimeZone): TrackerDigest {
 		const rows = this.database
 			.prepare(
-				`SELECT * FROM items WHERE ${visibleItems} AND ${activeStatus} AND ${visibleAttention}`
+				`SELECT * FROM ${itemChases} WHERE ${visibleItems} AND (
+					chased_count > 0 OR (${activeStatus} AND ${visibleAttention})
+					OR (status <> 'ignored' AND needs_daniel = 1 AND resolved = 0)
+					OR (status IN ('open','in_progress') AND auto IS NOT NULL)
+				)`
 			)
 			.all(new Date(nowMs).toISOString()) as TrackerItemRow[];
-		return buildTrackerDigest(rows, nowMs, timeZone);
+		return buildTrackerDigest(rows, nowMs, timeZone, {
+			runs: new TrackerRunReadRepository(this.database, ''),
+			projects: this.projectStatuses(nowMs)
+		});
+	}
+
+	/** Count every unfinished item, including snoozed ones the digest lists leave out. */
+	private projectStatuses(nowMs: number) {
+		const unfinished = `${visibleItems} AND ${activeStatus}`;
+		const rows = this.database
+			.prepare(`SELECT * FROM items WHERE ${unfinished}`)
+			.all() as TrackerItemRow[];
+		const notes = this.database
+			.prepare(
+				`SELECT item_id, hlc, text FROM item_notes
+				 WHERE item_id IN (SELECT id FROM items WHERE ${unfinished}) ORDER BY hlc DESC`
+			)
+			.all() as TrackerProjectNoteRow[];
+		return summarizeTrackerProjects(rows, notes, nowMs);
 	}
 
 	/** Format a digest using the legacy CLI section order and summaries. */
@@ -94,7 +124,7 @@ export class TrackerItemReadRepository {
 		const exact = this.raw(id);
 		if (exact && !exact.deleted) return exact;
 		const rows = this.database
-			.prepare("SELECT * FROM items WHERE id LIKE ? || '%' AND deleted = 0 LIMIT 2")
+			.prepare(`SELECT * FROM ${itemChases} WHERE id LIKE ? || '%' AND deleted = 0 LIMIT 2`)
 			.all(id) as TrackerItemRow[];
 		if (!rows.length) throw new TrackerItemReadError(`no item "${id}"`, 404);
 		if (rows.length > 1)
@@ -103,7 +133,7 @@ export class TrackerItemReadRepository {
 	}
 
 	private raw(id: string): TrackerItemRow | undefined {
-		return this.database.prepare('SELECT * FROM items WHERE id = ?').get(id) as
+		return this.database.prepare(`SELECT * FROM ${itemChases} WHERE id = ?`).get(id) as
 			| TrackerItemRow
 			| undefined;
 	}
@@ -112,6 +142,31 @@ export class TrackerItemReadRepository {
 		return this.database.prepare(
 			'SELECT hlc, node, text FROM item_notes WHERE item_id = ? ORDER BY hlc'
 		);
+	}
+}
+
+function addStatusFilter(filters: TrackerItemListFilters, where: string[], values: string[]) {
+	const { status } = filters;
+	if (queryFlag(filters.chased)) where.push('chased_count > 0');
+	if (!status) {
+		if (queryFlag(filters.flagged)) where.push("status <> 'ignored'");
+		else if (!queryFlag(filters.chased)) where.push(activeStatus);
+	} else if (status !== 'all') {
+		where.push('status = ?');
+		values.push(normalizeStatus(status));
+	}
+}
+
+function addFieldFilters(filters: TrackerItemListFilters, where: string[], values: string[]) {
+	for (const column of filterColumns) {
+		const value = filters[column];
+		if (!value) continue;
+		where.push(`${column} = ?`);
+		values.push(String(value));
+	}
+	if (filters.stage !== undefined) {
+		where.push(trackerPlanningStageSql + ' = ?');
+		values.push(trackerStage(filters.stage));
 	}
 }
 

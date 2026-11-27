@@ -9,23 +9,22 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingError.ts",
 			"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.ts",
 			"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.types.ts"
 		],
 		"symbols": [
+			"DevicePairingError",
 			"DevicePairingService",
 			"DevicePairingService.constructor",
-			"DevicePairingService.scanned",
-			"DevicePairingService.request",
+			"DevicePairingService.requestAccount",
 			"DevicePairingService.poll",
 			"DevicePairingService.exchange",
 			"DevicePairingInput",
-			"ScanningDevice",
 			"PendingPairing",
 			"DeviceCredentials",
 			"DevicePairingError",
 			"DevicePairingInput",
-			"ScanningDevice",
 			"PendingPairing",
 			"DeviceCredentials"
 		]
@@ -44,80 +43,24 @@
 				]
 			},
 			{
-				"name": "DevicePairingService.scanned.text",
-				"type": "string",
-				"required": true,
-				"description": "The exact text of a scanned pairing offer, which readPairingOffer accepts only in this layout: `harness-pair:v1;aud=harness-phone;env=<production or local>;exp=<10-digit epoch seconds>;host=<40 hex>;pairing=<32 hex>;code=<8 characters>;origin=<relay origin>`, at most 320 characters long. Text with another order, field, spelling, length or version, or an offer this build may not ask with, is refused before any request is sent, as offer-invalid, offer-unsupported, offer-environment or offer-expired.",
-				"examples": [
-					"harness-pair:v1;aud=harness-phone;env=production;exp=1794744000;host=7c1e9a04b5d2f83e61a0c95d4b7e2f10a8c36d59;pairing=4e8b1f7a2c9d06e3b5a18f4c7d2e9b01;code=ABCD2345;origin=https://relay.example.com",
-					"harness-pair:v1;aud=harness-phone;env=local;exp=1794744180;host=2b9f47d0e1c8a365f0d7b2e94c1a68d3e5f07b12;pairing=9d3a6e2f81c4b07e5a92d6f1c3e8b74a;code=KQ7M4WX3;origin=http://127.0.0.1:8787"
-				]
-			},
-			{
-				"name": "DevicePairingService.scanned.device",
-				"type": "ScanningDevice",
-				"required": true,
-				"description": "How this phone names itself to the person who approves it: deviceName is trimmed and must be 1 to 80 characters after trimming, and platform, 'ios' or 'test', may be omitted, which sends 'ios'. A name outside that range rejects with 'Check the pairing details and try again.' before any relay request is sent.",
-				"examples": [
-					{
-						"deviceName": "Studio iPhone",
-						"platform": "ios"
-					},
-					{
-						"deviceName": "Test Phone",
-						"platform": "test"
-					},
-					{
-						"deviceName": "Studio iPhone"
-					}
-				]
-			},
-			{
-				"name": "DevicePairingService.scanned.reading",
-				"type": "OfferReading",
-				"required": true,
-				"description": "The clock and the relay kinds of this build: now is the current time in epoch milliseconds, and environments lists the kinds, 'production' and/or 'local', that this build accepts. An offer is refused as offer-expired when its expiry is at or before now, as offer-environment when its kind is not listed, and as offer-invalid when it expires more than pairingTtlMs (300000) plus skewMs (60000) after now.",
-				"examples": [
-					{
-						"now": 1794743880000,
-						"environments": ["production"]
-					},
-					{
-						"now": 1794743880000,
-						"environments": ["production", "local"]
-					}
-				]
-			},
-			{
-				"name": "DevicePairingService.request.input",
+				"name": "DevicePairingService.requestAccount.input",
 				"type": "DevicePairingInput",
-				"required": true,
-				"description": "The offer and device the phone asks with: origin is a bare relay origin, https or http on localhost, 127.0.0.1 or [::1], with no user information, path, query or fragment; hostId and pairingId are 40 and 32 lowercase hex characters; and code, once upper-cased and stripped of every character outside A-Z and 0-9, is 8 characters from A-H, J-N, P-Z and 2-9. deviceName is trimmed to 1 to 80 characters, and platform, 'ios' or 'test', is optional and is sent as 'ios' when omitted; a failed check rejects with 'Check the pairing details and try again.' before any relay is contacted.",
-				"examples": [
-					{
-						"origin": "https://relay.example.com",
-						"hostId": "7c1e9a04b5d2f83e61a0c95d4b7e2f10a8c36d59",
-						"pairingId": "4e8b1f7a2c9d06e3b5a18f4c7d2e9b01",
-						"code": "ABCD2345",
-						"deviceName": "Studio iPhone",
-						"platform": "ios"
-					},
-					{
-						"origin": "http://127.0.0.1:8787",
-						"hostId": "2b9f47d0e1c8a365f0d7b2e94c1a68d3e5f07b12",
-						"pairingId": "9d3a6e2f81c4b07e5a92d6f1c3e8b74a",
-						"code": "KQ7M4WX3",
-						"deviceName": "Test Phone",
-						"platform": "test"
-					}
-				]
+				"required": true
 			},
 			{
-				"name": "DevicePairingService.request.keys",
+				"name": "DevicePairingService.requestAccount.hostKey",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DevicePairingService.requestAccount.submit",
+				"type": "(body: RelayPairingRequest) => Promise<void>",
+				"required": true
+			},
+			{
+				"name": "DevicePairingService.requestAccount.keys",
 				"type": "RemoteKeyPair",
-				"required": false,
-				"default": "undefined (omitted)",
-				"description": "The phone's own P-256 key pair: its public key is sealed into the request and gives the deviceId (the first 40 hex of its SHA-256). When it is omitted (default undefined), request creates a new pair with remoteKeys() and returns it in the PendingPairing."
+				"required": false
 			},
 			{
 				"name": "DevicePairingService.poll.pending",
@@ -190,120 +133,42 @@
 		"errorStatus": "declared",
 		"operations": [
 			{
-				"name": "DevicePairingService.scanned",
+				"name": "DevicePairingService.requestAccount",
 				"inputs": [
 					{
-						"name": "DevicePairingService.scanned.text",
-						"type": "string",
-						"required": true,
-						"description": "The exact text of a scanned pairing offer, which readPairingOffer accepts only in this layout: `harness-pair:v1;aud=harness-phone;env=<production or local>;exp=<10-digit epoch seconds>;host=<40 hex>;pairing=<32 hex>;code=<8 characters>;origin=<relay origin>`, at most 320 characters long. Text with another order, field, spelling, length or version, or an offer this build may not ask with, is refused before any request is sent, as offer-invalid, offer-unsupported, offer-environment or offer-expired.",
-						"examples": [
-							"harness-pair:v1;aud=harness-phone;env=production;exp=1794744000;host=7c1e9a04b5d2f83e61a0c95d4b7e2f10a8c36d59;pairing=4e8b1f7a2c9d06e3b5a18f4c7d2e9b01;code=ABCD2345;origin=https://relay.example.com",
-							"harness-pair:v1;aud=harness-phone;env=local;exp=1794744180;host=2b9f47d0e1c8a365f0d7b2e94c1a68d3e5f07b12;pairing=9d3a6e2f81c4b07e5a92d6f1c3e8b74a;code=KQ7M4WX3;origin=http://127.0.0.1:8787"
-						]
-					},
-					{
-						"name": "DevicePairingService.scanned.device",
-						"type": "ScanningDevice",
-						"required": true,
-						"description": "How this phone names itself to the person who approves it: deviceName is trimmed and must be 1 to 80 characters after trimming, and platform, 'ios' or 'test', may be omitted, which sends 'ios'. A name outside that range rejects with 'Check the pairing details and try again.' before any relay request is sent.",
-						"examples": [
-							{
-								"deviceName": "Studio iPhone",
-								"platform": "ios"
-							},
-							{
-								"deviceName": "Test Phone",
-								"platform": "test"
-							},
-							{
-								"deviceName": "Studio iPhone"
-							}
-						]
-					},
-					{
-						"name": "DevicePairingService.scanned.reading",
-						"type": "OfferReading",
-						"required": true,
-						"description": "The clock and the relay kinds of this build: now is the current time in epoch milliseconds, and environments lists the kinds, 'production' and/or 'local', that this build accepts. An offer is refused as offer-expired when its expiry is at or before now, as offer-environment when its kind is not listed, and as offer-invalid when it expires more than pairingTtlMs (300000) plus skewMs (60000) after now.",
-						"examples": [
-							{
-								"now": 1794743880000,
-								"environments": ["production"]
-							},
-							{
-								"now": 1794743880000,
-								"environments": ["production", "local"]
-							}
-						]
-					}
-				],
-				"outputs": [
-					{
-						"name": "DevicePairingService.scanned",
-						"type": "Promise<PendingPairing>",
-						"description": "Resolves to the PendingPairing that request builds from the offer read from the scanned text and the device, and rejects when the text is refused or the request fails."
-					}
-				],
-				"errors": [
-					{
-						"name": "Pairing offer invalid, unsupported, expired, or wrong environment",
-						"type": "thrown",
-						"description": "Rejects with Error('offer-<reason>') when readPairingOffer refuses the text, where reason is invalid, unsupported, environment or expired; otherwise it rejects with whatever request rejects with."
-					}
-				],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "DevicePairingService.request",
-				"inputs": [
-					{
-						"name": "DevicePairingService.request.input",
+						"name": "DevicePairingService.requestAccount.input",
 						"type": "DevicePairingInput",
-						"required": true,
-						"description": "The offer and device the phone asks with: origin is a bare relay origin, https or http on localhost, 127.0.0.1 or [::1], with no user information, path, query or fragment; hostId and pairingId are 40 and 32 lowercase hex characters; and code, once upper-cased and stripped of every character outside A-Z and 0-9, is 8 characters from A-H, J-N, P-Z and 2-9. deviceName is trimmed to 1 to 80 characters, and platform, 'ios' or 'test', is optional and is sent as 'ios' when omitted; a failed check rejects with 'Check the pairing details and try again.' before any relay is contacted.",
-						"examples": [
-							{
-								"origin": "https://relay.example.com",
-								"hostId": "7c1e9a04b5d2f83e61a0c95d4b7e2f10a8c36d59",
-								"pairingId": "4e8b1f7a2c9d06e3b5a18f4c7d2e9b01",
-								"code": "ABCD2345",
-								"deviceName": "Studio iPhone",
-								"platform": "ios"
-							},
-							{
-								"origin": "http://127.0.0.1:8787",
-								"hostId": "2b9f47d0e1c8a365f0d7b2e94c1a68d3e5f07b12",
-								"pairingId": "9d3a6e2f81c4b07e5a92d6f1c3e8b74a",
-								"code": "KQ7M4WX3",
-								"deviceName": "Test Phone",
-								"platform": "test"
-							}
-						]
+						"required": true
 					},
 					{
-						"name": "DevicePairingService.request.keys",
+						"name": "DevicePairingService.requestAccount.hostKey",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "DevicePairingService.requestAccount.submit",
+						"type": "(body: RelayPairingRequest) => Promise<void>",
+						"required": true
+					},
+					{
+						"name": "DevicePairingService.requestAccount.keys",
 						"type": "RemoteKeyPair",
-						"required": false,
-						"default": "undefined (omitted)",
-						"description": "The phone's own P-256 key pair: its public key is sealed into the request and gives the deviceId (the first 40 hex of its SHA-256). When it is omitted (default undefined), request creates a new pair with remoteKeys() and returns it in the PendingPairing."
+						"required": false
 					}
 				],
 				"outputs": [
 					{
-						"name": "DevicePairingService.request",
-						"type": "Promise<PendingPairing>",
-						"description": "Resolves once the relay answers the request with OK, to a PendingPairing holding the input, the checked origin, the device keys, the relay's hostKey, the deviceId, the verifier whose challenge was sent, and the approval key."
+						"name": "DevicePairingService.requestAccount",
+						"type": "Promise<PendingPairing>"
 					}
 				],
 				"errors": [
 					{
 						"name": "DevicePairingError",
-						"type": "thrown",
-						"description": "Rejects with 'Check the pairing details and try again.' when the input fails the checks, with 'The relay did not present the key of this computer.' when the relay's hostKey is missing or does not derive hostId, and with 'The pairing was refused or has expired.' when either relay call is not OK. Errors from fetch, response parsing and the crypto helpers propagate unchanged."
+						"type": "thrown"
 					}
 				],
-				"errorStatus": "declared"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "DevicePairingService.poll",
@@ -414,11 +279,6 @@
 	"dependencies": [
 		{
 			"unit": "remote.function.pairing-envelope",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "remote.function.pairing-offer",
 			"via": "import",
 			"origin": "derived"
 		},

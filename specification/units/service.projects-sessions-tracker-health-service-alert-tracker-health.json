@@ -1,0 +1,121 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-health-service-alert-tracker-health",
+	"uid": "u_kl47qqa2cz",
+	"kind": "service",
+	"title": "alertTrackerHealth",
+	"responsibility": "Owns the alertTrackerHealth service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-health-service/alertTrackerHealth.ts"],
+		"symbols": ["alertTrackerHealth"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "alertTrackerHealth.target",
+				"type": "TrackerHealthAlertTarget",
+				"required": true
+			},
+			{
+				"name": "alertTrackerHealth.report",
+				"type": "TrackerHealthReport",
+				"required": true
+			},
+			{
+				"name": "alertTrackerHealth.state",
+				"type": "TrackerHealthState",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "alertTrackerHealth",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "alertTrackerHealth",
+				"inputs": [
+					{
+						"name": "alertTrackerHealth.target",
+						"type": "TrackerHealthAlertTarget",
+						"required": true
+					},
+					{
+						"name": "alertTrackerHealth.report",
+						"type": "TrackerHealthReport",
+						"required": true
+					},
+					{
+						"name": "alertTrackerHealth.state",
+						"type": "TrackerHealthState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "alertTrackerHealth",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-health",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-alert-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-due",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-fallback",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-state",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-health-service/alertTrackerHealth.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-health-service/alertTrackerHealth.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

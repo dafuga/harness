@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostService.ts",
-			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostService.types.ts"
+			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostService.types.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostUnavailableError.ts"
 		],
 		"symbols": [
 			"RemoteHostService",
@@ -21,6 +22,7 @@
 			"RemoteHostService.start",
 			"RemoteHostService.enable",
 			"RemoteHostService.disable",
+			"RemoteHostService.linkAccount",
 			"RemoteHostService.screen",
 			"RemoteHostService.suspend",
 			"RemoteHostService.resume",
@@ -31,7 +33,8 @@
 			"RemoteHostService.saved",
 			"RemoteHostOptions",
 			"RemoteHostUnavailableError",
-			"RemoteHostOptions"
+			"RemoteHostOptions",
+			"RemoteHostUnavailableError"
 		]
 	},
 	"contract": {
@@ -48,6 +51,11 @@
 				"type": "(status: RemoteHostStatus) => void",
 				"required": true,
 				"description": "The function called with each published RemoteHostStatus. It is kept in a Set, so adding the same function twice still gives one listener."
+			},
+			{
+				"name": "RemoteHostService.linkAccount.ownerId",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteHostService.screen.locked",
@@ -624,6 +632,24 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "RemoteHostService.linkAccount",
+				"inputs": [
+					{
+						"name": "RemoteHostService.linkAccount.ownerId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostService.linkAccount",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "RemoteHostService.screen",
 				"inputs": [
 					{
@@ -1003,6 +1029,11 @@
 		},
 		{
 			"unit": "desktop.function.remote-host-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.networking-security-remote-host-service-remote-host-account",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -80,7 +80,10 @@ export class NativeAuthService {
 	private serial(action: () => Promise<NativeHostedStatus>): Promise<NativeHostedStatus> {
 		const generation = this.generation;
 		const next = this.queue.then(action).then((status) => {
-			if (generation === this.generation) this.signedIn = status.state === 'signed-in';
+			if (generation === this.generation) {
+				this.signedIn = status.state === 'signed-in';
+				if (this.signedIn && status.actor) this.options.onSignIn?.(status.actor.id);
+			}
 			return status;
 		});
 		this.queue = next.catch(() => undefined);

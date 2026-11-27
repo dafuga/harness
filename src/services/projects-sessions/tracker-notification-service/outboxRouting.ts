@@ -1,5 +1,4 @@
 // @harness-uid u_vqnqshfas2
-import { quietHourBoundary } from '../../../helpers/attention-timing/quietHourBoundary';
 import type {
 	TrackerDestination,
 	TrackerNotificationItem,
@@ -11,7 +10,7 @@ import type {
 	TrackerNotificationState
 } from './notificationState.types';
 import type { OutboxGroup, OutboxRecipient } from './outboxRouting.types';
-import { flagged, holdRegularReminder, readyRows } from './notificationRules';
+import { flagged, holdRegularReminder, parkedUntil, readyRows } from './notificationRules';
 import { outboxBatch, outboxSingle } from './webhookBatch';
 import { normalizeActor } from './webhookEvents';
 
@@ -55,7 +54,7 @@ function recipient(
 	return rule === 'cos' ? fallback : undefined;
 }
 
-export function quietOutboxEvent(row: OutboxRow): boolean {
+function attentionOutboxEvent(row: OutboxRow): boolean {
 	return (
 		row.kind === 'needs_daniel' ||
 		row.kind === 'due' ||
@@ -67,7 +66,7 @@ function relevant(row: OutboxRow, item: TrackerNotificationItem | undefined): bo
 	if (!item || item.deleted) return false;
 	if (row.kind === 'needs_daniel') return flagged(item);
 	if (row.kind === 'due') return item.status !== 'done' && item.due === row.payload.due;
-	return item.status === 'blocked';
+	return item.status === 'blocked' && (!row.payload.needs_daniel || flagged(item));
 }
 
 function drop(row: OutboxRow, reason: string): undefined {
@@ -90,14 +89,12 @@ function sendReady(
 		return row.status !== 'dropped';
 	}
 	if (heldByReminder(row, item, options, now)) return false;
-	if (!quietOutboxEvent(row)) return true;
+	if (!attentionOutboxEvent(row)) return true;
 	if (!relevant(row, item)) {
 		drop(row, 'no longer relevant');
 		return false;
 	}
-	const release = quietHourBoundary(now, options.quietHours);
-	if (release > now) row.nextAt = release;
-	return release <= now;
+	return parkedUntil(item) <= now;
 }
 
 function heldByReminder(
@@ -172,7 +169,7 @@ export function nextOutbox(
 		if (!target) continue;
 		if (
 			!row.itemId ||
-			(target.route === null && row.kind !== 'recurring_due' && !quietOutboxEvent(row))
+			(target.route === null && row.kind !== 'recurring_due' && !attentionOutboxEvent(row))
 		) {
 			singles.push(row);
 		} else {

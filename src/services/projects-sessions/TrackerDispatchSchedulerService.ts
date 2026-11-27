@@ -1,28 +1,29 @@
 // @harness-uid u_4rnjtzp6cn
-import { randomUUID } from 'node:crypto';
+import { trackerItemError } from '../../utils/projects-sessions/trackerItemError';
 import type { TrackerDispatchRepository } from '../../repositories/projects-sessions/TrackerDispatchRepository';
 import type { TrackerDispatchCandidate } from '../../repositories/projects-sessions/TrackerDispatchRepository.types';
 import type {
 	TrackerDispatcherService,
-	TrackerLaunchIntent,
 	TrackerDispatchResult,
 	TrackerRunReceipt
 } from '../agents-providers/TrackerDispatcherService';
-import { ownsLaunch } from '../agents-providers/tracker-dispatcher-service/launchEligibility';
+import { liveOverdueSuffix } from '../agents-providers/tracker-dispatcher-service/runMonitor';
+import { automaticEnabled } from '../agents-providers/tracker-dispatcher-service/launchEligibility';
 import {
 	observeReservedRun,
 	reconcileLegacyRuns,
 	schedulerWaits
 } from './trackerDispatchObservations';
-import type {
-	TrackerDispatchRunner,
-	TrackerDispatchSchedulerOptions,
-	TrackerReservedStart
-} from './TrackerDispatchSchedulerService.types';
+import type { TrackerDispatchSchedulerOptions } from './TrackerDispatchSchedulerService.types';
+import { TrackerDispatchQueue } from './trackerDispatchQueue';
+
+const tickTimeout = 120_000;
+const tickTimeoutMessage = 'dispatch tick timed out';
 
 /** Reconcile committed attempts before reserving new work for the node. */
 export class TrackerDispatchSchedulerService {
-	private ticking = false;
+	private currentTick?: Promise<void>;
+	private stopping = false;
 	private readonly waits = new Map<string, { token: string; reason: string }>();
 	private lastTickAt: string | null = null;
 	private lastError: string | null = null;
@@ -32,10 +33,10 @@ export class TrackerDispatchSchedulerService {
 		private readonly options: TrackerDispatchSchedulerOptions
 	) {}
 
-	status() {
+	status(minimumAge?: number) {
 		return {
-			enabled: this.options.policy?.enabled !== false,
-			stuck: this.repository.stuckRequests().map(({ flagged, ...item }) => ({
+			enabled: this.options.policy ? automaticEnabled(this.options.policy) : true,
+			stuck: this.repository.stuckRequests(minimumAge).map(({ flagged, ...item }) => ({
 				...item,
 				computer: item.computer ?? 'box',
 				reason: flagged
@@ -49,146 +50,161 @@ export class TrackerDispatchSchedulerService {
 		return {
 			enabled: this.options.policy?.enabled !== false,
 			last_tick_at: this.lastTickAt,
+			automatic_enabled: this.options.policy ? automaticEnabled(this.options.policy) : true,
+			capacity: this.lastTickAt ? (this.options.runner.capacity?.() ?? null) : null,
 			last_error: this.lastError,
 			...schedulerWaits(this.waits, limit)
 		};
 	}
 
-	async tick(signal: AbortSignal): Promise<void> {
-		if (signal.aborted || this.ticking) return;
-		this.ticking = true;
-		this.waits.clear();
+	async stop(reference: string, signal: AbortSignal) {
+		if (this.stopping) throw trackerItemError('another stop is in progress', 409);
+		this.stopping = true;
 		try {
-			await this.options.runner.refresh?.(signal, this.repository.managedRuns());
+			await this.currentTick?.catch(() => undefined);
 			signal.throwIfAborted();
-			await reconcileLegacyRuns(this.repository, this.options.runner, signal);
-			if (!(await this.reconcile(signal)))
-				await requestNextCandidate(this.repository.candidates(), (candidate) =>
-					this.claim(candidate, signal)
-				);
-			if (signal.aborted) return;
-			this.lastTickAt = new Date((this.options.policy?.now ?? Date.now)()).toISOString();
-			this.lastError = null;
-		} catch (error) {
-			if (!signal.aborted) this.lastError = 'dispatch tick failed';
-			throw error;
+			const { item, run } = this.repository.launches.stopTarget(reference);
+			if (run && (run.state !== 'finished' || run.outcome === 'blocked')) {
+				const reserved = run.dispatch_at !== undefined || run.started_at !== null;
+				if (reserved && !(await this.options.runner.stop?.(run, signal)))
+					throw trackerItemError(
+						`Run #${run.id} is opted out; Tracker could not confirm its session stopped`,
+						409
+					);
+				this.repository.launches.finishStoppedRun(run);
+			}
+			return item;
 		} finally {
-			this.ticking = false;
+			this.stopping = false;
 		}
 	}
 
-	private async reconcile(signal: AbortSignal): Promise<boolean> {
+	async tick(signal: AbortSignal): Promise<void> {
+		if (signal.aborted || this.stopping || this.currentTick) return;
+		const watchdog = dispatchWatchdog(signal, (lifetime) => this.poll(lifetime));
+		this.currentTick = watchdog.poll;
+		try {
+			await this.currentTick;
+		} catch (failure) {
+			if (watchdog.timedOut()) this.lastError = tickTimeoutMessage;
+			else if (!signal.aborted) this.lastError = 'dispatch tick failed';
+			throw failure;
+		} finally {
+			this.currentTick = undefined;
+		}
+	}
+
+	private async poll(signal: AbortSignal): Promise<void> {
+		this.waits.clear();
+		await this.options.runner.refresh?.(signal, this.repository.managedRuns());
+		signal.throwIfAborted();
+		await reconcileLegacyRuns(this.repository, this.options.runner, signal);
+		signal.throwIfAborted();
+		const queued = await this.reconcile(signal);
+		await creditHumanRedos(this.repository, this.dispatcher, signal);
+		signal.throwIfAborted();
+		const queue = new TrackerDispatchQueue(
+			this.repository,
+			this.dispatcher,
+			this.options,
+			this.waits
+		);
+		const candidates = this.repository.candidates();
+		await serveQueue(queue, { candidates, queued }, signal);
+		signal.throwIfAborted();
+		this.lastTickAt = new Date((this.options.policy?.now ?? Date.now)()).toISOString();
+		this.lastError = null;
+	}
+
+	private async reconcile(signal: AbortSignal): Promise<TrackerRunReceipt[]> {
+		const queued: TrackerRunReceipt[] = [];
 		for (const run of this.repository.managedRuns()) {
 			signal.throwIfAborted();
 			if (run.state === 'queued' && run.dispatch_at === undefined) {
-				const decision = await prepareQueuedRun(run, this.dispatcher, this.options, signal);
-				if (await this.release({ id: run.item_id, token: run.auto_token }, decision, signal))
-					return true;
+				queued.push(run);
 				continue;
 			}
 			const event = await observeReservedRun(run, this.options, signal);
-			if (event) await this.dispatcher.record(run.item_id, run, event);
-			else if (run.state === 'queued' && !this.waits.has(run.item_id))
+			signal.throwIfAborted();
+			if (event) {
+				const result = await this.dispatcher.record(run.item_id, run, event);
+				signal.throwIfAborted();
+				reportOverdue(run, result, this.options);
+			} else if (run.state === 'queued' && !this.waits.has(run.item_id))
 				this.waits.set(run.item_id, {
 					token: run.auto_token,
 					reason: 'waiting for host startup evidence'
 				});
 		}
-		return false;
-	}
-
-	private async claim(candidate: TrackerDispatchCandidate, signal: AbortSignal): Promise<boolean> {
-		signal.throwIfAborted();
-		const { id, auto, launch_source, launch_target } = candidate;
-		const source = launch_source === 'due' ? 'due' : 'manual';
-		if (auto) return this.claimIntent(id, { token: auto, source, target: launch_target }, signal);
-		if (!this.options.scheduleDue) return false;
-		const request = await this.dispatcher.request(id, { source: 'due', token: randomUUID() });
-		return request.status === 'requested' && this.claimIntent(id, request.intent, signal);
-	}
-
-	private async claimIntent(id: string, intent: TrackerLaunchIntent, signal: AbortSignal) {
-		const { policy, grant } = this.options;
-		if (policy && !ownsLaunch(intent, policy)) return false;
-		const permission =
-			intent.source === 'due' ? await grant?.(id, intent.token, signal) : undefined;
-		signal.throwIfAborted();
-		return this.release(
-			{ id, token: intent.token },
-			await this.dispatcher.claim(id, intent.token, permission),
-			signal
-		);
-	}
-
-	private async release(
-		{ id, token }: { id: string; token: string },
-		result: TrackerDispatchResult,
-		signal: AbortSignal
-	) {
-		if (result.status === 'held' && !this.waits.has(id))
-			this.waits.set(id, { token, reason: result.reason });
-		if (result.status !== 'start') return false;
-		const { run } = result;
-		const event = await startReservedRun(this.options.runner, result, signal);
-		if (!event) {
-			this.waits.set(run.item_id, {
-				token: run.auto_token,
-				reason: 'waiting for host startup evidence'
-			});
-			return false;
-		}
-		const observed = await this.dispatcher.record(run.item_id, run, event);
-		return event.type === 'session' && observed.status === 'recorded';
+		return queued;
 	}
 }
 
-async function requestNextCandidate(
-	candidates: readonly TrackerDispatchCandidate[],
-	claim: (candidate: TrackerDispatchCandidate) => Promise<boolean>
+async function creditHumanRedos(
+	repository: TrackerDispatchRepository,
+	dispatcher: TrackerDispatcherService,
+	signal: AbortSignal
+) {
+	for (const [itemId, runIds] of repository.humanRedoCandidates()) {
+		signal.throwIfAborted();
+		await dispatcher.creditHumanRedo(itemId, runIds);
+	}
+}
+
+function dispatchWatchdog(signal: AbortSignal, poll: (signal: AbortSignal) => Promise<void>) {
+	const deadline = new AbortController();
+	const lifetime = AbortSignal.any([signal, deadline.signal]);
+	const timer = setTimeout(() => deadline.abort(new Error(tickTimeoutMessage)), tickTimeout);
+	let cancel!: () => void;
+	const aborted = new Promise<never>((_, reject) => {
+		cancel = () => reject(lifetime.reason);
+		lifetime.addEventListener('abort', cancel, { once: true });
+	});
+	const completed = Promise.race([poll(lifetime), aborted]).finally(() => {
+		clearTimeout(timer);
+		lifetime.removeEventListener('abort', cancel);
+	});
+	return { poll: completed, timedOut: () => deadline.signal.aborted };
+}
+
+function reportOverdue(
+	run: TrackerRunReceipt,
+	result: TrackerDispatchResult,
+	{ runner }: TrackerDispatchSchedulerOptions
+) {
+	if (result.status === 'held' && result.reason.endsWith(liveOverdueSuffix))
+		runner.overdue?.(run, result.reason);
+}
+
+async function serveQueue(
+	queue: TrackerDispatchQueue,
+	{ candidates, queued }: { candidates: TrackerDispatchCandidate[]; queued: TrackerRunReceipt[] },
+	signal: AbortSignal
+) {
+	const claim = (candidate: TrackerDispatchCandidate) => queue.claim(candidate, signal);
+	const urgent = (candidate: TrackerDispatchCandidate) => candidate.priority === 'urgent';
+	if (await requestNextCandidate(candidates.filter(explicitCandidate), claim)) return;
+	const automatic = candidates.filter((candidate) => !explicitCandidate(candidate));
+	if (await requestNextCandidate(automatic.filter(urgent), claim)) return;
+	if (await requestNextCandidate(queued, (run) => queue.retry(run, signal))) return;
+	await requestNextCandidate(
+		automatic.filter((candidate) => !urgent(candidate)),
+		claim
+	);
+}
+
+function explicitCandidate(candidate: TrackerDispatchCandidate) {
+	return Boolean(
+		candidate.auto && (!candidate.launch_source || candidate.launch_source === 'manual')
+	);
+}
+
+async function requestNextCandidate<Candidate>(
+	candidates: readonly Candidate[],
+	claim: (candidate: Candidate) => Promise<boolean>
 ) {
 	for (const candidate of candidates) {
-		if (await claim(candidate)) return;
+		if (await claim(candidate)) return true;
 	}
-}
-
-async function prepareQueuedRun(
-	run: TrackerRunReceipt,
-	dispatcher: TrackerDispatcherService,
-	{ grant }: TrackerDispatchSchedulerOptions,
-	signal: AbortSignal
-) {
-	const permission =
-		run.launch_source === 'due' ? await grant?.(run.item_id, run.auto_token, signal) : undefined;
-	signal.throwIfAborted();
-	return dispatcher.prepare(run.item_id, run, permission);
-}
-
-async function startReservedRun(
-	runner: TrackerDispatchRunner,
-	reservation: TrackerReservedStart,
-	signal: AbortSignal
-) {
-	signal.throwIfAborted();
-	try {
-		return await runner.start(
-			reservation,
-			signal,
-			launchCompletionInstructions(reservation.run.item_id)
-		);
-	} catch {
-		// The host might have started the session before losing its reply.
-		return undefined;
-	} finally {
-		signal.throwIfAborted();
-	}
-}
-
-function launchCompletionInstructions(itemId: string): string {
-	return [
-		'## Completion and worktree cleanup',
-		'',
-		`After verification passes, run \`tracker done ${itemId.slice(0, 6)} --note "<result, PR link, tests run>"\` first and verify it succeeds.`,
-		'Remove a task-owned worktree only as the final step, after leaving it and only when authorized.',
-		'Never remove your current working directory. Leave cleanup to the launcher or a separate session if you are still in the worktree.'
-	].join('\n');
+	return false;
 }

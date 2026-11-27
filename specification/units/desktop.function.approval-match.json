@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/desktop-run-service/ApprovalMismatchError.ts",
 			"packages/desktop/src/services/agents-providers/desktop-run-service/approvalMatch.ts",
 			"packages/desktop/src/services/agents-providers/desktop-run-service/approvalMatch.types.ts"
 		],
-		"symbols": ["approvalMatch", "ApprovalMismatchError"]
+		"symbols": ["ApprovalMismatchError", "approvalMatch", "ApprovalMismatchError"]
 	},
 	"contract": {
 		"origin": "declared",

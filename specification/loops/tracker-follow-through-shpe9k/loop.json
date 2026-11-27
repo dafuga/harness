@@ -1,0 +1,65 @@
+{
+	"name": "tracker-follow-through-shpe9k",
+	"goal": "Replay item chasing, unattended work admission, and unanswered asks through the native Tracker lifecycle",
+	"createdAt": "2026-11-24T21:14:26.755Z",
+	"updatedAt": "2026-11-24T21:41:39.937Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-24T21:16:08.512Z",
+			"evidence": "The native CLI must persist chase history across sync and finish, keep capacity-held work queued, and ask again on the Lisbon schedule."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-24T21:16:10.285Z",
+			"evidence": "Existing CLI replay lacked chase and completion assertions, host-capacity fixture only used prequeued items, and direct-reminder fixture tested hourly retries."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-24T21:34:00.054Z",
+			"evidence": "Committed 4d74b5e18e reproduced unavailable chase, missing queued idle work, and the earlier reminder interval in the same three frozen test files. Signed MB2 replay also rejected the chase command at the red checkpoint."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-24T21:41:37.299Z",
+			"evidence": "Synced journal chase events, dispatcher admission for idle work, and durable Lisbon follow-ups use existing Tracker boundaries."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T21:41:39.937Z",
+			"evidence": "Frozen corpus failed at 3027531294 and passed at c2cd0bc4ea. Exact native CLI and tmux replay on harbor-mbp-2 passed eight tests."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

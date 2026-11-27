@@ -1,18 +1,31 @@
 // @harness-uid u_xba7ieg4je
+import { trackerAttachments } from '../../../utils/projects-sessions/trackerAttachments';
+import { trackerItemPriority } from '../../../utils/projects-sessions/trackerItemPriority';
 import type { SqliteStatement } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerItem, TrackerItemRow } from '../TrackerItemReadRepository.types';
 import type { StoredTrackerCallback, StoredTrackerNote } from './serializeTrackerItem.types';
+import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
+import {
+	trackerPlanning,
+	trackerPlanningStage
+} from '../../../utils/projects-sessions/trackerPlanning';
+import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { TrackerItemReadError } from './TrackerItemReadError';
 
 /** Shape an item for public reads. SQLite-only fields and callback targets stay private. */
 export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement): TrackerItem {
 	return {
 		id: row.id,
-		kind: row.kind,
+		...itemClassification(row),
 		title: row.title,
 		status: row.status,
+		stage: trackerPlanningStage(row),
+		planning: trackerPlanning(row),
 		blocked_reason: row.status === 'blocked' ? row.blocked_reason : null,
 		...ignoredFields(row),
+		...trackerChaseFields(row),
+		...(row.next_step && { next_step: row.next_step }),
+		...(row.parked_until && { parked_until: row.parked_until }),
 		due: row.due,
 		remind_at: nullIfEmpty(row.remind_at),
 		auto: nullIfEmpty(row.auto),
@@ -37,13 +50,10 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		parent: row.parent,
 		notes: row.notes,
 		...(row.adapter_instructions ? { adapter_instructions: row.adapter_instructions } : {}),
-		notes_log: (notes.all(row.id) as StoredTrackerNote[]).map(({ hlc, node, text }) => ({
-			at: new Date(hlcMilliseconds(hlc)).toISOString(),
-			node,
-			text
-		})),
+		notes_log: notesLog(row, notes),
 		needs_daniel: Boolean(row.needs_daniel),
 		question: row.question,
+		...askFields(row),
 		answer: row.answer,
 		answered_at: row.answered_at,
 		answered_by: row.answered_by,
@@ -54,6 +64,69 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		updated_at: row.updated_at,
 		deleted: Boolean(row.deleted)
 	};
+}
+
+export function trackerChaseFields(row: TrackerItemRow) {
+	if (!row.chased_clock || !row.chased_count) return {};
+	return {
+		chased_at: new Date(hlcMilliseconds(row.chased_clock)).toISOString(),
+		chased_by: row.chased_by ?? null,
+		chased_reason: row.chased_reason ?? null,
+		chased_count: row.chased_count
+	};
+}
+
+export function trackerAskAge(row: TrackerItemRow, now: number) {
+	const { needs_daniel } = JSON.parse(row.clocks) as { needs_daniel?: string };
+	const at =
+		trackerClockMilliseconds(needs_daniel ?? '') ||
+		Date.parse(row.updated_at ?? row.created_at ?? '') ||
+		now;
+	return {
+		asked_at: new Date(at).toISOString(),
+		waiting_minutes: Math.max(0, Math.floor((now - at) / 60_000))
+	};
+}
+
+function notesLog(row: TrackerItemRow, notes: SqliteStatement) {
+	return (notes.all(row.id) as StoredTrackerNote[]).map(({ hlc, node, text }) => ({
+		at: new Date(hlcMilliseconds(hlc)).toISOString(),
+		node,
+		text
+	}));
+}
+
+/** What the digest shows of an open ask: how long it has waited, its choices and confirm kind. */
+export function trackerAskFields(row: TrackerItemRow, open: boolean, now: number) {
+	if (!open) return {};
+	return {
+		...trackerAskAge(row, now),
+		...(row.options && { options: trackerAskOptions(row.options) }),
+		...(row.confirm && { confirm: row.confirm }),
+		...attachmentListing(row)
+	};
+}
+
+/** Options travel only on asks that have them, so plain items keep their old shape. */
+function askFields(row: TrackerItemRow) {
+	const options = trackerAskOptions(row.options);
+	return {
+		...(options.length && { options }),
+		...(options.length && row.needs_daniel && !row.resolved && { asked_at: askedAt(row) }),
+		...(options.length && row.confirm && { confirm: row.confirm }),
+		...(row.answer_option && { answer_option: Number(row.answer_option) }),
+		...attachmentListing(row)
+	};
+}
+
+/** Only the small listing is read out; documents are fetched one at a time. */
+function attachmentListing(row: TrackerItemRow) {
+	const attachments = trackerAttachments(row.attachments);
+	return attachments.length ? { attachments } : {};
+}
+
+function askedAt(row: TrackerItemRow) {
+	return trackerAskAge(row, 0).asked_at;
 }
 
 function ignoredFields(row: TrackerItemRow) {
@@ -94,4 +167,8 @@ function webhookLabel(url: string): string {
 	} catch {
 		return 'webhook';
 	}
+}
+
+function itemClassification({ kind, priority }: TrackerItemRow) {
+	return { kind, priority: trackerItemPriority(priority, 'normal') };
 }

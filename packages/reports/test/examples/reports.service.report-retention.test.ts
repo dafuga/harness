@@ -5,8 +5,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { ReportRetentionService } from '../../src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService';
-
-type Repository = NonNullable<ConstructorParameters<typeof ReportRetentionService>[0]>;
+import type { Repository } from './reports.service.report-retention.test.types';
 
 // A minimal repository stand-in: the service only reads root, directory(), list() and get().
 function fakeRepository(root: string): Repository {

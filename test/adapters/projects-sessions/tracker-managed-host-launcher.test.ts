@@ -9,6 +9,11 @@ import {
 	fixtureDockerImage as image,
 	managedFixtureBindings
 } from '../../support/trackerManagedProcessFixture';
+import {
+	verifyClaudeRefusals,
+	verifyUnusableWorktree
+} from '../../support/trackerClaudeStartupFixture';
+import { verifyNativeInvocations } from '../../support/trackerNativeInvocationAssertions';
 import { withTempRepo } from '../../support/temporary';
 import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
@@ -17,15 +22,17 @@ vi.mock('node:os', async (importOriginal) => {
 	const os = await importOriginal<typeof Os>();
 	return { ...os, userInfo: () => ({ ...os.userInfo(), username: 'unknown' }) };
 });
-
 const node = 'daniel-primary-mbp';
 const signal = new AbortController().signal;
 const client = { node, role: 'hub' as const, apiPort: 49281, syncPort: 49282 };
-
-test('launches native and managed Docker workers through isolated tmux and reuses their durable attempt evidence', () =>
-	measureWorkload('adapter.projects-sessions-tracker-tmux', 'managed-worker-roundtrip', () =>
-		withTempRepo(proveManagedWorker)
-	));
+test(
+	'launches native and managed Docker workers through isolated tmux and reuses their durable attempt evidence',
+	{ timeout: 30_000 },
+	() =>
+		measureWorkload('adapter.projects-sessions-tracker-tmux', 'managed-worker-roundtrip', () =>
+			withTempRepo(proveManagedWorker)
+		)
+);
 
 async function proveManagedWorker({ root, git }: TemporaryRepo) {
 	git('commit', '--allow-empty', '-m', 'Fixture source');
@@ -45,7 +52,8 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 		...native,
 		runId: 3,
 		key: JSON.stringify([native.itemId, 'reserved-claude-fixture', 1]),
-		selection: { provider: 'claude', model: 'claude-sonnet-4-6', intelligence: 'high' }
+		selection: { provider: 'claude', model: 'claude-sonnet-4-6', intelligence: 'high' },
+		sessionName: 'Harness: Fixture'
 	} satisfies TrackerHostStartRequest;
 	vi.stubEnv('HOME', paths.profiles.accountHome);
 	vi.stubEnv('USER', 'untrusted-fixture-user');
@@ -56,6 +64,8 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 				session: { key: input.key, state: 'exited', exitCode: 0 }
 			});
 		}
+		await verifyClaudeRefusals(launcher, claude, paths.profiles.accountHome);
+		await verifyUnusableWorktree(launcher, native);
 	} finally {
 		vi.unstubAllEnvs();
 	}
@@ -159,48 +169,7 @@ function verifyWorkerInvocations(profiles: ReturnType<typeof managedFixtureBindi
 	});
 	expect(Buffer.byteLength(docker[0].brief)).toBeLessThan(16_000);
 	expect(docker[0].cwd).toMatch(/\/effects\/[a-f0-9]{64}\/worktree$/);
-	verifyNativeInvocations(native[0], claude[0], docker[0].cwd);
-}
-
-function verifyNativeInvocations(
-	codex: { cwd: string },
-	claude: { cwd: string },
-	dockerWorktree: string
-) {
-	expect(codex).toMatchObject({
-		argv: [
-			'--dangerously-bypass-approvals-and-sandbox',
-			'-m',
-			'gpt-6.2-sol',
-			'-c',
-			'model_reasoning_effort="high"',
-			expect.stringContaining('def123abc4')
-		],
-		image: null,
-		user: null,
-		secret: false,
-		client: { node, apiPort: client.apiPort },
-		legacy: '/dev/null/tracker',
-		guestAuthFile: null
-	});
-	expect(claude).toMatchObject({
-		argv: [
-			'--dangerously-skip-permissions',
-			'--model',
-			'claude-sonnet-4-6',
-			'--effort',
-			'high',
-			expect.stringContaining('def123abc4')
-		],
-		image: null,
-		user: spawnSync('/usr/bin/id', ['-un'], { encoding: 'utf8' }).stdout.trim(),
-		secret: false,
-		client: { node, apiPort: client.apiPort },
-		legacy: '/dev/null/tracker',
-		guestAuthFile: null
-	});
-	expect(codex.cwd).not.toBe(dockerWorktree);
-	expect(claude.cwd).not.toBe(codex.cwd);
+	verifyNativeInvocations(native[0], claude[0], { dockerWorktree: docker[0].cwd, client });
 }
 
 function verifySecretSafety(profiles: { native: string; docker: string }, briefs: string[]) {

@@ -1,4 +1,5 @@
 // @harness-uid u_g7kdpz7bel
+import { trackerReminderTitle } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerItemSnapshot } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
 import type { TrackerItemInput } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import { normalizeTrackerItemFields } from '../../../utils/projects-sessions/normalizeTrackerItemFields';
@@ -28,7 +29,15 @@ export function planTrackerManualLaunch(
 			}
 		};
 	}
-	if (item.status === 'ignored') throw trackerItemError('item is ignored', 409);
+	return planTrackerExplicitLaunch(item, body, context);
+}
+
+function planTrackerExplicitLaunch(
+	item: TrackerItemSnapshot,
+	body: TrackerItemInput,
+	context: TrackerItemMutationContext
+) {
+	guardManualLaunch(item);
 	const { project, repo, computer, model, sensitive } = body;
 	const reset = item.status === 'blocked' || item.status === 'done';
 	const plan = planTrackerItemMutation(
@@ -54,4 +63,15 @@ export function planTrackerManualLaunch(
 			)
 		);
 	return plan;
+}
+
+function guardManualLaunch(item: TrackerItemSnapshot) {
+	if (item.kind === 'reminder' || trackerReminderTitle(item.title ?? ''))
+		throw trackerItemError('reminders cannot launch', 409);
+	if (item.status === 'ignored') throw trackerItemError('item is ignored', 409);
+	if (item.status === 'blocked' && item.needs_daniel && !item.resolved)
+		throw trackerItemError(
+			`waiting on Daniel (flagged). Review with tracker show ${item.id}.`,
+			409
+		);
 }
