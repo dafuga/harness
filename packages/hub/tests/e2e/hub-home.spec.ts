@@ -116,7 +116,9 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 	await capture(page, position, 'agent-chat');
 	const opener = chat.getByRole('button', { name: 'Open chat', exact: true });
 	await opener.click();
-	const widget = page.getByRole('dialog', { name: 'Chief of Staff', exact: true }).last();
+	const widget = page
+		.getByRole('dialog', { name: 'Chief of Staff', exact: true })
+		.filter({ has: page.getByRole('textbox', { name: 'Message Chief of Staff' }) });
 	await widget
 		.getByRole('textbox', { name: 'Message Chief of Staff' })
 		.fill('Synthetic Hub message');
