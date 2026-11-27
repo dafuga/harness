@@ -32,13 +32,13 @@ export class PairingExchangeService {
 		holder?: string
 	): Promise<RelayPairingExchange | undefined> {
 		const proof = verifier ? await pkceChallenge(verifier) : '';
-		const hostId = this.store.host()?.hostId ?? '';
+		const hostId = this.hostId();
 		const device = this.store.pairing(pairingId);
 		if (holder && device?.holder !== holder) return undefined;
 		const deviceId = device?.deviceId ?? '';
 		const credential = randomCredential();
 		const hash = await credentialHash({ role: 'device', hostId, deviceId, credential });
-		if (this.store.pairing(pairingId)?.challenge !== device?.challenge) return undefined;
+		if (this.replaced(pairingId, device)) return undefined;
 		const sealed = this.consume(pairingId, { proof, deviceId });
 		if (sealed === undefined) return undefined;
 		this.enroll(deviceId, hash, device?.holder);
@@ -56,12 +56,26 @@ export class PairingExchangeService {
 	): string | undefined {
 		const pairing = this.store.pairing(pairingId);
 		this.store.removePairing(pairingId);
-		if (!pairing || !this.store.host()) return undefined;
-		if (pairing.holder && this.store.revokedHolder(pairing.holder)) return undefined;
-		if (this.store.host()?.accountLinked && !pairing.holder) return undefined;
+		if (!pairing || !this.admitted(pairing)) return undefined;
 		if (pairing.state !== 'approved' || pairing.expiresAt <= Date.now()) return undefined;
 		if (!claim.deviceId || pairing.deviceId !== claim.deviceId) return undefined;
 		return this.proven(pairing, claim.proof) ? pairing.approval : undefined;
+	}
+
+	/** The pairing under this id is no longer the one the credential was prepared for. */
+	private replaced(pairingId: string, prepared: PairingRecord | undefined): boolean {
+		return this.store.pairing(pairingId)?.challenge !== prepared?.challenge;
+	}
+
+	private hostId(): string {
+		return this.store.host()?.hostId ?? '';
+	}
+
+	/** A registered host, a session that is not revoked, and one at all when account linked. */
+	private admitted(pairing: PairingRecord): boolean {
+		if (!this.store.host()) return false;
+		if (pairing.holder && this.store.revokedHolder(pairing.holder)) return false;
+		return !(this.store.host()?.accountLinked && !pairing.holder);
 	}
 
 	private proven(pairing: PairingRecord, proof: string): boolean {

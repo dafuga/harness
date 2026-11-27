@@ -49,6 +49,11 @@ func trackerWriteSessionChecks() {
     check(retry?["intentId"] as? String == review.intent.intentId && retry?["epoch"] as? String == "epoch-2",
           "tracker write: an interrupted write replays after relaunch with its original identity")
     restarted.answer(restarted.link, push, value: ["intentId": review.intent.intentId, "status": "accepted"])
+    trackerAcceptedReceiptCheck(restarted)
+    restarted.disconnect()
+}
+
+private func trackerAcceptedReceiptCheck(_ restarted: Bench) {
     var pending: [[String: String]]?
     restarted.session.trackerTool("tracker_write_status", input: [:]) {
         pending = ($0["data"] as? [String: Any])?["writes"] as? [[String: String]]
@@ -56,7 +61,6 @@ func trackerWriteSessionChecks() {
     restarted.settle()
     check(pending?.count == 1 && pending?.first?["status"] == "accepted",
           "tracker write: the accepted receipt is kept as acknowledged, not pending")
-    restarted.disconnect()
 }
 
 func trackerOptionChecks() {

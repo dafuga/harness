@@ -47,3 +47,15 @@ export type TrackerRecurringSettlement = {
 	note: string;
 	wake?: TrackerRecurringWork;
 };
+
+export interface TrackerBoxJob extends TrackerRecurringJob {
+	cmd: string;
+	created_at: number;
+}
+
+export interface TrackerListedBoxJob extends TrackerBoxJob {
+	title: string | null;
+	every: string | null;
+	owner: string | null;
+	running: boolean;
+}

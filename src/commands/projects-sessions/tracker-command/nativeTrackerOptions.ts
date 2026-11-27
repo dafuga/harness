@@ -2,13 +2,13 @@
 import { resolve } from 'node:path';
 import { nativeTrackerAskBody } from './nativeTrackerAskOptions';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
+import { nativeTrackerAdapterOptions } from './nativeTrackerAdapterRequest';
 
 const text = { type: 'string' } as const;
 const flag = { type: 'boolean' } as const;
 const words = { type: 'string', multiple: true } as const;
 const askOptions = { option: words, recommend: text, confirm: text } as const;
 export const nativeTrackerCommonOptions = { json: flag, quiet: { ...flag, short: 'q' }, by: text };
-
 export function itemFields(input: Record<string, string | boolean | string[] | undefined>) {
 	const { tz, repo } = input;
 	const fields = Object.fromEntries(
@@ -75,20 +75,32 @@ export const nativeTrackerCommandOptions = new Map<
 	['goal', itemOptions],
 	['update', { ...itemOptions, note: text, 'remind-at': text }],
 	['note', {}],
+	['alert', {}],
 	['progress', {}],
-	['flag', { question: text, force: flag, ...askOptions }],
+	[
+		'flag',
+		{
+			question: text,
+			force: flag,
+			...askOptions,
+			spec: words,
+			doc: words,
+			design: words,
+			'not-spec-review': flag
+		}
+	],
 	['chase', { note: text }],
 	['remind', { at: text, reminder: flag }],
 	['priority', {}],
 	['park', { until: text }],
 	['move-on', {}],
-	['block', { 'needs-daniel': flag, force: flag }],
+	['block', { force: flag, 'needs-daniel': flag }],
 	['unblock', { note: text }],
 	['ignore', { reason: text, until: text }],
 	['unignore', { note: text }],
-	['answer', { done: flag, option: text, confirmed: flag }],
+	['answer', { done: flag, option: text, confirmed: flag, 'keep-blocked': flag }],
 	['resolve', { done: flag }],
-	['done', { note: text, failed: flag, occurrence: text, 'next-step': text }],
+	['done', { note: text, failed: flag, occurrence: text, 'next-step': text, force: flag }],
 	['launch', launchOptions],
 	['unlaunch', {}],
 	['show', {}],
@@ -114,18 +126,23 @@ export const nativeTrackerCommandOptions = new Map<
 	['runs', { item: text, limit: text }],
 	['models', {}],
 	['pick', {}],
+	['reply', {}],
 	['autolaunch', {}],
-	['adapter', { 'dry-run': flag, 'backfill-comments': flag }],
-	['backup', {}],
+	['adapter', nativeTrackerAdapterOptions],
+	['backup', { to: text }],
+	['job', { cmd: text, 'wake-on': text, timeout: text }],
 	['start', {}],
 	['stop', {}],
 	['reopen', {}],
+	['reject', {}],
 	['unflag', {}],
 	['rm', {}],
 	['status', {}],
 	['digest', {}],
 	['sync', {}],
 	['watchdog', { item: text }],
+	['machines', { hours: text }],
+	['place', { kind: text, 'needs-ram': text }],
 	['needs-attention', {}],
 	['ensure', {}]
 ]);
@@ -139,7 +156,9 @@ export const nativeTrackerIdVerbs = new Set([
 	'unlaunch',
 	'start',
 	'reopen',
+	'reject',
 	'note',
+	'alert',
 	'progress',
 	'flag',
 	'chase',
@@ -150,49 +169,6 @@ export const nativeTrackerIdVerbs = new Set([
 	'done',
 	'unflag'
 ]);
-
-const inspectionRoutes = new Map<string, Record<string, string>>([
-	['autolaunch', { status: '/autolaunch', 'dry-run': '/autolaunch/dry-run' }],
-	['adapter', { list: '/adapters' }],
-	['backup', { list: '/backup/list' }]
-]);
-
-function nativeTrackerAdapterRequest(
-	[mode, source, ...trailing]: string[],
-	values: Record<string, string | boolean | undefined>
-): NativeTrackerRequest | undefined {
-	if (mode !== 'run') {
-		if (values['dry-run'] || values['backfill-comments'])
-			throw new TypeError('adapter polling flags require adapter run');
-		return undefined;
-	}
-	if (!source || trailing.length)
-		throw new TypeError('usage: tracker adapter run <source> [--backfill-comments] [--dry-run]');
-	const query = new URLSearchParams({ source });
-	for (const flag of ['dry-run', 'backfill-comments']) if (values[flag]) query.set(flag, '1');
-	return { method: 'POST', path: '/adapters/run?' + query };
-}
-
-export function nativeTrackerInspectionRequest(
-	command: string,
-	words: string[],
-	values: Record<string, string | boolean | undefined>
-): NativeTrackerRequest | undefined {
-	const adapter = command === 'adapter' ? nativeTrackerAdapterRequest(words, values) : undefined;
-	return adapter ?? nativeTrackerReadInspection(command, words);
-}
-
-function nativeTrackerReadInspection(
-	command: string,
-	words: string[]
-): NativeTrackerRequest | undefined {
-	const routes = inspectionRoutes.get(command);
-	if (!routes) return undefined;
-	const sub = words[0] ?? (command === 'autolaunch' ? 'status' : '');
-	if (words.length > 1 || !Object.hasOwn(routes, sub))
-		throw new TypeError(`usage: tracker ${command} ${Object.keys(routes).join('|')}`);
-	return { method: 'GET', path: routes[sub] };
-}
 
 export function launchAction(
 	path: string,

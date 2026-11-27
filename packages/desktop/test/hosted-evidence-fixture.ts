@@ -11,7 +11,7 @@ import type {
 } from '../src/models/verification-evidence/DesktopEvidence.types';
 import type { CacheStatus } from '../src/models/projects-sessions/ProjectContext.types';
 import { ProjectionCacheService } from '../src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
-import { recordedAnswer } from '../src/utils/recorded-answer/recordedAnswer';
+import { recordedAnswer } from '../src/utils/verification-evidence/recorded-answer/recordedAnswer';
 import { head, home, parent, sampleDetail, sampleScope } from './recorded-sample';
 
 export const token = 'fixture-private-token';

@@ -126,6 +126,7 @@ export interface TrackerNotificationState {
 	forceAttention?: boolean;
 	lastAttentionAttempt?: number;
 	lastAttentionSent?: number;
+	digestsSent?: number;
 	lastAttentionError?: string;
 	inFlight?: DeliveryAttempt;
 }

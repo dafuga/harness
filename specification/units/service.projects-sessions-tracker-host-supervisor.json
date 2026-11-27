@@ -1,0 +1,118 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-host-supervisor",
+	"uid": "u_yyuondcf5b",
+	"kind": "service",
+	"title": "TrackerHostSupervisorService",
+	"responsibility": "Owns the TrackerHostSupervisorService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerHostSupervisorService.ts",
+			"src/services/projects-sessions/TrackerHostSupervisorService.types.ts"
+		],
+		"symbols": [
+			"TrackerHostSupervisorService",
+			"TrackerHostSupervisorService.constructor",
+			"TrackerHostSupervisorService.run",
+			"TrackerHostSupervisorOptions"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerHostSupervisorService.constructor.options",
+				"type": "TrackerHostSupervisorOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerHostSupervisorService.run.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerHostSupervisorService.run",
+				"type": "Promise<'stopped' | 'already-running'>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerHostSupervisorService.run",
+				"inputs": [
+					{
+						"name": "TrackerHostSupervisorService.run.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostSupervisorService.run",
+						"type": "Promise<'stopped' | 'already-running'>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerHostSupervisorService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerHostSupervisorService.constructor.options",
+						"type": "TrackerHostSupervisorOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostSupervisorService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-adapter-lease",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-keep-tracker-serving",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-maintain-tracker-host",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerHostSupervisorService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerHostSupervisorService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

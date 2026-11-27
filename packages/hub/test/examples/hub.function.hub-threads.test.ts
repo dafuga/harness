@@ -3,17 +3,11 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { hubMessages } from '../../src/routes/api/[...path]/hub-projection-service/hubThreads';
 import { hubThreads } from '../../src/utils/networking-security/hubThreads';
-
-type CommittedThread = Parameters<typeof hubThreads>[0][number];
-type ThreadSummary = ReturnType<typeof hubThreads>[number];
-
-interface CommentInput {
-	id: string;
-	actorId: string;
-	actorName: string;
-	text: string;
-	createdAt: string;
-}
+import type {
+	CommentInput,
+	CommittedThread,
+	ThreadSummary
+} from './hub.function.hub-threads.test.types';
 
 function comment(input: CommentInput) {
 	return {

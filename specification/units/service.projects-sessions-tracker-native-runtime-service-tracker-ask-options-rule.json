@@ -11,12 +11,16 @@
 		"source": [
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAskOptionsRule.ts"
 		],
-		"symbols": ["trackerAskOptionsRule"]
+		"symbols": ["trackerQuestionRoutingRule", "trackerAskOptionsRule"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [],
 		"outputs": [
+			{
+				"name": "trackerQuestionRoutingRule",
+				"type": "unknown"
+			},
 			{
 				"name": "trackerAskOptionsRule",
 				"type": "unknown"

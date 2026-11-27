@@ -4,6 +4,7 @@ import { NativeConnectionService } from '../NativeConnectionService';
 import { ProjectRegistryService } from '../../../../services/projects-sessions/ProjectRegistryService';
 import { CommentOutboxService } from '../../../../services/projects-sessions/CommentOutboxService';
 import { ProjectionCacheService } from '../projection-cache-service/ProjectionCacheService';
+import { startTrackerRealtime } from '../tracker-realtime/startTrackerRealtime';
 import { createTrackerOverviewPublisher } from '../tracker-overview-publisher/createTrackerOverviewPublisher';
 import { app, BrowserWindow, dialog, ipcMain, protocol, safeStorage, shell } from 'electron';
 import type { IpcMainInvokeEvent } from 'electron';
@@ -81,7 +82,7 @@ function desktopBackend() {
 	const codex = new CodexAppServerAdapter(),
 		providers = new ProviderDiscoveryService({ codex, claude: new ClaudeCliAdapter() }),
 		stores = { registry, outbox, arbiter, providers, cache };
-	const { remote, lifecycle } = desktopRemote({
+	const { remote, lifecycle, home, homeChat } = desktopRemote({
 		directory,
 		origin,
 		sessionFile,
@@ -105,15 +106,22 @@ function desktopBackend() {
 	const transport = new LocalTransportService();
 	const publisher = createTrackerOverviewPublisher({ authority, env: process.env });
 	publisher?.start();
+	const stopRealtime = startTrackerRealtime({
+		publisher,
+		authority,
+		env: process.env,
+		emit: (event) => windows.current?.client.emit('tracker', event)
+	});
 	const refreshAccount = () => void connection.auth?.status().catch(() => undefined);
 	refreshAccount();
 	const accountTimer = connection.auth ? setInterval(refreshAccount, 60_000).unref() : undefined;
 	return {
-		shared: { ...stores, ...connection },
+		shared: { ...stores, ...connection, home, homeChat },
 		remote,
 		lifecycle,
 		transport,
 		publisher,
+		stopRealtime,
 		accountTimer
 	};
 }
@@ -135,6 +143,7 @@ function appLifecycle(backend: Backend): void {
 		quitting = true;
 		event.preventDefault();
 		backend.publisher?.stop();
+		backend.stopRealtime();
 		clearInterval(backend.accountTimer);
 		void backend.lifecycle
 			.quit()

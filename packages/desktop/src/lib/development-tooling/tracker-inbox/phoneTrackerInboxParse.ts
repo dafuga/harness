@@ -1,4 +1,6 @@
 // @harness-uid u_ymhr4iqr7u
+import type { TrackerAttachmentListingSource } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
+import { trackerAttachments } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
 import {
 	trackerPlanningSchema,
 	trackerStageSchema
@@ -30,6 +32,13 @@ function num(value: unknown): number | null {
 	return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 
+function reminderOf(value: unknown): Pick<InboxHeader, 'reminder'> {
+	if (!isRecord(value)) return {};
+	const at = text(value.at);
+	if (at === null || Number.isNaN(Date.parse(at))) return {};
+	return { reminder: { at, repeats: nullableText(value.repeats) } };
+}
+
 /** Returns the parsed value, or null when any required field is missing. Never throws. */
 export function parseHeader(value: unknown): InboxHeader | null {
 	if (!isRecord(value)) return null;
@@ -46,7 +55,8 @@ export function parseHeader(value: unknown): InboxHeader | null {
 		status,
 		...(stage.success && { stage: stage.data }),
 		updatedAt: nullableText(value.updatedAt),
-		dueAt: nullableText(value.dueAt)
+		dueAt: nullableText(value.dueAt),
+		...reminderOf(value.reminder)
 	};
 }
 
@@ -67,8 +77,14 @@ function parseFlag(value: unknown): InboxFlag | null {
 		at: nullableText(value.at),
 		question,
 		...(options.length >= 2 && { options }),
-		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind })
+		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind }),
+		...attachmentsOf(value.attachments as TrackerAttachmentListingSource)
 	};
+}
+
+function attachmentsOf(value: TrackerAttachmentListingSource): Pick<InboxFlag, 'attachments'> {
+	const attachments = trackerAttachments(value);
+	return attachments.length ? { attachments } : {};
 }
 
 function parseOptions(value: unknown): InboxOption[] {

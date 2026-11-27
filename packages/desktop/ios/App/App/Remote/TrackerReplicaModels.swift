@@ -18,8 +18,17 @@ struct TrackerItemHeader: Codable {
     let dueAt: String?
 
     let stage: String?
+    /// Set on an active personal item. Older Macs send none.
+    var reminder: TrackerReplicaReminder? = nil
 
     static let statuses = ["open", "in_progress", "blocked", "done", "ignored"]
+}
+
+struct TrackerReplicaReminder: Codable {
+    let at: String
+    let repeats: String?
+
+    var valid: Bool { TrackerReplicaItem.short(at, 40) && TrackerReplicaItem.short(repeats ?? "", 20) }
 }
 
 /// Only these fields are retained from an authenticated JSON reply.
@@ -45,6 +54,8 @@ struct TrackerReplicaItem: Codable {
         var options: [Option]? = nil
         /// deploy, money or secret: the answer needs the device owner's Face ID or passcode.
         var confirm: String? = nil
+        /// Specs and documents behind "View spec". Older Macs send none.
+        var attachments: [TrackerReplicaAttachment]? = nil
     }
 
     struct Run: Codable {
@@ -69,15 +80,16 @@ struct TrackerReplicaItem: Codable {
     let attentionRevision: String?
     let stage: String?
     let planning: TrackerReplicaPlanning?
+    let reminder: TrackerReplicaReminder?
 
     var header: TrackerItemHeader {
-        TrackerItemHeader(id: id, title: title, project: project, status: status, updatedAt: updatedAt, dueAt: dueAt, stage: stage)
+        TrackerItemHeader(id: id, title: title, project: project, status: status, updatedAt: updatedAt, dueAt: dueAt, stage: stage, reminder: reminder)
     }
 
     var valid: Bool {
         Self.short(id, 80) && Self.short(title, 240) && Self.short(project, 120)
             && TrackerItemHeader.statuses.contains(status)
-            && Self.short(updatedAt ?? "", 40) && Self.short(dueAt ?? "", 40)
+            && Self.short(updatedAt ?? "", 40) && Self.short(dueAt ?? "", 40) && (reminder.map(\.valid) ?? true)
             && (stage.map { ["idea", "detail", "design", "build"].contains($0) } ?? true)
             && notes.count <= 10 && notes.allSatisfy(Self.validNote)
             && (flag.map(Self.validFlag) ?? true)
@@ -91,6 +103,7 @@ struct TrackerReplicaItem: Codable {
 
     private static func validFlag(_ flag: Flag) -> Bool {
         ["open", "resolved"].contains(flag.state) && short(flag.at ?? "", 40) && short(flag.question, 512)
+            && (flag.attachments.map { $0.count <= 4 && $0.allSatisfy(\.valid) } ?? true)
             && (flag.options.map { $0.count <= 4 && $0.allSatisfy { short($0.label, 80) && short($0.effect, 400) } } ?? true)
             && (flag.confirm.map { ["deploy", "money", "secret"].contains($0) } ?? true)
     }
@@ -104,35 +117,6 @@ struct TrackerReplicaItem: Codable {
     static func short(_ value: String, _ max: Int) -> Bool {
         value.utf8.count <= max && !value.utf8.contains(0)
     }
-}
-
-struct TrackerReplicaPlanning: Codable {
-    struct Artifact: Codable {
-        struct Link: Codable {
-            let label: String
-            let url: String
-            let kind: String?
-        }
-
-        struct Page: Codable {
-            let name: String
-            let states: [String: String]?
-            let links: [Link]?
-        }
-
-        let summary: String?
-        let pages: [Page]?
-        let links: [Link]?
-    }
-
-    struct Promotion: Codable {
-        let stage: String
-        let by: String
-        let at: String
-    }
-
-    let artifacts: [String: Artifact]
-    let promotions: [Promotion]
 }
 
 struct TrackerReplicaPage: Decodable {

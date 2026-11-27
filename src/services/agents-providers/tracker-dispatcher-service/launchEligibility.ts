@@ -1,5 +1,8 @@
 // @harness-uid u_rzpjc6wqqy
-import { isQuietHour } from '../../../helpers/attention-timing/isQuietHour';
+import {
+	trackerReminderTitle,
+	trackerUnattendedHold
+} from '../../../utils/projects-sessions/trackerUnattendedHold';
 import type {
 	TrackerDispatchDecision,
 	TrackerDispatchItem,
@@ -24,13 +27,6 @@ export function trackerNodeNames(node: string, hub: boolean): string[] {
 		])
 	];
 }
-
-const nonWorkAgent =
-	/^(?:(?:cos|chief[-_ ]of[-_ ]staff|personal|brainstorm(?:ing)?)(?:$|[-_ ])|(?:daniel|dad|coach|claire|boating|doc|email-router|recruiting)$)/i;
-const nonWorkTitle = /^\s*(?:decision|brainstorm(?:ing)?)(?::|\s+for\b)/i;
-const reminderTitle = /^\s*(?:remind(?:er)?\b|watch:)/i;
-const deployTitle = /\bPROD\s+DEPLOY/i;
-const quietHours = { start: '22:00', end: '08:00', tz: 'Europe/Lisbon' };
 
 export const minute = 60_000;
 
@@ -70,7 +66,7 @@ export function startable(item: TrackerDispatchItem) {
 		item.kind === 'task' &&
 		(item.status === 'open' || item.status === 'in_progress') &&
 		!item.awaitingAnswer &&
-		!reminderTitle.test(item.title)
+		!trackerReminderTitle(item.title)
 	);
 }
 
@@ -133,10 +129,6 @@ export function automaticRequestHold(
 	);
 }
 
-export function automaticQuietHour(now: number) {
-	return isQuietHour(now, quietHours);
-}
-
 export function schedulingHold(
 	item: Pick<
 		TrackerDispatchItem,
@@ -161,29 +153,21 @@ export function schedulingHold(
 	if (item.awaitingAnswer) return 'waiting on Daniel';
 	if (item.status === 'blocked') return 'item is blocked';
 	if (Number(item.parkedUntil) > now) return 'item is parked';
-	return unattendedTitleOrAgentHold(item);
+	return trackerUnattendedHold(item);
 }
 
-function unattendedTitleOrAgentHold({
-	title,
-	owner,
-	agent
-}: Pick<TrackerDispatchItem, 'title' | 'owner' | 'agent'>) {
-	if (deployTitle.test(title)) return 'production deploy requires an explicit launch';
-	if (
-		reminderTitle.test(title) ||
-		nonWorkTitle.test(title) ||
-		/^daniel(?: fugere)?$/i.test((owner ?? '').trim())
-	) {
-		return 'decision or reminder for Daniel';
-	}
-	return nonWorkAgent.test((agent ?? '').trim())
-		? 'personal, brainstorming or Chief of Staff agent'
+export const finalReportPrefix = 'Final report:';
+
+/** A session that reported and stopped stays stopped until something changes on its item. */
+export function finalReportHold(
+	run: { outcome?: string | null; failure_reason?: string | null; ended_at?: number | null },
+	changedAt: number
+): string | null {
+	return run.outcome === 'abandoned' &&
+		run.failure_reason?.startsWith(finalReportPrefix) &&
+		changedAt <= (run.ended_at ?? 0)
+		? 'the last session ended with a final report'
 		: null;
-}
-
-export function trackerReminderTitle(title: string) {
-	return reminderTitle.test(title);
 }
 
 export function isDueNow(due: string | null | undefined, timezone: string, now: number): boolean {
@@ -202,3 +186,4 @@ export function isDueNow(due: string | null | undefined, timezone: string, now: 
 }
 
 export { activeRun, hasOpenSession, attemptKey, matchesRequest } from './runIdentity';
+export { trackerReminderTitle };

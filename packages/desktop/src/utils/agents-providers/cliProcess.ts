@@ -9,7 +9,7 @@ import { StringDecoder } from 'node:string_decoder';
 import { resourceEnvironment } from '../../../../../src/utils/execution-runtimes/resourceEnvironment';
 import type { CliCommand } from '../../models/agents-providers/AgentRunner.types';
 import { RunCancelled } from '../../models/agents-providers/AgentRunner.types';
-import { cliEnvironment } from '../cli-environment/cliEnvironment';
+import { cliEnvironment } from '../execution-runtimes/cli-environment/cliEnvironment';
 import { streamLines } from '../shared-primitives/streamLines';
 export function killOwnedProcess(pid: number | undefined): void {
 	if (!pid) return;
@@ -76,13 +76,17 @@ export async function cliProcess(
 		child.on('close', (code) => {
 			output += decoder.end();
 			consume.end();
-			finish(
-				code === 0 ? null : new CliCommandFailedError('CLI failed (' + String(code) + '): ' + error)
-			);
+			finish(exitFailure(code, error));
 		});
 		closeInput(child, options.input ?? '', finish);
 		if (child.pid) options.resources?.track(child.pid);
 	});
+}
+
+function exitFailure(code: number | null, error: string): Error | null {
+	return code === 0
+		? null
+		: new CliCommandFailedError('CLI failed (' + String(code) + '): ' + error);
 }
 
 function closeInput(

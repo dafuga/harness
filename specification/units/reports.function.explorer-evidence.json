@@ -19,7 +19,7 @@
 		"inputs": [
 			{
 				"name": "explorerEvidence.scope",
-				"type": "Pick<ExplorerScope, 'commit' | 'mode' | 'parent'>",
+				"type": "Pick<ExplorerScope, 'commit' | 'mode' | 'parent'> & Partial<Pick<ExplorerScope, 'summary'>>",
 				"required": true,
 				"description": "Identifies the requested commit, whether the page follows the current tip or stays at a selected commit, and that commit's first parent (null when it has none). The function reads a parent side only in commit mode when parent is non-null.",
 				"examples": [
@@ -112,7 +112,7 @@
 				"inputs": [
 					{
 						"name": "explorerEvidence.scope",
-						"type": "Pick<ExplorerScope, 'commit' | 'mode' | 'parent'>",
+						"type": "Pick<ExplorerScope, 'commit' | 'mode' | 'parent'> & Partial<Pick<ExplorerScope, 'summary'>>",
 						"required": true,
 						"description": "Identifies the requested commit, whether the page follows the current tip or stays at a selected commit, and that commit's first parent (null when it has none). The function reads a parent side only in commit mode when parent is non-null.",
 						"examples": [

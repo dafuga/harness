@@ -5,10 +5,7 @@ import { explorerCategory, explorerRole } from '../../src/utils/explorer-ui/expl
 import { explorerEntityCategories } from '../../../../src/utils/explorerRoute';
 import { modelDefinition } from '../entityClassFixtures';
 import { unit } from '../explorerFixture';
-
-type Subject = Parameters<typeof explorerCategory>[0];
-type Row = [name: string, subject: Subject, expected: string | null];
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Row, Subject, Cases } from './reports.function.explorer-category.test.types';
 
 const unitId = 'reports.function.explorer-category';
 const compat =

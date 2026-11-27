@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/reportRetention.ts",
+			"packages/reports/src/utils/reports-media/InvalidReportRetentionTimestampError.ts",
 			"packages/reports/src/utils/reports-media/reportRetention.ts",
 			"packages/reports/src/utils/reports-media/reportRetention.types.ts"
 		],
@@ -17,6 +18,7 @@
 			"reportLifetimeMs",
 			"reportCloudPrefixes",
 			"reportRetention",
+			"InvalidReportRetentionTimestampError",
 			"reportLifetimeMs",
 			"reportCloudPrefixes",
 			"reportRetention",

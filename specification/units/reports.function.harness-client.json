@@ -9,10 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/utils/explorer-ui/HarnessDataLoadError.ts",
 			"packages/reports/src/utils/explorer-ui/harnessClient.ts",
 			"packages/reports/src/utils/explorer-ui/harnessClient.types.ts"
 		],
-		"symbols": ["harnessClient", "HarnessClient", "HarnessClient", "HarnessDataLoadError"]
+		"symbols": [
+			"HarnessDataLoadError",
+			"harnessClient",
+			"HarnessClient",
+			"HarnessClient",
+			"HarnessDataLoadError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

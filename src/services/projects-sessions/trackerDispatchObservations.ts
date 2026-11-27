@@ -25,10 +25,9 @@ export async function observeReservedRun(
 	options: TrackerDispatchSchedulerOptions,
 	signal: AbortSignal
 ) {
-	return (
-		(await options.runner.observe(run, attemptKey(run), signal)) ??
-		(await expiredStartEvent(run, options, signal))
-	);
+	const event = await options.runner.observe(run, attemptKey(run), signal);
+	signal.throwIfAborted();
+	return event ?? (await expiredStartEvent(run, options, signal));
 }
 
 async function expiredStartEvent(

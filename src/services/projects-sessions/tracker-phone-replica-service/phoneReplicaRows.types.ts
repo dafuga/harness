@@ -9,6 +9,9 @@ export interface PhoneItemSource extends TrackerPlanningFields {
 	id: string;
 	title: string;
 	status: string;
+	agent: string | null;
+	remind_at: string | null;
+	every: string | null;
 	project: string | null;
 	updated_at: string | null;
 	due: string | null;
@@ -17,6 +20,8 @@ export interface PhoneItemSource extends TrackerPlanningFields {
 	question: string | null;
 	options: string | null;
 	confirm: string | null;
+	attachments?: string | null;
+	attachment_docs?: string | null;
 	flag_clock: string | null;
 	attention_clock: string;
 }
@@ -48,6 +53,7 @@ export interface PhoneTrackerRow {
 	updatedAt: string | null;
 	dueAt: string | null;
 	attentionRevision: string;
+	reminder?: { at: string; repeats: string | null };
 	notes: { id: string; author: string; at: string; text: string }[];
 	flag: {
 		state: 'open' | 'resolved';

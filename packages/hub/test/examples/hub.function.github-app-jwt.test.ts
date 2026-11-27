@@ -6,10 +6,7 @@ import {
 	githubAppKey,
 	githubAppJwt
 } from '../../src/lib/verification-evidence/server/auth/installation-token-service/githubAppJwt';
-import type { GithubAppJwtInput } from '../../src/utils/verification-evidence/githubAppJwt';
-
-type Sample = Pick<GithubAppJwtInput, 'appId' | 'now'>;
-type KeyPair = { pkcs1: string; pkcs8: string; publicKey: string };
+import type { Sample, KeyPair } from './hub.function.github-app-jwt.test.types';
 
 const UNIT_ID = 'hub.function.github-app-jwt';
 const APP_ID = '123456';

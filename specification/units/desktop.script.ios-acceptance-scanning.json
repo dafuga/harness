@@ -6,7 +6,11 @@
 	"title": "ios-acceptance-scanning",
 	"responsibility": "Owns the ios-acceptance-scanning build or maintenance script.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Devices link only through Google sign-in to the same account: there is no QR code, offer or scan any more.",
+		"at": "2026-11-25T18:38:19.441Z"
+	},
 	"owns": {
 		"source": ["packages/desktop/scripts/ios-acceptance-scanning.ts"],
 		"symbols": ["scanEndings", "cameraOnly"]

@@ -1,0 +1,118 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-local-api-service-read-tracker-machine-endpoint",
+	"uid": "u_ct2ksrufbk",
+	"kind": "service",
+	"title": "readTrackerMachineEndpoint",
+	"responsibility": "Owns the readTrackerMachineEndpoint service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-local-api-service/readTrackerMachineEndpoint.ts"
+		],
+		"symbols": ["readTrackerMachineEndpoint"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readTrackerMachineEndpoint.[root, name, ...rest]",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "readTrackerMachineEndpoint.query",
+				"type": "Record<string, string>",
+				"required": true
+			},
+			{
+				"name": "readTrackerMachineEndpoint.machines",
+				"type": "TrackerMachineService",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "readTrackerMachineEndpoint",
+				"type": "{ status: number; body: unknown } | undefined"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readTrackerMachineEndpoint",
+				"inputs": [
+					{
+						"name": "readTrackerMachineEndpoint.[root, name, ...rest]",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "readTrackerMachineEndpoint.query",
+						"type": "Record<string, string>",
+						"required": true
+					},
+					{
+						"name": "readTrackerMachineEndpoint.machines",
+						"type": "TrackerMachineService",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerMachineEndpoint",
+						"type": "{ status: number; body: unknown } | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-place-tracker-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine-service-tracker-machine-summary",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-local-api-service/readTrackerMachineEndpoint.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-local-api-service/readTrackerMachineEndpoint.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

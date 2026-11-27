@@ -10,19 +10,15 @@ extension RemoteSession {
     /// Begins the one attempt, on the queue and within the turn of whoever asks: between the
     /// decision to pair and the attempt there is no later turn that anything could come before.
     func begin(_ input: RemotePairing.Input) -> Result<[String: Any], RemoteFailure> {
-        guard record == nil, pairing == nil, look == nil else {
+        guard record == nil, pairing == nil else {
             return .failure(.failed("Disconnect from the current computer first."))
         }
-        guard matchesAccount(input.account?.subject) else { return .failure(.failed("Sign in to continue.")) }
+        guard matchesAccount(input.account.subject) else { return .failure(.failed("Sign in to continue.")) }
         let attempt = RemotePairing(input, queue: queue)
         pairing = attempt
         pending = input
-        move(input.account == nil ? "pairing" : "connecting")
+        move("connecting")
         attempt.start(
-            pending: { [weak self, weak attempt] in
-                guard let self = self, self.pairing === attempt else { return }
-                if input.account == nil { self.move("pending-approval") }
-            },
             done: { [weak self, weak attempt] result in
                 guard let self = self, self.pairing === attempt else { return }
                 self.paired(result)
@@ -32,7 +28,6 @@ extension RemoteSession {
 
     func endAccount() {
         queue.async {
-            self.endLook()
             self.forget()
             self.move("unpaired")
         }

@@ -7,27 +7,74 @@ name: Harness verify
 on:
   pull_request:
   push:
-    branches-ignore:
-      - harness-evidence
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Run the complete check for the combined release
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 concurrency:
-  group: harness-verify-${{ github.event.pull_request.head.sha || github.sha }}
+  group: harness-verify-${{ github.event.pull_request.head.sha || github.sha }}-${{ inputs.release == true && 'release' || 'focused' }}
   cancel-in-progress: true
 
 env:
   COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+  BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
   HARNESS_DEBT_RATCHET_BASE: ${{ github.event.before || '' }}
 
 jobs:
-  check:
-    name: Full check
+  focused:
+    name: Relevant checks
+    if: ${{ github.event_name != 'workflow_dispatch' || !inputs.release }}
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-    # The serialized command includes CLI, package and browser suites. Run 39681371806
-    # (job 119505032796) was cancelled at the former 45-minute limit; allow it to finish.
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ env.COMMIT }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Read archived source commits
+        run: git fetch --no-tags origin '+refs/harness/source/*:refs/harness/source/*'
+      - name: Install the pinned Bun
+        run: npm install --global bun@1.2.18
+      - name: Install dependencies exactly as locked
+        run: bun install --frozen-lockfile
+      - name: Install the pinned Rust toolchain
+        run: rustup show
+      - name: Install browser and Linux display dependencies
+        run: |
+          node node_modules/@playwright/test/cli.js install --with-deps chromium
+          sudo apt-get install --yes git-lfs xauth libgtk-3-0t64 ffmpeg
+      - name: Run selected checks
+        run: |
+          BASE="${BASE:-$(git rev-parse HEAD^)}"
+          xvfb-run -a bun run check --commit "$COMMIT" --ci-base "$BASE" --json > shared-check-result.json
+      - name: Keep the exact-tree check receipt
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: shared-check-result
+          path: shared-check-result.json
+          if-no-files-found: ignore
+
+  check-part:
+    name: Full check part (${{ matrix.part }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.release }}
+    # The check runs the CLI, package and browser suites. As one job it took 87 to 117 minutes
+    # and was cancelled at its 120 minute limit, so its parts now run side by side. The parts
+    # are defined in scripts/run-checks.ts; `bun run check` still runs all of them in order.
+    strategy:
+      fail-fast: false
+      matrix:
+        part: [static-unit, e2e-1, e2e-2, package, desktop, apps]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -77,7 +124,7 @@ jobs:
       - name: Install native display, Git LFS and video dependencies
         run: sudo apt-get install --yes git-lfs xauth libgtk-3-0t64 ffmpeg
       - name: Format, types, lint, Rust native and Wasm, tests, build, package and audits
-        run: xvfb-run -a bun run check
+        run: xvfb-run -a bun run check --part "${{ matrix.part }}"
 
       - name: Save bun cache after a completed attempt
         if: ${{ !cancelled() && steps.cache-bun.outputs.cache-hit != 'true' }}
@@ -101,6 +148,18 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: ${{ steps.cache-playwright.outputs.cache-primary-key }}
+
+  check:
+    name: Full check
+    needs: check-part
+    # Runs when a part fails or times out, so this one result stands for all of them. Not in a
+    # cancelled run: the push and pull request runs of one commit cancel each other.
+    if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.release }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require every part of the full check to pass
+        run: test '${{ needs.check-part.result }}' = success
 
   verify:
     name: Verify the exact commit

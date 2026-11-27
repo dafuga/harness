@@ -1,0 +1,133 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-fleet",
+	"uid": "u_hcvkvdj37h",
+	"kind": "service",
+	"title": "composeTrackerFleet",
+	"responsibility": "Owns the composeTrackerFleet service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-native-runtime-service/composeTrackerFleet.ts"
+		],
+		"symbols": ["composeTrackerFleet"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "composeTrackerFleet.runs",
+				"type": "TrackerRunReadRepository",
+				"required": true
+			},
+			{
+				"name": "composeTrackerFleet.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "composeTrackerFleet.runtime",
+				"type": "{ machines: TrackerMachineService; scheduler?: TrackerDispatchSchedulerService; now: () => number; }",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "composeTrackerFleet",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "composeTrackerFleet",
+				"inputs": [
+					{
+						"name": "composeTrackerFleet.runs",
+						"type": "TrackerRunReadRepository",
+						"required": true
+					},
+					{
+						"name": "composeTrackerFleet.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "composeTrackerFleet.runtime",
+						"type": "{ machines: TrackerMachineService; scheduler?: TrackerDispatchSchedulerService; now: () => number; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "composeTrackerFleet",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-dispatch-scheduler",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine-service-assign-tracker-launches",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine-service-place-tracker-auto-launch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine-service-tracker-launch-placement",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-telemetry",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-native-runtime-service/composeTrackerFleet.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-native-runtime-service/composeTrackerFleet.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

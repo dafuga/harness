@@ -54,6 +54,10 @@ export async function assertCatalogDetails(component: Locator, id: string, varia
 		await assertExplorerTableActions(component);
 		await assertExplorerTablePresentation(component, variant);
 	}
+	await assertCatalogPresentation(component, id, variant);
+}
+
+async function assertCatalogPresentation(component: Locator, id: string, variant: string) {
 	if (id === 'reports.component.harness-explorer-index') {
 		await expect(
 			component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),

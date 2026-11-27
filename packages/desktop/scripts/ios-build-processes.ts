@@ -1,11 +1,15 @@
 // @harness-uid u_em2kohyy6k
-import type { Row, Settling, Standing, FollowedResult } from './ios-build-processes.types';
+import type { IosServiceProcess } from './ios-service-observers.types';
+import type { Settling, Standing, FollowedResult } from './ios-build-processes.types';
 import { execFile, spawn } from 'node:child_process';
 import { realpathSync } from 'node:fs';
 import { basename, sep } from 'node:path';
 import { classifyProcess, platformServices } from '../../../src/utils/platformServices';
-import { processDescendants, signalProcesses } from '../../../src/utils/processDescendants';
-import type { TrackedProcess } from '../../../src/utils/processDescendants';
+import {
+	processDescendants,
+	signalProcesses,
+	type TrackedProcess
+} from '../../../src/utils/processDescendants';
 import { buildObservation, finishObservation } from './ios-build-observation';
 import { observeIosServices } from './ios-service-observers';
 import { desktopRoot, tried } from './ios-products';
@@ -35,7 +39,7 @@ function pause(milliseconds: number): Promise<void> {
 }
 
 /** The process table by id, or null when it could not be read: this process must be in it. */
-function table(): Promise<Map<number, Row> | null> {
+function table(): Promise<Map<number, IosServiceProcess> | null> {
 	const row = /^\s*(\d+)\s+(\w+\s+\w+\s+\d+\s+[\d:]+\s+\d+)\s+(.+?)\s*$/;
 	return new Promise((done) => {
 		execFile(
@@ -43,7 +47,7 @@ function table(): Promise<Map<number, Row> | null> {
 			['-A', '-o', 'pid=,lstart=,comm='],
 			{ maxBuffer: 16_000_000, timeout: 5000 },
 			(error, out) => {
-				const rows = new Map<number, Row>();
+				const rows = new Map<number, IosServiceProcess>();
 				for (const found of (error ? '' : out).split('\n').map((line) => row.exec(line)))
 					if (found)
 						rows.set(Number(found[1]), {
@@ -78,7 +82,10 @@ function platformOwned(executable: string, developer: string | null): boolean {
 }
 
 /** Another build's client of the shared tools is running: one that this build did not start. */
-function anotherBuild(rows: Map<number, Row>, known: Map<number, TrackedProcess>): boolean {
+function anotherBuild(
+	rows: Map<number, IosServiceProcess>,
+	known: Map<number, TrackedProcess>
+): boolean {
 	return [...rows].some(
 		([pid, row]) => sharedClients.includes(basename(row.executable)) && !known.has(pid)
 	);
@@ -105,7 +112,7 @@ async function notHandedOver(alive: TrackedProcess[], group: number): Promise<Tr
 
 /** One look at what is left; true when there is nothing to wait for any more. */
 async function nothingLeft(
-	rows: Map<number, Row>,
+	rows: Map<number, IosServiceProcess>,
 	known: Map<number, TrackedProcess>,
 	state: Settling
 ) {

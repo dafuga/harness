@@ -2,9 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { hubCache } from '../../src/routes/api/[...path]/hubCache';
-
-type Entry = Parameters<ReturnType<typeof hubCache>['put']>[1];
-type StoredObject = { bytes: Uint8Array; customMetadata: Record<string, string> };
+import type { Entry, StoredObject } from './hub.function.hub-cache.test.types';
 
 const identity = { repo: 'fixture-repo', issue: 42 } as unknown as Entry['identity'];
 

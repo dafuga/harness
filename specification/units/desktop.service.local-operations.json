@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/DesktopOperationUnavailableError.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.types.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/UnexpectedOverviewFieldsError.ts",
@@ -17,6 +18,7 @@
 		],
 		"symbols": [
 			"LocalOperationsService",
+			"DesktopOperationUnavailableError",
 			"LocalOperationsService",
 			"LocalOperationsService.constructor",
 			"LocalOperationsService.methods",
@@ -227,7 +229,8 @@
 								"data": "YWJj"
 							},
 							true
-						]
+						],
+						"unknownReason": "Wire dispatcher: the result shape depends on the request method."
 					}
 				],
 				"errors": [
@@ -296,6 +299,11 @@
 		},
 		{
 			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-types",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,5 +1,5 @@
 import type { HostedState, HostedCall, Answer } from './hosted-fixture.types';
-import type { Page, Route } from '@playwright/test';
+import { expect, type Page, type Route } from '@playwright/test';
 import { ada, clientId, credential, hostedData, type HostedData } from './hosted-data';
 import { emailAnswer } from './hosted-email';
 import { nativeAnswer } from './hosted-native';
@@ -101,6 +101,28 @@ export async function hostedFixture(page: Page, options: Partial<HostedState> = 
 export type { HostedCall, HostedState, Answer } from './hosted-fixture.types';
 
 export const githubUnavailable = { configured: false, connected: false, login: null };
+
+/**
+ * Switches the signed-in account on one focus. The page asks for the session twice then, and the
+ * second answer is late, so the first check is overtaken. Returns once that late answer is sent.
+ */
+export async function switchOnOvertakenFocus(
+	page: Page,
+	state: HostedState,
+	actor: HostedState['actor']
+) {
+	let asked = 0;
+	let answered = false;
+	await page.route('**/api/auth/status', async (route) => {
+		const late = ++asked === 2;
+		if (late) await new Promise((resolve) => setTimeout(resolve, 1_000));
+		await route.fallback();
+		answered ||= late;
+	});
+	state.actor = actor;
+	await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+	await expect.poll(() => answered).toBe(true);
+}
 
 export function waitForHubStatus(page: Page, path: string, status: number) {
 	return page.waitForResponse(

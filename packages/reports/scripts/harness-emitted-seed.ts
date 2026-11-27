@@ -1,5 +1,5 @@
 // @harness-uid u_dfas6iiqrt
-import type { EmittedSeed } from './harness-emitted-seed.types';
+
 /**
  * Adds to the synthetic history a unit that is built for two execution targets, and takes it
  * through what a reader must be able to follow: an output without any limit yet, a first
@@ -7,6 +7,7 @@ import type { EmittedSeed } from './harness-emitted-seed.types';
  * the approval of both sizes, and an output that is no longer built. The outputs are a few
  * zero bytes written by the fixture's own setup; nothing here is a real program.
  */
+import type { VerificationSeed } from './harness-emitted-seed.types';
 import { emittedSetup, resized, targets } from '../../../test/support/emittedRepo';
 import { reviewer, type VerifyOutcome, type VerifyRepo } from '../../../test/support/verifyRepo';
 
@@ -21,7 +22,10 @@ const source = (digits: string, method: string) =>
  */
 export async function seedEmitted(
 	repo: VerifyRepo,
-	{ verified, explain }: { verified: EmittedSeed['verified']; explain: EmittedSeed['explain'] }
+	{
+		verified,
+		explain
+	}: { verified: VerificationSeed['verified']; explain: VerificationSeed['explain'] }
 ): Promise<Record<'emitting' | 'packed' | 'swapped' | 'repacked' | 'vanished', string>> {
 	await repo.write(file, source('p3 w5', 'toLowerCase'));
 	const config = await repo.json<{ setup?: object[]; outputs?: string[] }>('harness.verify.json');
@@ -69,4 +73,4 @@ export async function seedEmitted(
 	return { emitting, packed, swapped, repacked, vanished };
 }
 
-export type { EmittedSeed } from './harness-emitted-seed.types';
+export type { VerificationSeed } from './harness-emitted-seed.types';

@@ -40,9 +40,16 @@
 			"packages/reports/src/components/verification-evidence/VideoEvidence.svelte",
 			"packages/reports/src/components/verification-evidence/VideoEvidence.types.ts",
 			"packages/reports/src/components/verification-evidence/video-evidence/videoEvidence.css",
-			"packages/reports/src/components/verification-evidence/video-evidence/videoFeedback.ts"
+			"packages/reports/src/components/verification-evidence/video-evidence/videoFeedback.ts",
+			"packages/reports/src/components/verification-evidence/video-evidence/videoProvenance.ts"
 		],
-		"symbols": ["VideoEvidence", "VideoEvidenceProps", "loadVideoFlags", "submitVideoFlag"]
+		"symbols": [
+			"VideoEvidence",
+			"VideoEvidenceProps",
+			"loadVideoFlags",
+			"submitVideoFlag",
+			"videoProvenance"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -159,6 +166,24 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "videoProvenance",
+				"inputs": [
+					{
+						"name": "videoProvenance.item",
+						"type": "Evidence",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoProvenance",
+						"type": "Evidence"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []

@@ -1,10 +1,11 @@
+import type { RegressionNote } from '../../src/core/git-source-history/historyTypes.types';
 import { sourceAt, focusedShot, unit } from './repository.regression-proof.fixture';
 import type { Source, Phase, Draft, Cases } from './repository.regression-proof.test.types';
 import { writeFileSync } from 'node:fs';
 import { test } from 'vitest';
 import type { RegressionRecord } from '../../src/core/verification-evidence/regressionTypes.types';
 import { HistoryNoteRepository } from '../../src/repositories/git-source-history/history-note-repository/HistoryNoteRepository';
-import type { RegressionNote } from '../../src/repositories/verification-evidence/RegressionProofRepository.types';
+
 import {
 	RegressionProofRepository,
 	regressionNotes

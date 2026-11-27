@@ -1,3 +1,4 @@
+import type { RuntimeEnvironment } from '../../src/core/execution-runtimes/runtimeTypes.types';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -5,17 +6,17 @@ import {
 	evidenceRequested,
 	recordCapture
 } from '../../src/utils/reports-media/record-capture/recordCapture';
-import type { Environment } from '../../src/utils/reports-media/record-capture/recordCapture.types';
+
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
 test('Evidence recording requires both opt-in settings', () => {
-	const requested: Environment = {
+	const requested: RuntimeEnvironment = {
 		HARNESS_EVIDENCE_DIR: '.cache/harness/evidence',
 		TAKE_SCREENSHOT: '1'
 	};
-	const alternate: Environment = {
+	const alternate: RuntimeEnvironment = {
 		HARNESS_EVIDENCE_DIR: '.cache/harness/evidence',
 		TAKE_SCREENSHOT: 'true'
 	};

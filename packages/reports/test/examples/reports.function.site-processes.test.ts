@@ -6,8 +6,7 @@ import type { CpuSnapshot } from '../../../../src/utils/development-tooling/cpuM
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { siteProcesses } from '../../src/routes/api/analytics-cpu/siteProcesses';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.site-processes.test.types';
 
 const sample: CpuSnapshot = {
 	status: 'available',

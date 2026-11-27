@@ -1,0 +1,100 @@
+{
+	"schemaVersion": 1,
+	"id": "script.needs-you-canary-check-surface",
+	"uid": "u_cmhc246euj",
+	"kind": "script",
+	"title": "checkSurface",
+	"responsibility": "Owns the checkSurface build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/needs-you-canary/checkSurface.ts"],
+		"symbols": ["signedOut", "checkSurface"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "checkSurface.options",
+				"type": "CanaryOptions",
+				"required": true
+			},
+			{
+				"name": "checkSurface.surface",
+				"type": "CanarySurface",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "signedOut",
+				"type": "unknown"
+			},
+			{
+				"name": "checkSurface",
+				"type": "Promise<CanaryResult>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "checkSurface",
+				"inputs": [
+					{
+						"name": "checkSurface.options",
+						"type": "CanaryOptions",
+						"required": true
+					},
+					{
+						"name": "checkSurface.surface",
+						"type": "CanarySurface",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkSurface",
+						"type": "Promise<CanaryResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "script.needs-you-canary-await-answer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-canary-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-canary-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/needs-you-canary/checkSurface.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/needs-you-canary/checkSurface.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -127,7 +127,10 @@ async function expectCategoryForwarding(project: string, taxonomy: object) {
 	const script =
 		"import CategoryImplementation from './billing/Entry.svelte'; let props = $props();";
 	const markup = '<CategoryImplementation {...props} />';
-	await writeFile(join(project, entry), `<script lang="ts">${script}</script>${markup}`);
+	await writeFile(
+		join(project, entry),
+		`<!-- @harness-uid u_abcdefghij -->\n<script lang="ts">${script}</script>${markup}`
+	);
 	const proxy = JSON.parse((await runHarness(['audit', '.', '--json'], project, false)).stdout);
 	const categoryFindings = (report: { findings: Array<{ path: string; rule: string }> }) =>
 		report.findings.filter(

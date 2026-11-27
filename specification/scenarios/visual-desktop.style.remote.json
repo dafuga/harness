@@ -40,7 +40,7 @@
 			"id": "states",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/units/explorer-shell-unit-desktop.style.remote.spec.ts",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/units/explorer-shell-unit-desktop-style-remote.spec.ts",
 			"cwd": "packages/reports"
 		}
 	],

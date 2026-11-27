@@ -4,7 +4,4 @@ import type { EvidenceArtifactQuery } from '../../../../models/verification-evid
 export type Query = EvidenceArtifactQuery & { projectId: string };
 
 export type Media = { bytes: Uint8Array; mediaType: string; principalId: string };
-
-export class InvalidKeptArtifactError extends Error {
-	override name = 'InvalidKeptArtifactError';
-}
+export { InvalidKeptArtifactError } from './InvalidKeptArtifactError';

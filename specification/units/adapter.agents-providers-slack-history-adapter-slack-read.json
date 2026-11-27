@@ -1,0 +1,119 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-slack-history-adapter-slack-read",
+	"uid": "u_bd5orhfrvh",
+	"kind": "adapter",
+	"title": "slackRead",
+	"responsibility": "Owns the slackRead integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/slack-history-adapter/slackRead.ts",
+			"src/adapters/agents-providers/slack-history-adapter/slackRead.types.ts"
+		],
+		"symbols": ["slackRead", "SlackReadMethod", "SlackReadReply"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "slackRead.config",
+				"type": "SlackHistoryAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "slackRead.method",
+				"type": "SlackReadMethod",
+				"required": true
+			},
+			{
+				"name": "slackRead.query",
+				"type": "Record<string, string>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "slackRead",
+				"type": "Promise<SlackReadReply>"
+			}
+		],
+		"errors": [
+			{
+				"name": "QaSyncError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "slackRead",
+				"inputs": [
+					{
+						"name": "slackRead.config",
+						"type": "SlackHistoryAdapterConfig",
+						"required": true
+					},
+					{
+						"name": "slackRead.method",
+						"type": "SlackReadMethod",
+						"required": true
+					},
+					{
+						"name": "slackRead.query",
+						"type": "Record<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "slackRead",
+						"type": "Promise<SlackReadReply>"
+					}
+				],
+				"errors": [
+					{
+						"name": "QaSyncError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-slack-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-sync-error",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/slack-history-adapter/slackRead.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/slack-history-adapter/slackRead.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

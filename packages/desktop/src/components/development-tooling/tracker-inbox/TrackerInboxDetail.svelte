@@ -4,6 +4,7 @@
 <script lang="ts">
 	import './trackerInboxDetail.css';
 	import type {
+		ConfirmedWrite,
 		InboxDetail,
 		InboxReply,
 		InboxReview,
@@ -12,16 +13,18 @@
 	} from '../../../models/development-tooling/TrackerInbox.types';
 	import {
 		confirmedWrite,
-		flagQuestion,
 		optionWrite,
-		writeGate
+		writeGate,
+		writtenAnswer
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 	import {
+		loadFailureMessage,
 		writeFailureMessage,
 		writeSentMessage
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInboxMessages';
 	import TrackerInboxRecord from './TrackerInboxRecord.svelte';
-	import TrackerInboxChoices from './TrackerInboxChoices.svelte';
+	import TrackerInboxAsk from './TrackerInboxAsk.svelte';
+	import { inboxDocuments } from '../../../lib/development-tooling/tracker-inbox/inboxDocuments';
 
 	let {
 		source,
@@ -44,23 +47,16 @@
 	let text = $state('');
 	let message = $state('');
 	let busy = $state(false);
-
+	const load = $derived(inboxDocuments(source, id));
 	const gate = $derived(
 		action && detail
 			? writeGate(action, detail, reviewed ? { revision: reviewed.revision } : null)
 			: null
 	);
-	const question = $derived(flagQuestion(detail?.flag ?? null));
 
 	function fresh(reply: InboxReply<InboxDetail>) {
 		detail = reply.value ?? null;
-		loadMessage = reply.value
-			? ''
-			: mode === 'mac'
-				? reply.code === 'noLocalMatch'
-					? 'This Tracker item is unavailable.'
-					: 'Tracker could not be reached on this Mac.'
-				: 'This item is not on the phone copy.';
+		loadMessage = reply.value ? '' : loadFailureMessage(reply.code, mode);
 	}
 
 	/** Opening an item is the review. A refresh after a write does not count as one. */
@@ -73,7 +69,7 @@
 		message = '';
 	}
 
-	async function refresh() {
+	export async function refresh() {
 		fresh(await source.detail(id));
 	}
 
@@ -115,9 +111,17 @@
 		}
 	}
 
+	/** A written answer from the Other modal is sent against the reviewed revision. */
+	async function other(answer: string) {
+		await deliver(detail && reviewed ? writtenAnswer(detail, reviewed, answer) : null);
+	}
+
 	/** A tapped option is the answer. Any confirm step has already happened in the choices. */
 	async function pick(number: number) {
-		const write = detail && reviewed ? optionWrite(detail, reviewed, number) : null;
+		await deliver(detail && reviewed ? optionWrite(detail, reviewed, number) : null);
+	}
+
+	async function deliver(write: ConfirmedWrite | null) {
 		if (!write || busy) {
 			message = 'The item changed since you reviewed it. Review it again before you answer.';
 			return;
@@ -128,6 +132,7 @@
 			message = reply.value
 				? writeSentMessage('answer', mode)
 				: writeFailureMessage(reply.code, mode);
+			if (reply.value) cancel();
 			await onchanged();
 			await refresh();
 		} finally {
@@ -150,17 +155,14 @@
 
 		<TrackerInboxRecord {detail} {mode} />
 
-		{#if detail.flag?.state === 'open' && detail.flag.options}
-			<TrackerInboxChoices flag={detail.flag} {busy} onpick={pick} />
+		{#if detail.flag}
+			<TrackerInboxAsk flag={detail.flag} {busy} {load} onpick={pick} onother={other} />
 		{/if}
 
 		<hx-section class="actions" aria-label="Confirm a write">
 			<hx-div class="buttons">
 				<hx-button type="button" onclick={() => start('note')}>Add note</hx-button>
-				<hx-button type="button" onclick={() => start('flag')}>Flag for you</hx-button>
-				{#if detail.flag?.state === 'open'}
-					<hx-button type="button" onclick={() => start('answer')}>Answer flag</hx-button>
-				{/if}
+				<hx-button type="button" onclick={() => start('flag')}>Flag for follow-up</hx-button>
 				<hx-button type="button" class="quiet" onclick={() => open(id)}>Review again</hx-button>
 			</hx-div>
 
@@ -179,7 +181,7 @@
 			{:else if action}
 				{#if !confirming}
 					<hx-label class="draft">
-						<hx-span>{action === 'answer' ? `Your answer to: ${question}` : 'Your text'}</hx-span>
+						<hx-span>Your text</hx-span>
 						<hx-textarea
 							maxlength="512"
 							rows="3"
@@ -198,7 +200,6 @@
 				{:else}
 					<hx-div class="confirm" role="group" aria-label="Confirm this write">
 						<hx-p>Send this {action} to <hx-strong>{detail.header.title}</hx-strong>?</hx-p>
-						{#if action === 'answer'}<hx-p class="meta">Question {question}</hx-p>{/if}
 						<hx-blockquote>{text.trim()}</hx-blockquote>
 						<hx-div class="buttons">
 							<hx-button type="button" disabled={busy} onclick={send}>Confirm and send</hx-button>

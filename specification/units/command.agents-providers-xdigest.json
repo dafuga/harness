@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "command.agents-providers-xdigest",
+	"uid": "u_53bgisvajn",
+	"kind": "command",
+	"title": "XDigestCommand",
+	"responsibility": "Register harness x-digest collect, send and identity.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/commands/agents-providers/XDigestCommand.ts",
+			"src/commands/agents-providers/XDigestCommand.types.ts"
+		],
+		"symbols": [
+			"XDigestCommand",
+			"XDigestCommand.register",
+			"XDigestCommandOptions",
+			"XDigestAction"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "XDigestCommand.register.program",
+				"type": "Command",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "XDigestCommand.register",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "InvalidArgumentError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "XDigestCommand.register",
+				"inputs": [
+					{
+						"name": "XDigestCommand.register.program",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestCommand.register",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "workflow.agents-providers-run-xdigest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-xdigest-send",
+			"via": "dynamic-import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/agents-providers/XDigestCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/agents-providers/XDigestCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

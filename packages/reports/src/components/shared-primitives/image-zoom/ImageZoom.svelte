@@ -2,7 +2,8 @@
 <!-- @harness-atoms ../atoms -->
 <!-- @harness-uid u_vy373725he -->
 <script lang="ts">
-	import type { DragStart, Point } from './ImageZoom.types';
+	import type { ZoomPoint } from '../../../utils/shared-primitives/trackpadZoom.types';
+	import type { DragStart } from './ImageZoom.types';
 	import { tick } from 'svelte';
 	import { t } from '../../../utils/reports-media/reportLocale';
 	import { imageAnchor, keepPointerInPlace } from './trackpadZoom';
@@ -33,17 +34,17 @@
 		loadedSrc = src;
 		failedSrc = null;
 	}
-	function viewCenter(element: HTMLElement): Point {
+	function viewCenter(element: HTMLElement): ZoomPoint {
 		return {
 			x: (element.scrollLeft + element.clientWidth / 2) / element.scrollWidth,
 			y: (element.scrollTop + element.clientHeight / 2) / element.scrollHeight
 		};
 	}
-	function centerOn(element: HTMLElement, point: Point) {
+	function centerOn(element: HTMLElement, point: ZoomPoint) {
 		element.scrollLeft = point.x * element.scrollWidth - element.clientWidth / 2;
 		element.scrollTop = point.y * element.scrollHeight - element.clientHeight / 2;
 	}
-	async function zoomTo(next: number | null, pointer?: Point) {
+	async function zoomTo(next: number | null, pointer?: ZoomPoint) {
 		const viewport = stage;
 		if (!viewport || !image?.naturalWidth) return;
 		const anchor = pointer ? imageAnchor(image, pointer) : zoomed ? viewCenter(viewport) : null;

@@ -1,5 +1,6 @@
 // @harness-uid u_jucgsgpmih
-import type { EntityFileInput } from './packagePieces.types';
+
+import type { ClassEntityTemplateInput } from './packagePieces.types';
 import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/strings/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 
@@ -136,7 +137,7 @@ export function utilFiles(name: string): PlannedFile[] {
 	];
 }
 
-function entityFiles(input: EntityFileInput): PlannedFile[] {
+function entityFiles(input: ClassEntityTemplateInput): PlannedFile[] {
 	return [
 		{ path: `src/${input.folder}/${input.className}.ts`, contents: input.contents },
 		{

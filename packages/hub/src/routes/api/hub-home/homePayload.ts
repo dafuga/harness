@@ -1,10 +1,22 @@
 import { z } from 'zod';
 import {
+	chatId,
+	homeChatInput,
+	homeRunId
+} from '$reports/lib/projects-sessions/hub-home/homeChatInput';
+import {
 	homeProviders,
 	homeRunPayload
 } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 import { controlledIdPattern } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
+import {
+	trackerArtifactMaxBytes,
+	trackerPlanningSchema,
+	trackerStageSchema
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
+import { trackerAttachmentLimits } from '../../../../../../src/utils/projects-sessions/trackerAttachmentLimits';
+import { trackerAttachmentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
 import { parseOverviewPayload } from '../tracker-overview/trackerOverviewInput';
 
 const text = (max: number) =>
@@ -23,7 +35,12 @@ const message = z.object({
 	id,
 	text: text(2000),
 	at: time,
-	from: z.enum(['agent', 'you'])
+	from: z.enum(['agent', 'you']),
+	// Hub messages and replies; older Macs send plain notes without them.
+	messageId: id.optional(),
+	status: z.enum(['stored', 'delivered', 'acknowledged', 'refused']).optional(),
+	reason: text(300).optional(),
+	replyTo: id.optional()
 });
 
 const askOption = z
@@ -49,6 +66,7 @@ const agent = z.object({
 		.object({ sessions: unsigned.default(0), tasks: z.array(task).max(5).default([]) })
 		.default({ sessions: 0, tasks: [] }),
 	itemId: id.nullable(),
+	runId: homeRunId.nullable().optional(),
 	task: title,
 	machine: short.nullable(),
 	model: short.nullable(),
@@ -59,12 +77,49 @@ const agent = z.object({
 	messages: z.array(message).max(20)
 });
 
+// A listed ask is always answerable by tap: 2 to 4 choices, exactly one recommended.
+const openAsk = z.object({
+	itemId: id,
+	agentId: id,
+	agentName: short,
+	title,
+	question: text(2000),
+	options: z
+		.array(askOption)
+		.min(2)
+		.max(4)
+		.refine((list) => list.filter((entry) => entry.recommended).length === 1),
+	confirm: z.enum(['deploy', 'money', 'secret']).optional(),
+	// Only the listing is part of the snapshot; documents are stored apart. Older Macs send none.
+	attachments: z.array(trackerAttachmentSchema).max(trackerAttachmentLimits.count).optional(),
+	since: time
+});
+
+const reminder = z.object({
+	itemId: id,
+	title,
+	at: time,
+	repeats: short.nullable(),
+	updatedAt: time
+});
+
+const planning = trackerPlanningSchema.refine(
+	({ artifacts }) =>
+		Object.values(artifacts).every(
+			(artifact) =>
+				new TextEncoder().encode(JSON.stringify(artifact)).byteLength <= trackerArtifactMaxBytes
+		),
+	'Each stage artifact must fit the Tracker limit'
+);
+
 const plan = z
 	.object({
 		id,
 		title,
 		project: short.nullable(),
 		state: z.enum(['draft', 'in-review', 'approved', 'in-progress', 'done']),
+		stage: trackerStageSchema.optional(),
+		planning: planning.optional(),
 		updatedAt: time,
 		total: unsigned,
 		done: unsigned,
@@ -74,9 +129,21 @@ const plan = z
 
 const snapshot = z.object({
 	overview: z.unknown(),
+	projectDirectory: z
+		.array(
+			z.object({
+				name: short,
+				state: z.enum(['needs-you', 'blocked', 'active', 'quiet', 'done']),
+				needsYou: unsigned
+			})
+		)
+		.optional(),
 	agents: z.array(agent).max(100),
+	openAsks: z.array(openAsk).max(100).optional(),
+	reminders: z.array(reminder).max(100).optional(),
 	plans: z.array(plan).max(100),
 	scheduled: z.array(homeRunPayload).max(200),
+	overdue: z.array(homeRunPayload).max(200).optional(),
 	providers: homeProviders
 });
 
@@ -87,23 +154,7 @@ export function parseHomePayload(value: unknown) {
 	return { ...result, overview };
 }
 
-export const chatId = z.string().uuid();
-
-export const chatInput = z
-	.object({
-		id: chatId,
-		agentId: id,
-		itemId: id,
-		kind: z.enum(['note', 'answer']),
-		question: text(2000).nullable(),
-		text: text(2000).refine((value) => value.trim().length > 0),
-		option: z.number().int().min(1).max(4).optional(),
-		confirmed: z.literal(true).optional()
-	})
-	.strict()
-	.refine((value) => (value.kind === 'answer') === Boolean(value.question))
-	.refine((value) => value.option === undefined || value.kind === 'answer')
-	.refine((value) => value.confirmed === undefined || value.option !== undefined);
+export { chatId, homeChatInput as chatInput };
 
 export const chatOutcome = z
 	.object({

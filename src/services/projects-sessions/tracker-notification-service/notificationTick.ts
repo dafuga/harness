@@ -1,11 +1,5 @@
 // @harness-uid u_vqnqshfas2
-import { isQuietHour } from '../../../helpers/attention-timing/isQuietHour';
-import {
-	askQuietHours,
-	directReminderDestination,
-	flagged,
-	parkedUntil
-} from './notificationRules';
+import { directReminderDestination, flagged, parkedUntil } from './notificationRules';
 import type {
 	TrackerDestination,
 	TrackerNotificationOptions
@@ -169,17 +163,16 @@ function replayState(options: TrackerNotificationOptions) {
 			issued,
 			paused,
 			held:
-				holdIssued(issued, options, paused) || (asking && quietOrPaused(issued, options, paused))
+				holdIssued(issued, options, paused) || (asking && pausedForChief(issued, options, paused))
 		};
 	});
 }
 
-function quietOrPaused(
+function pausedForChief(
 	issued: DeliveryAttempt,
 	options: TrackerNotificationOptions,
 	paused: boolean
 ) {
-	if (isQuietHour(options.now(), askQuietHours)) return true;
 	return (
 		paused &&
 		issued.request.destination.id === options.webhook?.destination.id &&

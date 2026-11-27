@@ -4,18 +4,26 @@
 <!-- @harness-uid u_dq2f5r7w3h -->
 <script lang="ts">
 	import type { InboxFlag } from '../../../models/development-tooling/TrackerInbox.types';
-	import { orderedOptions } from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
+	import OtherAnswerModal from '$reports/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte';
+	import {
+		flagQuestion,
+		orderedOptions
+	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 
 	let {
 		flag,
 		busy = false,
-		onpick
+		onpick,
+		onother
 	}: {
 		flag: InboxFlag;
 		busy?: boolean;
 		/** Called with the option's 1-based number once any confirm step is done. */
 		onpick: (number: number) => void;
+		/** Called with the answer written in the Other modal. */
+		onother: (text: string) => void;
 	} = $props();
+	let writing = $state(false);
 
 	const choices = $derived(orderedOptions(flag));
 	let pending = $state<number | null>(null);
@@ -35,7 +43,7 @@
 	}
 </script>
 
-{#if choices.length >= 2}
+{#if flag.state === 'open'}
 	<hx-section class="choices" aria-label="Choose an answer">
 		<hx-ul class="plain">
 			{#each choices as { number, option } (number)}
@@ -53,8 +61,28 @@
 					</hx-button>
 				</hx-li>
 			{/each}
+			<hx-li>
+				<hx-button
+					type="button"
+					class="choice"
+					aria-haspopup="dialog"
+					disabled={busy}
+					onclick={() => (writing = true)}
+				>
+					<hx-strong>Other…</hx-strong>
+					<hx-span class="effect">Write a different answer.</hx-span>
+				</hx-button>
+			</hx-li>
 		</hx-ul>
-		<hx-p class="meta">Or write your own answer with Answer flag.</hx-p>
+		{#if writing}
+			<OtherAnswerModal
+				question={flagQuestion(flag)}
+				maxlength={512}
+				{busy}
+				onsend={onother}
+				onclose={() => (writing = false)}
+			/>
+		{/if}
 		{#if pendingChoice && flag.confirm}
 			<hx-div class="confirm" role="group" aria-label="Confirm this {flag.confirm} answer">
 				<hx-p>

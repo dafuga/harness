@@ -35,7 +35,6 @@ function auditClassFileName(file: AuditFile): AuditFinding[] {
 	const className = exportedClassNames(file.structuralLines)[0];
 	if (!className) return [];
 	const stem = typeScriptStem(file.relativePath);
-	// A model type collection may also declare a small error or value class.
 	if (stem.endsWith('.types')) return [];
 	const rule = classRuleForPath(file.relativePath);
 	const roleClass = harnessClassFileRules.some(({ suffix }) => className.endsWith(suffix));
@@ -61,9 +60,15 @@ function auditModelFileName(file: AuditFile): AuditFinding[] {
 }
 
 function auditGeneratedFunctionFile(file: AuditFile): AuditFinding[] {
-	if (typeScriptStem(file.relativePath).endsWith('.types')) return [];
+	const stem = typeScriptStem(file.relativePath);
+	if (stem.endsWith('.types')) return [];
 	const rule = functionFileRule(file);
 	if (!rule) return [];
+	const errorName = namedErrorClass(file, stem);
+	if (errorName)
+		return stem === errorName
+			? []
+			: [fileNameFinding(file, `Name this error class file ${errorName}.ts.`)];
 	const findings = rule.validFileName
 		? []
 		: [fileNameFinding(file, `${rule.label} files should be named ${rule.filePattern}.`)];
@@ -76,6 +81,13 @@ function auditGeneratedFunctionFile(file: AuditFile): AuditFinding[] {
 			message: `${rule.label} files should export "${rule.expected}".`
 		}
 	];
+}
+
+function namedErrorClass(file: AuditFile, stem: string): string | undefined {
+	if (!stem.endsWith('Error')) return undefined;
+	return file.structuralLines
+		.map((line) => line.match(/^\s*export class ([A-Z][A-Za-z0-9]*Error) extends Error\b/)?.[1])
+		.find((name) => name !== undefined);
 }
 
 function auditConfigFileName(file: AuditFile): AuditFinding[] {

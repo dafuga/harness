@@ -1,4 +1,5 @@
 // @harness-uid u_xh7uht2d3a
+import type { TrackerChangeEvent } from '$reports/lib/projects-sessions/realtime/realtime.types';
 
 import type {
 	TrackerPlanning,
@@ -6,10 +7,16 @@ import type {
 } from '../../../../../src/utils/projects-sessions/trackerPlanning.types';
 
 /** The buckets an item can sit in. Needs you comes first: an open flag always wins. */
-export type InboxBucket = 'needs-you' | 'blocked' | 'active' | 'quiet' | 'done';
-export type InboxFilter = 'all' | InboxBucket;
+import type {
+	TrackerAttachment,
+	TrackerAttachmentDocument
+} from '../../../../../src/utils/projects-sessions/trackerAttachment.types';
 
-export type WriteAction = 'note' | 'flag' | 'answer';
+export type InboxBucket = 'needs-you' | 'blocked' | 'active' | 'quiet' | 'done';
+export type InboxFilter = 'all' | InboxBucket | 'reminders';
+
+/** `done` and `remind` (snooze) are the two taps on a reminder. */
+export type WriteAction = 'note' | 'flag' | 'answer' | 'done' | 'remind';
 
 /** One item's header as the phone replica holds it. */
 export interface InboxHeader {
@@ -20,6 +27,8 @@ export interface InboxHeader {
 	stage?: TrackerStage;
 	updatedAt: string | null;
 	dueAt: string | null;
+	/** Set on an active personal item: when it reminds next. */
+	reminder?: { at: string; repeats: string | null };
 }
 
 /** One tappable answer to an open ask. `recommended` is the one the asking session suggests. */
@@ -31,6 +40,8 @@ export interface InboxOption {
 
 export type InboxConfirmKind = 'deploy' | 'money' | 'secret';
 
+export type InboxAttachment = TrackerAttachment & { content?: TrackerAttachmentDocument };
+
 export interface InboxFlag {
 	state: string;
 	at: string | null;
@@ -38,6 +49,8 @@ export interface InboxFlag {
 	options?: InboxOption[];
 	/** Deploy, money and secret asks need an extra confirm step (Face ID on the phone). */
 	confirm?: InboxConfirmKind;
+	/** Specs and documents behind "View spec". */
+	attachments?: InboxAttachment[];
 }
 
 export interface InboxNote {
@@ -61,6 +74,10 @@ export interface InboxRun {
 export interface InboxRow {
 	header: InboxHeader;
 	bucket: InboxBucket;
+	/** The open structured ask of a Needs you row: its question and when it was raised. */
+	ask?: { question: string; since: string | null };
+	/** The item behind a Needs you row, read for its choices. Its revision is what a tap answers. */
+	review?: InboxDetail;
 }
 
 export interface InboxDetail {
@@ -109,6 +126,8 @@ export interface ConfirmedWrite {
 	revision: string | null;
 	/** The 1-based number of the tapped option; `text` is then that option's label. */
 	option?: number;
+	/** A reminder tap names the armed time it was shown; a snooze's `text` is the new time. */
+	armed?: string;
 }
 
 export interface InboxWriteReceipt {
@@ -130,6 +149,8 @@ export interface InboxReply<T> {
 
 export interface InboxOverview {
 	rows: InboxRow[];
+	/** Personal reminders, soonest first. */
+	reminders: InboxHeader[];
 	unresolvedFlags: number;
 	/** True when the phone returned its full cap of Needs you items, so more may exist. */
 	needsYouCapped: boolean;
@@ -140,7 +161,11 @@ export interface TrackerInboxSource {
 	overview(): Promise<InboxReply<InboxOverview>>;
 	search(query: string): Promise<InboxReply<InboxRow[]>>;
 	detail(id: string): Promise<InboxReply<InboxDetail>>;
+	/** One document of the open ask, where `detail` does not already carry the text (the phone). */
+	document?(itemId: string, attachmentId: string): Promise<InboxReply<TrackerAttachmentDocument>>;
 	write(write: ConfirmedWrite): Promise<InboxReply<InboxWriteReceipt>>;
 	writes(): Promise<InboxReply<InboxWrite[]>>;
 	discard(intentId: string): Promise<InboxReply<unknown>>;
+	/** Pushed tracker changes. Absent where a source cannot push; the screen then reads on demand. */
+	watch?(listener: (event: TrackerChangeEvent) => void): () => void;
 }

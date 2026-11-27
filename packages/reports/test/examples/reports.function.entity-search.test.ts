@@ -3,8 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { entitySearch } from '../../src/utils/explorer-ui/entitySearch';
 import type { SearchEntry } from '../../src/utils/explorer-ui/entitySearch';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.entity-search.test.types';
 const unitId = 'reports.function.entity-search';
 const record = (state: string, cases: Cases) =>
 	recordExampleCases(

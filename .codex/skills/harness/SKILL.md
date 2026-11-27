@@ -29,7 +29,7 @@ Choose component colors from Styles → Colors, defined in `appStyleTokensConfig
 4. Prefer adding or updating generators over manually duplicating scaffold behavior.
 5. Add or update unit and temp-workspace E2E tests for generator, audit, and CLI behavior changes.
 6. Keep generated and hand-edited files inside the configured Harness rule limits.
-7. Verify with `bun run check` before handing work back.
+7. Verify the committed candidate with `bun run check --item <tracker-id>`. Use the shared host queue for the combined release check with `--release`.
 8. Git answer caches: establish the object format first; hex shape is not immutability. Test refs named like the other width and unknown formats.
 9. Config changes: name owned helpers from the owning config file; update generator output and public SDK export plans together, then run the standard every-scaffold export-to-emission guard. Run root and every inheriting workspace's test entrypoint before a full check.
 10. Shared browser fixtures must preserve lazy setup: when their dependencies change, run an API-only case with an unavailable browser executable alongside actual browser cases. Characterize diagnostics before page announcement and overlapping context/page delivery without duplicates.
@@ -223,6 +223,9 @@ Read `harness info ui-design` before designing or changing a screen.
 
 - One main piece per screen. A screen has one main UI piece (a list, a board, a form or a canvas). Everything else is a primary action above it or quiet status below it. Two main pieces need two screens, tabs or a dialog.
 - Forms never sit inline on an overview. Create, edit, connect and settings forms open from a button in a dialog (the shared Modal) or on their own page. Mark overview screens with <!-- @harness-view overview -->; harness audit reports overview-inline-form for a form control or form component outside a dialog there. A search field inside a role="search" landmark only narrows the main piece and is allowed.
+- List cards never contain forms. Show one-line option chips with a small Recommended badge, and put explanations, text fields, selectors and confirmation steps in the item’s detail panel, sheet or dialog.
+- Agent cards show status and an Open chat button. Open the conversation in a bottom-right overlay on desktop and a full-screen sheet on phone.
+- Render explicit HTTP and HTTPS URLs in item text, questions, choices and notes as links. Open them in a new tab with rel="noopener noreferrer", allow long URLs to wrap, and keep links separate from item and choice buttons.
 - Primary actions are buttons in one short row above the main piece. A screen has at most one filled primary button (harness audit reports overview-single-primary); the rest are secondary buttons. Labels are short verbs in sentence case, such as New project.
 - Status is quiet. Connection, sync and account state is one short muted line or a small chip beside or below the main piece. Its details and settings open in a dialog; never stack full status panels on a landing screen.
 - Group by job, in this order: primary actions, the main piece, quiet status. Keep to about three groups and let spacing, not borders or headings, separate them.

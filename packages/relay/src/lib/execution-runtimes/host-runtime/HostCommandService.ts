@@ -1,7 +1,11 @@
 // @harness-uid u_gzun7zkojm
-import type { Acknowledged, Address } from './HostCommandService.types';
-import { relayCloseCodes } from '../../../../../remote/src/index';
-import type { RelayErrorCode, RelayHostCommand } from '../../../../../remote/src/index';
+import type { RemoteDeviceAddress } from '../../../../../remote/src/models/networking-security/RemoteRelay.types';
+import type { Acknowledged } from './HostCommandService.types';
+import {
+	relayCloseCodes,
+	type RelayErrorCode,
+	type RelayHostCommand
+} from '../../../../../remote/src/index';
 import type { HostSocketsAdapter } from './HostSocketsAdapter';
 import { HostCommandValidator } from '../../../validators/development-tooling/HostCommandValidator';
 import type { DeviceRevocationService } from './DeviceRevocationService';
@@ -40,14 +44,10 @@ export class HostCommandService {
 
 	private async run(command: Acknowledged): Promise<RelayErrorCode | undefined> {
 		switch (command.type) {
-			case 'pairing-open':
-				return this.offers.open(command.pairingId, command.expiresAt);
 			case 'pairing-approve':
 				return this.offers.approve(command);
 			case 'pairing-deny':
 				return this.offers.deny(command.pairingId);
-			case 'pairing-close':
-				return this.offers.close(command.pairingId);
 			case 'device-revoke':
 				this.revocation.revoke(command.deviceId);
 				return undefined;
@@ -55,18 +55,18 @@ export class HostCommandService {
 	}
 
 	/** A packet reaches the connection it names. A late one for another connection is dropped. */
-	private deliver(address: Address, packet: unknown): void {
+	private deliver(address: RemoteDeviceAddress, packet: unknown): void {
 		const target = this.connection(address);
 		if (target) this.sockets.send(target, packet);
 	}
 
-	private disconnect(address: Address, code: number): void {
+	private disconnect(address: RemoteDeviceAddress, code: number): void {
 		const target = this.connection(address);
 		if (target) this.link.drop(target, code);
 	}
 
 	/** The open connection an address names, if it is a connection of the device it names. */
-	private connection(address: Address): WebSocket | undefined {
+	private connection(address: RemoteDeviceAddress): WebSocket | undefined {
 		const socket = this.sockets.connection(address.connectionId);
 		const attachment = socket ? this.sockets.attachment(socket) : undefined;
 		const named = attachment?.role === 'device' && attachment.deviceId === address.deviceId;

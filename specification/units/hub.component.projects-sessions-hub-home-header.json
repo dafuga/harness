@@ -4,46 +4,90 @@
 	"uid": "u_pkjntjini6",
 	"kind": "component",
 	"title": "HubHomeHeader",
-	"responsibility": "Shows account navigation, current activity totals and the most urgent subscription warning.",
+	"responsibility": "Shows account navigation, current activity totals, computers and each subscription's quota.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
 		"uses": [
-			"hub.component.account-menu",
+			"hub.component.projects-sessions-hub-home-quota-pills",
 			"reports.component.brand-mark",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-header",
-			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-ul"
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeHeader.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeHeader.svelte"],
 		"symbols": ["HubHomeHeader"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.explorer-ui-explorer-kit-pill"
+		],
 		"inputs": [
 			{
 				"name": "HubHomeHeader.view",
 				"type": "HomeView",
 				"required": true,
 				"description": "Home data, project snapshots, source availability and clock used for presentation."
+			},
+			{
+				"name": "HubHomeHeader.link",
+				"type": "RealtimeState | null",
+				"required": true,
+				"description": "Provides the linked computer data and connection notices for the banner."
+			},
+			{
+				"name": "HubHomeHeader.accountName",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Display name of the signed-in account shown with its initial."
+			},
+			{
+				"name": "HubHomeHeader.accountMenu",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Account actions supplied by the web or native host."
+			},
+			{
+				"name": "HubHomeHeader.needsHref",
+				"type": "string",
+				"required": false,
+				"default": "Home with the view=needs-you query",
+				"description": "Address of the shared Needs you view."
+			},
+			{
+				"name": "HubHomeHeader.needsOnly",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Shows the Needs you heading and a link back to Home."
+			},
+			{
+				"name": "HubHomeHeader.notifications",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional notification controls supplied by the web host."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeHeader",
 				"type": "markup",
-				"description": "Shows account navigation, current activity totals and the most urgent subscription warning."
+				"description": "The shared Home header with the Harness logo, account controls, activity, machine and quota summaries, and optional Home and Needs you navigation."
 			}
 		],
 		"errors": [],
@@ -53,12 +97,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "hub.component.account-menu",
+			"unit": "hub.component.projects-sessions-hub-home-quota-pills",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.browser-context",
+			"unit": "hub.function.projects-sessions-hub-home-live",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -74,6 +118,11 @@
 		},
 		{
 			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -108,11 +157,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-li",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
@@ -126,15 +170,20 @@
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeHeader.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeHeader.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeHeader.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeHeader.svelte"
 			}
 		]
 	},

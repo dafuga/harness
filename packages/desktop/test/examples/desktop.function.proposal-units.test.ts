@@ -3,10 +3,9 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { proposalUnits } from '../../src/utils/proposalUnits';
 import type { Category, CatalogEntity } from '../../src/models/development-tooling/Desktop.types';
+import type { Cases } from './desktop.function.proposal-units.test.types';
 
 const UNIT_ID = 'desktop.function.proposal-units';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 function entity(id: string, category: Category, planned = false): CatalogEntity {
 	return {

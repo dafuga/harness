@@ -1,12 +1,13 @@
 import { expect, test } from 'vitest';
-import { mergeHomeSnapshots } from '../../src/components/projects-sessions/hubHomeMerge';
+import { mergeHomeSnapshots } from '../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
 import {
 	agentActivity,
 	homeHeadline,
 	isWorking
-} from '../../src/components/projects-sessions/hubHomePresentation';
+} from '../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
 import type {
 	HomeAgent,
+	HomePlan,
 	HomeSubscription,
 	OwnerHomeSnapshot
 } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
@@ -55,7 +56,7 @@ test('no computer answering gives no Home view, and one computer is shown unchan
 	expect(mergeHomeSnapshots([only])).toBe(only);
 });
 
-test('work synced between computers appears once, most urgent and most recent first', () => {
+test('work synced between computers appears once, preserving artifacts at the same revision', () => {
 	const primary = snapshot(
 		[
 			agent('shared', 'idle', '2026-11-25T10:00:00Z'),
@@ -72,7 +73,28 @@ test('work synced between computers appears once, most urgent and most recent fi
 		[quota('claude-a', '2026-11-25T11:00:00Z'), quota('codex-b', '2026-11-25T11:00:00Z')],
 		5
 	);
+	const plan: HomePlan = {
+		id: 'plan',
+		title: 'Fixture plan',
+		project: null,
+		state: 'draft',
+		updatedAt: '2026-11-25T10:00:00Z',
+		total: 0,
+		done: 0,
+		steps: []
+	};
+	primary.plans = [plan];
+	const withDesign: HomePlan = {
+		...plan,
+		stage: 'design',
+		planning: { promotions: [], artifacts: { design: { summary: 'Fixture design' } } }
+	};
+	second.plans = [withDesign];
 	const merged = mergeHomeSnapshots([primary, second]);
+	expect(merged?.plans).toEqual([withDesign]);
+	const later = { ...plan, updatedAt: '2026-11-25T11:00:00Z' };
+	primary.plans = [later];
+	expect(mergeHomeSnapshots([second, primary])?.plans).toEqual([later]);
 	expect(merged?.agents.map((entry) => [entry.id, entry.state])).toEqual([
 		['shared', 'needs-you'],
 		['only-primary', 'working'],
@@ -96,7 +118,10 @@ test('quota stays unknown unless a computer reports it, and a failed overview ne
 test('the headline reflects running sessions even before any agent card exists', () => {
 	expect(homeHeadline([])).toBe('Nothing is running yet');
 	expect(homeHeadline([], 11)).toBe('11 sessions running');
-	expect(homeHeadline([agent('a', 'working', '2026-11-25T10:00:00Z')], 11)).toBe('1 agent working');
+	expect(homeHeadline([agent('a', 'working', '2026-11-25T10:00:00Z')], 11)).toBe(
+		'11 sessions running for 1 agent'
+	);
+	expect(homeHeadline([], 0, 2)).toBe('Nothing is running, 2 need you');
 });
 
 test('an agent with a flag and live runs still counts as working, and sessions are not summed across computers', () => {
@@ -112,7 +137,9 @@ test('an agent with a flag and live runs still counts as working, and sessions a
 	expect(merged?.agents).toHaveLength(1);
 	expect(merged?.agents[0]).toMatchObject({ sessions: 3, state: 'needs-you' });
 	expect(merged?.agents[0].tasks.map((task) => task.title)).toEqual(['a', 'b', 'c', 'd']);
-	expect(homeHeadline(merged?.agents ?? [])).toBe('1 agent working, 1 needs you');
+	expect(homeHeadline(merged?.agents ?? [], 0, 1)).toBe(
+		'3 sessions running for 1 agent, 1 needs you'
+	);
 });
 
 test('sub-agent sessions count once across computers and make their parent agent working', () => {
@@ -135,5 +162,5 @@ test('sub-agent sessions count once across computers and make their parent agent
 	expect(agentActivity(merged!.agents[0])).toBe(
 		'3 sessions running (3 sub-agent sessions) · Synthetic task (+2 more)'
 	);
-	expect(homeHeadline(merged?.agents ?? [])).toBe('1 agent working');
+	expect(homeHeadline(merged?.agents ?? [])).toBe('3 sessions running for 1 agent');
 });

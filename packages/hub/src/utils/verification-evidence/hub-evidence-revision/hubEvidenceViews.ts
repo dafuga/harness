@@ -4,6 +4,7 @@ import { recordView } from '../../../../../../src/utils/development-tooling/reco
 import type { HubRecordStatusService } from '../../../services/verification-evidence/hub-evidence-service/HubRecordStatusService';
 import type { RecordStatus } from '../../../../../../src/services/verification-evidence/history-status-service/HistoryStatusService';
 import type { HubAttachedRecord } from '../hubAttachedRecord';
+import type { RecordView } from '../../../../../../src/utils/development-tooling/recordView.types';
 
 async function hubEvidenceView(history: HubRecordStatusService, item: RecordStatus) {
 	const loaded = await history.attached.load(item.evidence);
@@ -34,7 +35,10 @@ async function hubEvidenceView(history: HubRecordStatusService, item: RecordStat
 }
 
 /** Project every attached status while retaining explicit invalid-record gaps. */
-export async function hubEvidenceViews(history: HubRecordStatusService, items: RecordStatus[]) {
+export async function hubEvidenceViews(
+	history: HubRecordStatusService,
+	items: RecordStatus[]
+): Promise<RecordView[]> {
 	return (await Promise.all(items.map((item) => hubEvidenceView(history, item)))).filter(
 		(item) => item !== null
 	);

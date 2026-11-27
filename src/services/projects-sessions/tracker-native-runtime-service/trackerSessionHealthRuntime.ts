@@ -11,7 +11,10 @@ import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextT
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
-import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
+import { runSessionName } from './trackerFinishedSessions';
+import { readTrackerSlotState } from './trackerSlotInvariants';
+import { trackerProviderHold } from './trackerProviderHolds';
+import { blockMissingItem, recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from './trackerHostWatchdogState';
 import { trackerSessionHealth } from './trackerSessionHealth';
 import { flagRecoveryError, recoverTrackerSession } from './trackerSessionRecovery';
@@ -33,6 +36,7 @@ export function readTrackerSessionHealth(
 	const clocks = store.database.prepare('SELECT clocks FROM items WHERE id = ?');
 	const links = store.database.prepare('SELECT v FROM meta WHERE k GLOB ?');
 	return trackerSessionHealth({
+		judgedByRun: runJudgedPanes(store, panes, now),
 		host: store.node,
 		now,
 		reportUnassigned: store.node === 'daniel-primary-mbp',
@@ -47,6 +51,23 @@ export function readTrackerSessionHealth(
 		linkedItems: (runId) =>
 			(links.all(`${trackerSessionItemPrefix}${runId}:*`) as { v: string }[]).map(({ v }) => v)
 	});
+}
+
+/**
+ * A launcher pane of a finished run gets the run's grace and keep-alive exceptions, and a pane
+ * already reported by a run rule is not reported again for its item.
+ */
+function runJudgedPanes(
+	store: TrackerPersistenceService,
+	panes: readonly WatchdogPane[],
+	now: number
+): ReadonlySet<string> {
+	const { report, violations } = readTrackerSlotState(store, panes, { now, cap: null });
+	const judged = new Set([
+		...report.leftover.map(({ session }) => session).filter((name) => runSessionName.test(name)),
+		...violations.map(({ session }) => session)
+	]);
+	return new Set(panes.filter(({ name }) => judged.has(name)).map(({ key }) => key));
 }
 
 export async function applyTrackerSessionHealth(
@@ -84,15 +105,43 @@ async function publishIssue(
 ) {
 	const candidate = items.find(({ id, deleted }) => id === issue.item_id && !deleted);
 	const item = candidate && new TrackerItemReadRepository(store.database).getStored(candidate.id);
-	if (launch && item?.launch_source === 'recovery' && issue.kind === 'launch-stuck') {
-		flagRecoveryError(store, item, now, issue.reason);
-		return;
-	}
+	if (resolveRecoveryHold(store, { item, candidate, launch }, issue, now)) return;
 	const recovery =
 		issue.recover && item && launch
 			? await recoverTrackerSession(store, { item, launch, now })
 			: null;
+	if (recovery?.startsWith('Tracker requested relaunch')) return;
 	publishHealthNote(store, issue, { item, recovery, now });
+}
+
+function resolveRecoveryHold(
+	store: TrackerPersistenceService,
+	{
+		item,
+		candidate,
+		launch
+	}: { item?: TrackerItem; candidate?: TrackerItem; launch?: TrackerWatchdogLaunch },
+	issue: TrackerSessionHealthIssue,
+	now: number
+) {
+	if (!item) return false;
+	if (issue.blockReason) {
+		blockMissingItem(store, { item, candidate, reason: issue.blockReason });
+		return true;
+	}
+	if (!launch || item.launch_source !== 'recovery' || issue.kind !== 'launch-stuck') return false;
+	if (recoveryProviderHold(store, item.id, now)) return false;
+	flagRecoveryError(store, item, now, issue.reason);
+	return true;
+}
+
+/** A relaunch waiting for its provider is held, not stuck. */
+function recoveryProviderHold(store: TrackerPersistenceService, itemId: string, now: number) {
+	const latest = new TrackerRunReadRepository(store.database, store.node)
+		.list({ itemId })
+		.filter(({ node }) => node === store.node)
+		.at(-1);
+	return latest ? trackerProviderHold(store, latest.cli, now) : null;
 }
 
 function publishHealthNote(
@@ -112,8 +161,7 @@ function publishHealthNote(
 			key: healthKey(issue),
 			localOnly: !item || issue.kind === 'finished'
 		},
-		now,
-		null
+		now
 	);
 }
 

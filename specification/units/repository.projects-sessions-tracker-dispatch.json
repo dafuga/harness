@@ -11,8 +11,13 @@
 		"source": [
 			"src/repositories/projects-sessions/TrackerDispatchRepository.ts",
 			"src/repositories/projects-sessions/TrackerDispatchRepository.types.ts",
+			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchCommit.ts",
+			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchCommit.types.ts",
+			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchHumanRedo.ts",
 			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields.ts",
 			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl.ts",
+			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchEvents.ts",
+			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchEvents.types.ts",
 			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchRunRows.ts",
 			"src/repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema.ts"
 		],
@@ -26,6 +31,7 @@
 			"TrackerDispatchRepository.retireLegacy",
 			"TrackerDispatchRepository.assertLegacyRollbackSafe",
 			"TrackerDispatchRepository.candidates",
+			"TrackerDispatchRepository.humanRedoCandidates",
 			"TrackerDispatchRepository.stuckRequests",
 			"TrackerDispatchRepository.readSnapshot",
 			"TrackerDispatchRepositoryOptions",
@@ -33,11 +39,25 @@
 			"TrackerDispatchRow",
 			"TrackerStoredDispatchRun",
 			"TrackerRunReservation",
+			"dueStartKey",
+			"commitDecision",
+			"TrackerDispatchCommitTarget",
+			"TrackerDispatchCommitRequest",
+			"humanRedoCandidates",
 			"dispatchItem",
+			"trackerCompletionVersion",
 			"dispatchJournalFields",
 			"trackerStoredSchedulingHold",
 			"dispatchLaunchSource",
+			"canBlockStoppedRun",
 			"trackerDispatchControl",
+			"cancelQueuedDispatchRuns",
+			"recordLaunchEvents",
+			"pendingLaunchEvents",
+			"markLaunchEventsBatched",
+			"TrackerLaunchEvent",
+			"EventDetail",
+			"TrackerLaunchEventRow",
 			"legacyUnstarted",
 			"assertLegacyDispatchRollbackSafe",
 			"dispatchRunRows",
@@ -88,8 +108,34 @@
 				"required": true
 			},
 			{
+				"name": "TrackerDispatchRepository.stuckRequests.minimumAge",
+				"type": "number",
+				"required": false,
+				"default": 300000
+			},
+			{
 				"name": "TrackerDispatchRepository.readSnapshot.itemId",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "commitDecision.target",
+				"type": "TrackerDispatchCommitTarget",
+				"required": true
+			},
+			{
+				"name": "commitDecision.request",
+				"type": "TrackerDispatchCommitRequest",
+				"required": true
+			},
+			{
+				"name": "commitDecision.decide",
+				"type": "(snapshot: TrackerDispatchSnapshot) => TrackerDispatchDecision",
+				"required": true
+			},
+			{
+				"name": "humanRedoCandidates.database",
+				"type": "SqliteDatabase",
 				"required": true
 			},
 			{
@@ -100,6 +146,16 @@
 			{
 				"name": "dispatchItem.runs",
 				"type": "readonly TrackerRunReceipt[]",
+				"required": true
+			},
+			{
+				"name": "trackerCompletionVersion.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "trackerCompletionVersion.id",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -115,6 +171,31 @@
 			{
 				"name": "trackerStoredSchedulingHold.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "canBlockStoppedRun.item",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "canBlockStoppedRun.runs",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "canBlockStoppedRun.openSession",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "canBlockStoppedRun.activeSessionKeys",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "canBlockStoppedRun.run",
+				"type": "TrackerRunReceipt",
 				"required": true
 			},
 			{
@@ -135,6 +216,56 @@
 			{
 				"name": "trackerDispatchControl.now",
 				"type": "() => number",
+				"required": true
+			},
+			{
+				"name": "cancelQueuedDispatchRuns.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "cancelQueuedDispatchRuns.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "cancelQueuedDispatchRuns.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "recordLaunchEvents.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "recordLaunchEvents.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "recordLaunchEvents.writes",
+				"type": "TrackerDispatchWrites",
+				"required": false
+			},
+			{
+				"name": "recordLaunchEvents.at",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "pendingLaunchEvents.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "markLaunchEventsBatched.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "markLaunchEventsBatched.lastId",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -243,6 +374,10 @@
 				"type": "TrackerDispatchCandidate[]"
 			},
 			{
+				"name": "TrackerDispatchRepository.humanRedoCandidates",
+				"type": "unknown"
+			},
+			{
 				"name": "TrackerDispatchRepository.stuckRequests",
 				"type": "unknown"
 			},
@@ -251,8 +386,24 @@
 				"type": "TrackerDispatchSnapshot"
 			},
 			{
+				"name": "dueStartKey",
+				"type": "unknown"
+			},
+			{
+				"name": "commitDecision",
+				"type": "TrackerDispatchResult"
+			},
+			{
+				"name": "humanRedoCandidates",
+				"type": "unknown"
+			},
+			{
 				"name": "dispatchItem",
 				"type": "TrackerDispatchItem"
+			},
+			{
+				"name": "trackerCompletionVersion",
+				"type": "string | undefined"
 			},
 			{
 				"name": "dispatchJournalFields",
@@ -267,8 +418,28 @@
 				"type": "unknown"
 			},
 			{
+				"name": "canBlockStoppedRun",
+				"type": "unknown"
+			},
+			{
 				"name": "trackerDispatchControl",
 				"type": "unknown"
+			},
+			{
+				"name": "cancelQueuedDispatchRuns",
+				"type": "unknown"
+			},
+			{
+				"name": "recordLaunchEvents",
+				"type": "void"
+			},
+			{
+				"name": "pendingLaunchEvents",
+				"type": "unknown"
+			},
+			{
+				"name": "markLaunchEventsBatched",
+				"type": "void"
 			},
 			{
 				"name": "legacyUnstarted",
@@ -424,8 +595,27 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "TrackerDispatchRepository.stuckRequests",
+				"name": "TrackerDispatchRepository.humanRedoCandidates",
 				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.humanRedoCandidates",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.stuckRequests",
+				"inputs": [
+					{
+						"name": "TrackerDispatchRepository.stuckRequests.minimumAge",
+						"type": "number",
+						"required": false,
+						"default": 300000
+					}
+				],
 				"outputs": [
 					{
 						"name": "TrackerDispatchRepository.stuckRequests",
@@ -454,6 +644,52 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "commitDecision",
+				"inputs": [
+					{
+						"name": "commitDecision.target",
+						"type": "TrackerDispatchCommitTarget",
+						"required": true
+					},
+					{
+						"name": "commitDecision.request",
+						"type": "TrackerDispatchCommitRequest",
+						"required": true
+					},
+					{
+						"name": "commitDecision.decide",
+						"type": "(snapshot: TrackerDispatchSnapshot) => TrackerDispatchDecision",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "commitDecision",
+						"type": "TrackerDispatchResult"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "humanRedoCandidates",
+				"inputs": [
+					{
+						"name": "humanRedoCandidates.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "humanRedoCandidates",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "dispatchItem",
 				"inputs": [
 					{
@@ -471,6 +707,29 @@
 					{
 						"name": "dispatchItem",
 						"type": "TrackerDispatchItem"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerCompletionVersion",
+				"inputs": [
+					{
+						"name": "trackerCompletionVersion.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "trackerCompletionVersion.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerCompletionVersion",
+						"type": "string | undefined"
 					}
 				],
 				"errors": [],
@@ -518,6 +777,44 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "canBlockStoppedRun",
+				"inputs": [
+					{
+						"name": "canBlockStoppedRun.item",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "canBlockStoppedRun.runs",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "canBlockStoppedRun.openSession",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "canBlockStoppedRun.activeSessionKeys",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "canBlockStoppedRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "canBlockStoppedRun",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerDispatchControl",
 				"inputs": [
 					{
@@ -545,6 +842,108 @@
 					{
 						"name": "trackerDispatchControl",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cancelQueuedDispatchRuns",
+				"inputs": [
+					{
+						"name": "cancelQueuedDispatchRuns.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "cancelQueuedDispatchRuns.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "cancelQueuedDispatchRuns.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cancelQueuedDispatchRuns",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordLaunchEvents",
+				"inputs": [
+					{
+						"name": "recordLaunchEvents.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "recordLaunchEvents.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "recordLaunchEvents.writes",
+						"type": "TrackerDispatchWrites",
+						"required": false
+					},
+					{
+						"name": "recordLaunchEvents.at",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordLaunchEvents",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pendingLaunchEvents",
+				"inputs": [
+					{
+						"name": "pendingLaunchEvents.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pendingLaunchEvents",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "markLaunchEventsBatched",
+				"inputs": [
+					{
+						"name": "markLaunchEventsBatched.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "markLaunchEventsBatched.lastId",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "markLaunchEventsBatched",
+						"type": "void"
 					}
 				],
 				"errors": [],
@@ -749,6 +1148,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-cpu-budget",
 			"via": "import",
 			"origin": "derived"
 		},

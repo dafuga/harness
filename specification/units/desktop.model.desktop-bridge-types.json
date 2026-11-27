@@ -18,6 +18,7 @@
 			"runEventChannel",
 			"cacheEventChannel",
 			"ChannelName",
+			"DesignCanvasRequest",
 			"RevisionQuery",
 			"EntityQuery",
 			"SourceQuery",
@@ -158,6 +159,16 @@
 		},
 		{
 			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		},

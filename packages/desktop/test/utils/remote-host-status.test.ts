@@ -29,15 +29,10 @@ const state: RemoteHostState = {
 		}
 	]
 };
-const offer = {
-	pairingId: 'b'.repeat(32),
-	code: 'ABCD-EFGH',
-	expiresAt: '2026-10-12T10:05:00.000Z'
-};
-const runtime = (link: string, open = false) =>
+const runtime = (link: string) =>
 	({
 		link: { state: link },
-		pairing: { offer: () => (open ? offer : null), requests: () => [] },
+		pairing: { requests: () => [] },
 		online: () => true
 	}) as unknown as RemoteHostRuntimeService;
 const input = (overrides: Partial<RemoteHostStatusInput> = {}): RemoteHostStatusInput => ({
@@ -52,7 +47,7 @@ const input = (overrides: Partial<RemoteHostStatusInput> = {}): RemoteHostStatus
 });
 
 test('the status is public metadata: no key, no credential, no folder', () => {
-	const status = remoteHostStatus(input({ runtime: runtime('online', true) })),
+	const status = remoteHostStatus(input({ runtime: runtime('online') })),
 		text = JSON.stringify(status);
 	for (const secret of [
 		'host-credential-value',
@@ -71,14 +66,7 @@ test('the status is public metadata: no key, no credential, no folder', () => {
 		projects: [project],
 		devices: [{ deviceId, name: 'Phone', projectIds: [project.id], agents: true, online: true }]
 	});
-	const seconds = Math.floor(Date.parse(offer.expiresAt) / 1000);
-	const fields = `exp=${seconds};host=${hostId};pairing=${offer.pairingId};code=${offer.code.replace('-', '')}`;
-	expect(status.pairing).toEqual({
-		...offer,
-		hostId,
-		origin: 'https://relay.example',
-		scan: `harness-pair:v1;aud=harness-phone;env=production;${fields};origin=https://relay.example`
-	});
+	expect(status).not.toHaveProperty('pairing');
 });
 test('the state follows support, registration, enablement and the link, with words when not online', () => {
 	const cases: [Partial<RemoteHostStatusInput>, string][] = [
@@ -96,8 +84,7 @@ test('the state follows support, registration, enablement and the link, with wor
 	expect(remoteHostStatus(input({ supported: false }))).toMatchObject({
 		enabled: false,
 		host: null,
-		devices: [],
-		pairing: null
+		devices: []
 	});
 	expect(remoteHostStatus(input({ runtime: runtime('offline') })).reason).toMatch(/offline/);
 	expect(remoteHostStatus(input({ reason: 'Explained' })).reason).toBe('Explained');

@@ -1,6 +1,7 @@
 // @harness-uid u_4de62mowqb
+import type { RegressionNote } from '../../core/git-source-history/historyTypes.types';
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
-import type { RegressionNote } from './RegressionProofRepository.types';
+
 import { EvidenceTreeAdapter } from '../../adapters/verification-evidence/EvidenceTreeAdapter';
 import { evidenceRef } from '../../core/git-source-history/historyTypes';
 import { fail } from '../../core/development-tooling/errors';
@@ -16,6 +17,7 @@ import { sourceArchiveRef } from '../../utils/git-source-history/historyRefs';
 import type { ReadNote } from '../../utils/git-source-history/note-lines/noteCommit';
 import { EvidenceBranchRepository } from './evidence-branch-repository/EvidenceBranchRepository';
 import { HistoryNoteRepository } from '../git-source-history/history-note-repository/HistoryNoteRepository';
+import type { RegressionView } from '../../core/verification-evidence/regressionTypes.types';
 
 /** Append-only checkpoints share Harness's existing evidence branch, notes and archive refs. */
 export class RegressionProofRepository {
@@ -25,7 +27,11 @@ export class RegressionProofRepository {
 	) {}
 
 	/** Squash commits may reuse sealed pixels only when their entire source trees are identical. */
-	async history(commit: string, notes: Map<string, ReadNote>, media: MediaPlacer) {
+	async history(
+		commit: string,
+		notes: Map<string, ReadNote>,
+		media: MediaPlacer
+	): Promise<RegressionView[]> {
 		const git = new EvidenceTreeAdapter(this.root).git;
 		const target = await git.run(['rev-parse', `${commit}^{tree}`]);
 		const candidates = [
@@ -139,4 +145,4 @@ function regressionNote(
 	};
 }
 
-export type { RegressionNote } from './RegressionProofRepository.types';
+export type { RegressionNote } from '../../core/git-source-history/historyTypes.types';

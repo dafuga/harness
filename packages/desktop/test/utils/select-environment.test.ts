@@ -8,8 +8,6 @@ const names = [
 	'status',
 	'enable',
 	'disable',
-	'createPairing',
-	'closePairing',
 	'approvePairing',
 	'denyPairing',
 	'revokeDevice',

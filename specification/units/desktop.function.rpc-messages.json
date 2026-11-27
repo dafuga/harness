@@ -9,11 +9,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/agents-providers/codex-rpc/CodexRpcError.ts",
 			"packages/desktop/src/utils/agents-providers/codex-rpc/rpcMessages.ts",
 			"packages/desktop/src/utils/agents-providers/codex-rpc/rpcMessages.types.ts",
 			"packages/desktop/src/utils/agents-providers/rpcMessages.ts"
 		],
 		"symbols": [
+			"CodexRpcError",
 			"rpcMessages",
 			"rpcRequest",
 			"RpcState",
@@ -203,7 +205,8 @@
 							},
 							null,
 							"done"
-						]
+						],
+						"unknownReason": "Codex RPC result; the shape depends on the requested method."
 					}
 				],
 				"errors": [

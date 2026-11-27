@@ -41,7 +41,6 @@
 			"pureHelpers",
 			"Callable",
 			"unitMetadata",
-			"Unit",
 			"pureGlobals",
 			"pureHelperCalls",
 			"unitMetadata",
@@ -177,7 +176,7 @@
 			},
 			{
 				"name": "unitMetadata.units",
-				"type": "Unit[]",
+				"type": "RevisionUnit[]",
 				"required": true,
 				"description": "The registered units, enriched in place rather than replaced: every unit has its group, helpers and service fields recomputed, config units get configValues, and model units get modelDefinitions. Helpers are read only from units whose kind is function, helper, shared-function or module, and the array itself is not returned.",
 				"examples": [
@@ -650,7 +649,7 @@
 					},
 					{
 						"name": "unitMetadata.units",
-						"type": "Unit[]",
+						"type": "RevisionUnit[]",
 						"required": true,
 						"description": "The registered units, enriched in place rather than replaced: every unit has its group, helpers and service fields recomputed, config units get configValues, and model units get modelDefinitions. Helpers are read only from units whose kind is function, helper, shared-function or module, and the array itself is not returned.",
 						"examples": [

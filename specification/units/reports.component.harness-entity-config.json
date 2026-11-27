@@ -21,8 +21,11 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/EntityConfig.svelte"],
-		"symbols": ["EntityConfig", "EntityConfig.label", "EntityConfig.children"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/EntityConfig.svelte",
+			"packages/reports/src/components/explorer-ui/EntityConfig.types.ts"
+		],
+		"symbols": ["EntityConfig", "EntityConfig.label", "EntityConfig.children", "Setting"]
 	},
 	"contract": {
 		"origin": "declared",

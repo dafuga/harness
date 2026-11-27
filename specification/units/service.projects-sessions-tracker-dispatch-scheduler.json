@@ -52,6 +52,11 @@
 				"required": true
 			},
 			{
+				"name": "TrackerDispatchSchedulerService.status.minimumAge",
+				"type": "number",
+				"required": false
+			},
+			{
 				"name": "TrackerDispatchSchedulerService.runnerStatus.limit",
 				"type": "number",
 				"required": false,
@@ -196,7 +201,13 @@
 		"operations": [
 			{
 				"name": "TrackerDispatchSchedulerService.status",
-				"inputs": [],
+				"inputs": [
+					{
+						"name": "TrackerDispatchSchedulerService.status.minimumAge",
+						"type": "number",
+						"required": false
+					}
+				],
 				"outputs": [
 					{
 						"name": "TrackerDispatchSchedulerService.status",
@@ -474,6 +485,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-start-error",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -7,14 +7,6 @@ export interface HostPairingOptions {
 	hostId: string;
 	keys: RemoteKeyPair;
 	now?: () => number;
-	ttlMs?: number;
-	attempts?: number;
-}
-
-export interface HostPairingOffer {
-	pairingId: string;
-	code: string;
-	expiresAt: string;
 }
 
 export interface HostPairingFrame extends RelayPairingRequest {
@@ -39,7 +31,8 @@ export interface Requested extends RemotePairingRequest {
 	approvalKey: CryptoKey;
 }
 
-export interface Offer extends HostPairingOffer {
-	misses: number;
+export interface Offer {
+	pairingId: string;
+	expiresAt: string;
 	request: Requested | null;
 }

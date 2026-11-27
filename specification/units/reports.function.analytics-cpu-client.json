@@ -9,11 +9,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/reports-media/analytics-cpu/CpuSampleUnavailableError.ts",
 			"packages/reports/src/components/reports-media/analytics-cpu/analyticsCpuClient.ts",
 			"packages/reports/src/components/reports-media/analytics-cpu/analyticsCpuClient.types.ts",
 			"packages/reports/src/utils/reports-media/analyticsCpuClient.ts"
 		],
-		"symbols": ["analyticsCpuClient", "CpuSampleUnavailableError", "CpuState", "analyticsCpuClient"]
+		"symbols": [
+			"CpuSampleUnavailableError",
+			"analyticsCpuClient",
+			"CpuSampleUnavailableError",
+			"CpuState",
+			"analyticsCpuClient"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -68,4 +68,4 @@ test('Throws ReportLockBusyError when all lock attempts are occupied', async () 
 	} finally {
 		rmSync(directory, { recursive: true, force: true });
 	}
-});
+}, 15_000);

@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"hub.component.projects-sessions-hub-home-not-started",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
@@ -21,7 +22,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeWork.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeWork.svelte"],
 		"symbols": ["HubHomeWork", "HubHomeWork.trailing"]
 	},
 	"contract": {
@@ -33,6 +34,12 @@
 				"type": "OverviewSnapshot | null",
 				"required": true,
 				"description": "Tracker status and grouped project activity shown under active work."
+			},
+			{
+				"name": "HubHomeWork.pastDue",
+				"type": "HomePastDue[]",
+				"required": true,
+				"description": "Past-due Tracker runs that are not yet started or are blocked."
 			},
 			{
 				"name": "HubHomeWork.work",
@@ -74,6 +81,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-not-started",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-row",
 			"via": "import",
@@ -132,11 +144,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeWork.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeWork.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeWork.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeWork.svelte"
 			}
 		]
 	},

@@ -9,10 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/adapters/agents-providers/claude-cli-adapter/ClaudeCliSubscriptionSignInError.ts",
 			"packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeState.ts",
 			"packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeState.types.ts"
 		],
-		"symbols": ["claudeState", "ClaudeCliSubscriptionSignInError"]
+		"symbols": [
+			"ClaudeCliSubscriptionSignInError",
+			"claudeState",
+			"ClaudeCliSubscriptionSignInError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -25,19 +25,39 @@
 		"source": [
 			"src/services/projects-sessions/TrackerNativeRuntimeService.ts",
 			"src/services/projects-sessions/TrackerNativeRuntimeService.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/composeTrackerResponder.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerDestinations.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerReminderHost.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDuePolicy.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerTelemetry.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerTelemetry.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAdapterFailover.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAnswerDelivery.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAnswerDelivery.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAutolaunchAdmin.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosAlertKinds.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosDelivery.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosDelivery.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosDeliveryAsk.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosInbox.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosRound.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosWindow.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerDueDelegation.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinalReports.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinalReports.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinishedSessions.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerGithubCli.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHandLaunchSelection.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapter.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapterSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdmission.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdmission.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostBrief.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostCos.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostEffectsSchema.ts",
@@ -46,15 +66,31 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchPort.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchSchema.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostReport.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostRunEvents.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostRunner.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostVerification.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostVerification.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostVerifyPolicy.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostVerifyPolicy.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdog.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdog.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogAlerts.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogIdle.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubChiefMessages.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubChiefMessages.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessageNotes.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessages.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessages.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubPermits.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchEventBatch.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchWait.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLegacyExitReceipt.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerObservedRuns.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerProviderHolds.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerQueueAdmission.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerRecoveryHistory.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSecretSafetyRule.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealth.ts",
@@ -63,6 +99,10 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthRuntime.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionRecovery.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionRecovery.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSlotAlerts.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSlotInvariants.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSlotInvariants.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSlotSummary.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptExposure.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptExposure.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptPatterns.ts",
@@ -79,6 +119,7 @@
 		"symbols": [
 			"TrackerNativeRuntimeService",
 			"TrackerNativeRuntimeService.constructor",
+			"TrackerNativeRuntimeService.admin",
 			"TrackerNativeRuntimeService.spokeStatus",
 			"TrackerNativeRuntimeService.kickLinks",
 			"TrackerNativeRuntimeService.runLinks",
@@ -91,9 +132,11 @@
 			"TrackerLegacyDestinationBindings",
 			"TrackerNativeNotificationOptions",
 			"TrackerNativeRuntimeOptions",
+			"composeTrackerResponder",
 			"configuredTrackerDestinations",
 			"configuredTrackerReminderHost",
 			"composeTrackerDispatch",
+			"PeerStarts",
 			"liveTrackerDuePolicy",
 			"observeTrackerDuePolicy",
 			"TrackerHostEffectsMode",
@@ -105,16 +148,44 @@
 			"TrackerHostAdapterConfig",
 			"TrackerWorkerClient",
 			"TrackerGuestAuthWriter",
-			"composeTrackerLinks",
-			"composeTrackerTelemetry",
-			"trackerRunnerSample",
 			"trackerMachineSample",
+			"trackerRunnerSample",
+			"composeTrackerLinks",
+			"trackerHubMachines",
+			"localRunnerStatus",
+			"machineReport",
 			"trackerFleetMachineStore",
 			"trackerSpokeStatus",
-			"adapterFailover",
+			"composeTrackerTelemetry",
+			"TrackerTelemetryParts",
 			"readTrackerDuePreview",
 			"trackerDueItemPreview",
+			"adapterFailover",
+			"trackerAnswerDelivery",
+			"PendingTrackerAnswer",
+			"TrackerAnswerAttempt",
+			"duePauseKey",
+			"trackerAutolaunchAdmin",
+			"trackerHubDuePolicy",
 			"trackerContextHandoffs",
+			"staleDispatchHeartbeatKind",
+			"isOutageAlert",
+			"watchCosDelivery",
+			"TrackerCosDeliveryAlarm",
+			"TrackerCosRoundPorts",
+			"cosDeliveryDelivered",
+			"cosDeliveryAsk",
+			"trackerCosInboxKinds",
+			"trackerCosInboxRetention",
+			"trackerCosRound",
+			"cosSendWindowStart",
+			"grantsDelegation",
+			"finishReportedRuns",
+			"TrackerReportSession",
+			"TrackerFinalReport",
+			"runSessionName",
+			"closeFinishedTrackerSessions",
+			"linkedWorkActive",
 			"trackerGithubCli",
 			"handLaunchSelection",
 			"handLaunchNode",
@@ -128,24 +199,35 @@
 			"trackerHostCapacityHold",
 			"trackerHostAdmission",
 			"occupiedHostSlots",
+			"occupiedHostRuns",
+			"TrackerOccupiedRun",
 			"formatTrackerHostBrief",
+			"trackerLaunchContext",
+			"unsentCosAlerts",
 			"sendWatchdogAlerts",
+			"recordCosReceipts",
+			"cosReceiptReference",
 			"trackerHostEffectsSchema",
 			"trackerHostInventory",
 			"hasManualTrackerPane",
-			"finishedTrackerSession",
+			"retiredTrackerSession",
 			"trackerHostLaunch",
 			"configuredHostDispatch",
 			"ClaudeStartupFailure",
 			"TrackerHostSession",
+			"TrackerHostDispatchSettings",
 			"TrackerHostRouteItem",
 			"TrackerHostTarget",
 			"TrackerHostRoute",
+			"TrackerHostLaunchContext",
 			"TrackerHostStartReply",
 			"TrackerHostStartRequest",
 			"TrackerHostLaunchPort",
+			"TrackerVerifyResult",
+			"TrackerHostVerifyCommand",
 			"TrackerHostRunnerOptions",
 			"CompletedTrackerPaneRun",
+			"TrackerSessionSweep",
 			"trackerHostLaunchPort",
 			"withTrackerRunUsage",
 			"trackerItemStatus",
@@ -155,7 +237,19 @@
 			"hostSession",
 			"hostInventory",
 			"hostStart",
+			"trackerHostReport",
+			"withLaunchOrigin",
+			"trackerRouteSessionName",
+			"recordedHostEvent",
 			"trackerHostRunner",
+			"trackerHostVerification",
+			"MonitorEvent",
+			"VerifiedEvent",
+			"VerifyJob",
+			"hostVerify",
+			"hostWorktrees",
+			"noVerify",
+			"RouteSet",
 			"trackerHostWatchdog",
 			"configuredHostWatchdog",
 			"TrackerWatchdogAlerts",
@@ -165,6 +259,8 @@
 			"recordWatchdogAlert",
 			"contextAlert",
 			"recordHandoffFailure",
+			"recordOverdueAlert",
+			"blockMissingItem",
 			"applyIdleDecision",
 			"watchdogScan",
 			"watchdogEffectReceipt",
@@ -177,12 +273,47 @@
 			"paneNudgeKey",
 			"handoffRunOwnership",
 			"activeWatchdogItem",
+			"staleDispatchAlerts",
+			"chiefChannelSession",
+			"chiefChannelMissing",
+			"trackerHubChiefDelivery",
+			"HubChiefDelivery",
+			"pendingHubMessages",
+			"recordHubReceipt",
+			"trackerHubMessageDelivery",
+			"HubMessageDelivery",
+			"LocalRun",
+			"spokeGrant",
+			"spokeAutomaticPermit",
+			"batchTrackerLaunchEvents",
+			"trackerItemViews",
+			"trackerLaunchWait",
+			"trackerRequestWaits",
+			"trackerMachineSamples",
+			"machineOffline",
 			"trackerLegacyExitReceipt",
 			"legacyTrackerStartupProbe",
 			"trackerLegacySession",
 			"adoptTrackerHandLaunches",
-			"resetBudget",
+			"trackerProviders",
+			"trackerQuotaHold",
+			"heldTrackerProviders",
+			"clearTrackerQuotaHold",
+			"configuredTrackerProviderHold",
+			"trackerCodexPause",
+			"trackerProviderHold",
+			"trackerQuotaNotice",
+			"watchTrackerQuota",
+			"observeTrackerQuota",
+			"automaticQueueHold",
+			"queuedRung",
+			"maxRecoveryAttempts",
+			"emptyRecoveryState",
+			"recoveryBudget",
+			"hostWait",
 			"recoveryRung",
+			"recoveryHold",
+			"hasRecoveryBrief",
 			"trackerSecretSafetyRule",
 			"sessionHealthInterval",
 			"recoveryPollInterval",
@@ -199,6 +330,16 @@
 			"recoverTrackerSession",
 			"flagRecoveryError",
 			"TrackerRecoveryState",
+			"publishTrackerSlotAlerts",
+			"withSlotSummary",
+			"slotAlertKinds",
+			"readTrackerSlotState",
+			"TrackerSlotRun",
+			"TrackerSlotHolder",
+			"TrackerLeftoverPane",
+			"TrackerSlotReport",
+			"TrackerSlotState",
+			"trackerSlotSummary",
 			"recordTrackerTranscriptExposure",
 			"TrackerTranscriptExposure",
 			"trackerTranscriptMatches",
@@ -239,6 +380,26 @@
 				"required": true
 			},
 			{
+				"name": "composeTrackerResponder.runtime",
+				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'machines'>",
+				"required": true
+			},
+			{
+				"name": "composeTrackerResponder.runs",
+				"type": "TrackerRunReadRepository",
+				"required": true
+			},
+			{
+				"name": "composeTrackerResponder.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "composeTrackerResponder.composed",
+				"type": "Pick< ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue' | 'scheduler' >",
+				"required": true
+			},
+			{
 				"name": "configuredTrackerDestinations.bindings",
 				"type": "TrackerLegacyDestinationBindings",
 				"required": true
@@ -258,6 +419,11 @@
 				"name": "composeTrackerDispatch.options",
 				"type": "TrackerNativeRuntimeOptions",
 				"required": true
+			},
+			{
+				"name": "composeTrackerDispatch.machines",
+				"type": "PeerStarts",
+				"required": false
 			},
 			{
 				"name": "liveTrackerDuePolicy.store",
@@ -295,6 +461,56 @@
 				"required": true
 			},
 			{
+				"name": "trackerHubMachines.machines",
+				"type": "TrackerHubMachineStore",
+				"required": true
+			},
+			{
+				"name": "trackerHubMachines.runs",
+				"type": "TrackerRunReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerHubMachines.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "trackerHubMachines.machines",
+				"type": "TrackerMachineService",
+				"required": true
+			},
+			{
+				"name": "trackerHubMachines.scheduler",
+				"type": "TrackerDispatchSchedulerService",
+				"required": false
+			},
+			{
+				"name": "localRunnerStatus.scheduler",
+				"type": "TrackerDispatchSchedulerService",
+				"required": false
+			},
+			{
+				"name": "machineReport.runner",
+				"type": "ReturnType<typeof localRunnerStatus>",
+				"required": true
+			},
+			{
+				"name": "machineReport.active",
+				"type": "ReturnType<TrackerRunReadRepository['activeLocal']>",
+				"required": true
+			},
+			{
+				"name": "machineReport.at",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerSpokeStatus.links",
+				"type": "readonly TrackerSpokeLoopService[]",
+				"required": true
+			},
+			{
 				"name": "composeTrackerTelemetry.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -310,23 +526,8 @@
 				"required": true
 			},
 			{
-				"name": "composeTrackerTelemetry.scheduler",
-				"type": "TrackerDispatchSchedulerService",
-				"required": false
-			},
-			{
-				"name": "trackerSpokeStatus.links",
-				"type": "readonly TrackerSpokeLoopService[]",
-				"required": true
-			},
-			{
-				"name": "adapterFailover.options",
-				"type": "TrackerNativeRuntimeOptions",
-				"required": true
-			},
-			{
-				"name": "adapterFailover.now",
-				"type": "() => number",
+				"name": "composeTrackerTelemetry.parts",
+				"type": "TrackerTelemetryParts",
 				"required": true
 			},
 			{
@@ -342,6 +543,61 @@
 			{
 				"name": "trackerDueItemPreview.item",
 				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "adapterFailover.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "adapterFailover.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
+				"name": "trackerAnswerDelivery.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerAnswerDelivery.driver",
+				"type": "TrackerWatchdogPort",
+				"required": true
+			},
+			{
+				"name": "trackerAnswerDelivery.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
+				"name": "trackerAnswerDelivery.chiefOfStaff",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "trackerAutolaunchAdmin.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerAutolaunchAdmin.role",
+				"type": "'hub' | 'spoke'",
+				"required": true
+			},
+			{
+				"name": "trackerAutolaunchAdmin.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
+				"name": "trackerHubDuePolicy.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerHubDuePolicy.now",
+				"type": "() => number",
 				"required": true
 			},
 			{
@@ -362,6 +618,146 @@
 			{
 				"name": "trackerContextHandoffs.signal",
 				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "isOutageAlert.kind",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "watchCosDelivery.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "watchCosDelivery.pending",
+				"type": "readonly TrackerWatchdogAlert[]",
+				"required": true
+			},
+			{
+				"name": "watchCosDelivery.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "cosDeliveryAsk.pending",
+				"type": "readonly TrackerWatchdogAlert[]",
+				"required": true
+			},
+			{
+				"name": "cosDeliveryAsk.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "cosDeliveryAsk.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "cosDeliveryAsk.created",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "trackerCosRound.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerCosRound.driver",
+				"type": "TrackerWatchdogPort",
+				"required": true
+			},
+			{
+				"name": "trackerCosRound.ports",
+				"type": "TrackerCosRoundPorts",
+				"required": true
+			},
+			{
+				"name": "cosSendWindowStart.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "grantsDelegation.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "grantsDelegation.token",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "grantsDelegation.target",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "grantsDelegation.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "finishReportedRuns.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "finishReportedRuns.dispatch",
+				"type": "TrackerDispatcherService",
+				"required": true
+			},
+			{
+				"name": "finishReportedRuns.scan",
+				"type": "WatchdogScan",
+				"required": true
+			},
+			{
+				"name": "finishReportedRuns.skip",
+				"type": "ReadonlySet<string>",
+				"required": true
+			},
+			{
+				"name": "finishReportedRuns.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "closeFinishedTrackerSessions.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "closeFinishedTrackerSessions.sweep",
+				"type": "TrackerSessionSweep",
+				"required": true
+			},
+			{
+				"name": "closeFinishedTrackerSessions.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "linkedWorkActive.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "linkedWorkActive.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "linkedWorkActive.runId",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "linkedWorkActive.now",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -451,9 +847,14 @@
 				"required": true
 			},
 			{
-				"name": "trackerHostAdmission.inventory",
-				"type": "() => readonly TrackerHostSession[]",
-				"required": true
+				"name": "trackerHostAdmission.hostResources",
+				"type": "TrackerHostResources",
+				"required": false
+			},
+			{
+				"name": "trackerHostAdmission.now",
+				"type": "() => number",
+				"required": false
 			},
 			{
 				"name": "occupiedHostSlots.store",
@@ -461,8 +862,8 @@
 				"required": true
 			},
 			{
-				"name": "occupiedHostSlots.sessions",
-				"type": "readonly TrackerHostSession[]",
+				"name": "occupiedHostRuns.store",
+				"type": "TrackerPersistenceService",
 				"required": true
 			},
 			{
@@ -480,6 +881,46 @@
 				"type": "boolean",
 				"required": false,
 				"default": false
+			},
+			{
+				"name": "formatTrackerHostBrief.cpuBudget",
+				"type": "number",
+				"required": false
+			},
+			{
+				"name": "formatTrackerHostBrief.launch",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "trackerLaunchContext.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchContext.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchContext.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchContext.route",
+				"type": "TrackerHostTarget",
+				"required": true
+			},
+			{
+				"name": "unsentCosAlerts.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "unsentCosAlerts.alerts",
+				"type": "readonly TrackerWatchdogAlert[]",
+				"required": true
 			},
 			{
 				"name": "sendWatchdogAlerts.store",
@@ -502,6 +943,21 @@
 				"required": true
 			},
 			{
+				"name": "recordCosReceipts.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordCosReceipts.alerts",
+				"type": "readonly TrackerWatchdogAlert[]",
+				"required": true
+			},
+			{
+				"name": "cosReceiptReference.alert",
+				"type": "TrackerWatchdogAlert",
+				"required": true
+			},
+			{
 				"name": "trackerHostInventory.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -519,6 +975,11 @@
 			{
 				"name": "trackerHostInventory.node",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHostInventory.runs",
+				"type": "readonly TrackerRunReceipt[]",
 				"required": true
 			},
 			{
@@ -547,12 +1008,12 @@
 				"required": true
 			},
 			{
-				"name": "finishedTrackerSession.store",
+				"name": "retiredTrackerSession.store",
 				"type": "TrackerPersistenceService",
 				"required": true
 			},
 			{
-				"name": "finishedTrackerSession.session",
+				"name": "retiredTrackerSession.session",
 				"type": "TrackerHostSession",
 				"required": true
 			},
@@ -568,7 +1029,7 @@
 			},
 			{
 				"name": "trackerHostLaunch.effects",
-				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; ladderConfig?: TrackerLadderConfig; hostResources?: TrackerHostResources; }",
 				"required": false,
 				"default": {}
 			},
@@ -583,14 +1044,9 @@
 				"required": true
 			},
 			{
-				"name": "configuredHostDispatch.now",
-				"type": "() => number",
+				"name": "configuredHostDispatch.settings",
+				"type": "TrackerHostDispatchSettings",
 				"required": true
-			},
-			{
-				"name": "configuredHostDispatch.automaticEnabled",
-				"type": "() => boolean",
-				"required": false
 			},
 			{
 				"name": "trackerHostLaunchPort.config",
@@ -654,7 +1110,7 @@
 			},
 			{
 				"name": "startTrackerHost.input",
-				"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; }",
+				"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; cpuBudget?: number; sessionName?: string; }",
 				"required": true
 			},
 			{
@@ -665,6 +1121,81 @@
 			{
 				"name": "trackerHostStartupEvent.session",
 				"type": "TrackerHostSession | undefined",
+				"required": true
+			},
+			{
+				"name": "trackerHostReport.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerHostReport.driver",
+				"type": "TrackerHostLaunchPort",
+				"required": true
+			},
+			{
+				"name": "trackerHostReport.routeFor",
+				"type": "TrackerHostRoute",
+				"required": true
+			},
+			{
+				"name": "trackerHostReport.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
+				"name": "trackerHostReport.verifyCommand",
+				"type": "TrackerHostVerifyCommand",
+				"required": false
+			},
+			{
+				"name": "withLaunchOrigin.event",
+				"type": "TrackerDispatchEvent | undefined",
+				"required": true
+			},
+			{
+				"name": "withLaunchOrigin.route",
+				"type": "TrackerHostTarget | false | undefined",
+				"required": true
+			},
+			{
+				"name": "withLaunchOrigin.item",
+				"type": "TrackerItem | false",
+				"required": true
+			},
+			{
+				"name": "trackerRouteSessionName.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "trackerRouteSessionName.route",
+				"type": "TrackerHostTarget",
+				"required": true
+			},
+			{
+				"name": "recordedHostEvent.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "recordedHostEvent.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordedHostEvent.sessions",
+				"type": "readonly TrackerHostSession[]",
+				"required": true
+			},
+			{
+				"name": "recordedHostEvent.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "recordedHostEvent.legacySession",
+				"type": "(run: TrackerRunReceipt) => TrackerHostSession | undefined",
 				"required": true
 			},
 			{
@@ -689,6 +1220,16 @@
 				"default": {}
 			},
 			{
+				"name": "trackerHostVerification.driver",
+				"type": "TrackerHostLaunchPort",
+				"required": true
+			},
+			{
+				"name": "trackerHostVerification.commandFor",
+				"type": "TrackerHostVerifyCommand",
+				"required": false
+			},
+			{
 				"name": "trackerHostWatchdog.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -700,17 +1241,17 @@
 			},
 			{
 				"name": "trackerHostWatchdog.options",
-				"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork' | 'automaticEnabled'>",
+				"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' | 'dispatchAlerts' >",
 				"required": true
 			},
 			{
 				"name": "configuredHostWatchdog.runtime",
-				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>",
+				"type": "Pick< TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role' | 'scheduler' | 'fleetSamples' >",
 				"required": true
 			},
 			{
-				"name": "configuredHostWatchdog.watchdog",
-				"type": "TrackerHostEffects['watchdog']",
+				"name": "configuredHostWatchdog.hostEffects",
+				"type": "Pick<TrackerHostEffects, 'watchdog' | 'launch'>",
 				"required": false
 			},
 			{
@@ -749,8 +1290,8 @@
 				"required": true
 			},
 			{
-				"name": "recordWatchdogAlert.question",
-				"type": "| string | null",
+				"name": "recordWatchdogAlert.hold",
+				"type": "string",
 				"required": false
 			},
 			{
@@ -789,6 +1330,46 @@
 				"required": true
 			},
 			{
+				"name": "recordOverdueAlert.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordOverdueAlert.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "recordOverdueAlert.reason",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordOverdueAlert.at",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "blockMissingItem.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "blockMissingItem.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "blockMissingItem.candidate",
+				"type": "TrackerItem",
+				"required": false
+			},
+			{
+				"name": "blockMissingItem.reason",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "applyIdleDecision.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -802,6 +1383,11 @@
 				"name": "applyIdleDecision.snapshot",
 				"type": "WatchdogScan",
 				"required": true
+			},
+			{
+				"name": "applyIdleDecision.settles",
+				"type": "boolean",
+				"required": false
 			},
 			{
 				"name": "applyIdleDecision.decision",
@@ -905,6 +1491,116 @@
 				"required": true
 			},
 			{
+				"name": "staleDispatchAlerts.runtime",
+				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'scheduler' | 'fleetSamples' | 'now'>",
+				"required": true
+			},
+			{
+				"name": "trackerHubChiefDelivery.input",
+				"type": "HubChiefDelivery",
+				"required": true
+			},
+			{
+				"name": "pendingHubMessages.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "pendingHubMessages.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "recordHubReceipt.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordHubReceipt.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordHubReceipt.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHubMessageDelivery.input",
+				"type": "HubMessageDelivery",
+				"required": true
+			},
+			{
+				"name": "spokeGrant.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "spokeGrant.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "spokeGrant.mayStartAlone",
+				"type": "(itemId: string) => boolean",
+				"required": true
+			},
+			{
+				"name": "spokeAutomaticPermit.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "spokeAutomaticPermit.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "spokeAutomaticPermit.localPermit",
+				"type": "() => boolean",
+				"required": true
+			},
+			{
+				"name": "batchTrackerLaunchEvents.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerItemViews.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchWait.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchWait.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "trackerRequestWaits.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerMachineSamples.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "machineOffline.sampledAt",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "machineOffline.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "trackerLegacyExitReceipt.directory",
 				"type": "string",
 				"required": true
@@ -950,18 +1646,179 @@
 				"required": true
 			},
 			{
-				"name": "resetBudget.state",
-				"type": "TrackerRecoveryState | null",
+				"name": "trackerQuotaHold.store",
+				"type": "TrackerPersistenceService",
 				"required": true
 			},
 			{
-				"name": "resetBudget.run",
-				"type": "TrackerListedRun | undefined",
+				"name": "trackerQuotaHold.cli",
+				"type": "string",
 				"required": true
 			},
 			{
-				"name": "resetBudget.item",
+				"name": "heldTrackerProviders.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "clearTrackerQuotaHold.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "clearTrackerQuotaHold.cli",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "configuredTrackerProviderHold.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "configuredTrackerProviderHold.codexPausedUntil",
+				"type": "string",
+				"required": false,
+				"default": ""
+			},
+			{
+				"name": "configuredTrackerProviderHold.now",
+				"type": "() => number",
+				"required": false
+			},
+			{
+				"name": "trackerCodexPause.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerCodexPause.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerProviderHold.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerProviderHold.cli",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerProviderHold.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerQuotaNotice.screen",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerQuotaNotice.cli",
+				"type": "WatchdogCli",
+				"required": true
+			},
+			{
+				"name": "watchTrackerQuota.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "watchTrackerQuota.tmux",
+				"type": "TrackerTmuxAdapter",
+				"required": false
+			},
+			{
+				"name": "watchTrackerQuota.runs",
+				"type": "readonly TrackerRunReceipt[]",
+				"required": true
+			},
+			{
+				"name": "watchTrackerQuota.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "watchTrackerQuota.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "observeTrackerQuota.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "observeTrackerQuota.runs",
+				"type": "readonly TrackerRunReceipt[]",
+				"required": true
+			},
+			{
+				"name": "observeTrackerQuota.panes",
+				"type": "readonly WatchdogPane[]",
+				"required": true
+			},
+			{
+				"name": "observeTrackerQuota.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "automaticQueueHold.item",
+				"type": "TrackerDispatchItem | null",
+				"required": true
+			},
+			{
+				"name": "automaticQueueHold.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": false
+			},
+			{
+				"name": "automaticQueueHold.intent",
+				"type": "TrackerLaunchIntent",
+				"required": true
+			},
+			{
+				"name": "automaticQueueHold.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "automaticQueueHold.queued",
+				"type": "TrackerLaunchRung",
+				"required": false
+			},
+			{
+				"name": "queuedRung.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "recoveryBudget.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recoveryBudget.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recoveryBudget.latest",
+				"type": "TrackerListedRun",
+				"required": false
+			},
+			{
+				"name": "recoveryBudget.item",
 				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "hostWait.reason",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -978,6 +1835,36 @@
 				"name": "recoveryRung.node",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "recoveryHold.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "recoveryHold.latest",
+				"type": "TrackerListedRun | undefined",
+				"required": true
+			},
+			{
+				"name": "recoveryHold.changedAt",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "recoveryHold.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "hasRecoveryBrief.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "hasRecoveryBrief.latest",
+				"type": "TrackerListedRun",
+				"required": false
 			},
 			{
 				"name": "trackerSessionHealth.snapshot",
@@ -1117,6 +2004,56 @@
 			{
 				"name": "flagRecoveryError.detail",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "publishTrackerSlotAlerts.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "publishTrackerSlotAlerts.panes",
+				"type": "readonly WatchdogPane[]",
+				"required": true
+			},
+			{
+				"name": "publishTrackerSlotAlerts.slots",
+				"type": "{ now: number; cap: number | null }",
+				"required": true
+			},
+			{
+				"name": "withSlotSummary.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "withSlotSummary.alert",
+				"type": "TrackerWatchdogAlert",
+				"required": true
+			},
+			{
+				"name": "readTrackerSlotState.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "readTrackerSlotState.panes",
+				"type": "readonly WatchdogPane[]",
+				"required": true
+			},
+			{
+				"name": "readTrackerSlotState.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "readTrackerSlotState.cap",
+				"type": "number | null",
+				"required": true
+			},
+			{
+				"name": "trackerSlotSummary.report",
+				"type": "TrackerSlotReport",
 				"required": true
 			},
 			{
@@ -1368,8 +2305,9 @@
 				"type": "unknown"
 			},
 			{
-				"name": "finishedTrackerSession",
-				"type": "boolean"
+				"name": "retiredTrackerSession",
+				"type": "boolean",
+				"description": "Whether the recorded session belongs to a finished attempt that no longer fences a new launch. A live blocked pane still fences a retry."
 			},
 			{
 				"name": "trackerHostLaunch",
@@ -1535,6 +2473,18 @@
 		"errorStatus": "unknown",
 		"operations": [
 			{
+				"name": "TrackerNativeRuntimeService.admin",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerNativeRuntimeService.admin",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "TrackerNativeRuntimeService.spokeStatus",
 				"inputs": [],
 				"outputs": [
@@ -1571,6 +2521,39 @@
 					{
 						"name": "TrackerNativeRuntimeService.runLinks",
 						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "composeTrackerResponder",
+				"inputs": [
+					{
+						"name": "composeTrackerResponder.runtime",
+						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'machines'>",
+						"required": true
+					},
+					{
+						"name": "composeTrackerResponder.runs",
+						"type": "TrackerRunReadRepository",
+						"required": true
+					},
+					{
+						"name": "composeTrackerResponder.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "composeTrackerResponder.composed",
+						"type": "Pick< ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue' | 'scheduler' >",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "composeTrackerResponder",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -1626,6 +2609,11 @@
 						"name": "composeTrackerDispatch.options",
 						"type": "TrackerNativeRuntimeOptions",
 						"required": true
+					},
+					{
+						"name": "composeTrackerDispatch.machines",
+						"type": "PeerStarts",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -1712,32 +2700,83 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "composeTrackerTelemetry",
+				"name": "trackerHubMachines",
 				"inputs": [
 					{
-						"name": "composeTrackerTelemetry.store",
-						"type": "TrackerPersistenceService",
+						"name": "trackerHubMachines.machines",
+						"type": "TrackerHubMachineStore",
 						"required": true
 					},
 					{
-						"name": "composeTrackerTelemetry.runs",
+						"name": "trackerHubMachines.runs",
 						"type": "TrackerRunReadRepository",
 						"required": true
 					},
 					{
-						"name": "composeTrackerTelemetry.options",
+						"name": "trackerHubMachines.options",
 						"type": "TrackerNativeRuntimeOptions",
 						"required": true
 					},
 					{
-						"name": "composeTrackerTelemetry.scheduler",
+						"name": "trackerHubMachines.machines",
+						"type": "TrackerMachineService",
+						"required": true
+					},
+					{
+						"name": "trackerHubMachines.scheduler",
 						"type": "TrackerDispatchSchedulerService",
 						"required": false
 					}
 				],
 				"outputs": [
 					{
-						"name": "composeTrackerTelemetry",
+						"name": "trackerHubMachines",
+						"type": "TrackerHubMachineStore"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "localRunnerStatus",
+				"inputs": [
+					{
+						"name": "localRunnerStatus.scheduler",
+						"type": "TrackerDispatchSchedulerService",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "localRunnerStatus",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "machineReport",
+				"inputs": [
+					{
+						"name": "machineReport.runner",
+						"type": "ReturnType<typeof localRunnerStatus>",
+						"required": true
+					},
+					{
+						"name": "machineReport.active",
+						"type": "ReturnType<TrackerRunReadRepository['activeLocal']>",
+						"required": true
+					},
+					{
+						"name": "machineReport.at",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "machineReport",
 						"type": "unknown"
 					}
 				],
@@ -1775,27 +2814,37 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "adapterFailover",
+				"name": "composeTrackerTelemetry",
 				"inputs": [
 					{
-						"name": "adapterFailover.options",
+						"name": "composeTrackerTelemetry.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "composeTrackerTelemetry.runs",
+						"type": "TrackerRunReadRepository",
+						"required": true
+					},
+					{
+						"name": "composeTrackerTelemetry.options",
 						"type": "TrackerNativeRuntimeOptions",
 						"required": true
 					},
 					{
-						"name": "adapterFailover.now",
-						"type": "() => number",
+						"name": "composeTrackerTelemetry.parts",
+						"type": "TrackerTelemetryParts",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "adapterFailover",
+						"name": "composeTrackerTelemetry",
 						"type": "unknown"
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "readTrackerDuePreview",
@@ -1839,6 +2888,113 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "adapterFailover",
+				"inputs": [
+					{
+						"name": "adapterFailover.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "adapterFailover.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "adapterFailover",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerAnswerDelivery",
+				"inputs": [
+					{
+						"name": "trackerAnswerDelivery.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerAnswerDelivery.driver",
+						"type": "TrackerWatchdogPort",
+						"required": true
+					},
+					{
+						"name": "trackerAnswerDelivery.now",
+						"type": "() => number",
+						"required": true
+					},
+					{
+						"name": "trackerAnswerDelivery.chiefOfStaff",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAnswerDelivery",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerAutolaunchAdmin",
+				"inputs": [
+					{
+						"name": "trackerAutolaunchAdmin.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerAutolaunchAdmin.role",
+						"type": "'hub' | 'spoke'",
+						"required": true
+					},
+					{
+						"name": "trackerAutolaunchAdmin.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAutolaunchAdmin",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerHubDuePolicy",
+				"inputs": [
+					{
+						"name": "trackerHubDuePolicy.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerHubDuePolicy.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHubDuePolicy",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "trackerContextHandoffs",
 				"inputs": [
 					{
@@ -1866,6 +3022,263 @@
 					{
 						"name": "trackerContextHandoffs",
 						"type": "Promise<Set<string>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isOutageAlert",
+				"inputs": [
+					{
+						"name": "isOutageAlert.kind",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isOutageAlert",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "watchCosDelivery",
+				"inputs": [
+					{
+						"name": "watchCosDelivery.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "watchCosDelivery.pending",
+						"type": "readonly TrackerWatchdogAlert[]",
+						"required": true
+					},
+					{
+						"name": "watchCosDelivery.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchCosDelivery",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cosDeliveryAsk",
+				"inputs": [
+					{
+						"name": "cosDeliveryAsk.pending",
+						"type": "readonly TrackerWatchdogAlert[]",
+						"required": true
+					},
+					{
+						"name": "cosDeliveryAsk.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "cosDeliveryAsk.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "cosDeliveryAsk.created",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cosDeliveryAsk",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerCosRound",
+				"inputs": [
+					{
+						"name": "trackerCosRound.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerCosRound.driver",
+						"type": "TrackerWatchdogPort",
+						"required": true
+					},
+					{
+						"name": "trackerCosRound.ports",
+						"type": "TrackerCosRoundPorts",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerCosRound",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "cosSendWindowStart",
+				"inputs": [
+					{
+						"name": "cosSendWindowStart.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cosSendWindowStart",
+						"type": "number | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "grantsDelegation",
+				"inputs": [
+					{
+						"name": "grantsDelegation.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "grantsDelegation.token",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "grantsDelegation.target",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "grantsDelegation.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "grantsDelegation",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "finishReportedRuns",
+				"inputs": [
+					{
+						"name": "finishReportedRuns.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "finishReportedRuns.dispatch",
+						"type": "TrackerDispatcherService",
+						"required": true
+					},
+					{
+						"name": "finishReportedRuns.scan",
+						"type": "WatchdogScan",
+						"required": true
+					},
+					{
+						"name": "finishReportedRuns.skip",
+						"type": "ReadonlySet<string>",
+						"required": true
+					},
+					{
+						"name": "finishReportedRuns.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishReportedRuns",
+						"type": "Promise<Set<string>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "closeFinishedTrackerSessions",
+				"inputs": [
+					{
+						"name": "closeFinishedTrackerSessions.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "closeFinishedTrackerSessions.sweep",
+						"type": "TrackerSessionSweep",
+						"required": true
+					},
+					{
+						"name": "closeFinishedTrackerSessions.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "closeFinishedTrackerSessions",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "linkedWorkActive",
+				"inputs": [
+					{
+						"name": "linkedWorkActive.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "linkedWorkActive.pane",
+						"type": "WatchdogPane",
+						"required": true
+					},
+					{
+						"name": "linkedWorkActive.runId",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "linkedWorkActive.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "linkedWorkActive",
+						"type": "boolean"
 					}
 				],
 				"errors": [],
@@ -2026,9 +3439,14 @@
 						"required": true
 					},
 					{
-						"name": "trackerHostAdmission.inventory",
-						"type": "() => readonly TrackerHostSession[]",
-						"required": true
+						"name": "trackerHostAdmission.hostResources",
+						"type": "TrackerHostResources",
+						"required": false
+					},
+					{
+						"name": "trackerHostAdmission.now",
+						"type": "() => number",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -2038,7 +3456,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "occupiedHostSlots",
@@ -2047,17 +3465,30 @@
 						"name": "occupiedHostSlots.store",
 						"type": "TrackerPersistenceService",
 						"required": true
-					},
-					{
-						"name": "occupiedHostSlots.sessions",
-						"type": "readonly TrackerHostSession[]",
-						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "occupiedHostSlots",
 						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "occupiedHostRuns",
+				"inputs": [
+					{
+						"name": "occupiedHostRuns.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "occupiedHostRuns",
+						"type": "TrackerOccupiedRun[]"
 					}
 				],
 				"errors": [],
@@ -2081,12 +3512,78 @@
 						"type": "boolean",
 						"required": false,
 						"default": false
+					},
+					{
+						"name": "formatTrackerHostBrief.cpuBudget",
+						"type": "number",
+						"required": false
+					},
+					{
+						"name": "formatTrackerHostBrief.launch",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [
 					{
 						"name": "formatTrackerHostBrief",
 						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerLaunchContext",
+				"inputs": [
+					{
+						"name": "trackerLaunchContext.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerLaunchContext.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "trackerLaunchContext.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "trackerLaunchContext.route",
+						"type": "TrackerHostTarget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLaunchContext",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "unsentCosAlerts",
+				"inputs": [
+					{
+						"name": "unsentCosAlerts.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "unsentCosAlerts.alerts",
+						"type": "readonly TrackerWatchdogAlert[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "unsentCosAlerts",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -2126,6 +3623,54 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "recordCosReceipts",
+				"inputs": [
+					{
+						"name": "recordCosReceipts.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordCosReceipts.alerts",
+						"type": "readonly TrackerWatchdogAlert[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordCosReceipts",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "SQLiteError",
+						"type": "thrown",
+						"description": "The Tracker database could not commit the receipts."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "cosReceiptReference",
+				"inputs": [
+					{
+						"name": "cosReceiptReference.alert",
+						"type": "TrackerWatchdogAlert",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cosReceiptReference",
+						"type": "string",
+						"description": "An opaque stable identifier for a watchdog alert or CoS message."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "trackerHostInventory",
 				"inputs": [
 					{
@@ -2146,6 +3691,11 @@
 					{
 						"name": "trackerHostInventory.node",
 						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerHostInventory.runs",
+						"type": "readonly TrackerRunReceipt[]",
 						"required": true
 					},
 					{
@@ -2197,23 +3747,24 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "finishedTrackerSession",
+				"name": "retiredTrackerSession",
 				"inputs": [
 					{
-						"name": "finishedTrackerSession.store",
+						"name": "retiredTrackerSession.store",
 						"type": "TrackerPersistenceService",
 						"required": true
 					},
 					{
-						"name": "finishedTrackerSession.session",
+						"name": "retiredTrackerSession.session",
 						"type": "TrackerHostSession",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "finishedTrackerSession",
-						"type": "boolean"
+						"name": "retiredTrackerSession",
+						"type": "boolean",
+						"description": "Whether the recorded session belongs to a finished attempt that no longer fences a new launch. A live blocked pane still fences a retry."
 					}
 				],
 				"errors": [],
@@ -2234,7 +3785,7 @@
 					},
 					{
 						"name": "trackerHostLaunch.effects",
-						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; ladderConfig?: TrackerLadderConfig; hostResources?: TrackerHostResources; }",
 						"required": false,
 						"default": {}
 					}
@@ -2262,14 +3813,9 @@
 						"required": true
 					},
 					{
-						"name": "configuredHostDispatch.now",
-						"type": "() => number",
+						"name": "configuredHostDispatch.settings",
+						"type": "TrackerHostDispatchSettings",
 						"required": true
-					},
-					{
-						"name": "configuredHostDispatch.automaticEnabled",
-						"type": "() => boolean",
-						"required": false
 					}
 				],
 				"outputs": [
@@ -2390,7 +3936,7 @@
 					},
 					{
 						"name": "startTrackerHost.input",
-						"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; }",
+						"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; cpuBudget?: number; sessionName?: string; }",
 						"required": true
 					},
 					{
@@ -2424,7 +3970,134 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHostReport",
+				"inputs": [
+					{
+						"name": "trackerHostReport.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerHostReport.driver",
+						"type": "TrackerHostLaunchPort",
+						"required": true
+					},
+					{
+						"name": "trackerHostReport.routeFor",
+						"type": "TrackerHostRoute",
+						"required": true
+					},
+					{
+						"name": "trackerHostReport.now",
+						"type": "() => number",
+						"required": true
+					},
+					{
+						"name": "trackerHostReport.verifyCommand",
+						"type": "TrackerHostVerifyCommand",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHostReport",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withLaunchOrigin",
+				"inputs": [
+					{
+						"name": "withLaunchOrigin.event",
+						"type": "TrackerDispatchEvent | undefined",
+						"required": true
+					},
+					{
+						"name": "withLaunchOrigin.route",
+						"type": "TrackerHostTarget | false | undefined",
+						"required": true
+					},
+					{
+						"name": "withLaunchOrigin.item",
+						"type": "TrackerItem | false",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "withLaunchOrigin",
+						"type": "TrackerDispatchEvent | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRouteSessionName",
+				"inputs": [
+					{
+						"name": "trackerRouteSessionName.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "trackerRouteSessionName.route",
+						"type": "TrackerHostTarget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRouteSessionName",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordedHostEvent",
+				"inputs": [
+					{
+						"name": "recordedHostEvent.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "recordedHostEvent.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordedHostEvent.sessions",
+						"type": "readonly TrackerHostSession[]",
+						"required": true
+					},
+					{
+						"name": "recordedHostEvent.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "recordedHostEvent.legacySession",
+						"type": "(run: TrackerRunReceipt) => TrackerHostSession | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedHostEvent",
+						"type": "TrackerDispatchEvent | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "trackerHostRunner",
@@ -2461,6 +4134,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerHostVerification",
+				"inputs": [
+					{
+						"name": "trackerHostVerification.driver",
+						"type": "TrackerHostLaunchPort",
+						"required": true
+					},
+					{
+						"name": "trackerHostVerification.commandFor",
+						"type": "TrackerHostVerifyCommand",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHostVerification",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "trackerHostWatchdog",
 				"inputs": [
 					{
@@ -2475,7 +4171,7 @@
 					},
 					{
 						"name": "trackerHostWatchdog.options",
-						"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork' | 'automaticEnabled'>",
+						"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' | 'dispatchAlerts' >",
 						"required": true
 					}
 				],
@@ -2493,12 +4189,12 @@
 				"inputs": [
 					{
 						"name": "configuredHostWatchdog.runtime",
-						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>",
+						"type": "Pick< TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role' | 'scheduler' | 'fleetSamples' >",
 						"required": true
 					},
 					{
-						"name": "configuredHostWatchdog.watchdog",
-						"type": "TrackerHostEffects['watchdog']",
+						"name": "configuredHostWatchdog.hostEffects",
+						"type": "Pick<TrackerHostEffects, 'watchdog' | 'launch'>",
 						"required": false
 					},
 					{
@@ -2563,8 +4259,8 @@
 						"required": true
 					},
 					{
-						"name": "recordWatchdogAlert.question",
-						"type": "| string | null",
+						"name": "recordWatchdogAlert.hold",
+						"type": "string",
 						"required": false
 					}
 				],
@@ -2639,6 +4335,72 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "recordOverdueAlert",
+				"inputs": [
+					{
+						"name": "recordOverdueAlert.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordOverdueAlert.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "recordOverdueAlert.reason",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordOverdueAlert.at",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordOverdueAlert",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "blockMissingItem",
+				"inputs": [
+					{
+						"name": "blockMissingItem.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "blockMissingItem.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "blockMissingItem.candidate",
+						"type": "TrackerItem",
+						"required": false
+					},
+					{
+						"name": "blockMissingItem.reason",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "blockMissingItem",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "applyIdleDecision",
 				"inputs": [
 					{
@@ -2655,6 +4417,11 @@
 						"name": "applyIdleDecision.snapshot",
 						"type": "WatchdogScan",
 						"required": true
+					},
+					{
+						"name": "applyIdleDecision.settles",
+						"type": "boolean",
+						"required": false
 					},
 					{
 						"name": "applyIdleDecision.decision",
@@ -2872,6 +4639,285 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "staleDispatchAlerts",
+				"inputs": [
+					{
+						"name": "staleDispatchAlerts.runtime",
+						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'scheduler' | 'fleetSamples' | 'now'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "staleDispatchAlerts",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHubChiefDelivery",
+				"inputs": [
+					{
+						"name": "trackerHubChiefDelivery.input",
+						"type": "HubChiefDelivery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHubChiefDelivery",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "pendingHubMessages",
+				"inputs": [
+					{
+						"name": "pendingHubMessages.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "pendingHubMessages.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pendingHubMessages",
+						"type": "{ itemId: string; message: HubThreadMessage }[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordHubReceipt",
+				"inputs": [
+					{
+						"name": "recordHubReceipt.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordHubReceipt.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordHubReceipt.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordHubReceipt",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHubMessageDelivery",
+				"inputs": [
+					{
+						"name": "trackerHubMessageDelivery.input",
+						"type": "HubMessageDelivery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHubMessageDelivery",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "spokeGrant",
+				"inputs": [
+					{
+						"name": "spokeGrant.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "spokeGrant.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "spokeGrant.mayStartAlone",
+						"type": "(itemId: string) => boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "spokeGrant",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "spokeAutomaticPermit",
+				"inputs": [
+					{
+						"name": "spokeAutomaticPermit.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "spokeAutomaticPermit.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "spokeAutomaticPermit.localPermit",
+						"type": "() => boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "spokeAutomaticPermit",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "batchTrackerLaunchEvents",
+				"inputs": [
+					{
+						"name": "batchTrackerLaunchEvents.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "batchTrackerLaunchEvents",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemViews",
+				"inputs": [
+					{
+						"name": "trackerItemViews.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemViews",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerLaunchWait",
+				"inputs": [
+					{
+						"name": "trackerLaunchWait.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					},
+					{
+						"name": "trackerLaunchWait.item",
+						"type": "TrackerItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLaunchWait",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRequestWaits",
+				"inputs": [
+					{
+						"name": "trackerRequestWaits.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRequestWaits",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerMachineSamples",
+				"inputs": [
+					{
+						"name": "trackerMachineSamples.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMachineSamples",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "machineOffline",
+				"inputs": [
+					{
+						"name": "machineOffline.sampledAt",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "machineOffline.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "machineOffline",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerLegacyExitReceipt",
 				"inputs": [
 					{
@@ -2974,27 +5020,344 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "resetBudget",
+				"name": "trackerQuotaHold",
 				"inputs": [
 					{
-						"name": "resetBudget.state",
-						"type": "TrackerRecoveryState | null",
+						"name": "trackerQuotaHold.store",
+						"type": "TrackerPersistenceService",
 						"required": true
 					},
 					{
-						"name": "resetBudget.run",
-						"type": "TrackerListedRun | undefined",
+						"name": "trackerQuotaHold.cli",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerQuotaHold",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "heldTrackerProviders",
+				"inputs": [
+					{
+						"name": "heldTrackerProviders.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "heldTrackerProviders",
+						"type": "WatchdogCli[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "clearTrackerQuotaHold",
+				"inputs": [
+					{
+						"name": "clearTrackerQuotaHold.store",
+						"type": "TrackerPersistenceService",
 						"required": true
 					},
 					{
-						"name": "resetBudget.item",
+						"name": "clearTrackerQuotaHold.cli",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "clearTrackerQuotaHold",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "configuredTrackerProviderHold",
+				"inputs": [
+					{
+						"name": "configuredTrackerProviderHold.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "configuredTrackerProviderHold.codexPausedUntil",
+						"type": "string",
+						"required": false,
+						"default": ""
+					},
+					{
+						"name": "configuredTrackerProviderHold.now",
+						"type": "() => number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "configuredTrackerProviderHold",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerCodexPause",
+				"inputs": [
+					{
+						"name": "trackerCodexPause.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerCodexPause.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerCodexPause",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerProviderHold",
+				"inputs": [
+					{
+						"name": "trackerProviderHold.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerProviderHold.cli",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerProviderHold.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerProviderHold",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerQuotaNotice",
+				"inputs": [
+					{
+						"name": "trackerQuotaNotice.screen",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerQuotaNotice.cli",
+						"type": "WatchdogCli",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerQuotaNotice",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "watchTrackerQuota",
+				"inputs": [
+					{
+						"name": "watchTrackerQuota.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "watchTrackerQuota.tmux",
+						"type": "TrackerTmuxAdapter",
+						"required": false
+					},
+					{
+						"name": "watchTrackerQuota.runs",
+						"type": "readonly TrackerRunReceipt[]",
+						"required": true
+					},
+					{
+						"name": "watchTrackerQuota.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "watchTrackerQuota.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchTrackerQuota",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "observeTrackerQuota",
+				"inputs": [
+					{
+						"name": "observeTrackerQuota.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "observeTrackerQuota.runs",
+						"type": "readonly TrackerRunReceipt[]",
+						"required": true
+					},
+					{
+						"name": "observeTrackerQuota.panes",
+						"type": "readonly WatchdogPane[]",
+						"required": true
+					},
+					{
+						"name": "observeTrackerQuota.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "observeTrackerQuota",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "automaticQueueHold",
+				"inputs": [
+					{
+						"name": "automaticQueueHold.item",
+						"type": "TrackerDispatchItem | null",
+						"required": true
+					},
+					{
+						"name": "automaticQueueHold.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": false
+					},
+					{
+						"name": "automaticQueueHold.intent",
+						"type": "TrackerLaunchIntent",
+						"required": true
+					},
+					{
+						"name": "automaticQueueHold.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "automaticQueueHold.queued",
+						"type": "TrackerLaunchRung",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "automaticQueueHold",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "queuedRung",
+				"inputs": [
+					{
+						"name": "queuedRung.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "queuedRung",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "recoveryBudget",
+				"inputs": [
+					{
+						"name": "recoveryBudget.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recoveryBudget.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recoveryBudget.latest",
+						"type": "TrackerListedRun",
+						"required": false
+					},
+					{
+						"name": "recoveryBudget.item",
 						"type": "TrackerItem",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "resetBudget",
+						"name": "recoveryBudget",
+						"type": "TrackerRecoveryState"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hostWait",
+				"inputs": [
+					{
+						"name": "hostWait.reason",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostWait",
 						"type": "unknown"
 					}
 				],
@@ -3024,6 +5387,62 @@
 					{
 						"name": "recoveryRung",
 						"type": "TrackerLaunchRung | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoveryHold",
+				"inputs": [
+					{
+						"name": "recoveryHold.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "recoveryHold.latest",
+						"type": "TrackerListedRun | undefined",
+						"required": true
+					},
+					{
+						"name": "recoveryHold.changedAt",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "recoveryHold.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoveryHold",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasRecoveryBrief",
+				"inputs": [
+					{
+						"name": "hasRecoveryBrief.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "hasRecoveryBrief.latest",
+						"type": "TrackerListedRun",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasRecoveryBrief",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -3281,6 +5700,108 @@
 					{
 						"name": "flagRecoveryError",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "publishTrackerSlotAlerts",
+				"inputs": [
+					{
+						"name": "publishTrackerSlotAlerts.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "publishTrackerSlotAlerts.panes",
+						"type": "readonly WatchdogPane[]",
+						"required": true
+					},
+					{
+						"name": "publishTrackerSlotAlerts.slots",
+						"type": "{ now: number; cap: number | null }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "publishTrackerSlotAlerts",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withSlotSummary",
+				"inputs": [
+					{
+						"name": "withSlotSummary.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "withSlotSummary.alert",
+						"type": "TrackerWatchdogAlert",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "withSlotSummary",
+						"type": "TrackerWatchdogAlert"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerSlotState",
+				"inputs": [
+					{
+						"name": "readTrackerSlotState.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "readTrackerSlotState.panes",
+						"type": "readonly WatchdogPane[]",
+						"required": true
+					},
+					{
+						"name": "readTrackerSlotState.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "readTrackerSlotState.cap",
+						"type": "number | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerSlotState",
+						"type": "TrackerSlotState"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerSlotSummary",
+				"inputs": [
+					{
+						"name": "trackerSlotSummary.report",
+						"type": "TrackerSlotReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSlotSummary",
+						"type": "string"
 					}
 				],
 				"errors": [],
@@ -3612,7 +6133,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.agents-providers-pick-tracker-model",
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-hub-session-messages",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -3632,17 +6158,42 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-sanitize-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-cpu-budget",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-tracker-egress-policy",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "function.sqlite-types",
+			"unit": "function.projects-sessions-tracker-host-resource-hold",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "helper.attention-timing-is-quiet-hour",
+			"unit": "function.projects-sessions-tracker-host-resources-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-host-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-session-names",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -3692,6 +6243,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-backup",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-compose-tracker-backups",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-dispatch-scheduler",
 			"via": "import",
 			"origin": "derived"
@@ -3707,7 +6268,67 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-machine",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-fleet",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-recurrence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-web-push",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-ask-options-rule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-automation-browser-rule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-done-proof-rule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-sample-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-telemetry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-model-pick",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-resource-admission",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-run-limits",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-spoke-telemetry",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -3738,6 +6359,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-spoke-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -15,7 +15,14 @@ import type {
 	TrackerNotificationState
 } from './notificationState.types';
 import { webhookRequest } from './deliveryRequest';
-import { askQuietHours, eventId, flagged, isoTime, minute, parkedUntil } from './notificationRules';
+import {
+	danielQuietHours,
+	eventId,
+	flagged,
+	isoTime,
+	minute,
+	parkedUntil
+} from './notificationRules';
 
 function waitingToLaunch(
 	entry: AttentionRow,
@@ -77,7 +84,6 @@ function canSendAttention(
 ): boolean {
 	const { webhook } = options;
 	const { forceAttention: forced } = state;
-	const quietHold = webhook.quietHours !== false;
 	const at = nextAttentionBatchAt({
 		nowMs: now,
 		windowMs: (webhook.windowMinutes ?? 30) * minute,
@@ -87,11 +93,19 @@ function canSendAttention(
 		lastAttemptMs: state.lastAttentionAttempt ?? null,
 		urgentKinds: webhook.urgent ?? [],
 		windowAlignedKinds: ['launch_wait'],
-		quietHold,
-		quiet: options.quietHours
+		quietHold: false,
+		quiet: null
 	});
-	if (at === null || at > now) return false;
-	return !quietHold || Boolean(forced) || quietHourBoundary(now, options.quietHours) <= now;
+	return at !== null && at <= now;
+}
+
+function nextSuggestion(
+	state: TrackerNotificationState,
+	{ suggestions }: TrackerWebhookOptions,
+	now: number
+): string | undefined {
+	if (!suggestions?.length || quietHourBoundary(now, danielQuietHours) > now) return undefined;
+	return suggestions[(state.digestsSent ?? 0) % suggestions.length];
 }
 
 function prepareAttention(
@@ -116,6 +130,9 @@ function prepareAttention(
 			waiting_minutes: Math.max(0, Math.floor((now - at) / minute))
 		};
 	});
+	const suggestion = nextSuggestion(state, webhook, now);
+	const text = items.map(lineText);
+	if (suggestion) text.push(`Until the next digest: ${suggestion}`);
 	const keys = group.lines.map((row) => row.key);
 	const included = new Set(keys);
 	for (const row of pending) if (!included.has(row.key)) row.status = 'dropped';
@@ -129,7 +146,8 @@ function prepareAttention(
 		count: items.length,
 		counts: group.counts,
 		items,
-		text: items.map(lineText).join('\n'),
+		text: text.join('\n'),
+		...(suggestion && { suggestion }),
 		node: source.node,
 		sent_at: isoTime(now)
 	});
@@ -150,10 +168,9 @@ export function nextAttention(
 		delete state.forceAttention;
 		return undefined;
 	}
-	const quiet = quietHourBoundary(now, askQuietHours) > now;
 	const sendable = pending.filter(({ line, itemId }) => {
 		if (line.event !== 'needs_daniel' && !line.needs_daniel) return true;
-		return !quiet && parkedUntil(source.item(itemId)) <= now;
+		return parkedUntil(source.item(itemId)) <= now;
 	});
 	const configured = { ...options, webhook };
 	if (!sendable.length || !canSendAttention(state, configured, sendable, now)) return undefined;

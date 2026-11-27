@@ -1,6 +1,10 @@
 // @harness-uid u_st4dufvqxm
+import { phoneAskAttachments } from './phoneAskAttachments';
+import { trackerStructuredAsk } from '../../../utils/projects-sessions/trackerStructuredAsk';
 import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { createHash } from 'node:crypto';
+import { trackerPersonalReminder } from '../../../utils/projects-sessions/trackerPersonalReminder';
+import { trackerPersonalAgent } from '../../../utils/projects-sessions/trackerUnattendedHold';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
 import {
@@ -50,7 +54,10 @@ export function attentionRevision(item: PhoneItemSource): string {
 				item.question,
 				item.needs_daniel,
 				item.resolved,
-				...(item.options ? [item.options] : [])
+				...(item.options ? [item.options] : []),
+				...(item.attachments ? [item.attachments] : []),
+				// A reminder that moved makes an earlier Done or Snooze stale.
+				...(phoneReminder(item) ? [item.remind_at] : [])
 			])
 		)
 		.digest('hex');
@@ -61,8 +68,10 @@ function projectItem(
 	notes: PhoneNoteSource[],
 	runs: PhoneRunSource[]
 ): PhoneTrackerRow {
+	const reminder = phoneReminder(item);
 	return {
 		id: item.id,
+		...(reminder && { reminder }),
 		title: excerpt(item.title, 240),
 		project: excerpt(item.project, 120),
 		status: item.status,
@@ -83,7 +92,10 @@ function projectItem(
 						state: item.resolved ? 'resolved' : 'open',
 						at: clockTime(item.flag_clock),
 						question: excerpt(item.question, 512),
-						...phoneAskChoices(item)
+						...phoneAskChoices(item),
+						...(!trackerPersonalAgent(item.agent) &&
+							trackerStructuredAsk(item) &&
+							phoneAskAttachments(item))
 					}
 				: null,
 		runs: runs.map((run) => ({
@@ -98,10 +110,11 @@ function projectItem(
 	};
 }
 
-/** Choices travel on the flag so the phone can show buttons; plain asks keep their old shape. */
+/** Choices travel only on a structured ask: the phone counts and offers exactly those. */
 function phoneAskChoices(item: PhoneItemSource) {
+	// A personal item is never a "Needs you" ask, so its choices stay on the computer.
+	if (trackerPersonalAgent(item.agent) || !trackerStructuredAsk(item)) return {};
 	const options = trackerAskOptions(item.options);
-	if (!options.length) return {};
 	return {
 		options: options.map(({ label, effect, recommended }) => ({
 			label: excerpt(label, 80),
@@ -110,6 +123,10 @@ function phoneAskChoices(item: PhoneItemSource) {
 		})),
 		...(item.confirm && { confirm: item.confirm })
 	};
+}
+
+function phoneReminder(item: PhoneItemSource) {
+	return trackerPersonalReminder({ ...item, remindAt: item.remind_at });
 }
 
 function excerpt(value: string | null, bytes: number): string {
@@ -133,13 +150,16 @@ function clockTime(clock: string | null): string | null {
 }
 
 const itemSql = `
-	SELECT id, status, CASE WHEN length(title) <= 16384 THEN title ELSE '' END AS title,
+	SELECT id, status, agent, remind_at, every, CASE WHEN length(title) <= 16384 THEN title ELSE '' END AS title,
 		CASE WHEN length(coalesce(nullif(project, ''), agent)) <= 1024
 			THEN coalesce(nullif(project, ''), agent) END AS project,
 		updated_at, due, needs_daniel, resolved,
 		${[...trackerPlanningArtifactFields, ...trackerPlanningPromotionFields].join(', ')},
 		CASE WHEN length(question) <= 16384 THEN question END AS question,
 		CASE WHEN length(options) <= 4096 THEN options END AS options, confirm,
+		CASE WHEN length(attachments) <= 8192 THEN attachments END AS attachments,
+		CASE WHEN needs_daniel = 1 AND resolved = 0 AND length(attachment_docs) <= 524288
+			THEN attachment_docs END AS attachment_docs,
 		coalesce(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel')) AS flag_clock,
 		json_array(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel'),
 			json_extract(clocks, '$.resolved'), json_extract(clocks, '$.answered_at'),

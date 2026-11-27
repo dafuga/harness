@@ -1,17 +1,16 @@
 // @harness-uid u_bl6xl2h4a3
-import type {
-	TrackerDispatchItem,
-	TrackerLaunchIntent
-} from '../../agents-providers/TrackerDispatcherService.types';
-import { z } from 'zod';
+import type { z } from 'zod';
 import type { TrackerDispatchSchedulerService } from '../TrackerDispatchSchedulerService';
+import type { TrackerMachineService } from '../TrackerMachineService';
 import type { TrackerHubMachineStore } from '../TrackerHubSyncService.types';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { TrackerSpokeLoopService } from '../TrackerSpokeLoopService';
-import { TrackerSpokeSyncService } from '../TrackerSpokeSyncService';
 import { observeTrackerDuePolicy } from './nativeTrackerDuePolicy';
+import { trackerMachineSample } from './trackerFleetSampleSchema';
+
+export { trackerMachineSample, trackerRunnerSample } from './trackerFleetSampleSchema';
 
 export function composeTrackerLinks(
 	store: TrackerPersistenceService,
@@ -31,98 +30,59 @@ export function composeTrackerLinks(
 	);
 }
 
-export function composeTrackerTelemetry(
-	store: TrackerPersistenceService,
+/** Spokes see the hub only if its machine list carries the hub's own current report too. */
+export function trackerHubMachines(
+	machines: TrackerHubMachineStore,
 	runs: TrackerRunReadRepository,
 	options: TrackerNativeRuntimeOptions,
-	scheduler?: TrackerDispatchSchedulerService
-) {
-	const telemetry = options.dispatch?.telemetry;
-	const link = options.links?.find((entry) => (entry.link ?? 'hub') === 'hub');
-	const machines = options.syncResponder?.machines;
-	if (machines) return { tick: undefined, samples: () => machines.latestSamples() };
-	if (!link) return { tick: undefined, samples: undefined };
-	const now = options.now ?? Date.now;
-	let nextPoll = -Infinity;
-	let previousLaunchState = '';
-	let samples: readonly unknown[] = [];
-	const tick = async (signal: AbortSignal) => {
-		const active = runs.activeLocal();
-		const runner = scheduler?.runnerStatus() ?? { enabled: false };
-		const launchState = launchSampleRevision(runner, active, runs.latestLocalRunId());
-		if (now() < nextPoll && launchState === previousLaunchState) return;
-		nextPoll = now() + 60_000;
-		const client = new TrackerSpokeSyncService({
-			...link,
-			store,
-			transport: (request) => link.transport(request, signal)
-		});
-		const sample = telemetry?.sample() ?? {
-			at: new Date(now()).toISOString(),
-			runner: {
-				...runner,
-				active: active.filter(({ state }) => state !== 'queued').length
-			}
-		};
-		const received = await client.exchangeMachine(sample, runs.exportLocal());
-		signal.throwIfAborted();
-		if (received.run_history) runs.importHubHistory(received.run_history);
-		previousLaunchState = launchState;
-		samples = received.machines;
-		telemetry?.onMachines?.(samples);
+	{
+		machines: machineService,
+		scheduler
+	}: { machines: TrackerMachineService; scheduler?: TrackerDispatchSchedulerService }
+): TrackerHubMachineStore {
+	const { node, dispatch, now = Date.now } = options;
+	return {
+		record: (sample) => machines.record(sample),
+		latestSamples() {
+			const sample =
+				dispatch?.telemetry?.sample() ??
+				machineReport(localRunnerStatus(scheduler), runs.activeLocal(), now());
+			const stored = machines.latestSamples();
+			const spokes = stored.filter((value) => nodeOf(value) !== node);
+			// The hub's resource reading is taken once a minute and kept with its recorded report.
+			const own = stored.find((value) => nodeOf(value) === node);
+			const resources = trackerMachineSample.safeParse(own).data?.resources;
+			return [
+				...spokes,
+				{
+					...(sample as object),
+					...(resources && { resources }),
+					node,
+					host_work: machineService.localHostWork()
+				}
+			];
+		}
 	};
-	return { tick, samples: () => samples };
 }
 
-function launchSampleRevision(
-	runner: {
-		enabled: boolean;
-		last_error?: string | null;
-		capacity?: unknown;
-		automatic_enabled?: boolean;
-		waiting?: unknown;
-		waiting_tokens?: unknown;
-	},
+function nodeOf(value: unknown): string | undefined {
+	return trackerMachineSample.safeParse(value).data?.node;
+}
+
+export function localRunnerStatus(scheduler?: TrackerDispatchSchedulerService) {
+	return scheduler?.runnerStatus() ?? { enabled: false };
+}
+
+export function machineReport(
+	runner: ReturnType<typeof localRunnerStatus>,
 	active: ReturnType<TrackerRunReadRepository['activeLocal']>,
-	latestId: number | undefined
+	at: number
 ) {
-	return JSON.stringify([
-		runner.enabled,
-		runner.last_error,
-		runner.capacity,
-		runner.automatic_enabled,
-		runner.waiting,
-		runner.waiting_tokens,
-		latestId,
-		active.map(({ id, state }) => [id, state])
-	]);
+	return {
+		at: new Date(at).toISOString(),
+		runner: { ...runner, active: active.filter(({ state }) => state !== 'queued').length }
+	};
 }
-
-export const trackerRunnerSample = z.object({
-	enabled: z.boolean().nullish(),
-	last_tick_at: z.string().nullish(),
-	last_error: z.string().nullish(),
-	waiting_on: z.string().nullish(),
-	active: z.int().nonnegative().nullish(),
-	automatic_enabled: z.boolean().optional(),
-	capacity: z
-		.object({
-			freeSlots: z.int().min(0).max(500),
-			projects: z.record(
-				z.string(),
-				z.object({ freeGB: z.number().nonnegative(), freePct: z.number().min(0).max(100) })
-			)
-		})
-		.nullish(),
-	waiting: z.record(z.string(), z.string()).optional(),
-	waiting_tokens: z.record(z.string(), z.string()).optional()
-});
-
-export const trackerMachineSample = z.object({
-	node: z.string().min(1).max(128),
-	at: z.iso.datetime(),
-	runner: trackerRunnerSample
-});
 
 export function trackerFleetMachineStore(): TrackerHubMachineStore {
 	const samples = new Map<string, z.infer<typeof trackerMachineSample>>();
@@ -144,64 +104,4 @@ export function trackerSpokeStatus(links: readonly TrackerSpokeLoopService[]) {
 		...(hub ? { hub: hub.upstream(), ...hub.status() } : { disabled: true }),
 		...(peer && { peer: peer.status() })
 	};
-}
-
-export function adapterFailover(options: TrackerNativeRuntimeOptions, now: () => number) {
-	const machines = options.syncResponder?.machines;
-	const thresholds = options.hostEffects?.adapter?.dueDisk;
-	return (item: TrackerDispatchItem, intent: TrackerLaunchIntent) => {
-		if (!machines || !delegatableAdapterItem(item, intent)) return undefined;
-		const project = (item.project ?? item.agent)?.toLowerCase();
-		if (!project) return undefined;
-
-		return machines
-			.latestSamples()
-			.map((sample) => trackerMachineSample.safeParse(sample).data)
-			.find(
-				(host) =>
-					host &&
-					currentAdapterHost(host, options.node, now()) &&
-					adapterDiskFits(host.runner.capacity, project, thresholds)
-			)?.node;
-	};
-}
-
-function currentAdapterHost(
-	host: NonNullable<ReturnType<typeof trackerMachineSample.safeParse>['data']>,
-	local: string,
-	now: number
-) {
-	const runner = host.runner;
-	return (
-		host.node !== local &&
-		runner.automatic_enabled === true &&
-		runner.enabled &&
-		!runner.last_error &&
-		runner.last_tick_at &&
-		Math.abs(now - Date.parse(runner.last_tick_at)) <= 120_000 &&
-		Math.abs(now - Date.parse(host.at)) <= 120_000
-	);
-}
-
-function adapterDiskFits(
-	capacity: z.infer<typeof trackerRunnerSample>['capacity'],
-	project: string,
-	thresholds?: { freeGB: number; freePct: number }
-) {
-	if (!capacity?.freeSlots) return false;
-	const disk = capacity.projects[project];
-	return Boolean(
-		disk &&
-		(!thresholds || (disk.freeGB >= thresholds.freeGB && disk.freePct >= thresholds.freePct))
-	);
-}
-
-function delegatableAdapterItem(item: TrackerDispatchItem, intent: TrackerLaunchIntent) {
-	// The verified cross-host tester lane uses Codex. Keep MB2's Claude placement held.
-	return (
-		item.adapterDueOwner &&
-		!item.sensitive &&
-		intent.source === 'due' &&
-		intent.scheduledPick?.rung.cli === 'codex'
-	);
 }

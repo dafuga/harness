@@ -1,4 +1,5 @@
 // @harness-uid u_alfe4qnget
+import type { VerificationNote } from '../../../core/git-source-history/historyTypes.types';
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { notesRef } from '../../../core/git-source-history/historyTypes';
 import { EvidenceBranchRepository } from '../../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
@@ -14,10 +15,7 @@ import {
 	sameVideoCapture,
 	videoRecordPassed
 } from '../../../utils/development-tooling/record-lineage/videoLineage';
-import type {
-	PinnedHistory,
-	VerificationNote
-} from '../history-status-service/HistoryStatusService.types';
+import type { PinnedHistory } from '../history-status-service/HistoryStatusService.types';
 import type { Capture } from '../../../core/verification-evidence/verificationTypes';
 import type { VideoReferenceContext, VideoOriginProof } from '../VideoReferenceService.types';
 

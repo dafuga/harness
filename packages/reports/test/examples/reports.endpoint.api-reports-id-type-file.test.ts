@@ -2,13 +2,11 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { GET } from '../../src/routes/api/reports/[id]/[type]/[file]/+server';
+import type { Params, Outcome } from './reports.endpoint.api-reports-id-type-file.test.types';
 
 const FILE = '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08.png';
 const FALLBACK = 'Registered asset not found';
 const INVALID_IDS = ['not a uuid!', '../../etc/passwd', 'x'.repeat(101)];
-
-type Params = { id: string; type: string; file: string };
-type Outcome = { status: number | undefined; message: string | undefined };
 
 async function call(params: Params, range: string | null): Promise<Outcome> {
 	const request = new Request('http://localhost/', { headers: range === null ? {} : { range } });

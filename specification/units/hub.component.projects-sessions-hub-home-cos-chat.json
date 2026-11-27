@@ -1,0 +1,187 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-cos-chat",
+	"uid": "u_suxmf5vsuw",
+	"kind": "component",
+	"title": "HubHomeCosChat",
+	"responsibility": "Shows the Chief of Staff conversation and the selected item or open question in a single chat overlay.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-ask",
+			"hub.component.projects-sessions-hub-home-composer",
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.modal",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-ol",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-linkified-text"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte"],
+		"symbols": ["HubHomeCosChat"]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
+		"inputs": [
+			{
+				"name": "HubHomeCosChat.agent",
+				"type": "HomeAgent",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Chief of Staff as the linked computers report it; absent before the Tracker reports it."
+			},
+			{
+				"name": "HubHomeCosChat.now",
+				"type": "string",
+				"required": true,
+				"description": "The time Home was read, used for a stand-in Chief of Staff."
+			},
+			{
+				"name": "HubHomeCosChat.send",
+				"type": "SendHomeChat",
+				"required": true,
+				"description": "Sends one Home message through a linked computer or the Hub queue."
+			},
+			{
+				"name": "HubHomeCosChat.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Reads an existing Tracker answer receipt when the web widget shows an open question."
+			},
+			{
+				"name": "HubHomeCosChat.asks",
+				"type": "HomeOpenAsk[]",
+				"required": false,
+				"default": [],
+				"description": "Provides the current open questions. A resolved question loses its answer options."
+			},
+			{
+				"name": "HubHomeCosChat.showCard",
+				"type": "boolean",
+				"required": false,
+				"default": true,
+				"description": "Shows the summary card on Hub Home. The installed work screen uses the overlay alone."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeCosChat",
+				"type": "markup",
+				"description": "A \"Message Chief of Staff\" region with the latest four entries and one field."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-composer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ol",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -9,13 +9,14 @@ import { DeploymentReviewBlockedError } from './enqueueChangeDeployments.types';
 import { changeEnvironment } from './changeEnvironment';
 import { reviewDeployment } from './reviewDeployment';
 import { deploymentExecution } from './deploymentExecution';
+import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
 /** Dependencies retain their exact lower receipt even when newer commits deploy alongside them. */
 export async function enqueueChangeDeployments(
 	root: string,
 	input: { environment: DeploymentEnvironment; commit: string; projectId: string | null },
 	runtime: Required<Pick<DeploymentOptions, 'plugin'>> &
 		DeploymentOptions & { activities: DeploymentActivityService }
-) {
+): Promise<DeploymentActivity[]> {
 	const reviews = await Promise.all(
 		changeEnvironment(input.environment).map((environment) =>
 			reviewDeployment(

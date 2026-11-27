@@ -13,13 +13,7 @@ export const commandHelp = [
 	plainHelp('benchmark', 'Compare subagents against fixed component contracts.'),
 	plainHelp('resources', 'Shared CPU and memory admission for managed work.'),
 	plainHelp('jobs', 'Record job durations and estimate queued work.'),
-	{
-		name: 'analytics',
-		signature: 'analytics',
-		description: 'Query durable local cross-project Harness history.',
-		term: 'analytics',
-		aliases: []
-	},
+	plainHelp('analytics', 'Query durable local cross-project Harness history.'),
 	{
 		name: 'activity',
 		signature: 'activity',
@@ -198,15 +192,24 @@ export const commandHelp = [
 		term: 'audit [options] [path]',
 		aliases: []
 	},
-	{
-		name: 'response-check',
-		signature: 'response-check',
-		description: 'Check whether an LLM answer follows a user request using JEV.',
-		term: 'response-check [options]',
-		aliases: []
-	}
+	plainHelp(
+		'design',
+		'Author, list and render design canvases of HTML artboards in designs/.',
+		'design [options]'
+	),
+	plainHelp('qa-sync', 'Sync Slack QA threads to issues.', 'qa-sync [options]'),
+	plainHelp(
+		'container-browser',
+		'Run a private browser in a local container.',
+		'container-browser [options] <action> [value]'
+	),
+	plainHelp('x-digest', 'Send a read-only X digest.', 'x-digest [options] [action]'),
+	plainHelp(
+		'response-check',
+		'Check whether an LLM answer follows a user request using JEV.',
+		'response-check [options]'
+	)
 ];
-
-function plainHelp(name: string, description: string) {
-	return { name, signature: name, description, term: name, aliases: [] };
+function plainHelp(name: string, description: string, term = name) {
+	return { name, signature: name, description, term, aliases: [] };
 }

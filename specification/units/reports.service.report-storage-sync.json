@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/services/reports-media/report-command-service/InvalidReplayDirectoryError.ts",
 			"packages/reports/src/services/reports-media/report-command-service/ReportStorageSyncService.ts",
 			"packages/reports/src/services/reports-media/report-command-service/ReportStorageSyncService.types.ts"
 		],
 		"symbols": [
+			"InvalidReplayDirectoryError",
 			"ReportStorageSyncService",
 			"ReportStorageSyncService.constructor",
 			"ReportStorageSyncService.run",

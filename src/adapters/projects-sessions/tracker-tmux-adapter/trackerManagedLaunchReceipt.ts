@@ -14,10 +14,9 @@ import { join } from 'node:path';
 import { z } from 'zod';
 import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';
 import { claudeStartupFailure } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchSchema';
-import type {
-	ClaudeStartupFailure,
-	TrackerHostSession
-} from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
+import type { TrackerHostSession } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
+import { managedClaudeStartupPhase } from './trackerClaudeStartupPhase';
+import { trackerStartupCause } from './trackerStartupCause';
 import type {
 	TrackerManagedPresence,
 	TrackerManagedReceipt
@@ -53,6 +52,12 @@ export function checkTrackerManagedReceipt(
 	return record;
 }
 
+/** Where one attempt runs: its own worktree unless it recorded that it runs in place. */
+export function trackerManagedWorkingDirectory(directory: string, node: string, key: string) {
+	const attempt = join(directory, trackerManagedToken(node, key));
+	return privateRecord(join(attempt, 'working-directory')) ?? join(attempt, 'worktree');
+}
+
 export function trackerManagedEvidence(
 	directory: string,
 	receipt: TrackerManagedReceipt,
@@ -64,7 +69,11 @@ export function trackerManagedEvidence(
 	if (presence === 'unknown' && exitCode === undefined) return undefined;
 	let state: TrackerHostSession['state'] = 'exited';
 	if (exitCode === undefined) state = presence === 'absent' ? 'lost' : 'live';
+	const diagnostic = exitCode
+		? trackerStartupCause(privateRecord(join(directory, 'startup-error')) ?? '')
+		: undefined;
 	return {
+		...(diagnostic && { diagnostic }),
 		itemId: receipt.itemId,
 		key: receipt.key,
 		id: receipt.token,
@@ -140,23 +149,17 @@ export async function confirmManagedClaudeStartup(
 	if (recorded === 'ready') return session;
 	const result = recorded
 		? claudeStartupFailure.parse(recorded)
-		: await managedClaudeStartupPhase({ tmux, socket, live }, receipt, signal);
+		: await managedClaudeStartupPhase(
+				// A worker that already failed will never reach the composer.
+				{ tmux, socket, live: live && !session.exitCode, directory: path },
+				receipt,
+				signal
+			);
 	if (!result) return undefined;
 	if (!recorded) writeClaudeStartup(marker, result);
 	if (result === 'ready') return session;
 	if (live) await closeClaudeStartupPane(tmux, socket, receipt, signal);
 	return { ...session, startupFailure: result };
-}
-
-async function managedClaudeStartupPhase(
-	{ tmux, socket, live }: { tmux: string; socket: string; live: boolean },
-	receipt: TrackerManagedReceipt,
-	signal: AbortSignal
-) {
-	if (!live) return 'claude-not-ready';
-	const result = await claudePaneStartup(tmux, socket, receipt.tmux, signal);
-	if (result) return result;
-	return Date.now() - receipt.issuedAt >= 120_000 ? 'claude-not-ready' : undefined;
 }
 
 function writeClaudeStartup(path: string, phase: string): void {
@@ -167,26 +170,6 @@ function writeClaudeStartup(path: string, phase: string): void {
 	} finally {
 		rmSync(temporary, { force: true });
 	}
-}
-
-async function claudePaneStartup(
-	tmux: string,
-	socket: string,
-	name: string,
-	signal: AbortSignal
-): Promise<'ready' | ClaudeStartupFailure | undefined> {
-	const { code, stdout } = await runTrackerHostCommand(
-		tmux,
-		['-L', socket, 'capture-pane', '-p', '-t', `=${name}:`],
-		signal
-	);
-	if (code !== 0) return undefined;
-	if (/^─{8}.*\n❯(?:[ \u00A0].*)?\n─{8}.*\n\s*(?:[⏵⏸]+\s|\? for shortcuts\b)/mu.test(stdout))
-		return 'ready';
-	if (/^\s*Choose the text style that looks best with your terminal/m.test(stdout))
-		return 'claude-onboarding';
-	if (/^\s*Select login method:/m.test(stdout)) return 'claude-sign-in';
-	return undefined;
 }
 
 async function closeClaudeStartupPane(

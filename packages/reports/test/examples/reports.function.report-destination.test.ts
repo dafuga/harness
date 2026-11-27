@@ -4,8 +4,7 @@ import type { HarnessLegacyReport } from '../../src/models/explorer-ui/Harness.t
 import { history, sha, summary } from '../explorerFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.report-destination.test.types';
 const unitId = 'reports.function.report-destination';
 const symbol = 'reportDestination';
 

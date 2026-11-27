@@ -1,4 +1,8 @@
 // @harness-uid u_bl6xl2h4a3
+import { attemptKey } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import type { TrackerRunReceipt } from '../../agents-providers/TrackerDispatcherService.types';
+import { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
+import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { WatchdogStartupService } from '../WatchdogStartupService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
@@ -27,8 +31,7 @@ export function recordStartupAlerts(
 				session: action.pane,
 				identity: action.identity
 			},
-			snapshot.now,
-			action.question
+			snapshot.now
 		);
 	}
 	for (const cleared of plan.clearAlerts) clearStartupAlert(store, cleared);
@@ -46,6 +49,10 @@ function clearStartupAlert(
 	else persist();
 }
 
+/**
+ * Record one alert on the Chief of Staff channel (`needs-attention` and the CoS tick), with a note
+ * on the item. It never asks Daniel. An alert that must stop relaunches blocks the item instead.
+ */
 export function recordWatchdogAlert(
 	store: TrackerPersistenceService,
 	input: {
@@ -60,9 +67,7 @@ export function recordWatchdogAlert(
 		persist?: () => void;
 	},
 	at: number,
-	question:
-		| string
-		| null = `${store.node}: ${input.reason} Chief of Staff, please inspect the session.`
+	hold?: string
 ): void {
 	const { itemId, kind, reason, identity, session, localOnly } = input;
 	const key = input.key ?? `${itemId}:${kind}`;
@@ -80,11 +85,7 @@ export function recordWatchdogAlert(
 	};
 	const fields = {
 		'note+': `watchdog ${kind}: ${reason}`,
-		...(question && {
-			needs_daniel: 1,
-			resolved: 0,
-			question
-		})
+		...(hold && { status: 'blocked', blocked_reason: hold })
 	};
 	const persist = () => {
 		store.writeMeta({ watchdog_alerts: JSON.stringify({ ...alerts, [key]: alert }) });
@@ -104,8 +105,7 @@ export function contextAlert(
 	recordWatchdogAlert(
 		store,
 		{ itemId: id, session: pane.name, kind: 'context', reason, identity: pane.key },
-		now,
-		null
+		now
 	);
 }
 
@@ -120,6 +120,54 @@ export function recordHandoffFailure(
 		store,
 		{ itemId: id, session: pane.name, kind: 'handoff-failed', reason, identity: pane.key },
 		now,
-		`Tracker recovery: ${reason} Chief of Staff should inspect the pane and recover its worktree before clearing the flag.`
+		`Tracker recovery: ${reason} Chief of Staff should inspect the pane and recover its worktree before unblocking.`
 	);
+}
+
+export function recordOverdueAlert(
+	store: TrackerPersistenceService,
+	run: TrackerRunReceipt,
+	{ reason, at }: { reason: string; at: number }
+) {
+	const stop = `tracker stop ${run.item_id.slice(0, 6)}`;
+	recordWatchdogAlert(
+		store,
+		{
+			itemId: run.item_id,
+			kind: 'overdue',
+			reason: `Run #${run.id} ${reason}. No retry is queued. Check the session, or end it with \`${stop}\`.`,
+			identity: attemptKey(run),
+			session: run.tmux
+		},
+		at
+	);
+}
+
+export function blockMissingItem(
+	store: TrackerPersistenceService,
+	{ item, candidate, reason }: { item: TrackerItem; candidate?: TrackerItem; reason: string }
+) {
+	if (candidate?.auto !== item.auto || candidate?.updated_at !== item.updated_at) return;
+	store.commitLocal(() => {
+		if (
+			item.status !== 'in_progress' &&
+			!(item.status === 'open' && item.launch_source === 'recovery')
+		)
+			return { result: false };
+		const history = new TrackerRunReadRepository(store.database, store.node).list({
+			itemId: item.id
+		});
+		if (history.some(({ state }) => state !== 'finished')) return { result: false };
+		return {
+			result: true,
+			operation: {
+				itemId: item.id,
+				fields: {
+					status: 'blocked',
+					blocked_reason: reason,
+					'note+': `Tracker recovery held: ${reason}`
+				}
+			}
+		};
+	});
 }

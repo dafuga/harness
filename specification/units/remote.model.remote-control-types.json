@@ -8,15 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/remote/src/models/networking-security/RemoteControl.types.ts",
-			"packages/remote/src/models/networking-security/RemoteControlValues.ts"
-		],
+		"source": ["packages/remote/src/models/networking-security/RemoteControl.types.ts"],
 		"symbols": [
 			"RemoteRevision",
 			"RemoteGrant",
 			"RemoteConnectionEvent",
-			"RemotePairingOffer",
 			"RemotePairingRequest",
 			"RemoteDeviceInfo",
 			"RemoteHostState",
@@ -26,13 +22,9 @@
 			"RemoteMobileState",
 			"RemoteMobileStatus",
 			"RemotePairInput",
-			"RemoteScanInput",
-			"RemoteScanFailure",
 			"RemoteAccountComputer",
 			"RemoteAccountComputerInput",
-			"RemoteMobileControl",
-			"remoteScanFailures",
-			"remoteScanFailures"
+			"RemoteMobileControl"
 		]
 	},
 	"contract": {

@@ -18,6 +18,7 @@ import type {
 	RemoteDesktopControl,
 	RemoteMethod
 } from '../../../../../remote/src/index';
+import { watchLocalTracker } from './watchLocalTracker';
 import { LocalTransportClientService } from './LocalTransportClientService';
 import type { LocalSocketPort } from './LocalTransportClientService';
 import { binaryArtifact } from '../../../utils/reports-media/binaryArtifact';
@@ -55,7 +56,8 @@ const trackerInbox: TrackerInboxSource = {
 		partial: false,
 		value: []
 	}),
-	discard: async () => unavailable
+	discard: async () => unavailable,
+	watch: (listener) => watchLocalTracker(transport, inboxRead, listener)
 };
 const bridge: DesktopBridge = {
 	gameCreate: call('gameCreate'),
@@ -77,6 +79,8 @@ const bridge: DesktopBridge = {
 	connectHosted: call('connectHosted'),
 	disconnectHosted: call('disconnectHosted'),
 	projectOverview: call('projectOverview'),
+	homeSnapshot: call('homeSnapshot'),
+	homeChat: call('homeChat'),
 	trackerInbox,
 	listProjects: call('listProjects'),
 	selectProject: call('selectProject'),
@@ -96,6 +100,7 @@ const bridge: DesktopBridge = {
 	approve: call('approve'),
 	providers: call('providers'),
 	agentActivity: call('agentActivity'),
+	designCanvases: call('designCanvases'),
 	startRun: call('startRun'),
 	cancelRun: call('cancelRun'),
 	onRunEvent: (listener) => transport.on('run', (value) => listener(value as RunEvent))
@@ -105,8 +110,6 @@ const remote: RemoteDesktopControl = {
 	status: call('remote.status'),
 	enable: call('remote.enable'),
 	disable: call('remote.disable'),
-	createPairing: call('remote.createPairing'),
-	closePairing: call('remote.closePairing'),
 	approvePairing: call('remote.approvePairing'),
 	denyPairing: call('remote.denyPairing'),
 	revokeDevice: call('remote.revokeDevice'),

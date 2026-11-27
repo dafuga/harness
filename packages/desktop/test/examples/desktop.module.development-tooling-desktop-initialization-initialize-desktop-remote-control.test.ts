@@ -11,8 +11,6 @@ function createFixture() {
 	const calls: Array<{ method: string; input?: unknown }> = [];
 	const status = { enabled: true, phase: 'online' };
 	const devices = {
-		createPairing: () => (calls.push({ method: 'createPairing' }), 'pairing-offer'),
-		closePairing: () => (calls.push({ method: 'closePairing' }), 'closed'),
 		approvePairing: (input: unknown) => (
 			calls.push({ method: 'approvePairing', input }),
 			'approved'
@@ -41,8 +39,6 @@ function callControls(
 		status: control.status(),
 		enable: control.enable(),
 		disable: control.disable(),
-		createPairing: control.createPairing(),
-		closePairing: control.closePairing(),
 		approvePairing: control.approvePairing(inputs.approval),
 		denyPairing: control.denyPairing(inputs.pairing),
 		revokeDevice: control.revokeDevice(inputs.device)
@@ -64,8 +60,6 @@ test('Forwards remote host and device controls', () => {
 		status,
 		enable: 'enabled',
 		disable: 'disabled',
-		createPairing: 'pairing-offer',
-		closePairing: 'closed',
 		approvePairing: 'approved',
 		denyPairing: 'denied',
 		revokeDevice: 'revoked',
@@ -73,8 +67,6 @@ test('Forwards remote host and device controls', () => {
 			{ method: 'status' },
 			{ method: 'enable' },
 			{ method: 'disable' },
-			{ method: 'createPairing' },
-			{ method: 'closePairing' },
 			{ method: 'approvePairing', input: approval },
 			{ method: 'denyPairing', input: pairing },
 			{ method: 'revokeDevice', input: device }

@@ -11,20 +11,25 @@ import type { TrackerRunReadRepository } from '../TrackerRunReadRepository';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import { trackerChaseFields, trackerAskFields } from './serializeTrackerItem';
 import { trackerPlanningStage } from '../../../utils/projects-sessions/trackerPlanning';
-import type { StoredRecurringResult } from './buildTrackerDigest.types';
+import { splitTrackerAsks, listTrackerUnblocks, isStaleDecision } from './splitTrackerAsks';
+import { stampTrackerTime } from './stampTrackerTime';
+import type { StoredRecurringResult, TrackerDigestSources } from './buildTrackerDigest.types';
 
 /** Group active items by the configured calendar day and current recurring outcome. */
 export function buildTrackerDigest(
 	rows: TrackerItemRow[],
 	nowMs: number,
 	timeZone: string,
-	runs: TrackerRunReadRepository
+	{ runs, projects }: TrackerDigestSources
 ): TrackerDigest {
-	const localTime = stamp(nowMs, timeZone);
+	const localTime = stampTrackerTime(nowMs, timeZone);
 	const [today] = localTime.split(' ');
 	const groups: TrackerDigestGroups = {
 		blocked: [],
 		needs_daniel: [],
+		daniel_decisions: [],
+		pings: [],
+		needs_options: [],
 		overdue: [],
 		due_today: [],
 		recurring_missed: [],
@@ -36,18 +41,28 @@ export function buildTrackerDigest(
 		followThrough(groups, { row, item, nowMs, runs });
 		if (digestActive(row, nowMs)) groupActive(groups, row, item, { today, timeZone });
 	}
+	splitTrackerAsks(groups);
 	groups.chased_7d.sort((a, b) => (b.chased_at ?? '').localeCompare(a.chased_at ?? ''));
 	groups.queued.sort((a, b) => a.requested_at.localeCompare(b.requested_at));
+	const toUnblock = listTrackerUnblocks(groups);
 	return {
 		generated_at: new Date(nowMs).toISOString(),
 		local_time: `${localTime} ${timeZone}`,
 		today,
 		...groups,
-		counts: Object.fromEntries(
-			Object.entries(groups).map(([key, items]) => [key, items.length])
-		) as TrackerDigest['counts']
+		projects,
+		to_unblock: toUnblock,
+		counts: {
+			...(Object.fromEntries(
+				Object.entries(groups).map(([key, items]) => [key, items.length])
+			) as Record<keyof TrackerDigestGroups, number>),
+			stale_decisions: groups.daniel_decisions.filter(isStaleDecision).length,
+			projects: projects.length,
+			to_unblock: toUnblock.length
+		}
 	};
 }
+
 function followThrough(
 	groups: TrackerDigestGroups,
 	{
@@ -76,7 +91,9 @@ function groupActive(
 		if (problem) groups.recurring_missed.push(problem);
 	} else if (row.due) {
 		const day =
-			row.due.length === 10 ? row.due : stamp(Date.parse(row.due), timeZone).split(' ')[0];
+			row.due.length === 10
+				? row.due
+				: stampTrackerTime(Date.parse(row.due), timeZone).split(' ')[0];
 		if (day < today) groups.overdue.push(item);
 		if (day === today) groups.due_today.push(item);
 	}
@@ -164,9 +181,9 @@ function recurringProblem(
 		every,
 		every_tz: occurrenceZone ?? 'Europe/Lisbon',
 		missed,
-		missed_local: missed ? stamp(Date.parse(missed), displayZone) : null,
+		missed_local: missed ? stampTrackerTime(Date.parse(missed), displayZone) : null,
 		failed,
-		failed_local: failed ? stamp(Date.parse(failed.occurrence), displayZone) : null
+		failed_local: failed ? stampTrackerTime(Date.parse(failed.occurrence), displayZone) : null
 	};
 }
 
@@ -194,26 +211,4 @@ function recurringResult(raw: string | null): StoredRecurringResult | null {
 	} catch {
 		return null;
 	}
-}
-
-const formatters = new Map<string, Intl.DateTimeFormat>();
-
-function stamp(ms: number, timeZone: string): string {
-	let formatter = formatters.get(timeZone);
-	if (!formatter) {
-		formatter = new Intl.DateTimeFormat('en-US', {
-			timeZone,
-			hourCycle: 'h23',
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit'
-		});
-		formatters.set(timeZone, formatter);
-	}
-	const { year, month, day, hour, minute } = Object.fromEntries(
-		formatter.formatToParts(ms).map(({ type, value }) => [type, value])
-	);
-	return `${year}-${month}-${day} ${hour}:${minute}`;
 }

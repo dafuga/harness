@@ -29,10 +29,21 @@ import type { EvidenceArtifactResult } from '../verification-evidence/DesktopEvi
 import type { ProjectTaskRequest } from '../projects-sessions/ProjectTask.types';
 import type { RunEvent } from './RunContext.types';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
+import type {
+	HomeChatInput,
+	HomeChatReceipt,
+	OwnerHomeSnapshot
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { TrackerInboxSource } from './TrackerInbox.types';
 import type { channels } from './DesktopBridgeValues';
+import type { DesignCanvasPage } from '$reports/utils/planning-collaboration/designCanvas.types';
 
 export type ChannelName = (typeof channels)[keyof typeof channels];
+
+export interface DesignCanvasRequest extends ProjectContext {
+	/** The canvas to read; the first one when null. */
+	canvas: string | null;
+}
 
 export interface RevisionQuery extends ProjectContext {
 	branch: string | null;
@@ -143,8 +154,12 @@ export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
 	hostedStatus?(): Promise<NativeHostedStatus>;
 	connectHosted?(input?: { google?: boolean }): Promise<NativeHostedStatus>;
 	disconnectHosted?(): Promise<NativeHostedStatus>;
+	/** The design canvases of this computer's checkout; absent for hosted and paired projects. */
+	designCanvases?(input: DesignCanvasRequest): Promise<DesignCanvasPage>;
 	/** The local tracker's read-only overview; takes no input. Absent on hosts without a local tracker. */
 	projectOverview?(): Promise<OverviewSnapshot>;
+	homeSnapshot?(): Promise<OwnerHomeSnapshot>;
+	homeChat?(input: HomeChatInput): Promise<HomeChatReceipt>;
 	/** Direct inbox access on this Mac through the trusted local transport. */
 	trackerInbox?: TrackerInboxSource;
 	pendingComments?(input?: ProjectContext): Promise<HumanCommentResult[]>;

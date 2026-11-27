@@ -10,9 +10,15 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/validators/development-tooling/IpcRequestValidator.ts",
-			"packages/desktop/src/validators/development-tooling/IpcRequestValidator.types.ts"
+			"packages/desktop/src/validators/development-tooling/IpcRequestValidator.types.ts",
+			"packages/desktop/src/validators/development-tooling/UnknownDesktopOperationError.ts"
 		],
-		"symbols": ["IpcRequestValidator", "IpcRequestValidator.parse", "UnknownDesktopOperationError"]
+		"symbols": [
+			"IpcRequestValidator",
+			"IpcRequestValidator.parse",
+			"UnknownDesktopOperationError",
+			"UnknownDesktopOperationError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

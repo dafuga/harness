@@ -37,7 +37,7 @@
 	border-color: var(--hx-color-border);
 }
 .detail button:disabled {
-	opacity: 0.5;
+	opacity: var(--hx-opacity-disabled);
 }
 .detail .draft {
 	display: grid;
@@ -50,32 +50,4 @@
 	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-small);
 	padding: var(--hx-space-8);
-}
-.detail .choices {
-	display: grid;
-	gap: var(--hx-space-8);
-}
-.detail .choices .plain {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	display: grid;
-	gap: var(--hx-space-6);
-}
-.detail .choice {
-	display: grid;
-	gap: var(--hx-space-2);
-	width: 100%;
-	text-align: left;
-}
-.detail .choice[data-recommended='true'] {
-	border-width: var(--hx-border-medium, 2px);
-}
-.detail .choice .badge {
-	font-size: var(--hx-type-size-xs);
-	color: var(--hx-color-primary);
-}
-.detail .choice .effect {
-	font-size: var(--hx-type-size-xs);
-	color: var(--hx-color-text-muted);
 }

@@ -18,7 +18,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeAddSession.svelte"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeAddSession.svelte"
+		],
 		"symbols": ["HubHomeAddSession"]
 	},
 	"contract": {
@@ -79,15 +81,20 @@
 			"unit": "reports.component.shared-primitives-atoms-html-section",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-direct-agents",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeAddSession.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAddSession.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeAddSession.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAddSession.svelte"
 			}
 		]
 	},

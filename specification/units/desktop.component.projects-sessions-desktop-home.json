@@ -1,0 +1,226 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.projects-sessions-desktop-home",
+	"uid": "u_k36nzpchr3",
+	"kind": "component",
+	"title": "DesktopHome",
+	"responsibility": "Render the Hub Home and Needs you views in the signed-in Mac window using Tracker and local and hosted workspace data.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.game-create",
+			"hub.component.projects-sessions-hub-home-cards",
+			"hub.component.projects-sessions-hub-home-dialogs",
+			"hub.component.projects-sessions-hub-home-header",
+			"hub.component.projects-sessions-hub-home-live",
+			"reports.component.modal",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-main",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
+	"owns": {
+		"source": ["packages/desktop/src/components/projects-sessions/DesktopHome.svelte"],
+		"symbols": ["DesktopHome", "DesktopHome.accountMenu"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DesktopHome.workspace",
+				"type": "Workspace",
+				"required": true,
+				"description": "The active desktop workspace, including its bridge, project list and selection actions."
+			},
+			{
+				"name": "DesktopHome.accountName",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Public display name of the signed-in Google account."
+			},
+			{
+				"name": "DesktopHome.signOut",
+				"type": "() => void",
+				"required": true,
+				"description": "Signs out of the active account when the account menu action is chosen."
+			},
+			{
+				"name": "DesktopHome.phone",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Renders linked-device controls in a dialog when supplied."
+			},
+			{
+				"name": "DesktopHome.needsOnly",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Displays the shared decision cards with links to Home and the full Tracker inbox."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DesktopHome",
+				"type": "markup",
+				"description": "The shared Hub Home frame with Tracker decisions, navigation to Tracker, Hub and local projects, and account controls. The Needs you view reuses the same decision cards."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "DesktopHome.accountMenu",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DesktopHome.accountMenu",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.game-create",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.projects-sessions-desktop-home-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-follow-tracker-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.project-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-cards",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-dialogs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-live",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.public-site-home-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-spec-document",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub-home-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-spec-document-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-main",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

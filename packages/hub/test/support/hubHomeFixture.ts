@@ -25,6 +25,26 @@ export const agent = {
 	question: 'Choose the synthetic scope',
 	messages: []
 };
+export const plan = {
+	id: 'fixture-plan',
+	title: 'Plan the fixture',
+	project: null,
+	state: 'draft',
+	updatedAt: '2026-11-21T07:59:00.000Z',
+	stage: 'design',
+	total: 0,
+	done: 0,
+	steps: [],
+	planning: {
+		promotions: [],
+		artifacts: {
+			design: {
+				summary: 'Fixture design',
+				links: [{ kind: 'image', label: 'Mockup', url: 'https://design.example.test/plan.png' }]
+			}
+		}
+	}
+};
 export const payload = {
 	overview: snapshot(),
 	agents: [agent],
@@ -57,7 +77,7 @@ export function homeRequest(
 	});
 }
 
-export async function sheets() {
+export async function sheets(sql: string = migration) {
 	const worker = new Miniflare({
 		cf: false,
 		workers: [
@@ -80,10 +100,11 @@ export async function sheets() {
 		]
 	});
 	const db = (await worker.getD1Database('DB', 'hub-home-test')) as unknown as D1Database;
-	for (const sql of migration
+	for (const statement of sql
+		.replace(/^--.*$/gm, '')
 		.split(';')
-		.map((statement) => statement.trim())
+		.map((part) => part.trim())
 		.filter(Boolean))
-		await db.prepare(sql).run();
+		await db.prepare(statement).run();
 	return { db, close: () => worker.dispose() };
 }

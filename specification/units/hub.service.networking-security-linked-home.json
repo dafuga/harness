@@ -8,13 +8,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/networking-security/LinkedHomeService.ts"],
+		"source": [
+			"packages/hub/src/services/networking-security/LinkedHomeService.ts",
+			"packages/hub/src/services/networking-security/LinkedHomeService.types.ts"
+		],
 		"symbols": [
 			"LinkedHome",
 			"LinkedHomeService",
 			"LinkedHomeService.constructor",
 			"LinkedHomeService.read",
-			"LinkedHomeService.close"
+			"LinkedHomeService.chat",
+			"LinkedHomeService.close",
+			"LinkedHome",
+			"Connect"
 		]
 	},
 	"contract": {
@@ -37,6 +43,11 @@
 				"type": "Connect",
 				"required": false,
 				"description": "Makes the connection to one computer. Defaults to a browser connection using the stored device keys."
+			},
+			{
+				"name": "LinkedHomeService.chat.message",
+				"type": "HomeChatInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -62,6 +73,24 @@
 						"name": "LinkedHomeService.read",
 						"type": "Promise<LinkedHome>",
 						"description": "How many computers are linked, how many answered, and their merged Home view (null when none answered). Never throws: a failing computer is dropped and retried next read."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LinkedHomeService.chat",
+				"inputs": [
+					{
+						"name": "LinkedHomeService.chat.message",
+						"type": "HomeChatInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LinkedHomeService.chat",
+						"type": "Promise<HomeChatReceipt | null>"
 					}
 				],
 				"errors": [],
@@ -132,12 +161,32 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.service.networking-security-browser-computer",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.service.networking-security-linked-home-chat",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "remote.model.remote-control-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-direct-agents",
 			"via": "import",
 			"origin": "derived"
 		},

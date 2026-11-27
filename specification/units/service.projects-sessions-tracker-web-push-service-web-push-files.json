@@ -1,0 +1,217 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-web-push-service-web-push-files",
+	"uid": "u_2rj3usmtc3",
+	"kind": "service",
+	"title": "webPushFiles",
+	"responsibility": "Reads and atomically writes the sender's private key and state files beside the journal.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-web-push-service/webPushFiles.ts"],
+		"symbols": [
+			"webPushPaths",
+			"hubOriginSchema",
+			"readWebPushConfig",
+			"readPushState",
+			"writePrivateJsonFile"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "webPushPaths.database",
+				"type": "string",
+				"required": true,
+				"description": "The journal path."
+			},
+			{
+				"name": "readWebPushConfig.path",
+				"type": "string",
+				"required": true,
+				"description": "An absolute file path."
+			},
+			{
+				"name": "readPushState.path",
+				"type": "string",
+				"required": true,
+				"description": "An absolute file path."
+			},
+			{
+				"name": "writePrivateJsonFile.path",
+				"type": "string",
+				"required": true,
+				"description": "An absolute file path."
+			},
+			{
+				"name": "writePrivateJsonFile.value",
+				"type": "object",
+				"required": true,
+				"description": "The object to store as JSON."
+			}
+		],
+		"outputs": [
+			{
+				"name": "webPushPaths",
+				"type": "unknown",
+				"description": "The key and state file paths."
+			},
+			{
+				"name": "hubOriginSchema",
+				"type": "unknown",
+				"description": "Accepts a bare HTTPS origin."
+			},
+			{
+				"name": "readWebPushConfig",
+				"type": "WebPushConfig | null",
+				"description": "The key file, or null before setup."
+			},
+			{
+				"name": "readPushState",
+				"type": "PushState",
+				"description": "The stored state, or an empty one when absent or damaged."
+			},
+			{
+				"name": "writePrivateJsonFile",
+				"type": "void",
+				"description": "Writes mode 0600 by rename."
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "The key file is invalid or readable by others; the message repeats no content."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "webPushPaths",
+				"inputs": [
+					{
+						"name": "webPushPaths.database",
+						"type": "string",
+						"required": true,
+						"description": "The journal path."
+					}
+				],
+				"outputs": [
+					{
+						"name": "webPushPaths",
+						"type": "unknown",
+						"description": "The key and state file paths."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readWebPushConfig",
+				"inputs": [
+					{
+						"name": "readWebPushConfig.path",
+						"type": "string",
+						"required": true,
+						"description": "An absolute file path."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readWebPushConfig",
+						"type": "WebPushConfig | null",
+						"description": "The key file, or null before setup."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readPushState",
+				"inputs": [
+					{
+						"name": "readPushState.path",
+						"type": "string",
+						"required": true,
+						"description": "An absolute file path."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readPushState",
+						"type": "PushState",
+						"description": "The stored state, or an empty one when absent or damaged."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writePrivateJsonFile",
+				"inputs": [
+					{
+						"name": "writePrivateJsonFile.path",
+						"type": "string",
+						"required": true,
+						"description": "An absolute file path."
+					},
+					{
+						"name": "writePrivateJsonFile.value",
+						"type": "object",
+						"required": true,
+						"description": "The object to store as JSON."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writePrivateJsonFile",
+						"type": "void",
+						"description": "Writes mode 0600 by rename."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-plan-needs-you-push",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-web-push-service/webPushFiles.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-web-push-service/webPushFiles.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

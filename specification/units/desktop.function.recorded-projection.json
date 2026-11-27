@@ -9,15 +9,38 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/utils/recorded-answer/recordedProjection.ts",
 			"packages/desktop/src/utils/reports-media/recordedProjection.ts",
-			"packages/desktop/src/utils/reports-media/recordedProjection.types.ts"
+			"packages/desktop/src/utils/reports-media/recordedProjection.types.ts",
+			"packages/desktop/src/utils/verification-evidence/recorded-answer/recordedProjection.ts"
 		],
-		"symbols": ["recordedProjection", "side", "recordedProjection", "Impact", "Shown", "Staged"]
+		"symbols": ["side", "recordedProjection", "Impact", "Shown", "Staged", "recordedProjection"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "side.whole",
+				"type": "ExplorerSide",
+				"required": true,
+				"description": "One side with its revision detail, judging record, captures, coverage and gap. If detail is null, the function returns the side unchanged; otherwise coverage selects retained scenario states.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"detail": null,
+						"record": null,
+						"captures": [],
+						"coverage": [],
+						"gap": null
+					}
+				]
+			},
+			{
+				"name": "side.entity",
+				"type": "string",
+				"required": true,
+				"description": "Exact registered unit ID used to retain matching registry units, entity-specific measurements and explanations, and failures beginning with that ID followed by a colon and space.",
+				"examples": ["reports.component.evidence-grid"]
+			},
 			{
 				"name": "recordedProjection.evidence",
 				"type": "ExplorerEvidence",
@@ -46,29 +69,6 @@
 				"type": "string",
 				"required": true,
 				"description": "Exact registered unit ID to keep in revision details and entity-scoped results. Equality checks and failure-prefix matching use it verbatim.",
-				"examples": ["reports.component.evidence-grid"]
-			},
-			{
-				"name": "side.whole",
-				"type": "ExplorerSide",
-				"required": true,
-				"description": "One side with its revision detail, judging record, captures, coverage and gap. If detail is null, the function returns the side unchanged; otherwise coverage selects retained scenario states.",
-				"examples": [
-					{
-						"commit": "0123456789abcdef0123456789abcdef01234567",
-						"detail": null,
-						"record": null,
-						"captures": [],
-						"coverage": [],
-						"gap": null
-					}
-				]
-			},
-			{
-				"name": "side.entity",
-				"type": "string",
-				"required": true,
-				"description": "Exact registered unit ID used to retain matching registry units, entity-specific measurements and explanations, and failures beginning with that ID followed by a colon and space.",
 				"examples": ["reports.component.evidence-grid"]
 			}
 		],
@@ -99,6 +99,53 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [
+			{
+				"name": "side",
+				"inputs": [
+					{
+						"name": "side.whole",
+						"type": "ExplorerSide",
+						"required": true,
+						"description": "One side with its revision detail, judging record, captures, coverage and gap. If detail is null, the function returns the side unchanged; otherwise coverage selects retained scenario states.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"detail": null,
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": null
+							}
+						]
+					},
+					{
+						"name": "side.entity",
+						"type": "string",
+						"required": true,
+						"description": "Exact registered unit ID used to retain matching registry units, entity-specific measurements and explanations, and failures beginning with that ID followed by a colon and space.",
+						"examples": ["reports.component.evidence-grid"]
+					}
+				],
+				"outputs": [
+					{
+						"name": "side",
+						"type": "ExplorerSide",
+						"description": "Projected side preserving its commit, captures, coverage and gap. When detail exists, unrelated unit data and graph edges are removed, and the side's record becomes the matching projected record or null; without detail, the original side is returned.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"detail": null,
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": null
+							}
+						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
 			{
 				"name": "recordedProjection",
 				"inputs": [
@@ -159,53 +206,6 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
-			},
-			{
-				"name": "side",
-				"inputs": [
-					{
-						"name": "side.whole",
-						"type": "ExplorerSide",
-						"required": true,
-						"description": "One side with its revision detail, judging record, captures, coverage and gap. If detail is null, the function returns the side unchanged; otherwise coverage selects retained scenario states.",
-						"examples": [
-							{
-								"commit": "0123456789abcdef0123456789abcdef01234567",
-								"detail": null,
-								"record": null,
-								"captures": [],
-								"coverage": [],
-								"gap": null
-							}
-						]
-					},
-					{
-						"name": "side.entity",
-						"type": "string",
-						"required": true,
-						"description": "Exact registered unit ID used to retain matching registry units, entity-specific measurements and explanations, and failures beginning with that ID followed by a colon and space.",
-						"examples": ["reports.component.evidence-grid"]
-					}
-				],
-				"outputs": [
-					{
-						"name": "side",
-						"type": "ExplorerSide",
-						"description": "Projected side preserving its commit, captures, coverage and gap. When detail exists, unrelated unit data and graph edges are removed, and the side's record becomes the matching projected record or null; without detail, the original side is returned.",
-						"examples": [
-							{
-								"commit": "0123456789abcdef0123456789abcdef01234567",
-								"detail": null,
-								"record": null,
-								"captures": [],
-								"coverage": [],
-								"gap": null
-							}
-						]
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
@@ -224,11 +224,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/recorded-answer/recordedProjection.ts",
+		"entry": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedProjection.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/recorded-answer/recordedProjection.ts"
+				"entry": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedProjection.ts"
 			}
 		]
 	},

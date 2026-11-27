@@ -51,6 +51,7 @@ function forwardingEntry(path: string): boolean {
 	const modules = scripts.filter((script) => isModule(script[1]));
 	const markup = text
 		.replace(/^<!-- @harness-(?:tier|atoms) [^\n]* -->\n/gm, '')
+		.replace(/^<!-- @harness-uid u_[a-z0-9]+ -->\n/gm, '')
 		.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '')
 		.trim();
 	return (

@@ -1,11 +1,7 @@
 // @harness-uid u_phdcou5q3p
-export class FailedRevisionRecordNotFoundError extends Error {
-	override name = 'FailedRevisionRecordNotFoundError';
-}
+export { FailedRevisionRecordNotFoundError } from './FailedRevisionRecordNotFoundError';
 
-export class SlugifyTemplateNotFoundError extends Error {
-	override name = 'SlugifyTemplateNotFoundError';
-}
+export { SlugifyTemplateNotFoundError } from './SlugifyTemplateNotFoundError';
 
 export interface Unit {
 	id: string;

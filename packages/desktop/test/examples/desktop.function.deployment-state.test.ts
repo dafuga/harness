@@ -15,9 +15,7 @@ import type {
 	DeploymentPlugin,
 	DeploymentReceipt
 } from '../../src/models/development-tooling/Deployment.types';
-
-type Target = NonNullable<DeploymentConfig['targets']['dev']>;
-type Status = Awaited<ReturnType<typeof deploymentStatus>>;
+import type { Target, Status } from './desktop.function.deployment-state.test.types';
 
 const created: string[] = [];
 const target = {} as Target;

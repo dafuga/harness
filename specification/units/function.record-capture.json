@@ -12,14 +12,14 @@
 			"src/utils/reports-media/record-capture/recordCapture.ts",
 			"src/utils/reports-media/record-capture/recordCapture.types.ts"
 		],
-		"symbols": ["evidenceRequested", "recordCapture", "Environment"]
+		"symbols": ["evidenceRequested", "recordCapture"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
 				"name": "evidenceRequested.env",
-				"type": "Environment",
+				"type": "RuntimeEnvironment",
 				"required": false,
 				"description": "The environment to inspect; a nonempty HARNESS_EVIDENCE_DIR and TAKE_SCREENSHOT equal to \"1\" are both required. Defaults to process.env.",
 				"examples": [
@@ -57,7 +57,7 @@
 			},
 			{
 				"name": "recordCapture.env",
-				"type": "Environment",
+				"type": "RuntimeEnvironment",
 				"required": false,
 				"description": "The environment used to select the evidence directory and opt in; recording is skipped unless HARNESS_EVIDENCE_DIR is nonempty and TAKE_SCREENSHOT equals \"1\". Defaults to process.env.",
 				"examples": [
@@ -100,7 +100,7 @@
 				"inputs": [
 					{
 						"name": "evidenceRequested.env",
-						"type": "Environment",
+						"type": "RuntimeEnvironment",
 						"required": false,
 						"description": "The environment to inspect; a nonempty HARNESS_EVIDENCE_DIR and TAKE_SCREENSHOT equal to \"1\" are both required. Defaults to process.env.",
 						"examples": [
@@ -153,7 +153,7 @@
 					},
 					{
 						"name": "recordCapture.env",
-						"type": "Environment",
+						"type": "RuntimeEnvironment",
 						"required": false,
 						"description": "The environment used to select the evidence directory and opt in; recording is skipped unless HARNESS_EVIDENCE_DIR is nonempty and TAKE_SCREENSHOT equals \"1\". Defaults to process.env.",
 						"examples": [
@@ -189,6 +189,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.verify-types",
 			"via": "import",

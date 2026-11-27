@@ -1,5 +1,10 @@
 import { expect, type Locator } from '@playwright/test';
 
+const buttonNames: Record<string, string> = {
+	queueing: 'Queue switch',
+	cancelling: 'Cancel pending switch'
+};
+
 /** Keep each pending operation visible until the capture has completed. */
 export async function preparePickerOperation(component: Locator, variant: string) {
 	if (!['bind-ready', 'binding', 'queueing', 'cancelling', 'loading-queue'].includes(variant))
@@ -11,12 +16,7 @@ export async function preparePickerOperation(component: Locator, variant: string
 		if (variant === 'bind-ready') return true;
 		await button.click();
 	} else {
-		const button =
-			variant === 'queueing'
-				? 'Queue switch'
-				: variant === 'cancelling'
-					? 'Cancel pending switch'
-					: 'Show queued sessions';
+		const button = buttonNames[variant] ?? 'Show queued sessions';
 		if (variant === 'queueing') {
 			await component.getByRole('combobox', { name: 'Provider' }).selectOption('harness-claude');
 			await expect(component.getByRole('combobox', { name: 'Model' })).toHaveValue(

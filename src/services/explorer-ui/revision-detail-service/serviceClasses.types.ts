@@ -1,11 +1,11 @@
 // @harness-uid u_44u5mzzjmu
-import type { RevisionRegistry } from '../../../utils/revisionRegistry';
-import type { HelperFacts } from '../../../utils/explorer-ui/helperReferences';
-import type { HelperBinding } from '../../../utils/explorer-ui/helperReferences';
-import type { HelperReference } from '../../../utils/explorer-ui/helperReferences';
-import type { HelperConsumer } from '../../../utils/explorer-ui/helperConsumers';
 
-export type Unit = RevisionRegistry['units'][number];
+import type {
+	HelperFacts,
+	HelperBinding,
+	HelperReference
+} from '../../../utils/explorer-ui/helperReferences';
+import type { HelperConsumer } from '../../../utils/explorer-ui/helperConsumers';
 
 export type Facts = Map<string, HelperFacts>;
 

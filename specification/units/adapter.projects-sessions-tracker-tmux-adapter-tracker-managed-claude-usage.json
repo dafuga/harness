@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-tmux-adapter-tracker-managed-claude-usage",
+	"uid": "u_hhs647tr36",
+	"kind": "adapter",
+	"title": "trackerManagedClaudeUsage",
+	"responsibility": "Reads only usage counters from the transcripts of one managed Claude attempt.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedClaudeUsage.ts"],
+		"symbols": ["trackerManagedClaudeUsage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerManagedClaudeUsage.projects",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerManagedClaudeUsage",
+				"type": "NonNullable<TrackerHostLaunchPort['readUsage']>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "trackerManagedClaudeUsage",
+				"inputs": [
+					{
+						"name": "trackerManagedClaudeUsage.projects",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedClaudeUsage",
+						"type": "NonNullable<TrackerHostLaunchPort['readUsage']>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-tracker-claude-token-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-claude-session-id",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedClaudeUsage.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedClaudeUsage.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

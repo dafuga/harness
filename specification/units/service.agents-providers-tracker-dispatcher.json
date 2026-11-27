@@ -16,10 +16,14 @@
 			"src/services/agents-providers/tracker-dispatcher-service/launchIntent.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/recoveryIntent.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/runGiveUp.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runIdentity.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runMonitor.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runReceipt.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runReceipt.types.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/runResume.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/runReview.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/runReview.types.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runTransition.ts"
 		],
 		"symbols": [
@@ -29,6 +33,8 @@
 			"TrackerDispatcherService.claim",
 			"TrackerDispatcherService.prepare",
 			"TrackerDispatcherService.record",
+			"TrackerDispatcherService.reject",
+			"TrackerDispatcherService.creditHumanRedo",
 			"TrackerAttemptVersion",
 			"TrackerDispatchDecision",
 			"TrackerDispatchEvent",
@@ -85,14 +91,15 @@
 			"dueItemHold",
 			"automaticEnabled",
 			"automaticRequestHold",
-			"automaticQuietHour",
 			"schedulingHold",
-			"trackerReminderTitle",
+			"finalReportPrefix",
+			"finalReportHold",
 			"isDueNow",
 			"activeRun",
 			"hasOpenSession",
 			"attemptKey",
 			"matchesRequest",
+			"trackerReminderTitle",
 			"requestLaunch",
 			"previewDueLaunch",
 			"recoveryIntent",
@@ -101,11 +108,14 @@
 			"claimLaunch",
 			"prepareRetry",
 			"retireUnstartedRun",
+			"retryRung",
+			"giveUp",
 			"activeRun",
 			"hasOpenSession",
 			"attemptKey",
 			"matchesRequest",
 			"monitorRun",
+			"liveOverdueSuffix",
 			"completeRun",
 			"etaFor",
 			"queueRun",
@@ -116,7 +126,18 @@
 			"TrackerReceiptUsage",
 			"TrackerRunReceipt",
 			"TrackerSessionEvidence",
+			"TrackerFinalReportEvent",
 			"TrackerDispatchEvent",
+			"matchesSession",
+			"resumeRun",
+			"reopenAnswered",
+			"recordFinalReport",
+			"recordVerification",
+			"rejectRun",
+			"rejectCompletion",
+			"creditHumanRedo",
+			"rejectionReason",
+			"Clock",
 			"transitionRun"
 		]
 	},
@@ -200,6 +221,26 @@
 				"type": "TrackerDispatchEvent",
 				"required": true,
 				"description": "Trusted session, monitor, verification, startup failure, confirmed startup absence, answer or rejection evidence supplied by the caller."
+			},
+			{
+				"name": "TrackerDispatcherService.reject.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatcherService.reject.reason",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatcherService.creditHumanRedo.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatcherService.creditHumanRedo.runIds",
+				"type": "readonly number[]",
+				"required": true
 			},
 			{
 				"name": "dueGrantHold.snapshot",
@@ -362,11 +403,6 @@
 				"required": true
 			},
 			{
-				"name": "automaticQuietHour.now",
-				"type": "number",
-				"required": true
-			},
-			{
 				"name": "schedulingHold.item",
 				"type": "Pick< TrackerDispatchItem, | 'title' | 'kind' | 'status' | 'agent' | 'owner' | 'deleted' | 'awaitingAnswer' | 'scheduleOff' | 'recurring' | 'parkedUntil' >",
 				"required": true
@@ -377,8 +413,13 @@
 				"required": true
 			},
 			{
-				"name": "trackerReminderTitle.title",
-				"type": "string",
+				"name": "finalReportHold.run",
+				"type": "{ outcome?: string | null; failure_reason?: string | null; ended_at?: number | null }",
+				"required": true
+			},
+			{
+				"name": "finalReportHold.changedAt",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -542,6 +583,42 @@
 				"required": true
 			},
 			{
+				"name": "retryRung.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "retryRung.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "retryRung.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "retryRung.startup",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "giveUp.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "giveUp.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "giveUp.reopen",
+				"type": "TrackerDispatchWrites['item']",
+				"required": false
+			},
+			{
 				"name": "activeRun.run",
 				"type": "TrackerRunReceipt",
 				"required": true
@@ -624,11 +701,6 @@
 			{
 				"name": "completeRun.run",
 				"type": "TrackerRunReceipt",
-				"required": true
-			},
-			{
-				"name": "completeRun.policy",
-				"type": "TrackerDispatchPolicy",
 				"required": true
 			},
 			{
@@ -738,7 +810,7 @@
 			},
 			{
 				"name": "failRun.failure",
-				"type": "{ outcome: 'failed' | 'rejected' | 'timed_out' | 'abandoned'; reason: string; exitCode?: number | null; startup?: boolean; reopen?: boolean; usage?: TrackerReceiptUsage; }",
+				"type": "{ outcome: 'failed' | 'rejected' | 'timed_out' | 'abandoned'; reason: string; exitCode?: number | null; startup?: boolean; reopen?: boolean; note?: string; usage?: TrackerReceiptUsage; }",
 				"required": true
 			},
 			{
@@ -749,6 +821,156 @@
 			{
 				"name": "failRun.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "matchesSession.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "matchesSession.session",
+				"type": "TrackerSessionEvidence",
+				"required": true
+			},
+			{
+				"name": "matchesSession.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "resumeRun.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "resumeRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "resumeRun.session",
+				"type": "TrackerSessionEvidence",
+				"required": true
+			},
+			{
+				"name": "resumeRun.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "resumeRun.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "reopenAnswered.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "reopenAnswered.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "reopenAnswered.clock",
+				"type": "{ policy: TrackerDispatchPolicy; now: number }",
+				"required": true
+			},
+			{
+				"name": "recordFinalReport.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "recordFinalReport.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "recordFinalReport.report",
+				"type": "TrackerFinalReportEvent",
+				"required": true
+			},
+			{
+				"name": "recordFinalReport.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "recordVerification.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "recordVerification.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "recordVerification.event",
+				"type": "Extract<TrackerDispatchEvent, { type: 'verified' }>",
+				"required": true
+			},
+			{
+				"name": "recordVerification.clock",
+				"type": "Clock",
+				"required": true
+			},
+			{
+				"name": "rejectRun.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "rejectRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "rejectRun.reason",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "rejectRun.clock",
+				"type": "Clock",
+				"required": true
+			},
+			{
+				"name": "rejectCompletion.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "rejectCompletion.reason",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "rejectCompletion.clock",
+				"type": "Clock",
+				"required": true
+			},
+			{
+				"name": "creditHumanRedo.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "creditHumanRedo.ids",
+				"type": "readonly number[]",
+				"required": true
+			},
+			{
+				"name": "creditHumanRedo.clock",
+				"type": "Clock",
+				"required": true
+			},
+			{
+				"name": "rejectionReason.reason",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -920,6 +1142,52 @@
 						"name": "TrackerDispatcherService.record",
 						"type": "Promise<TrackerDispatchResult>",
 						"description": "Returns the committed receipt and any queued retry, or the hold, conflict or stale-event reason."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatcherService.reject",
+				"inputs": [
+					{
+						"name": "TrackerDispatcherService.reject.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatcherService.reject.reason",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatcherService.reject",
+						"type": "Promise<TrackerDispatchResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatcherService.creditHumanRedo",
+				"inputs": [
+					{
+						"name": "TrackerDispatcherService.creditHumanRedo.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatcherService.creditHumanRedo.runIds",
+						"type": "readonly number[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatcherService.creditHumanRedo",
+						"type": "Promise<TrackerDispatchResult>"
 					}
 				],
 				"errors": [],
@@ -1268,24 +1536,6 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "automaticQuietHour",
-				"inputs": [
-					{
-						"name": "automaticQuietHour.now",
-						"type": "number",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "automaticQuietHour",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
 				"name": "schedulingHold",
 				"inputs": [
 					{
@@ -1309,18 +1559,23 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "trackerReminderTitle",
+				"name": "finalReportHold",
 				"inputs": [
 					{
-						"name": "trackerReminderTitle.title",
-						"type": "string",
+						"name": "finalReportHold.run",
+						"type": "{ outcome?: string | null; failure_reason?: string | null; ended_at?: number | null }",
+						"required": true
+					},
+					{
+						"name": "finalReportHold.changedAt",
+						"type": "number",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "trackerReminderTitle",
-						"type": "unknown"
+						"name": "finalReportHold",
+						"type": "string | null"
 					}
 				],
 				"errors": [],
@@ -1591,6 +1846,68 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "retryRung",
+				"inputs": [
+					{
+						"name": "retryRung.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "retryRung.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "retryRung.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "retryRung.startup",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "retryRung",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "giveUp",
+				"inputs": [
+					{
+						"name": "giveUp.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "giveUp.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "giveUp.reopen",
+						"type": "TrackerDispatchWrites['item']",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "giveUp",
+						"type": "TrackerDispatchWrites['item']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "activeRun",
 				"inputs": [
 					{
@@ -1741,11 +2058,6 @@
 					{
 						"name": "completeRun.run",
 						"type": "TrackerRunReceipt",
-						"required": true
-					},
-					{
-						"name": "completeRun.policy",
-						"type": "TrackerDispatchPolicy",
 						"required": true
 					},
 					{
@@ -1933,7 +2245,7 @@
 					},
 					{
 						"name": "failRun.failure",
-						"type": "{ outcome: 'failed' | 'rejected' | 'timed_out' | 'abandoned'; reason: string; exitCode?: number | null; startup?: boolean; reopen?: boolean; usage?: TrackerReceiptUsage; }",
+						"type": "{ outcome: 'failed' | 'rejected' | 'timed_out' | 'abandoned'; reason: string; exitCode?: number | null; startup?: boolean; reopen?: boolean; note?: string; usage?: TrackerReceiptUsage; }",
 						"required": true
 					},
 					{
@@ -1951,6 +2263,273 @@
 					{
 						"name": "failRun",
 						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "matchesSession",
+				"inputs": [
+					{
+						"name": "matchesSession.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "matchesSession.session",
+						"type": "TrackerSessionEvidence",
+						"required": true
+					},
+					{
+						"name": "matchesSession.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchesSession",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resumeRun",
+				"inputs": [
+					{
+						"name": "resumeRun.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "resumeRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "resumeRun.session",
+						"type": "TrackerSessionEvidence",
+						"required": true
+					},
+					{
+						"name": "resumeRun.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "resumeRun.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "resumeRun",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reopenAnswered",
+				"inputs": [
+					{
+						"name": "reopenAnswered.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "reopenAnswered.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "reopenAnswered.clock",
+						"type": "{ policy: TrackerDispatchPolicy; now: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reopenAnswered",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordFinalReport",
+				"inputs": [
+					{
+						"name": "recordFinalReport.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "recordFinalReport.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "recordFinalReport.report",
+						"type": "TrackerFinalReportEvent",
+						"required": true
+					},
+					{
+						"name": "recordFinalReport.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordFinalReport",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordVerification",
+				"inputs": [
+					{
+						"name": "recordVerification.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "recordVerification.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "recordVerification.event",
+						"type": "Extract<TrackerDispatchEvent, { type: 'verified' }>",
+						"required": true
+					},
+					{
+						"name": "recordVerification.clock",
+						"type": "Clock",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordVerification",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "rejectRun",
+				"inputs": [
+					{
+						"name": "rejectRun.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "rejectRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "rejectRun.reason",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "rejectRun.clock",
+						"type": "Clock",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "rejectRun",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "rejectCompletion",
+				"inputs": [
+					{
+						"name": "rejectCompletion.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "rejectCompletion.reason",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "rejectCompletion.clock",
+						"type": "Clock",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "rejectCompletion",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "creditHumanRedo",
+				"inputs": [
+					{
+						"name": "creditHumanRedo.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "creditHumanRedo.ids",
+						"type": "readonly number[]",
+						"required": true
+					},
+					{
+						"name": "creditHumanRedo.clock",
+						"type": "Clock",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "creditHumanRedo",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "rejectionReason",
+				"inputs": [
+					{
+						"name": "rejectionReason.reason",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "rejectionReason",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -2020,7 +2599,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "helper.attention-timing-is-quiet-hour",
+			"unit": "function.projects-sessions-tracker-unattended-hold",
 			"via": "import",
 			"origin": "derived"
 		},

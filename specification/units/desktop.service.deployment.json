@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/development-tooling/DeploymentPreconditionError.ts",
 			"packages/desktop/src/services/development-tooling/DeploymentService.ts",
 			"packages/desktop/src/services/development-tooling/DeploymentService.types.ts"
 		],
 		"symbols": [
+			"DeploymentPreconditionError",
 			"DeploymentService",
 			"DeploymentService.constructor",
 			"DeploymentService.status",

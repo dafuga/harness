@@ -1,5 +1,6 @@
 // @harness-uid u_3gvi5wxxbc
-import { InvalidHostedEvidenceAnswerError, type Query } from './HostedEvidenceAdapter.types';
+import type { HostedEntityEvidenceQuery } from '../HostedEvidenceService.types';
+import { InvalidHostedEvidenceAnswerError } from './HostedEvidenceAdapter.types';
 import type { EvidenceArtifactQuery } from '../../../../../models/verification-evidence/DesktopEvidence.types';
 import {
 	HostedHttpAdapter,
@@ -18,11 +19,11 @@ export class HostedEvidenceAdapter {
 	}
 	path(
 		operation: 'evidence' | 'artifact',
-		query: Query | (EvidenceArtifactQuery & { projectId: string })
+		query: HostedEntityEvidenceQuery | (EvidenceArtifactQuery & { projectId: string })
 	) {
 		return hostedEvidencePath(query, operation);
 	}
-	async evidence(query: Query): Promise<unknown> {
+	async evidence(query: HostedEntityEvidenceQuery): Promise<unknown> {
 		const { bytes } = await this.read('evidence', query, 16 * 1024 * 1024);
 		try {
 			return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
@@ -35,7 +36,11 @@ export class HostedEvidenceAdapter {
 	artifact(query: EvidenceArtifactQuery & { projectId: string }) {
 		return this.read('artifact', query, artifactLimit);
 	}
-	private async read(operation: 'evidence' | 'artifact', query: Query, limit: number) {
+	private async read(
+		operation: 'evidence' | 'artifact',
+		query: HostedEntityEvidenceQuery,
+		limit: number
+	) {
 		const path = this.path(operation, query);
 		const credential = await this.http.authorize();
 		const response = await this.http.request(path, credential, {}, true);

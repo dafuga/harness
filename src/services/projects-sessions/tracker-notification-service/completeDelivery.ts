@@ -1,6 +1,4 @@
 // @harness-uid u_vqnqshfas2
-import { nextReminderAt } from '../../../helpers/attention-timing/nextReminderAt';
-import { quietHourBoundary } from '../../../helpers/attention-timing/quietHourBoundary';
 import type {
 	TrackerDeliveryResult,
 	TrackerNotificationOptions
@@ -12,8 +10,7 @@ import type {
 	TrackerNotificationState
 } from './notificationState.types';
 import { TrackerNotificationStateError } from './TrackerNotificationStateError';
-import { askQuietHours, intervalMs, nextAskAt } from './notificationRules';
-import { quietOutboxEvent } from './outboxRouting';
+import { intervalMs, nextAskAt } from './notificationRules';
 
 const backoff = [30_000, 120_000, 600_000, 1_800_000, 3_600_000];
 
@@ -63,8 +60,7 @@ function completeOutbox(
 			continue;
 		}
 		row.status = row.attempts >= 12 ? 'failed' : 'pending';
-		const at = retryAt(row.attempts, now);
-		row.nextAt = quietOutboxEvent(row) ? quietHourBoundary(at, options.quietHours) : at;
+		row.nextAt = retryAt(row.attempts, now);
 	}
 }
 
@@ -77,10 +73,7 @@ function completeReminders(
 	const at = attempt.startedAt;
 	const interval = intervalMs(options.reminderIntervalMinutes, 60);
 	const retry = intervalMs(options.retryMinutes, 5);
-	const next =
-		result.status === 'sent'
-			? nextReminderAt(at, interval, options.quietHours)
-			: quietHourBoundary(at + retry, options.quietHours);
+	const next = at + (result.status === 'sent' ? interval : retry);
 	for (const key of attempt.keys) {
 		const row = state.reminders.get(key);
 		if (!row)
@@ -112,20 +105,27 @@ function scheduleNextAsk(
 		row.firstPing ??= row.lastPing ?? at;
 		row.nextAt = nextAskAt(row.pings + 1, row.firstPing, at);
 	} else {
-		row.nextAt = quietHourBoundary(at + retry, askQuietHours);
+		row.nextAt = at + retry;
 	}
 }
+
+/** A busy target never saw the digest, so its window reopens after a short wait. */
+const busyRetry = 2 * 60_000;
 
 function completeAttention(
 	state: TrackerNotificationState,
 	attempt: DeliveryAttempt,
 	result: TrackerDeliveryResult,
-	now: number
+	options: TrackerNotificationOptions
 ): void {
+	const now = options.now();
 	if (result.status === 'rejected') {
 		state.lastAttentionError = result.error.slice(0, 200);
+		const window = intervalMs(options.webhook?.windowMinutes, 30);
+		if (result.busy) state.lastAttentionAttempt = Math.max(0, now - window + busyRetry);
 		return;
 	}
+	state.digestsSent = (state.digestsSent ?? 0) + 1;
 	for (const key of attempt.keys) {
 		const row = state.attention.get(key);
 		if (!row)
@@ -156,7 +156,7 @@ export function completeDelivery(
 			completeOutbox(state, attempt, result, options);
 			break;
 		case 'attention':
-			completeAttention(state, attempt, result, options.now());
+			completeAttention(state, attempt, result, options);
 			break;
 	}
 	delete state.inFlight;

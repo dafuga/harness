@@ -4,13 +4,14 @@ import { dispatchLaunchSource } from '../../../repositories/projects-sessions/tr
 import { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
-import { isQuietHour } from '../../../helpers/attention-timing/isQuietHour';
-import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
 import type { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
 import { watchdogManualPrefix } from '../WatchdogPaneService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
 import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
-import { canonicalNode } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import {
+	canonicalNode,
+	finalReportHold
+} from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { recordWatchdogAlert, urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from './trackerHostWatchdogState';
@@ -38,7 +39,6 @@ export async function queueIdleWork(
 	signal: AbortSignal
 ) {
 	const { now } = snapshot;
-	if (isQuietHour(now, { start: '22:00', end: '08:00', tz: trackerTimeZone })) return;
 	const unchangedSince = now - minutes * requestGrace;
 	const runs = new TrackerRunReadRepository(store.database, store.node);
 	const active = new Set<string>();
@@ -64,8 +64,7 @@ export async function queueIdleWork(
 				reason: `Idle task could not be placed: ${result.reason}. Chief of Staff, please assign a computer or resolve its launch route.`,
 				localOnly: true
 			},
-			now,
-			null
+			now
 		);
 	}
 	retainLaunchAlerts(store, idleWorkAlert, active);
@@ -74,6 +73,8 @@ export async function queueIdleWork(
 function existingWork(item: TrackerItem, runs: TrackerRunReadRepository) {
 	const history = runs.list({ itemId: item.id });
 	if (item.auto && !history.some((run) => run.auto_token === item.auto)) return true;
+	const latest = history.at(-1);
+	if (latest && finalReportHold(latest, Date.parse(item.answered_at ?? '') || 0)) return true;
 	// The dropped-session policy already owns recovery after a started attempt.
 	return item.status === 'in_progress' && history.some((run) => run.started_at != null);
 }
@@ -138,8 +139,7 @@ export function watchLaunchRequests(
 						? `Launch on ${computer} has been queued for more than ${minutes} minutes without a started run.`
 						: `Launch request has had no run on ${computer} for at least 60 seconds.`
 			},
-			now,
-			null
+			now
 		);
 		added = true;
 	}

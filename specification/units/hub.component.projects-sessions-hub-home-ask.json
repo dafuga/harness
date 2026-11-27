@@ -11,26 +11,25 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-choices",
-			"reports.component.shared-primitives-atoms-html-button",
-			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-input",
+			"reports.component.explorer-ui-explorer-kit-view-spec-buttons",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeAsk.svelte"],
-		"symbols": ["HubHomeAsk"]
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte"],
+		"symbols": ["HubHomeAsk", "HubHomeAsk.choices", "HubHomeAsk.answers"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HubHomeAsk.agent",
-				"type": "HomeAgent",
+				"name": "HubHomeAsk.ask",
+				"type": "HomeOpenAsk",
 				"required": true,
-				"description": "The agent whose open question is shown, with its options, confirm kind and current Tracker item."
+				"description": "The open question of one agent, with its item, choices and confirm kind."
 			},
 			{
 				"name": "HubHomeAsk.send",
@@ -43,6 +42,20 @@
 				"type": "(id: string) => Promise<HomeChatReceipt>",
 				"required": true,
 				"description": "Reads the delivery status of a submitted answer by its chat command identifier."
+			},
+			{
+				"name": "HubHomeAsk.submitted",
+				"type": "(message: HomeChatInput, receipt: HomeChatReceipt) => void",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Receives each queued answer and its receipt. Defaults to nothing being notified."
+			},
+			{
+				"name": "HubHomeAsk.present",
+				"type": "(content: Snippet | null) => void",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Renders a choice or written-answer dialog beside the Home list when provided."
 			}
 		],
 		"outputs": [
@@ -55,7 +68,45 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeAsk.choices",
+				"inputs": [
+					{
+						"name": "HubHomeAsk.choices.done",
+						"type": "() => void",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeAsk.choices",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeAsk.answers",
+				"inputs": [
+					{
+						"name": "HubHomeAsk.answers.close",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeAsk.answers",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -69,17 +120,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"unit": "hub.function.projects-sessions-hub-spec-document",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-input",
+			"unit": "reports.component.explorer-ui-explorer-kit-view-spec-buttons",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -97,15 +143,25 @@
 			"unit": "reports.component.shared-primitives-atoms-html-strong",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte"
 			}
 		]
 	},

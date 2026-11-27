@@ -2,10 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { hubArtifactCommit } from '../../src/routes/api/[...path]/hub-projection-service/hubArtifactCommit';
-
-type Context = Parameters<typeof hubArtifactCommit>[0];
-type History = { complete: boolean; commits: Array<{ hash: string }> };
-type Outcome = History | Error;
+import type { Outcome, Context, History } from './hub.function.hub-artifact-commit.test.types';
 
 const artifactPath =
 	'packages/hub/src/routes/api/[...path]/hub-projection-service/hubArtifactCommit.ts';

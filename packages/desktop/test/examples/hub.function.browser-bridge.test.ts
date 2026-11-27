@@ -5,10 +5,7 @@ import { HostedAgentUnavailableError } from '../../src/adapters/explorer-ui/brow
 import { ProjectIdRequiredError } from '../../src/adapters/explorer-ui/browser-project-adapter/ProjectIdRequiredError';
 import { browserBridge } from '../../src/adapters/explorer-ui/browser-project-adapter/browserBridge';
 import type { BrowserApi } from '../../src/models/development-tooling/BrowserApi.types';
-
-type Replies = Record<string, unknown>;
-type Cases = Parameters<typeof recordExampleCases>[1];
-type Bridge = Required<ReturnType<typeof browserBridge>>;
+import type { Replies, Bridge, Cases } from './hub.function.browser-bridge.test.types';
 
 const shownCaps = { comments: true, agents: true, planning: true, approval: true, source: 'local' };
 

@@ -18,13 +18,15 @@
 			"HubProjectionService.evidence",
 			"HubProjectionService.artifact",
 			"HubProjectionService.snapshot",
+			"HubProjectionService.designs",
 			"HubProjectionService.registry",
 			"HubProjectionService.entity",
 			"HubProjectionService.history",
 			"HubProjectionService.source",
 			"HubProjectionService.image",
 			"HubProjectionService.messages",
-			"Dependencies"
+			"Dependencies",
+			"MessageQuery"
 		]
 	},
 	"contract": {
@@ -138,7 +140,7 @@
 			},
 			{
 				"name": "HubProjectionService.snapshot.query",
-				"type": "{ branch: string | null; commit: string | null }",
+				"type": "RevisionQuery",
 				"required": true,
 				"description": "Selects a branch and optional commit for a read-only project snapshot. A null branch falls back to main or the first listed branch, and a null commit selects the chosen branch tip.",
 				"examples": [
@@ -147,6 +149,21 @@
 						"commit": "0123456789abcdef0123456789abcdef01234567"
 					}
 				]
+			},
+			{
+				"name": "HubProjectionService.designs.actor",
+				"type": "Actor",
+				"required": true
+			},
+			{
+				"name": "HubProjectionService.designs.projectId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "HubProjectionService.designs.query",
+				"type": "DesignCanvasQuery",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.registry.actor",
@@ -337,7 +354,7 @@
 			},
 			{
 				"name": "HubProjectionService.messages.query",
-				"type": "{ entityId: string; commit: string; threadId: string }",
+				"type": "MessageQuery",
 				"required": true,
 				"description": "Selects messages from a collaboration thread for one entity and source commit. The thread must be present in the collaboration API response for that project, entity, and commit.",
 				"examples": [
@@ -742,7 +759,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.evidence",
-						"type": "Promise<import('../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types').EntityEvidenceResult>",
+						"type": "Promise<EntityEvidenceResult>",
 						"description": "Resolves to the recorded scope, cache identity, entity evidence, and behavior projection for the selected entity and revision. Current mode reports the branch tip alone; commit mode compares the selected commit with its exact first parent, and answers over 16 MiB are rejected rather than truncated.",
 						"examples": [
 							{
@@ -910,7 +927,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.artifact",
-						"type": "Promise<import('../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types').EvidenceArtifactResult>",
+						"type": "Promise<EvidenceArtifactResult>",
 						"description": "Resolves to the verified capture bytes, media type, and SHA-256 named by the evidence query. The bytes are binary and limited to 11 MiB, so no JSON example is supplied."
 					}
 				],
@@ -979,7 +996,7 @@
 					},
 					{
 						"name": "HubProjectionService.snapshot.query",
-						"type": "{ branch: string | null; commit: string | null }",
+						"type": "RevisionQuery",
 						"required": true,
 						"description": "Selects a branch and optional commit for a read-only project snapshot. A null branch falls back to main or the first listed branch, and a null commit selects the chosen branch tip.",
 						"examples": [
@@ -993,7 +1010,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.snapshot",
-						"type": "Promise<import('../../../../../../desktop/src/models/development-tooling/Desktop.types').ProjectSnapshot>",
+						"type": "Promise<ProjectSnapshot>",
 						"description": "Resolves to a read-only snapshot containing the selected project revision, branch and commit lists, catalog entities, capabilities, and remote cache provenance. A missing branch or a commit that does not resolve to the requested revision is rejected.",
 						"examples": [
 							{
@@ -1073,6 +1090,34 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "HubProjectionService.designs",
+				"inputs": [
+					{
+						"name": "HubProjectionService.designs.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.designs.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.designs.query",
+						"type": "DesignCanvasQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.designs",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "HubProjectionService.registry",
@@ -1291,7 +1336,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.history",
-						"type": "Promise<{ entries: import('../../../../../../desktop/src/models/development-tooling/DesktopEntity.types').HistoryEvent[]; complete: boolean; nextPage: number | null; }>",
+						"type": "Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }>",
 						"description": "Resolves to one page of commit history for the selected unit source paths and plan path, with completeness and next-page metadata. The history adapter supplies at most 20 commits per page.",
 						"examples": [
 							{
@@ -1487,7 +1532,7 @@
 					},
 					{
 						"name": "HubProjectionService.messages.query",
-						"type": "{ entityId: string; commit: string; threadId: string }",
+						"type": "MessageQuery",
 						"required": true,
 						"description": "Selects messages from a collaboration thread for one entity and source commit. The thread must be present in the collaboration API response for that project, entity, and commit.",
 						"examples": [
@@ -1558,12 +1603,22 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-evidence-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.development-tooling-desktop-entity-types",
 			"via": "import",
 			"origin": "derived"
 		},

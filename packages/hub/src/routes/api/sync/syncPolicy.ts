@@ -5,7 +5,7 @@ import { appendChain, readChain } from './syncChain';
 import { enroll } from './syncEnroll';
 import { putGrants, readGrants } from './syncGrants';
 import { isDeviceId, SYNC_PREFIX, syncProblem } from './syncHttp';
-import { live } from './syncLive';
+import { foreignUpgrade, live, namedDevice } from './syncLive';
 import { getObject, listObjects, putObject } from './syncObjects';
 import { postOps, readOps } from './syncOps';
 
@@ -43,19 +43,27 @@ export async function serveSync(request: Request, deps: SyncDeps): Promise<Respo
 	}
 }
 
+/** The route a method and path name, or the refusal when they name none. */
+function namedRoute(method: string, parts: string[]) {
+	const verbs = routes[parts[0]];
+	if (!verbs) return syncProblem(404, 'not-found');
+	const route = verbs[method];
+	if (!route) return syncProblem(405, 'method-not-allowed');
+	if (!route.parts.includes(parts.length) || parts.includes(''))
+		return syncProblem(404, 'not-found');
+	return route;
+}
+
 async function dispatch(request: Request, deps: SyncDeps): Promise<Response> {
 	const url = new URL(request.url);
 	if (!deps.db || !url.pathname.startsWith(SYNC_PREFIX)) return syncProblem(404, 'not-found');
 	const parts = url.pathname.slice(SYNC_PREFIX.length).split('/');
-	const verbs = routes[parts[0]];
-	if (!verbs) return syncProblem(404, 'not-found');
-	const route = verbs[request.method];
-	if (!route) return syncProblem(405, 'method-not-allowed');
-	if (!route.parts.includes(parts.length) || parts.includes(''))
-		return syncProblem(404, 'not-found');
+	const route = namedRoute(request.method, parts);
+	if (route instanceof Response) return route;
+	if (foreignUpgrade(request, url, parts)) return syncProblem(403, 'origin-denied');
 	const session = deps.sessions ? await deps.sessions.resolve(request) : null;
 	if (!session) return syncProblem(401, 'session-required');
-	const device = request.headers.get('X-Harness-Device');
+	const device = namedDevice(request, parts);
 	if (!isDeviceId(device)) return syncProblem(400, 'device-required');
 	const call = {
 		request,

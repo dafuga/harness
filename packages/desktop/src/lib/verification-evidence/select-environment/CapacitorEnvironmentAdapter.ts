@@ -4,6 +4,11 @@ import { Capacitor, registerPlugin } from '@capacitor/core';
 import { CapacitorAccountAdapter } from './capacitor-account-adapter/CapacitorAccountAdapter';
 import { CapacitorBridgeAdapter } from './capacitor-bridge-adapter/CapacitorBridgeAdapter';
 import { CapacitorProjectsService } from './CapacitorProjectsService';
+import type {
+	OwnerHomeSnapshot,
+	HomeChatReceipt,
+	TrackerHomeSource
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { phoneTrackerTools } from './phoneTrackerTools';
 import type {
 	AccountNativePlugin,
@@ -18,9 +23,39 @@ export const remotePluginName = 'HarnessRemote';
 
 export const accountPluginName = 'HarnessAccount';
 
+export const vaultPluginName = 'HarnessVault';
+
+/** Offers the native Vault, only in a shell that ships it. */
+function offerVault(phone: RemoteMobileControl): void {
+	if (!Capacitor.isPluginAvailable(vaultPluginName)) return;
+	const vault = registerPlugin<{ open(): Promise<void> }>(vaultPluginName);
+	phone.openVault = () => vault.open();
+}
+
 function nativeAccount(): AccountNativePlugin | undefined {
 	if (!Capacitor.isPluginAvailable(accountPluginName)) return undefined;
 	return registerPlugin<AccountNativePlugin>(accountPluginName);
+}
+
+function offerAccountComputers(
+	phone: RemoteMobileControl,
+	plugin: RemoteNativePlugin,
+	note: (status: RemoteNativeStatus) => RemoteNativeStatus
+) {
+	if (!plugin.computers || !plugin.connectAccountComputer) return;
+	const list = plugin.computers.bind(plugin);
+	const connect = plugin.connectAccountComputer.bind(plugin);
+	phone.computers = async () => (await list()).computers;
+	phone.connectAccountComputer = async (input) => note(await connect(input));
+}
+
+function phoneHome(plugin: RemoteNativePlugin): TrackerHomeSource {
+	return {
+		read: async () =>
+			(await plugin.request({ method: 'homeSnapshot', input: {} })).value as OwnerHomeSnapshot,
+		send: async (message) =>
+			(await plugin.request({ method: 'homeChat', input: { ...message } })).value as HomeChatReceipt
+	};
 }
 
 /**
@@ -45,21 +80,18 @@ export class CapacitorEnvironmentAdapter {
 		};
 		const phone: RemoteMobileControl = {
 			status: async () => note(await plugin.status()),
-			scan: async (input) => note(await plugin.scan(input)),
 			disconnect: async () => note(await plugin.disconnect()),
 			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
 		};
 		const mac = computer.connect();
-		if (this.account && plugin.computers && plugin.connectAccountComputer) {
-			const list = plugin.computers.bind(plugin);
-			const connect = plugin.connectAccountComputer.bind(plugin);
-			phone.computers = async () => (await list()).computers;
-			phone.connectAccountComputer = async (input) => note(await connect(input));
-		}
+		if (this.account) offerAccountComputers(phone, plugin, note);
+		offerVault(phone);
 		const tracker = phoneTrackerTools(plugin);
+
 		const local = {
 			kind: 'capacitor',
 			local: false,
+			trackerHome: phoneHome(plugin),
 			phone,
 			...(tracker ? { tracker } : {})
 		} as const;

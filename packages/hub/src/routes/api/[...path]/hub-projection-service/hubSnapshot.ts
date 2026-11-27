@@ -6,6 +6,7 @@ import type {
 	SourceHistoryAdapter
 } from 'collaboration';
 import type { ProjectSnapshot } from '../../../../../../desktop/src/models/development-tooling/Desktop.types';
+import type { RevisionQuery } from '../../../../../../desktop/src/models/development-tooling/DesktopBridge.types';
 import { hubSource } from '../../../../utils/development-tooling/hubSource';
 import { hubCatalog } from '../../../../utils/networking-security/hub-catalog/hubCatalog';
 import { hubFail, hubHash } from '../../../../utils/development-tooling/hubJson';
@@ -19,7 +20,7 @@ export async function hubSnapshot(
 		cache: CollaborationCache;
 		project: ProjectSummary;
 	},
-	query: { branch: string | null; commit: string | null }
+	query: RevisionQuery
 ): Promise<ProjectSnapshot> {
 	const { project, source } = input,
 		branches = await source.branches(project.sourceRepository);

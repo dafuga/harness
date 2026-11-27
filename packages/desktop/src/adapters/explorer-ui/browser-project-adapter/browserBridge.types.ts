@@ -1,7 +1,9 @@
 // @harness-uid u_4fbefo5t7a
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
-import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
-import type { ProjectContext } from '../../../models/projects-sessions/ProjectContext.types';
+import type {
+	CacheStatus,
+	ProjectContext
+} from '../../../models/projects-sessions/ProjectContext.types';
 
 export type Reads = Pick<
 	DesktopBridge,
@@ -12,7 +14,10 @@ export type Reads = Pick<
 export type Listener = (event: CacheStatus) => void;
 
 /** Runs a read of one project and, when it is refused, says so before the refusal is thrown. */
-export type Guard = <T>(context: ProjectContext, read: (base: string) => Promise<T>) => Promise<T>;
+export type ProjectReadGuard = <T>(
+	context: ProjectContext,
+	read: (base: string) => Promise<T>
+) => Promise<T>;
 
 export type Denied = Pick<
 	DesktopBridge,

@@ -127,7 +127,6 @@ test('a desktop disabled event supersedes an older online status response', asyn
 		reason: null,
 		host: null,
 		origin: null,
-		pairing: null,
 		requests: [],
 		devices: [],
 		projects: []

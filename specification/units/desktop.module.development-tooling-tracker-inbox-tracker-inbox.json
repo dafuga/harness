@@ -13,6 +13,7 @@
 			"trackerStageLabels",
 			"inboxFilters",
 			"bucketLabels",
+			"filterLabel",
 			"itemBucket",
 			"countBuckets",
 			"filterRows",
@@ -22,12 +23,18 @@
 			"flagQuestion",
 			"confirmedWrite",
 			"orderedOptions",
+			"writtenAnswer",
 			"optionWrite"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "filterLabel.filter",
+				"type": "InboxFilter",
+				"required": true
+			},
 			{
 				"name": "itemBucket.status",
 				"type": "string",
@@ -42,6 +49,12 @@
 				"name": "countBuckets.rows",
 				"type": "readonly InboxRow[]",
 				"required": true
+			},
+			{
+				"name": "countBuckets.reminders",
+				"type": "number",
+				"required": false,
+				"default": 0
 			},
 			{
 				"name": "filterRows.rows",
@@ -104,6 +117,21 @@
 				"required": true
 			},
 			{
+				"name": "writtenAnswer.detail",
+				"type": "InboxDetail",
+				"required": true
+			},
+			{
+				"name": "writtenAnswer.reviewed",
+				"type": "InboxReview",
+				"required": true
+			},
+			{
+				"name": "writtenAnswer.answer",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "optionWrite.detail",
 				"type": "InboxDetail",
 				"required": true
@@ -131,6 +159,10 @@
 			{
 				"name": "bucketLabels",
 				"type": "Record<InboxBucket, string>"
+			},
+			{
+				"name": "filterLabel",
+				"type": "string"
 			},
 			{
 				"name": "itemBucket",
@@ -169,6 +201,10 @@
 				"type": "{ number: number; option: InboxOption }[]"
 			},
 			{
+				"name": "writtenAnswer",
+				"type": "ConfirmedWrite | null"
+			},
+			{
 				"name": "optionWrite",
 				"type": "ConfirmedWrite | null"
 			}
@@ -176,6 +212,24 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "filterLabel",
+				"inputs": [
+					{
+						"name": "filterLabel.filter",
+						"type": "InboxFilter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "filterLabel",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
 			{
 				"name": "itemBucket",
 				"inputs": [
@@ -206,6 +260,12 @@
 						"name": "countBuckets.rows",
 						"type": "readonly InboxRow[]",
 						"required": true
+					},
+					{
+						"name": "countBuckets.reminders",
+						"type": "number",
+						"required": false,
+						"default": 0
 					}
 				],
 				"outputs": [
@@ -363,6 +423,34 @@
 					{
 						"name": "orderedOptions",
 						"type": "{ number: number; option: InboxOption }[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writtenAnswer",
+				"inputs": [
+					{
+						"name": "writtenAnswer.detail",
+						"type": "InboxDetail",
+						"required": true
+					},
+					{
+						"name": "writtenAnswer.reviewed",
+						"type": "InboxReview",
+						"required": true
+					},
+					{
+						"name": "writtenAnswer.answer",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writtenAnswer",
+						"type": "ConfirmedWrite | null"
 					}
 				],
 				"errors": [],

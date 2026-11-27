@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/collaboration/src/utils/development-tooling/CorruptCacheError.ts",
 			"packages/collaboration/src/utils/development-tooling/cacheKey.ts",
 			"packages/collaboration/src/utils/development-tooling/cacheKey.types.ts"
 		],
-		"symbols": ["cacheKey", "readCache", "writeCache", "CorruptCacheError"]
+		"symbols": ["CorruptCacheError", "cacheKey", "readCache", "writeCache", "CorruptCacheError"]
 	},
 	"contract": {
 		"origin": "declared",

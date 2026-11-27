@@ -52,6 +52,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.agents-providers-qa-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.agents-providers-xdigest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.analytics",
 			"via": "import",
 			"origin": "derived"
@@ -83,6 +93,11 @@
 		},
 		{
 			"unit": "command.development-tooling-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.execution-runtimes-container-browser",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -153,6 +168,11 @@
 		},
 		{
 			"unit": "command.new",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.planning-collaboration-design",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -4,7 +4,7 @@
 	"uid": "u_cdjnlfhfw6",
 	"kind": "module",
 	"title": "runtime",
-	"responsibility": "Public, side-effect-free package entry for the runtime contract, adapters and the reference kernel.",
+	"responsibility": "Public, side-effect-free package entry for runtime adapters, agent tool safety and the reference kernel.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -69,7 +69,22 @@
 			"PlatformReceipt",
 			"PlatformSendResult",
 			"PlatformAuditLogRepository",
-			"PlatformMessagingService"
+			"PlatformMessagingService",
+			"AgentToolSafetyService",
+			"AgentToolAction",
+			"AgentToolApproval",
+			"AgentToolCharge",
+			"AgentToolDecision",
+			"AgentToolDefinition",
+			"AgentToolDenial",
+			"AgentToolEvent",
+			"AgentToolJournal",
+			"AgentToolJournalTransaction",
+			"AgentToolPolicy",
+			"AgentToolReview",
+			"AgentToolSafetyOptions",
+			"AgentToolScope",
+			"PreparedAgentTool"
 		]
 	},
 	"contract": {
@@ -169,6 +184,11 @@
 		},
 		{
 			"unit": "repository.agents-providers-platform-audit-log",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-agent-tool-safety",
 			"via": "reexport",
 			"origin": "derived"
 		},

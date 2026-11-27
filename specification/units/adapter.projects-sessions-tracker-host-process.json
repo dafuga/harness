@@ -77,7 +77,7 @@
 			},
 			{
 				"name": "runTrackerHostCommand.options",
-				"type": "{ input?: string; environment?: Record<string, string> }",
+				"type": "{ input?: string; environment?: Record<string, string>; maxBuffer?: number }",
 				"required": false,
 				"default": {},
 				"description": "Optional stdin and explicit, command-owned environment variables."
@@ -140,7 +140,8 @@
 					{
 						"name": "TrackerHostProcessAdapter.request",
 						"type": "Promise<unknown>",
-						"description": "Run the selected operation and return its versioned JSON response for validation by the caller."
+						"description": "Run the selected operation and return its versioned JSON response for validation by the caller.",
+						"unknownReason": "Parsed JSON from the external Tracker executable; callers validate the answer for their operation."
 					}
 				],
 				"errors": [],
@@ -195,7 +196,7 @@
 					},
 					{
 						"name": "runTrackerHostCommand.options",
-						"type": "{ input?: string; environment?: Record<string, string> }",
+						"type": "{ input?: string; environment?: Record<string, string>; maxBuffer?: number }",
 						"required": false,
 						"default": {},
 						"description": "Optional stdin and explicit, command-owned environment variables."

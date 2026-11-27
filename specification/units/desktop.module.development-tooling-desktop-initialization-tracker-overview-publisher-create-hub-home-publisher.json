@@ -9,9 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHubHomePublisher.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHubHomePublisher.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHubHomePublisher.types.ts"
 		],
-		"symbols": ["createHubHomePublisher"]
+		"symbols": ["createHubHomePublisher", "HubHomeReply"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -19,6 +20,11 @@
 			{
 				"name": "createHubHomePublisher.file",
 				"type": "string",
+				"required": false
+			},
+			{
+				"name": "createHubHomePublisher.sources",
+				"type": "QuotaSource[]",
 				"required": false
 			}
 		],
@@ -37,6 +43,11 @@
 					{
 						"name": "createHubHomePublisher.file",
 						"type": "string",
+						"required": false
+					},
+					{
+						"name": "createHubHomePublisher.sources",
+						"type": "QuotaSource[]",
 						"required": false
 					}
 				],
@@ -64,12 +75,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-codex-quota-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-home-provider-reader",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-home-tracker-chat",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-read-local-attachment",
 			"via": "import",
 			"origin": "derived"
 		},

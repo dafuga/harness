@@ -26,8 +26,6 @@ test('each remote control calls the running host or its devices with its input',
 			return name;
 		});
 	const devices = {
-		createPairing: call('createPairing'),
-		closePairing: call('closePairing'),
 		approvePairing: call('approvePairing'),
 		denyPairing: call('denyPairing'),
 		revokeDevice: call('revokeDevice')
@@ -49,7 +47,5 @@ test('each remote control calls the running host or its devices with its input',
 	expect(control.revokeDevice({ id: 'b' })).toBe('revokeDevice');
 	expect(calls).toContain('approvePairing:{"id":"a"}');
 	expect(calls).toContain('revokeDevice:{"id":"b"}');
-	expect(control.createPairing()).toBe('createPairing');
-	expect(control.closePairing()).toBe('closePairing');
 	expect(control.denyPairing({ id: 'c' })).toBe('denyPairing');
 });

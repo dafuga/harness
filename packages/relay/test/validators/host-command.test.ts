@@ -19,15 +19,12 @@ function refused(value: unknown): boolean {
 }
 
 async function commands(): Promise<Record<string, unknown>[]> {
-	const expiresAt = new Date(Date.now() + 60_000).toISOString();
 	return [
 		{ type: 'packet', deviceId, connectionId, packet: await acceptPacket() },
 		{ type: 'packet', deviceId, connectionId, packet: { type: 'reject', reason: 'revoked' } },
 		{ type: 'packet', deviceId, connectionId, packet: sealedPacket(3) },
-		{ type: 'pairing-open', ref, pairingId, expiresAt },
 		{ type: 'pairing-approve', ref, pairingId, deviceId, sealed: sealedText() },
 		{ type: 'pairing-deny', ref, pairingId },
-		{ type: 'pairing-close', ref, pairingId },
 		{ type: 'device-revoke', ref, deviceId },
 		{ type: 'device-drop', deviceId, connectionId, code: 4401 }
 	];
@@ -64,8 +61,9 @@ test('HostCommandValidator refuses ids and refs of another shape', () => {
 	expect(refused({ type: 'pairing-deny', ref: 'r'.repeat(65), pairingId })).toBe(true);
 	expect(refused({ type: 'pairing-deny', ref: 7, pairingId })).toBe(true);
 	expect(refused({ type: 'device-revoke', ref, deviceId: connectionId })).toBe(true);
-	expect(refused({ type: 'pairing-open', ref, pairingId, expiresAt: 'tomorrow' })).toBe(true);
-	expect(refused({ type: 'pairing-open', ref, pairingId, expiresAt: Date.now() })).toBe(true);
+	const expiresAt = new Date(Date.now() + 60_000).toISOString();
+	expect(refused({ type: 'pairing-open', ref, pairingId, expiresAt })).toBe(true);
+	expect(refused({ type: 'pairing-close', ref, pairingId })).toBe(true);
 	const approve = { type: 'pairing-approve', ref, pairingId, deviceId };
 	expect(refused({ ...approve, sealed: 'not base64url!' })).toBe(true);
 	expect(refused({ ...approve, sealed: '' })).toBe(true);

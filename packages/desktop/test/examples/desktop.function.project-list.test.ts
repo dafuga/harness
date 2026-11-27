@@ -3,10 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { projectList } from '../../src/components/projects-sessions/project-switcher/projectList';
 import { listedProjects } from '../../src/utils/projects-sessions/projectList';
-
-type Projects = Parameters<typeof projectList>[0];
-type Snapshot = NonNullable<Parameters<typeof projectList>[1]>;
-type Bridge = Parameters<typeof listedProjects>[0];
+import type { Projects, Snapshot, Bridge } from './desktop.function.project-list.test.types';
 
 const LISTED: Projects = [{ id: 'project-1', name: 'Atlas', kind: 'local' }];
 const SHA = 'a'.repeat(40);

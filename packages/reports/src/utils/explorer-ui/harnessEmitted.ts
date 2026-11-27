@@ -1,6 +1,10 @@
 // @harness-uid u_pauxu7ew4i
-import type { Measurement, EmittedLine } from './harnessEmitted.types';
-import type { HarnessRecord, HarnessUnit } from '../../models/explorer-ui/Harness.types';
+import type {
+	HarnessMeasurement,
+	HarnessRecord,
+	HarnessUnit
+} from '../../models/explorer-ui/Harness.types';
+import type { EmittedLine } from './harnessEmitted.types';
 
 export const metric = 'artifact-bytes';
 
@@ -25,7 +29,7 @@ function built(
 	record: HarnessRecord | null,
 	unit: string,
 	target?: string
-): Measurement | undefined {
+): HarnessMeasurement | undefined {
 	return record?.measurements.find(
 		(item) =>
 			item.unit === unit &&
@@ -42,7 +46,7 @@ function targetsOf(unit: HarnessUnit): string[] {
 	return order.filter((target) => declared.has(target));
 }
 
-function measured(record: HarnessRecord | null, found: Measurement | undefined): string {
+function measured(record: HarnessRecord | null, found: HarnessMeasurement | undefined): string {
 	if (!record || !found) return 'not measured at this revision';
 	if (found.value === null) return `unavailable: ${found.unavailable ?? 'no reason recorded'}`;
 	return emittedBytes(found.value);

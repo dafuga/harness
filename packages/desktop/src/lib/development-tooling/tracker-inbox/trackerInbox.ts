@@ -5,6 +5,7 @@ import type {
 	ConfirmedWrite,
 	InboxBucket,
 	InboxDetail,
+	InboxReview,
 	InboxFilter,
 	InboxFlag,
 	InboxOption,
@@ -29,7 +30,8 @@ export const inboxFilters: readonly InboxFilter[] = [
 	'blocked',
 	'active',
 	'quiet',
-	'done'
+	'done',
+	'reminders'
 ];
 
 export const bucketLabels: Record<InboxBucket, string> = {
@@ -42,7 +44,12 @@ export const bucketLabels: Record<InboxBucket, string> = {
 
 const MAX_TEXT_BYTES = 512;
 
-/** An open flag puts the item in Needs you. Otherwise the item status decides. */
+export function filterLabel(filter: InboxFilter): string {
+	if (filter === 'all') return 'All';
+	return filter === 'reminders' ? 'Reminders' : bucketLabels[filter];
+}
+
+/** An open structured ask puts the item in Needs you. Otherwise the item status decides. */
 export function itemBucket(status: string, flagOpen: boolean): InboxBucket {
 	if (flagOpen) return 'needs-you';
 	if (status === 'blocked') return 'blocked';
@@ -51,14 +58,18 @@ export function itemBucket(status: string, flagOpen: boolean): InboxBucket {
 	return 'quiet';
 }
 
-export function countBuckets(rows: readonly InboxRow[]): Record<InboxFilter, number> {
+export function countBuckets(
+	rows: readonly InboxRow[],
+	reminders = 0
+): Record<InboxFilter, number> {
 	const counts: Record<InboxFilter, number> = {
 		all: rows.length,
 		'needs-you': 0,
 		blocked: 0,
 		active: 0,
 		quiet: 0,
-		done: 0
+		done: 0,
+		reminders
 	};
 	for (const row of rows) counts[row.bucket] += 1;
 	return counts;
@@ -172,6 +183,17 @@ export function orderedOptions(flag: InboxFlag | null): { number: number; option
 }
 
 /** The answer write for a tapped option, or null when the review gate or the number refuses it. */
+/** A written answer against the reviewed revision, or nothing when the item no longer admits it. */
+export function writtenAnswer(
+	detail: InboxDetail,
+	reviewed: InboxReview,
+	answer: string
+): ConfirmedWrite | null {
+	if (!writeGate('answer', detail, reviewed).allowed) return null;
+	const { revision } = reviewed;
+	return confirmedWrite({ action: 'answer', id: detail.header.id, text: answer, revision }, true);
+}
+
 export function optionWrite(
 	detail: InboxDetail,
 	reviewed: { revision: string | null } | null,

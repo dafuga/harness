@@ -5,13 +5,13 @@ import { request as httpRequest } from 'node:http';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { DeviceConnectionService, DevicePairingService } from '../../remote/src/index';
+import { DeviceConnectionService } from '../../remote/src/index';
+import { accountPairing } from './remote-account-pairing';
 import type {
 	DeviceCredentials,
 	DeviceStatus,
 	RemoteBinary,
-	RemoteConnectionEvent,
-	RemotePairingOffer
+	RemoteConnectionEvent
 } from '../../remote/src/index';
 import { startRemoteFixture } from '../scripts/remote-fixture-host';
 import { RelaySocketAdapter } from '../src/adapters/networking-security/RelaySocketAdapter';
@@ -28,7 +28,6 @@ const settle = { timeout: 20000 },
 	notices: RemoteConnectionEvent[] = [];
 let fixture: Fixture,
 	publicDirectory: string,
-	offer: RemotePairingOffer,
 	credentials: DeviceCredentials,
 	phone: DeviceConnectionService;
 const control = (method: string, path: string, body?: unknown) =>
@@ -54,9 +53,18 @@ async function until<T>(read: () => Promise<T>, wanted: T): Promise<void> {
 beforeAll(async () => {
 	publicDirectory = await mkdtemp(join(tmpdir(), 'harness-remote-fixture-public-'));
 	fixture = await startRemoteFixture({ publicDirectory, log: (line) => lines.push(line) });
-	offer = (await (await control('POST', '/pairing')).json()) as RemotePairingOffer;
-	const pairing = new DevicePairingService(),
-		pending = await pairing.request({ ...offer, deviceName: 'Simulator', platform: 'test' });
+	const { pairing, pending } = await accountPairing(
+		{
+			origin: fixture.relayOrigin,
+			hostId: fixture.hostId,
+			hostKey: fixture.hostKey,
+			submit: async (pairingId, request) => {
+				const sent = await control('POST', '/account-request', { pairingId, request });
+				if (!sent.ok) throw new Error('The fixture refused the account request.');
+			}
+		},
+		'Simulator'
+	);
 	await until(() => pairing.poll(pending), 'approved');
 	credentials = await pairing.exchange(pending);
 	const client = { kind: 'test' as const, name: 'simulator stand-in' },
@@ -71,7 +79,7 @@ afterAll(async () => {
 	await rm(publicDirectory, { recursive: true, force: true });
 });
 
-test('a phone that typed the code is approved for the synthetic project only, with agents', () => {
+test('a signed-in phone is approved for the synthetic project only, with agents', () => {
 	expect(credentials.grant).toEqual({ projects: [fixture.project], agents: true });
 	expect(credentials.hostId).toBe(fixture.hostId);
 	expect(credentials.origin).toBe(fixture.relayOrigin);
@@ -127,28 +135,18 @@ test('the control locks, suspends and resumes the host, for a caller on this mac
 	expect((await control('POST', '/shell')).status).toBe(404);
 }, 60000);
 
-test('no credential, key or pairing code is printed or written; the offer is given only where it was asked for', async () => {
-	/** An offer is open while everything public is read: what would leak it is on the table. */
-	const open = (await (await control('POST', '/pairing')).json()) as RemotePairingOffer,
-		status = await (await control('GET', '/status')).text(),
-		saved = await readFile(join(publicDirectory, 'offer.json'), 'utf8'),
+test('no credential or key is printed or written, and the public facts hold no private key', async () => {
+	const status = await (await control('GET', '/status')).text(),
 		facts = await readFile(join(publicDirectory, 'fixture.json'), 'utf8'),
-		exposed = [status, saved, facts, ...lines].join('\n'),
-		codes = [offer, open].flatMap((item) => [item.code, item.code.replace('-', ''), item.scan]);
-	for (const secret of [credentials.credential, credentials.keys.d, ...codes])
+		exposed = [status, facts, ...lines].join('\n');
+	for (const secret of [credentials.credential, credentials.keys.d])
 		expect(exposed).not.toContain(secret);
-	expect(open.scan).toContain(`code=${open.code.replace('-', '')};`);
-	expect(JSON.parse(status).offer).toMatchObject({ pairingId: open.pairingId });
-	expect(JSON.parse(saved)).toMatchObject({ pairingId: open.pairingId });
-	for (const item of [offer, open]) {
-		const said = `Pairing offer ${item.pairingId} is open until`;
-		expect(lines.some((line) => line.startsWith(said))).toBe(true);
-	}
 	expect(JSON.parse(facts)).toMatchObject({
 		relayOrigin: fixture.relayOrigin,
-		hostId: offer.hostId,
+		hostId: credentials.hostId,
 		controlOrigin: fixture.controlOrigin
 	});
+	expect(JSON.parse(status)).not.toHaveProperty('offer');
 }, 60000);
 
 test('revoking through the control ends the phone', async () => {

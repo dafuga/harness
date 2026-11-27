@@ -92,13 +92,15 @@ test('the socket of a host follows no redirect on its upgrade, and its credentia
 	}
 }, 30000);
 
-test('the pairing calls of a phone follow no redirect', async () => {
+test('the poll and exchange calls of a phone follow no redirect', async () => {
 	for (const code of [307, 308]) {
 		const elsewhere = await recorder(),
 			relay = await recorder(() => ({ status: code, location: elsewhere.origin + '/v1/health' })),
 			request = { origin: relay.origin, hostId, pairingId: 'b'.repeat(32) },
 			phone = { ...request, code: 'ABCD-EFGH', deviceName: 'Fixture phone' };
-		await expect(new DevicePairingService().request(phone)).rejects.toThrow();
+		await expect(
+			new DevicePairingService().poll({ origin: relay.origin, input: phone } as never)
+		).rejects.toThrow();
 		expect(elsewhere.seen).toEqual([]);
 		expect(relay.seen).toHaveLength(1);
 	}

@@ -1,5 +1,6 @@
 // @harness-uid u_bnkwt2w55f
-import type { Measurement, Finding, Reviewed, FrozenLine } from './harnessBudget.types';
+import type { HarnessMeasurement } from '../../models/explorer-ui/Harness.types';
+import type { Finding, Reviewed, FrozenLine } from './harnessBudget.types';
 
 /**
  * The limit a line may claim. A number is shown only where one was reviewed: the baseline the
@@ -7,7 +8,7 @@ import type { Measurement, Finding, Reviewed, FrozenLine } from './harnessBudget
  * manifest merely declares is said to be declared, with no reviewed limit recorded.
  */
 function limitOf(
-	found: Measurement | undefined,
+	found: HarnessMeasurement | undefined,
 	finding: Finding | undefined,
 	known: Reviewed
 ): string {
@@ -20,7 +21,7 @@ function limitOf(
 }
 
 /** A metric nobody reviewed: it has no value to freeze, or a freeze that is only declared. */
-function unreviewed(found: Measurement | undefined, declared: boolean): string {
+function unreviewed(found: HarnessMeasurement | undefined, declared: boolean): string {
 	if (found?.value === null) return 'not frozen: no value to freeze';
 	return declared
 		? 'freeze declared; no reviewed limit is recorded at this revision'
@@ -28,7 +29,7 @@ function unreviewed(found: Measurement | undefined, declared: boolean): string {
 }
 
 /** What a value leaves out, and what the record found when it held it against a reviewed limit. */
-function noted(found: Measurement, finding: Finding | undefined): string {
+function noted(found: HarnessMeasurement, finding: Finding | undefined): string {
 	const partial = found.partial ? `Partial: ${found.partial}` : '';
 	const grew =
 		finding?.status === 'exceeded' && finding.baseline !== null
@@ -42,7 +43,7 @@ function noted(found: Measurement, finding: Finding | undefined): string {
  * to be unavailable and not frozen; it is never shown as a zero that a limit holds in place.
  */
 export function harnessBudget(
-	found: Measurement | undefined,
+	found: HarnessMeasurement | undefined,
 	finding?: Finding,
 	known: Reviewed = { declared: true }
 ): FrozenLine {

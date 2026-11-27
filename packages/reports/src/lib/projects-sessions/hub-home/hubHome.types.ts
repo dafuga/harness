@@ -1,5 +1,13 @@
 // @harness-uid u_kda7xezayo
-import type { OverviewSnapshot } from '../project-overview/projectOverview.types';
+import type { OverviewSnapshot, ProjectState } from '../project-overview/projectOverview.types';
+import type * as Planning from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
+import type { HomeLiveOverview } from './homeLive.types';
+
+import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
+import type { HubMessageStatus } from '../../../../../../src/utils/projects-sessions/hubSessionMessages.types';
+import type { HomeChatInput, HomeChatReceipt } from './homeChat.types';
+
+export type * from './homeChat.types';
 
 export type HomeAgentState = 'needs-you' | 'working' | 'idle' | 'offline';
 export type HomePlanState = 'draft' | 'in-review' | 'approved' | 'in-progress' | 'done';
@@ -10,6 +18,14 @@ export interface HomeMessage {
 	text: string;
 	at: string;
 	from: 'agent' | 'you';
+	/** A Hub message's Tracker id; its receipt and replies are keyed to it. */
+	messageId?: string;
+	/** Where a Hub message got to: stored, typed into the session, answered, or refused. */
+	status?: HubMessageStatus;
+	/** Why a refused message was not delivered. */
+	reason?: string;
+	/** The Hub message a session's reply answers. */
+	replyTo?: string;
 }
 
 /** One task an agent has a live run on right now. */
@@ -43,6 +59,8 @@ export interface HomeAgent {
 	/** Live sessions and tasks of the sub-agents working under this agent, never listed as agents themselves. */
 	subAgents: { sessions: number; tasks: HomeAgentTask[] };
 	itemId: string | null;
+	/** The live run Hub messages go to, as `<computer>#<run>`; none without a live session. */
+	runId?: string | null;
 	task: string;
 	machine: string | null;
 	model: string | null;
@@ -54,11 +72,40 @@ export interface HomeAgent {
 	messages: HomeMessage[];
 }
 
+/** One open structured ask: a question Daniel answers by tapping a choice, or by writing another. */
+export interface HomeOpenAsk {
+	itemId: string;
+	/** The Tracker project that asked; the same value as that agent's id. */
+	agentId: string;
+	agentName: string;
+	title: string;
+	question: string;
+	options: HomeAskOption[];
+	confirm?: HomeAskConfirm;
+	/** Specs and documents behind "View spec". */
+	attachments?: TrackerAttachment[];
+	since: string;
+}
+
+/** One personal reminder: a Tracker item that reminds Daniel, listed only under Reminders. */
+export interface HomeReminder {
+	itemId: string;
+	title: string;
+	/** The armed time. Done and snooze name it, so a stale tap changes nothing. */
+	at: string;
+	/** "Daily", "Weekly" and so on; null for a reminder that happens once. */
+	repeats: string | null;
+	updatedAt: string;
+}
+
 export interface HomePlan {
 	id: string;
 	title: string;
 	project: string | null;
 	state: HomePlanState;
+	/** Older Home publishers omit stage and artifacts. */
+	stage?: Planning.TrackerStage;
+	planning?: Planning.TrackerPlanning;
 	updatedAt: string;
 	total: number;
 	done: number;
@@ -74,7 +121,23 @@ export interface HomeRun {
 	source: 'tracker' | 'claude';
 	recurring: boolean;
 	paused: boolean;
+	/** What this Tracker run is once its time passes. Older computers do not report it. */
+	whenDue?: HomeWhenDue;
 }
+
+export interface HomeWhenDue {
+	state: 'running' | 'queued' | 'blocked';
+	reason: string | null;
+	/** Launch order class: 0 urgent, 1 normal, 2 low. */
+	urgency: number;
+}
+
+/** A run whose time has passed. Queued runs carry their launch position. */
+export type HomePastDue = HomeRun & {
+	state: HomeWhenDue['state'];
+	reason: string | null;
+	position?: number;
+};
 
 export interface HomeLimit {
 	id: string;
@@ -103,29 +166,45 @@ export interface HomeProviderReadings {
 	quota: HomeSubscription[] | null;
 }
 
+/** A visible Tracker project, including projects whose last task finished long ago. */
+export interface HomeTrackerProject {
+	name: string;
+	state: ProjectState;
+	needsYou: number;
+}
+
 export interface OwnerHomeSnapshot {
 	overview: OverviewSnapshot;
+	projectDirectory?: HomeTrackerProject[];
 	agents: HomeAgent[];
+	/** Every open structured ask, oldest first. Older Mac apps omit it. */
+	openAsks?: HomeOpenAsk[];
+	/** Personal reminders, soonest first. Older Mac apps omit them. */
+	reminders?: HomeReminder[];
 	plans: HomePlan[];
 	scheduled: HomeRun[];
+	overdue?: HomeRun[];
 	providers: HomeProviderReadings;
+	/**
+	 * Every project, session and run. Only a linked computer's answer over the encrypted
+	 * connection carries it: it is never uploaded or stored. Older Mac apps omit it.
+	 */
+	liveOverview?: HomeLiveOverview;
 }
 
-export interface HomeChatInput {
-	id: string;
-	agentId: string;
-	itemId: string;
-	kind: 'note' | 'answer';
-	question: string | null;
-	text: string;
-	/** A tapped option's 1-based number. The text then carries that option's label. */
-	option?: number;
-	confirmed?: boolean;
+/** The active local Mac or approved connection used by the installed apps. */
+export interface TrackerHomeSource {
+	read(): Promise<OwnerHomeSnapshot>;
+	send(message: HomeChatInput): Promise<HomeChatReceipt>;
 }
 
-export type HomeChatStatus = 'queued' | 'sent' | 'refused' | 'unconfirmed';
+export type OpenHomeSection = (section: HomeSection, itemId?: string) => void;
+export type SendHomeChat = TrackerHomeSource['send'];
 
-export interface HomeChatReceipt {
-	id: string;
-	status: HomeChatStatus;
+export interface HomePlannableView {
+	plans: HomePlan[] | null;
+	schedule: HomeRun[] | null;
+	agents: HomeAgent[] | null;
+	needsMac: boolean;
+	now: number;
 }

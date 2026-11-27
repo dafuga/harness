@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { fixtureNeedsDebug, iosBuildPlan, simulatorSigning } from '../scripts/ios-build-options';
 
 test('a normal build is Debug or Release, never a fixture, and is signed without a team', () => {
-	const plain = { fixture: false, scanFixture: false };
+	const plain = { fixture: false };
 	expect(iosBuildPlan([])).toEqual({ configuration: 'Debug', ...plain, sync: false });
 	expect(iosBuildPlan(['--release', '--sync'])).toEqual({
 		configuration: 'Release',
@@ -18,16 +18,10 @@ test('a fixture build is refused for Release before anything is built', () => {
 	expect(iosBuildPlan(['--fixture'])).toEqual({
 		configuration: 'Debug',
 		fixture: true,
-		scanFixture: false,
 		sync: false
 	});
-	expect(iosBuildPlan(['--scan-fixture'])).toEqual({
-		configuration: 'Debug',
-		fixture: false,
-		scanFixture: true,
-		sync: false
-	});
-	expect(iosBuildPlan(['--scan-fixture', '--release'])).toEqual({ error: fixtureNeedsDebug });
+	// The QR scan fixture went with QR pairing, so its option is now an unknown one.
+	expect(iosBuildPlan(['--scan-fixture'])).toHaveProperty('error');
 	expect(iosBuildPlan(['--fixture', '--release'])).toEqual({ error: fixtureNeedsDebug });
 	expect(iosBuildPlan(['--release', '--sync', '--fixture'])).toEqual({ error: fixtureNeedsDebug });
 });

@@ -38,11 +38,13 @@
 			"TrackerDigestItem",
 			"TrackerRecurringProblem",
 			"TrackerDigestGroups",
+			"TrackerProjectStatus",
 			"TrackerDigest",
 			"TrackerItemReadError",
 			"TrackerItemReadError.constructor",
 			"buildTrackerDigest",
 			"StoredRecurringResult",
+			"TrackerDigestSources",
 			"formatTrackerDigest",
 			"serializeTrackerItem",
 			"trackerChaseFields",
@@ -145,6 +147,11 @@
 			{
 				"name": "buildTrackerDigest.runs",
 				"type": "TrackerRunReadRepository",
+				"required": true
+			},
+			{
+				"name": "buildTrackerDigest.projects",
+				"type": "TrackerProjectStatus[]",
 				"required": true
 			},
 			{
@@ -480,6 +487,11 @@
 						"name": "buildTrackerDigest.runs",
 						"type": "TrackerRunReadRepository",
 						"required": true
+					},
+					{
+						"name": "buildTrackerDigest.projects",
+						"type": "TrackerProjectStatus[]",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -680,6 +692,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-is-tracker-phase4-worker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-next-tracker-clock",
 			"via": "import",
 			"origin": "derived"
@@ -695,12 +712,52 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-attachments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-structured-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read-repository-clip-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read-repository-format-tracker-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read-repository-split-tracker-asks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read-repository-stamp-tracker-time",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read-repository-summarize-tracker-projects",
 			"via": "import",
 			"origin": "derived"
 		},

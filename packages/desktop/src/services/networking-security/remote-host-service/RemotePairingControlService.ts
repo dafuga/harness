@@ -1,23 +1,19 @@
 // @harness-uid u_kl5coeje2e
-import { PairingOfferCreationError } from './PairingOfferCreationError';
-import { PairingOfferUnsupportedError } from './PairingOfferUnsupportedError';
 import { PairingRequestNotWaitingError } from './PairingRequestNotWaitingError';
 import { ProjectNotOpenedError } from './ProjectNotOpenedError';
 import type { RemoteHostAccess } from './RemotePairingControlService.types';
-import { RemoteInputValidator, offerEnvironment } from '../../../../../remote/src/index';
+import { RemoteInputValidator } from '../../../../../remote/src/index';
 import type {
 	HostPairingApproved,
 	RemoteApprovalInput,
 	RemoteGrant,
 	RemoteHostStatus,
-	RemotePairingOffer,
 	RemotePairingRequest
 } from '../../../../../remote/src/index';
 import type { RemoteHostDevice } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
 import type { ProjectRegistryService } from '../../projects-sessions/ProjectRegistryService';
 import type { RemoteHostRuntimeService } from './RemoteHostRuntimeService';
 const unreachable = ['The relay is not connected.', 'The relay did not answer.'];
-const replaced = 'A newer pairing code replaced this one.';
 
 function deviceOf(
 	approved: HostPairingApproved,
@@ -50,18 +46,6 @@ async function scoped(
 	if (projects.length !== approval.projectIds.length)
 		throw new ProjectNotOpenedError('Only projects opened on this computer can be shared.');
 	return { ...approval, projects };
-}
-
-/** Opens an offer at both ends and only withdraws its own on failure. */
-async function openedOffer(runtime: RemoteHostRuntimeService): Promise<string> {
-	const { pairingId, expiresAt } = runtime.pairing.open();
-	try {
-		await runtime.link.command({ type: 'pairing-open', pairingId, expiresAt });
-	} catch (error) {
-		if (runtime.pairing.offer()?.pairingId === pairingId) runtime.pairing.closeOffer();
-		throw error;
-	}
-	return pairingId;
 }
 
 async function approveDevice(
@@ -115,31 +99,6 @@ export class RemotePairingControlService {
 		private readonly host: RemoteHostAccess,
 		private readonly registry: Pick<ProjectRegistryService, 'list'>
 	) {}
-	async createPairing(): Promise<RemotePairingOffer> {
-		const { runtime, state } = this.host.current();
-		if (state.ownerId)
-			throw new PairingOfferUnsupportedError('Use your Google account to connect.');
-		const earlier = runtime.pairing.offer();
-		if (!offerEnvironment(state.origin ?? ''))
-			throw new PairingOfferUnsupportedError(
-				'The relay of this computer cannot be shown to a phone as a QR code.'
-			);
-		if (earlier) void this.tell(runtime, { type: 'pairing-close', pairingId: earlier.pairingId });
-		const pairingId = await openedOffer(runtime);
-		const { pairing } = await this.host.published();
-		if (pairing?.pairingId === pairingId) return pairing;
-		throw new PairingOfferCreationError(
-			runtime.pairing.offer() ? replaced : 'The pairing offer could not be opened.'
-		);
-	}
-	/** Withdraws the open offer and whoever asked with it: neither can be used any more. */
-	async closePairing(): Promise<RemoteHostStatus> {
-		const { runtime } = this.host.current(),
-			open = runtime.pairing.offer();
-		runtime.pairing.closeOffer();
-		if (open) await this.tell(runtime, { type: 'pairing-close', pairingId: open.pairingId });
-		return this.host.published();
-	}
 	async approvePairing(input: unknown): Promise<RemoteHostStatus> {
 		const approval = await scoped(this.registry, this.inputs.approval(input));
 		const { runtime, state } = this.host.current();

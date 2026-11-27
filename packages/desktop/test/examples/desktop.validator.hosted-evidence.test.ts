@@ -14,23 +14,27 @@ const query = {
 	mode: 'current' as const
 };
 
+function identity() {
+	return {
+		principalId: 'google-user-12345',
+		projectId: 'example-project',
+		repositoryId: 42,
+		requestedRef: 'main',
+		sourceCommit: commit,
+		sourceTree: 'abcdef0123456789abcdef0123456789abcdef01',
+		notesRef: 'refs/notes/harness',
+		notesRevision: null,
+		evidenceRef: 'refs/heads/harness-evidence',
+		evidenceRevision: null,
+		historyIndexRevision: null,
+		artifactHash: null,
+		profile: null
+	};
+}
+
 function answer() {
 	return {
-		identity: {
-			principalId: 'google-user-12345',
-			projectId: 'example-project',
-			repositoryId: 42,
-			requestedRef: 'main',
-			sourceCommit: commit,
-			sourceTree: 'abcdef0123456789abcdef0123456789abcdef01',
-			notesRef: 'refs/notes/harness',
-			notesRevision: null,
-			evidenceRef: 'refs/heads/harness-evidence',
-			evidenceRevision: null,
-			historyIndexRevision: null,
-			artifactHash: null,
-			profile: null
-		},
+		identity: identity(),
 		scope: {
 			location: { branch: 'main', commit, category: 'components', entity: query.entityId },
 			mode: 'current',

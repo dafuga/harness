@@ -8,13 +8,19 @@ import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
 } from '../../../../models/verification-evidence/DesktopEvidence.types';
-import type { AddCommentInput } from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type {
+	AddCommentInput,
+	CommittedThread
+} from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
+import type {
+	HostedHistoryPage,
+	HostedHistoryQuery,
 	RemoteProjectPort,
 	ProjectCapabilities
 } from '../../../../models/projects-sessions/ProjectContext.types';
 import type {
 	EntityQuery,
+	RevisionQuery,
 	SourceQuery,
 	ImageQuery,
 	ThreadQuery
@@ -28,6 +34,11 @@ import { RemoteProjectionService } from './RemoteProjectionService';
 import type { HostedReadOptions } from '../../../../services/development-tooling/HostedReadService';
 import { InvalidHostedSourceError } from './InvalidHostedSourceError';
 import { UnknownHostedImageAnchorError } from './UnknownHostedImageAnchorError';
+import type {
+	ProjectSnapshot,
+	ThreadMessage
+} from '../../../../models/development-tooling/Desktop.types';
+import type { EntityDetail } from '../../../../models/development-tooling/DesktopEntity.types';
 
 export { type NativeHostedCredential } from '../../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 
@@ -74,7 +85,7 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 		return Boolean(await this.options.credentials());
 	}
 	listProjects = () => this.projections.projects();
-	async snapshot(input: { projectId: string; branch: string | null; commit: string | null }) {
+	async snapshot(input: RevisionQuery & { projectId: string }): Promise<ProjectSnapshot> {
 		const snapshot = await this.projections.snapshot(input);
 		if (snapshot.cache?.status === 'offline') return snapshot;
 		const capabilities = await this.capabilities(input.projectId);
@@ -86,7 +97,7 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 		this.agents.shown(fresh, input);
 		return fresh;
 	}
-	async entity(input: EntityQuery & { projectId: string }) {
+	async entity(input: EntityQuery & { projectId: string }): Promise<EntityDetail> {
 		return this.projections.read(
 			{ ...input, branch: this.projections.branch(input.projectId) },
 			'entity',
@@ -122,16 +133,16 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 		);
 		return validate(encoded);
 	}
-	async messages(input: ThreadQuery & { projectId: string }) {
+	async messages(input: ThreadQuery & { projectId: string }): Promise<ThreadMessage[]> {
 		return this.projections.read(input, 'messages', (value) => this.validator.messages(value));
 	}
-	async history(input: EntityQuery & { projectId: string; page: number; branch?: string }) {
+	async history(input: HostedHistoryQuery): Promise<HostedHistoryPage> {
 		return this.projections.read(input, 'history', (value) => this.validator.history(value));
 	}
 	async capabilities(projectId: string): Promise<ProjectCapabilities> {
 		return hostedCapabilities(await this.http.json(this.path(projectId, '')), projectId);
 	}
-	async addComment(input: AddCommentInput) {
+	async addComment(input: AddCommentInput): Promise<CommittedThread> {
 		const credential = await this.http.authorize();
 		const response = await this.http.request(this.path(input.projectId, 'comments'), credential, {
 			method: 'POST',

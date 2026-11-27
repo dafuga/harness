@@ -8,15 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
-		"level": "molecule",
+		"level": "organism",
 		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-li",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeRow.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte"],
 		"symbols": ["HubHomeRow"]
 	},
 	"contract": {
@@ -62,6 +64,13 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional snippet placed after the row content."
+			},
+			{
+				"name": "HubHomeRow.activate",
+				"type": "(trigger: HTMLElement) => void",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Opens a row from its accessible detail button while retaining links in the surrounding row text."
 			}
 		],
 		"outputs": [
@@ -78,6 +87,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
@@ -91,15 +105,20 @@
 			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeRow.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeRow.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte"
 			}
 		]
 	},

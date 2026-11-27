@@ -1,5 +1,6 @@
 // @harness-uid u_gkqforuxtp
-import type { Dependencies } from './HubProjectionService.types';
+import type { Dependencies, MessageQuery } from './HubProjectionService.types';
+import type { DesignCanvasQuery } from './hubDesignCanvases.types';
 import { HubEvidenceService } from './hub-evidence-service/HubEvidenceService';
 import type {
 	EntityEvidenceQuery,
@@ -8,6 +9,7 @@ import type {
 import { hubHistory } from '../../../../utils/git-source-history/hubHistory';
 import type { Actor } from 'collaboration';
 import type { ThreadMessage } from '../../../../../../desktop/src/models/development-tooling/Desktop.types';
+import type { RevisionQuery } from '../../../../../../desktop/src/models/development-tooling/DesktopBridge.types';
 import { hubSource, hubRead } from '../../../../utils/development-tooling/hubSource';
 import type { HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 import {
@@ -22,32 +24,47 @@ import { hubThreads } from '../../../../utils/networking-security/hubThreads';
 import { hubPlans } from '../../../../utils/networking-security/hubPlans';
 import { hubDesignImage } from './hubDesigns';
 import { hubSnapshot } from './hubSnapshot';
+import { hubDesignCanvases } from './hubDesignCanvases';
 import { hubEntity } from './hubEntity';
 import { hubProjectionCache } from '../../../../utils/development-tooling/hubProjectionCache';
 import { RemoteProjectResponseValidator } from '../../../../../../desktop/src/validators/RemoteProjectResponseValidator';
+import type {
+	EntityEvidenceResult,
+	EvidenceArtifactResult
+} from '../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
+import type { ProjectSnapshot } from '../../../../../../desktop/src/models/development-tooling/Desktop.types';
+import type { HistoryEvent } from '../../../../../../desktop/src/models/development-tooling/DesktopEntity.types';
 
 export class HubProjectionService {
 	private readonly recorded: HubEvidenceService;
 	constructor(private context: Dependencies) {
 		this.recorded = new HubEvidenceService(context);
 	}
-	evidence(actor: Actor, projectId: string, query: EntityEvidenceQuery) {
+	evidence(
+		actor: Actor,
+		projectId: string,
+		query: EntityEvidenceQuery
+	): Promise<EntityEvidenceResult> {
 		return this.recorded.evidence(actor, projectId, query);
 	}
-	artifact(actor: Actor, projectId: string, query: EvidenceArtifactQuery) {
+	artifact(
+		actor: Actor,
+		projectId: string,
+		query: EvidenceArtifactQuery
+	): Promise<EvidenceArtifactResult> {
 		return this.recorded.artifact(actor, projectId, query);
 	}
 	private async load(actor: Actor, projectId: string, ref: string) {
 		const project = await this.context.api.getProject(actor, projectId);
 		return hubSource({ ...this.context, actor, project, ref });
 	}
-	async snapshot(
-		actor: Actor,
-		projectId: string,
-		query: { branch: string | null; commit: string | null }
-	) {
+	async snapshot(actor: Actor, projectId: string, query: RevisionQuery): Promise<ProjectSnapshot> {
 		const project = await this.context.api.getProject(actor, projectId);
 		return hubSnapshot({ ...this.context, actor, project }, query);
+	}
+	async designs(actor: Actor, projectId: string, query: DesignCanvasQuery) {
+		const project = await this.context.api.getProject(actor, projectId);
+		return hubDesignCanvases({ ...this.context, actor, project }, query);
 	}
 	async registry(actor: Actor, projectId: string, commit: string) {
 		return readRegistry(await this.load(actor, projectId, commit));
@@ -77,7 +94,7 @@ export class HubProjectionService {
 		actor: Actor,
 		projectId: string,
 		query: { entityId: string; commit: string; page: number; branch: string }
-	) {
+	): Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }> {
 		const context = await this.load(actor, projectId, query.commit),
 			data = await hubCatalog(context);
 		const unit = data.units.find((u) => u.id === query.entityId),
@@ -130,21 +147,20 @@ export class HubProjectionService {
 		);
 		return hubDesignImage(context, plan, query);
 	}
-	async messages(
-		actor: Actor,
-		projectId: string,
-		query: { entityId: string; commit: string; threadId: string }
-	): Promise<ThreadMessage[]> {
-		const thread = (
-			await this.context.api.listThreads(actor, {
-				projectId,
-				entityId: query.entityId,
-				commit: query.commit
-			})
-		).find((t) => t.id === query.threadId);
-		if (!thread) return hubFail('not-found');
-		return hubMessages(thread);
+	messages(actor: Actor, projectId: string, query: MessageQuery): Promise<ThreadMessage[]> {
+		return readMessages(this.context.api, { actor, projectId, query });
 	}
+}
+
+async function readMessages(
+	api: Dependencies['api'],
+	{ actor, projectId, query }: { actor: Actor; projectId: string; query: MessageQuery }
+): Promise<ThreadMessage[]> {
+	const { entityId, commit, threadId } = query;
+	const threads = await api.listThreads(actor, { projectId, entityId, commit });
+	const thread = threads.find((t) => t.id === threadId);
+	if (!thread) return hubFail('not-found');
+	return hubMessages(thread);
 }
 
 async function readRegistry(context: HubSourceContext) {

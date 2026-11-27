@@ -1,4 +1,5 @@
 // @harness-uid u_xba7ieg4je
+import type { TrackerAttachment } from '../../utils/projects-sessions/trackerAttachment.types';
 import type { TrackerItemPriority } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type { TrackerAskOption } from '../../utils/projects-sessions/trackerAskOptions.types';
 import type { trackerItemFields } from '../../adapters/projects-sessions/TrackerSchemaAdapter';
@@ -97,8 +98,12 @@ export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> & {
 		missed: string | null;
 		adapter_instructions?: string;
 		notes_log: TrackerItemNote[];
+		/** When the open ask with choices was raised. */
+		asked_at?: string;
 		options?: TrackerAskOption[];
 		confirm?: string;
+		/** Documents of the ask; their text is read one at a time. */
+		attachments?: TrackerAttachment[];
 		answer_option?: number;
 		needs_daniel: boolean;
 		resolved: boolean;
@@ -144,6 +149,12 @@ export type TrackerRecurringProblem = TrackerDigestItem & {
 export type TrackerDigestGroups = {
 	blocked: TrackerDigestItem[];
 	needs_daniel: TrackerDigestItem[];
+	/** Open structured asks, the only decisions shown to Daniel, oldest first, including finished and blocked items. */
+	daniel_decisions: TrackerDigestItem[];
+	/** Open flags raised by watchdog and idle-session alerts for Chief of Staff, oldest first. */
+	pings: TrackerDigestItem[];
+	/** Other open flags without answerable choices, for Chief of Staff to rewrite or clear, oldest first. */
+	needs_options: TrackerDigestItem[];
 	overdue: TrackerDigestItem[];
 	due_today: TrackerDigestItem[];
 	recurring_missed: TrackerRecurringProblem[];
@@ -155,9 +166,27 @@ export type TrackerDigestGroups = {
 	})[];
 };
 
+type TrackerStatusCounts = { in_progress: number; blocked: number; open: number };
+
+export type TrackerProjectStatus = TrackerStatusCounts & {
+	project: string;
+	/** Phase 4 module workers already included in this project's counts. */
+	phase4_workers: TrackerStatusCounts & { total: number };
+	eta?: { id: string; due: string; overdue: boolean };
+	latest_note?: { id: string; at: string; text: string };
+};
+
 export type TrackerDigest = TrackerDigestGroups & {
+	projects: TrackerProjectStatus[];
+	/** Every action only Daniel can take: open decisions, then unflagged blockers waiting on Daniel. */
+	to_unblock: TrackerDigestItem[];
 	generated_at: string;
 	local_time: string;
 	today: string;
-	counts: Record<keyof TrackerDigestGroups, number>;
+	counts: Record<keyof TrackerDigestGroups, number> & {
+		/** Daniel decisions that have waited at least a day. */
+		stale_decisions: number;
+		projects: number;
+		to_unblock: number;
+	};
 };

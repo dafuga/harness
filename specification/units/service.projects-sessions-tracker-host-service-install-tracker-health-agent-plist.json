@@ -1,0 +1,103 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-host-service-install-tracker-health-agent-plist",
+	"uid": "u_jmqi2j4hlv",
+	"kind": "service",
+	"title": "trackerHealthAgentPlist",
+	"responsibility": "Owns the trackerHealthAgentPlist service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-host-service-install/trackerHealthAgentPlist.ts"
+		],
+		"symbols": ["trackerHealthAgentPlist"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerHealthAgentPlist.label",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHealthAgentPlist.input",
+				"type": "TrackerHostInstallInput",
+				"required": true
+			},
+			{
+				"name": "trackerHealthAgentPlist.service",
+				"type": "{ path: string; logs: string[] }",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerHealthAgentPlist",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerHealthAgentPlist",
+				"inputs": [
+					{
+						"name": "trackerHealthAgentPlist.label",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerHealthAgentPlist.input",
+						"type": "TrackerHostInstallInput",
+						"required": true
+					},
+					{
+						"name": "trackerHealthAgentPlist.service",
+						"type": "{ path: string; logs: string[] }",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHealthAgentPlist",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-host-install",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-tracker-health-times",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-host-service-install/trackerHealthAgentPlist.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-host-service-install/trackerHealthAgentPlist.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

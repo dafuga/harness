@@ -6,9 +6,9 @@ import type {
 	ExplorerEntity,
 	ExplorerRelations
 } from '../../src/models/explorer-ui/Explorer.types';
+import type { Cases } from './reports.function.entity-usage.test.types';
 
 const unitId = 'reports.function.entity-usage';
-type Cases = Parameters<typeof recordExampleCases>[1];
 const record = (symbol: string, state: string, cases: Cases) => {
 	const file = `${state}.json`;
 	return recordExampleCases({ unitId, symbol, state, evidence: 'examples-cases', file }, cases);

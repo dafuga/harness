@@ -2,25 +2,71 @@
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_zj35fp7e6k -->
 <script lang="ts">
-	import type { InboxRow } from '../../../models/development-tooling/TrackerInbox.types';
+	import type {
+		InboxRow,
+		TrackerInboxSource
+	} from '../../../models/development-tooling/TrackerInbox.types';
 	import {
 		bucketLabels,
 		trackerStageLabels
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 
+	import { waitAge } from '$reports/lib/projects-sessions/hub-home/waitAge';
+
+	import {
+		optionWrite,
+		writtenAnswer
+	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
+	import { sendRowAnswer } from '../../../lib/development-tooling/tracker-inbox/sendRowAnswer';
+	import type {
+		ConfirmedWrite,
+		InboxDetail
+	} from '../../../models/development-tooling/TrackerInbox.types';
+	import TrackerInboxChoices from './TrackerInboxChoices.svelte';
+
 	let {
+		source,
+		mode,
+		onchanged,
+		onnotice,
 		rows,
 		selected,
 		empty,
 		label,
 		onselect
 	}: {
+		source: TrackerInboxSource;
+		mode: 'phone' | 'mac';
+		onchanged: () => Promise<void>;
+		/** Told what a row's answer did. The list shows it: an answered row leaves the list. */
+		onnotice: (message: string) => void;
 		rows: InboxRow[];
 		selected: string | null;
 		empty: string;
 		label: string;
 		onselect: (id: string) => void;
 	} = $props();
+	let busy = $state(false);
+	/** The revisions answered here, so a queued answer cannot be tapped twice. */
+	let answered = $state<string[]>([]);
+	const key = (review: InboxDetail) => `${review.header.id} ${review.revision}`;
+	const reviewed = (review: InboxDetail) => ({
+		itemId: review.header.id,
+		revision: review.revision
+	});
+
+	async function deliver(review: InboxDetail, write: ConfirmedWrite | null) {
+		if (busy) return;
+		busy = true;
+		try {
+			const result = await sendRowAnswer(source, write, mode);
+			onnotice(result.message);
+			if (result.sent) answered = [...answered, key(review)];
+			await onchanged();
+		} finally {
+			busy = false;
+		}
+	}
 </script>
 
 <hx-ul class="rows" aria-label={label}>
@@ -33,14 +79,31 @@
 				aria-current={selected === row.header.id ? 'true' : undefined}
 				onclick={() => onselect(row.header.id)}
 			>
-				<hx-span class="tag tag-{row.bucket}">{bucketLabels[row.bucket]}</hx-span>
-				<hx-span class="title">{row.header.title}</hx-span>
-				<hx-span class="meta"
-					>{row.header.project} · {row.header.id} · {trackerStageLabels[
-						row.header.stage ?? 'idea'
-					]}</hx-span
-				>
+				{#if row.ask}
+					<hx-span class="title">{row.header.project}</hx-span>
+					<hx-span class="question">{row.ask.question}</hx-span>
+					{#if row.ask.since}<hx-span class="meta"
+							>waiting {waitAge(row.ask.since, Date.now())}</hx-span
+						>{/if}
+				{:else}
+					<hx-span class="tag tag-{row.bucket}">{bucketLabels[row.bucket]}</hx-span>
+					<hx-span class="title">{row.header.title}</hx-span>
+					<hx-span class="meta"
+						>{row.header.project} · {row.header.id} · {trackerStageLabels[
+							row.header.stage ?? 'idea'
+						]}</hx-span
+					>
+				{/if}
 			</hx-button>
+			{#if row.review?.flag && !answered.includes(key(row.review))}
+				{@const review = row.review}
+				<TrackerInboxChoices
+					flag={row.review.flag}
+					{busy}
+					onpick={(number) => void deliver(review, optionWrite(review, reviewed(review), number))}
+					onother={(text) => void deliver(review, writtenAnswer(review, reviewed(review), text))}
+				/>
+			{/if}
 		</hx-li>
 	{:else}
 		<hx-li><hx-p class="hint">{empty}</hx-p></hx-li>
@@ -53,7 +116,7 @@
 		margin: 0;
 		padding: 0;
 		display: grid;
-		gap: var(--hx-space-6);
+		gap: var(--hx-space-16);
 	}
 	:global(.rows button.row) {
 		display: grid;
@@ -69,6 +132,14 @@
 	}
 	:global(.rows [aria-current='true']) {
 		border-color: var(--hx-color-primary);
+	}
+	:global(.rows li) {
+		display: grid;
+		gap: var(--hx-space-8);
+		min-width: 0;
+	}
+	:global(.rows .question) {
+		overflow-wrap: anywhere;
 	}
 	:global(.rows .title) {
 		font-weight: var(--hx-style-weight-semibold);

@@ -1,9 +1,9 @@
+import { providerProgram } from './trackerManagedProviderProgram';
 import { loadTrackerNodeConfig } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import type { DatabaseSync } from 'node:sqlite';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { expect } from 'vitest';
 
 export const fixtureDockerImage = 'sha256:' + 'a'.repeat(64);
 
@@ -43,10 +43,24 @@ const fs = require('node:fs');
 const { join } = require('node:path');
 const target = args[args.indexOf('-t') + 1]?.replace(/^=/, '').replace(/:$/, '');
 const pane = (name) => join(__dirname, 'claude-pane-' + name);
+const stateFile = join(__dirname, 'account-home', '.claude-session-fixture');
 if (args.includes('capture-pane')) {
-	process.stdout.write(fs.readFileSync(join(__dirname, 'account-home', '.claude-session-fixture'), 'utf8') === 'onboarding'
-		? 'Choose the text style that looks best with your terminal\\n'
-		: '────────────\\n❯\\u00A0\\n────────────\\n  ⏵⏵ bypass permissions on\\n');
+	const mode = fs.readFileSync(stateFile, 'utf8');
+	const screens = {
+		onboarding: 'Choose the text style that looks best with your terminal\\n',
+		untrusted: ' Accessing workspace:\\n\\n Quick safety check: Is this a project you created or one you trust?\\n\\n ❯ No, exit\\n   Yes, I trust this folder\\n\\n Enter to confirm · Esc to cancel\\n',
+		crash: 'Error: synthetic launcher crash\\n'
+	};
+	process.stdout.write(screens[mode] ?? '────────────\\n❯\\u00A0\\n────────────\\n  ⏵⏵ bypass permissions on\\n');
+	process.exit(0);
+}
+if (args.includes('display-message')) {
+	process.stdout.write(fs.readFileSync(join(__dirname, 'pane-cwd-' + target), 'utf8') + '\\n');
+	process.exit(0);
+}
+if (args.includes('if-shell') && args.at(-1).includes('send-keys')) {
+	fs.appendFileSync(join(__dirname, 'trust-keys'), args.at(-1) + '\\n');
+	fs.writeFileSync(stateFile, 'ready');
 	process.exit(0);
 }
 if (args.includes('if-shell')) fs.rmSync(pane(target), { force: true });
@@ -60,8 +74,15 @@ if (args.includes('show-environment')) {
 	process.exit(matches ? 0 : 1);
 }
 if (!args.includes('new-session')) process.exit(2);
+if (fs.existsSync(join(__dirname, 'tmux-refuses'))) {
+	process.stderr.write('create window failed: synthetic refusal\\n');
+	process.exit(1);
+}
 const dir = args.indexOf('-c');
 const [command, ...workerArgs] = args.slice(dir + 2);
+const sessionArg = args[args.indexOf('-s') + 1];
+fs.writeFileSync(join(__dirname, 'pane-cwd-' + sessionArg), fs.realpathSync(args[dir + 1]));
+if (args.includes('-n')) fs.appendFileSync(join(__dirname, 'window-names'), args[args.indexOf('-n') + 1] + '\\n');
 if (workerArgs.includes(join(__dirname, 'claude'))) {
 	fs.writeFileSync(pane(args[args.indexOf('-s') + 1]), args[args.indexOf('-e') + 1]);
 }
@@ -71,52 +92,6 @@ const run = spawnSync(command, workerArgs, {
 if (run.status !== 0) process.exit(run.status || 3);
 // The start reply is lost after the synthetic provider has exited.
 process.exit(1);
-`;
-
-const providerProgram = `
-const { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } = require('node:fs');
-const { basename, join } = require('node:path');
-const argv = process.argv.slice(2);
-if (basename(process.argv[1]) === 'claude') {
-	const mode = join(process.env.HOME, '.claude-session-fixture');
-	if (!existsSync(mode)) process.exit(41);
-	if (process.env.USER !== require('node:os').userInfo().username) process.exit(42);
-	const startup = readFileSync(mode, 'utf8');
-	if (argv[0] === 'auth' && argv[1] === 'status') {
-		if (startup === 'unverified') { process.stdout.write('synthetic private diagnostic'); process.exit(2); }
-		const loggedIn = startup !== 'signed-out';
-		process.stdout.write(JSON.stringify({ loggedIn, authMethod: loggedIn ? 'claude.ai' : 'none' }));
-		process.exit(loggedIn ? 0 : 1);
-	}
-	if (startup === 'onboarding') process.exit(0);
-}
-if (basename(process.argv[1]) === 'codex') {
-	const timestamp = new Date().toISOString();
-	const dir = join(process.env.HOME, '..', 'tracker-test-codex-transcripts',
-		timestamp.slice(0, 10).replaceAll('-', '/'));
-	mkdirSync(dir, { recursive: true, mode: 0o700 });
-	const cwd = process.cwd();
-	const usage = { input_tokens: 120, cached_input_tokens: 25, output_tokens: 10 };
-	const competing = existsSync(join(process.env.HOME, '..', 'competing-codex-transcript'));
-	const session = (id) => ({ type: 'session_meta', payload: { id, cwd, timestamp, base_instructions: 'x'.repeat(30 * 1024) } });
-	const counters = { type: 'event_msg', payload: { type: 'token_count', info: { total_token_usage: usage } } };
-	for (const suffix of competing ? ['1', '2'] : ['1']) {
-		const id = '9c0f0000-0000-4000-8000-00000000000' + suffix;
-		writeFileSync(join(dir, 'rollout-' + timestamp + '-' + id + '.jsonl'), [
-			session(id), { type: 'event_msg', payload: { type: 'user_message', message: 'synthetic transcript text' } },
-			counters
-		].map(JSON.stringify).join('\\n') + '\\n', { mode: 0o600, flag: 'wx' });
-	}
-}
-const briefPath = argv.includes('--brief') ? argv[argv.indexOf('--brief') + 1] : argv.at(-1)?.match(/^Read your brief at (.+) and do that work/)[1];
-appendFileSync(join(process.env.HOME, 'invoked.ndjson'), JSON.stringify({
-	argv, cwd: process.cwd(), image: process.env.HARNESS_TASK_DOCKER_IMAGE ?? null,
-	user: process.env.USER ?? null, secret: Boolean(process.env.FIXTURE_SECRET),
-	brief: briefPath && readFileSync(briefPath, 'utf8'),
-	client: JSON.parse(readFileSync(process.env.HARNESS_TRACKER_CONFIG, 'utf8')),
-	legacy: process.env.HARNESS_TRACKER_LEGACY_BIN,
-	guestAuthFile: process.env.HARNESS_TRACKER_GUEST_AUTH_FILE ?? null
-}) + '\\n');
 `;
 
 export function seedRetainedRuns(db: DatabaseSync, now: number) {
@@ -134,18 +109,6 @@ export function seedRetainedRuns(db: DatabaseSync, now: number) {
 			'auto-old00' + id + '-r' + id
 		);
 	}
-}
-
-export async function startLinkedItem(runtime: TrackerNativeRuntimeService) {
-	runtime.store.appendLocal({
-		itemId: 'linked0001',
-		fields: { title: 'Work started from the retained pane', kind: 'task', status: 'open' }
-	});
-	const request = new Request('http://tracker-fixture.invalid/items/linked0001/start', {
-		method: 'POST',
-		body: JSON.stringify({ session_run: '8' })
-	});
-	expect((await runtime.items.handle(request)).ok).toBe(true);
 }
 
 export function managedTrackerItemRequest(
@@ -208,5 +171,28 @@ export function seedCompletedRetainedRun(
 	runtime.store.appendLocal({
 		itemId: 'old008abcd',
 		fields: { title: 'Finished fixture', kind: 'task', status: 'done' }
+	});
+}
+
+export function seedManagedBriefItems(runtime: TrackerNativeRuntimeService, itemId: string) {
+	runtime.store.appendLocal({
+		itemId: 'parent0001',
+		fields: {
+			title: 'Parent assignment',
+			notes: 'Inspect the pending sibling.',
+			kind: 'task',
+			status: 'open'
+		}
+	});
+	runtime.store.appendLocal({
+		itemId,
+		fields: {
+			title: 'Synthetic Docker work',
+			status: 'open',
+			kind: 'task',
+			project: 'Harness',
+			parent: 'parent',
+			due: '2099-03-04'
+		}
 	});
 }

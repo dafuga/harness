@@ -3,7 +3,6 @@ import {
 	mkdirSync,
 	readFileSync,
 	readdirSync,
-	realpathSync,
 	unlinkSync,
 	writeFileSync
 } from 'node:fs';
@@ -15,25 +14,35 @@ import { trackerNodeRuntime } from '../../../src/services/projects-sessions/trac
 import { withTempRepo } from '../../support/temporary';
 import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
+import { onIdleHost } from '../../support/trackerHostResourceFixture';
 import {
 	managedFixtureBindings,
 	managedForegroundConfig,
-	managedTrackerItemRequest
+	managedTrackerItemRequest,
+	seedManagedBriefItems
 } from '../../support/trackerManagedProcessFixture';
 import {
 	verifyCancelledClaim,
 	verifyExpiredClaim,
-	verifyLegacyQueuedClaim
+	verifyLegacyQueuedClaim,
+	verifyManagedBrief
 } from '../../support/trackerManagedLaunchAssertions';
 
-import { verifyClaudeStartupRejection } from '../../support/trackerClaudeStartupFixture';
+import { verifyInPlaceBrief } from '../../support/trackerInPlaceFixture';
+import { expectedTokenUsage } from '../../support/trackerCodexUsageExpectation';
+import {
+	verifyClaudeLinkage,
+	verifyClaudeStartupRejection,
+	verifyOwnedWorktreeTrust,
+	verifyStartErrorCause
+} from '../../support/trackerClaudeStartupFixture';
 
 const itemId = 'abc123def4';
 const node = 'daniel-primary-mbp';
 
 test(
 	'the configured foreground completes managed runs through the normal Tracker done request',
-	{ timeout: 15_000 },
+	{ timeout: 60_000 },
 	() =>
 		measureWorkload('service.projects-sessions-tracker-node', 'managed-foreground', async () => {
 			await withTempRepo(proveManagedForeground);
@@ -47,6 +56,11 @@ test(
 						await withTempRepo((repo) => proveNativeUsage(repo, false, join(repo.root, 'ops')));
 						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'signed-out'));
 						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'onboarding'));
+						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'untrusted'));
+						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'crash'));
+						await withTempRepo(verifyOwnedWorktreeTrust);
+						await withTempRepo(verifyClaudeLinkage);
+						await withTempRepo(verifyStartErrorCause);
 					}
 				);
 			}
@@ -55,25 +69,25 @@ test(
 
 async function proveManagedForeground({ root, git }: TemporaryRepo) {
 	git('commit', '--allow-empty', '-m', 'Fixture source');
+	git('remote', 'add', 'origin', 'git@github.com:Greymass/synthetic.git');
 	const { config, profiles } = managedFixtureBindings(root);
 	const database = new DatabaseSync(':memory:');
 	const signal = new AbortController().signal;
 	try {
 		const runtime = new TrackerNativeRuntimeService(database, {
-			...trackerNodeRuntime(managedForegroundConfig(root, config), (scope) => {
-				expect(scope).toMatchObject({ itemId, apiPort: 49281 });
-				const run = database
-					.prepare('SELECT auto_token, attempt FROM runs WHERE id = ?')
-					.get(scope.runId);
-				expect(JSON.parse(scope.key)).toEqual([itemId, run?.auto_token, run?.attempt]);
-				writeFileSync(scope.path, 'synthetic host-signer fixture', { flag: 'wx', mode: 0o600 });
-			}),
+			...onIdleHost(
+				trackerNodeRuntime(managedForegroundConfig(root, config), (scope) => {
+					expect(scope).toMatchObject({ itemId, apiPort: 49281 });
+					const run = database
+						.prepare('SELECT auto_token, attempt FROM runs WHERE id = ?')
+						.get(scope.runId);
+					expect(JSON.parse(scope.key)).toEqual([itemId, run?.auto_token, run?.attempt]);
+					writeFileSync(scope.path, 'synthetic host-signer fixture', { flag: 'wx', mode: 0o600 });
+				})
+			),
 			now: () => Date.now()
 		});
-		runtime.store.appendLocal({
-			itemId,
-			fields: { title: 'Synthetic Docker work', status: 'open', kind: 'task', project: 'Harness' }
-		});
+		seedManagedBriefItems(runtime, itemId);
 		expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).status).toBe(200);
 		await runtime.scheduler!.tick(signal);
 		expect(database.prepare('SELECT state,tmux FROM runs').all()).toEqual([
@@ -93,6 +107,7 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 			brief: expect.stringContaining('tracker done abc123'),
 			guestAuthFile: expect.stringMatching(/\/effects\/[a-f0-9]{64}\/guest-auth\.json$/)
 		});
+		verifyManagedBrief(launched, root);
 		expect(launched.guestAuthFile.startsWith(launched.cwd + '/')).toBe(false);
 		expect(existsSync(launched.guestAuthFile)).toBe(false);
 		await verifyLostSession(runtime, database, config.stateDirectory);
@@ -114,12 +129,13 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 	try {
 		const runtime = new TrackerNativeRuntimeService(
 			database,
-			trackerNodeRuntime(managedForegroundConfig(root, config, 'macos', ops))
+			onIdleHost(trackerNodeRuntime(managedForegroundConfig(root, config, 'macos', ops)))
 		);
 		runtime.store.appendLocal({
 			itemId,
 			fields: {
 				title: 'Synthetic Codex work',
+				model: 'sol',
 				status: 'open',
 				kind: 'task',
 				...(ops ? { agent: 'cos', due: '2000-01-01', created_by: node } : { project: 'Harness' })
@@ -134,19 +150,14 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 		}
 		expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
 		await runtime.scheduler!.tick(signal);
-		if (ops) {
-			const invocation = JSON.parse(
-				readFileSync(join(config.native.profile, 'invoked.ndjson'), 'utf8')
-			);
-			expect(invocation.cwd).toBe(realpathSync(ops));
-		}
+		if (ops) verifyInPlaceBrief(config, ops);
 		expect(database.prepare('SELECT state FROM runs').get()).toEqual({ state: 'running' });
 		expect((await managedTrackerItemRequest(runtime, itemId, 'done')).ok).toBe(true);
 		await runtime.scheduler!.tick(signal);
 		expect(
 			database
 				.prepare(
-					'SELECT state,outcome,input_tokens,output_tokens,cache_read_tokens,cache_write_tokens FROM runs'
+					'SELECT state,outcome,input_tokens,output_tokens,cache_read_tokens,cache_write_tokens,credits_balance FROM runs'
 				)
 				.get()
 		).toEqual({
@@ -157,17 +168,6 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 	} finally {
 		database.close();
 	}
-}
-
-function expectedTokenUsage(missing: boolean) {
-	if (!missing)
-		return { input_tokens: 95, output_tokens: 10, cache_read_tokens: 25, cache_write_tokens: 0 };
-	return {
-		input_tokens: null,
-		output_tokens: null,
-		cache_read_tokens: null,
-		cache_write_tokens: null
-	};
 }
 
 async function verifyLostSession(
@@ -186,6 +186,9 @@ async function verifyLostSession(
 	});
 	expect(active).toBeDefined();
 	const attempt = join(attempts, active!);
+	const brief = readFileSync(join(attempt, 'brief.md'), 'utf8');
+	expect(brief).toMatch(/## Earlier attempts[\s\S]+run 1[^\n]*done/);
+	expect(brief).toMatch(/earlier attempt.*branches.*uncommitted changes.*open PRs/i);
 	unlinkSync(join(attempt, 'exit'));
 	const probe = join(attempts, '..', 'tmux-presence');
 	const token = readFileSync(join(attempt, 'started'), 'utf8').trim();

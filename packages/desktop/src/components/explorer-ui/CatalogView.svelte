@@ -181,7 +181,7 @@
 		height: var(--hx-space-16);
 		border-radius: var(--hx-radius-round);
 		background: var(--hx-color-text-muted);
-		transition: transform var(--hx-motion-fast) ease;
+		transition: transform var(--hx-motion-fast) var(--hx-motion-ease);
 	}
 	.switch-row > input:checked {
 		border-color: var(--hx-color-primary);

@@ -4,57 +4,177 @@
 	"uid": "u_qoahc5zxzf",
 	"kind": "component",
 	"title": "HubHomeChoices",
-	"responsibility": "Owns the HubHomeChoices Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Offers an open Hub ask as option buttons with a confirm step for deploy, money and secret asks, plus a written Other answer.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeChoices.svelte"],
-		"symbols": ["HubHomeChoices"]
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeChoices.svelte"],
+		"symbols": [
+			"HubHomeChoices",
+			"HubHomeChoices.badge",
+			"HubHomeChoices.choiceButton",
+			"HubHomeChoices.otherDialog",
+			"HubHomeChoices.confirmDialog",
+			"HubHomeChoices.confirmation"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeChoices.agent",
-				"type": "Pick<HomeAgent, 'options' | 'confirm'>",
-				"required": true
+				"type": "Pick<HomeAgent, 'options' | 'confirm' | 'question'>",
+				"required": true,
+				"description": "The question, choices and confirm kind of the open ask."
 			},
 			{
 				"name": "HubHomeChoices.busy",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Disables the choices while an answer is being sent. Defaults to false."
 			},
 			{
 				"name": "HubHomeChoices.onpick",
 				"type": "(number: number, confirmed: boolean) => void",
-				"required": true
+				"required": true,
+				"description": "Receives the 1-based option number and whether the confirm step was completed."
+			},
+			{
+				"name": "HubHomeChoices.onother",
+				"type": "(text: string) => void",
+				"required": true,
+				"description": "Receives the answer written in the Other modal."
+			},
+			{
+				"name": "HubHomeChoices.present",
+				"type": "(content: Snippet | null) => void",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Places a choice detail or written-answer dialog in the caller’s dialog outlet when supplied."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeChoices",
-				"type": "markup"
+				"type": "markup",
+				"description": "Choice buttons, the optional confirm step and the Other modal."
 			}
 		],
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeChoices.badge",
+				"inputs": [
+					{
+						"name": "HubHomeChoices.badge.recommended",
+						"type": "boolean",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.badge",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeChoices.choiceButton",
+				"inputs": [
+					{
+						"name": "HubHomeChoices.choiceButton.number",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "HubHomeChoices.choiceButton.option",
+						"type": "HomeChoice['option']",
+						"required": true
+					},
+					{
+						"name": "HubHomeChoices.choiceButton.linkedLabel",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "HubHomeChoices.choiceButton.linkedEffect",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.choiceButton",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeChoices.otherDialog",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.otherDialog",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeChoices.confirmDialog",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.confirmDialog",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeChoices.confirmation",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.confirmation",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "hub.function.projects-sessions-hub-home-choices",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -82,15 +202,30 @@
 			"unit": "reports.component.shared-primitives-atoms-html-strong",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.strings-link-segments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeChoices.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeChoices.svelte"
 			}
 		]
 	},

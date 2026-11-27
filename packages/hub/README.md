@@ -49,11 +49,21 @@ A phone can open owned or joined hosted projects without a paired Mac. A paired 
 
 Google sign-in in the Mac app registers it under its verified Hub account with `POST /api/remote/hosts`. The website’s Devices page and signed-in iPhone list that account’s linked Macs with `GET /api/remote/hosts?linked=1`. They can open a read-only encrypted connection to an online Mac without a QR code or approval prompt. The browser opens a same-origin WebSocket authenticated by its Hub session. The Hub derives the owner from the verified session on every management call and forwards requests to the relay through its private `REMOTE_HOSTS` binding. With that binding or `HARNESS_RELAY_ORIGIN` absent, remote access returns `503 remote-disabled`. An owner can unlink the Mac or revoke a connected device in settings. For a release, qualify the Hub and relay together before shipping Mac or iPhone builds that depend on them.
 
-## Validation
+## Post-release gate
 
-`bun run check:collaboration`, `bun run check:hub` and `bun run check:desktop` are included in the root check. Security tests use generated keys and synthetic provider/HTTP fixtures, without live credentials or invitations. Browser/native screenshots are external evidence and are not committed. Live provider registration and authorized hosted publication are separate acceptance layers.
+Record the deployed revision and installed versions in the same release Tracker item. Keep
+the item open until both applicable checks below pass on that release.
 
-The browser suite (`bun run --cwd packages/hub test:e2e`) starts its own preview on `127.0.0.1:5795` and refuses a server that is already there; it never uses the development server on 5798. `HARNESS_HUB_TEST_PORT=<port>` names another free port from 1024 to 65535.
+1. For changes to Home counts or their data sources, [verify Hub Home live counts](#verify-hub-home-live-counts).
+2. After every Hub, Mac or iPhone release, run the Needs you answer canary from the repository
+   root on the computer with automation Chrome. Record its Hub web, Mac app and iPhone results
+   and cleanup on the release item.
+
+   ```sh
+   bun scripts/needs-you-canary.ts --release <release item id> --tap mac,iphone
+   ```
+
+   Follow the [Needs-you release canary](../../specification/features/planned/needs-you-release-canary.md).
 
 ### Verify Hub Home live counts
 
@@ -85,3 +95,9 @@ Record the deployed URL, revision, deployment ID, command result and the observe
 in the release's Tracker note. Preserve any inspected image evidence privately. Use the real
 signed-in Home and live Tracker for this gate. Health probes, fixture runs and screenshots of
 injected data can support verification of other release requirements.
+
+## Validation
+
+`bun run check:collaboration`, `bun run check:hub` and `bun run check:desktop` are included in the root check. Security tests use generated keys and synthetic provider/HTTP fixtures, without live credentials or invitations. Browser/native screenshots are external evidence and are not committed. Live provider registration and authorized hosted publication are separate acceptance layers.
+
+The browser suite (`bun run --cwd packages/hub test:e2e`) starts its own preview on `127.0.0.1:5795` and refuses a server that is already there; it never uses the development server on 5798. `HARNESS_HUB_TEST_PORT=<port>` names another free port from 1024 to 65535.

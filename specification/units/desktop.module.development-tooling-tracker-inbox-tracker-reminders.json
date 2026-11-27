@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-tracker-inbox-tracker-reminders",
+	"uid": "u_saspvpttcc",
+	"kind": "module",
+	"title": "trackerReminders",
+	"responsibility": "Owns the trackerReminders library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/lib/development-tooling/tracker-inbox/trackerReminders.ts"],
+		"symbols": ["reminderHeaders", "reminderWrite"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reminderHeaders.headers",
+				"type": "readonly InboxHeader[]",
+				"required": true
+			},
+			{
+				"name": "reminderWrite.header",
+				"type": "InboxHeader",
+				"required": true
+			},
+			{
+				"name": "reminderWrite.until",
+				"type": "string",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "reminderHeaders",
+				"type": "InboxHeader[]"
+			},
+			{
+				"name": "reminderWrite",
+				"type": "ConfirmedWrite"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "reminderHeaders",
+				"inputs": [
+					{
+						"name": "reminderHeaders.headers",
+						"type": "readonly InboxHeader[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reminderHeaders",
+						"type": "InboxHeader[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reminderWrite",
+				"inputs": [
+					{
+						"name": "reminderWrite.header",
+						"type": "InboxHeader",
+						"required": true
+					},
+					{
+						"name": "reminderWrite.until",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "reminderWrite",
+						"type": "ConfirmedWrite"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/trackerReminders.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/trackerReminders.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,3055 @@
+{
+	"schemaVersion": 1,
+	"revision": "bc78f284cbcae66eeb574f65d454fcea4aaa26ff",
+	"bugClass": {
+		"id": "quiet-hours-gate-work",
+		"title": "Notification quiet hours also block work launches",
+		"cause": "A quiet-hour policy intended to suppress user-facing notifications is also applied to launching or scheduling work, so eligible jobs are deferred during that window. This can happen through a shared quiet-hours predicate or a separate inline time-window check in a work queue.",
+		"criteria": "Classify another site when a notification or messaging quiet-hours rule gates automatic work launch, queue processing, or job scheduling. Either shared notification quiet-hour logic or an independent inline time-window check in the work path is sufficient. Do not classify notification suppression alone.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "automaticQuietHour",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "queueIdleWork",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "quietHours",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "quiet_hours",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "isQuietHour",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "quietHour",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "shouldSuppressNotifications",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "notificationQuietHours",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "isQuietHour",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "isWithinQuietHours",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "shouldDeferWork",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "queueIdleWork",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "launchAutomaticWork",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "setHours(",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "getHours(",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "$effect",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "onMount",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"quiet",
+			"hours",
+			"notification",
+			"queue",
+			"idle",
+			"automatic",
+			"launch",
+			"work"
+		],
+		"pathHints": [
+			{
+				"contains": "src/workflows/",
+				"weight": 5
+			},
+			{
+				"contains": "src/services/",
+				"weight": 4
+			},
+			{
+				"contains": "src/core/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "test/services/",
+				"weight": -3
+			},
+			{
+				"contains": "test/utils/",
+				"weight": -3
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -1
+			}
+		]
+	},
+	"model": "gpt-6-luna",
+	"scannedFiles": 9414,
+	"skipped": [],
+	"candidates": [
+		{
+			"id": "08e6de37128cd11dab3f",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerWatchHostSessions.ts",
+			"line": 78,
+			"lastLine": 78,
+			"score": 29,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "queueIdleWork",
+					"weight": 5
+				},
+				{
+					"kind": "call",
+					"value": "queueIdleWork",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 66–78 enable and invoke `queueIdleWork` when `automaticEnabled` is not false, but the excerpt shows no quiet-hours predicate or time-window check; the queue call alone does not establish quiet hours defer work."
+		},
+		{
+			"id": "d4e86dfdeecf88d49fc0",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests.ts",
+			"line": 26,
+			"lastLine": 26,
+			"score": 23,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "queueIdleWork",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 14–26 establish `queueIdleWork` as a watchdog queue function and define queue grace periods, but this excerpt does not show a quiet-hours predicate or whether it gates dispatch; the triggering path is incomplete."
+		},
+		{
+			"id": "8c443f9efaaa75639e63",
+			"path": "src/helpers/attention-timing/quietHourBoundary.ts",
+			"line": 4,
+			"lastLine": 10,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "isQuietHour",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "quietHour",
+					"weight": 2
+				},
+				{
+					"kind": "call",
+					"value": "isQuietHour",
+					"weight": 4
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 8–10 define `quietHourBoundary` to return the end of a quiet window, but the excerpt does not show any work-path caller or launch being deferred; its own operation is only boundary calculation."
+		},
+		{
+			"id": "8ed418c4372501af297f",
+			"path": "src/services/projects-sessions/TrackerSupervisorService.types.ts",
+			"line": 29,
+			"lastLine": 29,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quiet_hours",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "`TrackerSupervisorViews.quiet_hours` at line 29 is only a view type field (`unknown`). No work-launch or scheduling path is shown."
+		},
+		{
+			"id": "7c5fa925e7aa62d6aa4f",
+			"path": "src/services/projects-sessions/tracker-web-push-service/planNeedsYouPush.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quietHour",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 1–7 only show `quietHourBoundary` imported into a web-push notification planner. The excerpt does not show the planner's trigger or any work-launch gating."
+		},
+		{
+			"id": "9025eba7193ab94fb827",
+			"path": "src/helpers/attention-timing/isQuietHour.ts",
+			"line": 7,
+			"lastLine": 7,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "isQuietHour",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 7–14 implement the shared quiet-window predicate, including null and equal-start/end guards, but show no caller or automatic-work launch path."
+		},
+		{
+			"id": "0021da64b404e36ae50a",
+			"path": "packages/hub/src/components/projects-sessions/HostedWorkspace.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 1–5 only show imports and setup for a hosted workspace. The excerpt does not include the relevant `onMount` body or any quiet-hours check, so it does not establish whether automatic work is gated."
+		},
+		{
+			"id": "a6d512fe9a1247400b43",
+			"path": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"line": 7,
+			"lastLine": 7,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "The excerpt shows only an `onMount` import at line 7; it does not show a quiet-hours rule or a work launch trigger."
+		},
+		{
+			"id": "968d06c842b022cb18c3",
+			"path": "packages/desktop/src/components/explorer-ui/EntityCard.svelte",
+			"line": 20,
+			"lastLine": 20,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 20–27 show an effect requesting an entity thumbnail through `imageUrl`; no notification quiet-hours check or automatic work queue is visible."
+		},
+		{
+			"id": "98eeba5840bdf9abf0da",
+			"path": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"line": 57,
+			"lastLine": 57,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 45–57 show thread-selection state and an effect that clears selections for another option; no quiet-hours condition gates work launch."
+		},
+		{
+			"id": "a26b13834fb8278306dd",
+			"path": "packages/desktop/src/components/game-authoring/game-preview/GamePreview.svelte",
+			"line": 54,
+			"lastLine": 54,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 42–54 describe a quiet status line for a control or active run and update prompt style; no notification quiet-hours rule or deferred work trigger is shown."
+		},
+		{
+			"id": "52506e0d51aa36297af3",
+			"path": "packages/desktop/src/components/game-authoring/GameCreate.svelte",
+			"line": 28,
+			"lastLine": 28,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 16–28 show component state, readiness, and bridge discovery on mount. The excerpt does not show a quiet-hours check governing a work launch."
+		},
+		{
+			"id": "83f25e3a7dd10571b666",
+			"path": "packages/desktop/src/components/game-authoring/GameLevelPlan.svelte",
+			"line": 94,
+			"lastLine": 98,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 82–98 show provider discovery and a generation function guarded by readiness, project, revision, and busy state; no quiet-hours rule is visible."
+		},
+		{
+			"id": "355ac9742c3b3df8ca13",
+			"path": "packages/desktop/src/components/game-authoring/GameWorkspace.svelte",
+			"line": 58,
+			"lastLine": 58,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 46–58 show a view-synchronization effect and run tracking; no notification quiet-hours policy or work-queue gate appears."
+		},
+		{
+			"id": "ed880a81a22cc5b1a60f",
+			"path": "packages/desktop/src/components/git-source-history/history-panel/HistoryPanel.svelte",
+			"line": 36,
+			"lastLine": 36,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 24–36 show history pagination state and coverage handling; no automatic work launch or quiet-hours check is present."
+		},
+		{
+			"id": "e0b8fc4293f399a8852b",
+			"path": "packages/desktop/src/components/networking-security/HostedConnection.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "The visible excerpt only shows `onMount` imported at line 5 and does not show a quiet-hours check or work launch/scheduling path. Trigger and any limiting condition are not established."
+		},
+		{
+			"id": "e203a65d092deeb9e8ea",
+			"path": "packages/desktop/src/components/networking-security/remote-phone-panel/RemotePhonePanel.svelte",
+			"line": 28,
+			"lastLine": 28,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 16–28 show reactive computer discovery for an unpaired remote-phone panel. No notification quiet-hours rule or automatic work queue/launch is visible, so the relevant trigger is not established."
+		},
+		{
+			"id": "78afd63be944be758452",
+			"path": "packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte",
+			"line": 100,
+			"lastLine": 100,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 88–100 show reactive selection of design-panel view state. No quiet-hours rule or work launch/scheduling path is visible, so the relevant trigger is not established."
+		},
+		{
+			"id": "2d2c987b8acaa3913a00",
+			"path": "packages/desktop/src/components/shared-primitives/ImageThumbnail.svelte",
+			"line": 16,
+			"lastLine": 16,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 4–16 show an image thumbnail loading its URL in a reactive effect. No quiet-hours rule or work launch/scheduling path is visible, so the relevant trigger is not established."
+		},
+		{
+			"id": "986cbe878d75073dbd6c",
+			"path": "packages/desktop/src/components/shared-primitives/PriorImage.svelte",
+			"line": 28,
+			"lastLine": 28,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 16–28 show a prior-image component loading an image URL. No quiet-hours rule or work launch/scheduling path is visible, so the relevant trigger is not established."
+		},
+		{
+			"id": "bffe9c9aff82a5f24015",
+			"path": "packages/desktop/src/components/shared-primitives/recorded-preview/RecordedPreview.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "The excerpt shows `onMount` imported at line 5, but no quiet-hours rule or automatic work launch/scheduling path. The relevant trigger is not established."
+		},
+		{
+			"id": "025a5d0f128818a2a6b6",
+			"path": "packages/desktop/src/components/shared-primitives/RevisionPicker.svelte",
+			"line": 23,
+			"lastLine": 23,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 11–23 show revision state synchronized from the workspace snapshot. No quiet-hours rule or work launch/scheduling path is visible, so the relevant trigger is not established."
+		},
+		{
+			"id": "2a525df879146634d75e",
+			"path": "packages/desktop/src/routes/+layout.svelte",
+			"line": 7,
+			"lastLine": 7,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "The excerpt shows layout imports through line 17, including `onMount` at line 7, but no quiet-hours check or work launch/scheduling path. The relevant trigger is not established."
+		},
+		{
+			"id": "4011c9d716bd09fdafe1",
+			"path": "packages/desktop/src/routes/+page.svelte",
+			"line": 6,
+			"lastLine": 6,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "The excerpt only shows `onMount` imported at line 6; it contains no quiet-hours predicate or work launch, scheduling, or queue path. Trigger and limiting behavior are not shown."
+		},
+		{
+			"id": "9b844e85088e99472ecb",
+			"path": "packages/desktop/src/routes/designs/+page.svelte",
+			"line": 7,
+			"lastLine": 7,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "The excerpt only shows `onMount` imported at line 7. No notification quiet-hours rule or automatic work launch/scheduling path is visible, so the candidate mechanism cannot be established."
+		},
+		{
+			"id": "24fd18037fc4e7cc9b5d",
+			"path": "packages/desktop/src/routes/game/+page.svelte",
+			"line": 7,
+			"lastLine": 7,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "The excerpt shows a game workspace page and `onMount` import at line 7, but no quiet-hours check gating work. The relevant trigger and any guard are not shown."
+		},
+		{
+			"id": "f23ba1ec195cfffe5b17",
+			"path": "packages/desktop/src/routes/settings/+page.svelte",
+			"line": 6,
+			"lastLine": 6,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "The excerpt shows `onMount` imported at line 6 and settings-route handling, but no quiet-hours policy applied to work launching or scheduling. The relevant path is not shown."
+		},
+		{
+			"id": "4af667a43b92a498234a",
+			"path": "packages/hub/src/components/accounts-access/LinkedComputers.svelte",
+			"line": 77,
+			"lastLine": 77,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 77–82 show an effect loading linked computers for the current actor and cleanup via `closeComputer`; no quiet-hours check or work queue/launch path is visible."
+		},
+		{
+			"id": "8ee3db533e1cb8fc23d1",
+			"path": "packages/hub/src/components/accounts-access/login-panel/LoginPanel.svelte",
+			"line": 22,
+			"lastLine": 22,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 22–34 show an effect that loads a Google sign-in challenge and renders a button; no quiet-hours predicate gates work. The candidate's relevant mechanism is not shown."
+		},
+		{
+			"id": "c23afde505ae77ddd503",
+			"path": "packages/hub/src/components/planning-collaboration/HostedDesigns.svelte",
+			"line": 27,
+			"lastLine": 27,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 27–39 show an effect fetching hosted design data and updating the latest response; no quiet-hours rule or work launch/scheduling path is visible."
+		},
+		{
+			"id": "078b35a1235e4eb11f79",
+			"path": "packages/hub/src/components/projects-sessions/HubHomeProjects.svelte",
+			"line": 34,
+			"lastLine": 34,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 34–47 show an effect that reads a project snapshot when the selected project changes; no notification quiet-hours gate or automatic work path is visible."
+		},
+		{
+			"id": "82c8ae8822e030763edf",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerWatchHostSessions.ts",
+			"line": 11,
+			"lastLine": 11,
+			"score": 23,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "queueIdleWork",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cb4a6625f19b409764c1",
+			"path": "src/services/projects-sessions/tracker-health-service/trackerHealthFallback.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "isQuietHour",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "20958135ab2461b1d0dc",
+			"path": "test/helpers/attention-timing/is-quiet-hour.test.ts",
+			"line": 11,
+			"lastLine": 19,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "isQuietHour",
+					"weight": 3
+				},
+				{
+					"kind": "call",
+					"value": "isQuietHour",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0ba1ea12ad2518b6ebfa",
+			"path": "test/helpers/attention-timing/is-quiet-hour.test.ts",
+			"line": 20,
+			"lastLine": 22,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "isQuietHour",
+					"weight": 3
+				},
+				{
+					"kind": "call",
+					"value": "isQuietHour",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7ff9cc0c42e803111f90",
+			"path": "src/services/projects-sessions/tracker-web-push-service/planNeedsYouPush.ts",
+			"line": 50,
+			"lastLine": 50,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quietHour",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c255ebf4e59c89ab8fde",
+			"path": "src/helpers/attention-timing/planDigestAlertTick.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "isQuietHour",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "37cb8bea76507daf2aac",
+			"path": "src/services/projects-sessions/tracker-notification-service/attentionBatch.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quietHour",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b7606d93fe00ae0c8279",
+			"path": "packages/hub/src/components/projects-sessions/HubHomeNotifications.svelte",
+			"line": 40,
+			"lastLine": 40,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b071e78d36feee9d248e",
+			"path": "packages/hub/src/components/projects-sessions/HostedWorkspace.svelte",
+			"line": 32,
+			"lastLine": 32,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f4607af1e678e9f9aef2",
+			"path": "packages/hub/src/components/projects-sessions/HostedWorkspace.svelte",
+			"line": 43,
+			"lastLine": 43,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "937f373a6ef8f12304e7",
+			"path": "src/helpers/attention-timing/nextAttentionBatchAt.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quietHour",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "df6b4bfc73fcf31ad57a",
+			"path": "packages/desktop/src/components/agents-providers/ChatAgents.svelte",
+			"line": 19,
+			"lastLine": 19,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "93e09ebf1dc0f816033b",
+			"path": "packages/desktop/src/components/agents-providers/ProjectAgent.svelte",
+			"line": 6,
+			"lastLine": 6,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "258c9755469542ee83ff",
+			"path": "packages/desktop/src/components/development-tooling/DeploymentActivity.svelte",
+			"line": 7,
+			"lastLine": 7,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b34efbddeca0589269c8",
+			"path": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"line": 54,
+			"lastLine": 57,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b4bd3af8f90e9ba67259",
+			"path": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"line": 63,
+			"lastLine": 63,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "65dc851aadbfd9eed77d",
+			"path": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"line": 84,
+			"lastLine": 84,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "23df8319a916fe7ad748",
+			"path": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"line": 97,
+			"lastLine": 97,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5c61b3d075ecd20b201c",
+			"path": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"line": 77,
+			"lastLine": 77,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8fb865664c201f6c5e6a",
+			"path": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"line": 86,
+			"lastLine": 86,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a12d4b9b64b8f5158003",
+			"path": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"line": 101,
+			"lastLine": 101,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "34029d3ecf41ec00e09a",
+			"path": "packages/desktop/src/components/game-authoring/GameWorkspace.svelte",
+			"line": 131,
+			"lastLine": 131,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "37ab0ae5c0634031c10b",
+			"path": "packages/desktop/src/components/networking-security/HostedConnection.svelte",
+			"line": 17,
+			"lastLine": 17,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eb29b934962f8d559d3e",
+			"path": "packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte",
+			"line": 109,
+			"lastLine": 113,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e84415e101690726d536",
+			"path": "packages/desktop/src/components/shared-primitives/recorded-preview/RecordedPreview.svelte",
+			"line": 29,
+			"lastLine": 29,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0fdb0b3ee47b31547aba",
+			"path": "packages/desktop/src/components/shared-primitives/recorded-preview/RecordedPreview.svelte",
+			"line": 45,
+			"lastLine": 45,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "171eb7bbad595d61f047",
+			"path": "packages/desktop/src/routes/+page.svelte",
+			"line": 38,
+			"lastLine": 38,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3b94366fd35478442913",
+			"path": "packages/desktop/src/routes/settings/+page.svelte",
+			"line": 24,
+			"lastLine": 24,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4ff1982fa5acdc0165ee",
+			"path": "packages/hub/src/components/projects-sessions/followNeedsLink.svelte.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5a20d0b3ce46032bcf44",
+			"path": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"line": 114,
+			"lastLine": 114,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2fed4f505ba852c85d74",
+			"path": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"line": 126,
+			"lastLine": 126,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c37f682084d5af10bab3",
+			"path": "packages/hub/src/components/projects-sessions/HubHomeAgents.svelte",
+			"line": 65,
+			"lastLine": 65,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d03b1350be16e1951aab",
+			"path": "packages/hub/src/components/projects-sessions/ProjectCreate.svelte",
+			"line": 7,
+			"lastLine": 7,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c6477690f8c1a585cd9e",
+			"path": "packages/hub/src/components/projects-sessions/ProjectCreate.svelte",
+			"line": 22,
+			"lastLine": 22,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0b77f137e565475931f7",
+			"path": "packages/hub/src/components/public-site/HomePage.svelte",
+			"line": 7,
+			"lastLine": 7,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7977e10e7dab3b1c4366",
+			"path": "packages/hub/src/components/public-site/HomePage.svelte",
+			"line": 26,
+			"lastLine": 26,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "37fc772eb1d5ec694096",
+			"path": "packages/hub/src/components/shared-primitives/MembersPanel.svelte",
+			"line": 8,
+			"lastLine": 8,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "67487bf97cdb749b6f86",
+			"path": "packages/hub/src/components/shared-primitives/MembersPanel.svelte",
+			"line": 19,
+			"lastLine": 19,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f78a4d3e910d1f9b9eb1",
+			"path": "packages/hub/src/components/shared-primitives/native-approval/NativeApproval.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9d442209982b6a1aae66",
+			"path": "packages/hub/src/components/shared-primitives/native-approval/NativeApproval.svelte",
+			"line": 21,
+			"lastLine": 21,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f13a6f5f8c44ffbade42",
+			"path": "packages/hub/src/routes/(accounts-access)/devices/+page.svelte",
+			"line": 31,
+			"lastLine": 31,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "636835a8b053294df613",
+			"path": "packages/hub/src/routes/projects/+page.svelte",
+			"line": 54,
+			"lastLine": 54,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "806c78bdb6d485990dcf",
+			"path": "packages/hub/src/routes/projects/+page.svelte",
+			"line": 82,
+			"lastLine": 82,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "171058916582adb19813",
+			"path": "packages/hub/src/routes/projects/+page.svelte",
+			"line": 96,
+			"lastLine": 96,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f515b42d717d014a17ae",
+			"path": "packages/hub/src/routes/tracker-overview/+page.svelte",
+			"line": 33,
+			"lastLine": 33,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7e9e9c10d00bac5a1bf7",
+			"path": "packages/desktop/src/components/agents-providers/AgentControls.svelte",
+			"line": 33,
+			"lastLine": 41,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "94bb5a32a8a705e8bb97",
+			"path": "packages/desktop/src/components/agents-providers/AgentControls.svelte",
+			"line": 45,
+			"lastLine": 45,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dbacfee90c2f63b1c4aa",
+			"path": "packages/desktop/src/components/agents-providers/AgentSettings.svelte",
+			"line": 6,
+			"lastLine": 10,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d3bfbcacd65f7c0c6012",
+			"path": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
+			"line": 6,
+			"lastLine": 6,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "40a0acbf1f0137b73a8d",
+			"path": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
+			"line": 88,
+			"lastLine": 88,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1c06d489b5b03c0f6a81",
+			"path": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxDetail.svelte",
+			"line": 143,
+			"lastLine": 143,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "54f5a2763767c8e5d966",
+			"path": "packages/desktop/src/components/execution-runtimes/RuntimePane.svelte",
+			"line": 27,
+			"lastLine": 27,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0d81ca424670e043bea1",
+			"path": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"line": 7,
+			"lastLine": 7,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "57d406e1b6a76f762aed",
+			"path": "packages/desktop/src/components/game-authoring/game-preview/GamePreview.svelte",
+			"line": 136,
+			"lastLine": 136,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "234bdca1ee884da69e5c",
+			"path": "packages/desktop/src/components/game-authoring/game-preview/GamePreview.svelte",
+			"line": 145,
+			"lastLine": 150,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e38afc0e20cdaa10b86d",
+			"path": "packages/desktop/src/components/game-authoring/GameCheckpointImage.svelte",
+			"line": 78,
+			"lastLine": 85,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "41ec0feb03deb1c64efa",
+			"path": "packages/desktop/src/components/game-authoring/GameCreate.svelte",
+			"line": 9,
+			"lastLine": 9,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2285c5026a3f86745336",
+			"path": "packages/desktop/src/components/game-authoring/GameGraph.svelte",
+			"line": 40,
+			"lastLine": 40,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "826f9e070bc284ac87c6",
+			"path": "packages/desktop/src/components/game-authoring/GameGraphFit.svelte",
+			"line": 6,
+			"lastLine": 6,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "873d54c9278239be7116",
+			"path": "packages/desktop/src/components/game-authoring/GameGraphFit.svelte",
+			"line": 27,
+			"lastLine": 27,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1c80d137385b07bd78e0",
+			"path": "packages/desktop/src/components/game-authoring/GameLevelPlan.svelte",
+			"line": 78,
+			"lastLine": 84,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "96885085e8bc2e277b47",
+			"path": "packages/desktop/src/components/game-authoring/GameLiveVideo.svelte",
+			"line": 8,
+			"lastLine": 8,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ae5da4756d055d0d8c1d",
+			"path": "packages/desktop/src/components/shared-primitives/AnnotatedImage.svelte",
+			"line": 28,
+			"lastLine": 28,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5288680f601e383cfcf8",
+			"path": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",
+			"line": 61,
+			"lastLine": 61,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e2baba08818d3ad860a8",
+			"path": "packages/desktop/src/components/shared-primitives/Composer.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1522a621d627eb8b6c56",
+			"path": "packages/desktop/src/components/shared-primitives/Composer.svelte",
+			"line": 56,
+			"lastLine": 56,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6bc92bafeaf77cbb6e7c",
+			"path": "packages/desktop/src/routes/+layout.svelte",
+			"line": 103,
+			"lastLine": 103,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b596f19fb7d1665972a9",
+			"path": "packages/desktop/src/routes/designs/+page.svelte",
+			"line": 47,
+			"lastLine": 47,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1e5d5d63e3f10f630dfe",
+			"path": "packages/desktop/src/routes/game/+page.svelte",
+			"line": 38,
+			"lastLine": 38,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fda324abb08df13ec1cf",
+			"path": "packages/desktop/src/routes/projects/+page.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "77b29c8d9403b251b277",
+			"path": "packages/desktop/src/routes/projects/+page.svelte",
+			"line": 17,
+			"lastLine": 17,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "da1c40a97fd2224d5948",
+			"path": "packages/reports/src/components/planning-collaboration/ConsoleChat.svelte",
+			"line": 16,
+			"lastLine": 20,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				},
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e3752703c4d3daf0d91b",
+			"path": "test/helpers/attention-timing/quiet-hour-boundary.test.ts",
+			"line": 2,
+			"lastLine": 8,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quietHour",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a1f9dd8f1dd14cbf6ef2",
+			"path": "test/helpers/attention-timing/quiet-hour-boundary.test.ts",
+			"line": 11,
+			"lastLine": 17,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quietHour",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f572d2b387b46735238d",
+			"path": "packages/reports/src/components/agents-providers/provider-picker/ProviderPicker.svelte",
+			"line": 45,
+			"lastLine": 45,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2040235d050689ae67fb",
+			"path": "packages/reports/src/components/agents-providers/provider-picker/ProviderPicker.svelte",
+			"line": 102,
+			"lastLine": 102,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "95b398b1523d50d3de72",
+			"path": "packages/reports/src/components/planning-collaboration/ConsoleChat.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2054fd8b8315b130e957",
+			"path": "packages/reports/src/components/agents-providers/provider-picker/ProviderPicker.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "88cedd9f807fc1407250",
+			"path": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"line": 56,
+			"lastLine": 56,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "025ad1b64ab26bf5e613",
+			"path": "packages/reports/src/components/explorer-ui/EntityBehavior.svelte",
+			"line": 55,
+			"lastLine": 55,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8eeea45b0283ecec32fa",
+			"path": "packages/reports/src/components/explorer-ui/EntitySearchResults.svelte",
+			"line": 37,
+			"lastLine": 37,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f044ed7e3b6fee13a8f5",
+			"path": "packages/reports/src/components/explorer-ui/EntityStates.svelte",
+			"line": 79,
+			"lastLine": 79,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "929a60da51f21e4ca98d",
+			"path": "packages/reports/src/components/explorer-ui/ExplorerFrame.svelte",
+			"line": 54,
+			"lastLine": 54,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "335d89fea761db577d26",
+			"path": "packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte",
+			"line": 56,
+			"lastLine": 56,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0fa8f02148dc2114a673",
+			"path": "packages/reports/src/components/explorer-ui/ExplorerStylesScreen.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9e4fa354ceb51ef29527",
+			"path": "packages/reports/src/components/explorer-ui/ExplorerStylesScreen.svelte",
+			"line": 21,
+			"lastLine": 21,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "328a695d913ae7bd866d",
+			"path": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte",
+			"line": 88,
+			"lastLine": 88,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e894033a8e64a6814749",
+			"path": "packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
+			"line": 38,
+			"lastLine": 38,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a57d76fcd1e3a8e92068",
+			"path": "packages/reports/src/components/explorer-ui/ExplorerUsageLink.svelte",
+			"line": 70,
+			"lastLine": 70,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "37d69633a90cdaeb0289",
+			"path": "packages/reports/src/components/explorer-ui/ExplorerUsageLink.svelte",
+			"line": 91,
+			"lastLine": 91,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "de4f612a48d135e4c9bb",
+			"path": "packages/reports/src/components/explorer-ui/HarnessConsole.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7671ff53df1ca68bab86",
+			"path": "packages/reports/src/components/explorer-ui/HarnessConsole.svelte",
+			"line": 113,
+			"lastLine": 113,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0eef667cc78feea9ad53",
+			"path": "packages/reports/src/components/explorer-ui/HarnessConsole.svelte",
+			"line": 126,
+			"lastLine": 131,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0bda2aa8e043a44f7081",
+			"path": "packages/reports/src/components/explorer-ui/HarnessConsole.svelte",
+			"line": 146,
+			"lastLine": 146,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a8b5b1f2e4da11d96fdd",
+			"path": "packages/reports/src/components/explorer-ui/HarnessConsole.svelte",
+			"line": 161,
+			"lastLine": 161,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2449bef992071b9dcf76",
+			"path": "packages/reports/src/components/explorer-ui/HarnessGroup.svelte",
+			"line": 21,
+			"lastLine": 21,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c81e51ef141fb970badd",
+			"path": "packages/reports/src/components/explorer-ui/HarnessTabs.svelte",
+			"line": 45,
+			"lastLine": 49,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d2020101ad9616275cdf",
+			"path": "packages/reports/src/components/explorer-ui/SourceContent.svelte",
+			"line": 26,
+			"lastLine": 26,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dcf5a5c181eaa2610fda",
+			"path": "packages/reports/src/components/planning-collaboration/design-canvas/DesignCanvas.svelte",
+			"line": 39,
+			"lastLine": 46,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "12f38f62e23ee10dfd1b",
+			"path": "packages/reports/src/components/planning-collaboration/FloatingChat.svelte",
+			"line": 44,
+			"lastLine": 48,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2d3fe17b510e886dd401",
+			"path": "packages/reports/src/components/reports-media/AudioComparison.svelte",
+			"line": 6,
+			"lastLine": 14,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3cd645326ca80d961094",
+			"path": "packages/reports/src/components/reports-media/AudioComparisonViewer.svelte",
+			"line": 10,
+			"lastLine": 10,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7450669d8928bda2181e",
+			"path": "packages/reports/src/components/reports-media/AudioComparisonViewer.svelte",
+			"line": 28,
+			"lastLine": 28,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3f3cb528aee3f160505f",
+			"path": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "29c966fa1ea595d96175",
+			"path": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"line": 33,
+			"lastLine": 33,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "72622668aa26b8571ea0",
+			"path": "packages/reports/src/components/shared-primitives/Modal.svelte",
+			"line": 33,
+			"lastLine": 33,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e4aaa590651d22c9404e",
+			"path": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"line": 33,
+			"lastLine": 33,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3afd69c15c87c97c9367",
+			"path": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"line": 99,
+			"lastLine": 99,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "283095a7d2c87229eb6b",
+			"path": "packages/reports/src/components/verification-evidence/VideoEvidence.svelte",
+			"line": 40,
+			"lastLine": 40,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fb9ba8f4d79969a56ac0",
+			"path": "packages/reports/src/components/verification-evidence/VideoGraphNavigation.svelte",
+			"line": 8,
+			"lastLine": 8,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "516ba86304ff7ac344ca",
+			"path": "packages/reports/src/routes/harness/projects/+page.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1d8311575ec0c6c1124f",
+			"path": "packages/reports/src/routes/harness/projects/+page.svelte",
+			"line": 32,
+			"lastLine": 32,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "16fce62bf5586697c834",
+			"path": "packages/reports/tests/e2e/support/component-previews/audioComparisonPreMount.ts",
+			"line": 6,
+			"lastLine": 6,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5467618d2d130e6790f9",
+			"path": "packages/reports/tests/e2e/support/component-previews/NativeAtomPreview.svelte",
+			"line": 2,
+			"lastLine": 2,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "21c948c7c71d96226ef0",
+			"path": "packages/reports/tests/e2e/support/component-previews/NativeAtomPreview.svelte",
+			"line": 40,
+			"lastLine": 40,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "28ff6967d7ffcff0c30d",
+			"path": "packages/reports/tests/e2e/support/component-previews/uploadComparisonPreMount.ts",
+			"line": 5,
+			"lastLine": 5,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "aa8a57277927c44614d3",
+			"path": "packages/reports/tests/e2e/support/shell/ShellNavbar.svelte",
+			"line": 33,
+			"lastLine": 33,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2a10771d6f0498f1221f",
+			"path": "src/templates/game-authoring/gameProject.ts",
+			"line": 55,
+			"lastLine": 55,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "139c29ea71a7029d98b1",
+			"path": "src/templates/game-authoring/gameProject.ts",
+			"line": 75,
+			"lastLine": 75,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "170130480730c5f92d64",
+			"path": "src/services/projects-sessions/tracker-health-service/trackerHealthFallback.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "isQuietHour",
+					"weight": 3
+				},
+				{
+					"kind": "call",
+					"value": "isQuietHour",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 19–21 use `isQuietHour(target.now, danielQuietHours)` to return before posting to the fallback alert destination. The shown trigger is notification delivery during quiet hours, with no work launch or scheduling gated."
+		},
+		{
+			"id": "a68d882fb384380a5f5b",
+			"path": "src/services/projects-sessions/tracker-supervisor-service/trackerSupervisorStatus.ts",
+			"line": 53,
+			"lastLine": 53,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quiet_hours",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 45–53 expose `quiet_hours: null` in tracker status defaults. This is status reporting and shows no quiet-hours check gating work."
+		},
+		{
+			"id": "dac0e9cf4b23036cd3fe",
+			"path": "src/helpers/attention-timing/planDigestAlertTick.ts",
+			"line": 26,
+			"lastLine": 26,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "isQuietHour",
+					"weight": 3
+				},
+				{
+					"kind": "call",
+					"value": "isQuietHour",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 21–27 apply `isQuietHour` only to a status digest tick: quiet hours suppress its message and persistence. No work launch or job scheduling is shown."
+		},
+		{
+			"id": "b6c5b697157c083ec4fa",
+			"path": "src/services/projects-sessions/tracker-notification-service/attentionBatch.ts",
+			"line": 107,
+			"lastLine": 107,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quietHour",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 95–107 call `quietHourBoundary` to suppress a next suggestion while quiet hours are active. The visible trigger affects notification suggestions only; no work launch or queue processing is shown."
+		},
+		{
+			"id": "a7743f3937bddabd83f9",
+			"path": "test/helpers/attention-timing/is-quiet-hour.test.ts",
+			"line": 2,
+			"lastLine": 10,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "isQuietHour",
+					"weight": 3
+				},
+				{
+					"kind": "call",
+					"value": "isQuietHour",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 1–10 are tests defining expected `isQuietHour` behavior; they show no production work path gated by quiet hours."
+		},
+		{
+			"id": "a780dbae2010a172a6a8",
+			"path": "src/index.ts",
+			"line": 200,
+			"lastLine": 201,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quietHour",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": "isQuietHour",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 196–202 only re-export quiet-hour helpers and related functions from `src/index.ts`; no work path is gated."
+		},
+		{
+			"id": "7ca7c803ae61e8da12d7",
+			"path": "packages/hub/src/components/projects-sessions/HubHomeNotifications.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 1–13 show a notification settings component importing `saveQuietHours` and push controls. No work scheduling or launch gate is visible."
+		},
+		{
+			"id": "95265b10c86fa17c11bd",
+			"path": "src/helpers/attention-timing/nextAttentionBatchAt.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quietHour",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 5–12 describe and implement timing for a Chief of Staff attention batch; quiet hours hold the send, and forced sends bypass the hold. This is notification delivery, with no work launch shown."
+		},
+		{
+			"id": "4a4c04696f3daa8a9a0a",
+			"path": "packages/desktop/src/components/agents-providers/ProjectAgent.svelte",
+			"line": 20,
+			"lastLine": 21,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				},
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 8–23 show a project-agent chat component loading providers when opened and listening on mount. No quiet-hours check or automatic work queue gate is visible."
+		},
+		{
+			"id": "376b59b9fa026682edb1",
+			"path": "src/helpers/attention-timing/nextReminderAt.ts",
+			"line": 3,
+			"lastLine": 11,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "quietHour",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 5–11 compute an unanswered-item reminder time and hold it to the end of quiet hours. This is notification timing; no work launch or job scheduling is shown."
+		},
+		{
+			"id": "49874d24db306d86e5b4",
+			"path": "packages/desktop/src/components/development-tooling/DeploymentActivity.svelte",
+			"line": 40,
+			"lastLine": 40,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 28–40 show an `onMount` subscription to workspace deployment activity and selection/focus behavior. The excerpt contains no quiet-hours policy or gate on automatic work launch; it is a deployment activity view."
+		},
+		{
+			"id": "2887186178ea90062afc",
+			"path": "packages/hub/src/components/projects-sessions/followNeedsLink.svelte.ts",
+			"line": 57,
+			"lastLine": 65,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				},
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 45–65 show a timed follow-up for a needs-link event and UI routing to an agent or list. The timer tracks patience for UI handling; no quiet-hours check gates work launch or queue processing."
+		},
+		{
+			"id": "ff2912c296cd5a0e2203",
+			"path": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"line": 14,
+			"lastLine": 14,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 2–14 show hub-home imports and component setup. No notification quiet-hours rule or work-launch gate is visible in the excerpt."
+		},
+		{
+			"id": "1b014094d86f6f798eaa",
+			"path": "packages/hub/src/components/projects-sessions/HubHomeAgents.svelte",
+			"line": 80,
+			"lastLine": 80,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 68–80 poll queued chat receipts every two seconds to refresh their status. This is UI receipt polling, with no quiet-hours check or work-launch scheduling gate shown."
+		},
+		{
+			"id": "c5c8de5963e71f99ba74",
+			"path": "packages/hub/src/routes/+layout.svelte",
+			"line": 5,
+			"lastLine": 13,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 1–13 refresh the browser session on mount and render child content. The excerpt shows no quiet-hours policy or work-launch path."
+		},
+		{
+			"id": "4cd8feb3866b5068c68d",
+			"path": "packages/desktop/src/components/agents-providers/ChatAgents.svelte",
+			"line": 5,
+			"lastLine": 5,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "onMount",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 1–15 describe a read-only agent roster and show setup imports. The stated read-only scope and lack of a quiet-hours or work-launch gate do not match the bug class."
+		},
+		{
+			"id": "5fac83b1e540f1e6d970",
+			"path": "packages/desktop/src/components/development-tooling/EnvironmentPicker.svelte",
+			"line": 18,
+			"lastLine": 18,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "$effect",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 6–18 load deployment environment data and select a deployment scope; the comment says selection does not deploy. No quiet-hours rule or automatic work-launch gate is shown."
+		}
+	],
+	"errors": [],
+	"classPath": "specification/bug-classes/quiet-hours-gate-work.json"
+}

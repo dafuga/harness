@@ -18,6 +18,8 @@
 			"TrackerNote",
 			"TrackerItemRecord",
 			"IncludedTrackerItem",
+			"TrackerRunDetailValue",
+			"TrackerRunDetailInput",
 			"TrackerRunRecord",
 			"TrackerMachineRecord",
 			"TrackerSources"
@@ -74,7 +76,7 @@
 				"outputs": [
 					{
 						"name": "readTrackerSources",
-						"type": "Promise<TrackerSources>",
+						"type": "Promise<Tracker.TrackerSources>",
 						"description": "Validated item, run, and machine records from the local tracker."
 					}
 				],
@@ -92,6 +94,21 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-attachments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-hub-home-home-ask-options",
 			"via": "import",
 			"origin": "derived"
@@ -102,7 +119,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-run-detail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-tracker-json-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-tracker-read-targets",
 			"via": "import",
 			"origin": "derived"
 		}

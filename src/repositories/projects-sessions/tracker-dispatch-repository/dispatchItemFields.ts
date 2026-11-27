@@ -1,6 +1,8 @@
 // @harness-uid u_ksy76trvsj
+import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type {
 	TrackerDispatchItem,
+	TrackerDispatchSnapshot,
 	TrackerDispatchWrites,
 	TrackerLaunchIntent,
 	TrackerRunReceipt
@@ -44,6 +46,17 @@ export function dispatchItem(
 		updatedAt: row.updated_at ? Date.parse(row.updated_at) : undefined,
 		launch: launchIntent(row)
 	};
+}
+
+/** The journal clock of the current completion, while the item is done and its source is open. */
+export function trackerCompletionVersion(database: SqliteDatabase, id: string): string | undefined {
+	const row = database
+		.prepare(
+			`SELECT clocks FROM items WHERE id = ? AND status = 'done' AND deleted = 0
+			AND coalesce(adapter_closed, 0) <> 1`
+		)
+		.get(id) as { clocks: string } | undefined;
+	return row && (JSON.parse(row.clocks) as Record<string, string>).status;
 }
 
 function flag(value: string | null): boolean {
@@ -95,14 +108,27 @@ function launchJournalFields(intent: TrackerLaunchIntent | null) {
 	};
 }
 
+/** A new question replaces the earlier ask, so its choices must not stay attached. */
+function replacedAsk(question: string | null | undefined): Record<string, unknown> {
+	return question ? { question, options: null, confirm: null } : {};
+}
+
+function launchRequestNote({ source, target, scheduledPick }: TrackerLaunchIntent) {
+	if (source === 'manual') return `auto-launch requested on ${target}`;
+	if (source !== 'due' || !scheduledPick) return undefined;
+	const pick = [scheduledPick.rung.model, scheduledPick.rung.effort].filter(Boolean).join(':');
+	return `due scheduler requested launch on ${target} (${pick})`;
+}
+
 export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['item']>) {
-	const fields: Record<string, unknown> = {};
+	const fields = replacedAsk(item.question);
 	for (const key of ['computer', 'project', 'repo', 'model', 'sensitive', 'status'] as const) {
 		if (item[key] !== undefined) fields[key] = item[key];
 	}
 	if (item.launch !== undefined) Object.assign(fields, launchJournalFields(item.launch));
-	if (item.launch?.source === 'manual')
-		fields['note+'] = `auto-launch requested on ${item.launch.target}`;
+	const requested = item.launch && launchRequestNote(item.launch);
+	if (requested) fields['note+'] = requested;
+	if (item.appendNote) fields['note+'] = item.appendNote;
 	if (item.blockedReason !== undefined) fields.blocked_reason = item.blockedReason;
 	if (item.awaitingAnswer !== undefined) fields.needs_daniel = item.awaitingAnswer;
 	if (item.answeredCurrentBlock === false) fields.resolved = false;
@@ -136,3 +162,17 @@ export const dispatchLaunchSource = `CASE
 		AND n.text LIKE 'auto-launch requested on %'
 	) THEN 'manual'
 	ELSE 'automatic' END`;
+
+export function canBlockStoppedRun(
+	{ item, runs, openSession, activeSessionKeys }: TrackerDispatchSnapshot,
+	run: TrackerRunReceipt
+) {
+	return (
+		item?.status === 'in_progress' &&
+		!item.launch &&
+		item.scheduleOff &&
+		!openSession &&
+		!activeSessionKeys?.length &&
+		!runs.some((entry) => entry !== run && entry.state !== 'finished')
+	);
+}

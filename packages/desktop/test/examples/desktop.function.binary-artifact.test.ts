@@ -3,9 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { binaryArtifact } from '../../src/utils/reports-media/binaryArtifact';
 import { InvalidMediaTypeError } from '../../src/utils/reports-media/binaryArtifact.types';
-
-type Input = Parameters<typeof binaryArtifact>[0];
-type Output = Awaited<ReturnType<typeof binaryArtifact>>;
+import type { Input, Output } from './desktop.function.binary-artifact.test.types';
 
 const EMPTY_SHA = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
 const HELLO_SHA = '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824';

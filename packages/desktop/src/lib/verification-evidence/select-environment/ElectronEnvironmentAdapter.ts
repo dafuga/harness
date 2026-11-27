@@ -9,8 +9,6 @@ const control: (keyof RemoteDesktopControl)[] = [
 	'status',
 	'enable',
 	'disable',
-	'createPairing',
-	'closePairing',
 	'approvePairing',
 	'denyPairing',
 	'revokeDevice',
@@ -31,6 +29,10 @@ export class ElectronEnvironmentAdapter {
 		return {
 			kind: 'electron',
 			bridge: harness,
+			trackerHome:
+				harness?.homeSnapshot && harness.homeChat
+					? { read: harness.homeSnapshot, send: harness.homeChat }
+					: undefined,
 			local: true,
 			host: whole ? (harnessRemote as RemoteDesktopControl) : undefined
 		};

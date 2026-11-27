@@ -6,13 +6,16 @@ import {
 	randomId,
 	remoteIdentity,
 	remoteKeys,
-	toBase64Url
+	toBase64Url,
+	type RemoteKeyPair,
+	type SecurePacket
 } from '../../remote/src/index';
-import type { RemoteKeyPair, SecurePacket } from '../../remote/src/index';
 import type { RemoteHostDevice } from '../src/adapters/networking-security/RemoteHostStoreAdapter';
 import { CommentOutboxService } from '../src/services/projects-sessions/CommentOutboxService';
-import { RemoteDeviceSessionsService } from '../src/services/RemoteDeviceSessionsService';
-import type { DeviceAddress } from '../src/services/RemoteDeviceSessionsService';
+import {
+	RemoteDeviceSessionsService,
+	type RemoteDeviceAddress
+} from '../src/services/RemoteDeviceSessionsService';
 import { remoteFixture } from './remote-fixture';
 
 /** The phone's end of one connection, with the keys it claims to hold. */
@@ -68,7 +71,8 @@ function trackerFetch(deviceId: string, trackerRequests: URL[]) {
 export async function setup(
 	trackerEnabled = false,
 	writeEnabled = false,
-	home?: () => Promise<unknown>
+	home?: () => Promise<unknown>,
+	homeChat?: (input: unknown) => Promise<unknown>
 ) {
 	const f = await remoteFixture(),
 		hostKeys = await remoteKeys(),
@@ -87,8 +91,8 @@ export async function setup(
 		lastSeenAt: null
 	};
 	const records = new Map([[deviceId, record]]),
-		sent: { address: DeviceAddress; packet: SecurePacket }[] = [],
-		drops: { address: DeviceAddress; code: number }[] = [],
+		sent: { address: RemoteDeviceAddress; packet: SecurePacket }[] = [],
+		drops: { address: RemoteDeviceAddress; code: number }[] = [],
 		inbox = new Map<string, (packet: SecurePacket) => void>();
 	const { registry, arbiter, providers, renderMockups } = f;
 	const trackerRequests: URL[] = [];
@@ -102,7 +106,8 @@ export async function setup(
 			outbox: new CommentOutboxService(),
 			...(trackerEnabled ? { trackerPhone: deviceId, trackerFetcher } : {}),
 			...(writeEnabled ? { trackerWrite: { device: deviceId, token: writeToken } } : {}),
-			...(home ? { home } : {})
+			...(home ? { home } : {}),
+			...(homeChat ? { homeChat } : {})
 		},
 		host: () => ({ id: hostId, name: 'Fixture Mac', keys: hostKeys }),
 		device: (id) => records.get(id) ?? null,

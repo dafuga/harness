@@ -8,6 +8,11 @@ export async function prepareEvidenceGrid(component: Locator, variant: string) {
 		await expect(component.locator('.evidence-grid .evidence-card')).toHaveCount(0);
 	}
 	if (variant === 'screenshot-only') await expect(component.locator('.media-tabs')).toHaveCount(0);
+	await prepareGridFilters(component, variant);
+	await prepareGridMedia(component, variant);
+}
+
+async function prepareGridFilters(component: Locator, variant: string) {
 	if (['empty', 'search'].includes(variant)) {
 		const value = variant === 'empty' ? 'no-match' : 'mobile';
 		await component
@@ -16,13 +21,6 @@ export async function prepareEvidenceGrid(component: Locator, variant: string) {
 		if (variant === 'empty')
 			await expect(component.getByText('No matching evidence.', { exact: true })).toBeVisible();
 		else await expect(component.locator('.evidence-grid .evidence-card')).toHaveCount(1);
-	}
-	if (['audio', 'screenshots'].includes(variant)) {
-		const button = component.locator('.media-tabs').getByRole('button', {
-			name: variant === 'audio' ? /^Audio/ : /^Screenshots/
-		});
-		await button.click();
-		await expect(button).toHaveAttribute('aria-pressed', 'true');
 	}
 	if (variant.startsWith('viewport-')) await selectViewport(component, variant.slice(9));
 	if (variant === 'category' || variant === 'category-audio') {
@@ -34,6 +32,16 @@ export async function prepareEvidenceGrid(component: Locator, variant: string) {
 		await expect(button).toHaveAttribute('aria-pressed', 'true');
 	}
 	if (variant === 'status' || variant.startsWith('status-')) await selectStatus(component, variant);
+}
+
+async function prepareGridMedia(component: Locator, variant: string) {
+	if (['audio', 'screenshots'].includes(variant)) {
+		const button = component.locator('.media-tabs').getByRole('button', {
+			name: variant === 'audio' ? /^Audio/ : /^Screenshots/
+		});
+		await button.click();
+		await expect(button).toHaveAttribute('aria-pressed', 'true');
+	}
 	if (variant === 'image-open') await openImage(component);
 	if (variant === 'audio-open') {
 		await component

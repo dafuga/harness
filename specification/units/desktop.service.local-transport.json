@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalTransportNotListeningError.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalTransportService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalTransportService.types.ts",
 			"packages/desktop/src/services/LocalTransportService.ts"
 		],
 		"symbols": [
 			"LocalTransportService",
+			"LocalTransportNotListeningError",
 			"LocalTransportService",
 			"LocalTransportService.constructor",
 			"LocalTransportService.port",

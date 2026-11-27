@@ -52,3 +52,7 @@ target
 
 # What the checks of the reports package generate: fixture builds, previews and captures.
 packages/reports/output
+
+# Artboards are authored designs: harness design checks them, and a reformat would change them.
+/designs/
+/output

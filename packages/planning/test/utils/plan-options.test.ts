@@ -45,9 +45,8 @@ if (symbol === 'planOptions') {
 } else if (symbol === 'checkOptions') {api.checkOptions(version);result = {valid:true};}
 else result = api.heldBy(version,binding.file,'o1');
 console.log(JSON.stringify(result));`;
-	const output = JSON.parse(
-		execFileSync('bun', ['-e', code, resolve(entry), symbol], { encoding: 'utf8' })
-	);
+	const stdout = execFileSync('bun', ['-e', code, resolve(entry), symbol], { encoding: 'utf8' });
+	const output = JSON.parse(stdout);
 	const expected = {
 		planOptions: { files: ['o1-default-desktop.png'], ids: ['o1'] },
 		checkOptions: { valid: true },

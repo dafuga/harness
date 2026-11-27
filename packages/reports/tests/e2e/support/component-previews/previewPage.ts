@@ -56,6 +56,15 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 	await routeShellCatalog(page, id, variant);
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
+	await freezeCalendar(page, id);
+	await page.goto(
+		`${previewOrigin}/?unit=${encodeURIComponent(id)}${variant ? `&variant=${encodeURIComponent(variant)}` : ''}`,
+		{
+			waitUntil: previewWaitUntil(id, variant)
+		}
+	);
+}
+async function freezeCalendar(page: Page, id: string) {
 	// Freeze calendar labels alone: Playwright's clock also erases NavigationTiming entries.
 	await page.addInitScript(
 		(now) => {
@@ -74,18 +83,19 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 			? NOW
 			: Date.parse('2026-10-20T10:00:05Z')
 	);
-	await page.goto(
-		`${previewOrigin}/?unit=${encodeURIComponent(id)}${variant ? `&variant=${encodeURIComponent(variant)}` : ''}`,
-		{
-			waitUntil: previewWaitUntil(id, variant)
-		}
-	);
 }
+
 export async function readyPreview(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	await expect(content).toBeAttached();
+	if (['desktop.page.root', 'desktop.component.projects-sessions-desktop-home'].includes(id))
+		await expect(content.getByRole('list', { name: 'Project directory' })).toBeVisible();
 	if (id === 'hub.component.projects-sessions-hub-home-dialogs')
 		await expect(content.getByRole('dialog', { name: 'Plans' })).toBeVisible();
+	if (id === 'hub.component.projects-sessions-hub-home-plan-detail')
+		await expect(content.getByRole('dialog', { name: 'Prepare the export cutover' })).toBeVisible();
+	if (id === 'desktop.component.development-tooling-tracker-work')
+		await expect(content.getByRole('button', { name: 'Prepare the export cutover' })).toBeVisible();
 	if (isBrokenPreviewImage(id, variant))
 		await expect(content.locator('.image-button').first()).toBeDisabled();
 	await applyActivityPreviewContext(page, content, id);
@@ -116,7 +126,6 @@ async function readyRoute(page: Page, id: string) {
 	if (publicDownloadPreview.has(id))
 		await expect(page.getByRole('link', { name: 'Download for Mac' }).first()).toBeVisible();
 	const headings: Record<string, string> = {
-		'desktop.page.root': 'Recent projects',
 		'desktop.page.harness-path': 'Pages',
 		'desktop.page.projects-project-id-harness-path': 'Pages',
 		'desktop.page.settings': 'Settings',

@@ -29,6 +29,18 @@ vi.mock('../../scripts/ios-acceptance-layout', () => ({
 }));
 vi.mock('../../scripts/ios-acceptance-simulator', () => ({ keychainGroups: stubs.keychainGroups }));
 
+const workspaceStates = new Map<string, string>([
+	['ixture', 'models Fixture model'],
+	['Offline cached view', 'Offline cached view · Computer offline'],
+	['Read-only · saved', 'Read-only · saved · Offline cached view · not checked with the server'],
+	['Computer offline', 'Computer offline'],
+	['Connected to Fixture computer', 'Connected to Fixture computer'],
+	['offered', 'offered'],
+	['current: ', 'current: Computer unlocked · awake'],
+	['access was removed', 'access was removed'],
+	['Connect to computer', 'Connect to computer Scan QR code']
+]);
+
 function exampleRun() {
 	let checks = 0;
 	const record = {
@@ -39,19 +51,7 @@ function exampleRun() {
 		hide: () => undefined
 	};
 	const page = {
-		until: vi.fn(async (_expression: string, words: string) => {
-			if (words === 'ixture') return 'models Fixture model';
-			if (words === 'Offline cached view') return 'Offline cached view · Computer offline';
-			if (words === 'Read-only · saved')
-				return 'Read-only · saved · Offline cached view · not checked with the server';
-			if (words === 'Computer offline') return 'Computer offline';
-			if (words === 'Connected to Fixture computer') return 'Connected to Fixture computer';
-			if (words === 'offered') return 'offered';
-			if (words === 'current: ') return 'current: Computer unlocked · awake';
-			if (words === 'access was removed') return 'access was removed';
-			if (words === 'Connect to computer') return 'Connect to computer Scan QR code';
-			return words;
-		}),
+		until: vi.fn(async (_expression: string, words: string) => workspaceStates.get(words) ?? words),
 		evaluate: vi.fn(async (expression: string) => {
 			if (expression.includes('location.pathname'))
 				return '/harness/project-1/harness/branch/main/pages/design | none';

@@ -20,8 +20,4 @@ export interface ScopeFacts {
 }
 
 export type Asked = Pick<EntityEvidenceQuery, 'entityId' | 'commit' | 'branch' | 'mode'>;
-
-/** A scope read refused: its commit is no longer the tip, or its entity is not registered. */
-export class RefusedScopeError extends Error {
-	override name = 'RefusedScopeError';
-}
+export { RefusedScopeError } from './RefusedScopeError';

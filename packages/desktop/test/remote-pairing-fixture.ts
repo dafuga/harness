@@ -9,7 +9,7 @@ import type { RelayHostFrame } from '../../remote/src/index';
 const json = (value: unknown, status = 200) =>
 	new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json' } });
 
-/** The public pairing routes of a relay in memory, and the host commands that drive them. */
+/** The poll and exchange routes of a relay in memory, an account request, and the host commands. */
 export class MemoryPairingDesk {
 	private readonly pairings = new Map<string, Pairing>();
 	constructor(private readonly options: PairingDeskOptions) {}
@@ -17,26 +17,35 @@ export class MemoryPairingDesk {
 		const parts = new URL(String(target)).pathname.split('/').filter(Boolean),
 			pairingId = parts[4] ?? '',
 			pairing = this.pairings.get(pairingId),
-			{ hostId, hostKey } = this.options.host();
+			{ hostId } = this.options.host();
 		if (!pairing || parts[2] !== hostId) return json({ error: 'not-found' }, 404);
 		const { state, expiresAt } = pairing;
-		if (!init?.method || init.method === 'GET')
-			return json({ hostId, pairingId, hostKey, state, expiresAt });
-		const body = JSON.parse(String(init.body ?? '{}')) as Fields;
+		const body = JSON.parse(String(init?.body ?? '{}')) as Fields;
+		if (init?.method !== 'POST') return json({ error: 'not-found' }, 404);
 		if (parts[5] === 'poll') return json({ state, expiresAt });
 		if (parts[5] === 'exchange') return this.exchange(pairingId, pairing, String(body.verifier));
-		Object.assign(pairing, { state: 'requested', challenge: body.challenge });
-		this.options.toHost({ type: 'pairing-request', pairingId, ...body } as RelayHostFrame);
-		return json({ state: 'requested', expiresAt }, 202);
+		return json({ error: 'not-found' }, 404);
 	}) as typeof fetch;
+	/** The verified account request of the owner, as the relay hands it to the host. */
+	submit(pairingId: string, request: object): void {
+		const body = request as Fields;
+		const expiresAt = new Date(Date.now() + 300_000).toISOString();
+		this.pairings.set(pairingId, {
+			state: 'requested',
+			expiresAt,
+			challenge: String(body.challenge)
+		});
+		this.options.toHost({
+			type: 'pairing-request',
+			pairingId,
+			account: true,
+			expiresAt,
+			...body
+		} as RelayHostFrame);
+	}
 	apply(command: PairingCommand): boolean {
-		if (command.type === 'pairing-open') {
-			this.pairings.set(command.pairingId, { state: 'open', expiresAt: command.expiresAt });
-			return true;
-		}
 		const pairing = this.pairings.get(command.pairingId);
 		if (!pairing) return false;
-		if (command.type === 'pairing-close') return this.pairings.delete(command.pairingId);
 		if (command.type === 'pairing-approve' && command.challenge !== pairing.challenge) return false;
 		if (command.type === 'pairing-deny') pairing.state = 'denied';
 		else Object.assign(pairing, { state: 'approved', approval: command });

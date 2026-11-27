@@ -6,7 +6,7 @@ import { reportRuntimeRoot } from '../../src/utils/reports-media/reportRuntimeRo
 const OVERRIDE = '/opt/harness/reports-runtime';
 const RealURL = URL;
 
-function ThrowingURL(): never {
+function throwingUrl(): never {
 	throw new TypeError('Invalid URL');
 }
 
@@ -109,7 +109,7 @@ test('falls back to the packages reports folder when unset', () => {
 });
 
 test('Throws TypeError when the fallback URL cannot be resolved', () => {
-	const caught = errorWithUrl(ThrowingURL);
+	const caught = errorWithUrl(throwingUrl);
 
 	expect(caught.name).toBe('TypeError');
 	recordExampleCases(

@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-tracker-structured-ask",
+	"uid": "u_mdrydzunlb",
+	"kind": "function",
+	"title": "trackerStructuredAsk",
+	"responsibility": "Decide whether an open Tracker flag is a structured ask Daniel can answer by tap",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/trackerStructuredAsk.ts",
+			"src/utils/projects-sessions/trackerStructuredAsk.types.ts"
+		],
+		"symbols": ["trackerFlagKind", "trackerStructuredAsk", "TrackerAskState"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "trackerFlagKind.item",
+				"type": "TrackerAskState",
+				"required": true,
+				"description": "The flag fields of a Tracker item: needs Daniel, resolved, status, question and options."
+			},
+			{
+				"name": "trackerStructuredAsk.item",
+				"type": "TrackerAskState",
+				"required": true,
+				"description": "The flag fields of a Tracker item: needs Daniel, resolved, status, question and options."
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerFlagKind",
+				"type": "'ask' | 'ping' | 'needs-options' | null",
+				"description": "ask, ping or needs-options for an open flag; null when no flag is open."
+			},
+			{
+				"name": "trackerStructuredAsk",
+				"type": "boolean",
+				"description": "True only when the open flag is a structured ask with two to four choices and one recommendation."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerFlagKind",
+				"inputs": [
+					{
+						"name": "trackerFlagKind.item",
+						"type": "TrackerAskState",
+						"required": true,
+						"description": "The flag fields of a Tracker item: needs Daniel, resolved, status, question and options."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerFlagKind",
+						"type": "'ask' | 'ping' | 'needs-options' | null",
+						"description": "ask, ping or needs-options for an open flag; null when no flag is open."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerStructuredAsk",
+				"inputs": [
+					{
+						"name": "trackerStructuredAsk.item",
+						"type": "TrackerAskState",
+						"required": true,
+						"description": "The flag fields of a Tracker item: needs Daniel, resolved, status, question and options."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerStructuredAsk",
+						"type": "boolean",
+						"description": "True only when the open flag is a structured ask with two to four choices and one recommendation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-is-tracker-ping",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/trackerStructuredAsk.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/trackerStructuredAsk.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

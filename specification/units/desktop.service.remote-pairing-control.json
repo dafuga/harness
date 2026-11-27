@@ -9,22 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/networking-security/remote-host-service/PairingOfferCreationError.ts",
-			"packages/desktop/src/services/networking-security/remote-host-service/PairingOfferUnsupportedError.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/PairingRequestNotWaitingError.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/ProjectNotOpenedError.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.types.ts"
 		],
 		"symbols": [
-			"PairingOfferCreationError",
-			"PairingOfferUnsupportedError",
 			"PairingRequestNotWaitingError",
 			"ProjectNotOpenedError",
 			"RemotePairingControlService",
 			"RemotePairingControlService.constructor",
-			"RemotePairingControlService.createPairing",
-			"RemotePairingControlService.closePairing",
 			"RemotePairingControlService.approvePairing",
 			"RemotePairingControlService.approveAccount",
 			"RemotePairingControlService.denyPairing",
@@ -458,148 +452,6 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
-			{
-				"name": "RemotePairingControlService.createPairing",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "RemotePairingControlService.createPairing",
-						"type": "Promise<RemotePairingOffer>",
-						"description": "The one-time offer shown as a QR code: its `pairingId`, `hostId`, `origin`, the typed `code` as `XXXX-XXXX`, the exact QR text in `scan`, and `expiresAt`, five minutes after it was opened. It resolves only once the relay has accepted the offer and the host has published it, and opening it replaces any earlier offer.",
-						"examples": [
-							{
-								"pairingId": "5e0c3a8f1d7b49e2a6f0c5d8b3e1a947",
-								"hostId": "c83b2f6d0e91a4753b8d2f0c6e9a1b47d5e83c20",
-								"origin": "https://relay.example.com",
-								"code": "K7QF-3M2D",
-								"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794737100;host=c83b2f6d0e91a4753b8d2f0c6e9a1b47d5e83c20;pairing=5e0c3a8f1d7b49e2a6f0c5d8b3e1a947;code=K7QF3M2D;origin=https://relay.example.com",
-								"expiresAt": "2026-11-15T10:05:00.000Z"
-							},
-							{
-								"pairingId": "b72d91e0f4a83c65d0e7b9a2c1f48d36",
-								"hostId": "c83b2f6d0e91a4753b8d2f0c6e9a1b47d5e83c20",
-								"origin": "https://relay.example.com",
-								"code": "9TWD-HX4N",
-								"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794737550;host=c83b2f6d0e91a4753b8d2f0c6e9a1b47d5e83c20;pairing=b72d91e0f4a83c65d0e7b9a2c1f48d36;code=9TWDHX4N;origin=https://relay.example.com",
-								"expiresAt": "2026-11-15T10:12:30.000Z"
-							}
-						]
-					}
-				],
-				"errors": [
-					{
-						"name": "current() failure (RemoteHostAccess)",
-						"type": "thrown",
-						"description": "Thrown by the host's `current()` with the message 'Turn remote access on first.' whenever remote access is off. Every operation calls `current()`, so every operation can reject with it."
-					},
-					{
-						"name": "PairingOfferUnsupportedError",
-						"type": "thrown",
-						"description": "Thrown by `createPairing` before any offer is opened, with the message 'The relay of this computer cannot be shown to a phone as a QR code.', when the computer's relay origin is missing or is not one an offer may carry."
-					},
-					{
-						"name": "command failure (RelayLinkService)",
-						"type": "thrown",
-						"description": "Rejected by the relay command with the message 'The relay is not connected.' when the relay socket is not online or drops while a command waits; `createPairing` and `approvePairing` pass it on unchanged."
-					},
-					{
-						"name": "command failure (RelayLinkService)",
-						"type": "thrown",
-						"description": "Rejected by the relay command with the message 'The relay did not answer.' when no acknowledgement arrives within the ack timeout, 10 seconds by default; `createPairing` and `approvePairing` pass it on unchanged."
-					},
-					{
-						"name": "command failure (RelayLinkService)",
-						"type": "thrown",
-						"description": "Rejected by the relay command when the relay acknowledges a command with ok set to false: the message is the error text the relay sent, or 'refused' when it sent none, and `createPairing` and `approvePairing` pass it on unchanged."
-					},
-					{
-						"name": "A newer pairing code superseded the request",
-						"type": "thrown",
-						"description": "Thrown by `createPairing` with the message 'A newer pairing code replaced this one.' when the status published after opening does not carry this offer while some offer is still open."
-					},
-					{
-						"name": "PairingOfferCreationError",
-						"type": "thrown",
-						"description": "Thrown by `createPairing` with the message 'The pairing offer could not be opened.' when the status published after opening does not carry this offer and no offer is open."
-					}
-				],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "RemotePairingControlService.closePairing",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "RemotePairingControlService.closePairing",
-						"type": "Promise<RemoteHostStatus>",
-						"description": "The host status once the open offer has been withdrawn, so `pairing` and `requests` are empty. The relay is told to close the offer when one was open, and an unreachable relay does not make this call fail.",
-						"examples": [
-							{
-								"supported": true,
-								"enabled": true,
-								"state": "online",
-								"reason": null,
-								"host": {
-									"id": "c83b2f6d0e91a4753b8d2f0c6e9a1b47d5e83c20",
-									"name": "Studio Mac"
-								},
-								"origin": "https://relay.example.com",
-								"pairing": null,
-								"requests": [],
-								"devices": [
-									{
-										"deviceId": "a4f19c2e7b06d83f51c9e0a7b2d46f8c1e3a5b97",
-										"name": "Office iPhone",
-										"platform": "ios",
-										"projectIds": [
-											"local-7c1e4a9b0d3f58e2a6c1b9d4f0e7a3c28d5b6f1e9a0c4d7b2e8f3a6c1d9b5e47"
-										],
-										"comments": true,
-										"agents": false,
-										"approvedAt": "2026-11-14T16:20:11.482Z",
-										"lastSeenAt": "2026-11-15T09:41:03.910Z",
-										"online": true
-									}
-								],
-								"projects": [
-									{
-										"id": "local-7c1e4a9b0d3f58e2a6c1b9d4f0e7a3c28d5b6f1e9a0c4d7b2e8f3a6c1d9b5e47",
-										"name": "harness-app"
-									}
-								]
-							},
-							{
-								"supported": true,
-								"enabled": true,
-								"state": "offline",
-								"reason": "The relay cannot be reached. Paired phones are offline.",
-								"host": {
-									"id": "c83b2f6d0e91a4753b8d2f0c6e9a1b47d5e83c20",
-									"name": "Studio Mac"
-								},
-								"origin": "https://relay.example.com",
-								"pairing": null,
-								"requests": [],
-								"devices": [],
-								"projects": [
-									{
-										"id": "local-7c1e4a9b0d3f58e2a6c1b9d4f0e7a3c28d5b6f1e9a0c4d7b2e8f3a6c1d9b5e47",
-										"name": "harness-app"
-									}
-								]
-							}
-						]
-					}
-				],
-				"errors": [
-					{
-						"name": "current() failure (RemoteHostAccess)",
-						"type": "thrown",
-						"description": "Thrown by the host's `current()` with the message 'Turn remote access on first.' whenever remote access is off. Every operation calls `current()`, so every operation can reject with it."
-					}
-				],
-				"errorStatus": "declared"
-			},
 			{
 				"name": "RemotePairingControlService.approvePairing",
 				"inputs": [

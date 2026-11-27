@@ -6,14 +6,8 @@ import { test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { acceptanceProducts, normalProduct } from '../../scripts/ios-acceptance-products';
-
-type RecordLike = Parameters<typeof acceptanceProducts>[0];
-type ReadLike = Parameters<typeof acceptanceProducts>[1];
-type AcceptanceLike = Parameters<typeof normalProduct>[0];
-interface Ledger {
-	begun: string[];
-	checks: Array<[boolean, string]>;
-}
+import { reading, recordOf, thrownBy } from './desktop.script.ios-acceptance-products.fixture';
+import type { AcceptanceLike } from './desktop.script.ios-acceptance-products.test.types';
 
 // The build and simulator helpers are replaced by fakes that record their calls and write the
 // App binaries a real build would leave, so the unit's own orchestration runs unchanged.
@@ -65,12 +59,7 @@ vi.mock('../../scripts/ios-acceptance-source', () => ({
 	treeDigest: (files: Map<string, string>) => `digest:${files.size}`
 }));
 
-vi.mock('../../scripts/ios-acceptance-guards', () => ({ scanMarker: 'synthetic-scanner' }));
 vi.mock('../../scripts/ios-build-options', () => ({ fixtureNeedsDebug: 'needs a Debug build' }));
-vi.mock('../../scripts/ios-scan-fixture', () => ({
-	holds: (product: string) => product.includes('scan-fixture'),
-	scanFixtureProduct: 'example/scan-fixture/App.app'
-}));
 vi.mock('../../scripts/ios-acceptance-run', () => ({
 	pause: () => Promise.resolve(),
 	shot: (_run: unknown, name: string) => {
@@ -95,34 +84,7 @@ function setupRoot(): string {
 	return fake.root;
 }
 
-function recordOf(): { ledger: Ledger; record: RecordLike } {
-	const ledger: Ledger = { begun: [], checks: [] };
-	const record = {
-		begin: (name: string) => {
-			ledger.begun.push(name);
-		},
-		check: (ok: boolean, text: string) => {
-			ledger.checks.push([ok, text]);
-		}
-	};
-	return { ledger, record: record as unknown as RecordLike };
-}
-
-function reading(): ReadLike {
-	return { renderer: new Map(), native: new Map(), fixtureComputer: new Map() };
-}
-
-function thrownBy(run: () => unknown): Error {
-	try {
-		run();
-	} catch (error) {
-		if (error instanceof Error) return error;
-		throw error;
-	}
-	throw new Error('Expected a thrown error.');
-}
-
-test('builds the five products and proves the renderer they carry', () => {
+test('builds the four products and proves the renderer they carry', () => {
 	const root = setupRoot();
 	try {
 		const { ledger, record } = recordOf();
@@ -132,18 +94,8 @@ test('builds the five products and proves the renderer they carry', () => {
 		expect(ledger.checks.every(([ok]) => ok)).toBe(true);
 		expect(result.releaseCopy).toBe('/example/desktop/.cache/ios/acceptance/Release/App.app');
 		expect(result.renderer).toEqual({ built: 'digest:2', copied: 'digest:2', files: 2 });
-		expect(Object.keys(result.facts)).toEqual([
-			'debug',
-			'release',
-			'fixtureCopy',
-			'releaseCopy',
-			'scanFixtureCopy'
-		]);
+		expect(Object.keys(result.facts)).toEqual(['debug', 'release', 'fixtureCopy', 'releaseCopy']);
 		expect(result.facts.debug).toMatchObject({ localNetworking: false, inspectable: false });
-		expect(result.facts.scanFixtureCopy).toMatchObject({
-			localNetworking: true,
-			inspectable: true
-		});
 
 		const flags = Object.fromEntries(
 			Object.entries(result.facts).map(([key, fact]) => [
@@ -162,7 +114,7 @@ test('builds the five products and proves the renderer they carry', () => {
 			[
 				{
 					name: 'relay and inspection flags of the five products',
-					input: ['debug', 'release', 'fixtureCopy', 'releaseCopy', 'scanFixtureCopy'],
+					input: ['debug', 'release', 'fixtureCopy', 'releaseCopy'],
 					output: flags
 				},
 				{

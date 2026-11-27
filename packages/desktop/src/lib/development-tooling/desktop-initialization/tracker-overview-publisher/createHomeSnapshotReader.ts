@@ -1,7 +1,9 @@
 // @harness-uid u_xyoozv6qf7
+import { buildHomeLiveOverview } from '$reports/lib/projects-sessions/hub-home/homeLiveOverview';
 import { buildHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeTrackerProjection';
 import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { readTrackerSources } from '$reports/lib/projects-sessions/project-overview/projectOverviewTracker';
+import type { QuotaSource } from './codexQuotaSource.types';
 import { createHomeProviderReader } from './homeProviderReader';
 
 /**
@@ -9,14 +11,16 @@ import { createHomeProviderReader } from './homeProviderReader';
  * Tracker work and sessions running here, and the provider quota it knows. It is read when asked
  * and travels only over the encrypted device connection, never through a stored copy.
  */
-export function createHomeSnapshotReader(providerFile?: string) {
-	const providers = createHomeProviderReader(providerFile);
+export function createHomeSnapshotReader(providerFile?: string, sources?: QuotaSource[]) {
+	const providers = createHomeProviderReader(providerFile, sources);
 	return async (): Promise<OwnerHomeSnapshot> => {
 		const now = Date.now();
 		const [readings, sources] = await Promise.all([
 			providers(now),
 			readTrackerSources(fetch, true).catch(() => null)
 		]);
-		return buildHomeSnapshot(sources, readings, now);
+		const snapshot = buildHomeSnapshot(sources, readings, now);
+		// Added here only: the uploaded copy is built without it and never carries every item.
+		return sources ? { ...snapshot, liveOverview: buildHomeLiveOverview(sources, now) } : snapshot;
 	};
 }

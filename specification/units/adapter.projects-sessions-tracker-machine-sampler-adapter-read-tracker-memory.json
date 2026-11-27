@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-machine-sampler-adapter-read-tracker-memory",
+	"uid": "u_mkuyvfniu4",
+	"kind": "adapter",
+	"title": "readTrackerMemory",
+	"responsibility": "Owns the readTrackerMemory integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/tracker-machine-sampler-adapter/readTrackerMemory.ts"
+		],
+		"symbols": ["readTrackerMemory", "readTrackerMetricsCommand"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readTrackerMetricsCommand.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readTrackerMetricsCommand.args",
+				"type": "string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "readTrackerMemory",
+				"type": "Promise<Pick<TrackerResourceSample, 'ram' | 'swap'>>"
+			},
+			{
+				"name": "readTrackerMetricsCommand",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readTrackerMemory",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "readTrackerMemory",
+						"type": "Promise<Pick<TrackerResourceSample, 'ram' | 'swap'>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerMetricsCommand",
+				"inputs": [
+					{
+						"name": "readTrackerMetricsCommand.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readTrackerMetricsCommand.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerMetricsCommand",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-machine-sampler-adapter-tracker-memory-parsers",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/tracker-machine-sampler-adapter/readTrackerMemory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/tracker-machine-sampler-adapter/readTrackerMemory.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

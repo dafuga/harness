@@ -40,8 +40,11 @@ export const readMethods = [
 	'pendingComments',
 	'providers'
 ] as const;
-/** The account's Home view of this computer: its running agents, work and quota. Read-only. */
-export const homeMethods = ['homeSnapshot'] as const;
+/**
+ * The account's Home view of this computer: its running agents, work and quota, and the one write
+ * Home makes: answering an open Tracker ask, or noting an agent's current item.
+ */
+export const homeMethods = ['homeSnapshot', 'homeChat'] as const;
 /** A person's own comment, and the thread it needs. No planning, approval or run comes with it. */
 export const commentMethods = ['addComment', 'openThread'] as const;
 /** Planning writes and agent runs: only with the `agents` permission of a grant. */
@@ -62,6 +65,7 @@ export const localMethods = [
 	'planDeployment',
 	'deploy',
 	'agentActivity',
+	'designCanvases',
 	'openProject',
 	'selectProject',
 	'hostedStatus',
@@ -76,8 +80,6 @@ export const controlMethods = [
 	'remote.status',
 	'remote.enable',
 	'remote.disable',
-	'remote.createPairing',
-	'remote.closePairing',
 	'remote.approvePairing',
 	'remote.denyPairing',
 	'remote.revokeDevice'
@@ -105,6 +107,7 @@ export const projectlessMethods: readonly RemoteMethod[] = [
 	attachMethod,
 	'listProjects',
 	'homeSnapshot',
+	'homeChat',
 	'deploymentActivities',
 	'trackerReplicaPull',
 	'trackerReplicaPush',
@@ -113,6 +116,7 @@ export const projectlessMethods: readonly RemoteMethod[] = [
 /** Answers remembered by request id: re-sending one of these never runs it twice. */
 export const mutationMethods: readonly RemoteMethod[] = [
 	'trackerReplicaPush',
+	'homeChat',
 	'trackerInboxWrite',
 	...commentMethods,
 	...agentMethods,
@@ -130,8 +134,6 @@ export const mutationMethods: readonly RemoteMethod[] = [
 	'disconnectHosted',
 	'remote.enable',
 	'remote.disable',
-	'remote.createPairing',
-	'remote.closePairing',
 	'remote.approvePairing',
 	'remote.denyPairing',
 	'remote.revokeDevice'

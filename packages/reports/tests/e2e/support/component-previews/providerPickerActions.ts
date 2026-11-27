@@ -12,21 +12,39 @@ export async function prepareProviderPickerState(component: Locator, variant: st
 	await expect(component.getByText(/Local preview: not connected to Codex/)).toBeVisible();
 	if (await preparePickerOperation(component, variant)) return;
 	if (await preparePickerQueue(component, variant)) return;
+	if (await assertPickerAvailability(component, variant)) return;
+	await assertPickerRequest(component, variant);
+}
+
+async function assertPickerAvailability(component: Locator, variant: string): Promise<boolean> {
 	if (variant === 'unbound') {
 		await expect(component.getByLabel('Session ID')).toBeVisible();
-		return expect(component.getByRole('button', { name: 'Queue switch' })).toBeDisabled();
+		await expect(component.getByRole('button', { name: 'Queue switch' })).toBeDisabled();
+		return true;
 	}
-	if (variant === 'unobserved')
-		return expect(component.getByText('Unknown', { exact: true })).toBeVisible();
-	if (variant === 'in-use') return expect(component.getByText(/In use · clients: 2/)).toBeVisible();
+	if (variant === 'unobserved') {
+		await expect(component.getByText('Unknown', { exact: true })).toBeVisible();
+		return true;
+	}
+	if (variant === 'in-use') {
+		await expect(component.getByText(/In use · clients: 2/)).toBeVisible();
+		return true;
+	}
 	if (variant === 'no-models') {
 		await expect(component.getByText('This selection is not in the catalog.')).toBeVisible();
-		return expect(component.getByRole('button', { name: 'Queue switch' })).toBeDisabled();
+		await expect(component.getByRole('button', { name: 'Queue switch' })).toBeDisabled();
+		return true;
 	}
-	if (variant === 'control-unavailable')
-		return expect(
+	if (variant === 'control-unavailable') {
+		await expect(
 			component.getByText('Desktop control is unavailable; the request stays pending.')
 		).toBeVisible();
+		return true;
+	}
+	return false;
+}
+
+async function assertPickerRequest(component: Locator, variant: string) {
 	if (variant === 'refreshing') {
 		await component.getByRole('button', { name: 'Refresh', exact: true }).click();
 		await expect(component.getByText('Refreshing…')).toBeVisible();

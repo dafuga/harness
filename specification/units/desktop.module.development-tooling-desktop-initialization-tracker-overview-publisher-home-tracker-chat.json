@@ -9,9 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerMessage.ts"
 		],
-		"symbols": ["deliverHomeChat"]
+		"symbols": ["deliverHomeChat", "deliverHomeMessage"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -22,19 +23,38 @@
 				"required": true
 			},
 			{
-				"name": "deliverHomeChat.agents",
-				"type": "HomeAgent[]",
+				"name": "deliverHomeChat.home",
+				"type": "Pick<OwnerHomeSnapshot, 'agents' | 'openAsks' | 'reminders'>",
 				"required": true
 			},
 			{
 				"name": "deliverHomeChat.fetcher",
 				"type": "typeof fetch",
 				"required": false
+			},
+			{
+				"name": "deliverHomeMessage.input",
+				"type": "HomeChatInput",
+				"required": true
+			},
+			{
+				"name": "deliverHomeMessage.home",
+				"type": "Pick<OwnerHomeSnapshot, 'agents'>",
+				"required": true
+			},
+			{
+				"name": "deliverHomeMessage.fetcher",
+				"type": "typeof fetch",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "deliverHomeChat",
+				"type": "Promise<HomeChatReceipt>"
+			},
+			{
+				"name": "deliverHomeMessage",
 				"type": "Promise<HomeChatReceipt>"
 			}
 		],
@@ -50,8 +70,8 @@
 						"required": true
 					},
 					{
-						"name": "deliverHomeChat.agents",
-						"type": "HomeAgent[]",
+						"name": "deliverHomeChat.home",
+						"type": "Pick<OwnerHomeSnapshot, 'agents' | 'openAsks' | 'reminders'>",
 						"required": true
 					},
 					{
@@ -63,6 +83,34 @@
 				"outputs": [
 					{
 						"name": "deliverHomeChat",
+						"type": "Promise<HomeChatReceipt>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "deliverHomeMessage",
+				"inputs": [
+					{
+						"name": "deliverHomeMessage.input",
+						"type": "HomeChatInput",
+						"required": true
+					},
+					{
+						"name": "deliverHomeMessage.home",
+						"type": "Pick<OwnerHomeSnapshot, 'agents'>",
+						"required": true
+					},
+					{
+						"name": "deliverHomeMessage.fetcher",
+						"type": "typeof fetch",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "deliverHomeMessage",
 						"type": "Promise<HomeChatReceipt>"
 					}
 				],

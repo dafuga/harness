@@ -7,17 +7,12 @@ import {
 	workspacePath,
 	workspaceRoute
 } from '../../src/utils/workspaceRoute';
+import type { Outcome, Case, Target } from './desktop.function.workspace-route.test.types';
 
 const commit = 'a'.repeat(40);
 const projectUuid = '6f1d2c3b-4a59-4e68-9f70-8a1b2c3d4e5f';
 const uriError = { name: 'URIError', message: 'URI malformed' };
 const refused = (message: string) => ({ error: { name: 'WorkspaceAddressError', message } });
-
-type Outcome =
-	| { output: unknown; error?: never }
-	| { error: { name: string; message: string }; output?: never };
-type Case = { name: string; input: unknown } & Outcome;
-type Target = Parameters<typeof workspacePath>[0];
 
 /** A route with its defaults: the pages category, and no project, branch, commit, entity or section. */
 const routeOf = (over: Record<string, unknown>) => ({

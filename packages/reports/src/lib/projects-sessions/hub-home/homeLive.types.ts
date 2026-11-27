@@ -1,0 +1,65 @@
+// @harness-uid u_dpe5j4r3is
+import type { OverviewItem, OverviewMachine } from '../project-overview/projectOverview.types';
+import type {
+	IncludedTrackerItem,
+	TrackerRunRecord
+} from '../project-overview/projectOverviewTracker.types';
+import type { TrackerStage } from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
+
+/**
+ * What a piece of work is doing now. `running` and `offline` are live Tracker runs (the second on
+ * a computer Tracker reports offline), `queued` waits to start, `blocked` awaits a resolution, and `finished` ended within the last day.
+ */
+export type HomeWorkState = 'running' | 'offline' | 'queued' | 'blocked' | 'finished';
+
+/** One live run, or one task that is in motion without one. */
+export interface HomeWorkRow {
+	key: string;
+	itemId: string;
+	/** Local Tracker run number, when reported by the linked computer. */
+	runId?: number;
+	title: string;
+	state: HomeWorkState;
+	/** How the latest run ended, as Tracker records it. */
+	outcome: string | null;
+	status: OverviewItem['status'];
+	/** The item's planning stage; null when this computer's Tracker reports none. */
+	stage: TrackerStage | null;
+	/** Where the work really is: why it is blocked, or the latest milestone its owner noted. */
+	now: string | null;
+	owner: string | null;
+	computer: string | null;
+	model: string | null;
+	/** When the run started, or was queued. Null when there is no run. */
+	startedAt: string | null;
+	updatedAt: string;
+}
+
+export interface HomeWorkProject {
+	agent: string;
+	/** Live runs on computers that are not offline. */
+	running: number;
+	counts: Record<OverviewItem['status'], number>;
+	rows: HomeWorkRow[];
+	/** The newest change to any of the project's items. */
+	updatedAt: string;
+}
+
+/** Every project, session and run one computer's Tracker knows, read when it was asked. */
+export interface HomeLiveOverview {
+	readAt: string;
+	projects: HomeWorkProject[];
+	machines: OverviewMachine[];
+	/** Live runs of private or ignored items: counted, never described. */
+	hiddenRuns: number;
+	/** Rows left out because a project had more than the list holds. */
+	omittedRows: number;
+}
+
+/** One item with the runs that belong to it, and the computers Tracker reports offline. */
+export interface ItemWork {
+	item: IncludedTrackerItem;
+	runs: TrackerRunRecord[];
+	offline: ReadonlySet<string>;
+	now: number;
+}

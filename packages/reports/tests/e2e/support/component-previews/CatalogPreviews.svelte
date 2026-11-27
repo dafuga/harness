@@ -6,7 +6,10 @@
 		nativeAccountContext,
 		remoteContext
 	} from '../../../../../desktop/src/models/development-tooling/Environment.types';
-	import type { NativeAccountContext } from '../../../../../desktop/src/models/development-tooling/Environment.types';
+	import type {
+		EnvironmentHost,
+		NativeAccountContext
+	} from '../../../../../desktop/src/models/development-tooling/Environment.types';
 	import { exampleDocument } from '../../../../../game/src/index';
 	import ChoiceRow from '../../../../../desktop/src/components/shared-primitives/ChoiceRow.svelte';
 	import { previewUnits, previewComponent } from './units';
@@ -86,6 +89,18 @@
 			signedIn: true,
 			signOut: () => {}
 		});
+	// These pages use the signed-in environment their layout supplies.
+	if (['desktop.page.designs', 'desktop.page.root'].includes(id))
+		setContext<NativeAccountContext>(nativeAccountContext, {
+			environment: {
+				kind: 'electron',
+				bridge: (window as Window & EnvironmentHost).harness,
+				local: true
+			},
+			signedIn: true,
+			accountName: 'Ada Morgan',
+			signOut: () => {}
+		});
 	onDestroy(fixture.cleanup);
 </script>
 
@@ -151,6 +166,10 @@
 						<ChoiceRow name="Main" meta="Current branch" current onchoose={noop} />
 						<ChoiceRow name="Order history" meta="Feature branch" onchoose={noop} />
 					</Component>
+				{:else if id.startsWith('reports.component.planning-collaboration-design-canvas-')}
+					<div class="design-preview-host" data-design={id.split('-').at(-1)}>
+						<Component {...fixture.props} />
+					</div>
 				{:else if fitted}
 					<div class="flow-host">
 						<SvelteFlow bind:nodes={flowNodes} bind:edges={flowEdges} colorMode="dark" fitView>
@@ -161,6 +180,9 @@
 					</div>
 				{:else if isHubHomePreview(id)}
 					<HubHomeCatalogPreview {id} {Component} />
+				{:else if id === 'desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices'}
+					<!-- Choice styles are scoped to the inbox, which holds them on rows and in the detail. -->
+					<div class="inbox detail"><Component {...fixture.props} /></div>
 				{:else if unit.source?.includes('/atoms/')}
 					<NativeAtomPreview {Component} source={unit.source} {variant} />
 				{:else}

@@ -1,0 +1,214 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-finish-tracker-occurrence",
+	"uid": "u_ewas4mssnh",
+	"kind": "function",
+	"title": "finishTrackerOccurrence",
+	"responsibility": "Record the done or failed result of one occurrence of a recurring Tracker item and reopen it for the next.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/projects-sessions/finishTrackerOccurrence.ts"],
+		"symbols": ["finishTrackerOccurrence", "nextTrackerReminder", "finishTrackerReminder"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "finishTrackerOccurrence.item",
+				"type": "TrackerItemSnapshot",
+				"required": true,
+				"description": "The recurring item, with its cadence, time zone, current status and latest due occurrence."
+			},
+			{
+				"name": "finishTrackerOccurrence.body",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "The done request: an optional occurrence time, failed flag, note and actor."
+			},
+			{
+				"name": "finishTrackerOccurrence.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "The mutation clock and the node recorded as the actor when the request names none."
+			},
+			{
+				"name": "nextTrackerReminder.every",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Cron schedule or macro the reminder repeats on."
+			},
+			{
+				"name": "nextTrackerReminder.timeZone",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Time zone the schedule is read in; Europe/Lisbon when absent."
+			},
+			{
+				"name": "nextTrackerReminder.after",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds the returned time must be later than."
+			},
+			{
+				"name": "finishTrackerReminder.item",
+				"type": "TrackerItemSnapshot",
+				"required": true,
+				"description": "The repeating reminder being marked done, with its armed time and schedule."
+			},
+			{
+				"name": "finishTrackerReminder.body",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "Done request; an occurrence names the armed time shown, a note is kept, failed is refused."
+			},
+			{
+				"name": "finishTrackerReminder.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "Mutation context supplying the current time."
+			}
+		],
+		"outputs": [
+			{
+				"name": "finishTrackerOccurrence",
+				"type": "TrackerItemChange",
+				"description": "The recorded result and appended note; a done or in-progress item is reopened. It refuses a bad time or no due occurrence."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "finishTrackerOccurrence",
+				"inputs": [
+					{
+						"name": "finishTrackerOccurrence.item",
+						"type": "TrackerItemSnapshot",
+						"required": true,
+						"description": "The recurring item, with its cadence, time zone, current status and latest due occurrence."
+					},
+					{
+						"name": "finishTrackerOccurrence.body",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "The done request: an optional occurrence time, failed flag, note and actor."
+					},
+					{
+						"name": "finishTrackerOccurrence.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "The mutation clock and the node recorded as the actor when the request names none."
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishTrackerOccurrence",
+						"type": "TrackerItemChange",
+						"description": "The recorded result and appended note; a done or in-progress item is reopened. It refuses a bad time or no due occurrence."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nextTrackerReminder",
+				"inputs": [
+					{
+						"name": "nextTrackerReminder.every",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Cron schedule or macro the reminder repeats on."
+					},
+					{
+						"name": "nextTrackerReminder.timeZone",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Time zone the schedule is read in; Europe/Lisbon when absent."
+					},
+					{
+						"name": "nextTrackerReminder.after",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds the returned time must be later than."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextTrackerReminder",
+						"type": "string",
+						"description": "The first scheduled time after the instant, as an ISO timestamp."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "finishTrackerReminder",
+				"inputs": [
+					{
+						"name": "finishTrackerReminder.item",
+						"type": "TrackerItemSnapshot",
+						"required": true,
+						"description": "The repeating reminder being marked done, with its armed time and schedule."
+					},
+					{
+						"name": "finishTrackerReminder.body",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "Done request; an occurrence names the armed time shown, a note is kept, failed is refused."
+					},
+					{
+						"name": "finishTrackerReminder.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "Mutation context supplying the current time."
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishTrackerReminder",
+						"type": "TrackerItemChange",
+						"description": "The next armed time, an open status when needed, and the history note."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-plan-tracker-item-mutation",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/finishTrackerOccurrence.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/finishTrackerOccurrence.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

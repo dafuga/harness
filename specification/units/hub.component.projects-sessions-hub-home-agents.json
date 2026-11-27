@@ -11,27 +11,25 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-add-session",
-			"hub.component.projects-sessions-hub-home-choices",
 			"hub.component.projects-sessions-hub-home-composer",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-form",
 			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-header",
-			"reports.component.shared-primitives-atoms-html-input",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-ol",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeAgents.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeAgents.svelte"],
 		"symbols": ["HubHomeAgents"]
 	},
 	"contract": {
@@ -48,13 +46,6 @@
 				"description": "Agents and their current Tracker context. A null value indicates loading where supported."
 			},
 			{
-				"name": "HubHomeAgents.asks",
-				"type": "HomeAgent[]",
-				"required": false,
-				"default": [],
-				"description": "Other projects' agents that need Daniel. They are not listed sessions but their questions and option buttons still show."
-			},
-			{
 				"name": "HubHomeAgents.added",
 				"type": "string[]",
 				"required": false,
@@ -64,7 +55,8 @@
 			{
 				"name": "HubHomeAgents.changeSession",
 				"type": "ChangeSession",
-				"required": true,
+				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Adds or removes a session Daniel created himself so it is listed under Agents."
 			},
 			{
@@ -120,17 +112,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.component.projects-sessions-hub-home-choices",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.component.projects-sessions-hub-home-composer",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-skeleton",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -165,22 +157,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-form",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-h3",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-header",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-input",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -215,6 +197,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.strings-link-segments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
@@ -222,11 +214,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeAgents.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAgents.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeAgents.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAgents.svelte"
 			}
 		]
 	},

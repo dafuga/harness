@@ -20,6 +20,8 @@ export interface TrackerTmuxNudge {
 	pane: Pick<WatchdogPane, 'key' | 'name' | 'activity' | 'createdAt' | 'x' | 'y'>;
 	cli: WatchdogCli;
 	message: string;
+	/** Which sessions may match; defaults to Chief of Staff or Tracker worker names. */
+	names?: RegExp;
 }
 
 export interface TrackerTmuxClose {
@@ -27,5 +29,9 @@ export interface TrackerTmuxClose {
 	cli: WatchdogCli;
 	attempt?: string;
 	observed?: boolean;
+	/** Close even without an empty composer: the pane has been silent since its run ended. */
+	force?: boolean;
+	/** Leave a session whose provider still reports a background shell or monitor. */
+	keepBackground?: boolean;
 	stillComplete(): boolean;
 }

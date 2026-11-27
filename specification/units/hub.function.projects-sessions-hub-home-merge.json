@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomeMerge.ts"],
-		"symbols": ["mergeHomeSnapshots"]
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubHomeMerge.ts"],
+		"symbols": ["mergeHomeSnapshots", "homeBoard"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -19,6 +19,24 @@
 				"type": "OwnerHomeSnapshot[]",
 				"required": true,
 				"description": "The validated Home view each online linked computer returned, in any order."
+			},
+			{
+				"name": "homeBoard.snapshot",
+				"type": "OwnerHomeSnapshot",
+				"required": true,
+				"description": "The listed owner Home snapshot with its scheduled and past-due runs."
+			},
+			{
+				"name": "homeBoard.routinesConnected",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether the routine source is connected and fresh; when false only Tracker runs are kept."
+			},
+			{
+				"name": "homeBoard.now",
+				"type": "number",
+				"required": true,
+				"description": "The current time in milliseconds that separates upcoming from past due."
 			}
 		],
 		"outputs": [
@@ -50,11 +68,58 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "homeBoard",
+				"inputs": [
+					{
+						"name": "homeBoard.snapshot",
+						"type": "OwnerHomeSnapshot",
+						"required": true,
+						"description": "The listed owner Home snapshot with its scheduled and past-due runs."
+					},
+					{
+						"name": "homeBoard.routinesConnected",
+						"type": "boolean",
+						"required": true,
+						"description": "Whether the routine source is connected and fresh; when false only Tracker runs are kept."
+					},
+					{
+						"name": "homeBoard.now",
+						"type": "number",
+						"required": true,
+						"description": "The current time in milliseconds that separates upcoming from past due."
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeBoard",
+						"type": "unknown",
+						"description": "The upcoming runs and the past-due runs."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-schedule",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
@@ -63,11 +128,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubHomeMerge.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeMerge.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubHomeMerge.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeMerge.ts"
 			}
 		]
 	},

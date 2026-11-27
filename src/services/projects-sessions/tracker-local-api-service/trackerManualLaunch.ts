@@ -37,9 +37,7 @@ function planTrackerExplicitLaunch(
 	body: TrackerItemInput,
 	context: TrackerItemMutationContext
 ) {
-	if (item.kind === 'reminder' || trackerReminderTitle(item.title ?? ''))
-		throw trackerItemError('reminders cannot launch', 409);
-	if (item.status === 'ignored') throw trackerItemError('item is ignored', 409);
+	guardManualLaunch(item);
 	const { project, repo, computer, model, sensitive } = body;
 	const reset = item.status === 'blocked' || item.status === 'done';
 	const plan = planTrackerItemMutation(
@@ -65,4 +63,15 @@ function planTrackerExplicitLaunch(
 			)
 		);
 	return plan;
+}
+
+function guardManualLaunch(item: TrackerItemSnapshot) {
+	if (item.kind === 'reminder' || trackerReminderTitle(item.title ?? ''))
+		throw trackerItemError('reminders cannot launch', 409);
+	if (item.status === 'ignored') throw trackerItemError('item is ignored', 409);
+	if (item.status === 'blocked' && item.needs_daniel && !item.resolved)
+		throw trackerItemError(
+			`waiting on Daniel (flagged). Review with tracker show ${item.id}.`,
+			409
+		);
 }

@@ -1,0 +1,214 @@
+/* @harness-uid u_aoav7uq63l */
+/* Inside the dialogs: list + detail splits (Agents, Projects), chat, plans, agenda, history. */
+.hh-home .hh-split {
+	display: grid;
+	grid-template-columns: minmax(280px, 440px) minmax(0, 1fr);
+	gap: var(--hx-space-24);
+	align-items: start;
+}
+/* Both panes may shrink to their track, so a long name or message never widens the dialog. */
+.hh-home .hh-split > * {
+	min-width: 0;
+}
+.hh-home .hh-group {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-4);
+	margin-bottom: var(--hx-space-22);
+}
+.hh-home .hh-split-list [aria-current='true'] {
+	margin-inline: calc(var(--hx-space-10) * -1);
+	padding-inline: var(--hx-space-10);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-selected);
+	box-shadow: var(--hx-shadow-selected);
+}
+.hh-home .hh-agent-where {
+	font-size: var(--hx-type-size-2xs);
+}
+.hh-home .hh-plan-grid .hh-plan {
+	gap: var(--hx-space-14);
+}
+.hh-home .hh-steps {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-6);
+	color: var(--hx-color-text-supporting);
+	font-size: var(--hx-type-size-compact);
+}
+.hh-home .hh-step {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-8);
+}
+.hh-home .hh-step::before {
+	content: '';
+	flex: none;
+	width: var(--hx-space-10);
+	height: var(--hx-space-10);
+	border: var(--hx-border-medium) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-round);
+}
+.hh-home .hh-step[data-done='true'] {
+	color: var(--hx-color-text-muted);
+}
+.hh-home .hh-step[data-done='true']::before {
+	border-color: var(--hx-color-success);
+	background: var(--hx-color-success);
+}
+.hh-home .hh-agenda {
+	max-width: 880px;
+}
+/* A minimum, not a width: a 12-hour time widens its row rather than running into the title. */
+.hh-home .hh-agenda-time {
+	flex: none;
+	min-width: var(--hx-space-64);
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-semibold);
+	font-variant-numeric: var(--hx-style-numeric-tabular);
+}
+.hh-home .hh-agenda-row .po-item-text {
+	flex: 1;
+}
+.hh-home .hh-repeat {
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+	gap: var(--hx-space-6);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+}
+.hh-home .hh-repeat .hh-icon {
+	width: 14px;
+	height: 14px;
+}
+.hh-home .hh-apps {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--hx-space-12);
+}
+.hh-home .hh-app {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-4);
+	min-width: 0;
+	padding: var(--hx-space-14);
+	overflow-wrap: anywhere;
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-surface);
+}
+.hh-home .hh-app-name {
+	font-size: var(--hx-type-size-base);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.hh-home .hh-app-counts {
+	font-size: var(--hx-type-size-compact);
+}
+.hh-home .hh-project-detail > .po-label {
+	margin-top: var(--hx-space-8);
+}
+.hh-home .hh-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-6);
+}
+.hh-home .hh-tag {
+	max-width: 100%;
+	padding: var(--hx-space-4) var(--hx-space-10);
+	overflow-wrap: anywhere;
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-pill);
+	font-size: var(--hx-type-size-xs);
+}
+.hh-home .hh-tag-code {
+	font-family: var(--hx-font-family-code);
+}
+.hh-home .hh-tag-more {
+	border-style: dashed;
+	color: var(--hx-color-text-muted);
+}
+.hh-home .hh-commit {
+	display: grid;
+	grid-template-columns: var(--hx-space-70) minmax(0, 1fr) auto;
+	gap: var(--hx-space-12);
+	align-items: baseline;
+	padding: var(--hx-space-10) 0;
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-home .hh-commit code {
+	color: var(--home-accent);
+}
+.hh-home .hh-overview .po-band {
+	margin-bottom: var(--hx-space-32);
+}
+@media (max-width: 1000px) {
+	.hh-home .hh-split {
+		grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+		gap: var(--hx-space-16);
+	}
+}
+/* Phone: one pane at a time. Agents shows its list; .hh-show-detail swaps to the chat (the
+   dialog header carries its name and Back). Projects stacks list over detail until a project is
+   opened, then shows the detail alone. */
+@media (max-width: 560px) {
+	.hh-home .hh-split {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.hh-home .hh-split-agents .hh-chat,
+	.hh-home .hh-show-detail .hh-split-list {
+		display: none;
+	}
+	.hh-home .hh-show-detail .hh-chat-head {
+		display: none;
+	}
+	.hh-home .hh-show-detail .hh-chat {
+		display: flex;
+		padding: 0;
+		border: 0;
+		background: transparent;
+	}
+	.hh-home .hh-apps {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.hh-home .hh-commit {
+		grid-template-columns: var(--hx-space-64) minmax(0, 1fr);
+	}
+	.hh-home .hh-commit .po-item-meta {
+		grid-column: 2;
+	}
+}
+
+/* The dialog already names the view and shows its totals. Keep the original overview cards. */
+.hh-home .hh-overview .po-head {
+	display: none;
+}
+
+.hh-home .hh-agent-linked-meta {
+	padding: 0 var(--hx-space-12) var(--hx-space-8);
+	overflow-wrap: anywhere;
+}
+
+.hh-home .hh-row-target {
+	position: relative;
+}
+.hh-home .hh-row-target .hx-text-link {
+	position: relative;
+	z-index: 1;
+}
+.hh-home .hh-plan .po-callout-actions > button {
+	position: relative;
+	z-index: 1;
+}
+.hh-home .hh-open-row {
+	position: absolute;
+	inset: 0;
+	border: 0;
+	border-radius: var(--hx-radius-small);
+	background: transparent;
+	cursor: pointer;
+}
+.hh-home .hh-row-target:has(.hh-open-row:hover) .po-item-title,
+.hh-home .hh-plan:has(.hh-open-row:hover) .po-name {
+	text-decoration: underline;
+}

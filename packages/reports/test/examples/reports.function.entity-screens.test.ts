@@ -13,8 +13,7 @@ import { commits, ids, scenarios, units } from '../entityUnits';
 import { withFocused } from '../entityStates';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-type Case = [name: string, input: unknown, output: unknown];
+import type { Case } from './reports.function.entity-screens.test.types';
 
 const unitId = 'reports.function.entity-screens';
 const page = units.find((unit) => unit.id === ids.page)!;

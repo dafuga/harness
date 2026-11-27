@@ -6,7 +6,11 @@
 	"title": "Encode and read pairing offers",
 	"responsibility": "Write the exact QR offer format and validate scanned offers against environment and expiry rules.",
 	"responsibilityOrigin": "declared",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Devices link only through Google sign-in to the same account: there is no QR code, offer or scan any more.",
+		"at": "2026-11-25T18:39:18.810Z"
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/networking-security/remote-host-service/pairingOffer.ts",

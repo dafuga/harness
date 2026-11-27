@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/project-session-service/planning-facade-adapter/planningReads.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningReadError.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.types.ts",
 			"packages/desktop/src/utils/planningReads.ts",
@@ -21,6 +22,7 @@
 			"readPlanMessages",
 			"readPlanImage",
 			"readPlanHistory",
+			"PlanningReadError",
 			"planningReads",
 			"readPlanMessages",
 			"readPlanImage",
@@ -399,7 +401,7 @@
 				"outputs": [
 					{
 						"name": "planningReads",
-						"type": "Promise<import(\"../../../../models/planning-collaboration/PlanningPort.types\").PlanRecord[]>",
+						"type": "Promise<PlanRecord[]>",
 						"description": "Resolves to one converted PlanRecord for each plan in the snapshot at the requested revision. A nonempty rejected list throws an Error containing the rejected paths and messages; API or Git read failures also reject.",
 						"examples": [
 							[]
@@ -441,7 +443,7 @@
 				"outputs": [
 					{
 						"name": "readPlanMessages",
-						"type": "Promise<import(\"../../../../models/development-tooling/Desktop.types\").ThreadMessage[]>",
+						"type": "Promise<ThreadMessage[]>",
 						"description": "Resolves to the selected thread's messages converted to desktop ThreadMessage records. The requested thread must belong to the entity at the requested revision.",
 						"examples": [
 							[

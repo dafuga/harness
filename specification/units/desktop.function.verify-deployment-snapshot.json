@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/verification-evidence/DeploymentSnapshotVerificationError.ts",
 			"packages/desktop/src/utils/verification-evidence/verifyDeploymentSnapshot.ts",
 			"packages/desktop/src/utils/verification-evidence/verifyDeploymentSnapshot.types.ts"
 		],
 		"symbols": [
+			"DeploymentSnapshotVerificationError",
 			"captureDeploymentTarget",
 			"verifyDeploymentSnapshot",
 			"DeploymentSnapshotVerificationError"
@@ -248,7 +250,7 @@
 				"outputs": [
 					{
 						"name": "captureDeploymentTarget",
-						"type": "Promise<{ target: import('../../models/development-tooling/Deployment.types').CloudflareTarget; destination: DeploymentReceipt | null }>",
+						"type": "Promise<{ target: CloudflareTarget; destination: DeploymentReceipt | null }>",
 						"description": "Returns config.targets[plan.environment] and the current receipt for that environment, or null when no receipt is recorded. The target is not separately checked for presence here; predecessor and ancestry checks apply only when those conditions exist.",
 						"examples": [
 							{

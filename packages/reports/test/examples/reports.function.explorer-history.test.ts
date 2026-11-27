@@ -7,14 +7,7 @@ import { scope } from '../entityPlaces';
 import { commits, ids, sha } from '../entityUnits';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-/**
- * Both symbols are called the way the explorer calls them, over the loaded fixture history: the
- * selected commit and its ancestry, a commit the index does not hold, and one stored revision.
- * Each state records one symbol, with the input it was given and the result it returned.
- */
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.explorer-history.test.types';
 const unitId = 'reports.function.explorer-history';
 const trace = (symbol: string, state: string, cases: Cases) =>
 	recordExampleCases(

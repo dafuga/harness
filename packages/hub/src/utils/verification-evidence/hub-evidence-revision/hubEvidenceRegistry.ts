@@ -7,8 +7,9 @@ import { revisionRegistry } from '../../../../../../src/utils/revision-registry/
 import { hubRecords } from '../../development-tooling/hubRecords';
 import { hubRead, type HubSourceContext } from '../../development-tooling/hubSource';
 import { hubJson, hubFail } from '../../development-tooling/hubJson';
+import type { RevisionRegistry } from '../../../../../../src/utils/verification-evidence/revision-registry/revisionRegistry.types';
 
-export async function hubEvidenceRegistry(context: HubSourceContext) {
+export async function hubEvidenceRegistry(context: HubSourceContext): Promise<RevisionRegistry> {
 	const units = await hubRecords(context);
 	const entries = context.entries.filter((e) =>
 		/^specification\/scenarios\/[^/]+\.json$/.test(e.path)

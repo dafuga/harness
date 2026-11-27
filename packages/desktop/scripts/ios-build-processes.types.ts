@@ -1,9 +1,4 @@
 // @harness-uid u_em2kohyy6k
-export interface Row {
-	started: string;
-	executable: string;
-}
-
 export interface Settling {
 	developer: string | null;
 	/** When each of this build's own processes was first asked to end. */

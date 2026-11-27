@@ -11,10 +11,11 @@ export interface TrackerSessionHealthIssue {
 	item_id: string;
 	host: string;
 	session: string | null;
-	kind: 'missing' | 'launch-stuck' | 'orphan' | 'finished';
+	kind: 'missing' | 'launch-stuck' | 'orphan' | 'finished' | 'finished-run-pane' | 'idle-run';
 	reason: string;
 	identity: string;
 	recover?: boolean;
+	blockReason?: string;
 }
 
 export interface TrackerSessionHealthSnapshot {
@@ -26,6 +27,8 @@ export interface TrackerSessionHealthSnapshot {
 	runs: (id: string) => readonly TrackerListedRun[];
 	scheduleAt: (id: string) => number;
 	linkedItems: (runId: number) => readonly string[];
+	/** Panes whose finished run is judged by the run's own slot rule instead of its item. */
+	judgedByRun?: ReadonlySet<string>;
 }
 
 export type TrackerWatchdogLaunch = (

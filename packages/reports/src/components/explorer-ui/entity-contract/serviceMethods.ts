@@ -1,7 +1,7 @@
 // @harness-uid u_62hgz5o7bv
-import type { Recorded, ServiceClass, Item } from './serviceMethods.types';
+import type { HarnessContractItem, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
+import type { Recorded, ServiceClass } from './serviceMethods.types';
 import type { ContractGroup } from '../../../utils/explorer-ui/contractFields';
-import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 import type { ContractRow } from '../../../utils/explorer-ui/entityContract';
 import { methodsNamed, orderedMethods, within } from './methodNames';
 import { fieldOf, returnField, typeLabel, type CallableContract } from './contractFields';
@@ -55,7 +55,7 @@ function methodContract(
 ): CallableContract {
 	const owner = `${of}.${method}`;
 	const name = qualified ? owner : method;
-	const under = (items: Item[], whole: boolean) =>
+	const under = (items: HarnessContractItem[], whole: boolean) =>
 		items.filter((item) => within(item.name, owner, whole));
 	const parameters = under(unit.contract.inputs, false).map((item) => ({
 		...fieldOf(item, unit),
@@ -99,9 +99,10 @@ function methodContract(
 
 /** What a service contract declares under no one `Class.method`, said once beside its methods. */
 function unscoped(unit: HarnessUnit, owners: string[]): ContractRow[] {
-	const free = (items: Item[], whole: boolean) =>
+	const free = (items: HarnessContractItem[], whole: boolean) =>
 		items.filter((item) => !owners.some((owner) => within(item.name, owner, whole)));
-	const names = (items: Item[]) => [...new Set(items.map((item) => item.name))].join(', ');
+	const names = (items: HarnessContractItem[]) =>
+		[...new Set(items.map((item) => item.name))].join(', ');
 	const { inputs, outputs, errors: failures } = unit.contract;
 	const errors = names(free(failures, true));
 	const others = names([...free(inputs, false), ...free(outputs, true)]);

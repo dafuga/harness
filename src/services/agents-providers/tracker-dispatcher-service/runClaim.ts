@@ -73,7 +73,13 @@ export function prepareRetry(
 		pinned: run.pinned
 	};
 	const problem = policy.admit(item, item.launch, rung);
-	if (problem) return skip('held', problem);
+	if (problem) {
+		if (problem === run.failure_reason) return skip('held', problem);
+		return {
+			result: { status: 'held', reason: problem },
+			writes: { runs: [reviseRun(run, { failure_reason: problem })] }
+		};
+	}
 	return reserveStart(item, { run, rung }, policy, now);
 }
 
@@ -101,10 +107,15 @@ export function retireUnstartedRun(
 		now - (run.dispatch_at ?? run.queued_at) < launchStartupGrace
 	)
 		return skip('ignored', 'launch reservation is owned elsewhere or still within startup grace');
-	const failure = { outcome: 'abandoned', reason: 'launch expired before startup', now } as const;
+	const failure = expiredStart(run, now);
 	if (run.dispatch_at !== undefined && startable(item))
 		return failRun(snapshot, run, { ...failure, startup: true }, clock);
 	return recordRun(finishRun(run, failure), { launch: null });
+}
+
+function expiredStart({ failure_reason: cause }: TrackerRunReceipt, now: number) {
+	const reason = `launch expired before startup${cause ? `: ${cause}` : ''}`;
+	return { outcome: 'abandoned', reason, now } as const;
 }
 
 function unstartedRun({ activeSessionKeys }: TrackerDispatchSnapshot, run: TrackerRunReceipt) {
@@ -153,9 +164,7 @@ function claimItemHold(
 		if (hold) return hold;
 	}
 	if (!startable(item)) return 'item is not startable';
-	return item.launch?.source === 'recovery' && item.status !== 'in_progress'
-		? 'item is no longer in progress'
-		: null;
+	return null;
 }
 
 function reserveStart(
@@ -165,13 +174,15 @@ function reserveStart(
 	now: number
 ): TrackerDispatchDecision {
 	const intent = item.launch!;
-	const reserved = reviseRun(run, { dispatch_at: now, eta_at: etaFor(item, policy, now) });
+	// A run queued before the model change starts on its replacement.
+	const model = rung.model === 'gpt-6.1-sol' ? 'gpt-6.2-sol' : rung.model;
+	const reserved = reviseRun(run, { model, dispatch_at: now, eta_at: etaFor(item, policy, now) });
 	return {
 		result: {
 			status: 'start',
 			run: reserved,
 			key: attemptKey(reserved),
-			selection: { provider: rung.cli, model: rung.model, intelligence: rung.effort ?? '' }
+			selection: { provider: rung.cli, model, intelligence: rung.effort ?? '' }
 		},
 		writes: {
 			runs: [reserved],

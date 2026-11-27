@@ -7,14 +7,13 @@ import type {
 	DesignOptionInfo,
 	DesignVersion
 } from '../../src/models/planning-collaboration/DesignVersion.types';
+import type { Case } from './desktop.function.prior-image.test.types';
 
 const commitA = '0123456789abcdef0123456789abcdef01234567';
 const commitB = '89abcdef0123456789abcdef0123456789abcdef';
 const hashA = '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08';
 const hashB = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
 const hashC = '431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460';
-
-type Case = { name: string; input: unknown; output: unknown };
 
 function image(viewport: string, sha256: string, state = 'default'): DesignImage {
 	return { state, viewport, sha256, bytes: 124800 };
