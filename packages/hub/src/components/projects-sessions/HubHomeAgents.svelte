@@ -10,8 +10,7 @@
 	import type {
 		HomeAgent,
 		HomeChatInput,
-		HomeChatReceipt,
-		HomeOpenAsk
+		HomeChatReceipt
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import {
 		agentGroups,
@@ -26,14 +25,11 @@
 	import { isPending, receiptText } from './hubHomeMessages';
 	import type { ChangeSession, SendHomeChat } from './hubHomeView.types';
 	import HubHomeAddSession from './HubHomeAddSession.svelte';
-	import HubHomeAsk from './HubHomeAsk.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
 	let {
-		agents: listed,
-		asks = [],
-		openAsks = [],
+		agents,
 		added = [],
 		changeSession,
 		agentId,
@@ -43,9 +39,6 @@
 		chatName = $bindable('')
 	}: {
 		agents: HomeAgent[] | null;
-		/** Other projects' agents that need you: not listed sessions, but their asks and options show. */
-		asks?: HomeAgent[];
-		openAsks?: HomeOpenAsk[];
 		added?: string[];
 		changeSession: ChangeSession;
 		agentId?: string;
@@ -55,7 +48,6 @@
 		chatName?: string;
 	} = $props();
 	const cosChat = homeCosChat();
-	const agents = $derived(listed === null ? null : [...listed, ...asks]);
 	let selected = $state<string>();
 	let pending = $state<{ message: HomeChatInput; receipt: HomeChatReceipt }[]>([]);
 	const active = $derived(
@@ -63,18 +55,10 @@
 			currentAgent(agents ?? []) ??
 			agents?.[0]
 	);
-	/** The chosen session's open asks. They are the latest messages of its chat. */
-	const chatAsks = $derived(openAsks.filter((ask) => ask.agentId === active?.id));
-
 	$effect(() => void (chatName = active?.name ?? ''));
 	function select(id: string) {
 		selected = id;
 		chatOpen = true;
-	}
-
-	/** Opening the chat lands on the question, wherever the thread starts. */
-	function revealAsk(element: HTMLElement) {
-		requestAnimationFrame(() => element.scrollIntoView({ block: 'nearest' }));
 	}
 
 	function submitted(message: HomeChatInput, result: HomeChatReceipt) {
@@ -185,11 +169,6 @@
 							class="hh-msg-at"
 							role="status">{receiptText(entry.receipt)}</hx-span
 						>
-					</hx-li>
-				{/each}
-				{#each chatAsks as ask (ask.itemId)}
-					<hx-li class="hh-msg hh-msg-ask" data-from="agent" {@attach revealAsk}>
-						<HubHomeAsk {ask} {send} {receipt} {submitted} />
 					</hx-li>
 				{/each}
 			</hx-ol>

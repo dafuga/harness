@@ -2,11 +2,6 @@ import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
 import { linkedComputersFixture } from './linked-computers-fixture';
 
-/**
- * "Needs you" on Home: each row carries its choices (recommended first) and Other, and opens the
- * asking session's chat, which offers the same. TAKE_SCREENSHOT=true keeps the pictures in
- * SCREENSHOT_DIR.
- */
 test.setTimeout(60000);
 
 const sizes = {
@@ -62,25 +57,24 @@ async function home(page: Page, size: keyof typeof sizes, change: 'two-asks' | '
 }
 
 const needsYou = (page: Page) => page.getByRole('region', { name: /^Blocked - needs you/ });
-/** The part of a row that opens the asking session's chat. */
-const openers = (page: Page) => needsYou(page).getByRole('button', { name: /waiting \d+[mhd]/ });
+const openers = (page: Page) =>
+	needsYou(page).getByRole('button', { name: 'Talk to Chief of Staff', exact: true });
+const widget = (page: Page) => page.getByRole('dialog', { name: 'Chief of Staff', exact: true });
+const talk = (page: Page, project: string) =>
+	rowOf(page, project).getByRole('button', { name: 'Talk to Chief of Staff', exact: true });
 const rowOf = (page: Page, project: string) =>
 	needsYou(page).getByRole('listitem').filter({ hasText: project });
 const agentsCard = (page: Page) => page.getByRole('region', { name: 'Agents', exact: true });
 
 for (const size of ['desktop', 'tablet', 'phone'] as const) {
-	test(`Home rows offer their choices and open the session chat (${size})`, async ({ page }) => {
+	test(`Home asks go to Chief of Staff without an Agents modal (${size})`, async ({ page }) => {
 		const fixture = await home(page, size, 'two-asks');
 		const rows = openers(page);
 		await expect(rows).toHaveCount(2);
-		// The count lives with the items in the blockers section; Agents shows only agents.
 		await expect(needsYou(page).getByText('2 need you', { exact: true })).toBeVisible();
 		await expect(agentsCard(page)).toBeVisible();
 		await expect(agentsCard(page).getByText(/\d+ needs? you/)).toHaveCount(0);
-		await expect(rows.filter({ hasText: 'harbor' })).toContainText(
-			/Ship harbor\?.*waiting \d+[mhd]/s
-		);
-		// Every row has its buttons: the recommended choice first, Other last, no inline field.
+		await expect(rowOf(page, 'harbor')).toContainText(/Ship harbor\?.*waiting \d+[mhd]/s);
 		await expect(needsYou(page).getByRole('group', { name: 'Choose an answer' })).toHaveCount(2);
 		const choices = rowOf(page, 'harbor')
 			.getByRole('group', { name: 'Choose an answer' })
@@ -96,19 +90,19 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 		await expect(rowOf(page, 'harbor').getByText('Merges and releases.')).toHaveCount(0);
 		await expect(rowOf(page, 'harbor').getByText('Waits a day.')).toHaveCount(0);
 
-		await rows.filter({ hasText: 'harbor' }).click();
-		const chat = page.getByRole('region', { name: 'Chat with harbor' });
-		const latest = chat
-			.getByRole('list', { name: 'Tracker conversation' })
-			.getByRole('listitem')
-			.last();
+		await talk(page, 'harbor').click();
+		const chat = widget(page);
+		await expect(page.getByRole('dialog', { name: 'Agents', exact: true })).toHaveCount(0);
+		await expect(chat).toBeVisible();
+		if (size !== 'phone') await expect(page.locator('dialog:modal')).toHaveCount(0);
+		const latest = chat.getByRole('region', { name: 'harbor needs you' });
 		await expect(latest.getByText('Ship harbor?')).toBeVisible();
 		await expect(latest.getByText('Merges and releases.')).toBeVisible();
 		await expect(
 			latest.getByRole('button', { name: /Ship harbor now.*Recommended/s })
 		).toBeVisible();
 		await expect(latest.getByRole('button', { name: /Other/ })).toBeVisible();
-		await expect(chat.getByRole('textbox', { name: /answer|reply/i })).toHaveCount(0);
+		await expect(chat.getByRole('textbox', { name: 'Message Chief of Staff' })).toBeVisible();
 		await shot(page, `hub-chat-ask-${size}`);
 
 		await latest.getByRole('button', { name: /Other/ }).click();
@@ -118,32 +112,38 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 		await expect(modal.getByRole('button', { name: 'Send answer' })).toBeDisabled();
 		await field.fill('Ship it Friday,\nafter the freeze.');
 		await shot(page, `hub-other-modal-${size}`);
-		// Escape closes only the modal; the chat stays open.
 		await page.keyboard.press('Escape');
 		await expect(modal).toBeHidden();
 		await expect(chat).toBeVisible();
 		expect(fixture.sent).toHaveLength(0);
-
+		await chat.getByRole('textbox', { name: 'Message Chief of Staff' }).fill('What are the risks?');
+		await chat.getByRole('button', { name: 'Send', exact: true }).click();
+		await expect
+			.poll(() => fixture.sent[0])
+			.toMatchObject({
+				agentId: 'cos',
+				kind: 'message',
+				text: expect.stringMatching(/What are the risks\?.*[\s\S]*item-harbor[\s\S]*Ship harbor\?/)
+			});
 		await latest.getByRole('button', { name: /Other/ }).click();
 		await field.fill('Ship it Friday,\nafter the freeze.');
 		await modal.getByRole('button', { name: 'Send answer' }).click();
-		await expect.poll(() => fixture.sent.length).toBe(1);
-		expect(fixture.sent[0]).toMatchObject({
+		await expect.poll(() => fixture.sent.length).toBe(2);
+		expect(fixture.sent[1]).toMatchObject({
 			agentId: 'harbor',
 			itemId: 'item-harbor',
 			kind: 'answer',
 			question: 'Ship harbor?',
 			text: 'Ship it Friday,\nafter the freeze.'
 		});
-		expect(fixture.sent[0]).not.toHaveProperty('option');
+		expect(fixture.sent[1]).not.toHaveProperty('option');
 	});
 }
 
 test('a tapped choice in the chat is sent as that option', async ({ page }) => {
 	const fixture = await home(page, 'desktop', 'two-asks');
-	await openers(page).filter({ hasText: 'harbor' }).click();
-	await page
-		.getByRole('region', { name: 'Chat with harbor' })
+	await talk(page, 'harbor').click();
+	await widget(page)
 		.getByRole('button', { name: /Hold harbor/ })
 		.click();
 	await expect.poll(() => fixture.sent.length).toBe(1);

@@ -11,6 +11,7 @@
 		summary,
 		actions,
 		variant = 'image',
+		modal = true,
 		onClose,
 		onclose,
 		children,
@@ -22,6 +23,7 @@
 		summary?: string;
 		actions?: import('svelte').Snippet;
 		variant?: 'image' | 'text' | 'lightbox' | 'section';
+		modal?: boolean;
 		onClose?: () => void;
 		onclose?: () => void;
 		children?: import('svelte').Snippet;
@@ -31,8 +33,15 @@
 	const titleId = $props.id();
 	let shown = $derived(isOpen ?? open);
 	$effect(() => {
-		if (shown) dialog?.showModal();
-		else dialog?.close();
+		if (!dialog) return;
+		if (!shown) {
+			dialog.close();
+			return;
+		}
+		if (dialog.open && dialog.matches(':modal') === modal) return;
+		if (dialog.open) dialog.close();
+		if (modal) dialog.showModal();
+		else dialog.show();
 	});
 	function close() {
 		onClose?.();
@@ -44,6 +53,13 @@
 	<hx-dialog
 		bind:this={dialog}
 		oncancel={close}
+		onkeydown={(event) => {
+			if (modal || event.key !== 'Escape' || !(event.target instanceof Element)) return;
+			if (event.target.closest('dialog') !== dialog) return;
+			event.preventDefault();
+			event.stopPropagation();
+			close();
+		}}
 		onclick={(event) => {
 			if (event.target === dialog) close();
 		}}
@@ -54,7 +70,6 @@
 		data-harness-component="modal"
 		aria-labelledby={titleId}
 	>
-
 		<hx-header class="viewer-header" class:hh-dialog-head={variant === 'section'}>
 			{#if variant === 'section'}
 				<hx-div class="hh-dialog-titles">
@@ -65,11 +80,16 @@
 			{:else}
 				<hx-h2 id={titleId}>{title}</hx-h2>
 			{/if}
-			<hx-button class:hh-icon-button={variant === 'section'} type="button" onclick={close} aria-label={$t('close')}
-				><HarnessIcon name="close" size={24} /></hx-button
+			<hx-button
+				class:hh-icon-button={variant === 'section'}
+				type="button"
+				onclick={close}
+				aria-label={$t('close')}><HarnessIcon name="close" size={24} /></hx-button
 			>
 		</hx-header>
-		<hx-div class="viewer-content" class:hh-dialog-body={variant === 'section'}>{@render children?.()}</hx-div>
+		<hx-div class="viewer-content" class:hh-dialog-body={variant === 'section'}
+			>{@render children?.()}</hx-div
+		>
 		{#if footer}<hx-footer>{@render footer()}</hx-footer>{/if}
 	</hx-dialog>
 {/if}

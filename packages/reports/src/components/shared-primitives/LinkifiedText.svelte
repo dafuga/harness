@@ -7,14 +7,16 @@
 	const segments = $derived(linkSegments(text));
 </script>
 
-{#each segments as part}
-	{#if part.href}<hx-a
-			class="hx-text-link"
-			href={part.href}
-			target="_blank"
-			rel="noopener noreferrer">{part.text}</hx-a
-		>{:else}{part.text}{/if}
-{/each}
+<hx-span data-harness-component="shared-primitives-linkified-text">
+	{#each segments as part}
+		{#if part.href}<hx-a
+				class="hx-text-link"
+				href={part.href}
+				target="_blank"
+				rel="noopener noreferrer">{part.text}</hx-a
+			>{:else}{part.text}{/if}
+	{/each}
+</hx-span>
 
 <style>
 	.hx-text-link {

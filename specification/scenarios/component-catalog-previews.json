@@ -361,6 +361,7 @@
 		"reports.component.shared-primitives-compare-panes",
 		"reports.component.shared-primitives-data-table",
 		"reports.component.shared-primitives-detail-list",
+		"reports.component.shared-primitives-linkified-text",
 		"reports.component.shared-primitives-loading-state",
 		"reports.component.source-code-action",
 		"reports.component.source-content",
@@ -8101,6 +8102,12 @@
 			"units": ["reports.component.shared-primitives-detail-list"]
 		},
 		{
+			"id": "reports-component-shared-primitives-linkified-text",
+			"title": "Tracker text with a web link",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-linkified-text"]
+		},
+		{
 			"id": "reports-component-shared-primitives-loading-state",
 			"title": "Accessible data loading status",
 			"coverage": "required",
@@ -10043,6 +10050,7 @@
 				"reports-component-shared-primitives-detail-list-duplicate-labels",
 				"reports-component-shared-primitives-detail-list-flat",
 				"reports-component-shared-primitives-detail-list-attributes",
+				"reports-component-shared-primitives-linkified-text",
 				"reports-component-shared-primitives-loading-state",
 				"reports-component-shared-primitives-loading-state-default-label",
 				"reports-component-shared-primitives-loading-state-long",
