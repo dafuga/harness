@@ -41,7 +41,9 @@ test('a component contract lists prop types and examples without an output secti
 			'Required',
 			'Optional',
 			'Default',
-			'No default'
+			'No default',
+			'Default not recorded',
+			'undefined'
 		])
 			expect(words(body)).toContain(text);
 		expect(body).toContain('aria-label="Props"');
@@ -51,6 +53,7 @@ test('a component contract lists prop types and examples without an output secti
 		expect(body).toMatch(/<table\b/);
 		expect(body).toContain('aria-haspopup="dialog"');
 		expect(body).toContain('View example for Enabled');
+		expect(body).toMatch(/Default:\s*<code\b[^>]*>undefined<\/code>/);
 		expect(body).toMatch(/Safe &lt;tag(?:&gt;|>)/);
 		expect(body).not.toContain('Whether the list is active.');
 		expect(body).not.toContain('<tag>');

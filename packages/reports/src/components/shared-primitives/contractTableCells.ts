@@ -4,8 +4,7 @@ import type { ContractField } from '../../utils/explorer-ui/contractFields';
 /** @pure What a field says about being required, naming a field that does not record it. */
 export function requirementLabel(field: ContractField): string {
 	if (field.required === true) return 'Required';
-	if (field.required === false)
-		return field.defaultKind === 'omitted' ? 'Optional, no default' : 'Optional';
+	if (field.required === false) return 'Optional';
 	return 'Requiredness not recorded';
 }
 

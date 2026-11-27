@@ -12,9 +12,7 @@ const field = (extra: Record<string, unknown>) =>
 test('requirement names required, optional and unrecorded fields', () => {
 	expect(requirementLabel(field({ required: true }))).toBe('Required');
 	expect(requirementLabel(field({ required: false }))).toBe('Optional');
-	expect(requirementLabel(field({ required: false, defaultKind: 'omitted' }))).toBe(
-		'Optional, no default'
-	);
+	expect(requirementLabel(field({ required: false, defaultKind: 'omitted' }))).toBe('Optional');
 	expect(requirementLabel(field({}))).toBe('Requiredness not recorded');
 });
 

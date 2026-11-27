@@ -1,6 +1,7 @@
 // @harness-uid u_6shfrcvyqy
 import { z } from 'zod';
 const text = z.string().trim().min(1);
+const exclusiveDefault = { not: { required: ['default', 'defaultKind'] } };
 
 export const contractItemSchema = z
 	.strictObject({
@@ -19,7 +20,8 @@ export const contractItemSchema = z
 	})
 	.refine((item) => !item.defaultKind || !Object.hasOwn(item, 'default'), {
 		message: 'A contract item declares either default or defaultKind.'
-	});
+	})
+	.meta(exclusiveDefault);
 
 /** Additive source facts preserve every historical contract's three array fields. */
 export function sourceContractSchema(item: typeof contractItemSchema) {
@@ -36,12 +38,14 @@ export function sourceContractSchema(item: typeof contractItemSchema) {
 		table: text.optional(),
 		primaryKey: text.optional(),
 		fields: z.array(
-			item.safeExtend({
-				nullable: z.boolean().optional(),
-				primaryKey: z.boolean().optional(),
-				validation: text.optional(),
-				relations: text.optional()
-			})
+			item
+				.safeExtend({
+					nullable: z.boolean().optional(),
+					primaryKey: z.boolean().optional(),
+					validation: text.optional(),
+					relations: text.optional()
+				})
+				.meta(exclusiveDefault)
 		),
 		validation: text.optional(),
 		relations: text.optional(),

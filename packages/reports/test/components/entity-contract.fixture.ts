@@ -1,8 +1,9 @@
+import type { HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import { typeDeclarations } from '../entityClassFixtures';
 import { contractFields } from '../../src/utils/explorer-ui/contractFields';
 import { unit as fixtureUnit } from '../explorerFixture';
 
-export const propContract = {
+export const propContract: HarnessUnit['contract'] = {
 	inputs: [
 		{
 			name: 'enabled',
@@ -13,6 +14,9 @@ export const propContract = {
 			examples: [false]
 		},
 		{ name: 'limit', type: 'number', required: false, default: 0, examples: [0] },
+		{ name: 'label', type: 'string', required: false, defaultKind: 'omitted' },
+		{ name: 'override', type: 'number | undefined', required: false, defaultKind: 'undefined' },
+		{ name: 'computed', type: 'string', required: false },
 		{
 			name: 'empty',
 			type: 'unknown',

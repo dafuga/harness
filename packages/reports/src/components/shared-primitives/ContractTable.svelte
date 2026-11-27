@@ -65,17 +65,17 @@
 					{@const defaultValue = defaultText(field)}
 					<hx-tr data-contract-input={metadata ? '' : undefined}>
 						{#if named}<hx-th scope="row"
-								>{#each nameWords(field.name) as word, position (position)}{#if position > 0}.<hx-wbr />{/if}{word}{/each}</hx-th
+								>{#each nameWords(field.name) as word, position (position)}{#if position > 0}.<hx-wbr
+										/>{/if}{word}{/each}</hx-th
 							>{/if}
 						<hx-td><hx-code class="type">{field.type}</hx-code></hx-td>
 						{#if metadata}
-							<hx-td
-								><hx-span class="requirement">{requirementLabel(field)}</hx-span></hx-td
-							>
+							<hx-td><hx-span class="requirement">{requirementLabel(field)}</hx-span></hx-td>
 							<hx-td
 								><hx-span class="default"
 									>{#if defaultValue !== null}Default: <hx-code>{defaultValue}</hx-code
-										>{:else}No default{/if}</hx-span
+										>{:else if field.defaultKind === 'omitted' || field.required === true}No default{:else}Default
+										not recorded{/if}</hx-span
 								></hx-td
 							>
 						{/if}
