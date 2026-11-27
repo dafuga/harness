@@ -91,7 +91,6 @@
 			"dueItemHold",
 			"automaticEnabled",
 			"automaticRequestHold",
-			"automaticQuietHour",
 			"schedulingHold",
 			"finalReportPrefix",
 			"finalReportHold",
@@ -399,11 +398,6 @@
 			},
 			{
 				"name": "automaticRequestHold.now",
-				"type": "number",
-				"required": true
-			},
-			{
-				"name": "automaticQuietHour.now",
 				"type": "number",
 				"required": true
 			},
@@ -1541,24 +1535,6 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "automaticQuietHour",
-				"inputs": [
-					{
-						"name": "automaticQuietHour.now",
-						"type": "number",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "automaticQuietHour",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
 				"name": "schedulingHold",
 				"inputs": [
 					{
@@ -2623,11 +2599,6 @@
 	"dependencies": [
 		{
 			"unit": "function.projects-sessions-tracker-unattended-hold",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-is-quiet-hour",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -58,8 +58,7 @@ export function trackerHostWatchdog(
 			if (config.transcriptRoots?.length) await scanTranscripts(signal);
 			await pollSessions(signal);
 			const launchAlert =
-				chiefOfStaff &&
-				watchLaunchRequests(store, now(), !watchdogLaunchHold(automaticEnabled));
+				chiefOfStaff && watchLaunchRequests(store, now(), !watchdogLaunchHold(automaticEnabled));
 			if (chiefOfStaff && (launchAlert || now() - lastCosPoll >= minute)) {
 				lastCosPoll = now();
 				peerAlerts = (await driver.peers?.(signal)) ?? peerAlerts;
