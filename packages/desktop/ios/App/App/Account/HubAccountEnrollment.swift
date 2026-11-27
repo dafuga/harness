@@ -1,7 +1,7 @@
 import Foundation
 
 /// Kept before the first POST so a lost reply or process restart reopens the same mailbox.
-private struct LoginEnrollmentNonce: Codable {
+struct LoginEnrollmentNonce: Codable {
     let value: Data
     let issued: Date
 

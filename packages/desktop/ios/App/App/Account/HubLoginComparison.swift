@@ -2,7 +2,7 @@ import Foundation
 
 /// Written before the nonce is revealed. A revised mailbox must still name exactly this
 /// claim and signing key, and its verified device chain must include the original head.
-private struct LoginClaimPin: Codable {
+struct LoginClaimPin: Codable {
     static let name = "enrollment-claim"
     let mailbox: String
     let approver: String
@@ -22,6 +22,8 @@ struct HubLoginComparison {
     let credential: HubAccountCredential
     let mailbox: EnrollMailbox
 
+    private var ledger: HubLoginLedger { HubLoginLedger(session: session, credential: credential, device: request.device) }
+
     func advance(_ done: @escaping Completion) {
         do {
             let store = try HubLoginDeviceStore(credential, base: session.loginKeys)
@@ -32,7 +34,7 @@ struct HubLoginComparison {
             if let pin, pin.mailbox != mailbox.id || pin.approver != claim.approver || pin.nonce != claim.nonce {
                 return done(.failure(.failed))
             }
-            try readChain([]) { result in
+            try ledger.readChain([]) { result in
                 do {
                     let state = try SealedChain.verify(result.get(), account: credential.subject, pin: pin?.chain)
                     guard let admin = state.devices[claim.approver], admin.active, admin.role == "admin",
@@ -51,31 +53,13 @@ struct HubLoginComparison {
         } catch { done(.failure(error as? HubAccountFailure ?? .failed)) }
     }
 
-    private func readChain(_ previous: [SealedChainEntry],
-                           _ done: @escaping (Result<[SealedChainEntry], HubAccountFailure>) -> Void) throws {
-        let call = HubAccountCall(method: "GET", path: "/api/sync/v1/chain", query: ["after": String(previous.count - 1)])
-        try send(call) { result in
-            do {
-                let reply = try result.get()
-                guard reply.status == 200 else { return done(.failure(.hub(reply))) }
-                let json = try SealedJson.parse(reply.data)
-                guard let page = json["entries"]?.items, page.count <= 2048 - previous.count,
-                    case .bool(let more) = json["more"] else { return done(.failure(.failed)) }
-                let entries = previous + (try page.map(SealedChainEntry.init(json:)))
-                guard more else { return done(.success(entries)) }
-                guard !page.isEmpty, entries.count < 2048 else { return done(.failure(.tooLarge)) }
-                try readChain(entries, done)
-            } catch { done(.failure(error as? HubAccountFailure ?? .failed)) }
-        }
-    }
-
     private func reveal(_ code: String, _ done: @escaping Completion) throws {
         if let shown = try mailbox.reveal() {
             return done(shown == request.nonce ? .success(code) : .failure(.failed))
         }
         let body = RemoteCoding.json(["nonce": RemoteCoding.base64url(request.nonce)])
         let call = HubAccountCall(method: "POST", path: "/api/sync/v1/enroll/" + mailbox.id, body: body)
-        try send(call) { result in
+        try ledger.send(call) { result in
             do {
                 let reply = try result.get()
                 guard [200, 201].contains(reply.status) else { return done(.failure(.hub(reply))) }
@@ -85,13 +69,6 @@ struct HubLoginComparison {
                 done(.success(code))
             } catch { done(.failure(error as? HubAccountFailure ?? .failed)) }
         }
-    }
-
-    private func send(_ call: HubAccountCall, _ done: @escaping HubAccountSession.Answer) throws {
-        guard let origin = session.origin, session.live() == credential else { throw HubAccountFailure.superseded }
-        var bound = call
-        bound.device = request.device.deviceId
-        session.send(bound, origin, credential.token, done)
     }
 
     static func forget(_ store: HubLoginDeviceStore) { store.remove(LoginClaimPin.name) }

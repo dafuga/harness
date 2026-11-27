@@ -81,16 +81,18 @@ struct EnrollRequest {
         guard named == (try opening.chainDevice(scopes: named.scopes)) else {
             throw SealedError("Approval names a different device or key.")
         }
-        let keys = try currentKeys(state, grants: grants, scopes: current.scopes)
-        return EnrolledDevice(pin: SealedChainPin(seq: state.seq, head: state.head), keys: keys)
+        return try EnrolledDevice.open(state, grants: grants, as: device)
     }
+}
 
-    @available(iOS 17.0, macOS 14.0, *)
-    private func currentKeys(
-        _ state: SealedChainState, grants: [SealedGrant], scopes: [String]
-    ) throws -> [String: SealedScopeKeys] {
+@available(iOS 17.0, macOS 14.0, *)
+extension EnrolledDevice {
+    static func open(_ state: SealedChainState, grants: [SealedGrant], as device: SealedDevice) throws -> EnrolledDevice {
+        guard let current = state.devices[device.deviceId], current.active, current.role == "admin",
+            !current.scopes.isEmpty, current == SealedChainDevice(device, role: "admin", scopes: current.scopes)
+        else { throw SealedError("The chain does not authorize this installation.") }
         var result: [String: SealedScopeKeys] = [:]
-        for id in scopes {
+        for id in current.scopes {
             guard let scope = state.scopes[id], !scope.stale,
                 let grant = grants.first(where: {
                     $0.scope == id && $0.epoch == scope.epoch && $0.device == device.deviceId
@@ -98,6 +100,6 @@ struct EnrollRequest {
             else { throw SealedError("The new device is missing a current scope grant.") }
             result[id] = try state.openGrant(grant, as: device)
         }
-        return result
+        return EnrolledDevice(pin: SealedChainPin(seq: state.seq, head: state.head), keys: result)
     }
 }

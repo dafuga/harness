@@ -10,6 +10,7 @@ final class MemoryLoginDeviceKeys: SealedSecretStore {
 
 final class MemoryAccountVault: HubAccountVault {
     let deviceKeys = MemoryLoginDeviceKeys()
+    var firstDeviceReplies: [String: [String: HubAccountReply]] = [:]
     var credential: HubAccountCredential?
     var wipes = 0
     init(_ credential: HubAccountCredential? = nil) { self.credential = credential }

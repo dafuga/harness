@@ -56,9 +56,11 @@ final class AccountBench {
         self.hub = hub
         session = HubAccountSession(origin: origin, vault: vault, transport: hub)
         session.loginKeys = vault.deviceKeys
+        session.loginPins = vault.deviceKeys
         session.makeLoginDevice = { try SealedDevice.create(enclave: false) }
         hub.routes["GET /api/auth/status"] = { _ in hubJSON(200, ["configured": true, "actor": hubAda]) }
         hub.routes["GET /api/sync/v1/device-session"] = { _ in hubJSON(200, ["state": "approved"]) }
+        installGenesisReplies(hub, vault: vault)
         session.now = { [unowned self] in self.time }
         session.open = { [unowned self] in self.opened.append($0) }
         session.authenticate = { [unowned self] page, _ in self.opened.append(page) }

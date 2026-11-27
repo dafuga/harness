@@ -35,7 +35,12 @@ struct SealedKeychain: SealedSecretStore {
 
     func save(_ name: String, _ data: Data) throws {
         // An unavailable key must never be replaced by a newly generated login identity.
-        if !insertOnly { SecItemDelete(query(name) as CFDictionary) }
+        if !insertOnly {
+            let update = [kSecValueData as String: data]
+            let status = SecItemUpdate(query(name) as CFDictionary, update as CFDictionary)
+            if status == errSecSuccess { return }
+            guard status == errSecItemNotFound else { throw SealedError("Keychain refused the update (\(status)).") }
+        }
         var item = query(name)
         item[kSecValueData as String] = data
         item[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly

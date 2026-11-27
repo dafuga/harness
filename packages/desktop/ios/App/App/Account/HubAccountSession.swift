@@ -28,6 +28,8 @@ final class HubAccountSession {
     var deviceStage = HubDeviceStage.checking
     var deviceCheck = 0
     var enrollment = HubAccountEnrollment()
+    var enrolledDevice: EnrolledDevice?
+    var loginPins: SealedSecretStore = SealedKeychain()
     var loginKeys: SealedSecretStore = SealedKeychain(insertOnly: true)
     var makeLoginDevice: () throws -> SealedDevice = { try SealedDevice.create(enclave: true) }
 
@@ -105,6 +107,10 @@ final class HubAccountSession {
             enrollment.forget(store)
             store.remove(SealedDeviceStore.name)
         }
+        if let credential, let pins = try? HubLoginDeviceStore(credential, base: loginPins) {
+            pins.remove(HubLoginAdmission.pinName)
+        }
+        enrolledDevice = nil
         enrollment = HubAccountEnrollment()
         deviceCheck += 1
         deviceStage = .checking

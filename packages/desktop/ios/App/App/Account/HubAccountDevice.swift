@@ -25,6 +25,9 @@ extension HubAccountSession {
     private static let devicePath = "/api/sync/v1/device-session"
 
     func checkDevice(_ credential: HubAccountCredential, _ origin: URL, _ done: @escaping Status) {
+        deviceCheck += 1
+        deviceStage = .checking
+        enrolledDevice = nil
         let device: SealedDevice
         do {
             let store = try HubLoginDeviceStore(credential, base: loginKeys)
@@ -37,7 +40,6 @@ extension HubAccountSession {
             deviceStage = .checking
             return done(.failure(.unkept))
         }
-        deviceCheck += 1
         let attempt = deviceCheck
         var call = HubAccountCall(method: "GET", path: Self.devicePath)
         call.device = device.deviceId
@@ -52,7 +54,7 @@ extension HubAccountSession {
                 self.proveDevice(device, challenge: body?["challenge"], credential: credential, done)
             } else if reply.status == 200, body?["state"] as? String == "waiting-for-approval" {
                 self.waitForApproval(device, attempt: attempt, done)
-            } else { self.finishDevice(reply, done) }
+            } else { self.finishDevice(reply, device: device, done) }
         }
     }
 
@@ -82,12 +84,12 @@ extension HubAccountSession {
             guard attempt == self.deviceCheck else { return done(.failure(.superseded)) }
             switch result {
             case .failure(let failure): done(.failure(failure))
-            case .success(let reply): self.finishDevice(reply, done)
+            case .success(let reply): self.finishDevice(reply, device: device, done)
             }
         }
     }
 
-    private func finishDevice(_ reply: HubAccountReply, _ done: @escaping Status) {
+    private func finishDevice(_ reply: HubAccountReply, device: SealedDevice, _ done: @escaping Status) {
         if reply.status == 401 {
             erase()
             return done(.success(snapshot))
@@ -98,6 +100,8 @@ extension HubAccountSession {
             deviceStage = .checking
             return done(.failure(.failed))
         }
+        if stage == .approved { return verifyAdmission(device, done) }
+        enrolledDevice = nil
         deviceStage = stage
         done(.success(snapshot))
     }
