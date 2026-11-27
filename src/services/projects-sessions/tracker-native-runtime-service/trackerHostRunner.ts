@@ -58,10 +58,12 @@ export function trackerHostRunner(
 		runner: {
 			async refresh(signal: AbortSignal, runs: readonly TrackerRunReceipt[]) {
 				report.retain(runs);
-				({ sessions, panes, windows } = await trackerHostInventory(
+				const inventory = await trackerHostInventory(
 					{ store, driver, tmux, node, runs, keys: runs.map(attemptKey), now: now() },
 					signal
-				));
+				);
+				signal.throwIfAborted();
+				({ sessions, panes, windows } = inventory);
 			},
 			async start(reservation: TrackerReservedStart, signal: AbortSignal, instructions: string) {
 				const item = items.getStored(reservation.run.item_id);
@@ -75,6 +77,7 @@ export function trackerHostRunner(
 					{ item, reservation, instructions },
 					signal
 				);
+				signal.throwIfAborted();
 				if (result?.type === 'session') sessions.push({ ...result.session, itemId: item.id });
 				return withLaunchOrigin(result, routeFor(item), item);
 			},

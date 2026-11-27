@@ -13,6 +13,8 @@ import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLo
 import type { TrackerHandoffAttempt } from './trackerWatchdogContext.types';
 import { heldTrackerProviders } from './trackerProviderHolds';
 import { trackerWatchdogAlerts } from './trackerHostWatchdogSchema';
+import { trackerMachineSample } from './trackerFleetSampleSchema';
+import { staleDispatchHeartbeatKind } from './trackerCosAlertKinds';
 
 export function watchdogItem(item: TrackerItem): WatchdogItem {
 	return {
@@ -139,4 +141,34 @@ export function activeWatchdogItem(
 		return undefined;
 	}
 	return undefined;
+}
+
+const dispatchHeartbeatGrace = 3 * 60_000;
+
+/** One stable alert identity per computer and missed heartbeat, until the launcher recovers. */
+export function staleDispatchAlerts(
+	samples: readonly unknown[],
+	local: { node: string; runner?: { enabled?: boolean; last_tick_at?: string | null }; now: number }
+) {
+	const reports = samples.flatMap((sample) => {
+		const report = trackerMachineSample.safeParse(sample).data;
+		return report && report.node !== local.node ? [report] : [];
+	});
+	return [...reports, local].flatMap(({ node, runner }) => {
+		if (!runner?.enabled || !/^[a-z0-9][a-z0-9._-]*$/i.test(node)) return [];
+		const stamp = runner.last_tick_at;
+		const at = Date.parse(stamp ?? '') + dispatchHeartbeatGrace;
+		if (!(local.now > at)) return [];
+		return [
+			{
+				id: `${node}:${staleDispatchHeartbeatKind}:${at}`,
+				item_id: 'scheduler',
+				host: node,
+				kind: staleDispatchHeartbeatKind,
+				identity: String(stamp),
+				reason: `Tracker launch scheduler last completed a tick at ${stamp}. Check the dispatch worker and host commands on this computer.`,
+				at
+			}
+		];
+	});
 }

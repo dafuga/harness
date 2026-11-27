@@ -43,6 +43,7 @@ export function trackerHostReport(
 			{ driver, run, items, now: now() },
 			signal
 		);
+		signal.throwIfAborted();
 		return verification.event(observed, { run, database: store.database }, signal);
 	};
 	return Object.assign(report, { retain: verification.retain });

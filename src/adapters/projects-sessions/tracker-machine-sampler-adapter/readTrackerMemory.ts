@@ -1,5 +1,4 @@
 // @harness-uid u_mkuyvfniu4
-import { execFile } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { freemem, totalmem } from 'node:os';
 import {
@@ -10,6 +9,8 @@ import {
 	parseTrackerVmStat
 } from './trackerMemoryParsers';
 import type { TrackerResourceSample } from '../../../utils/projects-sessions/trackerMachine.types';
+
+import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';
 
 const mib = 1024 * 1024;
 
@@ -23,10 +24,10 @@ export async function readTrackerMemory(): Promise<Pick<TrackerResourceSample, '
 
 async function macMemory() {
 	const [pages, swap, level, free] = await Promise.all([
-		read('/usr/bin/vm_stat', []),
-		read('/usr/sbin/sysctl', ['-n', 'vm.swapusage']),
-		read('/usr/sbin/sysctl', ['-n', 'kern.memorystatus_vm_pressure_level']),
-		read('/usr/bin/memory_pressure', ['-Q'])
+		readTrackerMetricsCommand('/usr/bin/vm_stat', []),
+		readTrackerMetricsCommand('/usr/sbin/sysctl', ['-n', 'vm.swapusage']),
+		readTrackerMetricsCommand('/usr/sbin/sysctl', ['-n', 'kern.memorystatus_vm_pressure_level']),
+		readTrackerMetricsCommand('/usr/bin/memory_pressure', ['-Q'])
 	]);
 	const available = parseTrackerVmStat(pages) || freemem();
 	const reading = shape({ total: totalmem(), available, ...parseTrackerSwapUsage(swap) });
@@ -55,8 +56,22 @@ function shape(memory: ReturnType<typeof parseTrackerMeminfo>) {
 	};
 }
 
-function read(command: string, args: string[]): Promise<string> {
-	return new Promise((resolve) => {
-		execFile(command, args, { timeout: 10_000 }, (error, stdout) => resolve(error ? '' : stdout));
-	});
+/** A failed or unavailable metric command leaves its reading empty. */
+export async function readTrackerMetricsCommand(command: string, args: string[]): Promise<string> {
+	const { PATH, TMUX_TMPDIR } = process.env;
+	const environment = { ...(PATH && { PATH }), ...(TMUX_TMPDIR && { TMUX_TMPDIR }) };
+	try {
+		const { code, stdout } = await runTrackerHostCommand(
+			command,
+			args,
+			AbortSignal.timeout(10_000),
+			{
+				environment,
+				maxBuffer: 16 * mib
+			}
+		);
+		return code === 0 ? stdout : '';
+	} catch {
+		return '';
+	}
 }

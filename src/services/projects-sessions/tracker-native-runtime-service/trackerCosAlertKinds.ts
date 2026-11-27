@@ -3,10 +3,13 @@ import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 
 import { trackerCosInboxKinds } from './trackerCosInbox';
 
+export const staleDispatchHeartbeatKind = 'stale-dispatch-heartbeat';
+
 /** @pure Outage and security alerts: sent first, and raised sooner when they cannot be sent. */
 export function isOutageAlert(kind: string): boolean {
 	return (
 		kind === urgentQueueAlertKind ||
+		kind === staleDispatchHeartbeatKind ||
 		trackerCosInboxKinds.has(kind) ||
 		kind.startsWith('credential exposure')
 	);

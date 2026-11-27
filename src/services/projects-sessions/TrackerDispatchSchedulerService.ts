@@ -17,6 +17,9 @@ import {
 import type { TrackerDispatchSchedulerOptions } from './TrackerDispatchSchedulerService.types';
 import { TrackerDispatchQueue } from './trackerDispatchQueue';
 
+const tickTimeout = 120_000;
+const tickTimeoutMessage = 'dispatch tick timed out';
+
 /** Reconcile committed attempts before reserving new work for the node. */
 export class TrackerDispatchSchedulerService {
 	private currentTick?: Promise<void>;
@@ -78,37 +81,49 @@ export class TrackerDispatchSchedulerService {
 
 	async tick(signal: AbortSignal): Promise<void> {
 		if (signal.aborted || this.stopping || this.currentTick) return;
-		this.currentTick = this.poll(signal);
+		const deadline = new AbortController();
+		const lifetime = AbortSignal.any([signal, deadline.signal]);
+		const error = new Error(tickTimeoutMessage);
+		const timer = setTimeout(() => deadline.abort(error), tickTimeout);
+		let cancel!: () => void;
+		const aborted = new Promise<never>((_, reject) => {
+			cancel = () => reject(lifetime.reason);
+			lifetime.addEventListener('abort', cancel, { once: true });
+		});
+		this.currentTick = Promise.race([this.poll(lifetime), aborted]);
 		try {
 			await this.currentTick;
+		} catch (failure) {
+			if (deadline.signal.aborted) this.lastError = tickTimeoutMessage;
+			else if (!signal.aborted) this.lastError = 'dispatch tick failed';
+			throw failure;
 		} finally {
+			clearTimeout(timer);
+			lifetime.removeEventListener('abort', cancel);
 			this.currentTick = undefined;
 		}
 	}
 
 	private async poll(signal: AbortSignal): Promise<void> {
 		this.waits.clear();
-		try {
-			await this.options.runner.refresh?.(signal, this.repository.managedRuns());
-			signal.throwIfAborted();
-			await reconcileLegacyRuns(this.repository, this.options.runner, signal);
-			const queued = await this.reconcile(signal);
-			await this.creditHumanRedos(signal);
-			const queue = new TrackerDispatchQueue(
-				this.repository,
-				this.dispatcher,
-				this.options,
-				this.waits
-			);
-			const candidates = this.repository.candidates();
-			await serveQueue(queue, { candidates, queued }, signal);
-			if (signal.aborted) return;
-			this.lastTickAt = new Date((this.options.policy?.now ?? Date.now)()).toISOString();
-			this.lastError = null;
-		} catch (error) {
-			if (!signal.aborted) this.lastError = 'dispatch tick failed';
-			throw error;
-		}
+		await this.options.runner.refresh?.(signal, this.repository.managedRuns());
+		signal.throwIfAborted();
+		await reconcileLegacyRuns(this.repository, this.options.runner, signal);
+		signal.throwIfAborted();
+		const queued = await this.reconcile(signal);
+		await this.creditHumanRedos(signal);
+		signal.throwIfAborted();
+		const queue = new TrackerDispatchQueue(
+			this.repository,
+			this.dispatcher,
+			this.options,
+			this.waits
+		);
+		const candidates = this.repository.candidates();
+		await serveQueue(queue, { candidates, queued }, signal);
+		signal.throwIfAborted();
+		this.lastTickAt = new Date((this.options.policy?.now ?? Date.now)()).toISOString();
+		this.lastError = null;
 	}
 
 	private async creditHumanRedos(signal: AbortSignal) {
@@ -127,9 +142,12 @@ export class TrackerDispatchSchedulerService {
 				continue;
 			}
 			const event = await observeReservedRun(run, this.options, signal);
-			if (event)
-				reportOverdue(run, await this.dispatcher.record(run.item_id, run, event), this.options);
-			else if (run.state === 'queued' && !this.waits.has(run.item_id))
+			signal.throwIfAborted();
+			if (event) {
+				const result = await this.dispatcher.record(run.item_id, run, event);
+				signal.throwIfAborted();
+				reportOverdue(run, result, this.options);
+			} else if (run.state === 'queued' && !this.waits.has(run.item_id))
 				this.waits.set(run.item_id, {
 					token: run.auto_token,
 					reason: 'waiting for host startup evidence'

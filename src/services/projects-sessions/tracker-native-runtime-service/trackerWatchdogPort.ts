@@ -4,6 +4,7 @@ import { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerT
 import { readClaudeCosReceipts } from '../../../adapters/projects-sessions/tracker-tmux-adapter/readClaudeCosReceipt';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import { watchdogEffectReceipt, watchdogScan } from './trackerHostWatchdogSchema';
+import { staleDispatchHeartbeatKind } from './trackerCosAlertKinds';
 import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { readTrackerWatchdogPeer } from './trackerWatchdogPeer';
 import { cosSendWindowStart } from './trackerCosWindow';
@@ -100,7 +101,12 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 		async send(alerts, signal, queue) {
 			const now = Date.now();
 			if (cosSendWindowStart(now) === null) return false;
-			if (now < nextCosTick && !alerts.some(({ kind }) => kind === urgentQueueAlertKind))
+			if (
+				now < nextCosTick &&
+				!alerts.some(
+					({ kind }) => kind === urgentQueueAlertKind || kind === staleDispatchHeartbeatKind
+				)
+			)
 				return false;
 			const panes = await tmux.scan(signal, /^cos$/);
 			if (panes.length !== 1) return false;
@@ -126,15 +132,19 @@ function cosSummary(alerts: readonly TrackerWatchdogAlert[]) {
 function cosPromptLine(alert: TrackerWatchdogAlert, budget: number) {
 	const full = cosAlertLine(alert);
 	if (Buffer.byteLength(full) <= budget) return full;
-	const id = `[${alert.item_id.slice(0, 6)}] `;
+	const id = `[${cosAlertLabel(alert)}] `;
 	const sentence = /^.*?[.!?](?=\s|$)/u.exec(plain(alert.reason).trim())?.[0];
 	if (sentence && Buffer.byteLength(id + sentence) <= budget) return id + sentence;
 	return id + 'See the full alert in Tracker.';
 }
 
 /** Rendered rows from before references and the composer budget are used to recover old receipts. */
-function cosAlertLine({ item_id, host, reason }: TrackerWatchdogAlert) {
-	return `[${item_id.slice(0, 6)}] ${host}: ${plain(reason).slice(0, 500)}`;
+function cosAlertLine(alert: TrackerWatchdogAlert) {
+	return `[${cosAlertLabel(alert)}] ${alert.host}: ${plain(alert.reason).slice(0, 500)}`;
+}
+
+function cosAlertLabel({ item_id, kind }: TrackerWatchdogAlert) {
+	return kind === staleDispatchHeartbeatKind ? 'scheduler' : item_id.slice(0, 6);
 }
 
 /** Only one pane of exactly that name, and only while its prompt is empty and waiting. */
