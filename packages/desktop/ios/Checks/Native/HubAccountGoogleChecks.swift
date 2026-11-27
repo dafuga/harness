@@ -27,12 +27,12 @@ func accountGoogleChecks() {
     check(stage?["state"] as? String == "waiting-for-approval" && stage?["actor"] == nil,
           "Google account: a new device waits after the native return")
     verifyEnrollmentOpening(bench, signer: signer)
-    verifyLoginComparison(bench)
     let reads = bench.hub.asked("/api/projects").count
     check(bench.request("/api/projects")?.refusal != nil && bench.hub.asked("/api/projects").count == reads,
           "Google account: a waiting device cannot read projects")
     check(awaited(bench.session.computers)?.refusal != nil && bench.hub.asked("/api/remote/hosts").isEmpty,
           "Google account: a waiting device cannot discover or pair computers")
+    verifyLoginComparison(bench)
     approvedDeviceReply(bench, path: devicePath, signer: signer)
     wait { (try? bench.status()?.get())?["state"] as? String == "signed-in" }
     check(bench.hub.asked(devicePath).contains { $0.httpMethod == "POST" } &&
