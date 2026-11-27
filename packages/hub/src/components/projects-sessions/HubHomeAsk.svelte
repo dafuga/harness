@@ -31,8 +31,7 @@
 		present?: (content: Snippet | null) => void;
 	} = $props();
 	const load = hubSpecDocuments();
-	type AnswerPhase = HomeChatStatus | 'sending';
-	const feedback: Record<AnswerPhase, string> = {
+	const feedback: Record<HomeChatStatus | 'sending', string> = {
 		sending: 'Sending answer…',
 		queued: 'Answer queued',
 		sent: 'Answer sent',
@@ -40,7 +39,7 @@
 		unconfirmed: 'Tracker did not confirm the answer. Check Tracker before retrying.'
 	};
 	const version = $derived(JSON.stringify([ask.itemId, ask.question, ask.since]));
-	let submission = $state<{ version: string; phase: AnswerPhase } | null>(null);
+	let submission = $state<{ version: string; phase: keyof typeof feedback } | null>(null);
 	const phase = $derived(submission?.version === version ? submission.phase : null);
 	const busy = $derived(phase === 'sending' || phase === 'queued');
 	const open = $derived(phase !== 'sent');
