@@ -20,7 +20,7 @@ case "${1-chromium}" in
     ;;
   protected-chrome)
     profile=/profile/google-chrome
-    launch=(/usr/bin/google-chrome-stable --force-renderer-accessibility)
+    launch=(setsid /usr/bin/google-chrome-stable --force-renderer-accessibility)
     install -d -m 700 "$profile"
     exec 9>"$profile/.harness-profile.lock"
     flock -n 9 || { echo 'The protected Chrome profile is already in use.' >&2; exit 1; }
@@ -63,15 +63,18 @@ close_protected_chrome() {
       wmctrl -ic "$window" >/dev/null 2>&1 || true
     fi
   done
-  # Closing the last window lets Chrome flush its profile before Docker stops the container.
+  # The network service can still be writing the profile after the browser parent exits.
   for _ in $(seq 1 100); do
-    kill -0 "$browser" 2>/dev/null || return 0
+    kill -0 -- "-$browser" 2>/dev/null || return 0
     sleep 0.1
   done
 }
 
 stop() {
-  if [[ -n "$bus" ]]; then close_protected_chrome; fi
+  if [[ -n "$bus" ]]; then
+    close_protected_chrome
+    kill -TERM -- "-$browser" 2>/dev/null || true
+  fi
   kill -TERM "$browser" 2>/dev/null || true
   wait "$browser" 2>/dev/null || true
   kill "$display" 2>/dev/null || true
