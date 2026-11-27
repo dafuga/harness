@@ -1,5 +1,5 @@
 import { DatabaseSync } from 'node:sqlite';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
 import { readClaudeCosReceipts } from '../../../src/adapters/projects-sessions/tracker-tmux-adapter/readClaudeCosReceipt';
@@ -20,7 +20,8 @@ import {
 	alarmAsks,
 	cosDeliveryFixture,
 	minute,
-	recordedDependencyQueue
+	recordedDependencyQueue,
+	writeAcceptedPrompts
 } from '../../support/trackerCosDeliveryFixture';
 import { withTempDir } from '../../support/temporary';
 
@@ -113,41 +114,6 @@ test('Claude transcript receipts prevent another send when tmux misses acceptanc
 			expect(alarmAsks(items, clock)).toEqual([]);
 		});
 	}));
-
-function writeAcceptedPrompts(
-	root: string,
-	rows: { line: string; reference: string }[],
-	timestamp: string
-) {
-	const heading = 'Tracker watchdog alerts for Chief of Staff. Review these items. ';
-	const legacy = rows
-		.slice(0, 4)
-		.map(({ line }) => line)
-		.join(' | ');
-	const queued = rows.slice(4);
-	const refs = queued.map(({ reference }) => reference).join(',');
-	const directory = join(root, '-fixture-cos');
-	mkdirSync(directory);
-	const file = join(directory, '11111111-1111-4111-a111-111111111111.jsonl');
-	const flag = 'NEW FLAG TRIAGE (automated, flag-triage.py, not typed by Daniel): fixture';
-	const prompts = [
-		{
-			type: 'user',
-			timestamp,
-			message: {
-				role: 'user',
-				content: `<pasted_content id="recorded">\n${heading}${legacy}\n</pasted_content>${flag}`
-			}
-		},
-		{
-			type: 'queue-operation',
-			operation: 'enqueue',
-			timestamp,
-			content: `${heading}Watchdog receipts: ${refs} || ${queued.map(({ line }) => line).join(' | ')}`
-		}
-	];
-	writeFileSync(file, prompts.map((prompt) => JSON.stringify(prompt)).join('\n') + '\n');
-}
 
 const options = [
 	{ label: 'Approve', effect: '', recommended: true },

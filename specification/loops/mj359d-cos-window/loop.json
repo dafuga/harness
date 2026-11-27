@@ -2,7 +2,7 @@
 	"name": "mj359d-cos-window",
 	"goal": "Fit the recorded oversized watchdog batch into the 80x24 CoS composer and deliver the next alert.",
 	"createdAt": "2026-11-27T16:46:13.334Z",
-	"updatedAt": "2026-11-27T16:47:40.970Z",
+	"updatedAt": "2026-11-27T16:48:22.748Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T16:48:22.748Z",
+			"evidence": "The same frozen test command failed at d4548a51ce without Enter, then passed at a53d022680. The bounded prompt included all eight pointers and a ninth alert was delivered in the next round."
 		},
 		{
 			"id": "siblings",

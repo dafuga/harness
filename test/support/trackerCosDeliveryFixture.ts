@@ -1,4 +1,4 @@
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
@@ -76,4 +76,39 @@ export function brokenDriver(root: string) {
 	const executable = join(root, 'broken-driver');
 	writeFileSync(executable, `#!${process.execPath}\nprocess.exit(1);\n`, { mode: 0o700 });
 	return executable;
+}
+
+export function writeAcceptedPrompts(
+	root: string,
+	rows: { line: string; reference: string }[],
+	timestamp: string
+) {
+	const heading = 'Tracker watchdog alerts for Chief of Staff. Review these items. ';
+	const legacy = rows
+		.slice(0, 4)
+		.map(({ line }) => line)
+		.join(' | ');
+	const queued = rows.slice(4);
+	const refs = queued.map(({ reference }) => reference).join(',');
+	const directory = join(root, '-fixture-cos');
+	mkdirSync(directory);
+	const file = join(directory, '11111111-1111-4111-a111-111111111111.jsonl');
+	const flag = 'NEW FLAG TRIAGE (automated, flag-triage.py, not typed by Daniel): fixture';
+	const prompts = [
+		{
+			type: 'user',
+			timestamp,
+			message: {
+				role: 'user',
+				content: `<pasted_content id="recorded">\n${heading}${legacy}\n</pasted_content>${flag}`
+			}
+		},
+		{
+			type: 'queue-operation',
+			operation: 'enqueue',
+			timestamp,
+			content: `${heading}Watchdog receipts: ${refs} || ${queued.map(({ line }) => line).join(' | ')}`
+		}
+	];
+	writeFileSync(file, prompts.map((prompt) => JSON.stringify(prompt)).join('\n') + '\n');
 }
