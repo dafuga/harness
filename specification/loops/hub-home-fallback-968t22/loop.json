@@ -2,7 +2,7 @@
 	"name": "hub-home-fallback-968t22",
 	"goal": "A signed-in Hub Home performs a full read on the first visible 20-second turn when its connected account sync socket delivers no Home notices.",
 	"createdAt": "2026-11-27T22:21:20.699Z",
-	"updatedAt": "2026-11-27T22:32:02.481Z",
+	"updatedAt": "2026-11-27T22:34:25.223Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T22:34:25.223Z",
+			"evidence": "Committed paired unit runner: red on 3aebf6f8cb and green on 63a1d32c84 with 16 unit checks and the same tracked fixture tree. Chromium red/green on 5c75b7eb73 and db2f5872f5 proved the first-turn failure and repair. All 7 live-overview Chromium cases passed at 933ac68c28 with identical Hub source and tests to 63a1d32c84."
 		},
 		{
 			"id": "verify",
