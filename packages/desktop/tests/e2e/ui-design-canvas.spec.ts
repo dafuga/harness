@@ -44,6 +44,11 @@ test('the Mac app shows a local canvas under its own strict policy', async ({ pa
 	const folder = process.env.DESIGN_PROOF_DIR ?? info.outputDir;
 	mkdirSync(folder, { recursive: true });
 	await page.screenshot({ path: join(folder, 'mac-canvas-dark.png') });
+	const selected = page.getByRole('navigation', { name: 'Canvases' }).getByRole('button', {
+		name: `${canvas.title} ${canvas.boards.length}`,
+		exact: true
+	});
+	await expect(selected).toHaveAttribute('aria-pressed', 'true', { timeout: 1500 });
 	await page.getByRole('button', { name: /^Other modal on iPhone, / }).dblclick();
 	const full = page.getByRole('dialog', { name: 'Other modal on iPhone' });
 	await expect(full.frameLocator('iframe').getByRole('dialog')).toBeVisible();
