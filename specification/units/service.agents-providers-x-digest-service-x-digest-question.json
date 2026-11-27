@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-x-digest-service-x-digest-question",
+	"uid": "u_abwrrjyfvg",
+	"kind": "service",
+	"title": "xDigestQuestion",
+	"responsibility": "Word the one question raised when X needs the owner.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/x-digest-service/xDigestQuestion.ts"],
+		"symbols": ["xDigestQuestion"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "xDigestQuestion.problem",
+				"type": "XBlock",
+				"required": true
+			},
+			{
+				"name": "xDigestQuestion.viewerUrl",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "xDigestQuestion",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "xDigestQuestion",
+				"inputs": [
+					{
+						"name": "xDigestQuestion.problem",
+						"type": "XBlock",
+						"required": true
+					},
+					{
+						"name": "xDigestQuestion.viewerUrl",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "xDigestQuestion",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-x-digest-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/x-digest-service/xDigestQuestion.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/x-digest-service/xDigestQuestion.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

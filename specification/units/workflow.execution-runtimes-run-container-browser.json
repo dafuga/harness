@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.execution-runtimes-run-container-browser",
+	"uid": "u_d22gcywhzl",
+	"kind": "workflow",
+	"title": "runContainerBrowser",
+	"responsibility": "Run one container browser action.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/execution-runtimes/runContainerBrowser.ts",
+			"src/workflows/execution-runtimes/runContainerBrowser.types.ts"
+		],
+		"symbols": ["runContainerBrowser", "ContainerBrowserAction", "ContainerBrowserRunInput"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runContainerBrowser.input",
+				"type": "ContainerBrowserRunInput",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "runContainerBrowser",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runContainerBrowser",
+				"inputs": [
+					{
+						"name": "runContainerBrowser.input",
+						"type": "ContainerBrowserRunInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runContainerBrowser",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-container-browser",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-container-browser-adapter-colima-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-container-cdp",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-viewer-device",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.execution-runtimes-run-container-browser-container-browser-paths",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.execution-runtimes-run-container-browser-serve-viewer",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/execution-runtimes/runContainerBrowser.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/execution-runtimes/runContainerBrowser.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
