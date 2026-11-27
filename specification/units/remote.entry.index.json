@@ -66,7 +66,8 @@
 			"sealedChain",
 			"sealedSas",
 			"sealedRecovery",
-			"readSealedDeviceSession"
+			"readSealedDeviceSession",
+			"SealedEnrollmentReviewService"
 		]
 	},
 	"contract": {
@@ -216,6 +217,11 @@
 		},
 		{
 			"unit": "remote.service.host-pairing",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-review",
 			"via": "reexport",
 			"origin": "derived"
 		},

@@ -1,3 +1,8 @@
+import type {
+	SealedChainEntry,
+	SealedGrant
+} from '../../../remote/src/models/networking-security/Sealed.types';
+import type { EnrollmentMailbox } from '../../../remote/src/services/networking-security/SealedEnrollmentReviewService.types';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { SealedEnrollmentReviewService } from '../../../remote/src/services/networking-security/SealedEnrollmentReviewService';
 import { chainEntryHash } from '../../../remote/src/utils/networking-security/sealedChainEntry';
@@ -147,9 +152,9 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	await review.claim();
 	expect(await review.comparison()).toBeNull();
 	const pathToMailbox = 'enroll/' + id;
-	const claimed = await (
+	const claimed = (await (
 		await fixture.call(otherSession, 'GET', pathToMailbox, { headers: newHeaders })
-	).json();
+	).json()) as EnrollmentMailbox;
 	const claim = JSON.parse(claimed.steps[1].body);
 	const code = await sealedSas({
 		request: pending,
@@ -168,23 +173,21 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	expect(await review.comparison()).toBe(code);
 	expect(await review.approve(code, async () => false)).toBeNull();
 	expect(
-		(
-			await (
-				await fixture.call(otherSession, 'GET', 'device-session', { headers: newHeaders })
-			).json()
-		).state
-	).toBe('waiting-for-approval');
+		await snapshot(
+			await fixture.call(otherSession, 'GET', 'device-session', { headers: newHeaders })
+		)
+	).toEqual({ status: 200, body: { state: 'waiting-for-approval' } });
 	const nextPin = await review.approve(code, async () => true);
 	expect(nextPin?.seq).toBe(1);
-	const history = await (
+	const history = (await (
 		await fixture.call(otherSession, 'GET', 'chain', { headers: newHeaders })
-	).json();
+	).json()) as { entries: SealedChainEntry[] };
 	const chain = await sealedChain(history.entries, { account, pin: nextPin! });
-	const delivered = await (
+	const delivered = (await (
 		await fixture.call(otherSession, 'GET', 'grants?device=' + pending.deviceId, {
 			headers: newHeaders
 		})
-	).json();
+	).json()) as { grants: SealedGrant[] };
 	expect(toBase64Url((await openSealedGrant(delivered.grants[0], pending, chain)).scopeId)).toBe(
 		scope
 	);

@@ -1,3 +1,4 @@
+// @harness-uid u_fbbrnjjwm4
 import { SealedError } from '../../../models/networking-security/SealedError';
 import type {
 	SealedChainEntry,
@@ -5,6 +6,7 @@ import type {
 } from '../../../models/networking-security/Sealed.types';
 import { sealedChain } from '../../../utils/networking-security/sealedChain';
 import type {
+	EnrollmentWrite,
 	EnrollmentMailbox,
 	EnrollmentReviewOptions,
 	MailboxStep
@@ -19,7 +21,7 @@ export class ReviewTransport {
 			throw new SealedError('Invalid approval request.');
 	}
 
-	async call<T>(path: string, body?: unknown): Promise<T> {
+	async call<T>(path: string, body?: EnrollmentWrite): Promise<T> {
 		const { device, signal, request } = this.options;
 		signal.throwIfAborted();
 		const response = await request('/api/sync/v1/' + path, {

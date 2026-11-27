@@ -36,3 +36,7 @@ export interface EnrollmentPublication {
 	grants: SealedGrant[];
 	pin: SealedChainPin;
 }
+
+export type EnrollmentWrite =
+	| Record<string, string>
+	| { entries: SealedChainEntry[]; grants: SealedGrant[] };

@@ -85,7 +85,7 @@ export class SealedEnrollmentReviewService {
 				if (!(await authenticate())) return null;
 				if ((await this.comparison()) !== displayed)
 					throw new SealedError('The comparison changed.');
-				this.publication = await this.prepare(this.opening);
+				this.publication = await preparePublication(this.hub, this.options, this.opening);
 			}
 			const { entry, grants, pin } = this.publication;
 			const result = await this.hub.call<{ seq: number; hash: string }>('devices', {
@@ -105,42 +105,44 @@ export class SealedEnrollmentReviewService {
 		const approver = this.options.device.deviceId;
 		return step.by === approver && stepMatches(step, { approver, nonce: toBase64Url(this.nonce) });
 	}
+}
 
-	private async prepare(opening: MailboxStep): Promise<EnrollmentPublication> {
-		const chain = await this.hub.chain(),
-			signer = this.options.device;
-		const scopes = assertAdmin(this.options, chain, opening.by);
-		const { kemPublic, signingPublic } = JSON.parse(opening.body) as EnrollmentOpening;
-		const device = {
-			deviceId: opening.by,
-			kemPublic,
-			signingPublic,
-			role: 'admin' as const,
-			scopes
-		};
-		const held = await this.hub.grants();
-		const grants = await Promise.all(
-			scopes.map((scope) => {
-				const grant = held.find(
-					(g) =>
-						g.device === signer.deviceId &&
-						g.scope === scope &&
-						g.epoch === chain.scopes[scope].epoch
-				);
-				if (!grant) throw new SealedError('A current grant is missing.');
-				return rewrapSealedGrant(grant, signer, chain, device);
-			})
-		);
-		this.options.signal.throwIfAborted();
-		const entry = await sealedChainEntry(signer, {
-			seq: chain.seq + 1,
-			prev: chain.head,
-			at: Date.now(),
-			by: signer.deviceId,
-			body: { type: 'enroll', device }
-		});
-		return { entry, grants, pin: { seq: entry.seq, head: await chainEntryHash(entry) } };
-	}
+async function preparePublication(
+	hub: ReviewTransport,
+	options: EnrollmentReviewOptions,
+	opening: MailboxStep
+): Promise<EnrollmentPublication> {
+	const chain = await hub.chain(),
+		signer = options.device;
+	const scopes = assertAdmin(options, chain, opening.by);
+	const { kemPublic, signingPublic } = JSON.parse(opening.body) as EnrollmentOpening;
+	const device = {
+		deviceId: opening.by,
+		kemPublic,
+		signingPublic,
+		role: 'admin' as const,
+		scopes
+	};
+	const held = await hub.grants();
+	const grants = await Promise.all(
+		scopes.map((scope) => {
+			const grant = held.find(
+				(g) =>
+					g.device === signer.deviceId && g.scope === scope && g.epoch === chain.scopes[scope].epoch
+			);
+			if (!grant) throw new SealedError('A current grant is missing.');
+			return rewrapSealedGrant(grant, signer, chain, device);
+		})
+	);
+	options.signal.throwIfAborted();
+	const entry = await sealedChainEntry(signer, {
+		seq: chain.seq + 1,
+		prev: chain.head,
+		at: Date.now(),
+		by: signer.deviceId,
+		body: { type: 'enroll', device }
+	});
+	return { entry, grants, pin: { seq: entry.seq, head: await chainEntryHash(entry) } };
 }
 
 function assertAdmin(
