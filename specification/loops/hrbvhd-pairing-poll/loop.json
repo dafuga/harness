@@ -2,11 +2,9 @@
 	"name": "hrbvhd-pairing-poll",
 	"goal": "A transient relay poll failure leaves the pending browser pairing available for approval within the 20 second window.",
 	"createdAt": "2026-11-27T18:34:55.283Z",
-	"updatedAt": "2026-11-27T18:41:13.275Z",
+	"updatedAt": "2026-11-27T18:44:23.276Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:42:22.550Z",
+			"evidence": "Fix 23940629c3 retries status 0, 408, 500, 502, 503 and 504 on poll only. Late approval, cancellation and terminal states end the attempt before exchange."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:44:23.276Z",
+			"evidence": "Exact-snapshot 23940629c3 passes the unchanged 87397fdfb4 regression and command. The service methods and real pairing protocol use a synthetic relay. Covers one exchange after recovery, no replay of a failed exchange, 403, denial, cancellation, timeout and late approval."
 		},
 		{
 			"id": "verify",
