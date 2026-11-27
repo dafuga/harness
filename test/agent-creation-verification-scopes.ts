@@ -69,5 +69,12 @@ export const agentCreationVerificationScopes: Record<string, VerificationScope> 
 			'tests/e2e/agent-settings.spec.ts': ['settings'],
 			'tests/e2e/agent-settings-availability.spec.ts': ['provider-boundaries', 'model-picker']
 		}
+	},
+	'vault-local-setup': {
+		package: 'desktop',
+		vitest: {},
+		playwright: {
+			'tests/e2e/agent-settings.spec.ts': ['initial', 'progress', 'ready', 'failed']
+		}
 	}
 };
