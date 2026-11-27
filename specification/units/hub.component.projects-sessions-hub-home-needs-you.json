@@ -12,6 +12,7 @@
 		"uses": [
 			"hub.component.projects-sessions-hub-home-ask",
 			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -88,6 +89,11 @@
 		},
 		{
 			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
 			"via": "import",
 			"origin": "derived"
 		},
