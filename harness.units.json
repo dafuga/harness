@@ -3876,6 +3876,12 @@
 			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
 			"reason": "Resolves shared Home presentation through the Reports build alias.",
 			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomeStatusText.ts"
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte",
+			"specifier": "../../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "The Hub chat composer uses the shared recipient selection control."
 		}
 	]
 }

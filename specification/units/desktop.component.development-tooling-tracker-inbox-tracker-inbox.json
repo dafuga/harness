@@ -90,7 +90,23 @@
 		"snippets": [
 			{
 				"name": "TrackerInbox.rows",
-				"inputs": [],
+				"inputs": [
+					{
+						"name": "TrackerInbox.rows.items",
+						"type": "InboxRow[]",
+						"required": false
+					},
+					{
+						"name": "TrackerInbox.rows.label",
+						"type": "string",
+						"required": false
+					},
+					{
+						"name": "TrackerInbox.rows.empty",
+						"type": "string",
+						"required": false
+					}
+				],
 				"outputs": [
 					{
 						"name": "TrackerInbox.rows",
@@ -147,6 +163,11 @@
 		},
 		{
 			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox-messages",
 			"via": "import",
 			"origin": "derived"
 		},

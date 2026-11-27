@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import type {
 		InboxFilter,
+		InboxReply,
 		InboxOverview,
 		InboxRow,
 		InboxWriteView,
@@ -19,6 +20,10 @@
 		writeView
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 	import { followTrackerSource } from '../../../lib/development-tooling/tracker-inbox/followTrackerSource';
+	import {
+		overviewFailureMessage,
+		syncMessage
+	} from '../../../lib/development-tooling/tracker-inbox/trackerInboxMessages';
 	import { withRowChoices } from '../../../lib/development-tooling/tracker-inbox/withRowChoices';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import TrackerInboxDetail from './TrackerInboxDetail.svelte';
@@ -40,18 +45,12 @@
 	let found = $state.raw<InboxRow[] | null>(null);
 	let selected = $state<string | null>(null);
 	let writes = $state.raw<InboxWriteView[]>([]);
-	let freshness = $state<'current' | 'stale' | 'unavailable'>('unavailable');
-	let lastSyncedAt = $state<string | null>(null);
+	let sync = $state.raw<Pick<InboxReply<never>, 'freshness' | 'lastSyncedAt'>>();
 	let link = $state<RealtimeState | null>(null);
 	let detailView = $state<ReturnType<typeof TrackerInboxDetail>>();
 
 	const counts = $derived(countBuckets(overview?.rows ?? []));
 	const listed = $derived(filterRows(overview?.rows ?? [], filter));
-
-	function note(reply: { freshness: typeof freshness; lastSyncedAt: string | null }) {
-		freshness = reply.freshness;
-		lastSyncedAt = reply.lastSyncedAt;
-	}
 
 	/** Reloads the decision list and the write states. Called after every confirmed write. */
 	export async function reload(): Promise<void> {
@@ -59,16 +58,10 @@
 			source.overview(),
 			home ? undefined : source.writes()
 		]);
-		note(status);
+		sync = { freshness: status.freshness, lastSyncedAt: status.lastSyncedAt };
 		const value = status.value;
 		overview = value ? { ...value, rows: await withRowChoices(source, value.rows) } : null;
-		loadFailure = status.value
-			? ''
-			: mac
-				? 'Tracker could not be reached on this Mac.'
-				: status.code === 'denied' || status.code === 'noReplica'
-					? 'No Tracker copy is on this phone yet. Connect to your computer to sync it.'
-					: 'The Tracker copy on this phone could not be read.';
+		loadFailure = value ? '' : overviewFailureMessage(status.code, mode);
 		writes = (outbox?.value ?? []).map(writeView);
 	}
 
@@ -78,7 +71,7 @@
 			return;
 		}
 		const reply = await source.search(term.trim());
-		note(reply);
+		sync = { freshness: reply.freshness, lastSyncedAt: reply.lastSyncedAt };
 		found = await withRowChoices(source, reply.value ?? []);
 	}
 
@@ -98,16 +91,20 @@
 	});
 </script>
 
-{#snippet rows()}
+{#snippet rows(
+	items: InboxRow[] = listed,
+	label: string = filter === 'all' ? 'All items' : bucketLabels[filter],
+	empty: string = filter === 'needs-you' ? 'Nothing needs you right now' : 'Nothing here right now.'
+)}
 	<TrackerInboxRows
 		{source}
 		{mode}
 		onchanged={follow}
 		onnotice={(message) => (notice = message)}
-		rows={listed}
+		rows={items}
 		{selected}
-		label={filter === 'all' ? 'All items' : bucketLabels[filter]}
-		empty={filter === 'needs-you' ? 'Nothing needs you right now' : 'Nothing here right now.'}
+		{label}
+		{empty}
 		onselect={choose}
 	/>
 {/snippet}
@@ -135,17 +132,7 @@
 					{link === 'live' ? 'Live' : 'Reconnecting'}
 				</hx-span>
 			{/if}
-			<hx-p class="meta">
-				{#if mac}
-					{overview ? 'Local Tracker' : 'Tracker on this Mac'}
-				{:else if freshness === 'current'}
-					Synced {lastSyncedAt ? new Date(lastSyncedAt).toLocaleString() : 'just now'}
-				{:else if freshness === 'stale'}
-					Showing the last copy. It may be out of date.
-				{:else}
-					No live copy. Writes wait until the phone reconnects.
-				{/if}
-			</hx-p>
+			<hx-p class="meta">{syncMessage(mode, Boolean(overview), sync)}</hx-p>
 		</hx-header>{/if}
 
 	{#if notice}<hx-p class="meta" role="status">{notice}</hx-p>{/if}
@@ -197,19 +184,11 @@
 
 		{#if found}
 			<hx-h2>Search results</hx-h2>
-			<TrackerInboxRows
-				{source}
-				{mode}
-				onchanged={follow}
-				onnotice={(message) => (notice = message)}
-				rows={found}
-				{selected}
-				label="Search results"
-				empty={mac
-					? 'No Tracker items match that search.'
-					: 'Nothing on this phone matches that search.'}
-				onselect={choose}
-			/>
+			{@render rows(
+				found,
+				'Search results',
+				mac ? 'No Tracker items match that search.' : 'Nothing on this phone matches that search.'
+			)}
 		{:else if filter === 'needs-you'}
 			<!-- One rows instance for both states, so an answer's status survives its row leaving. -->
 			<hx-section class="needs" aria-labelledby="inbox-needs-title">

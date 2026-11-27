@@ -90,10 +90,10 @@
 	min-width: 0;
 	max-width: 50%;
 }
-.hh-home .hh-to-chip {
+.hh-home .hh-to-chip select {
 	max-width: 100%;
 	overflow: hidden;
-	padding: var(--hx-space-6) var(--hx-space-10);
+	padding-inline-start: var(--hx-space-10);
 	border: 0;
 	border-radius: var(--hx-radius-compact);
 	background-color: var(--hx-color-surface-raised);
@@ -102,22 +102,7 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-/* In the app the chip is a native select: same chip, its ▾ drawn in currentColor so it follows
-   the scheme, and options on the scheme's surface so the open list is readable in both. */
-.hh-home select.hh-to-chip {
-	appearance: none;
-	padding-right: var(--hx-space-24);
-	background-image:
-		linear-gradient(45deg, transparent 50%, currentColor 50%),
-		linear-gradient(135deg, currentColor 50%, transparent 50%);
-	background-position:
-		right var(--hx-space-14) center,
-		right var(--hx-space-10) center;
-	background-size: var(--hx-space-4) var(--hx-space-4);
-	background-repeat: no-repeat;
-	cursor: pointer;
-}
-.hh-home select.hh-to-chip option {
+.hh-home .hh-to-chip option {
 	background-color: var(--hx-color-surface);
 	color: var(--hx-color-text);
 }
