@@ -2,7 +2,7 @@
 	"name": "tracker-release-preflight",
 	"goal": "Keep the Chief of Staff held-slot summary within the composer limit and publish a readable remote-work lease contract",
 	"createdAt": "2026-11-27T21:34:10.960Z",
-	"updatedAt": "2026-11-27T21:34:36.224Z",
+	"updatedAt": "2026-11-27T21:36:57.646Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T21:36:56.316Z",
+			"evidence": "Immutable red record a01defc870 with unchanged suite shape. The held-slot assertion failed because no trailer was sent. The readable unit guard still identified all three trackerHostWork fields."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T21:36:57.646Z",
+			"evidence": "Reserve the full slot trailer before budgeting alert rows, preserve receipts and declare the actual lease schema."
 		},
 		{
 			"id": "green",
