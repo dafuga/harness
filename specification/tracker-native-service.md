@@ -753,6 +753,29 @@ supervise`, and install starts it at once. The supervisor holds one lock per
   with no active attempt and no later successful one on any computer, the
   owning computer records `redone_by` as `human`.
 
+## Launch settings
+
+- **Run limits.** `launch.maxRetries` (default 1), `defaultEtaMinutes` (120),
+  `stallMinutes` (45) and `maxRunMinutes` (480) override the dispatcher on that
+  host. Closing finished sessions has no setting here.
+- **Routing.** The optional top-level `routing` object sets `ladder` (effort and
+  price for the built-in `haiku`, `terra` or `sol` model IDs),
+  `learning.minSamples` (3), `learning.upBelow` (0.5) and `claudeOnlyUntil`.
+  Launch, retry and `tracker pick` share it; run reports list the same ladder.
+- **Learning.** A first launch reads finished runs on similar tasks, local and
+  replicated, as `tracker pick` does. History only moves a task to a stronger
+  rung. Pinned items ignore it, and retries step up the route without it.
+- **In place.** On a managed macOS route, a directory outside git runs in place,
+  as does a route with `"worktree": false`. Sessions there share the directory,
+  and `verify` runs in it. A git failure other than "not a git repository" still
+  rejects the launch, and Docker workers never run in place. In-place Codex runs
+  report no token usage, because a shared directory cannot identify the rollout.
+- **Retired model.** A queued, unstarted `gpt-6.1-sol` run starts on
+  `gpt-6.2-sol`.
+
+These keys are new. An older release rejects a node configuration that sets
+them, so remove them before rolling back.
+
 ## Release copy and soak
 
 Stage the release locally under

@@ -1,4 +1,5 @@
 // @harness-uid u_gvqtr5mdwv
+import type { TrackerLadderConfig } from '../../../utils/agents-providers/parseTrackerModelSpec.types';
 import type { TrackerHostEffectsMode } from '../tracker-native-runtime-service/nativeTrackerHostEffects.types';
 
 export interface TrackerNodeSessionTarget {
@@ -20,6 +21,8 @@ interface TrackerNodeConfigFields {
 	backupDirectory?: string;
 	hostEffects?: TrackerHostEffectsMode;
 	autolaunch?: { enabled: boolean };
+	/** Model ladder, learning and Claude-only window overrides. */
+	routing?: NonNullable<TrackerLadderConfig['autolaunch']>;
 	notifications?: {
 		targets: Record<string, TrackerNodeTarget>;
 		itemCallbacks?: string[];
