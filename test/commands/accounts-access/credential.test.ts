@@ -2,10 +2,14 @@ import { Command } from 'commander';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, afterEach, expect, test, vi } from 'vitest';
+import { VaultBrokerClientAdapter } from '../../../src/adapters/accounts-access/VaultBrokerClientAdapter';
+import type { VaultDeviceRepository } from '../../../src/repositories/accounts-access/VaultDeviceRepository';
+import { PrivateBrowserGateService } from '../../../src/services/execution-runtimes/PrivateBrowserGateService';
+import { PrivateBrowserPhoneService } from '../../../src/services/execution-runtimes/PrivateBrowserPhoneService';
 import { VaultSealAdapter } from '../../../src/adapters/accounts-access/VaultSealAdapter';
 import { CredentialCommand } from '../../../src/commands/accounts-access/CredentialCommand';
 import { serveCredentialBroker } from '../../../src/workflows/accounts-access/serveCredentialBroker';
-import { FakePhone } from '../../support/credential-vault/phone';
+import { FakePhone, randomNonce } from '../../support/credential-vault/phone';
 import { reviewed, syntheticRecipe } from '../../support/credential-vault/recipe';
 import { createTempDirectory } from '../../support/temporary';
 
@@ -130,4 +134,44 @@ test('a browser action is filed with the broker for phone approval', async () =>
 	const result = await run(requestArgs(paths, 'read-roster', 'browser', socket));
 	expect(result).toMatchObject({ status: 'requested', method: 'browser' });
 	expect((result as { requestId: string }).requestId).toMatch(/^[0-9a-f]{32}$/u);
+});
+
+test('the broker startup shares device trust with its optional private browser routes', async () => {
+	const paths = files();
+	const phone = new FakePhone();
+	const socketPath = join(paths.directory, 's', 'broker.sock');
+	const trust = join(paths.directory, 'trust.json');
+	const origin = 'https://vault.example.test';
+	writeFileSync(
+		trust,
+		JSON.stringify({
+			devices: [{ id: phone.deviceId, role: 'approver', signingKey: phone.signingKey }]
+		})
+	);
+	const gate = new PrivateBrowserGateService({
+		revokeInput: async () => undefined,
+		disposeForm: async () => undefined,
+		verifyResult: async () => false
+	});
+	await gate.recover();
+	const options = {
+		socket: socketPath,
+		state: join(paths.directory, 'state'),
+		origin,
+		trust,
+		privateBrowser: (devices: VaultDeviceRepository) =>
+			new PrivateBrowserPhoneService({
+				devices,
+				gate,
+				submitField: async () => undefined
+			})
+	};
+	const served = await serveCredentialBroker(options);
+	closers.push(served.close);
+	const client = new VaultBrokerClientAdapter({ socketPath });
+	const path = '/v1/private-browser/offer';
+	const start = '/v1/private-browser/challenge';
+	const proof = phone.prove(origin, start, randomNonce(), { path, expiresAt: Date.now() + 20_000 });
+	const { nonce } = await client.call<{ nonce: string }>(start, proof);
+	expect(await client.call(path, phone.prove(origin, path, nonce))).toEqual({ offer: null });
 });
