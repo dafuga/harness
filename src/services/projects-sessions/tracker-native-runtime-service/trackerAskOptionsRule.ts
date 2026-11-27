@@ -1,8 +1,14 @@
 // @harness-uid u_77k5lqnq26
 // @harness-uid u_4sk0pt1rul
+export const trackerQuestionRoutingRule = `Send tool or process questions to Chief of Staff first with \`tracker alert <id> "<question>"\`. This includes how to use Tracker, which command to run, or how to apply a scope Daniel already approved.
+
+Use \`tracker flag\` only when Daniel has a decision to make. Write the question in plain English and say what you want to do and why in one sentence. Leave out internal command or field names such as "move-on", "launched run", and "next-step record". Include run numbers or commit SHAs only when Daniel needs them to decide.`;
+
 export const trackerAskOptionsRule = `## Asking Daniel
 
-Daniel answers from the Tracker, Hub, Mac and iOS apps by tapping a choice. Whenever you ask a question or hit a blocker, give 2 to 4 choices, one marked as your recommendation:
+${trackerQuestionRoutingRule}
+
+Daniel answers from the Tracker, Hub, Mac and iOS apps by tapping a choice. Give him 2 to 4 choices, one marked as your recommendation:
 
 \`tracker flag <id> "<the question>" --option "<label>=<what happens if chosen>" --option "<label>=<what happens>" --recommend <1-based number of the recommended option>\`
 

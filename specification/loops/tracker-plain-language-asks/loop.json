@@ -2,11 +2,9 @@
 	"name": "tracker-plain-language-asks",
 	"goal": "Prove Tracker sends tool and process questions to Chief of Staff without increasing Daniel’s Needs You list, keeps real decisions answerable, and teaches both launch paths the same plain-language rule.",
 	"createdAt": "2026-11-27T14:37:58.410Z",
-	"updatedAt": "2026-11-27T14:38:20.022Z",
+	"updatedAt": "2026-11-27T14:48:49.628Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T14:48:47.115Z",
+			"evidence": "At e005cab06c the original wording got exit 0 instead of exit 1. Native and canonical brief checks failed on missing plain-English guidance."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T14:48:49.628Z",
+			"evidence": "Flag lint uses the existing Chief of Staff route. Native and canonical launch instructions share the same plain-English guidance, mirrored and verified in the installed hand-launch template."
 		},
 		{
 			"id": "green",
