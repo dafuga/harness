@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_pkjntjini6 -->
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { resolve } from '$app/paths';
 	import Notice from '$reports/components/explorer-ui/explorer-kit/Notice.svelte';
 	import { liveSystemNotice } from './hubHomeLive';
@@ -14,7 +15,8 @@
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import type { HomeView } from './hubHomeView.types';
-	let { view, link }: { view: HomeView; link: RealtimeState | null } = $props();
+	let { view, link, children }: { view: HomeView; link: RealtimeState | null; children?: Snippet } =
+		$props();
 	const { session } = browserContext();
 	const liveSessions = $derived(view.overview?.status === 'ready' ? view.overview.liveSessions : 0);
 	const machines = $derived(view.overview?.status === 'ready' ? view.overview.machines : []);
@@ -60,6 +62,8 @@
 		</Notice>
 	</hx-div>
 {/if}
+
+{@render children?.()}
 
 <hx-header class="po-page hh-page hh-heading">
 	<hx-div class="po-head hh-head">

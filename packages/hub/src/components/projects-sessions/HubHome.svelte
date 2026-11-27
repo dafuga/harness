@@ -25,6 +25,7 @@
 	import type { HomeView, ReadHomeResult } from './hubHomeView.types';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import { followHubUpdates, liveReadMs } from '../../lib/networking-security/hubLiveUpdates';
+	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
 	import HubHomeHeader from './HubHomeHeader.svelte';
 	import HubHomeCards from './HubHomeCards.svelte';
 	import HubHomeDialogs from './HubHomeDialogs.svelte';
@@ -195,7 +196,17 @@
 
 <hx-div class="home-scheme">
 	<hx-div class="home-page hh-home">
-		<HubHomeHeader {view} {link} />
+		<HubHomeHeader {view} {link}>
+			<hx-div class="po-page hh-page">
+				<HubHomeNeedsYou
+					asks={view.openAsks}
+					now={view.now}
+					send={reads.send}
+					{receipt}
+					reading={snapshot ? 'ready' : settled ? 'unavailable' : 'loading'}
+				/>
+			</hx-div>
+		</HubHomeHeader>
 		{#if link === 'live'}
 			<hx-p class="po-page hh-page hh-live" role="status" aria-label="Updates" data-state={link}>
 				Live

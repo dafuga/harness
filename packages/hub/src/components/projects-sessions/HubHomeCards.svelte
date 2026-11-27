@@ -30,7 +30,6 @@
 	import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeLive from './HubHomeLive.svelte';
-	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
 	import { homeCosChat, provideHomeCosChat } from './hubHomeChatContext.svelte';
 	import HubHomeCosChat from './HubHomeCosChat.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
@@ -76,7 +75,6 @@
 	</EmptyState>
 {/snippet}
 
-<HubHomeNeedsYou asks={view.openAsks} now={view.now} {send} {receipt} />
 {#if view.agents && (view.owner || view.linkedComputers)}<HubHomeCosChat
 		agent={view.agents.find((agent) => agent.id === 'cos')}
 		now={new Date(view.now).toISOString()}

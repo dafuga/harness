@@ -107,3 +107,15 @@
 		filter: opacity(0);
 	}
 }
+.inbox.home-blockers {
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	text-align: start;
+}
+.inbox .empty-count {
+	color: var(--hx-color-text-muted);
+	border-color: transparent;
+}

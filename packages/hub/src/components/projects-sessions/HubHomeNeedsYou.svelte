@@ -19,11 +19,14 @@
 	let {
 		asks,
 		now,
+		reading = 'ready',
 		send,
 		receipt
 	}: {
 		asks: HomeOpenAsk[];
 		now: number;
+		/** Whether Home has received a snapshot that can establish the blocker count. */
+		reading?: 'loading' | 'ready' | 'unavailable';
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 	} = $props();
@@ -53,16 +56,16 @@
 	);
 </script>
 
-{#if shown.length}
-	<hx-section class="hh-needs" aria-labelledby="hh-needs-title">
-		<hx-div class="hh-needs-head">
-			<hx-h2 class="hh-needs-title" id="hh-needs-title">Blocked - needs you</hx-h2>
-			<Pill tone="hh-tone po-state po-needs-you" state="needs-you"
+<hx-section class="hh-needs" aria-labelledby="hh-needs-title">
+	<hx-div class="hh-needs-head">
+		<hx-h2 class="hh-needs-title" id="hh-needs-title">Blocked - needs you</hx-h2>
+		{#if shown.length}<Pill tone="hh-tone po-state po-needs-you" state="needs-you"
 				><hx-span class="po-mark" aria-hidden="true"></hx-span>{shown.length}
 				{shown.length === 1 ? 'needs' : 'need'} you</Pill
 			>
-		</hx-div>
-		<hx-ul class="hh-needs-list">
+		{:else if reading === 'ready'}<hx-span class="po-sessions">0</hx-span>{/if}
+	</hx-div>
+	{#if shown.length}<hx-ul class="hh-needs-list">
 			{#each shown as ask (askKey(ask))}
 				<hx-li
 					class="hh-needs-item"
@@ -91,6 +94,14 @@
 				</hx-li>
 			{/each}
 		</hx-ul>
-		{@render activeDetail?.()}
-	</hx-section>
-{/if}
+	{:else}
+		<hx-p class="po-sessions hh-answer-feedback"
+			>{reading === 'ready'
+				? 'Nothing needs you right now'
+				: reading === 'loading'
+					? 'Checking for blockers…'
+					: 'Blockers are unavailable.'}</hx-p
+		>
+	{/if}
+	{@render activeDetail?.()}
+</hx-section>
