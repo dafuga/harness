@@ -8,7 +8,7 @@ import { WatchdogStartupService } from '../WatchdogStartupService';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { watchLaunchRequests } from './trackerWatchLaunchRequests';
-import { sendWatchdogAlerts } from './trackerHostCos';
+import { trackerCosRound } from './trackerCosRound';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import {
 	activeWatchdogItem,
@@ -26,7 +26,6 @@ import { watchHostSessions } from './trackerWatchHostSessions';
 import { trackerHubMessageDelivery } from './trackerHubMessages';
 import type { WatchdogSessionScan } from './trackerWatchHostSessions.types';
 
-const minute = 60_000;
 const slotAlerts = new Set(['orphan', 'finished', ...slotAlertKinds]);
 const recoveryFailures = new Set(['recovery-failed', 'handoff-failed']);
 const sessionAlerts = new Set(['idle', 'context', 'overdue', 'startup']);
@@ -45,11 +44,13 @@ export function trackerHostWatchdog(
 	const scanTranscripts = trackerTranscriptScan(store, config.transcriptRoots ?? [], now);
 	const items = new TrackerItemReadRepository(store.database);
 	const chiefOfStaff = config.chiefOfStaff === true && store.node === 'daniel-primary-mbp';
-	let lastCosPoll = -Infinity;
-	let peerAlerts: readonly TrackerWatchdogAlert[] = [];
 	const readItems = () => items.list({ status: 'all', limit: -1 });
 	let liveSessions = new Set<string>();
-	const alerts = () => [...localAlerts(store, items, now(), liveSessions), ...peerAlerts];
+	const cos = trackerCosRound(store, driver, {
+		now,
+		local: () => localAlerts(store, items, now(), liveSessions)
+	});
+	const alerts = cos.alerts;
 	const pollSessions = watchHostSessions(
 		{ store, items, driver },
 		{ ...options, readItems, roots: config.transcriptRoots }
@@ -60,19 +61,14 @@ export function trackerHostWatchdog(
 		chiefOfStaff,
 		inspect: inspectHostWatchdog({ store, items, driver }, { ...options, readItems }),
 		async tick(signal: AbortSignal) {
-			if (config.transcriptRoots?.length) await scanTranscripts(signal);
-			liveSessions = (await pollSessions(signal)) ?? liveSessions;
-			const launchAlert =
-				chiefOfStaff && watchLaunchRequests(store, now(), !watchdogLaunchHold(automaticEnabled));
-			if (chiefOfStaff && (launchAlert || now() - lastCosPoll >= minute)) {
-				lastCosPoll = now();
-				peerAlerts = (await driver.peers?.(signal)) ?? [];
-				await sendWatchdogAlerts(
-					store,
-					driver,
-					alerts().filter(({ kind }) => kind !== 'missing' && kind !== 'context'),
-					signal
-				);
+			try {
+				if (config.transcriptRoots?.length) await scanTranscripts(signal);
+				liveSessions = (await pollSessions(signal)) ?? liveSessions;
+			} finally {
+				// A broken pane scan must not also silence the alerts or the stuck-delivery ask.
+				const launchAlert =
+					chiefOfStaff && watchLaunchRequests(store, now(), !watchdogLaunchHold(automaticEnabled));
+				if (chiefOfStaff && !signal.aborted) await cos.run(signal, launchAlert);
 			}
 			// Last, so a pane that cannot be typed into never holds back the checks above.
 			await deliverMessages(signal);
