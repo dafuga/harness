@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import type { HomeChatInput } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import { serveHubHome } from '../../src/routes/api/hub-home/homePolicy';
 import { OTHER, OWNER, overviewFixture } from '../support/trackerOverviewFixture';
-import { agent, homeRequest, id, message, payload, sheets } from '../support/hubHomeFixture';
+import { agent, homeRequest, id, message, payload, plan, sheets } from '../support/hubHomeFixture';
 
 test('the browser owner queues one scoped message, only native claims it, and a receipt is private', async () => {
 	const { db, close } = await sheets();
@@ -15,26 +15,6 @@ test('the browser owner queues one scoped message, only native claims it, and a 
 		const scoped = await fixture.native(OWNER, 'project:synthetic');
 		expect((await serve(homeRequest('PUT', { cookie }, '', payload))).status).toBe(404);
 		expect((await serve(homeRequest('PUT', { bearer: scoped }, '', payload))).status).toBe(404);
-		const plan = {
-			id: 'fixture-plan',
-			title: 'Plan the fixture',
-			project: null,
-			state: 'draft',
-			updatedAt: '2026-11-21T07:59:00.000Z',
-			stage: 'design',
-			total: 0,
-			done: 0,
-			steps: [],
-			planning: {
-				promotions: [],
-				artifacts: {
-					design: {
-						summary: 'Fixture design',
-						links: [{ kind: 'image', label: 'Mockup', url: 'https://design.example.test/plan.png' }]
-					}
-				}
-			}
-		};
 		const published = { ...payload, plans: [plan] };
 		const first = await serve(homeRequest('PUT', { bearer }, '', published));
 		expect(await first.json()).toEqual({ messages: [] });

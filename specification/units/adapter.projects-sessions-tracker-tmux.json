@@ -55,6 +55,7 @@
 			"TrackerManagedStartBindings",
 			"trackerManagedToken",
 			"checkTrackerManagedReceipt",
+			"trackerManagedWorkingDirectory",
 			"trackerManagedEvidence",
 			"hasManagedStartupEvidence",
 			"confirmManagedClaudeStartup",
@@ -67,7 +68,6 @@
 			"trackerManagedVerification",
 			"workerScript",
 			"launchTmux",
-			"prepareTrackerWorkingDirectory",
 			"trackerSocket",
 			"managedBrief",
 			"confirmManagedStartupAbsent",
@@ -221,6 +221,21 @@
 				"required": true
 			},
 			{
+				"name": "trackerManagedWorkingDirectory.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedWorkingDirectory.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedWorkingDirectory.key",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "trackerManagedEvidence.directory",
 				"type": "string",
 				"required": true
@@ -362,21 +377,6 @@
 			},
 			{
 				"name": "launchTmux.signal",
-				"type": "AbortSignal",
-				"required": true
-			},
-			{
-				"name": "prepareTrackerWorkingDirectory.directory",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "prepareTrackerWorkingDirectory.input",
-				"type": "TrackerHostStartRequest",
-				"required": true
-			},
-			{
-				"name": "prepareTrackerWorkingDirectory.signal",
 				"type": "AbortSignal",
 				"required": true
 			},
@@ -959,6 +959,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerManagedWorkingDirectory",
+				"inputs": [
+					{
+						"name": "trackerManagedWorkingDirectory.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerManagedWorkingDirectory.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerManagedWorkingDirectory.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedWorkingDirectory",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerManagedEvidence",
 				"inputs": [
 					{
@@ -1251,34 +1279,6 @@
 					{
 						"name": "launchTmux",
 						"type": "Promise<string | undefined>"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "prepareTrackerWorkingDirectory",
-				"inputs": [
-					{
-						"name": "prepareTrackerWorkingDirectory.directory",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "prepareTrackerWorkingDirectory.input",
-						"type": "TrackerHostStartRequest",
-						"required": true
-					},
-					{
-						"name": "prepareTrackerWorkingDirectory.signal",
-						"type": "AbortSignal",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "prepareTrackerWorkingDirectory",
-						"type": "Promise<string | { failure: string }>"
 					}
 				],
 				"errors": [],

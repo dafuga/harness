@@ -5,11 +5,8 @@ import type { TrackerWorkerClient } from '../../../services/projects-sessions/tr
 import type { TrackerHostStartRequest } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import { managedSessionName, trackerManagedToken } from './trackerManagedLaunchReceipt';
 import type { TrackerManagedReceipt } from './trackerManagedHostLauncher.types';
-import {
-	managedBrief,
-	prepareTrackerWorkingDirectory,
-	workerScript
-} from './trackerManagedWorkerProcess';
+import { managedBrief, workerScript } from './trackerManagedWorkerProcess';
+import { prepareTrackerWorkingDirectory } from './trackerManagedWorkingDirectory';
 import { trackerGuestAuthFile, trackerWorkerClient } from './trackerWorkerClient';
 
 /** Reserve the attempt directory, then write its checkout, brief, script and receipt. */
@@ -42,6 +39,8 @@ export async function prepareManagedLaunch(
 		...(input.backend === 'native' &&
 			input.selection.provider === 'claude' && { checkClaudeStartup: true })
 	};
+	if (worktree !== join(directory, 'worktree'))
+		writeFileSync(join(directory, 'working-directory'), worktree, { mode: 0o600, flag: 'wx' });
 	writeFileSync(briefPath, managedBrief(input), { mode: 0o600, flag: 'wx' });
 	writeFileSync(script, workerScript, { mode: 0o600, flag: 'wx' });
 	writeFileSync(join(directory, 'receipt.json'), JSON.stringify(receipt), {
