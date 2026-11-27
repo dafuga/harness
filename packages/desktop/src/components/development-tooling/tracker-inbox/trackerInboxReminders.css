@@ -42,7 +42,7 @@
 }
 .reminder-title {
 	margin: 0;
-	line-height: 1.5;
+	line-height: var(--hx-style-leading-normal);
 	overflow-wrap: anywhere;
 }
 .reminder-meta {
