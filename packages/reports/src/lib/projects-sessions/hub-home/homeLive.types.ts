@@ -1,5 +1,5 @@
 // @harness-uid u_dpe5j4r3is
-import type { OverviewItem, MachineStatus } from '../project-overview/projectOverview.types';
+import type { OverviewItem, OverviewMachine } from '../project-overview/projectOverview.types';
 import type {
 	IncludedTrackerItem,
 	TrackerRunRecord
@@ -48,7 +48,7 @@ export interface HomeWorkProject {
 export interface HomeLiveOverview {
 	readAt: string;
 	projects: HomeWorkProject[];
-	machines: { name: string; status: MachineStatus }[];
+	machines: OverviewMachine[];
 	/** Live runs of private or ignored items: counted, never described. */
 	hiddenRuns: number;
 	/** Rows left out because a project had more than the list holds. */

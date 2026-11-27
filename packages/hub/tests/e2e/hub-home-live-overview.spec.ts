@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test';
 import { expect, test } from '../../../../test/support/browserTest';
 import { recordedTracker } from '../../test/support/recordedTracker';
 import { liveRows, macAnswer, overview, productionHome } from './hub-home-live-fixture';
+import { captureNeedsYou } from './hub-home-capture';
 
 test.setTimeout(90000);
 
@@ -46,6 +47,9 @@ for (const [device, width, height] of [
 	}) => {
 		const tracker = recordedTracker();
 		await page.setViewportSize({ width, height });
+		tracker.machines.push(
+			Object.assign({ node: 'harbor-mbp-2', status: 'overloaded' }, { remote_runs: 2 })
+		);
 		const answer = await macAnswer(tracker);
 		answer.liveOverview!.machines.push({ name: 'grok-box', status: 'offline' });
 		const requests = await productionHome(page, answer);
@@ -72,6 +76,14 @@ for (const [device, width, height] of [
 				path: test.info().outputPath(`live-collapsed-${device}.png`)
 			});
 		}
+		const computer = page
+			.getByRole('list', { name: 'Computers' })
+			.getByRole('listitem')
+			.filter({ hasText: 'harbor-mbp-2' });
+		await expect(computer).toBeVisible();
+		await page.evaluate(() => window.scrollTo(0, 0));
+		await captureNeedsYou(page, `host-work-${device}`);
+		await expect(computer).toContainText('2 remote runs');
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
 		const projects = new Set(tracker.items.map((item) => item.agent));

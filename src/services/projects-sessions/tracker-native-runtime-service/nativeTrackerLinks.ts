@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import type { z } from 'zod';
 import type { TrackerDispatchSchedulerService } from '../TrackerDispatchSchedulerService';
+import type { TrackerMachineService } from '../TrackerMachineService';
 import type { TrackerHubMachineStore } from '../TrackerHubSyncService.types';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
@@ -34,7 +35,10 @@ export function trackerHubMachines(
 	machines: TrackerHubMachineStore,
 	runs: TrackerRunReadRepository,
 	options: TrackerNativeRuntimeOptions,
-	scheduler?: TrackerDispatchSchedulerService
+	{
+		machines: machineService,
+		scheduler
+	}: { machines: TrackerMachineService; scheduler?: TrackerDispatchSchedulerService }
 ): TrackerHubMachineStore {
 	const { node, dispatch, now = Date.now } = options;
 	return {
@@ -48,7 +52,15 @@ export function trackerHubMachines(
 			// The hub's resource reading is taken once a minute and kept with its recorded report.
 			const own = stored.find((value) => nodeOf(value) === node);
 			const resources = trackerMachineSample.safeParse(own).data?.resources;
-			return [...spokes, Object.assign({}, sample, resources && { resources }, { node })];
+			return [
+				...spokes,
+				{
+					...(sample as object),
+					...(resources && { resources }),
+					node,
+					host_work: machineService.localHostWork()
+				}
+			];
 		}
 	};
 }
