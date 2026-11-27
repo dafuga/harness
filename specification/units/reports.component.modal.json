@@ -79,7 +79,8 @@
 				"name": "Modal.modal",
 				"type": "boolean",
 				"required": false,
-				"default": true
+				"default": true,
+				"description": "Uses a browser modal when true and a modeless dialog when false."
 			},
 			{
 				"name": "Modal.onClose",

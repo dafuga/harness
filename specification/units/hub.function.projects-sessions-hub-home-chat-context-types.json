@@ -4,15 +4,15 @@
 	"uid": "u_afmcviqipo",
 	"kind": "function",
 	"title": "hubHomeChatContext",
-	"responsibility": "Owns the hubHomeChatContext shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Describes the conversation controller and the optional Tracker item or open question passed to it.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/hubHomeChatContext.types.ts"],
 		"symbols": ["HomeChatItemContext", "OpenHomeCosChat", "OpenHomeCosAsk", "HomeCosChatTarget"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [],

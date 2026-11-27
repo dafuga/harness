@@ -18,7 +18,8 @@
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-summary",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
@@ -102,6 +103,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.strings-link-segments",
 			"via": "import",
 			"origin": "derived"
 		},

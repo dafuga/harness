@@ -97,7 +97,8 @@
 			{
 				"name": "liveSystemNotice.reading",
 				"type": "LinkedHome | null",
-				"required": true
+				"required": true,
+				"description": "The current data or connection state used to select an offline or system alert."
 			}
 		],
 		"outputs": [
@@ -357,7 +358,8 @@
 					{
 						"name": "liveSystemNotice.reading",
 						"type": "LinkedHome | null",
-						"required": true
+						"required": true,
+						"description": "The current data or connection state used to select an offline or system alert."
 					}
 				],
 				"outputs": [

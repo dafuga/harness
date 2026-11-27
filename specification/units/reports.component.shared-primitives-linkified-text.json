@@ -4,8 +4,8 @@
 	"uid": "u_wn2wx7doya",
 	"kind": "component",
 	"title": "LinkifiedText",
-	"responsibility": "Owns the LinkifiedText Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Renders plain text and turns explicit HTTP and HTTPS URLs into safe links.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
@@ -19,18 +19,20 @@
 		"symbols": ["LinkifiedText"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "LinkifiedText.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Plain text that can contain explicit HTTP or HTTPS URLs."
 			}
 		],
 		"outputs": [
 			{
 				"name": "LinkifiedText",
-				"type": "markup"
+				"type": "markup",
+				"description": "Escaped text with validated HTTP and HTTPS URLs rendered as new-tab anchors."
 			}
 		],
 		"errors": [],
