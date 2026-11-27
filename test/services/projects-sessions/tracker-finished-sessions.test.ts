@@ -9,7 +9,6 @@ import {
 	verifyManualLaunchWithBlockedPane
 } from '../../support/trackerSlotFixture';
 import type { TrackerSlotFixture } from '../../support/trackerSlotFixture.types';
-
 const noon = Date.parse('2026-11-25T12:00:00Z');
 const minute = 60_000;
 vi.setConfig({ testTimeout: 90_000 });
