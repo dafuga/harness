@@ -62,10 +62,11 @@ async function fixture() {
 		offered: ReturnType<typeof offer>,
 		updates = {},
 		device = phone,
-		path = submitPath
+		path = submitPath,
+		value = fieldValue
 	) => {
 		const { runnerPublicKey, ...scope } = offered;
-		const sealed = phone.seal.seal(runnerPublicKey, offered.requestId, Buffer.from(fieldValue));
+		const sealed = phone.seal.seal(runnerPublicKey, offered.requestId, Buffer.from(value));
 		const { nonce } = devices.issue(device.deviceId);
 		return device.prove(brokerOrigin, path, nonce, { ...scope, sealed, ...updates });
 	};
@@ -159,4 +160,40 @@ test('cancelling during delivery aborts and drains the script before disposing t
 	expect(await delivery).toBe(false);
 	expect(disposeForm).toHaveBeenCalledTimes(2);
 	expect(gate.status()).toBe('ready');
+});
+
+test('a reviewed payment offer accepts all fields once, in the order the device approved', async () => {
+	const { phone, request, service, proof, submitField } = await fixture();
+	const fields = ['fixture-card-number', 'fixture-expiry', 'fixture-security-code'];
+	const scope = { ...reviewed, field: 'fixture-payment', fields };
+	const offered = service.offer(request.requestId, phone.deviceId, scope);
+	expect(offered).toMatchObject(scope);
+	if (!offered) throw new Error('No offer for the reviewed private form');
+	const values = JSON.stringify(['fixture-value-a', 'fixture-value-b', 'fixture-value-c']);
+	expect(
+		await service.submit(
+			proof(offered, { fields: [...fields].reverse() }, phone, submitPath, values)
+		)
+	).toBe(false);
+	expect(
+		await service.submit(proof(offered, { fields: undefined }, phone, submitPath, values))
+	).toBe(false);
+	submitField.mockImplementationOnce(async (received, bytes) => {
+		expect(received).toEqual(scope);
+		expect(bytes.equals(Buffer.from(values))).toBe(true);
+	});
+	expect(await service.submit(proof(offered, {}, phone, submitPath, values))).toBe(true);
+	expect(submitField).toHaveBeenCalledTimes(1);
+});
+
+test('a sealed entry missing a reviewed field aborts before invoking the browser', async () => {
+	const { phone, request, service, proof, submitField, gate } = await fixture();
+	const scope = { ...reviewed, fields: ['fixture-card-number', 'fixture-expiry'] };
+	const offered = service.offer(request.requestId, phone.deviceId, scope);
+	expect(offered).toBeDefined();
+	if (!offered) throw new Error('No offer for the reviewed private form');
+	const incomplete = proof(offered, {}, phone, submitPath, JSON.stringify(['fixture-value-a']));
+	expect(await service.submit(incomplete)).toBe(false);
+	expect(submitField).not.toHaveBeenCalled();
+	expect(gate.receipt()).toEqual({ requestId: request.requestId, outcome: 'aborted' });
 });
