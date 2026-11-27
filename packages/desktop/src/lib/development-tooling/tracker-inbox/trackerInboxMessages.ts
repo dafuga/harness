@@ -30,6 +30,14 @@ export function loadFailureMessage(code: string | undefined, mode: 'phone' | 'ma
 		: 'Tracker could not be reached on this Mac.';
 }
 
+/** Why the whole list could not be read. */
+export function overviewFailureMessage(code: string | undefined, mode: 'phone' | 'mac'): string {
+	if (mode === 'mac') return 'Tracker could not be reached on this Mac.';
+	return code === 'denied' || code === 'noReplica'
+		? 'No Tracker copy is on this phone yet. Connect to your computer to sync it.'
+		: 'The Tracker copy on this phone could not be read.';
+}
+
 export function writeSentMessage(action: WriteAction, mode: 'phone' | 'mac' = 'phone'): string {
 	if (mode === 'mac') return `${kinds[action]} saved to Tracker.`;
 	return `${kinds[action]} confirmed and queued. It reaches the Tracker when this phone is connected.`;

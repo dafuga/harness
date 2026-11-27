@@ -14,11 +14,11 @@
 	import {
 		countBuckets,
 		filterLabel,
-		bucketLabels,
 		filterRows,
 		inboxFilters,
 		writeView
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
+	import { overviewFailureMessage } from '../../../lib/development-tooling/tracker-inbox/trackerInboxMessages';
 	import { followTrackerSource } from '../../../lib/development-tooling/tracker-inbox/followTrackerSource';
 	import { withRowChoices } from '../../../lib/development-tooling/tracker-inbox/withRowChoices';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
@@ -57,13 +57,7 @@
 		note(status);
 		const value = status.value;
 		overview = value ? { ...value, rows: await withRowChoices(source, value.rows) } : null;
-		loadFailure = status.value
-			? ''
-			: mac
-				? 'Tracker could not be reached on this Mac.'
-				: status.code === 'denied' || status.code === 'noReplica'
-					? 'No Tracker copy is on this phone yet. Connect to your computer to sync it.'
-					: 'The Tracker copy on this phone could not be read.';
+		loadFailure = value ? '' : overviewFailureMessage(status.code, mode);
 		writes = (outbox.value ?? []).map(writeView);
 	}
 
