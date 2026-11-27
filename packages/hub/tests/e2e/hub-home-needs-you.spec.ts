@@ -150,41 +150,60 @@ test('a tapped choice in the chat is sent as that option', async ({ page }) => {
 	expect(fixture.sent[0]).toMatchObject({ agentId: 'harbor', kind: 'answer', option: 2 });
 });
 
-test('a choice tapped on a row answers that ask without opening the chat', async ({ page }) => {
-	const fixture = await home(page, 'phone', 'two-asks');
-	await rowOf(page, 'harbor')
-		.getByRole('button', { name: /Hold harbor/ })
-		.click();
-	await expect.poll(() => fixture.sent.length).toBe(1);
-	expect(fixture.sent[0]).toMatchObject({
-		itemId: 'item-harbor',
-		kind: 'answer',
-		question: 'Ship harbor?',
-		text: 'Hold harbor',
-		option: 2
+for (const size of ['desktop', 'phone'] as const)
+	test(`a choice tapped on a row answers that ask without opening the chat (${size})`, async ({
+		page
+	}) => {
+		const fixture = await home(page, size, 'two-asks');
+		const row = rowOf(page, 'harbor');
+		const choice = row.getByRole('button', { name: /Hold harbor/ });
+		await page.emulateMedia({ reducedMotion: 'no-preference' });
+		await choice.scrollIntoViewIfNeeded();
+		await page.evaluate(() => document.fonts.ready.then(() => {}));
+		const record = process.env.TAKE_SCREENSHOT === 'true';
+		if (record)
+			await page.screencast.start({
+				path: test.info().outputPath(`answer-${size}.webm`),
+				size: sizes[size]
+			});
+		try {
+			await choice.click();
+			await expect(row.getByRole('status')).toContainText(/Answer sent.*Hold harbor/);
+			await shot(page, `answer-confirmed-${size}`);
+			await expect(row).toHaveCount(0);
+		} finally {
+			if (record) await page.screencast.stop();
+		}
+		await expect.poll(() => fixture.sent.length).toBe(1);
+		expect(fixture.sent[0]).toMatchObject({
+			itemId: 'item-harbor',
+			kind: 'answer',
+			question: 'Ship harbor?',
+			text: 'Hold harbor',
+			option: 2
+		});
+		await expect(page.getByRole('dialog')).toHaveCount(0);
+		const deploy = rowOf(page, 'Chief of Staff');
+		await deploy.getByRole('button', { name: /Approve Saturday/ }).click();
+		const confirmation = page.getByRole('dialog', { name: 'Confirm answer' });
+		await expect(confirmation.getByText('Approve Saturday 09:00', { exact: true })).toBeVisible();
+		await expect(deploy.getByRole('group', { name: /Confirm this deploy answer/ })).toHaveCount(0);
+		await shot(page, 'hub-home-confirm-phone');
+		await page.keyboard.press('Escape');
+		await expect(confirmation).toHaveCount(0);
+		await expect(deploy.getByRole('button', { name: /Approve Saturday/ })).toBeFocused();
+		const other = deploy.getByRole('button', { name: 'Other…', exact: true });
+		await other.click();
+		const answer = page.getByRole('dialog', { name: 'Other answer' });
+		await expect(answer.getByRole('textbox', { name: 'Your answer' })).toBeFocused();
+		await expect(deploy.locator('input, textarea, select, form')).toHaveCount(0);
+		await shot(page, 'hub-home-other-phone');
+		await page.keyboard.press('Escape');
+		await expect(answer).toHaveCount(0);
+		await expect(other).toBeFocused();
+		expect(fixture.sent).toHaveLength(1);
+		await expect(row).toHaveCount(0);
 	});
-	await expect(page.getByRole('dialog')).toHaveCount(0);
-	const deploy = rowOf(page, 'Chief of Staff');
-	await deploy.getByRole('button', { name: /Approve Saturday/ }).click();
-	const confirmation = page.getByRole('dialog', { name: 'Confirm answer' });
-	await expect(confirmation.getByText('Approve Saturday 09:00', { exact: true })).toBeVisible();
-	await expect(deploy.getByRole('group', { name: /Confirm this deploy answer/ })).toHaveCount(0);
-	await shot(page, 'hub-home-confirm-phone');
-	await page.keyboard.press('Escape');
-	await expect(confirmation).toHaveCount(0);
-	await expect(deploy.getByRole('button', { name: /Approve Saturday/ })).toBeFocused();
-	const other = deploy.getByRole('button', { name: 'Other…', exact: true });
-	await other.click();
-	const answer = page.getByRole('dialog', { name: 'Other answer' });
-	await expect(answer.getByRole('textbox', { name: 'Your answer' })).toBeFocused();
-	await expect(deploy.locator('input, textarea, select, form')).toHaveCount(0);
-	await shot(page, 'hub-home-other-phone');
-	await page.keyboard.press('Escape');
-	await expect(answer).toHaveCount(0);
-	await expect(other).toBeFocused();
-	expect(fixture.sent).toHaveLength(1);
-	await expect(rowOf(page, 'harbor').getByRole('status')).toContainText('Answer sent');
-});
 
 test('with nothing stored on the Hub, a row tap goes to the linked Mac over its connection', async ({
 	page

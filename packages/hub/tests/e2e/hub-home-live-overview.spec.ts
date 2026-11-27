@@ -55,6 +55,9 @@ for (const [device, width, height] of [
 		const live = tracker.runs.filter((run) => run.ended_at === null);
 		const groups = overview(page).locator('details.hh-live-project');
 		await expect(groups.first()).toBeVisible();
+		await expect(groups.first().locator(':scope > summary')).toContainText(
+			/Running \d+ · Blocked \d+ · Not running \d+/
+		);
 		await expect(overview(page).locator('details.hh-live-project[open]')).toHaveCount(0);
 		await expect(liveRows(page).first()).toBeHidden();
 		const alert = page.getByRole('status', { name: 'System alerts' });
@@ -74,6 +77,9 @@ for (const [device, width, height] of [
 		}
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
+		await expect(
+			overview(page).locator('.hh-live-row:not([data-state=running]):visible')
+		).toHaveCount(0);
 		const projects = new Set(tracker.items.map((item) => item.agent));
 		await expect(overview(page).getByRole('status')).toHaveText(
 			`${live.length} runs live on 2 computers · ${projects.size} projects`
@@ -172,7 +178,7 @@ test('a change on the Mac shows within one turn, also while change notices are c
 		.filter({ has: page.locator('summary.hh-live-head', { hasText: item.agent! }) });
 	if (!(await group.evaluate((node) => (node as HTMLDetailsElement).open)))
 		await group.locator(':scope > summary').click();
-	const more = group.getByRole('button', { name: /^Show all/ });
+	const more = group.getByRole('button', { name: /^See all/ });
 	if (await more.count()) await more.click();
 	const row = overview(page)
 		.locator('.hh-live-row')
