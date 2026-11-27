@@ -23,7 +23,7 @@
 			},
 			{
 				"name": "trackerHostModelPolicy.config",
-				"type": "TrackerHostLaunchConfig",
+				"type": "Pick< TrackerHostLaunchConfig, 'maxRetries' | 'defaultEtaMinutes' | 'stallMinutes' | 'maxRunMinutes' >",
 				"required": true
 			},
 			{
@@ -56,7 +56,7 @@
 					},
 					{
 						"name": "trackerHostModelPolicy.config",
-						"type": "TrackerHostLaunchConfig",
+						"type": "Pick< TrackerHostLaunchConfig, 'maxRetries' | 'defaultEtaMinutes' | 'stallMinutes' | 'maxRunMinutes' >",
 						"required": true
 					},
 					{

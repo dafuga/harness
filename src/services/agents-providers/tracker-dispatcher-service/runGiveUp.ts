@@ -4,24 +4,47 @@ import type {
 	TrackerDispatchPolicy,
 	TrackerDispatchSnapshot,
 	TrackerDispatchWrites,
+	TrackerLaunchPick,
 	TrackerRunReceipt
 } from '../TrackerDispatcherService.types';
 
-export function retryRung(
+export function pickRetryModel(
 	item: TrackerDispatchItem,
 	run: TrackerRunReceipt,
-	policy: TrackerDispatchPolicy,
-	startup = false
+	policy: TrackerDispatchPolicy
+): TrackerLaunchPick | { error: string } {
+	// Abandoned predecessors with a retry are failed startups.
+	if (item.model || run.outcome === 'abandoned') return policy.pickModel(item);
+	const rung = policy.retryModel(item, run);
+	if (!rung) return { error: 'no eligible retry model' };
+	return { rung, kind: run.kind ?? item.kind, reason: `retry after ${run.rung} ${run.outcome}` };
+}
+
+export function pickQueuedRetryModel(
+	item: TrackerDispatchItem,
+	run: TrackerRunReceipt,
+	runs: readonly TrackerRunReceipt[],
+	policy: TrackerDispatchPolicy
 ) {
-	if (run.attempt > (policy.maxRetries ?? 1) || run.cli === 'none') return null;
-	if (!startup) return policy.retryModel(item, run);
-	return { id: run.rung, cli: run.cli, model: run.model, effort: run.effort, pinned: run.pinned };
+	const prior = runs.find(
+		(candidate) =>
+			candidate.id === run.escalated_from &&
+			candidate.node === run.node &&
+			candidate.auto_token === run.auto_token
+	);
+	return prior ? pickRetryModel(item, prior, policy) : policy.pickModel(item);
+}
+
+export function pickLaunchModel(item: TrackerDispatchItem, policy: TrackerDispatchPolicy) {
+	const scheduled = item.launch?.source === 'due' ? item.launch.scheduledPick : undefined;
+	return scheduled ?? policy.pickModel(item);
 }
 
 export function giveUp(
 	snapshot: TrackerDispatchSnapshot,
 	run: TrackerRunReceipt,
-	reopen?: TrackerDispatchWrites['item']
+	reopen?: TrackerDispatchWrites['item'],
+	pickError?: string
 ): TrackerDispatchWrites['item'] {
 	const { item, runs } = snapshot;
 	if (!item || (item.status === 'done' && !reopen)) return undefined;
@@ -29,7 +52,8 @@ export function giveUp(
 		.filter((attempt) => attempt.auto_token === run.auto_token && attempt.id !== run.id)
 		.map(({ rung, outcome }) => `${rung}: ${outcome}`);
 	history.push(`${run.rung}: ${run.outcome}`);
-	const reason = `auto-launch gave up after ${run.attempt} attempt(s) (${history.join(', ')}); last: ${run.failure_reason}`;
+	const pickNote = pickError ? `; retry selection: ${pickError}` : '';
+	const reason = `auto-launch gave up after ${run.attempt} attempt(s) (${history.join(', ')}); last: ${run.failure_reason}${pickNote}`;
 	return {
 		...reopen,
 		status: 'blocked',
