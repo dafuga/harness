@@ -1,8 +1,10 @@
+import { fixtureTrackerJson, trackerProcess } from './trackerNodeProcess';
+import type { TrackerNodeFixture } from './trackerNodeProcess.types';
 import { unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { DatabaseSync } from 'node:sqlite';
+import { DatabaseSync } from 'node:sqlite';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
-import { expect } from '../verificationExpect';
+import { expect } from 'vitest';
 
 export async function verifyAdoption(
 	runtime: TrackerNativeRuntimeService,
@@ -84,4 +86,67 @@ export async function verifyStaleIdleAlert(
 	advance();
 	await runtime.watchdog!.tick(new AbortController().signal);
 	expect(idle()).toEqual([]);
+}
+
+export async function verifyBlockedLaunchCli(spoke: TrackerNodeFixture, id: string, token: string) {
+	const item = await fixtureTrackerJson(spoke, ['block', id, 'Old dependency']);
+	const db = new DatabaseSync(spoke.config.database);
+	try {
+		const now = Date.now();
+		db.prepare(
+			`INSERT INTO runs(item_id,auto_token,rung,cli,model,state,outcome,failure_reason,queued_at,started_at,ended_at)
+			VALUES (?,?,'fable','claude','claude-fable-5-2','finished','blocked','Old dependency',?,?,?)`
+		).run(item.id, token, now, now, now);
+	} finally {
+		db.close();
+	}
+	for (const args of [
+		['answer', id, 'Dependency is ready'],
+		['reopen', id],
+		['pick', id]
+	])
+		await fixtureTrackerJson(spoke, args);
+	const result = await trackerProcess(spoke, ['launch', id]).exited;
+	expect
+		.soft(result)
+		.toMatchObject({ code: 1, stdout: '', stderr: expect.stringContaining('launcher disabled') });
+	expect.soft(result.stderr).toContain(`tracker show ${item.id}`);
+	expect.soft(await fixtureTrackerJson(spoke, ['show', id])).toMatchObject({
+		auto: expect.not.stringContaining(token),
+		runs: [
+			expect.objectContaining({
+				auto_token: token,
+				outcome: 'blocked',
+				failure_reason: 'Old dependency'
+			})
+		]
+	});
+}
+
+export async function seedBlockedLaunch(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	id: string
+) {
+	const now = runtime.now();
+	database
+		.prepare(
+			`INSERT INTO runs(id,item_id,auto_token,rung,cli,model,state,outcome,failure_reason,queued_at,started_at,ended_at)
+		VALUES (?,?,?,'sol','codex','gpt-6.2-sol','finished','blocked','Old dependency',?,?,?)`
+		)
+		.run(id === 'next100002' ? -2 : -3, id, id, now, now, now);
+	if (id === 'next100003') return;
+	runtime.store.appendLocal({
+		itemId: id,
+		fields: { status: 'blocked', blocked_reason: 'Old dependency' }
+	});
+	const response = await runtime.items.handle(
+		new Request(`http://tracker-fixture.invalid/items/${id}/unblock`, { method: 'POST' })
+	);
+	expect(response.ok).toBe(true);
+	// Record the host's capacity hold before polling the confirmation route.
+	await runtime.items.handle(
+		new Request(`http://tracker-fixture.invalid/items/${id}/launch`, { method: 'POST' })
+	);
+	await runtime.scheduler!.tick(new AbortController().signal);
 }
