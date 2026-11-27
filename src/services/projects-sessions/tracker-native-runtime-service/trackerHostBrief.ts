@@ -19,7 +19,7 @@ const launchRules = [
 	'Never merge into a Greymass repository. For Greymass work, stop at the pull request.',
 	'For other repositories, work on a branch and open a PR within the task scope. Merge only if Daniel explicitly authorized the PR and target on this item, or the standing authorization for Harness PRs covers this merge. Follow the item restrictions and required checks.',
 	'A production deploy or promotion, including a merge that deploys to production, requires Daniel’s explicit approval for the specific release.',
-	'Before raising a problem or asking Daniel, run `tracker check "<topic>"`. If the topic is ignored, do not raise it again.',
+	'Before raising a problem or asking Daniel, run `tracker check "<topic>"`. Reuse any existing item. If the topic is ignored, do not raise it again.',
 	'',
 	'## Tests',
 	'Add or update relevant tests for each change and run them before tracker done. Fix failures or record the blocker.',
@@ -106,7 +106,7 @@ function trackerBriefParent(
 	item: TrackerItem,
 	run: TrackerRunReceipt
 ) {
-	if (!item.parent || run.launch_source === 'due') return;
+	if (!item.parent || run.launch_source === 'due') return undefined;
 	try {
 		const parent = new TrackerItemReadRepository(store.database).resolve(item.parent);
 		return `## Parent\n\n${parent.kind} ${parent.id}: ${sanitizeTrackerText(parent.title ?? '')}\n${sanitizeTrackerText(parent.notes ?? '').slice(0, 1200)}\nRead the full parent with \`tracker show ${parent.id}\`.`;
