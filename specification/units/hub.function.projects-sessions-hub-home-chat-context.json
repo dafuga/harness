@@ -8,7 +8,9 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts"
+		],
 		"symbols": ["provideHomeCosChat", "homeCosChat"]
 	},
 	"contract": {

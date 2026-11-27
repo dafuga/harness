@@ -8,7 +8,9 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.types.ts"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.types.ts"
+		],
 		"symbols": ["HomeChatItemContext", "OpenHomeCosChat", "OpenHomeCosAsk", "HomeCosChatTarget"]
 	},
 	"contract": {

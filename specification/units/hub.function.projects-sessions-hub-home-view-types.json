@@ -10,6 +10,7 @@
 	"owns": {
 		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubHomeView.types.ts"],
 		"symbols": [
+			"LinkedHome",
 			"HomeView",
 			"OpenHomeSection",
 			"ChangeSession",
@@ -41,11 +42,6 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-presentation",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.service.networking-security-linked-home",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -8,14 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts"
-		],
-		"symbols": [
-			"hubSpecDocumentKey",
-			"provideHubSpecDocuments",
-			"hubSpecDocuments"
-		]
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts"],
+		"symbols": ["hubSpecDocumentKey", "provideHubSpecDocuments", "hubSpecDocuments"]
 	},
 	"contract": {
 		"origin": "declared",
