@@ -2,7 +2,7 @@
 	"name": "tracker-plain-language-asks",
 	"goal": "Prove Tracker sends tool and process questions to Chief of Staff without increasing Daniel’s Needs You list, keeps real decisions answerable, and teaches both launch paths the same plain-language rule.",
 	"createdAt": "2026-11-27T14:37:58.410Z",
-	"updatedAt": "2026-11-27T14:48:49.628Z",
+	"updatedAt": "2026-11-27T14:49:25.874Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T14:49:25.874Z",
+			"evidence": "The unchanged three-file regression passed at the fix commit. The executable hub-and-spoke test on harbor-mbp-2 also showed a technical ask in Chief of Staff attention, absent from Daniel's flagged list, followed by a valid Daniel decision."
 		},
 		{
 			"id": "verify",
