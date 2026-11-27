@@ -59,8 +59,6 @@ export class NativeAuthService {
 		return this.serial(() => this.refresh());
 	}
 	disconnect(): Promise<NativeHostedStatus> {
-		this.generation++;
-		this.signedIn = false;
 		this.closeDeviceApproval();
 		return this.serial(async () => {
 			this.options.onDisconnect?.();
@@ -83,6 +81,8 @@ export class NativeAuthService {
 		return readOverview(this.options);
 	}
 	closeDeviceApproval(): void {
+		this.generation++;
+		this.signedIn = false;
 		this.options.deviceApproval?.close();
 	}
 	deviceApproval(action: DeviceApprovalAction): Promise<DeviceApprovalResult> {

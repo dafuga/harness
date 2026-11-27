@@ -1,3 +1,4 @@
+import { NativeApprovalNotifications } from '../../src/lib/development-tooling/desktop-initialization/NativeApprovalNotifications';
 import { expect, test, vi } from 'vitest';
 import type { AuthOptions } from '../../src/lib/development-tooling/desktop-initialization/NativeAuthService.types';
 import { MacDeviceApprovalError } from '../../src/lib/development-tooling/desktop-initialization/MacDeviceApprovalError';
@@ -60,4 +61,36 @@ test('Mac Google identity waits for the native device before enabling the accoun
 		approvalFailure: 'approval-denied'
 	});
 	expect(service.admitted).toBe(false);
+});
+
+test('the background Mac prompts once after approval and skips stale responses after sign-out', async () => {
+	const signedIn = {
+		configured: true,
+		state: 'signed-in',
+		actor: { id: 'google:fixture', name: 'Fixture', email: 'fixture@example.invalid' }
+	} as const;
+	const auth = {
+		admitted: false,
+		status: vi
+			.fn<NativeAuthService['status']>()
+			.mockResolvedValue({ configured: true, state: 'waiting-for-approval' }),
+		deviceApproval: vi
+			.fn<NativeAuthService['deviceApproval']>()
+			.mockResolvedValue({ requests: [{ id: 'a'.repeat(32), createdAt: 1 }] })
+	};
+	const notify = vi.fn();
+	const observer = new NativeApprovalNotifications(auth, notify);
+	await observer.refresh();
+	expect(auth.deviceApproval).not.toHaveBeenCalled();
+	auth.admitted = true;
+	auth.status.mockResolvedValue(signedIn);
+	await observer.refresh();
+	await observer.refresh();
+	expect(notify).toHaveBeenCalledTimes(1);
+	auth.deviceApproval.mockImplementationOnce(async () => {
+		auth.admitted = false;
+		return { requests: [{ id: 'b'.repeat(32), createdAt: 2 }] };
+	});
+	await observer.refresh();
+	expect(notify).toHaveBeenCalledTimes(1);
 });

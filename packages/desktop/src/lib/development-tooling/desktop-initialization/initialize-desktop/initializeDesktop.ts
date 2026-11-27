@@ -6,7 +6,16 @@ import { CommentOutboxService } from '../../../../services/projects-sessions/Com
 import { ProjectionCacheService } from '../projection-cache-service/ProjectionCacheService';
 import { startTrackerRealtime } from '../tracker-realtime/startTrackerRealtime';
 import { createTrackerOverviewPublisher } from '../tracker-overview-publisher/createTrackerOverviewPublisher';
-import { app, BrowserWindow, dialog, ipcMain, protocol, safeStorage, shell } from 'electron';
+import {
+	app,
+	BrowserWindow,
+	dialog,
+	ipcMain,
+	Notification,
+	protocol,
+	safeStorage,
+	shell
+} from 'electron';
 import type { IpcMainInvokeEvent } from 'electron';
 import { resolve } from 'node:path';
 import type { LocalBootstrap } from '../../../../../../remote/src/index';
@@ -27,6 +36,7 @@ import { remoteControl } from './remoteControl';
 import { rendererAssets } from './rendererAssets';
 import { trustedSender } from './trustedSender';
 import { prepareDesktopStorage, preserveMacProfile } from './macSafeStorage';
+import { packagedApprovalHelper, refreshAccountInBackground } from './desktopApprovalNotifications';
 import { guardDesktopNavigation } from './guardDesktopNavigation';
 
 protocol.registerSchemesAsPrivileged([
@@ -81,11 +91,6 @@ function bootstrap(backend: Backend, event: unknown): LocalBootstrap | null {
  * Everything that outlives a window: the loopback transport, remote access with the sessions of
  * approved phones, and what every client shares: registry, outbox, cache and repository locks.
  */
-function packagedApprovalHelper(): string | undefined {
-	if (app.isPackaged && process.platform === 'darwin')
-		return resolve(process.resourcesPath, '../Helpers/HarnessDeviceApproval');
-}
-
 function desktopBackend() {
 	const directory = app.getPath('userData'),
 		origin = process.env.HARNESS_HUB_ORIGIN,
@@ -128,9 +133,7 @@ function desktopBackend() {
 		env: process.env,
 		emit: (event) => windows.current?.client.emit('tracker', event)
 	});
-	const refreshAccount = () => void connection.auth?.status().catch(() => undefined);
-	refreshAccount();
-	const accountTimer = connection.auth ? setInterval(refreshAccount, 60_000).unref() : undefined;
+	const accountTimer = refreshAccountInBackground(connection.auth, () => windows.current?.window);
 	return {
 		shared: { ...stores, ...connection, home, homeChat },
 		remote,
