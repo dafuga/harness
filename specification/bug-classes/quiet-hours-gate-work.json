@@ -1,0 +1,149 @@
+{
+	"schemaVersion": 1,
+	"revision": "bc78f284cbcae66eeb574f65d454fcea4aaa26ff",
+	"bugClass": {
+		"id": "quiet-hours-gate-work",
+		"title": "Notification quiet hours also block work launches",
+		"cause": "A quiet-hour policy intended to suppress user-facing notifications is also applied to launching or scheduling work, so eligible jobs are deferred during that window. This can happen through a shared quiet-hours predicate or a separate inline time-window check in a work queue.",
+		"criteria": "Classify another site when a notification or messaging quiet-hours rule gates automatic work launch, queue processing, or job scheduling. Either shared notification quiet-hour logic or an independent inline time-window check in the work path is sufficient. Do not classify notification suppression alone.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "automaticQuietHour",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "queueIdleWork",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "quietHours",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "quiet_hours",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "isQuietHour",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "quietHour",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "shouldSuppressNotifications",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "notificationQuietHours",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "isQuietHour",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "isWithinQuietHours",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "shouldDeferWork",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "queueIdleWork",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "launchAutomaticWork",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "setHours(",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "getHours(",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "$effect",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "onMount",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"quiet",
+			"hours",
+			"notification",
+			"queue",
+			"idle",
+			"automatic",
+			"launch",
+			"work"
+		],
+		"pathHints": [
+			{
+				"contains": "src/workflows/",
+				"weight": 5
+			},
+			{
+				"contains": "src/services/",
+				"weight": 4
+			},
+			{
+				"contains": "src/core/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "test/services/",
+				"weight": -3
+			},
+			{
+				"contains": "test/utils/",
+				"weight": -3
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -1
+			}
+		]
+	}
+}

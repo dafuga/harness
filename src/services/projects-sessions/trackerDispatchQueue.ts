@@ -17,7 +17,6 @@ import type {
 	TrackerRunReceipt
 } from '../agents-providers/TrackerDispatcherService';
 import {
-	automaticQuietHour,
 	ownsLaunch,
 	schedulingHold
 } from '../agents-providers/tracker-dispatcher-service/launchEligibility';
@@ -60,12 +59,7 @@ export class TrackerDispatchQueue {
 				? launch_source
 				: 'manual';
 		if (auto) return this.claimIntent(id, { token: auto, source, target: launch_target }, signal);
-		if (
-			!this.options.scheduleDue ||
-			this.refusedSlots.has('due') ||
-			(this.options.permitAutomatic && automaticQuietHour(policyNow(this.options)))
-		)
-			return false;
+		if (!this.options.scheduleDue || this.refusedSlots.has('due')) return false;
 		const request = await this.dispatcher.request(id, { source: 'due', token: randomUUID() });
 		return request.status === 'requested' && this.claimIntent(id, request.intent, signal);
 	}
@@ -102,7 +96,7 @@ export class TrackerDispatchQueue {
 		const hold = automaticQueueHold(item, { policy, intent, now, queued });
 		if (hold) {
 			const moved =
-				item && hold === trackerHostCapacityHold && !automaticQuietHour(now)
+				item && hold === trackerHostCapacityHold
 					? delegateAdapterIntake(this.repository, this.options, { item, intent })
 					: undefined;
 			this.waits.set(id, { token: intent.token, reason: moved ?? hold });
