@@ -81,7 +81,7 @@ export async function scheduledClickThrough(
 	expect(fixture.sent.at(-1)).toMatchObject({ text: expect.stringContaining('Can we move this?') });
 	await page.keyboard.press('Escape');
 	await expect(opener).toBeFocused();
-	const all = card.getByRole('button', { name: 'See all scheduled' });
+	const all = card.getByRole('button', { name: 'See all scheduled runs' });
 	await all.click();
 	const list = page.getByRole('dialog', { name: 'Scheduled', exact: true });
 	const scheduled = list.getByRole('button', { name: run.title, exact: true });
