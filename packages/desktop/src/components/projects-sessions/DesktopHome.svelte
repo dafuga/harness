@@ -1,5 +1,5 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms $reports/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_k36nzpchr3 -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
