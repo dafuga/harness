@@ -38,6 +38,16 @@ const scenario = {
 test('Contract items and source facts validate strictly', () => {
 	const accepted = contractItemSchema.parse(item);
 	const rejected = contractItemSchema.safeParse({ ...item, extra: true }).success;
+	const explicit = { name: 'option', type: 'string', required: false, defaultKind: 'undefined' };
+	const legacy = {
+		name: 'option',
+		type: 'string',
+		required: false,
+		default: 'undefined (omitted)'
+	};
+	expect(contractItemSchema.parse(explicit)).toEqual(explicit);
+	expect(contractItemSchema.parse(legacy)).toEqual(legacy);
+	expect(contractItemSchema.safeParse({ ...explicit, default: null }).success).toBe(false);
 	const source = sourceContractSchema(contractItemSchema).parse({
 		origin: 'declared',
 		inputs: [item],
