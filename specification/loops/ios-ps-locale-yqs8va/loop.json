@@ -2,11 +2,9 @@
 	"name": "ios-ps-locale-yqs8va",
 	"goal": "Under en_CA, the build can observe services before launch and retire only its own helpers.",
 	"createdAt": "2026-11-27T18:20:31.705Z",
-	"updatedAt": "2026-11-27T18:21:08.136Z",
+	"updatedAt": "2026-11-27T18:48:41.973Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,22 +25,30 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:25:40.651Z",
+			"evidence": "At dacd5b62b1 the en_CA example waited 30.36 seconds and returned a retirement error instead of left=null. Captured by loop record."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:25:43.185Z",
+			"evidence": "f33b42ea96 pins only the iOS process table read to C. Build child inherits the caller locale and private process identities match processDescendants and processProbes."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:25:46.229Z",
+			"evidence": "Same committed test, inputs, assertion, and environment as red passed in the clean snapshot of f33b42ea96. All 9 reported tests also pass under en_CA on both Macs."
 		},
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:48:41.973Z",
+			"evidence": "siblings-3d7b3c94-5ec2-4283-9a5d-5bc7095f0860.json"
 		},
 		{
 			"id": "verify",
