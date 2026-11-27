@@ -1,5 +1,6 @@
 import type { SyncCall } from './syncPolicy.types';
 import { askAccount } from './syncAccount';
+import { requireEnrollmentApprover } from './syncDeviceSession';
 import { fromBase64Url } from './syncBase64';
 import { readSyncJson, syncProblem } from './syncHttp';
 
@@ -15,9 +16,18 @@ export async function enroll(call: SyncCall): Promise<Response> {
 	if (!isObject(value)) return syncProblem(400, 'invalid-input');
 	const valid = id === undefined ? isOpening(value) : isStep(value, call.device);
 	if (!valid) return syncProblem(400, 'invalid-input');
-	// Reordering the same public fields must not create another prompt.
+	if (id !== undefined && ('approver' in value || 'entryHash' in value)) {
+		const refusal = await requireEnrollmentApprover(call);
+		if (refusal) return refusal;
+	}
+	// Give retried openings and claims the same wire representation.
 	const { kemPublic, signingPublic, commit } = value;
-	const body = id === undefined ? { kemPublic, signingPublic, commit } : value;
+	const body =
+		id === undefined
+			? { kemPublic, signingPublic, commit }
+			: 'approver' in value
+				? { approver: value.approver, nonce: value.nonce }
+				: value;
 	return forward(call, path, {
 		method: 'POST',
 		body: JSON.stringify({ by: call.device, body: JSON.stringify(body) })

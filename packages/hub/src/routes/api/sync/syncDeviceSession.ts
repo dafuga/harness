@@ -73,13 +73,22 @@ export async function requireApprovedAccess(call: SyncCall): Promise<Response | 
 	if (!scoped && !inbox && area !== 'live') return;
 	if (!(await isRecoverableAccount(call))) return;
 	if (scoped && !isScopeId(scope)) return syncProblem(400, 'invalid-input');
+	return approvedDeviceAccess(call, scoped ? scope : undefined);
+}
+
+/** A mailbox claim or receipt requires the same approved Google session as the inbox. */
+export async function requireEnrollmentApprover(call: SyncCall): Promise<Response | undefined> {
+	if (await isRecoverableAccount(call)) return approvedDeviceAccess(call);
+}
+
+async function approvedDeviceAccess(call: SyncCall, scope?: string): Promise<Response | undefined> {
 	if (!(await sessionMatchesDevice(call))) return syncProblem(403, 'device-approval-required');
 	const chain = await activeChain(call);
 	if (chain instanceof Response) return chain;
 	const device = chain?.devices[call.device];
 	if (!device?.active || device.role !== 'admin')
 		return syncProblem(403, 'device-approval-required');
-	if (!scoped) return;
+	if (scope === undefined) return;
 	if (!device.scopes.includes(scope)) return syncProblem(403, 'scope-denied');
 	if (call.request.method !== 'GET' && chain?.scopes[scope].stale)
 		return syncProblem(409, 'scope-key-rotation-required');

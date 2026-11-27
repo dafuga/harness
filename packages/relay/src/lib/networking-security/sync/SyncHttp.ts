@@ -64,8 +64,10 @@ export class SyncHttp {
 		if (typeof by !== 'string' || typeof text !== 'string' || text.length > syncLimits.stepBytes)
 			return failure(400, 'invalid');
 		if (id === undefined) return this.openEnroll(by, text, now);
-		const step = this.deps.enrollments.append(id, by, text, now);
-		if (!step) return failure(409, 'enrollment-unavailable');
+		const appended = this.deps.enrollments.append(id, by, text, now);
+		if (!appended) return failure(409, 'enrollment-unavailable');
+		const { step, created } = appended;
+		if (!created) return json(step);
 		this.deps.sockets.announce({ id, n: step.n });
 		return json(step, 201);
 	}
