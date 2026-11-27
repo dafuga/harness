@@ -6,6 +6,7 @@ import { watchdogEffectReceipt, watchdogScan } from './trackerHostWatchdogSchema
 import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { readTrackerWatchdogPeer } from './trackerWatchdogPeer';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
+import type { WatchdogPane } from '../WatchdogPaneService.types';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 import { WatchdogPaneService } from '../WatchdogPaneService';
 
@@ -107,15 +108,21 @@ async function deliverToSession(
 	const names = new RegExp(`^${session.replace(/[.]/g, '\\.')}$`);
 	const found = await tmux.scan(signal, names);
 	const [pane] = found;
-	if (
-		found.length !== 1 ||
-		(expected &&
-			(expected.startedAt < pane.createdAt - 1000 ||
-				expected.startedAt > pane.createdAt + 60_000 ||
-				(expected.key && expected.key !== pane.key)))
-	)
-		return 'missing';
+	if (found.length !== 1 || !matchesAnswerPane(pane, expected)) return 'missing';
 	const cli = panes.idlePrompt(pane);
 	if (!cli || (expected && expected.cli !== cli)) return 'busy';
 	return (await tmux.nudge({ pane, cli, message, names }, signal)) ? 'delivered' : 'busy';
+}
+
+function matchesAnswerPane(
+	pane: WatchdogPane,
+	expected: Parameters<NonNullable<TrackerWatchdogPort['deliver']>>[0]['expected']
+) {
+	if (!expected) return true;
+	const { startedAt, key } = expected;
+	return (
+		startedAt >= pane.createdAt - 1000 &&
+		startedAt <= pane.createdAt + 60_000 &&
+		(!key || key === pane.key)
+	);
 }

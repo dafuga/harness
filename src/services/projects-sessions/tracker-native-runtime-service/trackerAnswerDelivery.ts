@@ -95,30 +95,15 @@ async function deliverAnswer(
 ) {
 	const { id, generation } = answer;
 	const local = run.node === store.node;
-	const live = run.state === 'running' || run.state === 'observed' || run.outcome === 'blocked';
-	const { tmux, cli, started_at: startedAt } = run;
-	if (local && live && tmux && startedAt != null && (cli === 'codex' || cli === 'claude')) {
-		const result = await driver
-			.deliver?.(
-				{
-					session: tmux,
-					message: answerPrompt(answer),
-					expected: { startedAt, cli, key: recordedPaneKey(store, run.id) }
-				},
-				signal
-			)
-			.catch(() => undefined);
-		signal.throwIfAborted();
-		if (result === 'delivered') {
-			store.appendLocal({
-				itemId: id,
-				actor: 'Tracker',
-				fields: {
-					'note+': `${receiptPrefix}${generation} delivered to ${tmux} on ${store.node} (run #${run.id}).`
-				}
-			});
-			return;
-		}
+	if (local && (await submitAnswer(store, driver, { answer, run }, signal))) {
+		store.appendLocal({
+			itemId: id,
+			actor: 'Tracker',
+			fields: {
+				'note+': `${receiptPrefix}${generation} delivered to ${run.tmux} on ${store.node} (run #${run.id}).`
+			}
+		});
+		return;
 	}
 	if (answer.keepBlocked && run.state === 'finished') return;
 	if (at - answeredAt < (local ? alertGrace : remoteAlertGrace)) return;
@@ -129,11 +114,34 @@ async function deliverAnswer(
 			kind: alertKind,
 			identity: generation,
 			host: run.node,
-			session: tmux,
+			session: run.tmux,
 			reason: `The recorded answer has no delivery receipt from run #${run.id} on ${run.node}. Tracker will retry when an eligible pane is available. Chief of Staff, check the session or its relaunch.`
 		},
 		at
 	);
+}
+
+async function submitAnswer(
+	store: TrackerPersistenceService,
+	driver: TrackerWatchdogPort,
+	{ answer, run }: Pick<TrackerAnswerAttempt, 'answer' | 'run'>,
+	signal: AbortSignal
+) {
+	const live = run.state === 'running' || run.state === 'observed' || run.outcome === 'blocked';
+	const { tmux, cli, started_at: startedAt } = run;
+	if (!live || !tmux || startedAt == null || (cli !== 'codex' && cli !== 'claude')) return false;
+	const result = await driver
+		.deliver?.(
+			{
+				session: tmux,
+				message: answerPrompt(answer),
+				expected: { startedAt, cli, key: recordedPaneKey(store, run.id) }
+			},
+			signal
+		)
+		.catch(() => undefined);
+	signal.throwIfAborted();
+	return result === 'delivered';
 }
 
 function answerPrompt({ id, answeredAt, choice }: PendingTrackerAnswer) {
