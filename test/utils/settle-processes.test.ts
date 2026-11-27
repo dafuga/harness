@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, symlinkSync } from 'node:fs';
 import { join } from 'node:path';
-import { afterAll, beforeAll, expect, test } from 'vitest';
+import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
 import { runIsolated } from '../../src/utils/reports-media/run-isolated/runIsolated';
 import {
 	alive,
@@ -9,6 +9,7 @@ import {
 	journal,
 	pause,
 	remembered,
+	stopFixtureProcesses,
 	syntheticServices,
 	type SyntheticServices
 } from '../support/syntheticServices';
@@ -23,6 +24,9 @@ const mac = process.platform === 'darwin';
 let made: SyntheticServices;
 beforeAll(() => {
 	if (mac) made = syntheticServices();
+});
+afterEach(() => {
+	if (mac) stopFixtureProcesses(made.home);
 });
 afterAll(async () => {
 	if (mac) await cleared(made.home);

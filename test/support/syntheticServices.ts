@@ -1,5 +1,5 @@
 import type { SyntheticServices } from './syntheticServices.types';
-import { execFileSync, spawn, type ChildProcess } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import {
 	chmodSync,
 	copyFileSync,
@@ -8,13 +8,14 @@ import {
 	mkdtempSync,
 	readFileSync,
 	realpathSync,
-	rmSync,
 	symlinkSync,
 	writeFileSync
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { signalProcesses, type TrackedProcess } from '../../src/utils/processDescendants';
+import type { TrackedProcess } from '../../src/utils/processDescendants';
+import { recordFixtureProcess, watchFixture } from './syntheticFixtureCleanup';
+export { stopFixtureProcesses } from './syntheticFixtureCleanup';
 
 /**
  * TEST ONLY. Stand-ins for an OS-managed shared service and for the developer tools that vouch
@@ -79,6 +80,17 @@ function application(home: string, name: string, place: (target: string) => void
 
 export function syntheticServices(): SyntheticServices {
 	const home = realpathSync(mkdtempSync(join(tmpdir(), 'harness-services-')));
+	const close = watchFixture(home);
+	fixture = { home, close };
+	try {
+		return buildSyntheticServices(home);
+	} catch (error) {
+		void close().catch(() => undefined);
+		throw error;
+	}
+}
+
+function buildSyntheticServices(home: string): SyntheticServices {
 	const signedAs = (identifier: string) => (target: string) => {
 		copyFileSync(join(home, 'daemon'), target);
 		chmodSync(target, 0o755);
@@ -105,12 +117,14 @@ export function syntheticServices(): SyntheticServices {
 	};
 }
 
-const children: ChildProcess[] = [];
-const strays: TrackedProcess[] = [];
+let fixture: { home: string; close: () => Promise<void> } | undefined;
 
 /** The identity of a running process: its id with the time it started. */
 export function identityOf(pid: number): TrackedProcess {
-	const started = execFileSync('ps', ['-p', String(pid), '-o', 'lstart='], { stdio: 'pipe' });
+	const started = execFileSync('/bin/ps', ['-p', String(pid), '-o', 'lstart='], {
+		stdio: 'pipe',
+		env: { LC_ALL: 'C' }
+	});
 	return { pid, started: started.toString().trim() };
 }
 
@@ -126,8 +140,7 @@ export function alive(known: TrackedProcess): boolean {
 /** A process the test itself starts and keeps as its child. */
 export function child(file: string, args: string[], detached = false): TrackedProcess {
 	const started = spawn(file, args, { detached, stdio: 'ignore' });
-	children.push(started);
-	return identityOf(started.pid!);
+	return remembered(identityOf(started.pid!));
 }
 
 /** A process started through a parent that ends at once, so that launchd adopts it. */
@@ -141,7 +154,8 @@ export function adopted(file: string, args: string[]): TrackedProcess {
 
 /** Something a command under test started; it is ended with everything else at the end. */
 export function remembered(known: TrackedProcess): TrackedProcess {
-	strays.push(known);
+	if (!fixture) throw new Error('Synthetic service fixture is closed');
+	recordFixtureProcess(fixture.home, known);
 	return known;
 }
 
@@ -151,9 +165,9 @@ export const pause = (milliseconds: number) =>
 
 /** Ends what these tests started, each by its identity, and removes what they wrote. */
 export async function cleared(home: string): Promise<void> {
-	for (const started of children) started.kill('SIGKILL');
-	await signalProcesses(strays, 'SIGKILL');
-	rmSync(home, { recursive: true, force: true });
+	if (fixture?.home !== home) return;
+	await fixture.close();
+	fixture = undefined;
 }
 
 export type { SyntheticServices } from './syntheticServices.types';
