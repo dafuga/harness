@@ -27,6 +27,7 @@ func accountGoogleChecks() {
     check(stage?["state"] as? String == "waiting-for-approval" && stage?["actor"] == nil,
           "Google account: a new device waits after the native return")
     verifyEnrollmentOpening(bench, signer: signer)
+    verifyLoginComparison(bench)
     let reads = bench.hub.asked("/api/projects").count
     check(bench.request("/api/projects")?.refusal != nil && bench.hub.asked("/api/projects").count == reads,
           "Google account: a waiting device cannot read projects")
@@ -127,13 +128,17 @@ private func accountComputerRequest(
 private let enrollPath = "/api/sync/v1/enroll"
 
 private func setupEnrollmentMailbox(_ bench: AccountBench) {
+    var response: HubAccountReply?
+    bench.hub.routes["GET " + enrollPath + "/" + String(repeating: "a", count: 32)] = { _ in response ?? hubJSON(404, [:]) }
     bench.hub.routes["POST " + enrollPath] = { request in
         guard let data = request.httpBody, let body = String(data: data, encoding: .utf8),
             let by = request.value(forHTTPHeaderField: "X-Harness-Device")
         else { return hubJSON(400, [:]) }
-        return hubJSON(201, ["id": String(repeating: "a", count: 32),
+        let value: [String: Any] = ["id": String(repeating: "a", count: 32),
             "createdAt": Int(bench.time.timeIntervalSince1970 * 1000),
-            "steps": [["n": 0, "by": by, "body": body]]])
+            "steps": [["n": 0, "by": by, "body": body]]]
+        response = hubJSON(200, value)
+        return hubJSON(201, value)
     }
 }
 
