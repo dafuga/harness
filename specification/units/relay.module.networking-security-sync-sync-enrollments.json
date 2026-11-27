@@ -22,6 +22,7 @@
 			"SyncEnrollments.expire",
 			"SyncEnrollments.any",
 			"EnrollStep",
+			"EnrollmentDisplay",
 			"EnrollmentView",
 			"EnrollRow"
 		]
@@ -48,6 +49,11 @@
 				"name": "SyncEnrollments.open.now",
 				"type": "number",
 				"required": true
+			},
+			{
+				"name": "SyncEnrollments.open.display",
+				"type": "EnrollmentDisplay",
+				"required": false
 			},
 			{
 				"name": "SyncEnrollments.read.id",
@@ -136,6 +142,11 @@
 						"name": "SyncEnrollments.open.now",
 						"type": "number",
 						"required": true
+					},
+					{
+						"name": "SyncEnrollments.open.display",
+						"type": "EnrollmentDisplay",
+						"required": false
 					}
 				],
 				"outputs": [

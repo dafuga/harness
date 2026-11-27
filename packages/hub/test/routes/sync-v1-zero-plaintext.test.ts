@@ -135,6 +135,8 @@ test('an enrollment request cannot store a plaintext device name', async () => {
 	const response = await f.call(A, 'POST', 'enroll', { body: leaked, headers });
 	expect(response.status).toBe(400);
 	expect(await response.json()).toEqual({ error: 'invalid-input' });
+	const withPlatform = { ...fields, platform: 'iphone', name: canary.device };
+	expect((await f.call(A, 'POST', 'enroll', { body: withPlatform, headers })).status).toBe(400);
 	const stored = await storedByObject(f, 'google:fixture-a');
 	expect(stored).toEqual(before);
 	expectNoPlaintext(stored, [canary.device]);

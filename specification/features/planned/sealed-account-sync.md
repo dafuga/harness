@@ -24,7 +24,7 @@ when the Mac is offline.
 
 | Party                                           | Can                                                                             | Cannot                                                                                   |
 | ----------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Cloudflare, or anyone with Hub/D1/R2 access     | See account id, device ids and public keys, opaque ids, padded sizes, times, IP | Read titles, notes, statuses, projects, computer or device names, session output         |
+| Cloudflare, or anyone with Hub/D1/R2 access     | See account id, device ids and public keys, opaque ids, padded sizes, times, platform and approximate location | Read titles, notes, statuses, projects, computer or device names, session output         |
 |                                                 | Withhold, delay or reorder data; serve an old chain head to a new device        | Forge or alter data, inject a key, enroll a device, roll a known device back unnoticed   |
 | Someone with Daniel's Google session only       | Download ciphertext; write garbage that clients reject                          | Decrypt anything: Google sign-in never unlocks keys                                      |
 | A revoked device                                | Keep what it already downloaded and decrypted                                   | Read anything written after the revocation rotates its scopes                            |
@@ -110,6 +110,12 @@ The account mailbox accepts one claim, one reveal from its opener, and one
 receipt from its claimant. Retrying the same step returns its original
 position. Competing claims leave the transcript intact. Completed mailboxes
 leave the approval inbox and remain readable until their ten-minute expiry.
+The approved inbox may show a fixed device label derived from the platform,
+the relay's creation time, and the country observed by the Hub edge when
+available. The comparison code authenticates the public keys. Personal device
+names are sealed after enrollment. Retrying the same opening preserves the
+first display details. Individual mailbox reads and live announcements do
+not include the platform or country.
 On recoverable accounts, claiming and acknowledging require a current
 device-bound admin session. The iPhone keeps polling its account while it
 shows the comparison code and withholds protected reads until admission.

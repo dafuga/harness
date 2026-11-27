@@ -153,7 +153,8 @@ private func verifyEnrollmentOpening(_ bench: AccountBench, signer: P256.Signing
     let resumed = try? restarted.status()?.get()
     let sameOpening = restarted.hub.body(enrollPath)["commit"] as? String == fields["commit"] as? String
     check(resumed?["state"] as? String == "waiting-for-approval" && sameOpening &&
-          openings.count == 1 && Set(fields.keys) == ["kemPublic", "signingPublic", "commit"] &&
+          openings.count == 1 && Set(fields.keys) == ["kemPublic", "signingPublic", "commit", "platform"] &&
+          fields["platform"] as? String == "iphone" &&
           fields["signingPublic"] as? String == RemoteCoding.base64url(signer.publicKey.x963Representation) &&
           (fields["commit"] as? String)?.count == 64 && bench.hub.bearer(enrollPath) == "Bearer " + hubToken,
           "Google account: waiting opens one account-bound mailbox for this phone's keys")

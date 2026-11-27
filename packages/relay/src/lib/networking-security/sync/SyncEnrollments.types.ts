@@ -7,14 +7,21 @@ export interface EnrollStep {
 	body: string;
 }
 
+export interface EnrollmentDisplay {
+	platform: 'iphone' | 'mac' | 'web';
+	country?: string;
+}
+
 export interface EnrollmentView {
 	id: string;
 	createdAt: number;
 	steps: EnrollStep[];
+	display?: EnrollmentDisplay;
 }
 
 export interface EnrollRow extends Record<string, SqlStorageValue> {
 	id: string;
 	created_at: number;
 	steps: string;
+	display: string | null;
 }

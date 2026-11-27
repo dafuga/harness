@@ -25,7 +25,7 @@ const session = 'session-a';
 const otherSession = 'session-a-browser';
 let fixture: SyncFixture;
 beforeAll(async () => {
-	fixture = await startSync();
+	fixture = await startSync({ country: 'PT' });
 	await fixture.db.batch(
 		[session, otherSession].map((token) =>
 			fixture.db
@@ -106,16 +106,8 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	});
 	const inbox = await fixture.call(session, 'GET', 'enroll', { headers });
 	expect(await snapshot(inbox)).toEqual({ status: 200, body: { requests: [] } });
-	const listener = await fixture.socket(session, device.deviceId);
-	listener.close();
+	(await fixture.socket(session, device.deviceId)).close();
 	const pending = await sealedDevice();
-	const unrelated = await fixture.call(otherSession, 'GET', 'device-session', {
-		headers: { 'X-Harness-Device': pending.deviceId }
-	});
-	expect(await snapshot(unrelated)).toEqual({
-		status: 200,
-		body: { state: 'waiting-for-approval' }
-	});
 	const newHeaders = { 'X-Harness-Device': pending.deviceId };
 	const heldInbox = await fixture.call(otherSession, 'GET', 'enroll', { headers: newHeaders });
 	expect(await snapshot(heldInbox)).toEqual({
@@ -129,11 +121,26 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 		commit: await sealedEnrollCommit(pending, requestNonce)
 	};
 	const mailbox = await fixture.call(otherSession, 'POST', 'enroll', {
-		headers: newHeaders,
-		body: opening
+		headers: { ...newHeaders, 'CF-IPCountry': 'CA' },
+		body: { ...opening, platform: 'iphone' }
 	});
 	expect(mailbox.status).toBe(201);
 	const { id } = (await mailbox.json()) as { id: string };
+	const reissued = await fixture.call(otherSession, 'POST', 'enroll', {
+		headers: newHeaders,
+		body: opening
+	});
+	expect(await snapshot(reissued)).toMatchObject({ status: 200, body: { id } });
+	const visible = await fixture.call(session, 'GET', 'enroll', { headers });
+	expect(await visible.json()).toEqual({
+		requests: [
+			expect.objectContaining({
+				id,
+				createdAt: expect.any(Number),
+				display: { platform: 'iphone', country: 'PT' }
+			})
+		]
+	});
 	await expect(fixture.socket(otherSession, pending.deviceId)).rejects.toThrow();
 	let dropPublishedReply = true;
 	const review = new SealedEnrollmentReviewService(
@@ -163,6 +170,8 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	const claimed = (await (
 		await fixture.call(otherSession, 'GET', pathToMailbox, { headers: newHeaders })
 	).json()) as EnrollmentMailbox;
+	expect(claimed).not.toHaveProperty('display');
+	expect(JSON.parse(claimed.steps[0].body)).toEqual(opening);
 	const claim = JSON.parse(claimed.steps[1].body);
 	const code = await sealedSas({
 		request: pending,

@@ -98,7 +98,7 @@ export async function startSync(options: SyncStart = {}): Promise<SyncFixture> {
 		bundle(relayEntry, ['cloudflare:workers'])
 	]);
 	const miniflare = new Miniflare({
-		cf: false,
+		cf: options.country ? { country: options.country } : false,
 		host: '127.0.0.1',
 		unsafeInspectDurableObjects: true,
 		workers: [hubWorker(hub), relayWorker(relay)]

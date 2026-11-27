@@ -1,7 +1,9 @@
+import type { EnrollmentDisplay } from '../../../../../relay/src/lib/networking-security/sync/SyncEnrollments.types';
 import type { SyncCall } from './syncPolicy.types';
 import { askAccount } from './syncAccount';
 import { requireEnrollmentApprover } from './syncDeviceSession';
 import { fromBase64Url } from './syncBase64';
+import { isRecoverableAccount } from './syncRecovery';
 import { readSyncJson, syncProblem } from './syncHttp';
 
 const stepBytes = 4 * 1024;
@@ -14,7 +16,8 @@ export async function enroll(call: SyncCall): Promise<Response> {
 	if (call.request.method === 'GET') return forward(call, path);
 	const value = await readSyncJson(call.request, stepBytes);
 	if (!isObject(value)) return syncProblem(400, 'invalid-input');
-	const valid = id === undefined ? isOpening(value) : isStep(value, call.device);
+	const display = id === undefined ? approvalDisplay(call.request, value.platform) : undefined;
+	const valid = id === undefined ? isOpening(value, display) : isStep(value, call.device);
 	if (!valid) return syncProblem(400, 'invalid-input');
 	if (id !== undefined && ('approver' in value || 'entryHash' in value)) {
 		const refusal = await requireEnrollmentApprover(call);
@@ -30,7 +33,11 @@ export async function enroll(call: SyncCall): Promise<Response> {
 				: value;
 	return forward(call, path, {
 		method: 'POST',
-		body: JSON.stringify({ by: call.device, body: JSON.stringify(body) })
+		body: JSON.stringify({
+			by: call.device,
+			body: JSON.stringify(body),
+			display: display && (await isRecoverableAccount(call)) ? display : undefined
+		})
 	});
 }
 
@@ -38,13 +45,25 @@ function isObject(value: unknown): value is Record<string, unknown> {
 	return !!value && typeof value === 'object' && !Array.isArray(value);
 }
 
-function isOpening(value: Record<string, unknown>): boolean {
+function isOpening(value: Record<string, unknown>, display?: EnrollmentDisplay): boolean {
 	return (
-		Object.keys(value).length === 3 &&
+		(Object.keys(value).length === 3 ||
+			(Object.keys(value).length === 4 && display !== undefined)) &&
 		isPublicPoint(value.kemPublic) &&
 		isPublicPoint(value.signingPublic) &&
 		isHash(value.commit)
 	);
+}
+
+function approvalDisplay(request: Request, platform: unknown): EnrollmentDisplay | undefined {
+	if (platform !== 'iphone' && platform !== 'mac' && platform !== 'web') return;
+	const country = request.cf?.country;
+	return {
+		platform,
+		...(typeof country === 'string' && /^[A-Z]{2}$/.test(country) && country !== 'XX'
+			? { country }
+			: {})
+	};
 }
 
 function isStep(value: Record<string, unknown>, device: string): boolean {

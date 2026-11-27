@@ -1,4 +1,5 @@
 // @harness-uid u_7knh6lpstr
+import type { EnrollmentDisplay, EnrollmentView } from './SyncEnrollments.types';
 import type { SyncHttpDeps } from './SyncHttp.types';
 import { isScopeId, syncLimits } from './syncWire';
 import { readJsonBody } from '../../../utils/development-tooling/readJsonBody';
@@ -63,7 +64,8 @@ export class SyncHttp {
 			text = body?.body;
 		if (typeof by !== 'string' || typeof text !== 'string' || text.length > syncLimits.stepBytes)
 			return failure(400, 'invalid');
-		if (id === undefined) return this.openEnroll(by, text, now);
+		if (id === undefined)
+			return this.openEnroll(by, text, now, body?.display as EnrollmentDisplay | undefined);
 		const appended = this.deps.enrollments.append(id, by, text, now);
 		if (!appended) return failure(409, 'enrollment-unavailable');
 		const { step, created } = appended;
@@ -75,15 +77,24 @@ export class SyncHttp {
 	private readEnroll(id: string | undefined, now: number): Response {
 		if (id === undefined) return json({ requests: this.deps.enrollments.pending(now) });
 		const view = this.deps.enrollments.read(id, now);
-		return view ? json(view) : failure(404, 'not-found');
+		return view ? json(transcript(view)) : failure(404, 'not-found');
 	}
 
-	private async openEnroll(by: string, body: string, now: number): Promise<Response> {
-		const opened = this.deps.enrollments.open(by, body, now);
+	private async openEnroll(
+		by: string,
+		body: string,
+		now: number,
+		display?: EnrollmentDisplay
+	): Promise<Response> {
+		const opened = this.deps.enrollments.open(by, body, now, display);
 		if (!opened) return failure(429, 'too-many-requests');
-		if (!opened.created) return json(opened.view);
+		if (!opened.created) return json(transcript(opened.view));
 		await this.deps.sweep();
 		this.deps.sockets.announce({ id: opened.view.id, n: 0 });
-		return json(opened.view, 201);
+		return json(transcript(opened.view), 201);
 	}
+}
+
+function transcript({ id, createdAt, steps }: EnrollmentView) {
+	return { id, createdAt, steps };
 }

@@ -38,8 +38,10 @@ final class HubAccountEnrollment {
             guard waiters.count == 1 else { return }
             let prior = mailbox?.id
             let path = "/api/sync/v1/enroll" + (prior.map { "/" + $0 } ?? "")
+            var fields = request.opening.fields
+            fields["platform"] = "iphone"
             var call = HubAccountCall(method: prior == nil ? "POST" : "GET", path: path,
-                                      body: prior == nil ? RemoteCoding.json(request.opening.fields) : nil)
+                                      body: prior == nil ? RemoteCoding.json(fields) : nil)
             call.device = device.deviceId
             session.send(call, origin, credential.token) { result in
                 do {

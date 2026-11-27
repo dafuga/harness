@@ -1,5 +1,10 @@
 // @harness-uid u_ex57mq5k4r
-import type { EnrollRow, EnrollStep, EnrollmentView } from './SyncEnrollments.types';
+import type {
+	EnrollRow,
+	EnrollStep,
+	EnrollmentDisplay,
+	EnrollmentView
+} from './SyncEnrollments.types';
 import { randomId } from '../../../../../remote/src/index';
 import { syncLimits } from './syncWire';
 
@@ -16,10 +21,13 @@ export class SyncEnrollments {
 				steps TEXT NOT NULL
 			)`
 		);
+		const columns = sql.exec<{ name: string }>('PRAGMA table_info(enrollments)').toArray();
+		if (!columns.some(({ name }) => name === 'display'))
+			sql.exec('ALTER TABLE enrollments ADD COLUMN display TEXT');
 	}
 
 	/** Null when too many requests are already waiting. */
-	open(by: string, body: string, now: number) {
+	open(by: string, body: string, now: number, display?: EnrollmentDisplay) {
 		const pending = this.unexpired(now);
 		const existing = pending.find(({ steps }) => steps[0].by === by && steps[0].body === body);
 		if (existing) return { view: existing, created: false };
@@ -27,20 +35,21 @@ export class SyncEnrollments {
 		const id = randomId();
 		const steps = [{ n: 0, by, body }];
 		this.sql.exec(
-			'INSERT INTO enrollments (id, created_at, steps) VALUES (?, ?, ?)',
+			'INSERT INTO enrollments (id, created_at, steps, display) VALUES (?, ?, ?, ?)',
 			id,
 			now,
-			JSON.stringify(steps)
+			JSON.stringify(steps),
+			display ? JSON.stringify(display) : null
 		);
-		return { view: { id, createdAt: now, steps }, created: true };
+		return { view: { id, createdAt: now, steps, display }, created: true };
 	}
 
 	read(id: string, now: number): EnrollmentView | null {
 		const row = this.sql
-			.exec<EnrollRow>('SELECT id, created_at, steps FROM enrollments WHERE id = ?', id)
+			.exec<EnrollRow>('SELECT id, created_at, steps, display FROM enrollments WHERE id = ?', id)
 			.toArray()[0];
 		if (!row || row.created_at < now - syncLimits.enrollmentMs) return null;
-		return { id: row.id, createdAt: row.created_at, steps: JSON.parse(row.steps) as EnrollStep[] };
+		return readView(row);
 	}
 
 	pending(now: number): EnrollmentView[] {
@@ -50,13 +59,9 @@ export class SyncEnrollments {
 	private unexpired(now: number): EnrollmentView[] {
 		this.expire(now);
 		const rows = this.sql
-			.exec<EnrollRow>('SELECT id, created_at, steps FROM enrollments ORDER BY created_at')
+			.exec<EnrollRow>('SELECT id, created_at, steps, display FROM enrollments ORDER BY created_at')
 			.toArray();
-		return rows.map((row) => ({
-			id: row.id,
-			createdAt: row.created_at,
-			steps: JSON.parse(row.steps) as EnrollStep[]
-		}));
+		return rows.map(readView);
 	}
 
 	/** Only the first claim wins. Replaying an accepted step returns its original position. */
@@ -71,10 +76,7 @@ export class SyncEnrollments {
 			return { step: existing, created: false };
 		}
 		if (view.steps.length !== n) return null;
-		const requester = view.steps[0].by;
-		if (n === 1 && by === requester) return null;
-		if (n === 2 && by !== requester) return null;
-		if (n === 3 && by !== view.steps[1].by) return null;
+		if (!expectedWriter(view, n, by)) return null;
 		const step = { n, by, body };
 		this.sql.exec(
 			'UPDATE enrollments SET steps = ? WHERE id = ?',
@@ -92,6 +94,22 @@ export class SyncEnrollments {
 	any(): boolean {
 		return this.sql.exec<{ c: number }>('SELECT COUNT(*) AS c FROM enrollments').one().c > 0;
 	}
+}
+
+function readView(row: EnrollRow): EnrollmentView {
+	return {
+		id: row.id,
+		createdAt: row.created_at,
+		steps: JSON.parse(row.steps) as EnrollStep[],
+		display: row.display ? (JSON.parse(row.display) as EnrollmentDisplay) : undefined
+	};
+}
+
+function expectedWriter(view: EnrollmentView, n: number, by: string): boolean {
+	const requester = view.steps[0].by;
+	if (n === 1) return by !== requester;
+	if (n === 2) return by === requester;
+	return by === view.steps[1].by;
 }
 
 function isPending(view: EnrollmentView): boolean {
