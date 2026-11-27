@@ -115,12 +115,17 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 }
 /** Wait for the real route store, rather than its earlier gate or loading frame. */
 async function readyRoute(page: Page, id: string) {
+	if (id === 'desktop.page.root' || id === 'desktop.component.projects-sessions-desktop-home')
+		await expect(
+			page
+				.getByRole('region', { name: 'Projects', exact: true })
+				.getByRole('list', { name: 'Project directory' })
+		).toBeVisible();
 	if (overviewPreviews.has(id))
 		await expect(page.getByText('Atlas', { exact: true })).toBeVisible();
 	if (publicDownloadPreview.has(id))
 		await expect(page.getByRole('link', { name: 'Download for Mac' }).first()).toBeVisible();
 	const headings: Record<string, string> = {
-		'desktop.page.root': 'Recent projects',
 		'desktop.page.harness-path': 'Pages',
 		'desktop.page.projects-project-id-harness-path': 'Pages',
 		'desktop.page.settings': 'Settings',
