@@ -21,12 +21,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/accounts-access/DeviceApprovalInbox.svelte"
-		],
-		"symbols": [
-			"DeviceApprovalInbox"
-		]
+		"source": ["packages/desktop/src/components/accounts-access/DeviceApprovalInbox.svelte"],
+		"symbols": ["DeviceApprovalInbox"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -107,9 +103,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"device-approval-ios-renderer"
-	],
+	"scenarios": ["device-approval-ios-renderer"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
