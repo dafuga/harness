@@ -89,7 +89,7 @@ test('a message to Chief of Staff needs no item, is stored once and is never typ
 
 	// Chief of Staff is reached through its notification channel on the hub, not the cos pane.
 	const pane = port();
-	await trackerHubMessageDelivery({ store, driver: pane.driver })(signal);
+	await trackerHubMessageDelivery({ store, driver: pane.driver, now: () => now })(signal);
 	expect(pane.deliver).not.toHaveBeenCalled();
 	expect(thread(receipt.item)).toMatchObject([{ status: 'stored' }]);
 });
@@ -102,12 +102,12 @@ test('a session message goes only to that exact live run, on the computer that r
 		await request('/messages', { id: uuid, target, text: 'Rebase first' })
 	).json();
 	const busy = port('busy');
-	await trackerHubMessageDelivery({ store, driver: busy.driver })(signal);
+	await trackerHubMessageDelivery({ store, driver: busy.driver, now: () => now })(signal);
 	expect(thread(itemId)).toMatchObject([{ id, status: 'stored' }]);
 
 	const live = port();
 	now += 60_000;
-	await trackerHubMessageDelivery({ store, driver: live.driver })(signal);
+	await trackerHubMessageDelivery({ store, driver: live.driver, now: () => now })(signal);
 	expect(live.deliver).toHaveBeenCalledExactlyOnceWith(
 		{ session: `auto-${itemId}-r7`, message: expect.stringContaining('Rebase first') },
 		signal
@@ -121,7 +121,7 @@ test('a session message goes only to that exact live run, on the computer that r
 	});
 	expect(other.status).toBe(201);
 	const remote = port();
-	await trackerHubMessageDelivery({ store, driver: remote.driver })(signal);
+	await trackerHubMessageDelivery({ store, driver: remote.driver, now: () => now })(signal);
 	expect(remote.deliver).not.toHaveBeenCalled();
 });
 
@@ -144,7 +144,7 @@ test('a replaced or ended run is refused and never handed to another session', a
 	).json();
 	database.prepare(`UPDATE runs SET state = 'finished', ended_at = ? WHERE id = 7`).run(now);
 	const { driver, deliver } = port();
-	await trackerHubMessageDelivery({ store, driver })(signal);
+	await trackerHubMessageDelivery({ store, driver, now: () => now })(signal);
 	expect(deliver).not.toHaveBeenCalled();
 	expect(thread(itemId)).toMatchObject([
 		{ id, status: 'refused', reason: expect.stringContaining('run 7') }
