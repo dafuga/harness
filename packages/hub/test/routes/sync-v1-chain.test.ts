@@ -1,6 +1,5 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import type { SealedChainEntry } from '../../../remote/src/models/networking-security/Sealed.types';
-import { toBase64Url } from '../../../remote/src/utils/networking-security/remoteBytes';
 import {
 	chainEntryHash,
 	sealedChainEntry
@@ -30,13 +29,12 @@ const answer = async (response: Response) => {
 	return `${response.status} ${body.error ?? 'ok'}`;
 };
 
-async function genesis() {
+async function genesis(account = 'google:fixture-a') {
 	const device = await sealedDevice();
-	const scope = toBase64Url(newScopeKeys().scopeId);
 	const body = {
 		type: 'genesis' as const,
-		account: 'google:fixture-a',
-		devices: [sealedDevicePublic(device, 'admin', [scope])],
+		account,
+		devices: [sealedDevicePublic(device, 'admin', [])],
 		scopes: []
 	};
 	const entry = await sealedChainEntry(device, {
@@ -54,7 +52,10 @@ async function next(
 	last: SealedChainEntry,
 	seq = last.seq + 1
 ) {
-	const body = { type: 'revoke' as const, device: 'someone' };
+	const body = {
+		type: 'enroll' as const,
+		device: sealedDevicePublic(await sealedDevice(), 'admin', [])
+	};
 	return sealedChainEntry(device, {
 		seq,
 		prev: await chainEntryHash(last),
@@ -73,6 +74,22 @@ test('the chain accepts one linear history and refuses forks, gaps and rollbacks
 		'409 chain-conflict'
 	);
 	const second = await next(device, entry);
+	const pending = await sealedDevice();
+	const unsigned = {
+		...second,
+		body: { ...second.body, device: sealedDevicePublic(pending, 'admin', []) }
+	};
+	expect(await answer(await f.call(A, 'POST', 'chain', { body: unsigned, headers }))).toBe(
+		'400 invalid-chain'
+	);
+	expect(
+		await answer(
+			await f.call(A, 'POST', 'chain', {
+				body: second,
+				headers: { 'X-Harness-Device': pending.deviceId }
+			})
+		)
+	).toBe('400 invalid-chain');
 	expect(
 		await answer(await f.call(A, 'POST', 'chain', { body: { ...second, seq: 3 }, headers }))
 	).toBe('409 chain-conflict');
@@ -99,7 +116,7 @@ test('the chain accepts one linear history and refuses forks, gaps and rollbacks
 }, 60_000);
 
 test('the server hashes an entry exactly as the sealed core does', async () => {
-	const { device, entry } = await genesis();
+	const { device, entry } = await genesis('google:fixture-b');
 	const headers = { 'X-Harness-Device': device.deviceId };
 	expect(await answer(await f.call(B, 'POST', 'chain', { body: entry, headers }))).toBe('201 ok');
 	const stored = await f.db
@@ -128,6 +145,9 @@ test('accounts never see each other, and a call needs a session and a device', a
 	);
 	expect(await answer(await f.call(A, 'POST', 'chain', { body: 'not json', headers }))).toBe(
 		'400 invalid-input'
+	);
+	expect(await answer(await f.call(B, 'POST', 'chain', { body: entry, headers }))).toBe(
+		'400 invalid-chain'
 	);
 	const before = (await (await f.call(B, 'GET', 'chain', { headers })).json()) as {
 		entries: unknown[];
