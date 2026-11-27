@@ -60,6 +60,10 @@
 		19E25B6355F643AAB964EF30 /* HubAccountEnrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E25B6355F643AAB964EE30 /* HubAccountEnrollment.swift */; };
 		CB472C284C1943ADB88ADF30 /* HubLoginComparison.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB472C284C1943ADB88ADE30 /* HubLoginComparison.swift */; };
 		E38C84E60C2D453DB17B2F30 /* HubLoginLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38C84E60C2D453DB17B2E30 /* HubLoginLedger.swift */; };
+		E38C84E60C2D453DB17B2F34 /* HubAccountApprovals.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38C84E60C2D453DB17B2E34 /* HubAccountApprovals.swift */; };
+		E38C84E60C2D453DB17B2F35 /* HubLoginReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38C84E60C2D453DB17B2E35 /* HubLoginReview.swift */; };
+		E38C84E60C2D453DB17B2F36 /* HubApprovalTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38C84E60C2D453DB17B2E36 /* HubApprovalTransport.swift */; };
+		E38C84E60C2D453DB17B2F37 /* HubApprovalPublication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38C84E60C2D453DB17B2E37 /* HubApprovalPublication.swift */; };
 		7E5CC906CC234EB7807B9F30 /* HubLoginAdmission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5CC906CC234EB7807B9E30 /* HubLoginAdmission.swift */; };
 		F7116F5832344A9F9FE7B901 /* VaultApprovalCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */; };
 		F7116F5832344A9F9FE7B903 /* VaultApprovalRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */; };
@@ -213,6 +217,10 @@
 		19E25B6355F643AAB964EE30 /* HubAccountEnrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountEnrollment.swift; sourceTree = "<group>"; };
 		CB472C284C1943ADB88ADE30 /* HubLoginComparison.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubLoginComparison.swift; sourceTree = "<group>"; };
 		E38C84E60C2D453DB17B2E30 /* HubLoginLedger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubLoginLedger.swift; sourceTree = "<group>"; };
+		E38C84E60C2D453DB17B2E34 /* HubAccountApprovals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountApprovals.swift; sourceTree = "<group>"; };
+		E38C84E60C2D453DB17B2E35 /* HubLoginReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubLoginReview.swift; sourceTree = "<group>"; };
+		E38C84E60C2D453DB17B2E36 /* HubApprovalTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubApprovalTransport.swift; sourceTree = "<group>"; };
+		E38C84E60C2D453DB17B2E37 /* HubApprovalPublication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubApprovalPublication.swift; sourceTree = "<group>"; };
 		7E5CC906CC234EB7807B9E30 /* HubLoginAdmission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubLoginAdmission.swift; sourceTree = "<group>"; };
 		F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultApprovalCrypto.swift; sourceTree = "<group>"; };
 		F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultApprovalRequest.swift; sourceTree = "<group>"; };
@@ -410,6 +418,10 @@
 				19E25B6355F643AAB964EE30 /* HubAccountEnrollment.swift */,
 				CB472C284C1943ADB88ADE30 /* HubLoginComparison.swift */,
 				E38C84E60C2D453DB17B2E30 /* HubLoginLedger.swift */,
+				E38C84E60C2D453DB17B2E34 /* HubAccountApprovals.swift */,
+				E38C84E60C2D453DB17B2E35 /* HubLoginReview.swift */,
+				E38C84E60C2D453DB17B2E36 /* HubApprovalTransport.swift */,
+				E38C84E60C2D453DB17B2E37 /* HubApprovalPublication.swift */,
 				7E5CC906CC234EB7807B9E30 /* HubLoginAdmission.swift */,
 				F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */,
 				F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */,
@@ -674,6 +686,10 @@
 				19E25B6355F643AAB964EF30 /* HubAccountEnrollment.swift in Sources */,
 				CB472C284C1943ADB88ADF30 /* HubLoginComparison.swift in Sources */,
 				E38C84E60C2D453DB17B2F30 /* HubLoginLedger.swift in Sources */,
+				E38C84E60C2D453DB17B2F34 /* HubAccountApprovals.swift in Sources */,
+				E38C84E60C2D453DB17B2F35 /* HubLoginReview.swift in Sources */,
+				E38C84E60C2D453DB17B2F36 /* HubApprovalTransport.swift in Sources */,
+				E38C84E60C2D453DB17B2F37 /* HubApprovalPublication.swift in Sources */,
 				7E5CC906CC234EB7807B9F30 /* HubLoginAdmission.swift in Sources */,
 				F7116F5832344A9F9FE7B901 /* VaultApprovalCrypto.swift in Sources */,
 				F7116F5832344A9F9FE7B903 /* VaultApprovalRequest.swift in Sources */,

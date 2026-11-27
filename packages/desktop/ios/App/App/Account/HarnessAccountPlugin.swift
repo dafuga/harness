@@ -1,6 +1,7 @@
 import AuthenticationServices
 import Capacitor
 import Foundation
+import LocalAuthentication
 import UIKit
 
 /// The page's way to this phone's own Hub account, beside and apart from any paired computer.
@@ -15,7 +16,8 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
         CAPPluginMethod(name: "status", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "connect", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "disconnect", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "deviceApproval", returnType: CAPPluginReturnPromise)
     ]
 
     static let sharedSession: HubAccountSession = {
@@ -106,10 +108,41 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
         }
     }
 
+
     private static func settle(_ call: CAPPluginCall, _ result: Result<[String: Any], HubAccountFailure>) {
         switch result {
         case .success(let status): call.resolve(status)
         case .failure(let failure): call.reject(failure.message, failure.code)
+        }
+    }
+}
+
+extension HarnessAccountPlugin {
+    /// The web view can review public approval details. Credentials and key wrapping stay here.
+    @objc func deviceApproval(_ call: CAPPluginCall) {
+        let done: HubAccountSession.Status = { Self.settle(call, $0) }
+        if call.getString("action") == "list" { return session.approvalRequests(done) }
+        guard let id = call.getString("id") else { return done(.failure(.refused)) }
+        switch call.getString("action") {
+        case "review": session.reviewApproval(id, done: done)
+        case "deny": session.denyDevice(id, done: done)
+        case "approve":
+            guard let code = call.getString("code") else { return done(.failure(.refused)) }
+            session.approveDevice(id, code: code, authenticate: Self.confirmDevice, done: done)
+        default: done(.failure(.refused))
+        }
+    }
+
+    private static func confirmDevice(_ done: @escaping (Bool) -> Void) {
+        DispatchQueue.main.async {
+            let context = LAContext()
+            context.touchIDAuthenticationAllowableReuseDuration = 0
+            context.localizedFallbackTitle = ""
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                                   localizedReason: "Approve the device with the matching code.") { accepted, _ in
+                context.invalidate()
+                done(accepted)
+            }
         }
     }
 }

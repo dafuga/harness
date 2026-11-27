@@ -4,7 +4,7 @@
 	"uid": "u_t44fq24p5d",
 	"kind": "adapter",
 	"title": "Google account on iOS",
-	"responsibility": "Connects a phone directly to its Google account projects while keeping credentials outside the renderer.",
+	"responsibility": "Connects a phone directly to its Google account projects and reviews device approvals while keeping credentials outside the renderer.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -12,6 +12,7 @@
 			"packages/desktop/ios/App/App/Account/EnrollMailbox.swift",
 			"packages/desktop/ios/App/App/Account/EnrollRequest.swift",
 			"packages/desktop/ios/App/App/Account/HarnessAccountPlugin.swift",
+			"packages/desktop/ios/App/App/Account/HubAccountApprovals.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountDevice.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountEnrollment.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountHandoff.swift",
@@ -19,9 +20,12 @@
 			"packages/desktop/ios/App/App/Account/HubAccountModels.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountSession.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountVault.swift",
+			"packages/desktop/ios/App/App/Account/HubApprovalPublication.swift",
+			"packages/desktop/ios/App/App/Account/HubApprovalTransport.swift",
 			"packages/desktop/ios/App/App/Account/HubLoginAdmission.swift",
 			"packages/desktop/ios/App/App/Account/HubLoginComparison.swift",
-			"packages/desktop/ios/App/App/Account/HubLoginLedger.swift"
+			"packages/desktop/ios/App/App/Account/HubLoginLedger.swift",
+			"packages/desktop/ios/App/App/Account/HubLoginReview.swift"
 		],
 		"symbols": []
 	},
