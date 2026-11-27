@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_tctvnvpwgz -->
 <script lang="ts">
+	import DeviceListRow from '$shared/accounts-access/DeviceListRow.svelte';
 	import Modal from '$shared/Modal.svelte';
 	import type { RemoteAccountComputer } from '../../../../remote/src/models/networking-security/RemoteControl.types';
 	import { BrowserComputerService } from '../../services/networking-security/BrowserComputerService';
@@ -86,32 +87,25 @@
 	{#if computers?.length}
 		<hx-ul aria-label="Linked computers">
 			{#each computers as computer (computer.hostId)}
-				<hx-li class="hub-list-row">
-					<hx-span class="hub-list-name"
-						><hx-strong>{computer.name}</hx-strong><hx-small
-							>{computer.online ? 'Online' : 'Offline'}</hx-small
-						></hx-span
-					>
-					<hx-span class="hub-list-meta">
-						{#if computer.online}
-							<hx-button
-								type="button"
-								aria-label={`Connect to ${computer.name}`}
-								onclick={() => void connect(computer)}>Connect</hx-button
-							>
-						{:else}
-							<hx-button
-								type="button"
-								aria-label={`Manage ${computer.name}`}
-								onclick={() => {
-									closeComputer();
-									selected = computer;
-									unlink = true;
-								}}>Manage</hx-button
-							>
-						{/if}
-					</hx-span>
-				</hx-li>
+				<DeviceListRow name={computer.name} status={computer.online ? 'Online' : 'Offline'}>
+					{#if computer.online}
+						<hx-button
+							type="button"
+							aria-label={`Connect to ${computer.name}`}
+							onclick={() => void connect(computer)}>Connect</hx-button
+						>
+					{:else}
+						<hx-button
+							type="button"
+							aria-label={`Manage ${computer.name}`}
+							onclick={() => {
+								closeComputer();
+								selected = computer;
+								unlink = true;
+							}}>Manage</hx-button
+						>
+					{/if}
+				</DeviceListRow>
 			{/each}
 		</hx-ul>
 	{:else if computers}

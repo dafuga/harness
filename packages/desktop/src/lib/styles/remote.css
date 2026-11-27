@@ -87,18 +87,10 @@
 	gap: var(--hx-space-8);
 }
 .remote-devices {
-	display: grid;
-	gap: var(--hx-space-8);
 	width: 100%;
 	margin: 0;
 	padding: 0;
 	list-style: none;
-}
-.remote-devices li {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--hx-space-8);
 }
 .remote-connection.compact {
 	position: relative;
