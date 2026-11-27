@@ -136,6 +136,10 @@
 	}
 }
 @media (max-width: 560px) {
+	.hh-home .hh-live-head .hh-live-counts {
+		display: block;
+		margin-top: var(--hx-space-4);
+	}
 	.hh-home .hh-live-row,
 	.hh-home .hh-live-quiet {
 		grid-template-columns: minmax(0, 1fr);
