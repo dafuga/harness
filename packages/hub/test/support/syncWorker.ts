@@ -41,7 +41,12 @@ export default {
 		const token = framed.headers.get('x-test-session') ?? '';
 		const id = Object.hasOwn(actors, token) ? actors[token] : null;
 		const record = id
-			? ({ actor: { id }, kind: 'native', resource: 'projects' } as SessionRecord)
+			? ({
+					idHash: 'test-' + token,
+					actor: { id },
+					kind: 'native',
+					resource: 'projects'
+				} as SessionRecord)
 			: null;
 		const response = await serveSync(framed, {
 			sessions: { resolve: async () => record },
