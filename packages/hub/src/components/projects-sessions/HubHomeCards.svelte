@@ -29,6 +29,7 @@
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
+	import HubHomeCosChat from './HubHomeCosChat.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
@@ -72,6 +73,11 @@
 {/snippet}
 
 <HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} {send} {receipt} />
+{#if view.agents && (view.owner || view.linkedComputers)}<HubHomeCosChat
+		agent={view.agents.find((agent) => agent.id === 'cos')}
+		now={new Date(view.now).toISOString()}
+		{send}
+	/>{/if}
 <HubHomeLive reading={view.computers} now={view.now} />
 <hx-div class="hh-grid">
 	<HubHomeCard

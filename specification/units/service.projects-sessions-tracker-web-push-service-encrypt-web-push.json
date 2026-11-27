@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-web-push-service-encrypt-web-push",
+	"uid": "u_x3kkbvtisb",
+	"kind": "service",
+	"title": "encryptWebPush",
+	"responsibility": "Encrypts a message so only the subscribed browser can read it (RFC 8291).",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-web-push-service/encryptWebPush.ts",
+			"src/services/projects-sessions/tracker-web-push-service/encryptWebPush.types.ts"
+		],
+		"symbols": ["encryptWebPush", "WebPushSeed"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "encryptWebPush.plaintext",
+				"type": "Buffer",
+				"required": true,
+				"description": "The message bytes."
+			},
+			{
+				"name": "encryptWebPush.browser",
+				"type": "PushSubscriptionTarget['keys']",
+				"required": true,
+				"description": "The subscription's p256dh and auth keys."
+			},
+			{
+				"name": "encryptWebPush.seed",
+				"type": "WebPushSeed",
+				"required": false,
+				"description": "Fixed salt and one-time key for the published test vector only."
+			}
+		],
+		"outputs": [
+			{
+				"name": "encryptWebPush",
+				"type": "Buffer",
+				"description": "The aes128gcm request body."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "encryptWebPush",
+				"inputs": [
+					{
+						"name": "encryptWebPush.plaintext",
+						"type": "Buffer",
+						"required": true,
+						"description": "The message bytes."
+					},
+					{
+						"name": "encryptWebPush.browser",
+						"type": "PushSubscriptionTarget['keys']",
+						"required": true,
+						"description": "The subscription's p256dh and auth keys."
+					},
+					{
+						"name": "encryptWebPush.seed",
+						"type": "WebPushSeed",
+						"required": false,
+						"description": "Fixed salt and one-time key for the published test vector only."
+					}
+				],
+				"outputs": [
+					{
+						"name": "encryptWebPush",
+						"type": "Buffer",
+						"description": "The aes128gcm request body."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-web-push-contract",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-web-push-service/encryptWebPush.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-web-push-service/encryptWebPush.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

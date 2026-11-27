@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
+			"packages/hub/src/components/projects-sessions/hubHomeStatusText.ts",
 			"packages/hub/src/components/projects-sessions/hubHomeTime.ts"
 		],
 		"symbols": [
@@ -34,6 +35,7 @@
 			"staleReading",
 			"missingQuotaProviders",
 			"warningLabel",
+			"messageStatusText",
 			"pastDueLabel",
 			"pastDueSummary",
 			"initials",
@@ -47,6 +49,9 @@
 			"runDay",
 			"runTime",
 			"when",
+			"pastDueLabel",
+			"pastDueSummary",
+			"messageStatusText",
 			"runDay",
 			"runTime",
 			"runMoment",
@@ -181,18 +186,6 @@
 				"description": "Provider allowance window to label."
 			},
 			{
-				"name": "pastDueLabel.run",
-				"type": "Pick<HomePastDue, 'state' | 'position'>",
-				"required": true,
-				"description": "The state and optional queue position of one past-due run."
-			},
-			{
-				"name": "pastDueSummary.runs",
-				"type": "HomePastDue[]",
-				"required": true,
-				"description": "The past-due runs to total by state."
-			},
-			{
 				"name": "initials.name",
 				"type": "string",
 				"required": true,
@@ -257,6 +250,30 @@
 				"type": "number",
 				"required": true,
 				"description": "Observation time in milliseconds; stale readings are not counted as low."
+			},
+			{
+				"name": "pastDueLabel.run",
+				"type": "Pick<HomePastDue, 'state' | 'position'>",
+				"required": true,
+				"description": "The state and optional queue position of one past-due run."
+			},
+			{
+				"name": "pastDueSummary.runs",
+				"type": "HomePastDue[]",
+				"required": true,
+				"description": "The past-due runs to total by state."
+			},
+			{
+				"name": "messageStatusText.message",
+				"type": "Pick<HomeMessage, 'status' | 'reason'>",
+				"required": true,
+				"description": "A thread entry's status and refusal reason."
+			},
+			{
+				"name": "messageStatusText.name",
+				"type": "string",
+				"required": true,
+				"description": "The receiving session, as Daniel knows it."
 			},
 			{
 				"name": "runDay.at",
@@ -758,44 +775,6 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "pastDueLabel",
-				"inputs": [
-					{
-						"name": "pastDueLabel.run",
-						"type": "Pick<HomePastDue, 'state' | 'position'>",
-						"required": true,
-						"description": "The state and optional queue position of one past-due run."
-					}
-				],
-				"outputs": [
-					{
-						"name": "pastDueLabel",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
-			},
-			{
-				"name": "pastDueSummary",
-				"inputs": [
-					{
-						"name": "pastDueSummary.runs",
-						"type": "HomePastDue[]",
-						"required": true,
-						"description": "The past-due runs to total by state."
-					}
-				],
-				"outputs": [
-					{
-						"name": "pastDueSummary",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
 				"name": "initials",
 				"inputs": [
 					{
@@ -957,6 +936,69 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "pastDueLabel",
+				"inputs": [
+					{
+						"name": "pastDueLabel.run",
+						"type": "Pick<HomePastDue, 'state' | 'position'>",
+						"required": true,
+						"description": "The state and optional queue position of one past-due run."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pastDueLabel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "pastDueSummary",
+				"inputs": [
+					{
+						"name": "pastDueSummary.runs",
+						"type": "HomePastDue[]",
+						"required": true,
+						"description": "The past-due runs to total by state."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pastDueSummary",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "messageStatusText",
+				"inputs": [
+					{
+						"name": "messageStatusText.message",
+						"type": "Pick<HomeMessage, 'status' | 'reason'>",
+						"required": true,
+						"description": "A thread entry's status and refusal reason."
+					},
+					{
+						"name": "messageStatusText.name",
+						"type": "string",
+						"required": true,
+						"description": "The receiving session, as Daniel knows it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "messageStatusText",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "runDay",

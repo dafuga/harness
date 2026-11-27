@@ -26,6 +26,7 @@
 	import HubHomeHeader from './HubHomeHeader.svelte';
 	import HubHomeCards from './HubHomeCards.svelte';
 	import HubHomeDialogs from './HubHomeDialogs.svelte';
+	import { followNeedsLink } from './followNeedsLink.svelte';
 	import '../../lib/styles/home-scheme.css';
 	import '../../lib/styles/hub-home/index.css';
 
@@ -139,6 +140,11 @@
 		};
 	});
 
+	followNeedsLink(() => {
+		const dialog = selected !== null;
+		return { asks: view.openAsks, open, close, dialog, reload: refresh };
+	});
+
 	function open(section: HomeSection, id?: string) {
 		if (!selected)
 			opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -180,9 +186,7 @@
 		refresh();
 	}
 
-	function receipt(id: string) {
-		return api.get<HomeChatReceipt>('/api/hub-home/chat', { id });
-	}
+	const receipt = (id: string) => api.get<HomeChatReceipt>('/api/hub-home/chat', { id });
 </script>
 
 <hx-div class="home-scheme">

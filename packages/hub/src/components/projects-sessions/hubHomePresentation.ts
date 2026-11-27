@@ -4,7 +4,6 @@ import type {
 	HomeAgent,
 	HomeAgentState,
 	HomeLimit,
-	HomePastDue,
 	HomePlanState,
 	HomeSection,
 	HomeSubscription
@@ -144,19 +143,7 @@ export function warningLabel(limit: HomeLimit) {
 	return warningFor(limit.left) === 'critical' ? 'Almost out' : 'Low';
 }
 
-const pastDueLabels = { running: 'Running', queued: 'Queued', blocked: 'Blocked' } as const;
-
-export function pastDueLabel(run: Pick<HomePastDue, 'state' | 'position'>) {
-	return run.position ? `Queued #${run.position}` : pastDueLabels[run.state];
-}
-
-export function pastDueSummary(runs: HomePastDue[]) {
-	return (Object.keys(pastDueLabels) as HomePastDue['state'][])
-		.map((state) => ({ state, total: runs.filter((run) => run.state === state).length }))
-		.filter(({ total }) => total)
-		.map(({ state, total }) => `${total} ${pastDueLabels[state].toLowerCase()}`)
-		.join(' · ');
-}
+export { messageStatusText, pastDueLabel, pastDueSummary } from './hubHomeStatusText';
 
 export function initials(name: string) {
 	return name

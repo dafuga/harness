@@ -36,6 +36,15 @@ Proposed on Tracker item `xrmz3f`, revised for implementation on `tzqm5r` with t
 
 **Daniel's decision (22 November, 13:45, option B).** After the scripted login the session gets full CDP/Playwright control of the logged-in browser. It does not get a mediated gateway with an operation list, read-only default or URL deny list. Because the session can read cookies and open any page, three controls carry more weight: the endpoint is reachable only by the requesting session, the container's network allowlist applies, and destroy signs out on the provider and checks the security log.
 
+## Interim: Harness iOS approves for the live broker
+
+Daniel, 26 November: vault requests belong in the Harness app now (Tracker `bcx64s`). Until the Harness broker takes over, Harness iOS is a second approver of the live credential broker and speaks `CB-DEVICE-V1` to it unchanged. The native code is under `packages/desktop/ios/App/App/Vault/`; the web view only opens it. It needs iOS 17.
+
+- **Pairing and custody.** The app is enrolled with the broker's QR pairing, with its own Secure Enclave keys, so the old app's enrollment is untouched. Saved logins move by the old app's encrypted backup, never as plaintext. The Phase 4 rule that Harness pairs through Google device linking applies when the Harness broker takes over.
+- **Picking a login.** Every saved login for the requested service or site is offered. The username and website are readable before Face ID so they can be listed, and must match the sealed entry when it is opened.
+- **Release modes.** An approval-only request releases nothing. A deferred sign-in (`deferredOtp`) releases only the password; the later `codeOnly` request releases only a fresh code. A `websiteDomain` request releases only to a login saved for that exact website. A request with a `selectionId` is approved for that offer and broker origin.
+- **Not covered yet.** Remote push needs an APNs build (`VAULT_APNS`) and broker push settings; without it the app polls while it is open.
+
 ## Method selection rule
 
 For each requested `(site, action)` the recipe declares its methods. Harness picks the first eligible method in this fixed order:

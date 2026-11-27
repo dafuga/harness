@@ -37,6 +37,11 @@
 		'home-cards': { view, open: noop, send },
 		'home-choices': { agent: { options: previewAnswerOptions }, onpick: noop },
 		'home-composer': { agents: view.agents, send },
+		'home-cos-chat': {
+			agent: view.agents?.find((agent) => agent.id === 'cos'),
+			now: new Date(view.now).toISOString(),
+			send
+		},
 		'home-dialogs': {
 			selected: 'plans',
 			view,
@@ -65,6 +70,16 @@
 			now: view.now,
 			open: noop
 		},
+		'home-notification-settings': {
+			quiet: { enabled: true, start: '22:00', end: '08:00' },
+			deliveredAt: view.now - 900_000,
+			busy: false,
+			failed: '',
+			save: noop,
+			turnOff: noop,
+			close: noop
+		},
+		'home-notifications': {},
 		'home-not-started': {
 			pastDue: [
 				{

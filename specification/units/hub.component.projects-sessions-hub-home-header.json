@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.account-menu",
+			"hub.component.projects-sessions-hub-home-notifications",
 			"hub.component.projects-sessions-hub-home-quota-pills",
 			"reports.component.brand-mark",
 			"reports.component.explorer-ui-explorer-kit-pill",
@@ -54,6 +55,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.account-menu",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-notifications",
 			"via": "import",
 			"origin": "derived"
 		},

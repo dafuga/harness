@@ -85,3 +85,22 @@
 		grid-row: 2;
 	}
 }
+/* Chief of Staff's chat box on Home: the latest messages with their receipts, then the composer. */
+.hh-home .hh-cos-chat {
+	display: grid;
+	gap: var(--hx-space-10);
+	margin-bottom: var(--hx-space-16);
+	padding: var(--hx-space-12);
+	min-width: 0;
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-large);
+	background: var(--hx-color-surface);
+}
+.hh-home .hh-cos-thread {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.hh-home .hh-msg[data-status='refused'] .hh-msg-at {
+	color: var(--hx-color-error);
+}

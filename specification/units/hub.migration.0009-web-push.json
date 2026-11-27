@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.migration.0009-web-push",
+	"uid": "u_o6ujztkzxi",
+	"kind": "migration",
+	"title": "0009-web-push",
+	"responsibility": "Adds the tables for browser push subscriptions and the quiet-hours setting.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/db/migrations/0009-web-push.sql"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/db/migrations/0009-web-push.sql",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/db/migrations/0009-web-push.sql"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
