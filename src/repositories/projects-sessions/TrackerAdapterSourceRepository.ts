@@ -2,7 +2,7 @@
 import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes';
 import type {
 	TrackerAdapterListRow,
-	TrackerAdapterSource,
+	TrackerStoredAdapterSource,
 	TrackerAdapterSourceAction,
 	TrackerAdapterSourceRow
 } from './TrackerAdapterRepository.types';
@@ -92,7 +92,7 @@ export class TrackerAdapterSourceRepository {
 		return rows.map(({ id }) => id);
 	}
 
-	source(id: string): TrackerAdapterSource | undefined {
+	source(id: string): TrackerStoredAdapterSource | undefined {
 		const row = this.database
 			.prepare(
 				'SELECT config, enabled_at, cursor, paused FROM adapter_sources WHERE id = ? AND removed = 0'
@@ -100,12 +100,7 @@ export class TrackerAdapterSourceRepository {
 			.get(id) as TrackerAdapterSourceRow | undefined;
 		if (!row) return undefined;
 		const config = readSourceConfig(row.config);
-		if (
-			config.type !== 'github' ||
-			id !== `github:${config.target}` ||
-			!/^[a-z0-9][a-z0-9-]*\/[a-z0-9_.-]+$/.test(config.target) ||
-			/\/(?:\.|\.\.)$/.test(config.target)
-		)
+		if (!isTrackerAdapterSourceId(id) || id !== `${config.type}:${config.target}`)
 			throw new TypeError('Invalid Tracker adapter source');
 		return {
 			...config,
@@ -117,7 +112,7 @@ export class TrackerAdapterSourceRepository {
 	}
 
 	/** Save a new source, or revive a removed one; its links and receipts prevent duplicates. */
-	add(source: TrackerAdapterSource & { enabled_at: number }): boolean {
+	add(source: TrackerStoredAdapterSource): boolean {
 		// Cursor and pause state live in their own columns, as in legacy rows.
 		const config = JSON.stringify({ ...source, cursor: undefined, paused: undefined });
 		const { enabled_at } = source;
@@ -154,12 +149,20 @@ export class TrackerAdapterSourceRepository {
 	}
 }
 
-function readSourceConfig(value: string): TrackerAdapterSource {
+function readSourceConfig(value: string): TrackerStoredAdapterSource {
 	try {
 		const source: unknown = JSON.parse(value);
 		if (!source || typeof source !== 'object') throw new TypeError();
-		return source as TrackerAdapterSource;
+		return source as TrackerStoredAdapterSource;
 	} catch {
 		throw new TypeError('Invalid Tracker adapter source');
 	}
+}
+
+/** The accepted persisted identifiers for Tracker adapter commands. */
+export function isTrackerAdapterSourceId(id: string): boolean {
+	return (
+		(/^github:[a-z0-9][a-z0-9-]*\/[a-z0-9_.-]+$/.test(id) && !/\/(?:\.|\.\.)$/.test(id)) ||
+		/^gmail:[a-z0-9][a-z0-9-]{0,63}$/.test(id)
+	);
 }

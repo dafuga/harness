@@ -123,7 +123,14 @@ function launchSettings(item: NativeTrackerItemDetail): string[] {
 function formatAdapter(source: NativeTrackerAdapter): string {
 	const runner = source.runner ? ` on ${source.runner}` : '';
 	const error = source.last_error ? ` [${source.last_error}]` : '';
-	return `${source.id} → ${source.agent} (${source.paused ? 'paused' : 'enabled'})${runner}${error}`;
+	const route = source.effect ? formatMessageRoute(source.effect) : source.agent;
+	return `${source.id} → ${route} (${source.paused ? 'paused' : 'enabled'})${runner}${error}`;
+}
+
+function formatMessageRoute(effect: { kind: string; item_id?: string; agent?: string }): string {
+	return effect.kind === 'notify'
+		? `Chief of Staff on ${effect.item_id?.slice(0, 6)}`
+		: (effect.agent ?? 'task');
 }
 
 function formatBackupList({ status, files }: NativeTrackerBackupList): string {
@@ -161,7 +168,9 @@ function formatNativeTrackerAdapterRun(
 				: [result.dry_run ? 'would' : '', action].filter(Boolean).join(' ');
 		const link = item_id && action !== 'create' ? ` → ${item_id.slice(0, 6)}` : '';
 		const due = auto_launch ? ' [due for auto-launch]' : '';
-		return `${verb} ${title} (${url})${link}${due}`;
+		const reference = url ? ` (${url})` : '';
+		return `${verb} ${title}${reference}${link}${due}`;
 	});
+	if (result.deferred) lines.push('Message rule deferred during quiet hours.');
 	return lines.join('\n') || 'No items to create or link.';
 }

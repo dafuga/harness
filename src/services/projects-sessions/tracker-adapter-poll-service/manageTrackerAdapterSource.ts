@@ -1,7 +1,7 @@
 // @harness-uid u_wlip653voz
 import type { TrackerAdapterOwner } from './manageTrackerAdapterSource.types';
 import type {
-	TrackerAdapterSource,
+	TrackerStoredAdapterSource,
 	TrackerAdapterSourceAction
 } from '../../../repositories/projects-sessions/TrackerAdapterRepository.types';
 import type { TrackerAdapterRepository } from '../../../repositories/projects-sessions/TrackerAdapterRepository';
@@ -9,7 +9,7 @@ import { trackerItemError } from '../../../utils/projects-sessions/trackerItemEr
 
 export function addTrackerAdapterSource(
 	owner: TrackerAdapterOwner,
-	source: TrackerAdapterSource & { enabled_at: number }
+	source: TrackerStoredAdapterSource
 ) {
 	return whileOwning(owner, () => {
 		if (!owner.sources.add(source)) throw trackerItemError('adapter already exists', 409);

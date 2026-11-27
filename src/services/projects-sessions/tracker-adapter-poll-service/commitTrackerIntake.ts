@@ -4,7 +4,8 @@ import type {
 	TrackerAdapterCandidate,
 	TrackerAdapterItem,
 	TrackerAdapterLink,
-	TrackerAdapterSource
+	TrackerAdapterSource,
+	TrackerAdapterWorkSource
 } from '../../../repositories/projects-sessions/TrackerAdapterRepository.types';
 import type {
 	TrackerAdapterAction,
@@ -95,7 +96,7 @@ function matchesTrackerIntakeScope(
 
 export function commitTrackerIntake(
 	context: TrackerAdapterIntakeContext,
-	source: TrackerAdapterSource,
+	source: TrackerAdapterWorkSource,
 	record: TrackerAdapterIntakeRecord,
 	action: TrackerAdapterAction
 ): TrackerAdapterLink {
@@ -158,7 +159,7 @@ export function trackerEventFields(
 }
 
 function newItemFields(
-	source: TrackerAdapterSource,
+	source: TrackerAdapterWorkSource,
 	record: TrackerAdapterIntakeRecord,
 	context: TrackerAdapterIntakeContext,
 	now: number

@@ -9,7 +9,9 @@ import type {
 import type {
 	TrackerAdapterCandidate,
 	TrackerAdapterRemoteState,
-	TrackerAdapterSource
+	TrackerAdapterSource,
+	TrackerAdapterWorkSource,
+	TrackerMessageSource
 } from '../../repositories/projects-sessions/TrackerAdapterRepository.types';
 
 export interface TrackerGithubIssue extends GithubIssueIntakeIssue {
@@ -91,16 +93,32 @@ export interface TrackerGithubFollowUpPolicy {
 	coveredComments?: Record<string, string>;
 }
 
+export interface TrackerMessageCandidate {
+	id: string;
+	threadId: string;
+	sender?: string;
+	receivedAt: number;
+	keywordMatched: boolean;
+}
+
+export type TrackerMessageProvider = (
+	match: Readonly<TrackerMessageSource['match']>,
+	query: TrackerAdapterReadQuery
+) => AsyncIterable<TrackerMessageCandidate>;
+
 export interface TrackerAdapterPollDependencies {
 	lease: TrackerAdapterLease;
 	provider: TrackerGithubAdapterProvider;
+	messageProviders?: Readonly<
+		Partial<Record<TrackerMessageSource['type'], TrackerMessageProvider>>
+	>;
 	redactText: (text: string) => string;
 	intakePolicy?: (source: Readonly<TrackerAdapterSource>) => TrackerAdapterIntakePolicy | undefined;
 	now?: () => number;
 	itemId?: () => string;
 	hasStarted?: (itemId: string) => boolean;
 	manual?: boolean;
-	dueOwner?: (source: Readonly<TrackerAdapterSource>) => string | null;
+	dueOwner?: (source: Readonly<TrackerAdapterWorkSource>) => string | null;
 }
 
 export interface TrackerAdapterPollOptions {
@@ -112,7 +130,7 @@ export interface TrackerAdapterPollOptions {
 
 export interface TrackerAdapterAction {
 	priority?: TrackerItemPriority;
-	action: 'create' | 'link' | 'covered';
+	action: 'create' | 'link' | 'covered' | 'notify';
 	external_id: string;
 	item_id?: string;
 	title: string;
@@ -134,6 +152,7 @@ export type TrackerAdapterPollResult =
 			actions: TrackerAdapterAction[];
 			events: number;
 			synced_back: number;
+			deferred?: true;
 			sync_errors: TrackerAdapterWriteError[];
 	  };
 

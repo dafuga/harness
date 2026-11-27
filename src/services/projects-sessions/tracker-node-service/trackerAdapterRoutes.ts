@@ -1,4 +1,6 @@
 // @harness-uid u_gvqtr5mdwv
+import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
+import { isTrackerAdapterSourceId } from '../../../repositories/projects-sessions/TrackerAdapterSourceRepository';
 import type { TrackerAdapterSourceAction } from '../../../repositories/projects-sessions/TrackerAdapterRepository.types';
 import {
 	ladderFrom,
@@ -10,11 +12,11 @@ import {
 	addTrackerAdapterSource,
 	changeTrackerAdapterSource
 } from '../tracker-adapter-poll-service/manageTrackerAdapterSource';
+import { trackerMessageSourceInput } from '../tracker-adapter-poll-service/trackerMessageSourceInput';
 import { trackerAdapterSourceInput } from '../tracker-adapter-poll-service/trackerAdapterSourceInput';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import { readItemBody } from '../tracker-local-api-service/trackerLocalItemMutation';
 
-const sourcePattern = /^github:[a-z0-9][a-z0-9-]*\/[a-z0-9_.-]+$/;
 const elsewhere = 'Run adapters on the designated Tracker runner';
 /** GitHub reads can outlast the listener's idle timeout. */
 export const trackerSlowAdapterPath: RegExp = /\/adapters\/(?:run|add)$/;
@@ -31,8 +33,8 @@ export function trackerAdapterRoute(
 	if (action === 'add') return add(request, runtime, adapter).catch(requestFailure);
 	if (!adapter.status().active) return Promise.resolve(failure(409, elsewhere));
 	const source = url.searchParams.get('source');
-	if (!source || !sourcePattern.test(source))
-		return Promise.resolve(failure(400, 'A GitHub adapter source ID is required'));
+	if (!source || !isTrackerAdapterSourceId(source))
+		return Promise.resolve(failure(400, 'A Tracker adapter source ID is required'));
 	if (action === 'run') return run(request, adapter, source);
 	return Promise.resolve()
 		.then(() =>
@@ -49,15 +51,19 @@ async function add(
 	adapter: TrackerAdapterPollService
 ): Promise<Response> {
 	const query = new URL(request.url).searchParams;
-	const source = trackerAdapterSourceInput(await readItemBody(request), runtime.now());
-	validateModel(source.model, runtime);
+	const after = query.get('after');
+	const since = after === null ? undefined : Date.parse(after);
+	if (Number.isNaN(since)) return failure(400, '--after must be an ISO date/time');
+	const source = prepareSource(await readItemBody(request), runtime, since);
+	if (source.type === 'gmail' && query.get('backfill') === '1')
+		return failure(400, 'Gmail adapters use --after to select a start time');
+	if (!adapter.supports(source.type))
+		return failure(409, 'Tracker adapter provider is not configured');
 	if (query.get('dry-run') !== '1') {
 		if (!adapter.status().active) return failure(409, elsewhere);
 		return Response.json(addTrackerAdapterSource(adapter.owner(), source), { status: 201 });
 	}
-	const after = query.get('after');
-	const enabled_at = after === null ? source.enabled_at : Date.parse(after);
-	if (Number.isNaN(enabled_at)) return failure(400, '--after must be an ISO date/time');
+	const enabled_at = since ?? source.enabled_at;
 	try {
 		const preview = await adapter.preview(
 			{ ...source, enabled_at },
@@ -67,6 +73,24 @@ async function add(
 	} catch {
 		return failure(502, 'Tracker adapter intake failed');
 	}
+}
+
+function prepareSource(
+	input: Awaited<ReturnType<typeof readItemBody>>,
+	runtime: TrackerNativeRuntimeService,
+	since?: number
+) {
+	if (input.type !== 'gmail') {
+		const source = trackerAdapterSourceInput(input, runtime.now());
+		validateModel(source.model, runtime);
+		return source;
+	}
+	const source = trackerMessageSourceInput(input, since ?? runtime.now());
+	if (source.effect.kind === 'notify')
+		source.effect.item_id = new TrackerItemReadRepository(runtime.store.database).resolve(
+			source.effect.item_id
+		).id;
+	return source;
 }
 
 function validateModel(model: string | null, { ladderConfig }: TrackerNativeRuntimeService): void {

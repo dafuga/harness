@@ -22,7 +22,8 @@
 			"TrackerAdapterSourceRepository.add",
 			"TrackerAdapterSourceRepository.change",
 			"TrackerAdapterSourceRepository.advance",
-			"TrackerAdapterSourceRepository.recordRun"
+			"TrackerAdapterSourceRepository.recordRun",
+			"isTrackerAdapterSourceId"
 		]
 	},
 	"contract": {
@@ -60,7 +61,7 @@
 			},
 			{
 				"name": "TrackerAdapterSourceRepository.add.source",
-				"type": "TrackerAdapterSource & { enabled_at: number }",
+				"type": "TrackerStoredAdapterSource",
 				"required": true
 			},
 			{
@@ -97,6 +98,11 @@
 				"name": "TrackerAdapterSourceRepository.recordRun.error",
 				"type": "string | null",
 				"required": true
+			},
+			{
+				"name": "isTrackerAdapterSourceId.id",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -126,7 +132,7 @@
 			},
 			{
 				"name": "TrackerAdapterSourceRepository.source",
-				"type": "TrackerAdapterSource | undefined"
+				"type": "TrackerStoredAdapterSource | undefined"
 			},
 			{
 				"name": "TrackerAdapterSourceRepository.add",
@@ -143,6 +149,10 @@
 			{
 				"name": "TrackerAdapterSourceRepository.recordRun",
 				"type": "void"
+			},
+			{
+				"name": "isTrackerAdapterSourceId",
+				"type": "boolean"
 			}
 		],
 		"errors": [
@@ -260,7 +270,7 @@
 				"outputs": [
 					{
 						"name": "TrackerAdapterSourceRepository.source",
-						"type": "TrackerAdapterSource | undefined"
+						"type": "TrackerStoredAdapterSource | undefined"
 					}
 				],
 				"errors": [
@@ -276,7 +286,7 @@
 				"inputs": [
 					{
 						"name": "TrackerAdapterSourceRepository.add.source",
-						"type": "TrackerAdapterSource & { enabled_at: number }",
+						"type": "TrackerStoredAdapterSource",
 						"required": true
 					}
 				],
@@ -358,6 +368,24 @@
 					{
 						"name": "TrackerAdapterSourceRepository.recordRun",
 						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isTrackerAdapterSourceId",
+				"inputs": [
+					{
+						"name": "isTrackerAdapterSourceId.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerAdapterSourceId",
+						"type": "boolean"
 					}
 				],
 				"errors": [],

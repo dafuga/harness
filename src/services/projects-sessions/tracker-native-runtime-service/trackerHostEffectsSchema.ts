@@ -8,6 +8,7 @@ import { hostVerify, hostWorktrees, noVerify } from './trackerHostVerifyPolicy';
 const absolutePath = z.string().refine(isAbsolute);
 const driver = absolutePath;
 const adapterPolicy = {
+	gmail: z.strictObject({ account: z.email(), tokenDriver: absolutePath }).optional(),
 	manual: z.literal(true).optional(),
 	followUp: z
 		.strictObject({

@@ -16,10 +16,15 @@
 			"src/services/projects-sessions/tracker-adapter-poll-service/githubIntakeRecord.ts",
 			"src/services/projects-sessions/tracker-adapter-poll-service/manageTrackerAdapterSource.ts",
 			"src/services/projects-sessions/tracker-adapter-poll-service/manageTrackerAdapterSource.types.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/pollTrackerGithubSource.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/pollTrackerMessageSource.ts",
 			"src/services/projects-sessions/tracker-adapter-poll-service/readTrackerIntake.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/readTrackerMessageIntake.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/readTrackerMessageIntake.types.ts",
 			"src/services/projects-sessions/tracker-adapter-poll-service/trackerAdapterPollError.ts",
 			"src/services/projects-sessions/tracker-adapter-poll-service/trackerAdapterSourceInput.ts",
-			"src/services/projects-sessions/tracker-adapter-poll-service/trackerAdapterSourceInput.types.ts"
+			"src/services/projects-sessions/tracker-adapter-poll-service/trackerAdapterSourceInput.types.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/trackerMessageSourceInput.ts"
 		],
 		"symbols": [
 			"TrackerAdapterIntakePolicy",
@@ -36,6 +41,7 @@
 			"TrackerAdapterPollService.constructor",
 			"TrackerAdapterPollService.status",
 			"TrackerAdapterPollService.owner",
+			"TrackerAdapterPollService.supports",
 			"TrackerAdapterPollService.preview",
 			"TrackerAdapterPollService.tick",
 			"TrackerAdapterPollService.poll",
@@ -47,6 +53,8 @@
 			"TrackerAdapterLease",
 			"TrackerAdapterIntakePolicy",
 			"TrackerGithubFollowUpPolicy",
+			"TrackerMessageCandidate",
+			"TrackerMessageProvider",
 			"TrackerAdapterPollDependencies",
 			"TrackerAdapterPollOptions",
 			"TrackerAdapterAction",
@@ -73,14 +81,20 @@
 			"changeTrackerAdapterSource",
 			"unlinkedRepository",
 			"TrackerAdapterOwner",
+			"pollTrackerGithubSource",
+			"pollTrackerMessageSource",
 			"readTrackerIssues",
 			"readTrackerComments",
 			"trackerTesterLogin",
+			"trackerMessageQuiet",
+			"readTrackerMessageIntake",
+			"TrackerMessageReadOptions",
 			"TrackerAdapterPollError",
 			"TrackerAdapterPollError.constructor",
 			"assertTrackerPollActive",
 			"trackerAdapterSourceInput",
-			"TrackerAdapterSourceFields"
+			"TrackerAdapterSourceFields",
+			"trackerMessageSourceInput"
 		]
 	},
 	"contract": {
@@ -97,8 +111,13 @@
 				"required": true
 			},
 			{
+				"name": "TrackerAdapterPollService.supports.type",
+				"type": "TrackerStoredAdapterSource['type']",
+				"required": true
+			},
+			{
 				"name": "TrackerAdapterPollService.preview.source",
-				"type": "TrackerAdapterSource",
+				"type": "TrackerStoredAdapterSource",
 				"required": true
 			},
 			{
@@ -199,7 +218,7 @@
 			},
 			{
 				"name": "commitTrackerIntake.source",
-				"type": "TrackerAdapterSource",
+				"type": "TrackerAdapterWorkSource",
 				"required": true
 			},
 			{
@@ -319,7 +338,7 @@
 			},
 			{
 				"name": "addTrackerAdapterSource.source",
-				"type": "TrackerAdapterSource & { enabled_at: number }",
+				"type": "TrackerStoredAdapterSource",
 				"required": true
 			},
 			{
@@ -340,6 +359,46 @@
 			{
 				"name": "unlinkedRepository.repository",
 				"type": "TrackerAdapterRepository",
+				"required": true
+			},
+			{
+				"name": "pollTrackerGithubSource.context",
+				"type": "TrackerAdapterIntakeContext",
+				"required": true
+			},
+			{
+				"name": "pollTrackerGithubSource.sources",
+				"type": "TrackerAdapterSourceRepository",
+				"required": true
+			},
+			{
+				"name": "pollTrackerGithubSource.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "pollTrackerGithubSource.options",
+				"type": "TrackerAdapterPollOptions & { signal: AbortSignal }",
+				"required": true
+			},
+			{
+				"name": "pollTrackerMessageSource.context",
+				"type": "TrackerAdapterIntakeContext",
+				"required": true
+			},
+			{
+				"name": "pollTrackerMessageSource.sources",
+				"type": "TrackerAdapterSourceRepository",
+				"required": true
+			},
+			{
+				"name": "pollTrackerMessageSource.source",
+				"type": "TrackerMessageSource",
+				"required": true
+			},
+			{
+				"name": "pollTrackerMessageSource.options",
+				"type": "TrackerAdapterPollOptions & { signal: AbortSignal }",
 				"required": true
 			},
 			{
@@ -393,6 +452,31 @@
 				"required": false
 			},
 			{
+				"name": "trackerMessageQuiet.source",
+				"type": "TrackerMessageSource",
+				"required": true
+			},
+			{
+				"name": "trackerMessageQuiet.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "readTrackerMessageIntake.context",
+				"type": "TrackerAdapterIntakeContext",
+				"required": true
+			},
+			{
+				"name": "readTrackerMessageIntake.source",
+				"type": "TrackerMessageSource",
+				"required": true
+			},
+			{
+				"name": "readTrackerMessageIntake.options",
+				"type": "TrackerMessageReadOptions",
+				"required": true
+			},
+			{
 				"name": "TrackerAdapterPollError.constructor.message",
 				"type": "string",
 				"required": true
@@ -411,6 +495,16 @@
 				"name": "trackerAdapterSourceInput.now",
 				"type": "number",
 				"required": true
+			},
+			{
+				"name": "trackerMessageSourceInput.input",
+				"type": "TrackerAdapterSourceFields",
+				"required": true
+			},
+			{
+				"name": "trackerMessageSourceInput.now",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -421,6 +515,10 @@
 			{
 				"name": "TrackerAdapterPollService.owner",
 				"type": "TrackerAdapterOwner"
+			},
+			{
+				"name": "TrackerAdapterPollService.supports",
+				"type": "boolean"
 			},
 			{
 				"name": "TrackerAdapterPollService.preview",
@@ -495,6 +593,14 @@
 				"type": "TrackerAdapterRepository"
 			},
 			{
+				"name": "pollTrackerGithubSource",
+				"type": "Promise<TrackerAdapterPollResult>"
+			},
+			{
+				"name": "pollTrackerMessageSource",
+				"type": "Promise<TrackerAdapterPollResult>"
+			},
+			{
 				"name": "readTrackerIssues",
 				"type": "unknown"
 			},
@@ -507,12 +613,24 @@
 				"type": "boolean"
 			},
 			{
+				"name": "trackerMessageQuiet",
+				"type": "boolean"
+			},
+			{
+				"name": "readTrackerMessageIntake",
+				"type": "unknown"
+			},
+			{
 				"name": "assertTrackerPollActive",
 				"type": "void"
 			},
 			{
 				"name": "trackerAdapterSourceInput",
 				"type": "TrackerAdapterSource & { enabled_at: number }"
+			},
+			{
+				"name": "trackerMessageSourceInput",
+				"type": "TrackerMessageSource"
 			}
 		],
 		"errors": [
@@ -556,11 +674,29 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "TrackerAdapterPollService.supports",
+				"inputs": [
+					{
+						"name": "TrackerAdapterPollService.supports.type",
+						"type": "TrackerStoredAdapterSource['type']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterPollService.supports",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "TrackerAdapterPollService.preview",
 				"inputs": [
 					{
 						"name": "TrackerAdapterPollService.preview.source",
-						"type": "TrackerAdapterSource",
+						"type": "TrackerStoredAdapterSource",
 						"required": true
 					},
 					{
@@ -757,7 +893,7 @@
 					},
 					{
 						"name": "commitTrackerIntake.source",
-						"type": "TrackerAdapterSource",
+						"type": "TrackerAdapterWorkSource",
 						"required": true
 					},
 					{
@@ -981,7 +1117,7 @@
 					},
 					{
 						"name": "addTrackerAdapterSource.source",
-						"type": "TrackerAdapterSource & { enabled_at: number }",
+						"type": "TrackerStoredAdapterSource",
 						"required": true
 					}
 				],
@@ -1038,6 +1174,86 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pollTrackerGithubSource",
+				"inputs": [
+					{
+						"name": "pollTrackerGithubSource.context",
+						"type": "TrackerAdapterIntakeContext",
+						"required": true
+					},
+					{
+						"name": "pollTrackerGithubSource.sources",
+						"type": "TrackerAdapterSourceRepository",
+						"required": true
+					},
+					{
+						"name": "pollTrackerGithubSource.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "pollTrackerGithubSource.options",
+						"type": "TrackerAdapterPollOptions & { signal: AbortSignal }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pollTrackerGithubSource",
+						"type": "Promise<TrackerAdapterPollResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerAdapterPollError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pollTrackerMessageSource",
+				"inputs": [
+					{
+						"name": "pollTrackerMessageSource.context",
+						"type": "TrackerAdapterIntakeContext",
+						"required": true
+					},
+					{
+						"name": "pollTrackerMessageSource.sources",
+						"type": "TrackerAdapterSourceRepository",
+						"required": true
+					},
+					{
+						"name": "pollTrackerMessageSource.source",
+						"type": "TrackerMessageSource",
+						"required": true
+					},
+					{
+						"name": "pollTrackerMessageSource.options",
+						"type": "TrackerAdapterPollOptions & { signal: AbortSignal }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pollTrackerMessageSource",
+						"type": "Promise<TrackerAdapterPollResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerAdapterPollError",
+						"type": "thrown"
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{
@@ -1130,6 +1346,62 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerMessageQuiet",
+				"inputs": [
+					{
+						"name": "trackerMessageQuiet.source",
+						"type": "TrackerMessageSource",
+						"required": true
+					},
+					{
+						"name": "trackerMessageQuiet.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMessageQuiet",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerMessageIntake",
+				"inputs": [
+					{
+						"name": "readTrackerMessageIntake.context",
+						"type": "TrackerAdapterIntakeContext",
+						"required": true
+					},
+					{
+						"name": "readTrackerMessageIntake.source",
+						"type": "TrackerMessageSource",
+						"required": true
+					},
+					{
+						"name": "readTrackerMessageIntake.options",
+						"type": "TrackerMessageReadOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerMessageIntake",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerAdapterPollError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "assertTrackerPollActive",
 				"inputs": [
 					{
@@ -1170,6 +1442,29 @@
 					{
 						"name": "trackerAdapterSourceInput",
 						"type": "TrackerAdapterSource & { enabled_at: number }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerMessageSourceInput",
+				"inputs": [
+					{
+						"name": "trackerMessageSourceInput.input",
+						"type": "TrackerAdapterSourceFields",
+						"required": true
+					},
+					{
+						"name": "trackerMessageSourceInput.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMessageSourceInput",
+						"type": "TrackerMessageSource"
 					}
 				],
 				"errors": [],
@@ -1243,6 +1538,16 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-adapter-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
 			"via": "import",
 			"origin": "derived"
 		},

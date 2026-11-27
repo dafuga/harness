@@ -1,0 +1,134 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-gmail",
+	"uid": "u_mpr47pwba7",
+	"kind": "adapter",
+	"title": "TrackerGmailAdapter",
+	"responsibility": "Owns the TrackerGmailAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/TrackerGmailAdapter.ts",
+			"src/adapters/projects-sessions/TrackerGmailAdapter.types.ts"
+		],
+		"symbols": [
+			"TrackerGmailAdapterConfig",
+			"TrackerGmailAdapter",
+			"TrackerGmailAdapter.constructor",
+			"TrackerGmailAdapter.read",
+			"TrackerGmailAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerGmailAdapter.constructor.config",
+				"type": "TrackerGmailAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "TrackerGmailAdapter.constructor.transport",
+				"type": "(url: string, options: RequestInit) => Promise<Response>",
+				"required": false
+			},
+			{
+				"name": "TrackerGmailAdapter.read.match",
+				"type": "Readonly<TrackerMessageMatch>",
+				"required": true
+			},
+			{
+				"name": "TrackerGmailAdapter.read.query",
+				"type": "TrackerAdapterReadQuery",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerGmailAdapter.read",
+				"type": "AsyncGenerator<TrackerMessageCandidate>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerGmailAdapter.read",
+				"inputs": [
+					{
+						"name": "TrackerGmailAdapter.read.match",
+						"type": "Readonly<TrackerMessageMatch>",
+						"required": true
+					},
+					{
+						"name": "TrackerGmailAdapter.read.query",
+						"type": "TrackerAdapterReadQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerGmailAdapter.read",
+						"type": "AsyncGenerator<TrackerMessageCandidate>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerGmailAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerGmailAdapter.constructor.config",
+						"type": "TrackerGmailAdapterConfig",
+						"required": true
+					},
+					{
+						"name": "TrackerGmailAdapter.constructor.transport",
+						"type": "(url: string, options: RequestInit) => Promise<Response>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerGmailAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-adapter",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/TrackerGmailAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/TrackerGmailAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

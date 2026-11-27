@@ -1,0 +1,45 @@
+{
+	"name": "m3bybh-message-triggers",
+	"goal": "Prove read-only message rules through Tracker adapter intake, quiet-hour deferral, and one atomic action per matching message.",
+	"createdAt": "2026-11-27T14:54:25.930Z",
+	"updatedAt": "2026-11-27T15:07:09.822Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T15:01:40.417Z",
+			"evidence": "One native runner, read-only pinned Gmail transport, deterministic OR selectors, Lisbon quiet hours, and atomic receipt with a task or Chief of Staff alert. Live activation follows separate Mac release approval."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-27T15:06:25.408Z",
+			"evidence": "Gmail reads through the designated Tracker runner and commits each matched task or Chief of Staff alert with its receipt. The host takes a short-lived token through an approved private driver."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-27T15:07:09.822Z",
+			"evidence": "harbor-mbp-2 focused CLI and persistence fixture: 19/19 passed. Notification rollback and retry were atomic; a matching task entered the normal scheduler and reached a synthetic launcher. Gmail HTTP reads used synthetic responses."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

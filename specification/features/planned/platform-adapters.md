@@ -183,3 +183,49 @@ verify the labeled message is visible. If the result is unknown, reconcile it
 in Slack before considering any retry. Desktop startup, cloud activation and
 the live Slack test remain pending until their host wiring and approved Vault
 installation are available.
+
+## Tracker inbox rules
+
+Inbox rules use Tracker's designated adapter runner and its journal. The Gmail
+provider checks the mailbox bound to that runner. It reads message IDs, thread
+IDs, arrival times, labels and the From header. Gmail evaluates keyword phrases
+using its normal search semantics. Tracker never pulls the message body,
+subject, snippet or attachments into its action payload. Sender and domain
+rules compare the From header. Treat that header as a routing signal rather
+than proof of identity.
+
+Add one rule per action. The selectors on a rule are alternatives. Use commas
+to pass multiple values to a selector. For example:
+
+```sh
+tracker adapter add gmail --target vendor-reply --title 'Vendor reply received' \
+  --thread THREAD_ID --domain vendor.example --notify TRACKER_ITEM \
+  --after 2026-11-26T17:00:00Z --dry-run
+```
+
+A notification adds a note to the named item and queues a message in the Chief
+of Staff channel. To create a task, replace `--notify TRACKER_ITEM` with
+`--agent NAME` and optionally specify `--project` and `--owner`.
+The task is created without launching by default. `--auto-launch match`
+makes it eligible for the normal Tracker due scheduler. Task titles are supplied
+by the rule owner. Inbox text never becomes task instructions.
+
+A rule starts at registration unless `--after` specifies an earlier arrival
+time. Preview that range before enabling the rule. Each poll rereads an overlap
+to accommodate indexing delays. Tracker records a hashed message ID per rule
+in the same transaction as the task or alert, so overlap and retry do not
+repeat an action. Rule polling defers actions during 22:00–08:00 Lisbon time.
+Use `--quiet-hours HH:MM-HH:MM` to add a quiet period in the same timezone.
+
+On the designated reader, set `hostEffects.adapter.gmail` to the approved
+`account` and the absolute path of an owner-controlled `tokenDriver`. The
+executable takes no arguments and returns a short-lived Gmail read-only access
+token over its private stdout pipe. The Vault owns refresh and rotation.
+Harness verifies the returned account against Google's profile before reading.
+The adapter registration is opt-in and needs a separately qualified binding and
+release. The existing `tracker adapter list`, `run --dry-run`, `pause`,
+`resume` and `remove` commands also work with `gmail:<rule>` IDs.
+
+Messenger and Telegram can implement the same message-provider contract when
+their read-only access is approved. Telegram access is scoped to the
+tg-research account.

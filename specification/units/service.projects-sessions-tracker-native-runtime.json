@@ -53,6 +53,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinalReports.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinishedSessions.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerGithubCli.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerGmailHost.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHandLaunchSelection.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapter.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapterSchema.ts",
@@ -186,6 +187,7 @@
 			"closeFinishedTrackerSessions",
 			"linkedWorkActive",
 			"trackerGithubCli",
+			"trackerGmailHost",
 			"handLaunchSelection",
 			"handLaunchNode",
 			"trackerHostAdapter",
@@ -749,6 +751,11 @@
 			{
 				"name": "trackerGithubCli.binding",
 				"type": "{ executable: string; configDirectory: string; }",
+				"required": true
+			},
+			{
+				"name": "trackerGmailHost.config",
+				"type": "NonNullable<TrackerHostAdapterConfig['gmail']>",
 				"required": true
 			},
 			{
@@ -3182,6 +3189,24 @@
 					{
 						"name": "trackerGithubCli",
 						"type": "TrackerGithubAdapterProvider"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerGmailHost",
+				"inputs": [
+					{
+						"name": "trackerGmailHost.config",
+						"type": "NonNullable<TrackerHostAdapterConfig['gmail']>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerGmailHost",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -5795,6 +5820,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.projects-sessions-tracker-adapter-lease",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-gmail",
 			"via": "import",
 			"origin": "derived"
 		},
