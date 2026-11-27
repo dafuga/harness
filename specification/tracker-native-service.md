@@ -597,6 +597,10 @@ The native CLI confirms a manual launch against the run for that exact request.
 It reports the run number, state and computer, or exits non-zero with the
 admission reason. If the target has not reported an outcome within 20 seconds,
 the CLI reports the timeout. A hold or timeout leaves the request pending.
+After an answer, reopen, or unblock releases an item with only finished attempts,
+an explicit launch starts a fresh request and keeps the blocked run in history.
+The CLI points to `tracker show ITEM` for the current outcome and to
+`tracker unlaunch ITEM` if the new request is still pending and should be cancelled.
 `tracker launch on` and `tracker launch off` still set the due-scheduling preference.
 
 The primary watchdog alerts CoS when a request has no matching run after

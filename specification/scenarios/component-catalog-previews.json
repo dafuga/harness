@@ -31,6 +31,7 @@
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
+		"desktop.component.development-tooling-tracker-work",
 		"desktop.component.entity-card",
 		"desktop.component.entity-view",
 		"desktop.component.environment-picker",
@@ -134,6 +135,8 @@
 		"hub.component.projects-sessions-hub-home-not-started",
 		"hub.component.projects-sessions-hub-home-notification-settings",
 		"hub.component.projects-sessions-hub-home-notifications",
+		"hub.component.projects-sessions-hub-home-plan-detail",
+		"hub.component.projects-sessions-hub-home-plannable",
 		"hub.component.projects-sessions-hub-home-plans",
 		"hub.component.projects-sessions-hub-home-project-card",
 		"hub.component.projects-sessions-hub-home-projects",
@@ -263,6 +266,7 @@
 		"reports.component.projects-sessions-project-overview-project-overview-card",
 		"reports.component.projects-sessions-project-overview-project-overview-item",
 		"reports.component.projects-sessions-project-overview-project-overview-state",
+		"reports.component.projects-sessions-tracker-planning-details",
 		"reports.component.provider-picker",
 		"reports.component.provider-picker-cards",
 		"reports.component.recorded-value",
@@ -887,6 +891,12 @@
 			"title": "Tracker write states",
 			"coverage": "required",
 			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes"]
+		},
+		{
+			"id": "desktop-component-development-tooling-tracker-work",
+			"title": "Tracker work",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-work"]
 		},
 		{
 			"id": "desktop-component-entity-card",
@@ -2303,6 +2313,18 @@
 			"title": "HubHomeNotifications",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-notifications"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-plan-detail",
+			"title": "Hub plan detail",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-plan-detail"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-plannable",
+			"title": "Hub plans and schedule",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-plannable"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-plans",
@@ -6715,6 +6737,12 @@
 			"units": ["reports.component.projects-sessions-project-overview-project-overview-state"]
 		},
 		{
+			"id": "reports-component-projects-sessions-tracker-planning-details",
+			"title": "Tracker planning details",
+			"coverage": "required",
+			"units": ["reports.component.projects-sessions-tracker-planning-details"]
+		},
+		{
 			"id": "reports-component-provider-picker",
 			"title": "Session model picker",
 			"coverage": "required",
@@ -8902,6 +8930,7 @@
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-reminders",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-rows",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-writes",
+				"desktop-component-development-tooling-tracker-work",
 				"desktop-component-entity-card",
 				"desktop-component-entity-view",
 				"desktop-component-entity-view-source",
@@ -9118,6 +9147,8 @@
 				"hub-component-projects-sessions-hub-home-not-started",
 				"hub-component-projects-sessions-hub-home-notification-settings",
 				"hub-component-projects-sessions-hub-home-notifications",
+				"hub-component-projects-sessions-hub-home-plan-detail",
+				"hub-component-projects-sessions-hub-home-plannable",
 				"hub-component-projects-sessions-hub-home-plans",
 				"hub-component-projects-sessions-hub-home-project-card",
 				"hub-component-projects-sessions-hub-home-projects",
@@ -9853,6 +9884,7 @@
 				"reports-component-projects-sessions-project-overview-project-overview-card",
 				"reports-component-projects-sessions-project-overview-project-overview-item",
 				"reports-component-projects-sessions-project-overview-project-overview-state",
+				"reports-component-projects-sessions-tracker-planning-details",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-loading",
 				"reports-component-provider-picker-connection-error",

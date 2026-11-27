@@ -38,8 +38,15 @@
 			"root": "packages/game"
 		}
 	],
-	"tests": ["test/", "tests/"],
-	"global": ["**/.prettierignore", "tsconfig.api.json", "specification/measurements/"],
+	"tests": [
+		"test/",
+		"tests/"
+	],
+	"global": [
+		"**/.prettierignore",
+		"tsconfig.api.json",
+		"specification/measurements/"
+	],
 	"ignored": [
 		"**/*.md",
 		"specification/features/",
@@ -67,6 +74,156 @@
 		"**/src/configs/*/threads/**/*"
 	],
 	"references": [
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomePlannable.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomePlans.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeSchedule.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSchedule.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/home-scheme.css",
+			"to": "packages/reports/src/lib/styles/home-scheme.css",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/hub-home/index.css",
+			"to": "packages/reports/src/lib/styles/hub-home/index.css",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNotifications.svelte",
+			"specifier": "$reports/lib/styles/hub-home/notifications.css",
+			"to": "packages/reports/src/lib/styles/hub-home/notifications.css",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Resolves the shared Home rendering dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/project-overview.css",
+			"to": "packages/reports/src/lib/styles/project-overview.css",
+			"reason": "The installed plan and schedule use the same card and dialog tokens as Hub."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/project-overview-cards.css",
+			"to": "packages/reports/src/lib/styles/project-overview-cards.css",
+			"reason": "The installed plan and schedule use the same card and dialog tokens as Hub."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/project-overview-controls.css",
+			"to": "packages/reports/src/lib/styles/project-overview-controls.css",
+			"reason": "The installed plan and schedule use the same card and dialog tokens as Hub."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/project-overview-responsive.css",
+			"to": "packages/reports/src/lib/styles/project-overview-responsive.css",
+			"reason": "The installed plan and schedule use the same card and dialog tokens as Hub."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeSchedule",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeSchedule.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/desktop/src/models/development-tooling/Environment.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
+			"specifier": "$reports/components/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
+			"specifier": "$reports/components/projects-sessions/TrackerPlanningDetails.svelte",
+			"to": "packages/reports/src/components/projects-sessions/TrackerPlanningDetails.svelte",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
 		{
 			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeChatWriter.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/homeTrackerProjection",

@@ -115,3 +115,6 @@ Deferred plan wave 5 retains implementation commit `2d80b045b7` for the moved so
 The Wave 5 desktop audit follow-up retains commit `3f638101fe` for the compact source signatures.
 
 The Wave 5 Hub lint follow-up retains commit `269686f1db` for the compact source signatures.
+
+Plan and schedule click-through retains implementation commits `8713ce6311`, `5c2602ebf4` and
+`e5d8b2e82c` for the fixed Home read and chat paths through the Mac preload and paired phone.

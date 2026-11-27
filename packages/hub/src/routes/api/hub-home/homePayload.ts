@@ -10,6 +10,11 @@ import {
 } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 import { controlledIdPattern } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
+import {
+	trackerArtifactMaxBytes,
+	trackerPlanningSchema,
+	trackerStageSchema
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { trackerAttachmentLimits } from '../../../../../../src/utils/projects-sessions/trackerAttachmentLimits';
 import { trackerAttachmentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
 import { parseOverviewPayload } from '../tracker-overview/trackerOverviewInput';
@@ -98,12 +103,23 @@ const reminder = z.object({
 	updatedAt: time
 });
 
+const planning = trackerPlanningSchema.refine(
+	({ artifacts }) =>
+		Object.values(artifacts).every(
+			(artifact) =>
+				new TextEncoder().encode(JSON.stringify(artifact)).byteLength <= trackerArtifactMaxBytes
+		),
+	'Each stage artifact must fit the Tracker limit'
+);
+
 const plan = z
 	.object({
 		id,
 		title,
 		project: short.nullable(),
 		state: z.enum(['draft', 'in-review', 'approved', 'in-progress', 'done']),
+		stage: trackerStageSchema.optional(),
+		planning: planning.optional(),
 		updatedAt: time,
 		total: unsigned,
 		done: unsigned,

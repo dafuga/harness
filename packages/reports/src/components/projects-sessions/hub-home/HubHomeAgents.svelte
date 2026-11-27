@@ -22,7 +22,10 @@
 		overviewTone,
 		messageStatusText
 	} from './hubHomePresentation';
-	import { isPending, receiptText } from './hubHomeMessages';
+	import {
+		isPending,
+		receiptText
+	} from './hubHomeMessages';
 	import type { ChangeSession, SendHomeChat } from './hubHomeView.types';
 	import HubHomeAddSession from './HubHomeAddSession.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';

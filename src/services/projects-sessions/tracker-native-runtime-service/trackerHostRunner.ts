@@ -6,8 +6,8 @@ import {
 	trackerLegacySession
 } from './trackerLegacyExitReceipt';
 import {
-	finishedTrackerSession,
 	hasManualTrackerPane,
+	retiredTrackerSession,
 	trackerHostInventory
 } from './trackerHostInventory';
 import { trackerStoredSchedulingHold } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
@@ -140,7 +140,7 @@ function activeTrackerSessionKeys(
 				!session.legacyRunId &&
 				session.itemId === itemId &&
 				session.state === 'live' &&
-				!finishedTrackerSession(store, session)
+				!retiredTrackerSession(store, session)
 		)
 		.map(({ key }) => key);
 }

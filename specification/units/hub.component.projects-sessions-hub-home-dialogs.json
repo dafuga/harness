@@ -12,6 +12,7 @@
 		"uses": [
 			"hub.component.projects-sessions-hub-home-agents",
 			"hub.component.projects-sessions-hub-home-directory",
+			"hub.component.projects-sessions-hub-home-plan-detail",
 			"hub.component.projects-sessions-hub-home-plans",
 			"hub.component.projects-sessions-hub-home-projects",
 			"hub.component.projects-sessions-hub-home-quota",
@@ -133,6 +134,11 @@
 		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-directory",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-plan-detail",
 			"via": "import",
 			"origin": "derived"
 		},
