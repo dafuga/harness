@@ -49,6 +49,13 @@ A phone can open owned or joined hosted projects without a paired Mac. A paired 
 
 Google sign-in in the Mac app registers it under its verified Hub account with `POST /api/remote/hosts`. The website’s Devices page and signed-in iPhone list that account’s linked Macs with `GET /api/remote/hosts?linked=1`. They can open a read-only encrypted connection to an online Mac without a QR code or approval prompt. The browser opens a same-origin WebSocket authenticated by its Hub session. The Hub derives the owner from the verified session on every management call and forwards requests to the relay through its private `REMOTE_HOSTS` binding. With that binding or `HARNESS_RELAY_ORIGIN` absent, remote access returns `503 remote-disabled`. An owner can unlink the Mac or revoke a connected device in settings. For a release, qualify the Hub and relay together before shipping Mac or iPhone builds that depend on them.
 
+## After a release
+
+After every Hub, Mac or iPhone release, and before the release item is marked done, run the
+needs-you canary from the repository root on the computer with the automation Chrome:
+`bun scripts/needs-you-canary.ts --release <release item id> --tap mac,iphone`. See
+[Needs-you release canary](../../specification/features/planned/needs-you-release-canary.md).
+
 ## Validation
 
 `bun run check:collaboration`, `bun run check:hub` and `bun run check:desktop` are included in the root check. Security tests use generated keys and synthetic provider/HTTP fixtures, without live credentials or invitations. Browser/native screenshots are external evidence and are not committed. Live provider registration and authorized hosted publication are separate acceptance layers.
