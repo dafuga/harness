@@ -2,11 +2,9 @@
 	"name": "release-device-list-row-preview",
 	"goal": "The catalog registry and the existing desktop, tablet and phone matrix render the shared linked device row.",
 	"createdAt": "2026-11-28T00:33:09.445Z",
-	"updatedAt": "2026-11-28T00:34:15.312Z",
+	"updatedAt": "2026-11-28T00:37:44.643Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,7 +32,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T00:37:44.643Z",
+			"evidence": "Committed fixture and scenario registration at c64b3dbe18. Existing registry assertions and rendering of the production device row cover the declared screenshots."
 		},
 		{
 			"id": "green",

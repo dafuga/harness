@@ -16,7 +16,6 @@ import {
 	productionHome,
 	seedLiveDisposition
 } from './hub-home-live-fixture';
-
 test.setTimeout(90000);
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
