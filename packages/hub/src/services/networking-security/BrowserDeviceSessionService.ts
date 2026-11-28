@@ -12,6 +12,7 @@ import type { EnrollmentTransportOptions } from '../../../../remote/src/services
 import { readEnrollment } from '../../../../remote/src/services/networking-security/sealed-enrollment-review-service/reviewTransport';
 import { SealedEnrollmentRequestService } from '../../../../remote/src/services/networking-security/SealedEnrollmentRequestService';
 import type { EnrollmentResolution } from '../../../../remote/src/services/networking-security/SealedEnrollmentRequestService.types';
+import type { ApprovalPushRequest } from '../../lib/networking-security/hubPush.types';
 import {
 	keepBrowserEnrollment,
 	openBrowserEnrollments,
@@ -92,6 +93,23 @@ export class BrowserDeviceSessionService {
 
 	clearReviews(): void {
 		this.reviews.clear();
+	}
+
+	push(account: string, signal: AbortSignal): ApprovalPushRequest {
+		return (method, subscription) =>
+			this.withDatabase(account, signal, async (db) => {
+				const { installation } = await readBrowserEnrollment(db, account);
+				if (!installation?.progress.pin)
+					throw new SealedError('This browser needs device approval.');
+				const { device } = installation;
+				return this.transport(account, device, signal).request('/api/sync/v1/approval-push', {
+					method,
+					redirect: 'error',
+					cache: 'no-store',
+					headers: { 'X-Harness-Device': device.deviceId, 'Content-Type': 'application/json' },
+					body: subscription === undefined ? undefined : JSON.stringify(subscription)
+				});
+			});
 	}
 
 	private transport(account: string, device: SealedDeviceKeys, signal: AbortSignal) {

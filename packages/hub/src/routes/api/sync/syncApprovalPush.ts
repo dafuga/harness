@@ -12,8 +12,9 @@ export async function approvalPush(call: SyncCall): Promise<Response> {
 		return syncProblem(403, 'origin-denied');
 	const refusal = await requireEnrollmentApprover(call, true);
 	if (refusal) return refusal;
+	if (request.method === 'GET')
+		return syncJson({ publicKey: deps.approvalPush?.publicKey ?? null });
 	if (!deps.approvalPush) return syncProblem(404, 'unavailable');
-	if (request.method === 'GET') return syncJson({ publicKey: deps.approvalPush.publicKey });
 	if (request.method === 'DELETE') {
 		await deleteTarget(call);
 		return syncJson({ subscribed: false });

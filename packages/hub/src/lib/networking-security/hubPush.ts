@@ -7,7 +7,13 @@ import {
 	pushSupport,
 	subscribe
 } from './hubPushBrowser';
-import type { HubPushReading, HubPushSettings, PushQuietHours } from './hubPush.types';
+import type {
+	ApprovalPushRequest,
+	HubApprovalPushReading,
+	HubPushReading,
+	HubPushSettings,
+	PushQuietHours
+} from './hubPush.types';
 
 const root = '/api/push';
 const subscriptionPath = root + '/subscription';
@@ -29,12 +35,17 @@ async function stored(api: BrowserApi, settings: HubPushSettings, held: PushSubs
 }
 
 async function onDevice(api: BrowserApi, settings: HubPushSettings): Promise<HubPushReading> {
+	const device = await notificationDevice();
+	return device === 'on'
+		? stored(api, settings, await subscribe(settings.publicKey))
+		: reading(device, settings);
+}
+
+async function notificationDevice(): Promise<HubPushReading['device']> {
 	const support = pushSupport();
-	if (support !== 'supported') return reading(support, settings);
-	if (Notification.permission === 'denied') return reading('blocked', settings);
-	if (Notification.permission !== 'granted' || !(await currentSubscription()))
-		return reading('off', settings);
-	return stored(api, settings, await subscribe(settings.publicKey));
+	if (support !== 'supported') return support;
+	if (Notification.permission === 'denied') return 'blocked';
+	return Notification.permission === 'granted' && (await currentSubscription()) ? 'on' : 'off';
 }
 
 /** Null when the Hub offers no notifications: not the owner, or no key configured. */
@@ -81,4 +92,38 @@ export async function forgetHubPush(api: BrowserApi): Promise<void> {
 
 export function saveQuietHours(api: BrowserApi, quiet: PushQuietHours): Promise<HubPushSettings> {
 	return api.send<HubPushSettings>('POST', root, { quiet });
+}
+
+/** Reuse the browser's current subscription, bound separately to this approved installation. */
+export async function readApprovalPush(
+	call: ApprovalPushRequest
+): Promise<HubApprovalPushReading | null> {
+	const response = await call('GET');
+	if (!response.ok) return null;
+	const { publicKey } = await response.json();
+	if (typeof publicKey !== 'string') return null;
+	const device = await notificationDevice();
+	if (device === 'on') await saveApprovalPush(call, publicKey);
+	return { device, publicKey };
+}
+
+export async function turnOnApprovalPush(call: ApprovalPushRequest, publicKey: string) {
+	const permission = await Notification.requestPermission();
+	if (permission !== 'granted')
+		return { device: permission === 'denied' ? 'blocked' : 'off', publicKey } as const;
+	await saveApprovalPush(call, publicKey);
+	return { device: 'on', publicKey } as const;
+}
+
+async function saveApprovalPush(call: ApprovalPushRequest, publicKey: string) {
+	const subscription = await subscribe(publicKey);
+	const response = await call('POST', subscription.toJSON());
+	if (!response.ok) throw new Error('The Hub could not save approval notifications.');
+}
+
+export async function turnOffApprovalPush(call: ApprovalPushRequest, publicKey: string) {
+	const response = await call('DELETE');
+	if (!response.ok) throw new Error('The Hub could not turn off approval notifications.');
+	await (await currentSubscription())?.unsubscribe();
+	return { device: 'off', publicKey } as const;
 }

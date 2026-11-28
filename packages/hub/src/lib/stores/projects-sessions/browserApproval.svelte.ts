@@ -75,6 +75,10 @@ export class BrowserApprovalState {
 		this.error = '';
 	}
 
+	push(account: string) {
+		return this.service.push(account, this.reviewLifetime.signal);
+	}
+
 	forget(account: string): Promise<void> {
 		this.reset();
 		return this.service.forget(account);

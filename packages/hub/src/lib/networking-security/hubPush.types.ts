@@ -19,3 +19,13 @@ export interface HubPushReading {
 	/** This browser's last delivered notification, when it has had one. */
 	deliveredAt: number | null;
 }
+
+export type ApprovalPushRequest = (
+	method: 'GET' | 'POST' | 'DELETE',
+	subscription?: PushSubscriptionJSON
+) => Promise<Response>;
+
+export interface HubApprovalPushReading {
+	device: HubPushDevice;
+	publicKey: string;
+}

@@ -4,29 +4,43 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import {
+		readApprovalPush,
 		readHubPush,
 		saveQuietHours,
+		turnOffApprovalPush,
 		turnOffHubPush,
+		turnOnApprovalPush,
 		turnOnHubPush
 	} from '../../lib/networking-security/hubPush';
-	import type { HubPushReading, PushQuietHours } from '../../lib/networking-security/hubPush.types';
+	import type {
+		HubApprovalPushReading,
+		HubPushReading,
+		PushQuietHours
+	} from '../../lib/networking-security/hubPush.types';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { deviceHints, onSummary } from './hubHomeNotificationText';
 	import HubHomeNotificationSettings from './HubHomeNotificationSettings.svelte';
 	import '$reports/lib/styles/hub-home/notifications.css';
 
-	const { api } = browserContext();
+	const { api, session } = browserContext();
 	let push = $state<HubPushReading | null>(null);
+	let approval = $state<HubApprovalPushReading | null>(null);
 	let busy = $state(false);
 	let failed = $state('');
 	let editing = $state(false);
+	const device = $derived(push?.device ?? approval?.device);
+	const approvalCall = $derived(
+		session.status?.deviceApproval && session.actor
+			? session.deviceApproval.push(session.actor.id)
+			: null
+	);
 
 	/** One change at a time. Resolves to whether it worked, so a dialog stays open on failure. */
-	async function change(failure: string, work: () => Promise<HubPushReading | null>) {
+	async function change(failure: string, work: () => Promise<void>) {
 		busy = true;
 		failed = '';
 		try {
-			push = await work();
+			await work();
 			return true;
 		} catch {
 			failed = failure;
@@ -36,58 +50,84 @@
 		}
 	}
 
-	// A Hub without notifications, or one that cannot be read now, simply shows no row.
+	async function readApproval() {
+		const call = approvalCall;
+		if (call) approval = await readApprovalPush(call).catch(() => null);
+	}
+
+	async function readNotifications() {
+		push = await readHubPush(api).catch(() => null);
+		await readApproval();
+	}
+
 	onMount(() => {
-		void readHubPush(api).then(
-			(value) => (push = value),
-			() => {}
-		);
+		void readNotifications();
 	});
 
 	function turnOn() {
-		const settings = push!.settings;
-		void change('Notifications could not be turned on. Try again.', () =>
-			turnOnHubPush(api, settings)
-		);
+		void change('Notifications could not be turned on. Try again.', async () => {
+			if (push) {
+				push = await turnOnHubPush(api, push.settings);
+				await readApproval();
+			} else if (approvalCall && approval) {
+				approval = await turnOnApprovalPush(approvalCall, approval.publicKey);
+			}
+		});
 	}
 
 	async function turnOff() {
-		if (
-			await change('Notifications could not be turned off. Try again.', () => turnOffHubPush(api))
-		)
-			editing = false;
+		const stopped = await change('Notifications could not be turned off. Try again.', async () => {
+			if (push) push = await turnOffHubPush(api);
+			if (approvalCall && approval?.device === 'on')
+				approval = await turnOffApprovalPush(approvalCall, approval.publicKey);
+		});
+		if (stopped) editing = false;
 	}
 
 	async function save(quiet: PushQuietHours) {
-		const saved = await change('Quiet hours were not saved. Try again.', async () => ({
-			...push!,
-			settings: await saveQuietHours(api, quiet)
-		}));
+		const saved = await change('Quiet hours were not saved. Try again.', async () => {
+			if (push) push = { ...push, settings: await saveQuietHours(api, quiet) };
+		});
 		if (saved) editing = false;
 	}
 </script>
 
-{#if push}
-	<hx-div class="hh-notify" role="group" aria-label="Notifications" data-device={push.device}>
-		{#if push.device === 'on'}
-			<hx-p class="hh-notify-text" role="status">{onSummary(push.settings.quiet)}</hx-p>
-			<hx-button
-				type="button"
-				class="po-action hh-notify-action"
-				aria-haspopup="dialog"
-				onclick={() => ((failed = ''), (editing = true))}>Notification settings</hx-button
+{#if device}
+	<hx-div class="hh-notify" role="group" aria-label="Notifications" data-device={device}>
+		{#if device === 'on'}
+			<hx-p class="hh-notify-text" role="status"
+				>{push ? onSummary(push.settings.quiet) : 'Device approval notifications on'}</hx-p
 			>
+			{#if push}
+				<hx-button
+					type="button"
+					class="po-action hh-notify-action"
+					aria-haspopup="dialog"
+					onclick={() => ((failed = ''), (editing = true))}>Notification settings</hx-button
+				>
+			{:else}
+				<hx-button
+					type="button"
+					class="po-action hh-notify-action"
+					disabled={busy}
+					onclick={turnOff}>{busy ? 'Turning off…' : 'Turn off notifications'}</hx-button
+				>
+			{/if}
 		{:else}
-			{#if push.device === 'off'}
+			{#if device === 'off'}
 				<hx-button type="button" class="po-action hh-notify-action" disabled={busy} onclick={turnOn}
 					>{busy ? 'Turning on…' : 'Turn on notifications'}</hx-button
 				>
 			{/if}
-			<hx-p class="hh-notify-text">{deviceHints[push.device]}</hx-p>
+			<hx-p class="hh-notify-text"
+				>{!push && device === 'off'
+					? 'Get device approval requests when this tab is closed.'
+					: deviceHints[device]}</hx-p
+			>
 		{/if}
 		{#if failed && !editing}<hx-p class="hh-notify-error" role="alert">{failed}</hx-p>{/if}
 	</hx-div>
-	{#if editing}
+	{#if editing && push}
 		<HubHomeNotificationSettings
 			quiet={push.settings.quiet}
 			deliveredAt={push.deliveredAt}
