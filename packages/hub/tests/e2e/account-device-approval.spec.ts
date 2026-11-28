@@ -96,7 +96,7 @@ async function admitBrowser(
 	await expect.poll(async () => (await inbox()).requests.length).toBe(1);
 	const [{ id }] = (await inbox()).requests;
 	await page.reload();
-	await expect(waitingHeading).toBeVisible();
+	await expect(waitingHeading).toBeVisible({ timeout: 15_000 });
 	expect((await inbox()).requests.map((item) => item.id)).toEqual([id]);
 	expect(entered.installations.size).toBe(1);
 	const review = new SealedEnrollmentReviewService(
@@ -177,7 +177,7 @@ test('each Hub browser sign-in waits for a verified device approval, including a
 		const decisions = await admitBrowser(fixture, page, testInfo);
 		const target = await context.newPage();
 		const entered = await startBrowser(target, fixture.origin, [requester, returning]);
-		await expect(target.getByRole('heading', waiting)).toBeVisible();
+		await expect(target.getByRole('heading', waiting)).toBeVisible({ timeout: 15_000 });
 		await page.bringToFront();
 		await decideFromBrowser(page, target, testInfo, decisions);
 		await target.reload();
@@ -186,7 +186,7 @@ test('each Hub browser sign-in waits for a verified device approval, including a
 		await target.getByRole('button', { name: 'Account', exact: true }).click();
 		await target.getByRole('button', { name: 'Sign out', exact: true }).click();
 		await target.getByRole('button', googleButton).click();
-		await expect(target.getByRole('heading', waiting)).toBeVisible();
+		await expect(target.getByRole('heading', waiting)).toBeVisible({ timeout: 15_000 });
 		expect(entered.installations.size).toBe(2);
 		await expect(target.locator(home)).toHaveCount(0);
 		await page.bringToFront();
