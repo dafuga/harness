@@ -1,0 +1,42 @@
+{
+	"name": "ycw5dy-hub-task-board",
+	"goal": "A Board button on Hub Home opens a read-only Kanban of Tracker items: To do, In progress (model + computer), Blocked (one-line reason, needs-Daniel marked), Done last 7 days; counts in headers, project filter, card opens item detail, usable at iPhone width.",
+	"createdAt": "2026-11-28T17:28:38.669Z",
+	"updatedAt": "2026-11-28T17:28:38.669Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	],
+	"agentModel": "claude-sonnet-5-5"
+}

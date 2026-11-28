@@ -5,9 +5,13 @@
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { statusLabel } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
 	import { workSummary, workEta } from './hubHomePresentation';
-	import type { HomeWorkView } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
+	import type {
+		HomeWorkView,
+		LinkedHome
+	} from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 	import type { OpenHomeSection } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import HubHomeCard from './HubHomeCard.svelte';
+	import HubHomeBoardButton from './HubHomeBoardButton.svelte';
 	import HubHomeNotStarted from './HubHomeNotStarted.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
@@ -16,7 +20,7 @@
 		view,
 		open
 	}: {
-		view: HomeWorkView;
+		view: HomeWorkView & { computers?: LinkedHome | null; native?: boolean };
 		open: OpenHomeSection;
 	} = $props();
 </script>
@@ -44,6 +48,12 @@
 				: 'All clear'}
 	open={() => open('wip')}
 >
+	{#snippet badge()}
+		<!-- Hub web only: the installed apps report no linked computers here. -->
+		{#if view.computers !== undefined && !view.native}
+			<HubHomeBoardButton reading={view.computers} now={view.now} />
+		{/if}
+	{/snippet}
 	{#if view.overview === null}
 		<HubHomeSkeleton />
 	{:else if !view.trackerConnected}

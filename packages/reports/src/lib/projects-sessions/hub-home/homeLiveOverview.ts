@@ -18,6 +18,8 @@ import { homeText } from './homeTrackerText';
 import { buildHomeMachines, isActiveHomeRun } from './buildHomeMachines';
 import { homeWorkNow } from './homeWorkNow';
 import { homeLaunchPause } from './homeSchedule';
+import { activeAgentCount } from './homeActiveAgents';
+import { buildHomeTaskBoard } from './homeTaskBoard';
 
 export const homeLiveLimits = { projects: 200, rows: 100 } as const;
 const stateOrder: HomeWorkState[] = ['running', 'offline', 'queued', 'blocked', 'finished'];
@@ -147,6 +149,11 @@ function byActivity(a: HomeWorkProject, b: HomeWorkProject) {
 	);
 }
 
+function boardWork(work: ItemWork) {
+	const last = [...work.runs].sort((a, b) => b.id - a.id)[0];
+	return { item: work.item, rows: itemRows(work), resting: workRow(work, 'finished', last) };
+}
+
 /** Each run once, however many times the synced list repeats it. */
 function runsByItem(runs: TrackerRunRecord[]) {
 	const unique = new Map(runs.map((run) => [`${run.node ?? ''}:${run.id}`, run]));
@@ -157,26 +164,6 @@ function runsByItem(runs: TrackerRunRecord[]) {
 function listed(item: TrackerItemRecord): IncludedTrackerItem | null {
 	const named = { ...item, agent: item.agent || 'No project' };
 	return isIncludedItem(named) ? named : null;
-}
-
-function activeAgentCount(
-	items: IncludedTrackerItem[],
-	runs: ReadonlyMap<string, TrackerRunRecord[]>,
-	offline: ReadonlySet<string>
-) {
-	const identities = new Set<string>();
-	for (const item of items) {
-		if (
-			!runs
-				.get(item.id)
-				?.some((run) => run.ended_at === null && liveState(run, offline) === 'running')
-		)
-			continue;
-		const project = (item.project?.trim() || item.agent).toLowerCase();
-		const owner = item.owner?.trim().toLowerCase() || null;
-		identities.add(JSON.stringify([project, owner]));
-	}
-	return identities.size;
 }
 
 /**
@@ -194,11 +181,14 @@ export function buildHomeLiveOverview(sources: TrackerSources, now: number): Hom
 		.filter(([id]) => !shown.has(id))
 		.flatMap(([, own]) => own)
 		.filter((run) => run.state === 'running' && run.ended_at === null).length;
+	const workOf = (item: IncludedTrackerItem) => ({
+		item,
+		runs: runs.get(item.id) ?? [],
+		offline,
+		now
+	});
 	const built = [...Map.groupBy(items, (item) => item.agent)].map(([agent, own]) =>
-		workProject(
-			agent,
-			own.map((item) => ({ item, runs: runs.get(item.id) ?? [], offline, now }))
-		)
+		workProject(agent, own.map(workOf))
 	);
 	const projects = built.map((entry) => entry.project).sort(byActivity);
 	return {
@@ -206,6 +196,10 @@ export function buildHomeLiveOverview(sources: TrackerSources, now: number): Hom
 		projects: projects.slice(0, homeLiveLimits.projects),
 		machines: buildHomeMachines(sources, runs, shown),
 		hiddenRuns,
+		board: buildHomeTaskBoard(
+			items.map((item) => boardWork(workOf(item))),
+			now
+		),
 		runningAgentCount: activeAgentCount(items, runs, offline),
 		omittedRows:
 			built.reduce((sum, entry) => sum + entry.omitted, 0) +

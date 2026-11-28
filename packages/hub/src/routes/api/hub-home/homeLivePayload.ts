@@ -47,6 +47,24 @@ const project = z.object({
 	updatedAt: time
 });
 
+const columnCounts = { todo: count, progress: count, blocked: count, done: count };
+const board = z.object({
+	cards: z
+		.array(
+			z.object({
+				column: z.enum(['todo', 'progress', 'blocked', 'done']),
+				project: short,
+				priority: z.enum(['urgent', 'normal', 'low']),
+				needsYou: z.boolean(),
+				label: short,
+				reason: text(300).nullable(),
+				row
+			})
+		)
+		.max(5000),
+	counts: z.array(z.object({ project: short, ...columnCounts })).max(500)
+});
+
 const liveOverview = z.object({
 	readAt: time,
 	projects: z.array(project).max(200),
@@ -77,7 +95,9 @@ const liveOverview = z.object({
 		.max(200),
 	hiddenRuns: count,
 	runningAgentCount: count.optional(),
-	omittedRows: count
+	omittedRows: count,
+	// A board this Hub cannot read is dropped; the rest of the overview stays.
+	board: board.optional().catch(undefined)
 });
 
 /**

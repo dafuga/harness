@@ -3,11 +3,10 @@
 <!-- @harness-uid u_52e2mcsala -->
 <script lang="ts">
 	import { tick } from 'svelte';
-	import Modal from '../../Modal.svelte';
+	import HubHomeJobDetail from './HubHomeJobDetail.svelte';
 	import { linkSegments } from '$reports/utils/strings/linkSegments';
 	import { pastDueLabel } from './hubHomeStatusText';
 	import type { HomePastDue } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
 		HomeWorkProject,
@@ -16,14 +15,9 @@
 	} from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 	import {
 		projectWorkCounts,
-		stageLabel,
-		statusWords,
 		updatedWorkAge,
-		workAge,
 		workFacts,
-		workNow,
-		workStateLabel,
-		workTimes
+		workStateLabel
 	} from './hubHomeLive';
 
 	let {
@@ -159,19 +153,4 @@
 	{/if}
 </hx-details>
 
-{#if detail}
-	{@const detailText = workNow(detail)}
-	<Modal isOpen title="Job details" variant="section" onClose={closeDetails}>
-		<hx-div class="hh-live-detail">
-			<hx-h3><LinkifiedText text={detail.title} /></hx-h3>
-			<hx-p class="hh-live-detail-facts">
-				{workStateLabel(detail)} · {statusWords[detail.status]}
-				{#if stageLabel(detail.stage)}
-					· {stageLabel(detail.stage)}{/if}
-			</hx-p>
-			<hx-p class="hh-live-detail-facts">{workFacts(detail).join(' · ')}</hx-p>
-			<hx-p class="hh-live-detail-facts">{workAge(detail, now)} · {workTimes(detail)}</hx-p>
-			{#if detailText}<hx-p><LinkifiedText text={detailText} /></hx-p>{/if}
-		</hx-div>
-	</Modal>
-{/if}
+{#if detail}<HubHomeJobDetail row={detail} {now} close={closeDetails} />{/if}

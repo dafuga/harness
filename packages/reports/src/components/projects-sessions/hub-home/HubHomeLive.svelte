@@ -10,6 +10,7 @@
 	import type { LinkedHome } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 	import { liveNotice, liveSummary, liveSystemNotice } from './hubHomeLive';
 	import HubHomeLiveProject from './HubHomeLiveProject.svelte';
+	import HubHomeBoardButton from './HubHomeBoardButton.svelte';
 	import { count } from './hubHomePresentation';
 	import { runTime } from './hubHomeTime';
 
@@ -49,6 +50,7 @@
 <hx-section class="hh-live-overview" aria-labelledby="hh-live-title">
 	<hx-div class="hh-live-top">
 		<hx-h2 class="hh-needs-title" id="hh-live-title">Live overview</hx-h2>
+		{#if !local}<hx-span class="hh-live-board"><HubHomeBoardButton {reading} {now} /></hx-span>{/if}
 		{#if overview}
 			<hx-p class="hh-live-summary" role="status">{liveSummary(overview)}</hx-p>
 			<hx-p class="hh-live-source">

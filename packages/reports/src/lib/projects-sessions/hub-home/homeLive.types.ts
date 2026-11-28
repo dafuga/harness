@@ -8,6 +8,7 @@ import type {
 	IncludedTrackerItem,
 	TrackerRunRecord
 } from '../project-overview/projectOverviewTracker.types';
+import type { HomeTaskBoard } from './homeTaskBoard.types';
 import type { HomeAgent, HomePastDue, OwnerHomeSnapshot } from './hubHome.types';
 import type { TrackerStage } from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
 
@@ -92,6 +93,8 @@ export interface HomeLiveOverview {
 	runningAgentCount?: number;
 	/** Rows left out because a project had more than the list holds. */
 	omittedRows: number;
+	/** The Kanban board. Older Mac apps send none. */
+	board?: HomeTaskBoard;
 }
 
 /** One item with the runs that belong to it, and the computers Tracker reports offline. */
