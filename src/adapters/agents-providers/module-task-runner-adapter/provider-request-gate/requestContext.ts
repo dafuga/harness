@@ -28,13 +28,12 @@ export function requestContext(
 
 export function pendingInputTokens(next: RequestContext, prior?: RequestContext): number {
 	if (!prior || next.incremental) return next.tokens;
-	let shared = 0;
-	while (shared < next.items.length && next.items[shared].hash === prior.items[shared]?.hash)
-		shared++;
-	const changed = Array.from(next.fields).filter(
+	// A rewritten message does not make later, unchanged messages new input.
+	const changedItems = next.items.filter((part, index) => part.hash !== prior.items[index]?.hash);
+	const changedFields = Array.from(next.fields).filter(
 		([key, part]) => prior.fields.get(key)?.hash !== part.hash
 	);
-	const parts = [...next.items.slice(shared), ...changed.map(([, part]) => part)];
+	const parts = [...changedItems, ...changedFields.map(([, part]) => part)];
 	return parts.reduce((tokens, part) => tokens + part.tokens + 1, 0);
 }
 
