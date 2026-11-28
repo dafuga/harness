@@ -15,6 +15,7 @@ import type {
 	ItemWork
 } from './homeLive.types';
 import { homeText } from './homeTrackerText';
+import { buildHomeMachines, isActiveHomeRun } from './buildHomeMachines';
 import { homeWorkNow } from './homeWorkNow';
 
 export const homeLiveLimits = { projects: 200, rows: 100 } as const;
@@ -55,7 +56,7 @@ function workRow({ item }: ItemWork, state: HomeWorkState, run?: TrackerRunRecor
 }
 
 function liveState(run: TrackerRunRecord, offline: ReadonlySet<string>): HomeWorkState {
-	if (!['running', 'verifying', 'observed'].includes(run.state)) return 'queued';
+	if (!isActiveHomeRun(run)) return 'queued';
 	return run.node && offline.has(run.node) ? 'offline' : 'running';
 }
 
@@ -114,7 +115,8 @@ function workProject(agent: string, works: ItemWork[]) {
 	const project: HomeWorkProject = {
 		agent: homeText(agent, 200) ?? 'No project',
 		running: rows.filter((row) => row.state === 'running').length,
-		blockedRows: rows.filter((row) => row.state !== 'running' && row.status === 'blocked').length,
+		blockedRows: rows.filter((row) => row.state === 'blocked').length,
+		waitingRows: rows.filter((row) => row.state === 'queued' || row.state === 'offline').length,
 		totalRows: rows.length,
 		counts,
 		rows: rows.slice(0, homeLiveLimits.rows),
@@ -172,11 +174,7 @@ export function buildHomeLiveOverview(sources: TrackerSources, now: number): Hom
 	return {
 		readAt: new Date(now).toISOString(),
 		projects: projects.slice(0, homeLiveLimits.projects),
-		machines: sources.machines.map((entry) => ({
-			name: homeText(entry.node, 200) ?? '',
-			status: entry.status,
-			...(entry.remoteRuns !== undefined && { remoteRuns: entry.remoteRuns })
-		})),
+		machines: buildHomeMachines(sources, runs, shown),
 		hiddenRuns,
 		omittedRows:
 			built.reduce((sum, entry) => sum + entry.omitted, 0) +

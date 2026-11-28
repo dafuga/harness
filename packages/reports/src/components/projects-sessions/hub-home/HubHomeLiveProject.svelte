@@ -50,9 +50,7 @@
 			{@const linked = hasWebLink(row.title)}
 			{@const due = dueById?.get(row.itemId)}
 			{@const label =
-				due && row.state === 'queued' && !row.runId
-					? pastDueLabel(due)
-					: workStateLabel(row)}
+				due && row.state === 'queued' && !row.runId ? pastDueLabel(due) : workStateLabel(row)}
 			<hx-li class="hh-live-row" data-state={row.state}>
 				<hx-div class="hh-live-item-text">
 					{#if linked}<hx-p class="hh-live-linked"><LinkifiedText text={row.title} /></hx-p>{/if}
@@ -123,7 +121,7 @@
 					finished,
 					'Not running jobs'
 				)}{/if}
-			{#if counts.blocked + counts.resting > blocked.length + waiting.length + finished.length}
+			{#if counts.blocked + counts.resting > blocked.length + waiting.length}
 				<hx-p class="po-sessions"
 					>Additional jobs were counted but their details were not reported by this computer.</hx-p
 				>

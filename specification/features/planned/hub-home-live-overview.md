@@ -23,6 +23,24 @@ When several linked computers answer, the overview holding the newest Tracker ch
 - Private and ignored items are never described. Their live runs are counted in one line.
 - Open and blocked tasks without a running session appear under their project’s job disclosure. A project lists up to 100 rows and says how many were left out.
 
+## Computers on Home
+
+Hub web and Harness Mac Home use the shared computer header to show active Tracker agent
+sessions on each computer. The online primary Mac appears first, followed by other online
+computers by name, then offline computers by name. The same order applies to the shared
+Project Overview computer strip. Runs are identified by their origin computer and run number.
+Tracked work delegated to a second computer also counts there, once per run even if it holds
+multiple leases. Finished and
+queued runs do not count. Private runs can contribute to the count without exposing their titles.
+
+Selecting a computer opens a read-only detail with available and total RAM, one-minute load and
+core count, estimated spare cores, startup disk space, and the sessions using that computer.
+The header and detail use the status and reasons from the same Tracker reading. An offline
+computer has no current resource reading. Earlier Trackers may report delegated work
+as a count only. Historic completed-item totals are omitted from project rows and retained in
+the source counts. The separate iPhone landing page does not mount the computer header. Its
+shared project summaries follow the same count rule.
+
 ## Freshness and empty states
 
 Linked computers are asked on every 20 second turn while the page is visible, including while change notices are connected. The section states how many linked computers answered and when the answer was read.

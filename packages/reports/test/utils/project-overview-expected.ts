@@ -19,9 +19,9 @@ export const EXPECTED_SNAPSHOT = {
 	liveSessions: 2,
 	machines: [
 		{ name: 'box', status: 'ok' },
-		{ name: 'mb2', status: 'offline' },
 		{ name: 'primary', status: 'busy' },
-		{ name: 'runner', status: 'overloaded' }
+		{ name: 'runner', status: 'overloaded' },
+		{ name: 'mb2', status: 'offline' }
 	],
 	projects: [
 		// needs-you: flagged, unresolved question; the note's token is redacted.

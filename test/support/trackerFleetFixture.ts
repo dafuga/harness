@@ -119,10 +119,11 @@ export async function exchangeFleetReport(
 	await client.exchangeMachine(sample as unknown as TrackerWireValue, []);
 }
 
-async function expectRemoteRuns(nodes: ReturnType<typeof fleet>, count: number) {
+async function expectRemoteRuns(nodes: ReturnType<typeof fleet>, ...ids: number[]) {
 	for (const runtime of [nodes.hub, nodes.peer]) {
 		const machine = (await call(runtime, ['machines', 'mb2'])).data;
-		expect(machine.remote_runs).toBe(count);
+		expect(machine.remote_runs).toBe(ids.length);
+		expect(machine.remote_run_refs).toEqual(ids.map((id) => ({ node: hubNode, id })));
 	}
 }
 
@@ -136,24 +137,24 @@ export async function checkRemoteWork(nodes: ReturnType<typeof fleet>) {
 	expect((await hostLease(nodes.hub, 'POST', colima)).status).toBe(200);
 	nodes.clock.at += minute;
 	await nodes.tick();
-	await expectRemoteRuns(nodes, 1);
+	await expectRemoteRuns(nodes, run);
 	expect((await hostLease(nodes.hub, 'DELETE', ssh)).status).toBe(200);
 	nodes.clock.at += minute;
 	await nodes.tick();
-	await expectRemoteRuns(nodes, 1);
+	await expectRemoteRuns(nodes, run);
 	nodes.hub.store.database
 		.prepare("UPDATE runs SET state = 'finished', ended_at = ? WHERE id = ?")
 		.run(nodes.clock.at, run);
 	nodes.clock.at += minute;
 	await nodes.tick();
-	await expectRemoteRuns(nodes, 0);
+	await expectRemoteRuns(nodes);
 	expect((await hostLease(nodes.hub, 'POST', colima)).status).toBe(409);
 
 	const expired = { ...ssh, lease: randomUUID(), run: originRun(nodes.hub) };
 	expect((await hostLease(nodes.hub, 'POST', expired)).status).toBe(200);
 	nodes.clock.at += minute;
 	await nodes.tick();
-	await expectRemoteRuns(nodes, 1);
+	await expectRemoteRuns(nodes, expired.run);
 	nodes.clock.at += 3 * minute;
-	await expectRemoteRuns(nodes, 0);
+	await expectRemoteRuns(nodes);
 }

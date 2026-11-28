@@ -18,6 +18,8 @@ import {
 import {
 	recordedTracker,
 	recordedTrackerFetch,
+	expectedComputerOrder,
+	seedComputerWork,
 	type RecordedTracker
 } from '../support/recordedTracker';
 import { recordedMacAnswer } from '../support/recordedTrackerMac';
@@ -50,22 +52,23 @@ function expectInitialProjectList(overview: HomeLiveOverview) {
 	expect(quiet).not.toContain('class="hh-live-head"');
 }
 
-describe('how the browser receives it', () => {
-	const api = {
-		get: async () => ({ computers: [{ hostId: 'a'.repeat(40), name: 'Mac', online: true }] })
-	};
-	const linked = (answer: unknown) =>
-		new LinkedHomeService(
-			api as never,
-			'owner',
-			() =>
-				({
-					home: async () => answer,
-					close: () => {}
-				}) as never
-		).read();
+const api = {
+	get: async () => ({ computers: [{ hostId: 'a'.repeat(40), name: 'Mac', online: true }] })
+};
+const linked = (answer: unknown) =>
+	new LinkedHomeService(
+		api as never,
+		'owner',
+		() =>
+			({
+				home: async () => answer,
+				close: () => {}
+			}) as never
+	).read();
 
+describe('how the browser receives it', () => {
 	test('the overview arrives from the linked computer, with credentials redacted', async () => {
+		const remoteTitles = seedComputerWork(tracker);
 		const secret = 'ghp_' + 'a'.repeat(36);
 		itemOf(liveRuns()[0].item_id).title = `Use ${secret}`;
 		const answer = await recordedMacAnswer(tracker);
@@ -74,6 +77,27 @@ describe('how the browser receives it', () => {
 
 		expect(snapshot?.liveOverview?.projects).toHaveLength(answer.liveOverview.projects.length);
 		expect(JSON.stringify(snapshot)).not.toContain(secret);
+		expect(snapshot!.liveOverview!.machines.map(({ name }) => name)).toEqual(expectedComputerOrder);
+		const overview = snapshot!.overview;
+		expect(overview.status === 'ready' && overview.machines.map(({ name }) => name)).toEqual(
+			expectedComputerOrder
+		);
+		const machine = snapshot!.liveOverview!.machines.find(({ name }) => name === 'harbor-mbp-2');
+		expect(machine).toMatchObject({
+			agentCount: 2,
+			reasons: ['memory pressure is critical'],
+			resources: {
+				ramAvailableMB: 12288,
+				ramTotalMB: 65536,
+				cores: 10,
+				loadOne: 3.5,
+				diskFreeGB: 45.5
+			},
+			sessions: ['Use [redacted]', remoteTitles[1]].map((title) => ({
+				title,
+				origin: 'studio-mac'
+			}))
+		});
 		expectInitialProjectList(snapshot!.liveOverview!);
 	});
 
@@ -97,19 +121,19 @@ describe('how the browser receives it', () => {
 		expect(mergeHomeSnapshots([behind, fresh])?.liveOverview).toEqual(fresh.liveOverview);
 		expect(mergeHomeSnapshots([fresh, behind])?.liveOverview).toEqual(fresh.liveOverview);
 	});
+});
 
-	test('neither the uploaded snapshot nor what the Hub accepts for storage can carry it', async () => {
-		const answer = await recordedMacAnswer(tracker);
-		const uploaded = buildHomeSnapshot(
-			await readTrackerSources(recordedTrackerFetch(tracker), true),
-			noProviders,
-			now()
-		);
+test('neither the uploaded snapshot nor what the Hub accepts for storage can carry it', async () => {
+	const answer = await recordedMacAnswer(tracker);
+	const uploaded = buildHomeSnapshot(
+		await readTrackerSources(recordedTrackerFetch(tracker), true),
+		noProviders,
+		now()
+	);
 
-		expect(answer.liveOverview.projects.length).toBeGreaterThan(0);
-		expect(uploaded).not.toHaveProperty('liveOverview');
-		expect(parseHomePayload(answer)).not.toHaveProperty('liveOverview');
-	});
+	expect(answer.liveOverview.projects.length).toBeGreaterThan(0);
+	expect(uploaded).not.toHaveProperty('liveOverview');
+	expect(parseHomePayload(answer)).not.toHaveProperty('liveOverview');
 });
 
 describe('what the page says when there is nothing to show', () => {

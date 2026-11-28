@@ -1,0 +1,180 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-hub-home-hub-home-computer-detail",
+	"uid": "u_klyhoh45ns",
+	"kind": "component",
+	"title": "HubHomeComputerDetail",
+	"responsibility": "Shows the selected computer’s current capacity and Tracker sessions in a read-only Home dialog.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.modal",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-detail-list",
+			"reports.component.shared-primitives-linkified-text"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeComputerDetail.svelte"
+		],
+		"symbols": [
+			"HubHomeComputerDetail",
+			"HubHomeComputerDetail.label",
+			"HubHomeComputerDetail.children"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": ["reports.component.shared-primitives-detail-list"],
+		"inputs": [
+			{
+				"name": "HubHomeComputerDetail.machine",
+				"type": "HomeComputer",
+				"required": true,
+				"description": "The selected computer with optional current resource readings and visible running sessions."
+			},
+			{
+				"name": "HubHomeComputerDetail.close",
+				"type": "() => void",
+				"required": true,
+				"description": "Closes the detail and restores focus to the computer pill through the caller."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeComputerDetail",
+				"type": "markup",
+				"description": "A compact resource and session dialog, with explicit unavailable and empty states."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeComputerDetail.label",
+				"inputs": [
+					{
+						"name": "HubHomeComputerDetail.label.row",
+						"type": "ResourceReading",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeComputerDetail.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeComputerDetail.children",
+				"inputs": [
+					{
+						"name": "HubHomeComputerDetail.children.row",
+						"type": "ResourceReading",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeComputerDetail.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-detail-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComputerDetail.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComputerDetail.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

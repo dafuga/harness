@@ -1,0 +1,150 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-build-home-machines",
+	"uid": "u_olskun75lm",
+	"kind": "module",
+	"title": "buildHomeMachines",
+	"responsibility": "Counts active runs by computer and joins current remote-work leases to displayable sessions.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/hub-home/buildHomeMachines.ts"],
+		"symbols": ["isActiveHomeRun", "buildHomeMachines"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "isActiveHomeRun.run",
+				"type": "TrackerRunRecord",
+				"required": true,
+				"description": "One Tracker run with its lifecycle state and optional end timestamp."
+			},
+			{
+				"name": "buildHomeMachines.sources",
+				"type": "TrackerSources",
+				"required": true,
+				"description": "The validated Tracker items, runs and machine records for a single read."
+			},
+			{
+				"name": "buildHomeMachines.runs",
+				"type": "Map<string, TrackerRunRecord[]>",
+				"required": true,
+				"description": "Tracker runs grouped by item and already deduplicated by origin and run ID."
+			},
+			{
+				"name": "buildHomeMachines.listed",
+				"type": "ReadonlySet<string>",
+				"required": true,
+				"description": "Item IDs eligible to show titles in the Home snapshot."
+			}
+		],
+		"outputs": [
+			{
+				"name": "isActiveHomeRun",
+				"type": "boolean",
+				"description": "True for a running, verifying or observed run with no end timestamp."
+			},
+			{
+				"name": "buildHomeMachines",
+				"type": "HomeComputer[]",
+				"description": "One computer summary for every reported computer, with active counts and allowed session details where current."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "isActiveHomeRun",
+				"inputs": [
+					{
+						"name": "isActiveHomeRun.run",
+						"type": "TrackerRunRecord",
+						"required": true,
+						"description": "One Tracker run with its lifecycle state and optional end timestamp."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isActiveHomeRun",
+						"type": "boolean",
+						"description": "True for a running, verifying or observed run with no end timestamp."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "buildHomeMachines",
+				"inputs": [
+					{
+						"name": "buildHomeMachines.sources",
+						"type": "TrackerSources",
+						"required": true,
+						"description": "The validated Tracker items, runs and machine records for a single read."
+					},
+					{
+						"name": "buildHomeMachines.runs",
+						"type": "Map<string, TrackerRunRecord[]>",
+						"required": true,
+						"description": "Tracker runs grouped by item and already deduplicated by origin and run ID."
+					},
+					{
+						"name": "buildHomeMachines.listed",
+						"type": "ReadonlySet<string>",
+						"required": true,
+						"description": "Item IDs eligible to show titles in the Home snapshot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildHomeMachines",
+						"type": "HomeComputer[]",
+						"description": "One computer summary for every reported computer, with active counts and allowed session details where current."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-items",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/buildHomeMachines.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/buildHomeMachines.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

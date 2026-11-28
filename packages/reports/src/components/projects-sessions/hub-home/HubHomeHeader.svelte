@@ -3,18 +3,22 @@
 <!-- @harness-uid u_pkjntjini6 -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import type { Snippet } from 'svelte';
+	import { tick, type Snippet } from 'svelte';
 	import Notice from '$reports/components/explorer-ui/explorer-kit/Notice.svelte';
 	import { liveSystemNotice } from './hubHomeLive';
 	import BrandMark from '$reports/components/BrandMark.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import { count, homeHeadline, summaryLine } from './hubHomePresentation';
+	import { compareOverviewMachines } from '$reports/lib/projects-sessions/project-overview/projectOverviewItems';
+	import type { HomeComputer } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
+	import HubHomeComputerDetail from './HubHomeComputerDetail.svelte';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import type { HomeView } from './hubHomeView.types';
 	let {
 		view,
 		link,
+		localMachines,
 		accountName = '',
 		accountMenu,
 		needsHref = resolve('/') + '?view=needs-you',
@@ -23,6 +27,7 @@
 	}: {
 		view: HomeView;
 		link: RealtimeState | null;
+		localMachines?: HomeComputer[];
 		accountName?: string;
 		accountMenu?: Snippet;
 		needsHref?: string;
@@ -30,15 +35,30 @@
 		notifications?: Snippet;
 	} = $props();
 	const liveSessions = $derived(view.overview?.status === 'ready' ? view.overview.liveSessions : 0);
-	const machines = $derived(
-		view.computers?.snapshot?.liveOverview?.machines ??
+	const machines: HomeComputer[] = $derived(
+		(
+			localMachines ??
+			view.computers?.snapshot?.liveOverview?.machines ??
 			(view.overview?.status === 'ready' ? view.overview.machines : [])
+		)
+			.slice()
+			.sort(compareOverviewMachines)
 	);
 	const offline = $derived(
 		machines.filter((machine) => machine.status === 'offline').map((machine) => machine.name)
 	);
 	const systemNotice = $derived(liveSystemNotice(view.computers));
 	let accountOpen = $state(false);
+	let chosenComputer = $state<string>();
+	let computerTrigger: HTMLButtonElement | undefined;
+	const selected = $derived(machines.find(({ name }) => name === chosenComputer));
+
+	function closeComputer() {
+		const trigger = computerTrigger;
+		chosenComputer = undefined;
+		computerTrigger = undefined;
+		void tick().then(() => trigger?.focus());
+	}
 </script>
 
 <hx-header class="hh-topbar">
@@ -118,14 +138,28 @@
 		{#if machines.length}
 			<hx-ul class="po-machines" aria-label="Computers">
 				{#each machines as machine (machine.name)}
-					<Pill as="li" tone="po-machine" state={machine.status}>
-						<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
-						{machine.name}
-						<hx-span class="po-machine-status"
-							>{machine.status}{machine.remoteRuns
-								? ` · ${count(machine.remoteRuns, 'remote run')}`
-								: ''}</hx-span
+					<Pill as="li" tone="po-machine hh-computer-pill" state={machine.status}>
+						<hx-button
+							type="button"
+							class="hh-computer-trigger"
+							aria-haspopup="dialog"
+							title={machine.reasons?.join(' · ') || undefined}
+							onclick={(event) => {
+								computerTrigger = event.currentTarget;
+								chosenComputer = machine.name;
+							}}
 						>
+							<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
+							{machine.name}
+							{#if machine.agentCount !== undefined}
+								<hx-span>· {count(machine.agentCount, 'agent')}</hx-span>
+							{:else if machine.remoteRuns && machine.status !== 'offline'}
+								<hx-span>· {count(machine.remoteRuns, 'remote run')}</hx-span>
+							{:else}
+								<hx-span>· Agents unavailable</hx-span>
+							{/if}
+							<hx-span class="po-machine-status">· {machine.status}</hx-span>
+						</hx-button>
 					</Pill>
 				{/each}
 			</hx-ul>
@@ -135,7 +169,28 @@
 	</hx-div>
 </hx-header>
 
+{#if selected}<HubHomeComputerDetail machine={selected} close={closeComputer} />{/if}
+
 <style>
+	:global(.po-machine.hh-computer-pill) {
+		padding: 0;
+	}
+	.hh-computer-trigger {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--hx-space-8);
+		min-height: 44px;
+		padding-inline: var(--hx-space-12);
+		border: 0;
+		border-radius: var(--hx-radius-pill);
+		background: transparent;
+		color: inherit;
+		font: inherit;
+		cursor: pointer;
+	}
+	.hh-computer-trigger:hover {
+		background: var(--hx-color-hover);
+	}
 	.hh-inbox-link {
 		margin-inline-start: auto;
 		white-space: nowrap;

@@ -13,6 +13,7 @@ import {
 } from '../../utils/projects-sessions/trackerMachineStatus';
 import type {
 	TrackerMachineRow,
+	TrackerMachineRunRef,
 	TrackerPlacementRequest,
 	TrackerResourceSample
 } from '../../utils/projects-sessions/trackerMachine.types';
@@ -97,19 +98,24 @@ export class TrackerMachineService {
 	rows(): TrackerMachineRow[] {
 		const now = this.options.now();
 		const latest = this.repository.latest();
-		const remote = remoteRunCounts(now, [
-			this.localHostWork(),
-			...[...this.peerWork.values()].map(({ work }) => work)
-		]);
+		const remote = remoteRunsByHost(
+			now,
+			new Map([
+				[this.store.node, this.localHostWork()],
+				...[...this.peerWork].map(([node, { work }]) => [node, work] as const)
+			])
+		);
 		const nodes = new Set([...trackerFleetNodes, ...latest.keys(), this.store.node]);
 		return [...nodes].sort().map((node) => {
 			const sample = latest.get(node) ?? null;
 			const recent = this.repository.recent(node, now);
+			const refs = remote.get(node) ?? [];
 			return {
 				node,
 				role: trackerMachineRole(node),
 				...trackerMachineStatus(sample, recent, now),
-				remote_runs: remote.get(node) ?? 0,
+				remote_runs: refs.length,
+				remote_run_refs: refs,
 				sample
 			};
 		});
@@ -140,18 +146,17 @@ export class TrackerMachineService {
 }
 
 /** Distinct source runs per destination, including concurrent SSH and Colima leases once. */
-function remoteRunCounts(now: number, snapshots: TrackerHostWork[][]): Map<string, number> {
-	const counts = new Map<string, number>();
-	for (const snapshot of snapshots) {
-		const seen = new Set<string>();
+function remoteRunsByHost(now: number, snapshots: ReadonlyMap<string, TrackerHostWork[]>) {
+	const hosts = new Map<string, Map<string, TrackerMachineRunRef>>();
+	for (const [node, snapshot] of snapshots) {
 		for (const { run, host, expires_at } of snapshot) {
-			const key = `${run}:${host}`;
-			if (expires_at <= now || seen.has(key)) continue;
-			seen.add(key);
-			counts.set(host, (counts.get(host) ?? 0) + 1);
+			if (expires_at <= now) continue;
+			const refs = hosts.get(host) ?? new Map<string, TrackerMachineRunRef>();
+			refs.set(`${node}:${run}`, { node, id: run });
+			hosts.set(host, refs);
 		}
 	}
-	return counts;
+	return new Map([...hosts].map(([host, refs]) => [host, [...refs.values()]]));
 }
 
 function isReport(

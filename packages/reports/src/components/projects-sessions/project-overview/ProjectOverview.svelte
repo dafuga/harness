@@ -27,6 +27,7 @@
 		visibleCards
 	} from './projectOverviewPresentation';
 	import type { OverviewFilter } from './projectOverviewPresentation.types';
+	import { compareOverviewMachines } from '../../../lib/projects-sessions/project-overview/projectOverviewItems';
 	import type { OverviewItem } from '../../../lib/projects-sessions/project-overview/projectOverview.types';
 	import type { ProjectOverviewDetailRow, ProjectOverviewProps } from './ProjectOverview.types';
 	import '../../../lib/styles/project-overview.css';
@@ -44,6 +45,7 @@
 		ready?.projects.filter(({ agent }) => !project || project === agent) ?? []
 	);
 	const chips = $derived(filterChips(cards));
+	const machines = $derived(ready?.machines.slice().sort(compareOverviewMachines) ?? []);
 	let filter = $state<OverviewFilter>('all');
 	const visible = $derived(visibleCards(cards, filter));
 	const now = Date.now();
@@ -91,7 +93,7 @@
 			<hx-h1 id="po-title" class="po-title">{headline(cards)}</hx-h1>
 			<hx-p class="po-totals">{totalsLine(cards.length, ready.liveSessions)}</hx-p>
 			<hx-ul class="po-machines" aria-label="Computers">
-				{#each ready.machines as machine (machine)}
+				{#each machines as machine (machine)}
 					<Pill as="li" tone="po-machine" state={machine.status}>
 						<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
 						{machine.name}

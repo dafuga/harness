@@ -7,6 +7,7 @@ import {
 } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { readHomeAskConfirm, readHomeAskOptions } from '../hub-home/homeAskOptions';
 import type { HomeAskInput } from '../hub-home/hubHome.types';
+import { z } from 'zod';
 import type { MachineStatus } from './projectOverview.types';
 import type * as Tracker from './projectOverviewTracker.types';
 import { TRACKER_GET_URLS, ITEM_STATUSES, MACHINE_STATUSES } from './trackerReadTargets';
@@ -20,13 +21,15 @@ export async function readTrackerSources(
 ): Promise<Tracker.TrackerSources> {
 	const [items, runs, machines] = await Promise.all([
 		getTrackerJson(fetcher, TRACKER_GET_URLS.items),
-		getTrackerJson(fetcher, TRACKER_GET_URLS.runs),
+		getTrackerJson(fetcher, includeHomeFields ? TRACKER_GET_URLS.homeRuns : TRACKER_GET_URLS.runs),
 		getTrackerJson(fetcher, TRACKER_GET_URLS.machines)
 	]);
 	return {
 		items: asList(items, 'items').map((item) => parseItem(item, includeHomeFields)),
 		runs: asList(runs, 'runs').map((run) => parseRun(run, includeHomeFields)),
-		machines: asList(machines, 'machines').map(parseMachine)
+		machines: asList(machines, 'machines').map((machine) =>
+			parseMachine(machine, includeHomeFields)
+		)
 	};
 }
 
@@ -102,14 +105,38 @@ function parseRun(value: unknown, includeHomeFields: boolean): Tracker.TrackerRu
 	};
 }
 
-function parseMachine(value: unknown): Tracker.TrackerSources['machines'][number] {
+const remoteRefs = z.array(z.object({ node: z.string().min(1).max(128), id: z.int().positive() }));
+const nonnegative = z.number().nonnegative();
+const diskRow = z.object({ mount: z.string(), free_gb: nonnegative });
+
+function parseMachine(value: unknown, includeHomeFields: boolean): Tracker.TrackerMachineRecord {
 	const row = asRecord(value, 'machine');
-	const count = row.remote_runs;
-	const whole = typeof count === 'number' && Number.isSafeInteger(count);
+	const remoteRuns = z.int().min(0).max(1_000_000).safeParse(row.remote_runs).data;
 	return {
-		...(whole && count >= 0 && count <= 1_000_000 && { remoteRuns: count }),
+		remoteRuns,
 		node: requiredText(row.node, 'machine node'),
-		status: oneOf(row.status, MACHINE_STATUSES, 'machine status') as MachineStatus
+		status: oneOf(row.status, MACHINE_STATUSES, 'machine status') as MachineStatus,
+		...(includeHomeFields && {
+			remoteRunRefs: remoteRefs.safeParse(row.remote_run_refs).data,
+			reasons: z.array(z.string()).safeParse(row.reasons).data?.slice(0, 12),
+			resources: machineResources(row)
+		})
+	};
+}
+
+function machineResources(row: Record<string, unknown>) {
+	const ram = z.object({ available_mb: nonnegative, total_mb: z.number().positive() });
+	const memory = ram.safeParse(row.ram).data;
+	const disks = z.array(diskRow).safeParse(row.disks).data;
+	const root = disks?.find(({ mount }) => mount === '/') ?? disks?.[0];
+	const cores = z.int().positive().safeParse(row.cores).data;
+	const load = z.array(nonnegative).safeParse(row.load).data;
+	return {
+		ramAvailableMB: memory?.available_mb,
+		ramTotalMB: memory?.total_mb,
+		cores,
+		loadOne: load?.[0],
+		diskFreeGB: root?.free_gb
 	};
 }
 

@@ -1,4 +1,6 @@
 // @harness-uid u_nves237tvx
+import type { TrackerMachineRunRef } from '../../../../../../src/utils/projects-sessions/trackerMachine.types';
+import type { HomeComputerResources } from '../hub-home/homeLive.types';
 import type { MachineStatus, OverviewItem } from './projectOverview.types';
 
 /** Item statuses the tracker reports, including ignored records that never affect a card. */
@@ -88,7 +90,14 @@ export type TrackerRunRecord = {
 };
 
 /** A computer from /machines or /status.machines. Only safe resource attribution counts are included. */
-export type TrackerMachineRecord = { node: string; status: MachineStatus; remoteRuns?: number };
+export type TrackerMachineRecord = {
+	node: string;
+	status: MachineStatus;
+	remoteRuns?: number;
+	reasons?: string[];
+	remoteRunRefs?: TrackerMachineRunRef[];
+	resources?: HomeComputerResources;
+};
 
 /** Validated item, run, and machine records from the tracker. */
 export type TrackerSources = {

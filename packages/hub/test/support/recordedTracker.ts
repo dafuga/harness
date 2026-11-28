@@ -22,3 +22,36 @@ export function recordedTrackerFetch(tracker: RecordedTracker): typeof fetch {
 		throw new Error(`unexpected Tracker read: ${path}`);
 	}) as typeof fetch;
 }
+
+export const expectedComputerOrder = [
+	'daniel-primary-mbp',
+	'alpha-runner',
+	'harbor-mbp-2',
+	'studio-mac',
+	'travel-mac',
+	'grok-box'
+];
+
+/** Two live origin runs delegate work to the same computer. */
+export function seedComputerWork(tracker: RecordedTracker) {
+	const running = tracker.runs.filter((run) => run.state === 'running').slice(0, 2);
+	tracker.machines.push(
+		{ node: 'studio-mac', status: 'busy' },
+		{ node: 'grok-box', status: 'offline' },
+		{ node: 'travel-mac', status: 'ok' },
+		{
+			node: 'harbor-mbp-2',
+			status: 'overloaded',
+			reasons: ['memory pressure is critical'],
+			remote_runs: 2,
+			remote_run_refs: running.map(({ node, id }) => ({ node, id })),
+			cores: 10,
+			load: [3.5, 3, 2],
+			ram: { available_mb: 12288, total_mb: 65536 },
+			disks: [{ mount: '/', free_gb: 45.5 }]
+		},
+		{ node: 'alpha-runner', status: 'ok' },
+		{ node: 'daniel-primary-mbp', status: 'ok' }
+	);
+	return running.map((run) => tracker.items.find((item) => item.id === run.item_id)!.title);
+}

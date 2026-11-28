@@ -1,6 +1,6 @@
-import { expect, test } from '../../../../test/support/browserTest';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { captureNeedsYou } from './hub-home-capture';
-import { recordedTracker } from '../../test/support/recordedTracker';
+import { recordedTracker, seedComputerWork } from '../../test/support/recordedTracker';
 import {
 	checkProjectDisclosure,
 	expandProjects,
@@ -19,19 +19,22 @@ import {
 test.setTimeout(90000);
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
-	['phone', 390, 844]
+	['phone', 390, 844],
+	['tablet', 834, 1194],
+	['desktop-dark', 1440, 900],
+	['phone-light', 390, 844]
 ] as const) {
 	test(`${device}: every project and live run of a recorded Tracker shows with its facts`, async ({
 		page
 	}) => {
 		const tracker = recordedTracker();
 		await page.setViewportSize({ width, height });
-		tracker.machines.push(
-			Object.assign({ node: 'harbor-mbp-2', status: 'overloaded' }, { remote_runs: 2 })
-		);
+		const remoteTitles = seedComputerWork(tracker);
+		await page.emulateMedia({
+			colorScheme: ['phone', 'desktop-dark'].includes(device) ? 'dark' : 'light'
+		});
 		seedLiveDisposition(tracker);
 		const answer = await macAnswer(tracker);
-		answer.liveOverview!.machines.push({ name: 'grok-box', status: 'offline' });
 		const sample = answer.liveOverview!.projects[0];
 		answer.liveOverview!.projects.push({
 			...sample,
@@ -44,7 +47,7 @@ for (const [device, width, height] of [
 		});
 		const requests = await productionHome(page, answer);
 		await page.clock.setFixedTime(Date.parse(tracker.recordedAt));
-		await page.goto('/');
+		const navigation = await page.goto('/');
 
 		const live = tracker.runs.filter((run) => run.state === 'running' && run.ended_at === null);
 		const groups = overview(page).locator('details.hh-live-project');
@@ -68,7 +71,9 @@ for (const [device, width, height] of [
 			await page.evaluate(() => document.fonts.ready.then(() => {}));
 			await page.screenshot({ path: test.info().outputPath(`home-top-${device}.png`) });
 		}
-		await expectComputerWorkload(page, device);
+		await expectComputerWorkload(page, device, remoteTitles);
+		if (process.env.TAKE_SCREENSHOT === 'true')
+			await recordRendererMetrics(page, device, navigation?.request().timing().responseEnd);
 		await checkProjectDisclosure(page, answer.liveOverview!.projects, device);
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
@@ -81,10 +86,26 @@ for (const [device, width, height] of [
 		await expectLiveDisposition(page, test.info().outputPath(`live-disposition-${device}.png`));
 		await expect(overview(page)).toContainText('over an encrypted connection · read');
 		await expectNoSidewaysScroll(page, width);
-		if (device === 'phone') await expectEvenHeaderSpacing(page);
+		if (width === 390) await expectEvenHeaderSpacing(page);
 		expect(requests.filter((entry) => entry.path === '/api/tracker-overview')).toEqual([]);
 		expect(requests.filter((entry) => entry.method === 'PUT')).toEqual([]);
 	});
+}
+
+async function recordRendererMetrics(page: Page, device: string, responseEndMs?: number) {
+	const cdp = await page.context().newCDPSession(page);
+	try {
+		await cdp.send('Performance.enable');
+		const { metrics } = await cdp.send('Performance.getMetrics');
+		const usedHeap = metrics.find(({ name }) => name === 'JSHeapUsedSize');
+		console.log(
+			'Home renderer',
+			device,
+			JSON.stringify({ responseEndMs, pageHeapBytes: usedHeap?.value })
+		);
+	} finally {
+		await cdp.detach();
+	}
 }
 
 test('a paragraph-long title keeps its row short on a phone', async ({ page }) => {

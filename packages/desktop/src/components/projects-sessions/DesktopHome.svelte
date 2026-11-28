@@ -117,6 +117,7 @@
 	<hx-div class="home-page hh-home">
 		<HubHomeHeader
 			{view}
+			localMachines={home?.liveOverview?.machines}
 			{link}
 			{accountName}
 			{accountMenu}

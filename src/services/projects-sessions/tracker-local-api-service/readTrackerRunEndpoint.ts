@@ -55,7 +55,8 @@ export function readTrackerRunEndpoint(
 		case 'runs':
 			return runs.list({
 				itemId: query.item ? items.resolve(query.item).id : undefined,
-				limit: query.limit
+				limit: query.limit,
+				includeActive: query.include_active === '1'
 			});
 		case 'models':
 			if (parts[1] === 'report') {
