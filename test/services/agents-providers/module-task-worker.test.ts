@@ -8,6 +8,7 @@ import { dirname, join } from 'node:path';
 import { verifiedSubmission, verifiedTaskBaseline } from '../../support/moduleTaskEvidence';
 import { observedTaskOperation } from '../../support/taskProfiles';
 import { seedTaskFrameFlag, hash } from '../../support/frameFlagFixture';
+import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { LfsAdapter } from '../../../src/adapters/git-source-history/LfsAdapter';
 test('module filters and assignment claims select once, then preserve changes for review', async () => {
 	const f = await moduleTaskFixture();
@@ -169,4 +170,75 @@ async function acceptVerified(
 	});
 	await service.review(id, { ...accept, evidence: evidence.commit });
 	return evidence;
+}
+
+test.each(['repaired', 'exhausted'] as const)(
+	'declared checks retain each round and resume the same provider session (%s)',
+	async (outcome) => {
+		const f = await moduleTaskFixture();
+		try {
+			const service = new ModuleTaskService(f.root);
+			await f.feature();
+			const check = {
+				argv: [
+					process.execPath,
+					'--eval',
+					"const file = await Bun.file('src/orders.ts').text(); if (!file.includes('orders = 3')) { console.error('Expected order count 3'); process.exit(1); }"
+				]
+			};
+			await service.add(JSON.parse(await readFile(await f.input({ check }), 'utf8')));
+			const { runner, calls, sessionId } = checkedTaskRunner(outcome === 'repaired');
+			expect(await new ModuleTaskWorkerService(f.root, runner).once('owner')).toMatchObject({
+				status: 'blocked'
+			});
+			expect(calls).toHaveLength(0);
+			const worker = new ModuleTaskWorkerService(f.root, runner, undefined, true);
+			const result = await observedTaskOperation(
+				'service.agents-providers-module-task-worker',
+				'declared-check-with-synthetic-provider',
+				() => worker.once('owner')
+			);
+			const shown = (await service.show('orders-validation')).task;
+			const repaired = outcome === 'repaired';
+			expect(result.status).toBe(repaired ? 'review' : 'failed');
+			expect(shown.result?.checkRounds).toMatchObject(
+				repaired
+					? [
+							{ status: 'failed', exitCode: 1 },
+							{ status: 'passed', exitCode: 0 }
+						]
+					: Array.from({ length: 3 }, () => ({ status: 'failed', exitCode: 1 }))
+			);
+			expect(shown.result?.executions).toHaveLength(repaired ? 2 : 3);
+			expect(shown.result?.checkpointCommit).toMatch(/^[a-f0-9]{40}$/);
+			expect(calls[0].command).not.toContain('resume');
+			for (const call of calls.slice(1)) {
+				expect(call.command).toContain('resume');
+				expect(call.command).toContain(sessionId);
+				expect(call.prompt).toContain('Expected order count 3');
+				expect(call.cwd).toBe(calls[0].cwd);
+			}
+		} finally {
+			await f.dispose();
+		}
+	},
+	30000
+);
+
+function checkedTaskRunner(repair: boolean) {
+	const sessionId = '4de9edbc-d14a-4e0a-84aa-e95d62c17895';
+	const calls: { command: string[]; prompt: string; cwd: string }[] = [];
+	const runner = new ModuleTaskRunnerAdapter(async (command, { prompt, cwd }) => {
+		calls.push({ command, prompt, cwd });
+		const orders = repair && calls.length > 1 ? 3 : 2;
+		await writeFile(join(cwd, 'src/orders.ts'), `export const orders = ${orders};\n`);
+		return {
+			code: 0,
+			stdout: [
+				JSON.stringify({ type: 'thread.started', thread_id: sessionId }),
+				JSON.stringify({ type: 'turn.completed', model: 'gpt-6-luna' })
+			].join('\n')
+		};
+	});
+	return { runner, calls, sessionId };
 }

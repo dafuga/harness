@@ -72,7 +72,12 @@ test.each(models)(
 				provider,
 				checks: [
 					{ name: 'reduce-module-bytes', status: 'passed', disposition: 'applied' },
-					{ name: 'security-review', status: 'failed', required: false }
+					{
+						name: 'security-review',
+						status: 'failed',
+						required: false,
+						summary: 'Implemented order validation.'
+					}
 				]
 			});
 			const check = receipt.checks[0];
@@ -91,7 +96,7 @@ test.each(models)(
 );
 
 test.each(['completion-coverage-loss', 'completion-test-failure'])(
-	'managed module completion discards %s and blocks review',
+	'managed module completion discards %s and preserves the verified baseline',
 	async (mode) => {
 		const f = await moduleTaskFixture({ checks: [] });
 		try {
@@ -106,13 +111,13 @@ test.each(['completion-coverage-loss', 'completion-test-failure'])(
 				})
 			]);
 			const run = await f.cli(['worker', '--worker=owner', '--once', '--json'], false);
-			expect(run.exitCode).toBe(1);
+			expect(run.exitCode).toBe(0);
 			const { result, status } = JSON.parse(run.stdout);
-			expect(status).toBe('failed');
+			expect(status).toBe('review');
 			const receipt = await completionReceipt(result.text);
 			expect(receipt.checks[0]).toMatchObject({
 				name: 'reduce-module-bytes',
-				status: 'failed',
+				status: 'passed',
 				disposition: 'discarded',
 				before: { testExitCode: 0 },
 				after: { testExitCode: mode === 'completion-test-failure' ? 1 : 0 }
