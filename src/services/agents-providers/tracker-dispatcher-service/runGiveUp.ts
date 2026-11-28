@@ -11,14 +11,18 @@ import { automaticRequestHold, schedulingHold, startable } from './launchEligibi
 export function retryHeld(
 	item: TrackerDispatchItem,
 	run: TrackerRunReceipt,
-	startup: boolean | undefined,
+	manualStartup: boolean,
 	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
 ) {
 	// Recovery owns its budget and backoff across separate launch tokens.
 	if (run.launch_source === 'recovery') return true;
-	if (startup && run.launch_source === 'manual')
+	if (manualStartup)
 		return !startable(item) || Boolean(schedulingHold({ ...item, scheduleOff: false }, now));
 	return Boolean(automaticRequestHold(item, policy, now));
+}
+
+export function isManualStartupFailure(run: TrackerRunReceipt, startup?: boolean): boolean {
+	return startup === true && run.launch_source === 'manual' && run.started_at === null;
 }
 
 export function retryRung(

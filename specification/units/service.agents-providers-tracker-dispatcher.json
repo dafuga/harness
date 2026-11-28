@@ -109,6 +109,7 @@
 			"prepareRetry",
 			"retireUnstartedRun",
 			"retryHeld",
+			"isManualStartupFailure",
 			"retryRung",
 			"giveUp",
 			"activeRun",
@@ -594,8 +595,8 @@
 				"required": true
 			},
 			{
-				"name": "retryHeld.startup",
-				"type": "boolean | undefined",
+				"name": "retryHeld.manualStartup",
+				"type": "boolean",
 				"required": true
 			},
 			{
@@ -607,6 +608,16 @@
 				"name": "retryHeld.now",
 				"type": "number",
 				"required": true
+			},
+			{
+				"name": "isManualStartupFailure.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "isManualStartupFailure.startup",
+				"type": "boolean",
+				"required": false
 			},
 			{
 				"name": "retryRung.item",
@@ -1885,8 +1896,8 @@
 						"required": true
 					},
 					{
-						"name": "retryHeld.startup",
-						"type": "boolean | undefined",
+						"name": "retryHeld.manualStartup",
+						"type": "boolean",
 						"required": true
 					},
 					{
@@ -1908,6 +1919,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "isManualStartupFailure",
+				"inputs": [
+					{
+						"name": "isManualStartupFailure.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "isManualStartupFailure.startup",
+						"type": "boolean",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "isManualStartupFailure",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "retryRung",

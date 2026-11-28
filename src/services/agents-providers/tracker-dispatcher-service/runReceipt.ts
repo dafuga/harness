@@ -11,7 +11,7 @@ import type {
 	TrackerRunReceipt
 } from '../TrackerDispatcherService.types';
 import { canonicalNode, matchesRequest, minute } from './launchEligibility';
-import { giveUp, retryHeld, retryRung } from './runGiveUp';
+import { giveUp, isManualStartupFailure, retryHeld, retryRung } from './runGiveUp';
 
 export function etaFor(
 	item: TrackerDispatchItem | null,
@@ -153,12 +153,13 @@ export function failRun(
 ): TrackerDispatchDecision {
 	const { item } = snapshot;
 	const finished = finishRun(run, { ...failure, now });
+	const manualStartup = isManualStartupFailure(run, failure.startup);
 	// A failed verification or rejection reopens completed work, whether or not a retry follows.
 	const reopen = failure.reopen ? { status: 'open' as const, appendNote: failure.note } : undefined;
 	if (
 		!item ||
 		!matchesRequest(item, run, policy) ||
-		retryHeld({ ...item, ...reopen }, run, failure.startup, { policy, now })
+		retryHeld({ ...item, ...reopen }, run, manualStartup, { policy, now })
 	)
 		return recordFailedRun(finished, reopen);
 	const choice = retryRung(item, run, policy, failure.startup);
@@ -174,7 +175,7 @@ export function failRun(
 		policy,
 		now
 	);
-	if (failure.startup && run.launch_source === 'manual') retry.manualStartupRetry = true;
+	if (manualStartup) retry.manualStartupRetry = true;
 	return {
 		result: { status: 'recorded', run: finished, retry },
 		writes: { runs: [finished, retry], failedRunId: finished.id, ...(reopen && { item: reopen }) }
