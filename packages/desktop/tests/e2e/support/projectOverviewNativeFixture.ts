@@ -187,6 +187,7 @@ export async function captureOverview(page: Page, name: string) {
 	await page.evaluate(() => document.fonts.ready);
 	const revision = process.env.HARNESS_VERIFY_REVISION ?? 'local';
 	await page.screenshot({
-		path: `/tmp/harness-env-evidence/project-overview-${name}-${revision}.png`
+		path: `/tmp/harness-env-evidence/project-overview-${name}-${revision}.png`,
+		animations: 'disabled'
 	});
 }

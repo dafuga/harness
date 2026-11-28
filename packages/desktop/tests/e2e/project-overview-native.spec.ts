@@ -31,7 +31,14 @@ test('the desktop landing reaches the overview, which shows the synthetic states
 	const job = live.getByRole('button', { name: 'Synthetic live item', exact: true });
 	await expect(job).toContainText('Running');
 	await expect(job).toContainText('fixture-model');
-	await job.scrollIntoViewIfNeeded();
+	await expect
+		.poll(async () => {
+			const card = (await job.boundingBox())!;
+			const section = (await live.boundingBox())!;
+			return card.y + card.height <= section.y + section.height;
+		})
+		.toBe(true);
+	await live.scrollIntoViewIfNeeded();
 	await captureOverview(page, 'mac-home-live-grid');
 	await job.click();
 	const detail = page.getByRole('dialog', { name: 'Job details' });
