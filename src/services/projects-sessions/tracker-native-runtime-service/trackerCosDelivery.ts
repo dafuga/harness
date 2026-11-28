@@ -1,6 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { cosSendWindowStart } from './trackerCosWindow';
+import { cosSendWindowStart } from '../../../utils/projects-sessions/trackerCosSendWindow';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 import type { TrackerCosSafetyNotice } from './trackerCosDelivery.types';
 
@@ -9,13 +9,19 @@ const noticeId = 'chief-review-safety';
 const episodeKey = 'chief_review_safety_episode';
 const reviewKinds = new Set(['chief-review', 'alert', 'flag-refused', 'cos-message']);
 
+const emergencies = [
+	/\bprod(?:uction)?\b[^.;]{0,40}\b(?:is |went )?(?:down|outage)\b|\boutage in prod(?:uction)?\b/i,
+	/\bsecurity (?:incident|breach|hole|vulnerability|compromise)\b|\bactive compromise\b/i,
+	/\bcredential exposure\b|\b(?:secret|credential|token|api key|private key|password)s?\b[^.;]{0,60}\b(?:detected in session|exposed|leaked|compromised)\b/i,
+	/\b(?:exposed|leaked|compromised)\b[^.;]{0,40}\b(?:secret|credential|token|api key|private key|password)s?\b/i
+];
+
+/** @pure Prod-down and security asks wait 10 minutes for Chief of Staff instead of 30. */
 export function chiefReviewEmergency(kind: string, reason: string): boolean {
 	return (
 		kind === 'chief-review-emergency' ||
 		kind.startsWith('credential exposure') ||
-		/\b(?:prod(?:uction)? (?:is )?down|security incident|credential exposure|active compromise)\b/i.test(
-			reason
-		)
+		emergencies.some((pattern) => pattern.test(reason))
 	);
 }
 

@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import { isTrackerAwaitingAnswer } from '../../../utils/projects-sessions/isTrackerAwaitingAnswer';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
@@ -23,8 +24,8 @@ export function watchdogItem(item: TrackerItem): WatchdogItem {
 		title: item.title ?? '',
 		status: (item.status ?? 'ignored') as WatchdogItem['status'],
 		deleted: item.deleted,
-		needsDaniel: item.needs_daniel,
-		resolved: item.resolved,
+		needsDaniel: isTrackerAwaitingAnswer(item),
+		resolved: !item.review_status && item.resolved,
 		question: item.question,
 		notes: item.notes_log.map(({ node, text, at }) => ({
 			node: node ?? '',

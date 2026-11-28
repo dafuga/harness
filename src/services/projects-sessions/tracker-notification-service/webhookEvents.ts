@@ -1,4 +1,5 @@
 // @harness-uid u_vqnqshfas2
+import { isHiddenByReview } from './isHiddenByReview';
 import type {
 	TrackerNotificationItem,
 	TrackerNotificationOp,
@@ -131,15 +132,8 @@ function classifyEvent(
 	context: { settings: TrackerWebhookOptions; now: number }
 ): void {
 	const item = source.item(op.item_id);
-	if (
-		!item?.title ||
-		item.status === 'ignored' ||
-		item.chief_review ||
-		item.chief_answer ||
-		typeof op.fields.chief_review === 'string' ||
-		op.fields.chief_answer
-	)
-		return;
+	if (!item?.title || item.status === 'ignored') return;
+	if (isHiddenByReview(item, op.fields, op.fields.status === 'done')) return;
 	if (
 		item.every &&
 		op.node === source.node &&

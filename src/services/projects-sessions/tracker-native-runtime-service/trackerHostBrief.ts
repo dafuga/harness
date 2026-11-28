@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import { isTrackerAwaitingAnswer } from '../../../utils/projects-sessions/isTrackerAwaitingAnswer';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
@@ -96,13 +97,14 @@ function trackerResumeLines(item: TrackerItem, recovery: boolean) {
 		.at(-1);
 	return [
 		handoff && `## Last handoff\n\n${handoff.text.slice(0, 4000)}`,
-		item.needs_daniel &&
-			!item.resolved &&
+		isTrackerAwaitingAnswer(item) &&
 			'An unanswered Tracker question remains open. Continue independent work and preserve any approval gates.'
 	];
 }
 
 function trackerAnswerBrief(item: TrackerItem) {
+	if (item.chief_answered)
+		return `A Chief of Staff answer is recorded. Read it with \`tracker review ${item.id}\` and continue as directed.`;
 	if (!item.resolved || item.needs_daniel || !item.answered_at) return undefined;
 	return 'A Tracker answer is recorded. Read the current answer on the item and continue as directed. Handle credentials through the approved private path.';
 }

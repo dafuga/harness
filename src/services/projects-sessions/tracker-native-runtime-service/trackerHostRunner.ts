@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import { isTrackerAwaitingAnswer } from '../../../utils/projects-sessions/isTrackerAwaitingAnswer';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import {
 	legacyTrackerStartupProbe,
@@ -191,7 +192,7 @@ function hostItemMatchesRun(item: TrackerItem, run: TrackerRunReceipt) {
 	return (
 		!item.deleted &&
 		['open', 'in_progress'].includes(item.status ?? '') &&
-		!(item.needs_daniel && !item.resolved) &&
+		!isTrackerAwaitingAnswer(item) &&
 		(item.kind ?? 'task') === 'task' &&
 		!trackerReminderTitle(item.title ?? '') &&
 		item.auto === run.auto_token

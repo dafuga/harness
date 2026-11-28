@@ -86,7 +86,11 @@ export class PhoneReplicaWriteService {
 			database.prepare(writeReceipt).run(scope, intent.intentId, requestHash);
 			return {
 				result: accepted,
-				operation: { itemId: intent.itemId, fields: plan.fields, actor: 'Harness Studio' }
+				operation: {
+					itemId: intent.itemId,
+					fields: plan.fields,
+					actor: intent.action === 'flag' ? 'Daniel@harness-studio' : 'Harness Studio'
+				}
 			};
 		});
 	}

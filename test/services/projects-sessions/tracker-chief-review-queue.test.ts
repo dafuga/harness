@@ -1,9 +1,10 @@
+import { migrateTrackerChiefReviews } from '../../../src/services/projects-sessions/tracker-native-runtime-service/migrateTrackerChiefReviews';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
+import { TrackerLocalApiService } from '../../../src/services/projects-sessions/TrackerLocalApiService';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import {
-	migrateTrackerChiefReviews,
 	publishApprovedReviews,
 	trackerChiefReviewAlerts
 } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerChiefReviewQueue';
@@ -50,7 +51,7 @@ test('migrates legacy flags, plumbing and blockers and preserves the receipt acr
 		}
 	});
 	const current = new TrackerPersistenceService(database, 'new-mac', {
-		chiefReview: true,
+		chiefReview: 'local',
 		now: () => noon
 	});
 	migrateTrackerChiefReviews(current);
@@ -70,7 +71,7 @@ test('migrates legacy flags, plumbing and blockers and preserves the receipt acr
 
 	using otherDatabase = new DatabaseSync(':memory:');
 	const other = new TrackerPersistenceService(otherDatabase, 'other-mac', {
-		chiefReview: true,
+		chiefReview: 'local',
 		now: () => noon
 	});
 	other.applyOps(current.opsSince(0, 100));
@@ -84,7 +85,7 @@ test('holds requests from Daniel and Chief of Staff overnight, then publishes on
 	const night = noon - 6 * 60 * 60_000;
 	let now = night;
 	const store = new TrackerPersistenceService(database, 'fixture-mac', {
-		chiefReview: true,
+		chiefReview: 'local',
 		now: () => now
 	});
 	const items = new TrackerItemReadRepository(database);
@@ -106,4 +107,66 @@ test('holds requests from Daniel and Chief of Staff overnight, then publishes on
 	const count = store.maxSeq();
 	publishApprovedReviews(store, now + 60_000);
 	expect(store.maxSeq()).toBe(count);
+});
+
+test('keeps automated Tracker health and backup asks exclusive to Chief of Staff', async () => {
+	using database = new DatabaseSync(':memory:');
+	const now = () => noon;
+	const store = new TrackerPersistenceService(database, 'fixture-mac', {
+		chiefReview: 'local',
+		now
+	});
+	const api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), { now });
+	for (const [id, actor] of [
+		['health0001', 'tracker-health'],
+		['backup0001', 'tracker backups']
+	]) {
+		store.appendLocal({ itemId: id, actor, fields: { title: id, status: 'open', ...decision } });
+		const release = await api.handle(
+			new Request(`http://tracker.local/items/${id}/release`, {
+				method: 'POST',
+				headers: { 'x-tracker-as': 'Chief of Staff' },
+				body: JSON.stringify({ question: decision.question, options: choices })
+			})
+		);
+		expect(release.status).toBe(409);
+	}
+	expect(trackerChiefReviewAlerts(store).map(({ kind }) => kind)).toEqual([
+		'chief-only-review',
+		'chief-only-review'
+	]);
+});
+
+test('keeps the chosen option from a private review out of public item reads', async () => {
+	using database = new DatabaseSync(':memory:');
+	const now = () => noon;
+	const store = new TrackerPersistenceService(database, 'fixture-mac', {
+		chiefReview: 'local',
+		now
+	});
+	const api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), { now });
+	const id = 'private001';
+	store.appendLocal({
+		itemId: id,
+		actor: 'tracker-run-40@fixture-mac',
+		fields: { title: id, status: 'open', ...decision }
+	});
+	const answer = await api.handle(
+		new Request(`http://tracker.local/items/${id}/answer`, {
+			method: 'POST',
+			headers: { 'x-tracker-as': 'Chief of Staff' },
+			body: JSON.stringify({ option: 1 })
+		})
+	);
+	expect(await answer.json()).toMatchObject({ answer: 'First', resolved: true });
+	const publicItem = await (
+		await api.handle(new Request(`http://tracker.local/items/${id}`))
+	).json();
+	expect(publicItem).toMatchObject({
+		answer: null,
+		answered_at: null,
+		answered_by: null,
+		resolved: false
+	});
+	expect(publicItem).not.toHaveProperty('answer_option');
 });

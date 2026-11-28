@@ -46,11 +46,9 @@ async function trackerAlertItem(
 		.trim()
 		.slice(0, maxMessage);
 	if (!text) throw trackerItemError('alert text required');
-	const refused = body.refused ? String(body.refused).slice(0, 300) : undefined;
 	const { store, items, now } = dependencies;
 	const itemId = knownItem(items, target);
-	const kind = refused ? 'flag-refused' : 'alert';
-	const message = refused ? `refused flag: ${text} (refused because: ${refused})` : text;
+	const { kind, message } = alertMessage(text, body.refused);
 	const reason = itemId ? message : `to "${target.slice(0, 40)}" (no such item): ${message}`;
 	pruneOldAlerts(store, now);
 	recordWatchdogAlert(
@@ -67,6 +65,12 @@ async function trackerAlertItem(
 		now
 	);
 	return { item_id: itemId ?? null, target, kind };
+}
+
+function alertMessage(text: string, refusal: unknown) {
+	if (!refusal) return { kind: 'alert', message: text };
+	const because = String(refusal).slice(0, 300);
+	return { kind: 'flag-refused', message: `refused flag: ${text} (refused because: ${because})` };
 }
 
 function knownItem(items: TrackerItemReadRepository, target: string): string | undefined {

@@ -11,13 +11,15 @@ import type {
 	TrackerSequencedOperation,
 	TrackerStoredOperation
 } from './TrackerOperationRepository.types';
-
 import {
 	localTrackerOperation,
 	operationActor
 } from './tracker-operation-repository/localTrackerOperation';
-
-import { chiefReviewFields } from './tracker-operation-repository/chiefReviewFields';
+import {
+	reviewLocalOperation,
+	reviewReplicatedOperation
+} from './tracker-operation-repository/reviewTrackerOperation';
+import type { TrackerReviewGate } from './tracker-operation-repository/reviewTrackerOperation.types';
 
 const itemFields = new Set<string>(trackerItemFields);
 const appendNoteField = 'note+';
@@ -26,7 +28,7 @@ export class TrackerOperationRepository {
 	constructor(
 		private readonly database: SqliteDatabase,
 		private readonly now: () => number = Date.now,
-		private readonly chiefReview = false
+		private readonly review: TrackerReviewGate = 'off'
 	) {}
 
 	/** Apply a batch to a database with the Tracker items, item_notes and ops tables. */
@@ -35,7 +37,9 @@ export class TrackerOperationRepository {
 		persist?: () => void
 	): TrackerAppliedOperations {
 		return trackerWrite(this.database, () => {
-			const applied = operations.map((operation) => this.prepare(operation)).filter((operation) => this.applyOperation(operation));
+			const applied = operations
+				.map((operation) => reviewReplicatedOperation(this.database, this.review, operation))
+				.filter((operation) => this.applyOperation(operation));
 			persistReceipt(persist);
 			return { operations: applied, itemIds: [...new Set(applied.map(({ item_id }) => item_id))] };
 		});
@@ -43,7 +47,8 @@ export class TrackerOperationRepository {
 
 	appendLocal(request: TrackerLocalOperation, persist?: () => void): TrackerOperation {
 		return trackerWrite(this.database, () => {
-			const operation = this.prepare(localTrackerOperation(this.database, request, this.now()));
+			const draft = localTrackerOperation(this.database, request, this.now());
+			const operation = reviewLocalOperation(this.database, this.review, draft);
 			if (!this.applyOperation(operation)) throw new TypeError('Tracker operation clock collision');
 			persistReceipt(persist);
 			return operation;
@@ -55,7 +60,8 @@ export class TrackerOperationRepository {
 		return trackerWrite(this.database, () => {
 			const { result, operation } = decide();
 			if (operation) {
-				const next = this.prepare(localTrackerOperation(this.database, { ...operation, node }, this.now()));
+				const draft = localTrackerOperation(this.database, { ...operation, node }, this.now());
+				const next = reviewLocalOperation(this.database, this.review, draft);
 				if (!this.applyOperation(next)) throw new TypeError('Tracker operation clock collision');
 			}
 			return { result, changed: Boolean(operation) };
@@ -102,10 +108,6 @@ export class TrackerOperationRepository {
 				: this.database.prepare(select).get(seq)
 		) as { count: number };
 		return row.count;
-	}
-
-	private prepare(operation: TrackerOperation): TrackerOperation {
-		return this.chiefReview ? { ...operation, fields: chiefReviewFields(operation) } : operation;
 	}
 
 	private applyOperation(operation: TrackerOperation): boolean {

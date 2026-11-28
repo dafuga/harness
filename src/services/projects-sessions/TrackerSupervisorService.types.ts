@@ -2,6 +2,7 @@
 export type TrackerSupervisorWorker =
 	| 'adapter'
 	| 'backup'
+	| 'chief-review'
 	| 'dispatch'
 	| 'ignore-expiry'
 	| 'messages'

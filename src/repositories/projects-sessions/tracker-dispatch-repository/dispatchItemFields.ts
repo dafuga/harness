@@ -1,4 +1,5 @@
 // @harness-uid u_ksy76trvsj
+import { isTrackerAwaitingAnswer } from '../../../utils/projects-sessions/isTrackerAwaitingAnswer';
 import {
 	describeTrackerScheduleHold,
 	trackerScheduleHold
@@ -46,7 +47,7 @@ export function dispatchItem(
 		scheduleOff: Boolean(hold),
 		...(hold && { scheduleHoldReason: describeTrackerScheduleHold(hold) }),
 		deleted: Boolean(row.deleted),
-		awaitingAnswer: Boolean(row.chief_review || (row.needs_daniel && !row.resolved)),
+		awaitingAnswer: isTrackerAwaitingAnswer({ ...row, review_status: row.chief_review }),
 		parkedUntil: Date.parse(row.parked_until ?? ''),
 		question: row.question,
 		answeredCurrentBlock: answeredBlock(row, clocks, runs),
@@ -154,7 +155,7 @@ export function trackerStoredSchedulingHold(item: TrackerItem, now: number) {
 			agent: item.agent,
 			owner: item.owner,
 			deleted: item.deleted,
-			awaitingAnswer: item.needs_daniel && !item.resolved,
+			awaitingAnswer: isTrackerAwaitingAnswer(item),
 			scheduleOff: item.schedule_off,
 			scheduleHoldReason: item.schedule_hold && describeTrackerScheduleHold(item.schedule_hold),
 			recurring: item.recurring,

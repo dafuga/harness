@@ -99,6 +99,7 @@ export function recoveryHold(
 	{ changedAt, now }: { changedAt: number; now: number }
 ) {
 	const stored = trackerStoredSchedulingHold(item, now);
+	if (item.review_status) return `Waiting on a question: ${item.review_status}`;
 	if (item.needs_daniel && !item.resolved && trackerFlagBlocksRecovery(item.question))
 		return item.question ?? 'Waiting on Daniel';
 	if (!latest) return stored;

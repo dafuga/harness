@@ -187,7 +187,7 @@ function trackerStuckRequests(
 ) {
 	const pending = database
 		.prepare(
-			`SELECT i.id, i.title, i.clocks, (i.needs_daniel = 1 AND i.resolved = 0) AS flagged,
+			`SELECT i.id, i.title, i.clocks, ((i.needs_daniel = 1 AND i.resolved = 0) OR i.chief_review IS NOT NULL) AS flagged,
 		nullif(coalesce(i.launch_target, i.computer), 'auto') AS computer
 		FROM items i WHERE i.deleted = 0 AND i.title IS NOT NULL AND i.status IN ('open','in_progress')
 		AND i.auto IS NOT NULL AND NOT EXISTS (

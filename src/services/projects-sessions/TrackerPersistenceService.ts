@@ -31,9 +31,9 @@ export class TrackerPersistenceService {
 	) {
 		if (!node || /\s/.test(node)) throw new TypeError('Tracker node name is required');
 		this.now = options.now ?? Date.now;
-		this.chiefReview = options.chiefReview === true;
+		this.chiefReview = options.chiefReview !== undefined;
 		this.schema = new TrackerSchemaAdapter(database, options);
-		this.journal = new TrackerOperationRepository(database, this.now, this.chiefReview);
+		this.journal = new TrackerOperationRepository(database, this.now, options.chiefReview);
 		this.storage = new SqliteAdapter(database, []);
 		const identity = this.schema.initialize();
 		this.dbId = identity.dbId;

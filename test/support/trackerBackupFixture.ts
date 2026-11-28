@@ -9,6 +9,7 @@ import { TrackerCommand } from '../../src/commands/projects-sessions/TrackerComm
 import { trackerNodeApi } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeListeners';
 import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerSupervisorService } from '../../src/services/projects-sessions/TrackerSupervisorService';
+import { readChiefReview } from '../../src/repositories/projects-sessions/tracker-operation-repository/chiefReviewFields';
 import { createTempDirectory } from './temporary';
 
 const node = 'daniel-primary-mbp';
@@ -56,7 +57,13 @@ export async function trackerBackupFixture(start: string, sharing?: { external: 
 		alerts: () =>
 			database
 				.prepare("SELECT * FROM items WHERE title = 'Tracker backups need attention'")
-				.all() as { status: string; needs_daniel: number; question: string; options: string }[],
+				.all() as {
+				status: string;
+				needs_daniel: number;
+				question: string | null;
+				chief_review: string | null;
+			}[],
+		review: (raw: string | null) => readChiefReview(raw),
 		tick: () => runWorkers(runtime),
 		api: (method: string, route: string) => callApi(runtime, method, route),
 		cli: (...args: string[]) => runCli(root, path, args),

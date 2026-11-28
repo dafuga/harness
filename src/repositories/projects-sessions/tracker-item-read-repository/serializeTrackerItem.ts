@@ -1,5 +1,6 @@
 // @harness-uid u_xba7ieg4je
 import { isPrivateTrackerReviewNote } from '../../../utils/projects-sessions/isTrackerBlockedOnDaniel';
+import { trackerAnswerFields } from './trackerAnswerFields';
 import { trackerScheduleHold } from '../../../utils/projects-sessions/trackerScheduleHold';
 import { trackerAttachments } from '../../../utils/projects-sessions/trackerAttachments';
 import { trackerItemPriority } from '../../../utils/projects-sessions/trackerItemPriority';
@@ -63,10 +64,7 @@ export function serializeTrackerItem(
 		needs_daniel: Boolean(row.needs_daniel),
 		question: row.question,
 		...askFields(row),
-		answer: row.chief_answer ? null : row.answer,
-		answered_at: row.chief_answer ? null : row.answered_at,
-		answered_by: row.chief_answer ? null : row.answered_by,
-		resolved: !row.chief_answer && Boolean(row.resolved),
+		...trackerAnswerFields(row),
 		callback: publicCallback(row.callback),
 		created_at: row.created_at,
 		created_by: row.created_by,
@@ -134,7 +132,7 @@ function askFields(row: TrackerItemRow) {
 		...(options.length && { options }),
 		...(options.length && row.needs_daniel && !row.resolved && { asked_at: askedAt(row) }),
 		...(options.length && row.confirm && { confirm: row.confirm }),
-		...(row.answer_option && { answer_option: Number(row.answer_option) }),
+		...(!row.chief_answer && row.answer_option && { answer_option: Number(row.answer_option) }),
 		...attachmentListing(row)
 	};
 }

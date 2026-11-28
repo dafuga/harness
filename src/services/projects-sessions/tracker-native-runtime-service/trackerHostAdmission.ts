@@ -91,7 +91,7 @@ export function occupiedHostRuns(store: TrackerPersistenceService): TrackerOccup
 		.prepare(
 			`SELECT r.id, r.item_id AS itemId, r.state, r.cli, r.tmux, r.watch_pane AS watchPane,
 			r.started_at AS startedAt, r.resumed_at AS resumedAt, i.status, i.deleted,
-			(i.needs_daniel = 1 AND coalesce(i.resolved, 0) = 0) AS waiting
+			((i.needs_daniel = 1 AND coalesce(i.resolved, 0) = 0) OR i.chief_review IS NOT NULL) AS waiting
 			${slotRuns} ORDER BY r.id`
 		)
 		.all() as unknown as TrackerOccupiedRun[];

@@ -1,4 +1,5 @@
 // @harness-uid u_g7kdpz7bel
+import { isTrackerAwaitingAnswer } from '../../../utils/projects-sessions/isTrackerAwaitingAnswer';
 import { trackerReminderTitle } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerItemSnapshot } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
 import type { TrackerItemInput } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
@@ -70,7 +71,10 @@ function guardManualLaunch(item: TrackerItemSnapshot) {
 	if (item.kind === 'reminder' || trackerReminderTitle(item.title ?? ''))
 		throw trackerItemError('reminders cannot launch', 409);
 	if (item.status === 'ignored') throw trackerItemError('item is ignored', 409);
-	if (item.status === 'blocked' && item.needs_daniel && !item.resolved)
+	if (
+		item.status === 'blocked' &&
+		isTrackerAwaitingAnswer({ ...item, review_status: item.chief_review })
+	)
 		throw trackerItemError(
 			`waiting on Daniel (flagged). Review with tracker show ${item.id}.`,
 			409

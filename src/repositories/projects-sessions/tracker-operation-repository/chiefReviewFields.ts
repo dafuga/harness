@@ -1,67 +1,57 @@
 // @harness-uid u_c5mwmd6z6z
-import { isTrackerBlockedOnDaniel } from '../../../utils/projects-sessions/isTrackerBlockedOnDaniel';
-import { isTrackerCosMessage } from '../../../utils/projects-sessions/isTrackerPing';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
-import { cosSendWindowStart } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerCosWindow';
+import { isTrackerBlockedOnDaniel } from '../../../utils/projects-sessions/isTrackerBlockedOnDaniel';
+import {
+	isTrackerPlumbingAsk,
+	trackerReviewer
+} from '../../../utils/projects-sessions/trackerReviewer';
+import { cosSendWindowStart } from '../../../utils/projects-sessions/trackerCosSendWindow';
 import type { TrackerOperation } from '../TrackerOperationRepository.types';
-import type { ChiefReview } from './chiefReviewFields.types';
-
-const privateFields = [
-	'question',
-	'options',
-	'confirm',
-	'attachments',
-	'attachment_docs',
-	'next_step'
-];
-
-export function trackerReviewer(actor: string | null | undefined): 'chief' | 'daniel' | null {
-	const name = actor?.split('@')[0]?.trim();
-	if (/^(?:cos|chief[-_ ]of[-_ ]staff)$/i.test(name ?? '')) return 'chief';
-	if (/^(?:daniel(?: fugere)?|danielfugere)$/i.test(name ?? '')) return 'daniel';
-	return null;
-}
+import { closedReviewFields } from './closedChiefReviewFields';
+import { heldReviewFields } from './heldChiefReviewFields';
+import type { ChiefReview, ChiefReviewContext } from './chiefReviewFields.types';
 
 /** Keep an ask's contents out of every public item field until the reviewer releases it. */
-export function chiefReviewFields(operation: TrackerOperation, migrate = false) {
+export function chiefReviewFields(
+	operation: TrackerOperation,
+	{ current, migrate = false }: ChiefReviewContext = {}
+): TrackerOperation['fields'] {
 	const { fields, actor, hlc } = operation;
 	if (Object.hasOwn(fields, 'chief_review')) return fields;
-	const blocker =
-		typeof fields.blocked_reason === 'string' && isTrackerBlockedOnDaniel(fields.blocked_reason);
-	const question = typeof fields.question === 'string' ? fields.question : null;
-	const asks = Number(fields.needs_daniel) === 1 && Number(fields.resolved) !== 1;
-	if (!asks && !blocker) return fields;
+	const ask = readAsk(fields);
+	if (!ask.flag && !ask.blocker) return closedReviewFields(fields, current);
+	const chiefOnly = isTrackerPlumbingAsk(actor, ask.text, fields.title);
+	const approved = !migrate && !chiefOnly && trackerReviewer(actor) !== null;
+	if (approved && cosSendWindowStart(trackerClockMilliseconds(hlc)) !== null)
+		return {
+			...fields,
+			chief_review: null,
+			...(ask.flag && clearedPrivateAnswer(current?.chief_answer))
+		};
+	return heldReviewFields(operation, ask, { current, mode: reviewMode(chiefOnly, approved) });
+}
 
-	const chiefOnly =
-		isTrackerCosMessage(question) ||
-		/^\d+ Tracker alerts? (?:has|have) not reached your Chief of Staff session\b/i.test(
-			question ?? ''
-		) ||
-		fields.title === 'Tracker alerts are not reaching Chief of Staff';
-	const approved = !migrate && trackerReviewer(actor) !== null && !chiefOnly;
-	const at = trackerClockMilliseconds(hlc);
-	if (approved && cosSendWindowStart(at) !== null)
-		return { ...fields, chief_review: null, ...(asks && { chief_answer: null }) };
-
-	const pending = { ...fields };
-	const details: Record<string, unknown> = asks ? { needs_daniel: 1, resolved: 0 } : {};
-	for (const key of privateFields) {
-		if (key in pending) details[key] = pending[key];
-		pending[key] = null;
-	}
-	if (blocker) {
-		details.blocked_reason = pending.blocked_reason;
-		pending.blocked_reason = null;
-		delete pending['note+'];
-	}
-	const review: ChiefReview = {
-		at,
-		generation: hlc,
-		actor: actor ?? null,
-		mode: chiefOnly ? 'chief-only' : approved ? 'approved' : 'review',
-		fields: details
+/** A released ask must not show the private answer an earlier review left behind. */
+function clearedPrivateAnswer(answeredBy: string | null | undefined) {
+	return {
+		chief_answer: null,
+		...(answeredBy && { answer: null, answered_at: null, answered_by: null })
 	};
-	return { ...pending, needs_daniel: 0, chief_review: JSON.stringify(review) };
+}
+
+function readAsk(fields: TrackerOperation['fields']) {
+	const reason = typeof fields.blocked_reason === 'string' ? fields.blocked_reason : null;
+	const question = typeof fields.question === 'string' ? fields.question : null;
+	return {
+		blocker: reason !== null && isTrackerBlockedOnDaniel(reason),
+		flag: Number(fields.needs_daniel) === 1 && Number(fields.resolved) !== 1,
+		text: question ?? reason ?? ''
+	};
+}
+
+function reviewMode(chiefOnly: boolean, approved: boolean): ChiefReview['mode'] {
+	if (chiefOnly) return 'chief-only';
+	return approved ? 'approved' : 'review';
 }
 
 export function readChiefReview(value: string | null | undefined): ChiefReview | null {

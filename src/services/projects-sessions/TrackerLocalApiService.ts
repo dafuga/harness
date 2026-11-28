@@ -1,16 +1,6 @@
 // @harness-uid u_g7kdpz7bel
-import { cancelQueuedDispatchRuns } from '../../repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl';
 import type { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
 import { checkTrackerItem } from '../../utils/projects-sessions/checkTrackerItem';
-import { planTrackerItemMutation } from '../../utils/projects-sessions/planTrackerItemMutation';
-import {
-	itemAction,
-	itemMutation,
-	itemMutationContext,
-	readItemBody,
-	recordTrackerSessionItem,
-	trackerMutationBody
-} from './tracker-local-api-service/trackerLocalItemMutation';
 import { trackerHostWorkEndpoint } from './tracker-local-api-service/trackerHostWorkEndpoint';
 import { readTrackerMachineEndpoint } from './tracker-local-api-service/readTrackerMachineEndpoint';
 import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
@@ -20,8 +10,9 @@ import {
 	trackerFailureResponse,
 	trackerResponse
 } from './tracker-local-api-service/trackerLocalResponse';
-import { readChiefReviews, writeChiefReview } from './tracker-local-api-service/trackerChiefReview';
-import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
+import { readChiefReviews } from './tracker-local-api-service/readTrackerChiefReviews';
+import { writeTrackerItem } from './tracker-local-api-service/writeTrackerItem';
+import { readActor } from './tracker-local-api-service/trackerLocalActor';
 import { trackerRejectItem } from './tracker-local-api-service/trackerLocalRejection';
 import {
 	isTrackerAlert,
@@ -39,10 +30,6 @@ import {
 	readTrackerRunEndpoint
 } from './tracker-local-api-service/readTrackerRunEndpoint';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
-import {
-	isTrackerManualLaunch,
-	planTrackerManualLaunch
-} from './tracker-local-api-service/trackerManualLaunch';
 
 /** Handles core item requests for the loopback listener over its shared Tracker journal. */
 export class TrackerLocalApiService {
@@ -72,7 +59,11 @@ export class TrackerLocalApiService {
 				if (read) return read;
 			}
 			if (parts[0] === 'items' && parts.length <= 3) {
-				const write = await this.write(request, parts);
+				const write = await writeTrackerItem(request, parts, {
+					store: this.store,
+					items: this.items,
+					options: this.options
+				});
 				if (write) return write;
 			}
 			return trackerResponse(404, { error: `no route ${request.method} ${url.pathname}` });
@@ -133,43 +124,6 @@ export class TrackerLocalApiService {
 		const item = this.items.resolve(id);
 		return trackerResponse(200, recurring?.history?.(item.id, limit) ?? []);
 	}
-
-	private async write(request: Request, [, id, verb]: string[]): Promise<Response | undefined> {
-		const action = itemAction(request.method, id, verb);
-		const manual =
-			this.options.manualLaunch && request.method === 'POST' && id && isTrackerManualLaunch(verb);
-		const release = request.method === 'POST' && id && verb === 'release';
-		if (!action && !manual && !release) return undefined;
-		const input = await readItemBody(request);
-		request.signal.throwIfAborted();
-		const actor = readActor(request.headers);
-		const reviewed = id && writeChiefReview({ store: this.store, items: this.items, options: this.options }, id, { verb, actor, body: input });
-		if (reviewed) return reviewed;
-		if (release) return trackerResponse(404, { error: 'review queue unavailable' });
-		const context = itemMutationContext(this.store, this.items, this.options, verb === 'launch');
-		const body = trackerMutationBody(input, action, actor, Boolean(context.planLaunch));
-		const plan = action
-			? planTrackerItemMutation(itemMutation(action, id, body, this.items), context)
-			: planTrackerManualLaunch(verb, this.items.resolve(id), body, context);
-		const persist = () => {
-			if (action === 'start')
-				recordTrackerSessionItem(this.store.database, plan.itemId, body.session_run);
-			if (manual && verb === 'unlaunch')
-				cancelQueuedDispatchRuns(this.store, plan.itemId, context.now);
-		};
-		const privateFlag = this.store.chiefReview && action === 'flag' &&
-			typeof body.question === 'string' && !plan.fields?.needs_daniel;
-		const fields = privateFlag ? { question: body.question, needs_daniel: 1, resolved: 0 } : plan.fields;
-		const operation = fields &&
-			this.store.appendLocal({ itemId: plan.itemId, fields, actor }, persist);
-		if (!this.store.chiefReview)
-			recordCosFlag(this.store, { itemId: plan.itemId, action, question: body.question }, context.now);
-		const pending = operation?.fields.chief_review;
-		return trackerResponse(action === 'add' ? 201 : 200, {
-			...this.items.getStored(plan.itemId),
-			...(typeof pending === 'string' && { review_status: 'awaiting Chief of Staff review' })
-		});
-	}
 }
 
 function trackerSpecialResponse(
@@ -220,14 +174,4 @@ function trackerItemSpecialResponse(
 			now: dependencies.options.now?.() ?? Date.now()
 		}
 	).then((item) => trackerResponse(200, item));
-}
-
-function readActor(headers: Headers): string | null {
-	const actor = headers
-		.get('x-tracker-as')
-		?.replace(/[^\P{Cc}\u0080-\u009f]/gu, '')
-		.trim()
-		.slice(0, 80);
-	if (!actor) return null;
-	return actor;
 }

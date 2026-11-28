@@ -24,6 +24,7 @@ export async function ignoringNode(role: 'hub' | 'spoke', clock: () => number) {
 		const asked = itemId === 'dated';
 		runtime.store.appendLocal({
 			itemId,
+			actor: 'Chief of Staff',
 			fields: {
 				title: `Ignore fixture ${itemId}`,
 				status: asked ? 'in_progress' : 'open',

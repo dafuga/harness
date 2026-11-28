@@ -16,7 +16,7 @@ export interface TrackerSlotPane {
 export interface TrackerSlotFixture {
 	runtime: TrackerNativeRuntimeService;
 	database: DatabaseSync;
-	request(path: string, body?: object): Promise<void>;
+	request(path: string, body?: object, actor?: string): Promise<void>;
 	panes(): string[];
 	allPanes(): string[];
 	screen(name: string, screen: string): void;

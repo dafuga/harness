@@ -47,8 +47,10 @@ export async function clearTrackerBackupAlert(
 	const { alert_item: id } = readTrackerBackupState(stateFile);
 	if (!id) return;
 	const { status } = await send(items, 'GET', `/items/${id}`);
-	if (status && status !== 'done' && status !== 'ignored')
+	if (status && status !== 'done' && status !== 'ignored') {
+		await send(items, 'POST', `/items/${id}/unflag`);
 		await send(items, 'POST', `/items/${id}/done`, { note, force: true });
+	}
 	writeTrackerBackupState(stateFile, { alert_item: null });
 }
 

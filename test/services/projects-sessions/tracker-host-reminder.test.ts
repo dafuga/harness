@@ -70,6 +70,7 @@ async function verifyAskFollowThrough(
 ) {
 	runtime.store.appendLocal({
 		itemId: 'decision01',
+		actor: 'Chief of Staff',
 		fields: { title: 'Synthetic ask', status: 'open', needs_daniel: 1, question: 'Proceed?' }
 	});
 	const asked = now();

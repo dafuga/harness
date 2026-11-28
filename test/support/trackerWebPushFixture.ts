@@ -5,19 +5,25 @@ import { expect, onTestFinished } from 'vitest';
 import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { trackerNodeApi } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeListeners';
 import { TrackerSupervisorService } from '../../src/services/projects-sessions/TrackerSupervisorService';
+import { publishApprovedReviews } from '../../src/services/projects-sessions/tracker-native-runtime-service/trackerChiefReviewQueue';
 import { generateWebPushKeys } from '../../src/services/projects-sessions/tracker-web-push-service/webPushTokens';
 import { createTempDirectory } from './temporary';
 import { webPushWorld, hubOrigin } from './trackerWebPushWorld';
 
 const node = 'daniel-primary-mbp';
 
-async function callTracker(runtime: TrackerNativeRuntimeService, route: string, body: unknown) {
+async function callTracker(
+	runtime: TrackerNativeRuntimeService,
+	route: string,
+	body: unknown,
+	actor: string
+) {
 	const request = new Request(`http://127.0.0.1:7700/native/v1${route}`, {
 		method: 'POST',
 		body: JSON.stringify(body),
 		headers: {
 			'content-type': 'application/json',
-			'x-tracker-as': 'test',
+			'x-tracker-as': actor,
 			'x-harness-tracker-node': node,
 			'x-harness-tracker-role': 'hub'
 		}
@@ -44,10 +50,16 @@ export async function trackerWebPushFixture() {
 		now: () => clock,
 		webPush: { database: path, fetch }
 	});
-	const api = (route: string, body: unknown) => callTracker(runtime, route, body);
-	const item = async (fields: Record<string, unknown>, question: string, options?: unknown) => {
+	const api = (route: string, body: unknown, actor = 'Chief of Staff') =>
+		callTracker(runtime, route, body, actor);
+	const item = async (
+		fields: Record<string, unknown>,
+		question: string,
+		options?: unknown,
+		actor?: string
+	) => {
 		const { id } = await api('/items', { agent: 'harbor', ...fields });
-		await api(`/items/${id}/flag`, { question, options });
+		await api(`/items/${id}/flag`, { question, options }, actor);
 		return id;
 	};
 	return {
@@ -61,8 +73,13 @@ export async function trackerWebPushFixture() {
 			writeFileSync(file, JSON.stringify(config), { mode: 0o600 });
 			chmodSync(file, 0o600);
 		},
-		ask: (title: string, question: string, extra: Record<string, unknown> = {}) =>
-			item({ title, ...extra }, question, [{ label: 'Yes', recommended: true }, { label: 'No' }]),
+		ask: (title: string, question: string, extra: Record<string, unknown> = {}, actor?: string) =>
+			item(
+				{ title, ...extra },
+				question,
+				[{ label: 'Yes', recommended: true }, { label: 'No' }],
+				actor
+			),
 		/** A flag without choices: a dependency block for Chief of Staff, never a decision. */
 		dependency: (title: string) => item({ title }, 'FOR CoS: waiting on the box'),
 		advance(ms: number) {
@@ -71,6 +88,9 @@ export async function trackerWebPushFixture() {
 		at(time: string) {
 			clock = Date.parse(time);
 		},
-		tick: () => runtime.webPush!.tick()
+		tick: () => {
+			publishApprovedReviews(runtime.store, clock);
+			return runtime.webPush!.tick();
+		}
 	};
 }

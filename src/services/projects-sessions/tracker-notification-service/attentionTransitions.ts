@@ -1,4 +1,5 @@
 // @harness-uid u_vqnqshfas2
+import { isHiddenByReview } from './isHiddenByReview';
 import type {
 	TrackerNotificationItem,
 	TrackerNotificationOp,
@@ -110,18 +111,10 @@ export function observeAttention(
 	};
 	const next = applyAttentionPatch(previous, fields);
 	state.attentionItems.set(item.id, next);
-	if (
-		item.chief_review ||
-		item.chief_answer ||
-		typeof fields.chief_review === 'string' ||
-		fields.chief_answer ||
-		item.deleted ||
-		[item.status, next.status].includes('ignored')
-	)
-		return;
+	if (item.deleted || [item.status, next.status].includes('ignored')) return;
 
 	const event = attentionTransition(previous, next);
-	if (!event) return;
+	if (!event || isHiddenByReview(item, fields, event === 'done')) return;
 	const note = event === 'done' ? source.latestNote(item.id) : undefined;
 	enqueueTransition(state, item, event, { clock: op.hlc, now, at: clockTime(op.hlc) || now, note });
 }

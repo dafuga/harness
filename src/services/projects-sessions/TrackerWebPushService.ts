@@ -2,10 +2,9 @@
 import { isDeepStrictEqual } from 'node:util';
 import { quietHourBoundary } from '../../helpers/attention-timing/quietHourBoundary';
 import { danielQuietHours } from './tracker-notification-service/notificationRules';
-import { cosSafetyMessage } from './tracker-native-runtime-service/trackerCosDeliveryAsk';
+import { TrackerSafetyPushService } from './TrackerSafetyPushService';
 import { deliverNeedsYou } from './tracker-web-push-service/deliverNeedsYou';
 import {
-	emptyPushState,
 	failedPush,
 	planNeedsYouPush,
 	pushAskKey,
@@ -29,17 +28,18 @@ import type { TrackerWebPushOptions } from './TrackerWebPushService.types';
 export class TrackerWebPushService {
 	/** Kept here too: a state file that cannot be written must never make a send repeat early. */
 	private remembered?: PushState;
-	private safetyState = emptyPushState();
-	private safetyGeneration?: string;
+	private readonly safetyNotice: TrackerSafetyPushService;
 
-	constructor(private readonly options: TrackerWebPushOptions) {}
+	constructor(private readonly options: TrackerWebPushOptions) {
+		this.safetyNotice = new TrackerSafetyPushService(options);
+	}
 
 	/** Does nothing until `tracker web-push setup` has run; the Hub is asked only when due. */
 	async tick(): Promise<void> {
 		const paths = webPushPaths(this.options.database);
 		const config = readWebPushConfig(paths.config);
 		if (!config) return;
-		await this.sendSafetyNotice(config);
+		await this.safetyNotice.send(config);
 		const now = this.options.now();
 		if (quietHourBoundary(now, danielQuietHours) > now) return;
 		const asks = this.options.asks();
@@ -50,33 +50,6 @@ export class TrackerWebPushService {
 		this.remembered = next;
 		if (!isDeepStrictEqual(next, readPushState(paths.state)))
 			writePrivateJsonFile(paths.state, next);
-	}
-
-	private async sendSafetyNotice(config: WebPushConfig): Promise<void> {
-		const { safety, now } = this.options;
-		const notice = safety?.read();
-		if (!notice || (!notice.emergency && quietHourBoundary(now(), danielQuietHours) > now()))
-			return;
-		const { generation } = notice;
-		if (generation !== this.safetyGeneration) this.safetyState = emptyPushState();
-		this.safetyGeneration = generation;
-		if (!this.safetyState.sent.includes(generation)) {
-			if ((this.safetyState.holdUntil ?? 0) > now()) return;
-			const ports = { fetch: this.options.fetch ?? fetch, now: now() };
-			try {
-				const view = await readSenderView(config, ports);
-				this.safetyState = await deliverNeedsYou(config, ports, {
-					view,
-					asks: [],
-					keys: [generation],
-					state: this.safetyState,
-					message: cosSafetyMessage(notice)
-				});
-			} catch {
-				this.safetyState = failedPush(this.safetyState, 'Safety notice delivery failed', now());
-			}
-		}
-		if (this.safetyState.sent.includes(generation)) safety?.complete(generation);
 	}
 
 	private async attempt(config: WebPushConfig, attempt: PushAttempt): Promise<PushState> {

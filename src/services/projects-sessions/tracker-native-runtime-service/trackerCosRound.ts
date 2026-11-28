@@ -1,6 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { publishApprovedReviews, trackerChiefReviewAlerts } from './trackerChiefReviewQueue';
+import { trackerChiefReviewAlerts } from './trackerChiefReviewQueue';
 import { watchCosDelivery } from './trackerCosDelivery';
 import { recordCosReceipts, sendWatchdogAlerts, unsentCosAlerts } from './trackerHostCos';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
@@ -24,7 +24,6 @@ export function trackerCosRound(
 		async run(signal: AbortSignal, urgent: boolean) {
 			if (!urgent && now() - lastRun < interval) return;
 			lastRun = now();
-			publishApprovedReviews(store, lastRun);
 			peerAlerts = (await driver.peers?.(signal)) ?? [];
 			const deliverable = alerts().filter(({ kind }) => kind !== 'missing');
 			const pending = unsentCosAlerts(store, deliverable);

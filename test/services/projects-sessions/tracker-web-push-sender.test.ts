@@ -24,7 +24,13 @@ test('stays silent until set up, and with only pings open never asks the Hub', a
 test('announces a new decision once, repeats every 15 minutes, stops when answered', async () => {
 	const f = await fixture();
 	f.configure();
-	const id = await f.ask('Ship it', 'Deploy now?');
+	const id = await f.ask('Ship it', 'Deploy now?', {}, 'tracker-run-40@fixture-mac');
+	await f.tick();
+	expect(f.world.hubRequests).toEqual([]);
+	await f.api(`/items/${id}/release`, {
+		question: 'Deploy now?',
+		options: [{ label: 'Yes', recommended: true }, { label: 'No' }]
+	});
 	await f.tick();
 	expect(f.world.shown).toEqual(
 		[mac, phone].map((endpoint) => ({

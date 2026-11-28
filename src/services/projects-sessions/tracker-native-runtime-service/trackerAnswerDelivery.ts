@@ -46,13 +46,13 @@ function pendingAnswers(store: TrackerPersistenceService) {
 	return store.database
 		.prepare(
 			`SELECT i.id, i.chief_answer IS NOT NULL AS privateReview, i.answered_at AS answeredAt, json_extract(i.clocks, '$.answer') AS generation,
-				CASE WHEN i.answer_option IS NOT NULL AND coalesce(i.confirm,'') <> 'secret'
+				CASE WHEN i.chief_answer IS NULL AND i.answer_option IS NOT NULL AND coalesce(i.confirm,'') <> 'secret'
 					AND cast(coalesce(i.sensitive,0) AS INTEGER) = 0 THEN i.answer END AS choice,
 				(i.status = 'blocked' AND json_extract(i.clocks,'$.status') >= json_extract(i.clocks,'$.answer'))
 					AS keepBlocked
 			FROM items i
 			WHERE i.deleted = 0 AND coalesce(i.kind,'task') = 'task'
-				AND i.status IN ('open','in_progress','blocked')
+				AND (i.status IN ('open','in_progress','blocked') OR (i.status = 'done' AND i.chief_answer IS NOT NULL))
 				AND i.resolved = 1 AND i.needs_daniel = 0 AND i.answered_at IS NOT NULL
 				AND json_extract(i.clocks,'$.answer') = json_extract(i.clocks,'$.answered_at')
 				AND json_extract(i.clocks,'$.answer') > coalesce(json_extract(i.clocks,'$.question'),'')

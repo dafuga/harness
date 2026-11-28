@@ -73,6 +73,7 @@ async function proveHostCapacity(root: string) {
 function queueCapacityItem(runtime: TrackerNativeRuntimeService, id: string, flagged: boolean) {
 	runtime.store.appendLocal({
 		itemId: id,
+		actor: 'Chief of Staff',
 		fields: {
 			title: id,
 			kind: 'task',

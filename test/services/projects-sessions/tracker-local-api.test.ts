@@ -16,7 +16,7 @@ beforeEach(() => {
 	database = new DatabaseSync(':memory:');
 	store = new TrackerPersistenceService(database, 'fixture-mac', {
 		now: () => now,
-		chiefReview: true
+		chiefReview: 'local'
 	});
 	const recurring = new TrackerRecurringRepository(store);
 	api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {

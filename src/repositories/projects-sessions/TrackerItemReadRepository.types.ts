@@ -112,6 +112,10 @@ export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> & {
 		answer_option?: number;
 		needs_daniel: boolean;
 		resolved: boolean;
+		/** Set while an ask is held from Daniel. */
+		review_status?: string;
+		/** Chief of Staff answered privately; read it with `tracker review`. */
+		chief_answered?: boolean;
 		callback: { target: string; node?: unknown } | null;
 		deleted: boolean;
 	};

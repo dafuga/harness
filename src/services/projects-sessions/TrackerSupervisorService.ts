@@ -9,6 +9,7 @@ import { batchTrackerLaunchEvents } from './tracker-native-runtime-service/track
 import { trackerSupervisorStatus } from './tracker-supervisor-service/trackerSupervisorStatus';
 import { assertTrackerLegacyRollbackSafe } from './tracker-supervisor-service/assertTrackerLegacyRollbackSafe';
 import { trackerHubChiefDelivery } from './tracker-native-runtime-service/trackerHubChiefMessages';
+import { publishApprovedReviews } from './tracker-native-runtime-service/trackerChiefReviewQueue';
 
 /** Owns one node's workers and drains in-flight work before returning database ownership. */
 export class TrackerSupervisorService {
@@ -76,6 +77,7 @@ export class TrackerSupervisorService {
 		const chiefMessages = chiefMessageWorker(this.runtime);
 		const ticks = {
 			...ignoreExpiryWorker(this.runtime),
+			...chiefReviewWorker(this.runtime),
 			...(telemetry && { telemetry }),
 			...(backups.service && { backup: () => backups.service!.tick() }),
 			...webPushWorker(this.runtime),
@@ -101,6 +103,10 @@ export class TrackerSupervisorService {
 
 function ignoreExpiryWorker({ ignoreExpiry }: TrackerNativeRuntimeService) {
 	return ignoreExpiry && { 'ignore-expiry': async () => ignoreExpiry() };
+}
+
+function chiefReviewWorker({ role, store, now }: TrackerNativeRuntimeService) {
+	return role === 'hub' && { 'chief-review': async () => publishApprovedReviews(store, now()) };
 }
 
 /** On the hub: tells Daniel's browsers about open decisions. */

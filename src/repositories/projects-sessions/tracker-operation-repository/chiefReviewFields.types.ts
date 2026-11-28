@@ -7,6 +7,28 @@ export interface ChiefReview {
 	fields: Record<string, unknown>;
 }
 
+/** The item's review columns before the operation is applied. */
+export interface CurrentChiefReview {
+	chief_review: string | null;
+	chief_answer: string | null;
+}
+
+export interface ChiefReviewContext {
+	current?: CurrentChiefReview;
+	migrate?: boolean;
+}
+
+export interface ChiefReviewAsk {
+	flag: boolean;
+	blocker: boolean;
+	text: string;
+}
+
+export interface ChiefReviewHold {
+	current: CurrentChiefReview | undefined;
+	mode: ChiefReview['mode'];
+}
+
 export interface ChiefReviewRow {
 	id: string;
 	title: string;

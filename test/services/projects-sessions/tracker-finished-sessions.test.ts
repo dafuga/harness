@@ -85,7 +85,8 @@ async function verifyLiveAnswerDelivery(hub: TrackerSlotFixture) {
 		});
 		await hub.request(
 			`/items/${item}/answer`,
-			item === 'liveclaude' ? { answer: 'Synthetic free text' } : { option: 1 }
+			item === 'liveclaude' ? { answer: 'Synthetic free text' } : { option: 1 },
+			'Chief of Staff'
 		);
 		await hub.advance(3 * minute);
 		expect.soft(hub.runtime.watchdog!.alerts()).toContainEqual(
@@ -123,7 +124,7 @@ async function verifyAnsweredPaneRetained(hub: TrackerSlotFixture) {
 	await hub.advance(5_000);
 	expect(hub.runs(id)).toEqual([finished('blocked')]);
 	await hub.request(`/items/${id}/flag`, { question: 'Choose the synthetic region' });
-	await hub.request(`/items/${id}/answer`, { answer: 'Use the first region' });
+	await hub.request(`/items/${id}/answer`, { answer: 'Use the first region' }, 'Chief of Staff');
 	await hub.advance(minute);
 	expect(hub.panes()).toContain(name);
 	expect(hub.runs(id)).toEqual([running]);
@@ -144,7 +145,11 @@ test('a blocked run closes and stays down until its answer allows a relaunch', (
 		expect(hub.panes()).toEqual([]);
 		// Model a finished run with no closer receipt, such as after the provider exits itself.
 		hub.database.exec("DELETE FROM meta WHERE k = 'tracker_closed_blocked_run:1'");
-		await hub.request('/items/blocked001/flag', { question: 'Choose the synthetic region' });
+		await hub.request(
+			'/items/blocked001/flag',
+			{ question: 'Choose the synthetic region' },
+			'Chief of Staff'
+		);
 		for (let poll = 0; poll < 15; poll++) await hub.advance(2 * minute);
 		await hub.request('/items/blocked001/answer', { answer: 'Correct, wait', keep_blocked: true });
 		for (let poll = 0; poll < 15; poll++) await hub.advance(2 * minute);

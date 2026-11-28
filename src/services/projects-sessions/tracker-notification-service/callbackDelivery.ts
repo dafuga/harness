@@ -15,7 +15,7 @@ function completionEvents(item: TrackerNotificationItem): Map<string, CallbackEv
 	const events = new Map<string, CallbackEvent[]>();
 	const { status, resolved } = item.clocks;
 	if (item.status === 'done' && status) events.set(status, ['done']);
-	if (item.resolved && resolved && !item.chief_answer)
+	if (item.resolved && resolved)
 		events.set(resolved, [...(events.get(resolved) ?? []), 'resolved']);
 	return events;
 }

@@ -50,7 +50,22 @@ async function proveShownUntilAnswered(hub: TrackerNodeFixture, delivered: () =>
 		...['--recommend', '1']
 	]);
 	expect(asked).toMatchObject({ code: 0, stderr: '' });
-	expect(asked.stdout).toContain('DONE, NEEDS DANIEL');
+	expect(asked.stdout).toContain('awaiting Chief of Staff review');
+	expectEveryView(await trackerNeedsYouViews(hub, id), false);
+	expect(delivered()).not.toContain(question);
+
+	const released = await node.finishedTrackerProcess(hub, [
+		'release',
+		id,
+		question,
+		...flag,
+		'--recommend',
+		'1',
+		'--by',
+		'Chief of Staff'
+	]);
+	expect(released).toMatchObject({ code: 0, stderr: '' });
+	expect(released.stdout).toContain('DONE, NEEDS DANIEL');
 	expectEveryView(await trackerNeedsYouViews(hub, id), true);
 	expect((await node.finishedTrackerProcess(hub, ['digest'])).stdout).toContain(
 		'ITEM DONE, FLAG STILL OPEN'

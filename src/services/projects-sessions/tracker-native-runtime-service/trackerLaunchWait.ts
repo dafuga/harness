@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import { isTrackerAwaitingAnswer } from '../../../utils/projects-sessions/isTrackerAwaitingAnswer';
 import { z } from 'zod';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
@@ -60,7 +61,7 @@ function itemWait(item: TrackerItem): string | undefined {
 	if (item.deleted) return 'item is deleted';
 	if (item.status === 'done' || item.status === 'ignored') return `item is ${item.status}`;
 	if (item.status === 'blocked') return item.blocked_reason ?? 'item is blocked';
-	return item.needs_daniel && !item.resolved ? 'waiting on Daniel' : undefined;
+	return isTrackerAwaitingAnswer(item) ? 'waiting on Daniel' : undefined;
 }
 
 function localWait({ scheduler }: TrackerNativeRuntimeService, item: TrackerItem) {

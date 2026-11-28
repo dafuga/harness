@@ -1,7 +1,7 @@
 // @harness-uid u_tzqekyfiyf
 export interface TrackerSchemaAdapterConfig {
 	now?: () => number;
-	chiefReview?: boolean;
+	chiefReview?: 'local' | 'replicas';
 	databaseId?: () => string;
 }
 
