@@ -34,6 +34,7 @@ async function registered(root: string) {
 	git(root, 'commit', '-m', 'register the owned unit');
 }
 
+// Allow the fixture's 30-second settlement poll to report its own failure after Git setup.
 test('a completed change names the unit owning a changed file and counts the file no unit owns', async () => {
 	const f = await fixture(async (turn) => {
 		await writeFile(join(turn.cwd, 'src/owned.ts'), 'agent revision');
@@ -51,4 +52,4 @@ test('a completed change names the unit owning a changed file and counts the fil
 		'Units changed: [[unit:app.function.owned]]; 1 file outside any unit.'
 	);
 	expect(notice.body).not.toContain('src/new.ts');
-}, 20000);
+}, 60_000);
