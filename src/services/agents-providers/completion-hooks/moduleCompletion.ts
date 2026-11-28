@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { completionHooksConfig } from '../../../configs/agents-providers/completionHooksConfig';
+import type { TaskRunInput } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { taskWrites } from '../module-task-worker-service/taskClaim';
 import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/ModuleTaskWorktreeAdapter';
 import { assessReduction } from './assessReduction';
@@ -12,7 +13,11 @@ import { loadCompletionConfig } from './completionConfig';
 import { askCompletion, completionRecordPath, evaluateCompletion } from './completionRun';
 import type { CompletionCheck, CompletionReceipt } from './completionRun.types';
 import { moduleCompletionMeasurement } from './moduleCompletionMeasurement';
-import type { ModuleCandidate, ModuleCompletionInput } from './moduleCompletion.types';
+import type {
+	ModuleCandidate,
+	ModuleCompletionContext,
+	ModuleCompletionInput
+} from './moduleCompletion.types';
 
 export async function completeModule(input: ModuleCompletionInput): Promise<void> {
 	const { owner, task, result, context } = input;
@@ -106,8 +111,8 @@ async function reviewModule(
 		);
 		await requireSameTree(base, await candidateCheckpoint(input, scratch, base), scratch);
 	}
-	receipt.summary = await askCompletion(
-		context.runner.run.bind(context.runner),
+	const proposedReduction = await moduleReviewVerdict(
+		context,
 		{
 			...result,
 			cwd: scratch.root,
@@ -115,9 +120,10 @@ async function reviewModule(
 			prompt: moduleCheckPrompt(task.module.id, source, tests)
 		},
 		check,
-		!measured
+		receipt
 	);
 	const paths = await taskWrites(scratch, { ...task, sourceCommit: base });
+	if (!proposedReduction) return;
 	if (!measured) {
 		if (paths.length)
 			throw new CompletionCheckError('A read-only completion check changed the worktree.');
@@ -128,6 +134,29 @@ async function reviewModule(
 	if (!accepted || !paths.length) return;
 	await requireSameTree(proposed, await candidateCheckpoint(input, scratch, base), scratch);
 	await promoteModule(candidate, proposed, receipt);
+}
+
+async function moduleReviewVerdict(
+	context: ModuleCompletionContext,
+	input: TaskRunInput,
+	check: CompletionCheck,
+	receipt: CompletionReceipt
+): Promise<boolean> {
+	const measured = check.name === completionHooksConfig.reduce;
+	try {
+		receipt.summary = await askCompletion(
+			context.runner.run.bind(context.runner),
+			input,
+			check,
+			!measured
+		);
+		return true;
+	} catch (error) {
+		if (!measured || !(error instanceof CompletionCheckError) || !error.summary) throw error;
+		receipt.summary = error.summary;
+		receipt.reason = error.message;
+		return false;
+	}
 }
 
 function moduleCheckPrompt(module: string, source: string[], tests: string[]): string {

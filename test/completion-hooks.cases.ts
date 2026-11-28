@@ -95,6 +95,14 @@ test.each(models)(
 	30000
 );
 
+const baselineCheck = {
+	argv: [
+		'bun',
+		'--eval',
+		"process.exit((await Bun.file('src/orders.ts').text()).includes('Comments') ? 0 : 1)"
+	]
+};
+
 test.each([
 	'completion-coverage-loss',
 	'completion-test-failure',
@@ -107,16 +115,7 @@ test.each([
 		try {
 			await f.feature();
 			await writeFile(join(f.root, 'mode'), mode);
-			const check =
-				mode === 'completion-declared-check'
-					? {
-							argv: [
-								'bun',
-								'--eval',
-								"process.exit((await Bun.file('src/orders.ts').text()).includes('Comments') ? 0 : 1)"
-							]
-						}
-					: undefined;
+			const check = mode === 'completion-declared-check' ? baselineCheck : undefined;
 			await f.cli([
 				'add',
 				'--input',

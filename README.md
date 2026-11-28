@@ -1310,8 +1310,8 @@ attempt. The offline Docker pilot does not run host checks. Only enable host
 checks in queues whose executable commands and task code you trust.
 
 A size-reduction candidate is evaluated in a scratch worktree after the original
-passes verification. If the candidate loses coverage, fails tests or fails the
-declared check, Harness records the reason and preserves the verified original.
+passes verification. If the provider rejects the candidate, or it loses coverage
+or fails a check, Harness records the reason and preserves the verified original.
 The original still has to pass its required checks to reach review.
 
 The managed provider runtime has an offline Linux Docker pilot. Set
