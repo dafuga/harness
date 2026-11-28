@@ -37,6 +37,7 @@ async function withPackedConsumer(use: (project: string) => Promise<void>): Prom
 		await writeFile(join(project, 'consumer.ts'), packedApiConsumer);
 		await seedConsumerLock({ project, tarball, consumer: manifest });
 		await runCommand(['bun', 'install', '--prefer-offline'], project);
+		await expectPackedCliKernel(project);
 		await use(project);
 	} finally {
 		await rm(root, { recursive: true, force: true });
@@ -138,7 +139,6 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 	await withPackedConsumer(async (project) => {
 		const types = await expectTypes(project);
 		await expectPackagedSqlite(project);
-		await expectPackedCliKernel(project);
 		const manifest = await readFile('specification/units/function.commit-identity.json', 'utf8');
 		const native = kernelArtifacts().native ?? '';
 		const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
