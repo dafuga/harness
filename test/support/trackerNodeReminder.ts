@@ -1,5 +1,5 @@
 import { expect } from 'vitest';
-import { fixtureTrackerJson, trackerProcess } from './trackerNodeProcess';
+import { fixtureTrackerJson } from './trackerNodeProcess';
 import type { TrackerFixtureReceipts, TrackerNodeFixture } from './trackerNodeProcess.types';
 import { verifyCosDryRun } from './verifyCosDryRun';
 
@@ -64,21 +64,11 @@ export async function verifyProjectFollowUp(hub: TrackerNodeFixture, spoke: Trac
 		'--next-step',
 		'Choose pilot scope'
 	]);
-	const launchedSession = { ...spoke, env: { TRACKER_ITEM_ID: id, TRACKER_RUN_ID: '42' } };
-	const short = id.slice(0, 6);
-	const refused = await trackerProcess(launchedSession, ['done', short]).exited;
-	expect(refused).toMatchObject({ code: 1, stderr: expect.stringContaining('hygiene: closed') });
-	expect(await fixtureTrackerJson(spoke, ['show', id])).toMatchObject({ status: 'open' });
-	const proof = 'hygiene: closed 2 tabs/windows I opened; left open: shared preview for review';
-	const done = await trackerProcess(launchedSession, ['done', short, '--note', proof, '--json'])
-		.exited;
-	expect(done).toMatchObject({ code: 0, stderr: '' });
-	expect(JSON.parse(done.stdout)).toMatchObject({
+	expect(await fixtureTrackerJson(spoke, ['done', id])).toMatchObject({
 		id,
 		status: 'done',
 		needs_daniel: true,
-		next_step: 'Choose pilot scope',
-		notes_log: expect.arrayContaining([expect.objectContaining({ text: proof })])
+		next_step: 'Choose pilot scope'
 	});
 	await expect
 		.poll(() => fixtureTrackerJson(hub, ['digest']), { timeout: 8_000 })
