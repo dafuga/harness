@@ -7,7 +7,11 @@ import { WebSocketServer, type WebSocket } from 'ws';
 import type { ContainerViewerGateConfig } from './ContainerViewerGateService.types';
 import { bridgeScreen } from './container-viewer-gate-service/bridgeScreen';
 import { sendViewerAsset } from './container-viewer-gate-service/sendViewerAsset';
-import { refuse, sendPairingPage } from './container-viewer-gate-service/viewerPages';
+import {
+	refuse,
+	retryViewerNavigation,
+	sendPairingPage
+} from './container-viewer-gate-service/viewerPages';
 import {
 	allowedHost,
 	sameOrigin,
@@ -61,7 +65,7 @@ export class ContainerViewerGateService {
 		}
 		const path = new URL(request.url ?? '/', 'http://viewer').pathname;
 		const access = this.config.devices.access(viewerToken(request));
-		if (access.status !== 'approved') this.pair(path, access, response);
+		if (access.status !== 'approved') this.pair(path, access, request, response);
 		else if (path === '/') response.writeHead(302, { location: start }).end();
 		else await sendViewerAsset(response, this.config.assets, path);
 	}
@@ -69,13 +73,18 @@ export class ContainerViewerGateService {
 	private pair(
 		path: string,
 		access: ReturnType<ContainerViewerGateConfig['devices']['access']>,
+		request: IncomingMessage,
 		response: ServerResponse
 	): void {
 		if (path !== '/') refuse(response, 403);
-		else if (access.status === 'pending') sendPairingPage(response, access.code);
+		else if (request.headers['sec-fetch-site'] === 'cross-site') {
+			// A legacy Strict cookie can be present in the browser but absent from this request.
+			if (request.headers['sec-fetch-dest'] === 'document') retryViewerNavigation(response);
+			else refuse(response, 403);
+		} else if (access.status === 'pending') sendPairingPage(response, access.code);
 		else {
 			const { token, code } = this.config.devices.request();
-			const keep = 'Path=/; HttpOnly; SameSite=Strict; Max-Age=31536000';
+			const keep = 'Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000';
 			sendPairingPage(response, code, `${viewerCookie}=${token}; ${keep}`);
 		}
 	}

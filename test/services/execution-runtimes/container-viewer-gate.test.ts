@@ -81,7 +81,7 @@ async function pair() {
 
 test('an unapproved device sees only its pairing code', async () => {
 	const { first, cookie, code } = await pair();
-	expect(first.cookie).toContain('HttpOnly; SameSite=Strict');
+	expect(first.cookie?.includes('HttpOnly; SameSite=Lax')).toBe(true);
 	expect((await get('/', { cookie })).body).toContain(code);
 	expect((await get('/vnc.html', { cookie })).status).toBe(403);
 	expect(await refused(viewer(cookie))).toBe(true);
@@ -95,7 +95,17 @@ test('approval admits that device to the client and the screen, and revoke remov
 	expect(devices.approve('000000' === code ? '000001' : '000000')).toBe(false);
 	expect(devices.approve(code)).toBe(true);
 	expect(devices.approve(code)).toBe(false);
-	expect((await get('/', { cookie })).status).toBe(302);
+	const link = { 'sec-fetch-site': 'cross-site', 'sec-fetch-dest': 'document' };
+	// A previously issued Strict cookie is omitted on the first request from another site.
+	const legacy = await get('/', link);
+	expect(legacy.cookie === undefined).toBe(true);
+	expect(legacy.body).not.toContain('Approve this device');
+	expect(devices.counts().pending).toBe(0);
+	for (const headers of [{ cookie }, { ...link, cookie }]) {
+		const approved = await get('/', headers);
+		expect(approved.status).toBe(302);
+		expect(approved.cookie === undefined).toBe(true);
+	}
 	expect((await get('/vnc.html', { cookie })).body).toBe('CLIENT');
 	const socket = viewer(cookie);
 	await new Promise((resolve) => socket.once('open', resolve));
@@ -117,6 +127,9 @@ test('rebinding hosts, foreign origins and paths outside the client are refused'
 	devices.approve(code);
 	expect((await get('/', { cookie, host: 'attacker.example' })).status).toBe(403);
 	expect(await refused(viewer(cookie, 'http://attacker.example'))).toBe(true);
+	const frame = await get('/', { 'sec-fetch-site': 'cross-site', 'sec-fetch-dest': 'iframe' });
+	expect(frame.status).toBe(403);
+	expect(frame.cookie === undefined).toBe(true);
 	for (const path of ['/..%2Fsecret.txt', '/%2e%2e/secret.txt', '/link.txt', '/missing']) {
 		const reply = await get(path, { cookie });
 		expect(reply.body).not.toContain('SECRET');
