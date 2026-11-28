@@ -3530,6 +3530,12 @@
 			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
 		},
 		{
+			"from": "packages/hub/src/routes/api/hub-home/homeLivePayload.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/trackerReadTargets",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/trackerReadTargets.ts",
+			"reason": "Hub Home reads the shared Tracker utilization schema through the Reports build alias."
+		},
+		{
 			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminder.svelte",
 			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
 			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
