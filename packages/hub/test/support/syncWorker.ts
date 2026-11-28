@@ -59,7 +59,8 @@ export default {
 			bucket: env.CACHE,
 			accounts: env.ACCOUNT_SYNC,
 			approvalPush: {
-				publicKey: 'fixture-application-key',
+				publicKey:
+					'BP4z9KsN6nGRTbVYI_c7VJSPQTBtkgcy27mlmlMoZIIgDll6e3vCYLocInmYWAmS6TlzAC8wEqKK6PBru3jl7A8',
 				deliver: async () => {
 					await env.DB.prepare(
 						"INSERT INTO fixture_approval_deliveries (kind) VALUES ('device-approval')"

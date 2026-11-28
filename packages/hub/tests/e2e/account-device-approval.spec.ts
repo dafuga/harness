@@ -5,6 +5,7 @@ import { readSealedDeviceSession } from '../../../remote/src/utils/networking-se
 import { bootstrapCandidate } from '../../test/support/syncBootstrapCandidate';
 import { startSync } from '../../test/support/syncFixture';
 import { hostedFixture, ada, clientId } from './hosted-fixture';
+import { pushAddress, pushBrowser } from './hub-web-push-fixture';
 import { shown } from './hub-web-push-page';
 
 test.use({ channel: 'chromium' });
@@ -34,6 +35,7 @@ async function startBrowser(page: Page, origin: string, sessions: string[]) {
 	await page.route('**/api/hub-home', (route) =>
 		route.fulfill({ json: { agents: [], plans: [], scheduled: [], quota: [] } })
 	);
+	await page.route('**/api/push', (route) => route.fulfill({ json: { available: false } }));
 	const installations = new Set<string>();
 	const decisions = { count: 0 };
 	await page.route('**/api/sync/v1/**', async (route) => {
@@ -187,12 +189,21 @@ test('each Hub browser sign-in waits for a verified device approval, including a
 					)
 			)
 		);
-		const decisions = await admitBrowser(fixture, page, testInfo);
 		await page.context().grantPermissions(['notifications']);
-		await page.evaluate(async () => {
-			await navigator.serviceWorker.register('/push-sw.js');
-			await navigator.serviceWorker.ready;
-		});
+		await pushBrowser(page, { permission: 'default' });
+		const decisions = await admitBrowser(fixture, page, testInfo);
+		const enable = page.getByRole('button', { name: 'Turn on notifications' });
+		await capture(page, testInfo, 'approval-push-off');
+		await expect(enable).toBeVisible({ timeout: 4000 });
+		await enable.click();
+		await expect(page.getByText('Device approval notifications on')).toBeVisible();
+		expect(
+			await fixture.db
+				.prepare('SELECT endpoint FROM approval_web_push WHERE account = ?')
+				.bind(account)
+				.first('endpoint')
+		).toBe(pushAddress);
+		await capture(page, testInfo, 'approval-push-on');
 		const target = await context.newPage();
 		const entered = await startBrowser(target, fixture.origin, [requester, returning]);
 		await expect(target.getByRole('heading', waiting)).toBeVisible({ timeout: 15_000 });

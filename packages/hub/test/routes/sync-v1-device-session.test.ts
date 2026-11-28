@@ -14,7 +14,8 @@ const account = 'google:fixture-a';
 const session = 'session-a';
 const otherSession = 'session-a-browser';
 const pushPath = 'approval-push';
-const pushKey = 'fixture-application-key';
+const pushKey =
+	'BP4z9KsN6nGRTbVYI_c7VJSPQTBtkgcy27mlmlMoZIIgDll6e3vCYLocInmYWAmS6TlzAC8wEqKK6PBru3jl7A8';
 let fixture: SyncFixture;
 beforeAll(async () => {
 	fixture = await startSync({ country: 'PT' });
@@ -233,14 +234,19 @@ async function verifyPushRegistration(
 		endpoint: 'https://fcm.googleapis.com/fcm/send/approval-fixture',
 		keys: { p256dh: toBase64Url(device.kemPublic), auth: 'a'.repeat(22) }
 	};
-	expect(await snapshot(await fixture.call(otherSession, 'POST', pushPath, { headers, body }))).toEqual({
-		status: 403, body: { error: 'device-approval-required' }
+	expect(
+		await snapshot(await fixture.call(otherSession, 'POST', pushPath, { headers, body }))
+	).toEqual({
+		status: 403,
+		body: { error: 'device-approval-required' }
 	});
 	expect(await snapshot(await fixture.call(session, 'GET', pushPath, { headers }))).toEqual({
-		status: 200, body: { publicKey: pushKey }
+		status: 200,
+		body: { publicKey: pushKey }
 	});
 	expect(await snapshot(await fixture.call(session, 'POST', pushPath, { headers, body }))).toEqual({
-		status: 200, body: { subscribed: true }
+		status: 200,
+		body: { subscribed: true }
 	});
 }
 

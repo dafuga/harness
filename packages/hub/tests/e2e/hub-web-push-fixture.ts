@@ -12,7 +12,7 @@ const id = createHash('sha256').update(pushAddress).digest('hex');
  * The Hub's notification routes, and a browser whose push service is synthetic: test browsers
  * have none, so only the permission answer and the subscription are stood in for.
  */
-async function pushBrowser(page: Page, { permission, answer }: PushFixtureOptions) {
+export async function pushBrowser(page: Page, { permission, answer }: PushFixtureOptions) {
 	await page.addInitScript(
 		([initial, answered, endpoint]) => {
 			const stored = () => localStorage.getItem('test-push-permission') ?? initial;
