@@ -141,10 +141,7 @@ export class TrackerMachineService {
 		});
 	}
 
-	/**
-	 * Why a peer may not start a due task now. A computer that has never reported resources runs
-	 * an earlier release and keeps its grant; its own launcher still applies its guards.
-	 */
+	/** Older peers without a resource sample keep their grant and apply their own launch guards. */
 	peerStartHold(node: string): string | null {
 		const row = this.rows().find((candidate) => candidate.node === node);
 		if (!row?.sample) return null;
