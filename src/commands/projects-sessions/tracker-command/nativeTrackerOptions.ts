@@ -75,6 +75,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['goal', itemOptions],
 	['update', { ...itemOptions, note: text, 'remind-at': text }],
 	['note', {}],
+	['rule', { from: text, skill: text, limit: text }],
 	['alert', {}],
 	['progress', {}],
 	[

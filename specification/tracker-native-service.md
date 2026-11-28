@@ -618,6 +618,23 @@ host binding. An unavailable destination is retried. Resolving, unflagging,
 unblocking, closing, ignoring or deleting the item cancels its reminder.
 The journal replicates the reminder time and the hub stores delivery receipts.
 
+### Session rules
+
+Run `tracker rule add "<rule>" --from <incident> --skill <name>` to record a
+rule from an incident. Supply one line of operational guidance without
+credentials or private paths. Tracker adds an incident note in the same
+journal operation. Retrying an identical rule on the same node returns the
+existing revision.
+
+Use `tracker rule list` for the current source, with optional `--skill <name>`,
+`--limit <count>`, or `--json`. Tracker sends the rule over its existing signed
+sync link. A disconnected computer sees it after that computer catches up.
+Native Claude and Codex launch briefs show recent rules, point to the full
+source, and tell sessions when to read the installed skills. Future rule
+additions require no software release or service restart. The owner-only
+Hub Project overview shows the five most recent rules from the desktop
+publisher.
+
 ### Legacy CLI inventory and remaining checks
 
 Compared the `7acf3ca` CLI command switch and daemon routes with the native

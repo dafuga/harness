@@ -153,6 +153,22 @@
 			{/each}
 		{/if}
 	{/if}
+	{#if !project && ready?.sessionRules}
+		<hx-section class="po-band" aria-labelledby="po-session-rules">
+			<hx-h2 id="po-session-rules" class="po-band-title">Recent session rules</hx-h2>
+			<DetailList
+				rows={ready.sessionRules}
+				rowKey={(rule) => JSON.stringify([rule.incident, rule.skill, rule.text])}
+				className="po-detail"
+			>
+				{#snippet label(rule)}{rule.skill} · {formatWhen(rule.at)}{/snippet}
+				{#snippet children(rule)}<LinkifiedText text={rule.text} />{/snippet}
+				{#snippet empty()}<EmptyState as="div" className="po-empty"
+						>No session rules yet.</EmptyState
+					>{/snippet}
+			</DetailList>
+		</hx-section>
+	{/if}
 {/snippet}
 
 <!-- Standalone (the native renderer) is the whole document: its own main and Harness link. Inside

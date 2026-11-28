@@ -27,6 +27,7 @@
 			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerPlanningRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerRequest.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerRule.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerRunRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerTimedItemRequest.ts",
 			"src/commands/projects-sessions/tracker-command/printNativeTrackerAddHint.ts",
@@ -92,6 +93,8 @@
 			"nativeTrackerPlanningRequest",
 			"nativeTrackerCommands",
 			"nativeTrackerArgs",
+			"nativeTrackerRuleRequest",
+			"formatNativeTrackerRules",
 			"nativeTrackerRunRequest",
 			"nativeTrackerQuery",
 			"nativeTrackerTimedItemRequest",
@@ -354,6 +357,21 @@
 				"required": true
 			},
 			{
+				"name": "nativeTrackerRuleRequest.[verb, ...words]",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerRuleRequest.values",
+				"type": "Record<string, string | boolean | undefined>",
+				"required": true
+			},
+			{
+				"name": "formatNativeTrackerRules.data",
+				"type": "unknown",
+				"required": true
+			},
+			{
 				"name": "nativeTrackerRunRequest.command",
 				"type": "string",
 				"required": true
@@ -609,6 +627,14 @@
 			{
 				"name": "nativeTrackerArgs",
 				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerRuleRequest",
+				"type": "NativeTrackerRequest"
+			},
+			{
+				"name": "formatNativeTrackerRules",
+				"type": "string"
 			},
 			{
 				"name": "nativeTrackerRunRequest",
@@ -1314,6 +1340,52 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "nativeTrackerRuleRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerRuleRequest.[verb, ...words]",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerRuleRequest.values",
+						"type": "Record<string, string | boolean | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerRuleRequest",
+						"type": "NativeTrackerRequest"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "formatNativeTrackerRules",
+				"inputs": [
+					{
+						"name": "formatNativeTrackerRules.data",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatNativeTrackerRules",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "nativeTrackerRunRequest",
 				"inputs": [
 					{
@@ -1722,6 +1794,11 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-run-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-session-rule",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -11,6 +11,7 @@ export function wantsNativeTrackerHelp(args: string[]): boolean {
 export function printNativeTrackerHelp(): number {
 	console.log(
 		`Usage: tracker <command> [arguments] [--json]\nNative commands: ${nativeTrackerCommands}\n` +
+			'Session rules: rule add "<rule>" --from <incident> --skill <name> | rule list [--skill <name>] [--limit <count>]\n' +
 			'Local: instructions [--check] [file...]\n' +
 			'Run work on another computer: host-work <ssh|colima> <computer> -- <command> [args...]\n' +
 			'Subcommands: autolaunch [status|dry-run|pause|resume|clear-quota <codex|claude>], ' +

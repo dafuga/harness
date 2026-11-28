@@ -3,6 +3,9 @@ import { createHubHomePublisher } from './createHubHomePublisher';
 import { liveQuotaSources } from './liveQuotaSources';
 import type { TrackerOverviewFactoryInput } from './TrackerOverviewPublisher.types';
 import { TrackerOverviewPublisher } from './TrackerOverviewPublisher';
+import { getTrackerJson } from '$reports/lib/projects-sessions/project-overview/trackerJsonRead';
+import { TRACKER_GET_URLS } from '$reports/lib/projects-sessions/project-overview/trackerReadTargets';
+import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 import { readProjectOverview } from '$reports/lib/projects-sessions/project-overview/readProjectOverview';
 
 /**
@@ -18,11 +21,21 @@ export function createTrackerOverviewPublisher(
 	const publisher = new TrackerOverviewPublisher({
 		authority: input.authority,
 		ownerActorId,
-		read: input.read ?? (() => readProjectOverview()),
+		read: input.read ?? readOwnerOverview,
 		publishHome:
 			input.env.HARNESS_HUB_HOME_PUBLISH === '1'
 				? createHubHomePublisher(input.env.HARNESS_HUB_HOME_PROVIDER_FILE, liveQuotaSources())
 				: undefined
 	});
 	return publisher;
+}
+
+async function readOwnerOverview(): Promise<OverviewSnapshot> {
+	const [snapshot, rules] = await Promise.all([
+		readProjectOverview(),
+		getTrackerJson(fetch, TRACKER_GET_URLS.sessionRules).catch(() => null)
+	]);
+	return snapshot.status === 'ready' && Array.isArray(rules)
+		? { ...snapshot, sessionRules: rules }
+		: snapshot;
 }

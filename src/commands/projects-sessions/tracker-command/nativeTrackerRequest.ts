@@ -1,5 +1,6 @@
 // @harness-uid u_r7qgepnoax
 import { parseArgs } from 'node:util';
+import { nativeTrackerRuleRequest } from './nativeTrackerRule';
 import { nativeTrackerTimedItemRequest } from './nativeTrackerTimedItemRequest';
 import { nativeTrackerPlanningRequest } from './nativeTrackerPlanningRequest';
 import type { NativeTrackerAskValues, NativeTrackerRequest } from './nativeTrackerCli.types';
@@ -90,6 +91,8 @@ function itemQuery(
 				}
 			};
 		}
+		case 'rule':
+			return nativeTrackerRuleRequest(words, values);
 		case 'list':
 			if (words.length) throw new TypeError('usage: tracker list [options]');
 			return { method: 'GET', path: '/items' + query(fields) };

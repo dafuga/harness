@@ -1,4 +1,6 @@
 // @harness-uid u_2aj7ipsk7y
+import type { TrackerSessionRule } from '../../../../../../src/repositories/projects-sessions/TrackerSessionRuleRepository.types';
+
 /** The five project states, in the order they are picked. */
 export type ProjectState = 'needs-you' | 'blocked' | 'active' | 'quiet' | 'done';
 
@@ -54,5 +56,6 @@ export type OverviewSnapshot =
 			projects: OverviewCard[];
 			machines: OverviewMachine[];
 			liveSessions: number;
+			sessionRules?: TrackerSessionRule[];
 	  }
 	| { status: 'unavailable' };

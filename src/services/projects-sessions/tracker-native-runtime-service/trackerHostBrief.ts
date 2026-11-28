@@ -9,6 +9,11 @@ import type { TrackerRunReceipt } from '../../agents-providers/TrackerDispatcher
 import type { TrackerHostTarget } from './trackerHostLaunch.types';
 import { floorReasons, projectOf } from '../../../utils/agents-providers/classifyTrackerTask';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
+import {
+	TrackerSessionRuleRepository,
+	trackerRecentRuleCount
+} from '../../../repositories/projects-sessions/TrackerSessionRuleRepository';
+import type { TrackerSessionRule } from '../../../repositories/projects-sessions/TrackerSessionRuleRepository.types';
 import { trackerAskOptionsRule } from './trackerAskOptionsRule';
 import { trackerAutomationBrowserRule } from './trackerAutomationBrowserRule';
 import { trackerDoneProofRule } from './trackerDoneProofRule';
@@ -40,14 +45,17 @@ export function formatTrackerHostBrief(
 	{
 		recovery = false,
 		cpuBudget,
-		launch
-	}: { recovery?: boolean; cpuBudget?: number; launch?: string } = {}
+		launch,
+		rules = []
+	}: { recovery?: boolean; cpuBudget?: number; launch?: string; rules?: TrackerSessionRule[] } = {}
 ): string {
 	const id = item.id.slice(0, 6);
 	const risks = floorReasons(item);
 	const notes = item.notes_log.slice(-10).map(({ at, text }) => `- ${at} ${text.slice(0, 1200)}`);
 	return [
 		trackerSecretSafetyRule,
+		'',
+		trackerSessionRulesBrief(rules),
 		'',
 		trackerAskOptionsRule,
 		'',
@@ -85,6 +93,20 @@ export function formatTrackerHostBrief(
 		.filter((line) => line !== null && line !== undefined && line !== false)
 		.join('\n');
 }
+export function trackerHostRules(store: TrackerPersistenceService): TrackerSessionRule[] {
+	return new TrackerSessionRuleRepository(store.database).list().slice(0, trackerRecentRuleCount);
+}
+
+function trackerSessionRulesBrief(rules: TrackerSessionRule[]): string {
+	return [
+		'## Session rules',
+		'Read the current rule set with `tracker rule list` before acting. Tracker syncs these rules between computers.',
+		'Read the relevant installed skills before the action. In Claude, use `~/.claude/skills`; in Codex, use `~/.codex/skills`.',
+		'Read `secret-safe-computer-use/SKILL.md` before credential work and `computer-hygiene/SKILL.md` before using browsers, apps, simulators or background processes.',
+		...rules.map(({ incident, skill, text }) => `- [${skill}, incident ${incident}] ${text}`)
+	].join('\n');
+}
+
 function trackerResumeLines(item: TrackerItem, recovery: boolean) {
 	if (!recovery) return [];
 	const handoff = item.notes_log

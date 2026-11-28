@@ -2,7 +2,7 @@
 	"name": "vj5xv5-session-rules",
 	"goal": "Record incident rules once in the signed Tracker journal, then verify that later Claude and Codex launches and Hub read the updated rules without restarting Tracker.",
 	"createdAt": "2026-11-28T11:52:26.524Z",
-	"updatedAt": "2026-11-28T11:53:35.474Z",
+	"updatedAt": "2026-11-28T12:00:41.417Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T11:57:30.187Z",
+			"evidence": "0bc7b059c5: focused Vitest failed (2/2). CLI returned no JSON for rule list since the command is absent; native brief had no Session rules section."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T11:57:32.370Z",
+			"evidence": "Use an indexed v1 field on a signed journal operation, atomically append its visible incident note, and read the local projection at each launch. Publish recent entries through the owner-only Hub overview."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T12:00:41.417Z",
+			"evidence": "Rule CLI writes a v1 journal entry plus incident note, each native brief reads current local rules, and Hub owner overview publishes and renders the latest five."
 		},
 		{
 			"id": "green",

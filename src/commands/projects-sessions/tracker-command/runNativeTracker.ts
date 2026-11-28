@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import { formatNativeTrackerRules } from './nativeTrackerRule';
 import { lstatSync } from 'node:fs';
 import { homedir, userInfo } from 'node:os';
 import { join } from 'node:path';
@@ -162,6 +163,9 @@ function renderNativeTracker(
 		return;
 	}
 	switch (command) {
+		case 'rule':
+			console.log(formatNativeTrackerRules(data));
+			return;
 		case 'job':
 			console.log(formatNativeTrackerJob(options.first, data as NativeTrackerJobResponse));
 			return;

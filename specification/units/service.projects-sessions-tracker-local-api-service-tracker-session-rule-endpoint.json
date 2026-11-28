@@ -1,0 +1,133 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-local-api-service-tracker-session-rule-endpoint",
+	"uid": "u_wqffa5k52u",
+	"kind": "service",
+	"title": "trackerSessionRuleEndpoint",
+	"responsibility": "Owns the trackerSessionRuleEndpoint service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-local-api-service/trackerSessionRuleEndpoint.ts"
+		],
+		"symbols": ["trackerSessionRuleEndpoint"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerSessionRuleEndpoint.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerSessionRuleEndpoint.store",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "trackerSessionRuleEndpoint.items",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "trackerSessionRuleEndpoint.actor",
+				"type": "string | null",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerSessionRuleEndpoint",
+				"type": "Promise<Response>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerItemReadError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerSessionRuleEndpoint",
+				"inputs": [
+					{
+						"name": "trackerSessionRuleEndpoint.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerSessionRuleEndpoint.store",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "trackerSessionRuleEndpoint.items",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "trackerSessionRuleEndpoint.actor",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSessionRuleEndpoint",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemReadError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-session-rule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api-service-tracker-local-response",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-local-api-service/trackerSessionRuleEndpoint.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-local-api-service/trackerSessionRuleEndpoint.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

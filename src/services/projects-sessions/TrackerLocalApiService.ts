@@ -7,10 +7,12 @@ import {
 	itemAction,
 	itemMutation,
 	itemMutationContext,
+	readTrackerActor,
 	readItemBody,
 	recordTrackerSessionItem,
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
+import { trackerSessionRuleEndpoint } from './tracker-local-api-service/trackerSessionRuleEndpoint';
 import { trackerHostWorkEndpoint } from './tracker-local-api-service/trackerHostWorkEndpoint';
 import { readTrackerMachineEndpoint } from './tracker-local-api-service/readTrackerMachineEndpoint';
 import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
@@ -140,7 +142,7 @@ export class TrackerLocalApiService {
 		if (!action && !manual) return undefined;
 		const input = await readItemBody(request);
 		request.signal.throwIfAborted();
-		const actor = readActor(request.headers);
+		const actor = readTrackerActor(request.headers);
 		const context = itemMutationContext(this.store, this.items, this.options, verb === 'launch');
 		const body = trackerMutationBody(input, action, actor, Boolean(context.planLaunch));
 		const plan = action
@@ -167,12 +169,14 @@ function trackerSpecialResponse(
 ) {
 	if (parts.length === 1 && parts[0] === 'host-work' && dependencies.options.machines)
 		return trackerHostWorkEndpoint(request, dependencies.options.machines);
+	if (parts.length === 1 && parts[0] === 'rules')
+		return trackerSessionRuleEndpoint(request, dependencies, readTrackerActor(request.headers));
 	if (parts[0] === 'jobs') return trackerJobResponse(request, parts, dependencies);
 	if (isTrackerAlert(request, parts)) return trackerAlertResponse(request, parts[1], dependencies);
 	if (parts[0] === 'messages')
 		return trackerMessageEndpoint(request, parts, {
 			...dependencies,
-			actor: readActor(request.headers)
+			actor: readTrackerActor(request.headers)
 		}).then((result) =>
 			result
 				? trackerResponse(result.status, result.body)
@@ -188,7 +192,7 @@ function trackerItemSpecialResponse(
 ): Promise<Response> | undefined {
 	if (!/^items\/[^/]+\/(?:inbox|stage|artifact|reject)$/.test(parts.join('/'))) return undefined;
 	const [, id, verb] = parts;
-	const actor = readActor(request.headers);
+	const actor = readTrackerActor(request.headers);
 	if (verb === 'inbox')
 		return trackerInboxItem(request, id, { ...dependencies, actor }).then((item) =>
 			trackerResponse(200, item)
@@ -206,14 +210,4 @@ function trackerItemSpecialResponse(
 			now: dependencies.options.now?.() ?? Date.now()
 		}
 	).then((item) => trackerResponse(200, item));
-}
-
-function readActor(headers: Headers): string | null {
-	const actor = headers
-		.get('x-tracker-as')
-		?.replace(/[^\P{Cc}\u0080-\u009f]/gu, '')
-		.trim()
-		.slice(0, 80);
-	if (!actor) return null;
-	return actor;
 }

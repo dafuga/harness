@@ -41,6 +41,9 @@
 			"ProjectOverview.page",
 			"ProjectOverview.label",
 			"ProjectOverview.children",
+			"ProjectOverview.empty",
+			"ProjectOverview.label",
+			"ProjectOverview.children",
 			"ProjectOverviewProps",
 			"ProjectOverviewDetailRow"
 		]
@@ -100,6 +103,54 @@
 				"outputs": [
 					{
 						"name": "ProjectOverview.page",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ProjectOverview.label",
+				"inputs": [
+					{
+						"name": "ProjectOverview.label.rule",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectOverview.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ProjectOverview.children",
+				"inputs": [
+					{
+						"name": "ProjectOverview.children.rule",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectOverview.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ProjectOverview.empty",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectOverview.empty",
 						"type": "markup"
 					}
 				],
