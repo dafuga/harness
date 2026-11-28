@@ -15,7 +15,8 @@
 			"BrowserApprovalState.review",
 			"BrowserApprovalState.reset",
 			"BrowserApprovalState.push",
-			"BrowserApprovalState.forget"
+			"BrowserApprovalState.forget",
+			"createBrowserApprovalStore"
 		]
 	},
 	"contract": {
@@ -72,6 +73,10 @@
 			{
 				"name": "BrowserApprovalState.forget",
 				"type": "Promise<void>"
+			},
+			{
+				"name": "createBrowserApprovalStore",
+				"type": "BrowserApprovalState"
 			}
 		],
 		"errors": [
@@ -180,6 +185,18 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "createBrowserApprovalStore",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "createBrowserApprovalStore",
+						"type": "BrowserApprovalState"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []

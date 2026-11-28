@@ -1,21 +1,23 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { SealedEnrollmentReviewService } from '../../../remote/src/services/networking-security/SealedEnrollmentReviewService';
-import { chainEntryHash } from '../../../remote/src/utils/networking-security/sealedChainEntry';
 import { SealedEnrollmentRequestService } from '../../../remote/src/services/networking-security/SealedEnrollmentRequestService';
 import type { EnrollmentProgress } from '../../../remote/src/services/networking-security/SealedEnrollmentRequestService.types';
 import { sealedDevice } from '../../../remote/src/utils/networking-security/sealedDevice';
 import { toBase64Url } from '../../../remote/src/utils/networking-security/remoteBytes';
 import { readSealedDeviceSession } from '../../../remote/src/utils/networking-security/readSealedDeviceSession';
-import { bootstrapCandidate } from '../support/syncBootstrapCandidate';
 import { startSync } from '../support/syncFixture';
 import type { SyncFixture } from '../support/syncFixture.types';
+import {
+	signedIn,
+	snapshot,
+	verifyPushDelivery,
+	verifyPushRegistration,
+	verifySignedOutPushDelivery
+} from '../support/syncApprovalPushAssertions';
 
 const account = 'google:fixture-a';
 const session = 'session-a';
 const otherSession = 'session-a-browser';
-const pushPath = 'approval-push';
-const pushKey =
-	'BP4z9KsN6nGRTbVYI_c7VJSPQTBtkgcy27mlmlMoZIIgDll6e3vCYLocInmYWAmS6TlzAC8wEqKK6PBru3jl7A8';
 let fixture: SyncFixture;
 beforeAll(async () => {
 	fixture = await startSync({ country: 'PT' });
@@ -34,27 +36,8 @@ afterAll(async () => {
 	await fixture?.stop();
 });
 
-async function snapshot(response: Response) {
-	return { status: response.status, body: (await response.json()) as unknown };
-}
-
-async function signedIn() {
-	const candidate = await bootstrapCandidate(account);
-	const { headers, admin, body } = candidate;
-	const first = await fixture.call(session, 'GET', 'device-session', { headers });
-	expect(await snapshot(first)).toEqual({ status: 200, body: { state: 'first-device' } });
-	const response = await fixture.call(session, 'POST', 'bootstrap', candidate);
-	expect(response.status).toBe(201);
-	return {
-		device: admin,
-		headers,
-		pin: { seq: 0, head: await chainEntryHash(body.entry) },
-		scope: body.grants[0].scope
-	};
-}
-
 test('an enrolled identifier cannot approve another Google session', async () => {
-	const { device, headers, scope, pin } = await signedIn();
+	const { device, headers, scope, pin } = await signedIn(fixture, account, session);
 	const path = `ops/${scope}`;
 	const projects = () =>
 		fetch(fixture.origin + '/api/projects', { headers: { 'X-Test-Session': otherSession } });
@@ -92,7 +75,7 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 		device
 	);
 	expect(approved).toBe('approved');
-	await verifyPushRegistration(device, headers);
+	await verifyPushRegistration(fixture, { session, otherSession }, device, headers);
 	const held = await fixture.call(session, 'GET', 'device-session', { headers });
 	expect(await snapshot(held)).toEqual({ status: 200, body: { state: 'approved' } });
 	expect((await fixture.call(session, 'GET', path, { headers })).status).toBe(200);
@@ -142,7 +125,7 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 		code: null
 	});
 	expect(progress.mailbox).toBe(id);
-	await verifyPushDelivery(1);
+	await verifyPushDelivery(fixture, 1);
 	const visible = await fixture.call(session, 'GET', 'enroll', { headers });
 	expect(await visible.json()).toEqual({
 		requests: [
@@ -224,66 +207,5 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	expect(await (await fixture.call(session, 'GET', 'enroll', { headers })).json()).toEqual({
 		requests: []
 	});
-	await verifySignedOutPushDelivery(browserRequest);
+	await verifySignedOutPushDelivery(fixture, { account, session }, browserRequest);
 }, 60_000);
-
-async function verifyPushRegistration(
-	device: Awaited<ReturnType<typeof sealedDevice>>,
-	headers: Record<string, string>
-) {
-	const body = {
-		endpoint: 'https://fcm.googleapis.com/fcm/send/approval-fixture',
-		keys: { p256dh: toBase64Url(device.kemPublic), auth: 'a'.repeat(22) }
-	};
-	expect(
-		await snapshot(await fixture.call(otherSession, 'POST', pushPath, { headers, body }))
-	).toEqual({
-		status: 403,
-		body: { error: 'device-approval-required' }
-	});
-	expect(
-		await snapshot(
-			await fixture.call(session, 'POST', pushPath, {
-				headers: { ...headers, Origin: 'https://unrelated.example' },
-				body
-			})
-		)
-	).toEqual({ status: 403, body: { error: 'origin-denied' } });
-	expect(await snapshot(await fixture.call(session, 'GET', pushPath, { headers }))).toEqual({
-		status: 200,
-		body: { publicKey: pushKey }
-	});
-	expect(await snapshot(await fixture.call(session, 'POST', pushPath, { headers, body }))).toEqual({
-		status: 200,
-		body: { subscribed: true }
-	});
-}
-
-async function verifySignedOutPushDelivery(
-	request: (path: string, init: RequestInit) => Promise<Response>
-) {
-	await fixture.db
-		.prepare('UPDATE auth_sessions SET revoked_at = ? WHERE id_hash = ?')
-		.bind(Date.now(), 'test-' + session)
-		.run();
-	const device = await sealedDevice();
-	const flow = new SealedEnrollmentRequestService({
-		account,
-		device,
-		signal: new AbortController().signal,
-		request
-	});
-	const nonce = crypto.getRandomValues(new Uint8Array(32));
-	expect(await flow.resolve({ nonce }, async () => {})).toEqual({
-		state: 'waiting-for-approval',
-		code: null
-	});
-	await verifyPushDelivery(1);
-}
-
-async function verifyPushDelivery(count: number) {
-	const rows = await fixture.db
-		.prepare('SELECT kind FROM fixture_approval_deliveries ORDER BY rowid')
-		.all<{ kind: string }>();
-	expect(rows.results).toEqual(Array.from({ length: count }, () => ({ kind: 'device-approval' })));
-}

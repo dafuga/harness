@@ -6,7 +6,7 @@ import { bootstrapCandidate } from '../../test/support/syncBootstrapCandidate';
 import { startSync } from '../../test/support/syncFixture';
 import { hostedFixture, ada, clientId } from './hosted-fixture';
 import { pushAddress, pushBrowser } from './hub-web-push-fixture';
-import { shown } from './hub-web-push-page';
+import { captureDeviceApproval, shown } from './hub-web-push-page';
 
 test.use({ channel: 'chromium' });
 
@@ -61,19 +61,6 @@ async function startBrowser(page: Page, origin: string, sessions: string[]) {
 	return { installations, state, decisions };
 }
 
-async function capture(page: Page, testInfo: TestInfo, state: string) {
-	if (process.env.TAKE_SCREENSHOT !== 'true') return;
-	for (const width of [390, 768, 1440]) {
-		await page.setViewportSize({ width, height: 900 });
-		await page.evaluate(async () => {
-			await document.fonts.ready;
-			const visible = [...document.images].filter((image) => image.checkVisibility());
-			await Promise.all(visible.map((image) => image.decode()));
-		});
-		await page.screenshot({ path: testInfo.outputPath(`hub-device-${state}-${width}.png`) });
-	}
-}
-
 async function admitBrowser(
 	fixture: Awaited<ReturnType<typeof startSync>>,
 	page: Page,
@@ -90,7 +77,7 @@ async function admitBrowser(
 	const entered = await startBrowser(page, fixture.origin, [browser]);
 	const waitingHeading = page.getByRole('heading', waiting);
 	await expect(waitingHeading.or(page.locator(home))).toBeVisible();
-	await capture(page, testInfo, 'waiting');
+	await captureDeviceApproval(page, testInfo, 'waiting');
 	await expect(waitingHeading).toBeVisible();
 	await expect(page.locator(home)).toHaveCount(0);
 	expect(entered.state.calls.some((call) => call.path === '/api/projects')).toBe(false);
@@ -131,10 +118,10 @@ async function decideFromBrowser(
 ) {
 	const inbox = page.getByRole('region', { name: 'Device approvals' });
 	const review = inbox.getByRole('button', { name: 'Review Harness Hub' });
-	await capture(page, testInfo, 'inbox');
+	await captureDeviceApproval(page, testInfo, 'inbox');
 	await expect(review).toBeVisible({ timeout: 19_000 });
 	await expect
-		.poll(() => shown(page))
+		.poll(() => shown(page, '/device-approval-notifications/'))
 		.toEqual([
 			{
 				title: 'Harness',
@@ -143,12 +130,12 @@ async function decideFromBrowser(
 				data: null
 			}
 		]);
-	await capture(page, testInfo, 'inbox');
+	await captureDeviceApproval(page, testInfo, 'inbox');
 	await review.click();
 	const dialog = page.getByRole('dialog', { name: 'Approve Harness Hub' });
 	const code = await dialog.getByText(/^\d{6}$/).textContent();
 	await expect(target.getByText(code!, { exact: true })).toBeVisible();
-	await capture(page, testInfo, 'compare');
+	await captureDeviceApproval(page, testInfo, 'compare');
 	const approve = dialog.getByRole('button', { name: 'Approve device' });
 	await approve.dispatchEvent('click');
 	await expect(dialog.getByRole('alert')).toHaveText(
@@ -158,7 +145,7 @@ async function decideFromBrowser(
 	await approve.click();
 	await expect(page.getByText('Device approved.', { exact: true })).toBeVisible();
 	await expect(target.locator(home)).toBeVisible();
-	await capture(page, testInfo, 'approved');
+	await captureDeviceApproval(page, testInfo, 'approved');
 	expect(decisions.count).toBe(1);
 }
 
@@ -193,8 +180,11 @@ test('each Hub browser sign-in waits for a verified device approval, including a
 		await pushBrowser(page, { permission: 'default' });
 		const decisions = await admitBrowser(fixture, page, testInfo);
 		const enable = page.getByRole('button', { name: 'Turn on notifications' });
-		await capture(page, testInfo, 'approval-push-off');
-		await expect(enable).toBeVisible({ timeout: 4000 });
+		try {
+			await expect(enable).toBeVisible({ timeout: 4000 });
+		} finally {
+			await captureDeviceApproval(page, testInfo, 'approval-push-off');
+		}
 		await enable.click();
 		await expect(page.getByText('Device approval notifications on')).toBeVisible();
 		expect(
@@ -203,7 +193,7 @@ test('each Hub browser sign-in waits for a verified device approval, including a
 				.bind(account)
 				.first('endpoint')
 		).toBe(pushAddress);
-		await capture(page, testInfo, 'approval-push-on');
+		await captureDeviceApproval(page, testInfo, 'approval-push-on');
 		const target = await context.newPage();
 		const entered = await startBrowser(target, fixture.origin, [requester, returning]);
 		await expect(target.getByRole('heading', waiting)).toBeVisible({ timeout: 15_000 });
@@ -223,7 +213,7 @@ test('each Hub browser sign-in waits for a verified device approval, including a
 		await deny.click({ timeout: 19_000 });
 		await expect(page.getByText('Device denied.', { exact: true })).toBeVisible();
 		await expect(target.getByRole('heading', { name: 'Device approval denied' })).toBeVisible();
-		await capture(page, testInfo, 'denied');
+		await captureDeviceApproval(page, testInfo, 'denied');
 	} finally {
 		await context.close();
 		await fixture.stop();

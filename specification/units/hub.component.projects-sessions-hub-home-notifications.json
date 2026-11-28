@@ -26,8 +26,8 @@
 			{
 				"name": "HubHomeNotifications.owner",
 				"type": "boolean",
-				"description": "Whether to load the Tracker owner's decision notification settings.",
-				"required": true
+				"required": true,
+				"description": "Whether to load the Tracker owner's decision notification settings."
 			}
 		],
 		"outputs": [

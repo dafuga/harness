@@ -19,35 +19,52 @@ export async function enroll(call: SyncCall): Promise<Response> {
 		return id === undefined ? forward(call, path) : readOne(call, path);
 	const value = await readSyncJson(call.request, stepBytes);
 	if (!isObject(value)) return syncProblem(400, 'invalid-input');
-	const display = id === undefined ? approvalDisplay(call.request, value.platform) : undefined;
-	const valid = id === undefined ? isOpening(value, display) : isStep(value, call.device);
-	if (!valid) return syncProblem(400, 'invalid-input');
-	if (id !== undefined && ('approver' in value || 'entryHash' in value || value.deny === true)) {
-		const refusal = await requireEnrollmentApprover(call, value.deny === true);
+	return id === undefined ? openEnrollment(call, path, value) : writeStep(call, path, value);
+}
+
+async function openEnrollment(call: SyncCall, path: string, value: Record<string, unknown>) {
+	const display = approvalDisplay(call.request, value.platform);
+	if (!isOpening(value, display)) return syncProblem(400, 'invalid-input');
+	const recoverable = await isRecoverableAccount(call);
+	const { kemPublic, signingPublic, commit } = value;
+	const response = await postEnrollment(
+		call,
+		path,
+		{ kemPublic, signingPublic, commit },
+		{
+			display: recoverable ? display : undefined,
+			owner: recoverable ? await requesterBinding(call) : undefined
+		}
+	);
+	if (recoverable && response.status === 201) await notifyApprovalDevices(call);
+	return response;
+}
+
+async function writeStep(call: SyncCall, path: string, value: Record<string, unknown>) {
+	if (!isStep(value, call.device)) return syncProblem(400, 'invalid-input');
+	const denied = value.deny === true;
+	if ('approver' in value || 'entryHash' in value || denied) {
+		const refusal = await requireEnrollmentApprover(call, denied);
 		if (refusal) return refusal;
 	}
 	// Give retried openings and claims the same wire representation.
-	const { kemPublic, signingPublic, commit } = value;
-	const body =
-		id === undefined
-			? { kemPublic, signingPublic, commit }
-			: 'approver' in value
-				? { approver: value.approver, nonce: value.nonce }
-				: value;
-	const recoverable = id === undefined && (await isRecoverableAccount(call));
-	const bound = recoverable || (id !== undefined && typeof value.nonce === 'string');
-	const response = await forward(call, path, {
-		method: 'POST',
-		body: JSON.stringify({
-			by: call.device,
-			body: JSON.stringify(body),
-			display: recoverable ? display : undefined,
-			owner: bound ? await requesterBinding(call) : undefined,
-			decision: value.deny === true ? { kind: 'deny' } : undefined
-		})
+	const body = 'approver' in value ? { approver: value.approver, nonce: value.nonce } : value;
+	return postEnrollment(call, path, body, {
+		owner: typeof value.nonce === 'string' ? await requesterBinding(call) : undefined,
+		decision: denied ? { kind: 'deny' } : undefined
 	});
-	if (recoverable && response.status === 201) await notifyApprovalDevices(call);
-	return response;
+}
+
+function postEnrollment(
+	call: SyncCall,
+	path: string,
+	body: Record<string, unknown>,
+	metadata: Record<string, unknown>
+) {
+	return forward(call, path, {
+		method: 'POST',
+		body: JSON.stringify({ by: call.device, body: JSON.stringify(body), ...metadata })
+	});
 }
 
 async function readOne(call: SyncCall, path: string): Promise<Response> {

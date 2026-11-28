@@ -1,6 +1,6 @@
 // @harness-uid u_yz656jlmvp
 import type { BrowserAuth } from '../../../utils/accounts-access/browserAuth';
-import { BrowserApprovalState } from './browserApproval.svelte';
+import { createBrowserApprovalStore } from './browserApproval.svelte';
 import type { AuthStatus } from '../../../models/accounts-access/HubAuth.types';
 
 /** Who the server says is signed in. Null while that is not known; the page never assumes. */
@@ -8,7 +8,7 @@ class SessionState {
 	status = $state<AuthStatus | null>(null);
 	error = $state('');
 	busy = $state(false);
-	readonly deviceApproval = new BrowserApprovalState();
+	readonly deviceApproval = createBrowserApprovalStore();
 	/** Counts the questions asked; an answer to an earlier one is older than what is shown. */
 	private asked = 0;
 	/** The newest question, so that a caller who was overtaken can wait for its answer. */

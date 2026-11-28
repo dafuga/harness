@@ -84,3 +84,7 @@ export class BrowserApprovalState {
 		return this.service.forget(account);
 	}
 }
+
+export function createBrowserApprovalStore(): BrowserApprovalState {
+	return new BrowserApprovalState();
+}

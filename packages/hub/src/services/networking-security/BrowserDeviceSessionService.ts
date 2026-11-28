@@ -27,7 +27,7 @@ export class BrowserDeviceSessionService {
 	constructor(private readonly fetcher: typeof fetch = fetch) {}
 
 	resolve(account: string, signal: AbortSignal): Promise<EnrollmentResolution> {
-		return this.withDatabase(account, signal, async (db) => {
+		return withDatabase(account, signal, async (db) => {
 			const { device, progress } = await resolveBrowserEnrollment(db, account);
 			const flow = new SealedEnrollmentRequestService(this.transport(account, device, signal));
 			return flow.resolve(progress, (next) =>
@@ -44,7 +44,7 @@ export class BrowserDeviceSessionService {
 		signal: AbortSignal,
 		call: DeviceApprovalAction
 	): Promise<DeviceApprovalResult> {
-		return this.withDatabase(account, signal, async (db) => {
+		return withDatabase(account, signal, async (db) => {
 			const { installation } = await readBrowserEnrollment(db, account);
 			signal.throwIfAborted();
 			const pin = installation?.progress.pin;
@@ -97,7 +97,7 @@ export class BrowserDeviceSessionService {
 
 	push(account: string, signal: AbortSignal): ApprovalPushRequest {
 		return (method, subscription) =>
-			this.withDatabase(account, signal, async (db) => {
+			withDatabase(account, signal, async (db) => {
 				const { installation } = await readBrowserEnrollment(db, account);
 				if (!installation?.progress.pin)
 					throw new SealedError('This browser needs device approval.');
@@ -128,30 +128,30 @@ export class BrowserDeviceSessionService {
 	}
 
 	forget(account: string): Promise<void> {
-		return this.withDatabase(account, undefined, async (db) => {
+		return withDatabase(account, undefined, async (db) => {
 			const { accountPin } = await readBrowserEnrollment(db, account);
 			await keepBrowserEnrollment(db, account, { accountPin });
 		});
 	}
+}
 
-	private async withDatabase<T>(
-		account: string,
-		signal: AbortSignal | undefined,
-		use: (db: IDBDatabase) => Promise<T>
-	): Promise<T> {
-		// Lock across tabs for the full read, protocol exchange and durable update.
-		return await navigator.locks.request(
-			'harness-device-approval:' + account,
-			{ signal },
-			async () => {
-				const db = await openBrowserEnrollments();
-				try {
-					signal?.throwIfAborted();
-					return await use(db);
-				} finally {
-					db.close();
-				}
+async function withDatabase<T>(
+	account: string,
+	signal: AbortSignal | undefined,
+	use: (db: IDBDatabase) => Promise<T>
+): Promise<T> {
+	// Lock across tabs for the full read, protocol exchange and durable update.
+	return await navigator.locks.request(
+		'harness-device-approval:' + account,
+		{ signal },
+		async () => {
+			const db = await openBrowserEnrollments();
+			try {
+				signal?.throwIfAborted();
+				return await use(db);
+			} finally {
+				db.close();
 			}
-		);
-	}
+		}
+	);
 }

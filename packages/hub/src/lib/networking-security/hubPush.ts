@@ -1,5 +1,6 @@
 // @harness-uid u_56mpqyme4j
 import type { BrowserApi } from '../../utils/browserApi';
+import { BrowserApiRequestError } from '../../routes/browserApi.types';
 import {
 	addressHash,
 	approvalPushScope,
@@ -126,12 +127,14 @@ export async function turnOnApprovalPush(call: ApprovalPushRequest, publicKey: s
 async function saveApprovalPush(call: ApprovalPushRequest, publicKey: string) {
 	const subscription = await subscribe(publicKey, approvalPushScope);
 	const response = await call('POST', subscription.toJSON());
-	if (!response.ok) throw new Error('The Hub could not save approval notifications.');
+	if (!response.ok)
+		throw new BrowserApiRequestError('The Hub could not save approval notifications.');
 }
 
 export async function turnOffApprovalPush(call: ApprovalPushRequest, publicKey: string) {
 	const response = await call('DELETE');
-	if (!response.ok) throw new Error('The Hub could not turn off approval notifications.');
+	if (!response.ok)
+		throw new BrowserApiRequestError('The Hub could not turn off approval notifications.');
 	await (await currentSubscription(approvalPushScope))?.unsubscribe();
 	return { device: 'off', publicKey } as const;
 }
