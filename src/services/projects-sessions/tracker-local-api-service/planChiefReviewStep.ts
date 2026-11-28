@@ -1,5 +1,6 @@
 // @harness-uid u_g7kdpz7bel
 import type { ChiefReview } from '../../../repositories/projects-sessions/tracker-operation-repository/chiefReviewFields.types';
+import { hasPublishedAsk } from '../../../repositories/projects-sessions/tracker-operation-repository/hasPublishedAsk';
 import type { TrackerItemFields } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import { planTrackerItemMutation } from '../../../utils/projects-sessions/planTrackerItemMutation';
 import type {
@@ -44,7 +45,30 @@ function answerPlan(
 	if (reviewer !== 'chief') return { ...plan, fields };
 	// A Chief of Staff answer goes to the session. It is not written into notes Daniel reads.
 	delete fields['note+'];
-	return { ...plan, fields: { ...fields, chief_answer: review.actor ?? 'Chief of Staff' } };
+	if (hasPublishedAsk(item)) return { ...plan, fields: besidePublishedAsk(verb, fields, review) };
+	return { ...plan, fields: { ...fields, chief_answer: privateAnswerOwner(review) } };
+}
+
+function privateAnswerOwner(review: ChiefReview) {
+	return review.actor ?? 'Chief of Staff';
+}
+
+/** Close only the held draft: the flag Daniel has stays open, with the answer kept private. */
+function besidePublishedAsk(
+	verb: ChiefReviewRequest['verb'],
+	fields: TrackerItemFields,
+	review: ChiefReview
+): TrackerItemFields {
+	if (verb === 'resolve') return { chief_review: null };
+	const { answer, answered_at, answered_by, status } = fields;
+	return {
+		chief_review: null,
+		chief_answer: privateAnswerOwner(review),
+		answer,
+		answered_at,
+		answered_by,
+		...(status !== undefined && { status })
+	};
 }
 
 function releasePlan(

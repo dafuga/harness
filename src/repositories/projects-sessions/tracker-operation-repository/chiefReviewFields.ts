@@ -7,6 +7,7 @@ import {
 } from '../../../utils/projects-sessions/trackerReviewer';
 import { cosSendWindowStart } from '../../../utils/projects-sessions/trackerCosSendWindow';
 import type { TrackerOperation } from '../TrackerOperationRepository.types';
+import { hasPublishedAsk } from './hasPublishedAsk';
 import { closedReviewFields } from './closedChiefReviewFields';
 import { heldReviewFields, privateAskFields } from './heldChiefReviewFields';
 import type { ChiefReview, ChiefReviewAsk, ChiefReviewContext } from './chiefReviewFields.types';
@@ -21,7 +22,8 @@ export function chiefReviewFields(
 	if (Object.hasOwn(fields, 'chief_review')) return fields;
 	const ask = readAsk(fields);
 	if (!ask.flag && !ask.blocker) return closedReviewFields(fields, current);
-	if (restatesReleasedAsk(fields, ask, current)) return fields;
+	const restated = restatedFields(fields, ask, current);
+	if (restated) return restated;
 	return reviewedAskFields(operation, ask, context);
 }
 
@@ -40,17 +42,30 @@ function reviewedAskFields(
 			chief_review: null,
 			...(ask.flag && clearedPrivateAnswer(current?.chief_answer))
 		};
-	return heldReviewFields(operation, ask, { current, mode: reviewMode(chiefOnly, approved) });
+	return heldReviewFields(operation, ask, {
+		current,
+		mode: reviewMode(chiefOnly, approved),
+		keepPublished: !migrate && hasPublishedAsk(current)
+	});
 }
 
-/** Restoring a published flag, as unignore does, carries no wording that needs a new review. */
-function restatesReleasedAsk(
+/**
+ * A published flag repeated word for word is not a new ask. Restoring it, as unignore does,
+ * passes unchanged; a session saying it again writes nothing over what Daniel already has.
+ */
+function restatedFields(
 	fields: TrackerOperation['fields'],
 	ask: ChiefReviewAsk,
 	current: ChiefReviewContext['current']
-) {
-	const published = current?.needs_daniel === 1 && current.resolved !== 1;
-	return published && !ask.blocker && !privateAskFields.some((key) => key in fields);
+): TrackerOperation['fields'] | undefined {
+	if (!current || !hasPublishedAsk(current) || ask.blocker) return undefined;
+	const sent = privateAskFields.filter((key) => key in fields);
+	if (!sent.length) return fields;
+	const published = current as unknown as Record<string, unknown>;
+	if (sent.some((key) => (fields[key as never] ?? null) !== (published[key] ?? null)))
+		return undefined;
+	const repeated = new Set([...sent, 'needs_daniel', 'resolved', 'answer_option']);
+	return Object.fromEntries(Object.entries(fields).filter(([key]) => !repeated.has(key)));
 }
 
 /** A released ask must not show the private answer an earlier review left behind. */

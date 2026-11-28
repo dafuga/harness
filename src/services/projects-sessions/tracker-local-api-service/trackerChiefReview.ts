@@ -1,5 +1,6 @@
 // @harness-uid u_g7kdpz7bel
 import { readChiefReview } from '../../../repositories/projects-sessions/tracker-operation-repository/chiefReviewFields';
+import { hasPublishedAsk } from '../../../repositories/projects-sessions/tracker-operation-repository/hasPublishedAsk';
 import type { ChiefReview } from '../../../repositories/projects-sessions/tracker-operation-repository/chiefReviewFields.types';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
 import { trackerReviewer } from '../../../utils/projects-sessions/trackerReviewer';
@@ -27,6 +28,8 @@ export function writeChiefReview(
 		return undefined;
 	}
 	const reviewer = allowedReviewer(request);
+	// Daniel answers the flag he can see. A draft held beside it is not what he was asked.
+	if (reviewer === 'daniel' && hasPublishedAsk(item)) return undefined;
 	commitReviewStep(ports, item, { ...request, review, reviewer });
 	const stored = items.getStored(item.id);
 	return trackerResponse(200, reviewReply(ports, item.id, stored));

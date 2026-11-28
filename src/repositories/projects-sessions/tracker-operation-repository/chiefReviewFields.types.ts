@@ -13,6 +13,12 @@ export interface CurrentChiefReview {
 	chief_answer: string | null;
 	needs_daniel: number | null;
 	resolved: number | null;
+	question?: string | null;
+	options?: string | null;
+	confirm?: string | null;
+	attachments?: string | null;
+	attachment_docs?: string | null;
+	next_step?: string | null;
 }
 
 export interface ChiefReviewContext {
@@ -29,6 +35,8 @@ export interface ChiefReviewAsk {
 export interface ChiefReviewHold {
 	current: CurrentChiefReview | undefined;
 	mode: ChiefReview['mode'];
+	/** Daniel already has a flag on the item, which a held ask never touches. */
+	keepPublished: boolean;
 }
 
 export interface ChiefReviewRow {

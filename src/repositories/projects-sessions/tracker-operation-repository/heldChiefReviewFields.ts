@@ -13,13 +13,17 @@ export const privateAskFields = [
 	'next_step'
 ];
 
-/** Move an ask's contents into the private review record. */
+/**
+ * Move an ask's contents into the private review record. A flag Daniel already has stays exactly
+ * as it is until a reviewer releases its replacement.
+ */
 export function heldReviewFields(
 	operation: TrackerOperation,
 	ask: ChiefReviewAsk,
-	{ current, mode }: ChiefReviewHold
+	{ current, mode, keepPublished }: ChiefReviewHold
 ): TrackerOperation['fields'] {
 	const { visible, details } = splitAsk(operation.fields, ask);
+	if (keepPublished) leaveUntouched(visible);
 	const previous = current?.chief_review ? (JSON.parse(current.chief_review) as ChiefReview) : null;
 	const review = mergeReview(previous, {
 		at: trackerClockMilliseconds(operation.hlc),
@@ -28,9 +32,14 @@ export function heldReviewFields(
 		mode,
 		fields: details
 	});
-	// A blocker alone leaves any flag Daniel already has exactly where it is.
-	const hidden = ask.flag && { needs_daniel: 0 };
+	const hidden = ask.flag && !keepPublished && { needs_daniel: 0 };
 	return { ...visible, ...hidden, chief_review: JSON.stringify(review) };
+}
+
+function leaveUntouched(visible: TrackerOperation['fields']) {
+	const published: Record<string, unknown> = visible;
+	for (const key of [...privateAskFields, 'needs_daniel', 'resolved', 'answer_option'])
+		delete published[key];
 }
 
 function splitAsk(fields: TrackerOperation['fields'], ask: ChiefReviewAsk) {

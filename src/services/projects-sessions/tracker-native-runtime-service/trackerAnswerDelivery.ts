@@ -53,7 +53,8 @@ function pendingAnswers(store: TrackerPersistenceService) {
 			FROM items i
 			WHERE i.deleted = 0 AND coalesce(i.kind,'task') = 'task'
 				AND (i.status IN ('open','in_progress','blocked') OR (i.status = 'done' AND i.chief_answer IS NOT NULL))
-				AND i.resolved = 1 AND i.needs_daniel = 0 AND i.answered_at IS NOT NULL
+				AND ((i.resolved = 1 AND i.needs_daniel = 0) OR i.chief_answer IS NOT NULL)
+				AND i.answered_at IS NOT NULL
 				AND json_extract(i.clocks,'$.answer') = json_extract(i.clocks,'$.answered_at')
 				AND json_extract(i.clocks,'$.answer') > coalesce(json_extract(i.clocks,'$.question'),'')
 				AND NOT EXISTS (SELECT 1 FROM item_notes n WHERE n.item_id = i.id

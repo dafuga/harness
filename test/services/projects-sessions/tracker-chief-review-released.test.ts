@@ -73,7 +73,7 @@ test('restating a released flag without new wording does not send it back to rev
 	}
 });
 
-test('new wording from a session on a released ask is reviewed before Daniel sees it', () => {
+test('new wording from a session waits for review while Daniel keeps the released ask', () => {
 	const { database, store, items } = releasedAsk();
 	try {
 		store.appendLocal({
@@ -81,8 +81,12 @@ test('new wording from a session on a released ask is reviewed before Daniel see
 			actor: 'auto-worker-r1',
 			fields: { ...released, question: 'Can you also pick a second fixture?' }
 		});
-		expect(items.getStored(id)).toMatchObject({ needs_daniel: false, question: null });
-		expect(items.digest(noon).daniel_decisions).toEqual([]);
+		expect(items.getStored(id)).toMatchObject({
+			needs_daniel: true,
+			question: released.question,
+			options: choices
+		});
+		expect(JSON.stringify(items.digest(noon))).not.toContain('second fixture');
 		expect(trackerChiefReviewAlerts(store)).toHaveLength(1);
 	} finally {
 		database.close();

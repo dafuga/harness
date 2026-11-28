@@ -3,6 +3,7 @@ import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTyp
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import type { TrackerOperation } from '../TrackerOperationRepository.types';
 import { chiefReviewFields } from './chiefReviewFields';
+import { privateAskFields } from './heldChiefReviewFields';
 import type { CurrentChiefReview } from './chiefReviewFields.types';
 import type { TrackerReviewGate } from './reviewTrackerOperation.types';
 
@@ -15,7 +16,10 @@ export function reviewLocalOperation(
 ): TrackerOperation {
 	if (gate === 'off' || !operation?.fields) return operation;
 	const current = database
-		.prepare('SELECT chief_review, chief_answer, needs_daniel, resolved FROM items WHERE id = ?')
+		.prepare(
+			`SELECT chief_review, chief_answer, needs_daniel, resolved, ${privateAskFields.join(', ')}
+			FROM items WHERE id = ?`
+		)
 		.get(operation.item_id) as CurrentChiefReview | undefined;
 	return { ...operation, fields: chiefReviewFields(operation, { current }) };
 }
