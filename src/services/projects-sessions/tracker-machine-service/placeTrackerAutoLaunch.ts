@@ -13,14 +13,21 @@ export function placeTrackerAutoLaunch(plan: PlanLaunch, view: TrackerFleetView)
 			.trim()
 			.toLowerCase();
 		if (requested && requested !== 'auto') return plan(fields, current, source);
-		const queued = current?.auto ? (current.launch_target ?? current.computer) : undefined;
-		const item = launchSubject({ ...current, ...fields });
-		const placed =
-			queued ??
-			(item.repo ? undefined : trackerDesktopLaunchHost(item)) ??
-			trackerLaunchPlacement(item, view)?.node;
+		const placed = automaticLaunchTarget(fields, current, view);
 		return plan(placed ? { ...fields, computer: placed } : fields, current, source);
 	};
+}
+
+function automaticLaunchTarget(
+	fields: Parameters<PlanLaunch>[0],
+	current: Parameters<PlanLaunch>[1],
+	view: TrackerFleetView
+) {
+	const queued = current?.auto ? (current.launch_target ?? current.computer) : undefined;
+	if (queued !== undefined && queued !== null) return queued;
+	const item = launchSubject({ ...current, ...fields });
+	if (item.repo) return undefined;
+	return trackerDesktopLaunchHost(item) ?? trackerLaunchPlacement(item, view)?.node;
 }
 
 function launchSubject(fields: Parameters<PlanLaunch>[0]) {

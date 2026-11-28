@@ -17,7 +17,6 @@ import type {
 	TrackerWorkDemand
 } from './trackerMachine.types';
 
-/** Typical RAM that new work needs, in GB. */
 export const trackerWorkRamGB: Record<TrackerWorkKind, number> = {
 	codex: 1.5,
 	claude: 2,
@@ -104,20 +103,19 @@ function candidate(
 	const { node, role, status, sample } = row;
 	if (status === 'offline' || !sample)
 		return { node, role, status, fits: false, score: null, reasons: row.reasons };
-	const {
-		kind,
-		agentSession = kind === 'codex' || kind === 'claude',
-		sessionSlots,
-		reserved
-	} = request;
+	const { kind, sessionSlots, reserved } = request;
 	const slots = sessionSlots && (sessionSlots.get(node) ?? 0);
 	const free = placementHeadroom(
 		sample,
 		placementCapacity(row, sample),
 		reserved?.get(node) ?? noWork
 	);
-	const holds = fitHolds(row, sample, { demand, free, agentSession });
-	if (slots === 0) holds.push('no available launcher session slot');
+	const holds = fitHolds(row, sample, {
+		demand,
+		free,
+		agentSession: isAgentSession(request),
+		slots
+	});
 	const cpuHeavy = kind === 'browser-tests' || kind === 'build';
 	const score =
 		matchScore(demand, free, sample, { cpuHeavy, slots }) - (role === 'shared' ? 25 : 0);
@@ -131,6 +129,10 @@ function candidate(
 		score: Math.round(score),
 		reasons: [summary(sample), estimate, ...holds]
 	};
+}
+
+function isAgentSession({ kind, agentSession }: TrackerPlacementRequest): boolean {
+	return agentSession ?? (kind === 'codex' || kind === 'claude');
 }
 
 function placementCapacity(
@@ -149,10 +151,8 @@ function placementCapacity(
 
 export function trackerMachineTargets(row: TrackerMachineRow, sample: TrackerResourceSample) {
 	const limits = placementCapacity(row, sample);
-	return {
-		cpu: trackerUtilizationTargets.cpu,
-		ram: Math.round(100 * clamp((limits.ramGB * 1024) / sample.ram.total_mb))
-	};
+	const ram = Math.round((100 * limits.ramGB * 1024) / sample.ram.total_mb);
+	return { cpu: trackerUtilizationTargets.cpu, ram: Math.min(100, Math.max(0, ram)) };
 }
 
 function placementHeadroom(
@@ -174,11 +174,13 @@ function fitHolds(
 	{
 		demand,
 		free,
-		agentSession
+		agentSession,
+		slots
 	}: {
 		demand: TrackerWorkDemand;
 		free: TrackerWorkDemand;
 		agentSession: boolean;
+		slots?: number;
 	}
 ): string[] {
 	const holds: string[] = [];
@@ -189,6 +191,7 @@ function fitHolds(
 		holds.push('insufficient free cores below the utilisation target');
 	if (row.role === 'shared' && (sample.load[1] ?? 0) > trackerBusyLoadPerCore * sample.cores)
 		holds.push('shared box is already busy');
+	if (slots === 0) holds.push('no available launcher session slot');
 	return holds;
 }
 
@@ -213,8 +216,4 @@ function summary(sample: TrackerResourceSample): string {
 	const heavy = test_runners + browsers;
 	const extra = heavy ? `, ${heavy} test runner/browser group(s)` : '';
 	return `${Math.round((sample.ram.available_mb / 1024) * 10) / 10} GB RAM free, load ${sample.load[1] ?? 0}/${sample.cores} cores, ${claude + codex} agent session(s)${extra}`;
-}
-
-function clamp(value: number): number {
-	return Math.max(0, Math.min(1, value));
 }

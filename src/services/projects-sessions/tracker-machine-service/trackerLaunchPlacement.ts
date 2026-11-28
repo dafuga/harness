@@ -27,6 +27,7 @@ export function trackerDesktopLaunchHost(item: TrackerModelItem): string | undef
 		desktopChrome.test(`${item.title ?? ''} ${item.notes ?? ''}`)
 	)
 		return 'daniel-primary-mbp';
+	return undefined;
 }
 
 /**
@@ -81,14 +82,17 @@ function launcherNodes(
 	const now = view.now();
 	const fresh = (at?: string | null) => Boolean(at) && Math.abs(now - Date.parse(at!)) <= runnerAge;
 	return new Map(
-		view.samples().flatMap((value) => {
-			const sample = trackerMachineSample.safeParse(value).data;
-			if (!sample || !fresh(sample.at) || (onlyNode && sample.node !== onlyNode)) return [];
-			const { enabled, last_error, last_tick_at, capacity } = sample.runner;
-			if (!enabled || last_error || !fresh(last_tick_at)) return [];
-			const slots = (capacity?.freeSlots ?? 0) - (reserved?.get(sample.node)?.sessions ?? 0);
-			return slots > 0 && capacity?.projects[project] ? [[sample.node, slots] as const] : [];
-		})
+		view
+			.samples()
+			.map((value) => trackerMachineSample.safeParse(value).data)
+			.filter((sample) => sample !== undefined)
+			.filter(({ node, at }) => fresh(at) && (!onlyNode || node === onlyNode))
+			.flatMap(({ node, runner: { enabled, last_error, last_tick_at, capacity } }) => {
+				if (!capacity?.projects[project] || !enabled || last_error || !fresh(last_tick_at))
+					return [];
+				const slots = capacity.freeSlots - (reserved?.get(node)?.sessions ?? 0);
+				return [[node, Math.max(0, slots)] as const];
+			})
 	);
 }
 

@@ -12,6 +12,7 @@ import { resourceSample } from '../../support/trackerMachineFixture';
 
 const now = Date.parse('2026-11-26T12:00:00Z');
 const minute = 60_000;
+const learnedCodexDemand = { kind: 'codex', needsRamGB: 0.6, needsCores: 0.19 } as const;
 
 function status(over: Partial<TrackerResourceSample>, recent: TrackerResourceSample[] = []) {
 	return trackerMachineStatus(resourceSample(now, over), recent, now);
@@ -98,8 +99,7 @@ test('fits demand to live CPU and RAM across different host shapes', () => {
 		cpu_busy_pct: 15,
 		ram: { total_mb: 65_536, used_mb: 19_456, available_mb: 46_080, available_pct: 70 }
 	});
-	const learned = { kind: 'codex' as const, needsRamGB: 0.6, needsCores: 0.19 };
-	const placement = placeTrackerWork([busyPrimary, mb2WithHeadroom], learned);
+	const placement = placeTrackerWork([busyPrimary, mb2WithHeadroom], learnedCodexDemand);
 	expect(placement.ranked.every(({ fits }) => fits)).toBe(true);
 	expect(placement.recommended).toBe(mb2.node);
 	const memoryBusy = row(mb2.node, {
