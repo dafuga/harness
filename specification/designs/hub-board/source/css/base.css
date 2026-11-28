@@ -1,0 +1,219 @@
+/* Reset and the small shared pieces: marks, pills, tags, buttons, chips, avatars, meters. */
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+body {
+	position: relative;
+	overflow: hidden;
+	background: var(--hx-color-background);
+	color: var(--hx-color-text);
+	font: 14px/1.5 var(--hx-font-family-body);
+	-webkit-font-smoothing: antialiased;
+}
+button {
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+}
+ul,
+ol {
+	list-style: none;
+}
+.muted {
+	color: var(--hx-color-text-muted);
+}
+.num {
+	font-variant-numeric: tabular-nums;
+}
+.clip1 {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.clip2 {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+.grow {
+	flex: 1;
+	min-width: 0;
+}
+.kicker {
+	color: var(--hx-color-text-muted);
+	font-size: 11px;
+	line-height: 16px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+/* State mark: the shape repeats the state, so colour is never the only cue. */
+.mk {
+	display: inline-block;
+	flex: none;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: currentColor;
+}
+.mk[data-k='needs'] {
+	border-radius: 2px;
+	transform: rotate(45deg);
+}
+.mk[data-k='blocked'] {
+	border-radius: 1px;
+}
+.mk[data-k='todo'] {
+	border: 1.5px dashed currentColor;
+	background: transparent;
+}
+.mk[data-k='done'] {
+	width: 9px;
+	height: 5px;
+	border: solid currentColor;
+	border-width: 0 0 2px 2px;
+	border-radius: 0;
+	background: transparent;
+	transform: translateY(-1px) rotate(-45deg);
+}
+[data-tone='needs'] {
+	--tone: var(--hx-color-accent);
+	--tone-wash: var(--hx-color-primary-soft);
+}
+[data-tone='active'] {
+	--tone: var(--hx-color-info);
+	--tone-wash: var(--hx-color-info-soft);
+}
+[data-tone='blocked'] {
+	--tone: var(--hx-color-error);
+	--tone-wash: var(--hx-color-error-soft);
+}
+[data-tone='done'] {
+	--tone: var(--hx-color-success);
+	--tone-wash: var(--hx-color-success-soft);
+}
+[data-tone='warn'] {
+	--tone: var(--hx-color-warning);
+	--tone-wash: var(--hx-color-warning-soft);
+}
+[data-tone='quiet'] {
+	--tone: var(--hx-color-text-muted);
+	--tone-wash: transparent;
+}
+.tone {
+	color: var(--tone);
+}
+
+.pill {
+	display: inline-flex;
+	align-items: center;
+	flex: none;
+	gap: 6px;
+	height: 22px;
+	padding: 0 8px;
+	border: 1px solid var(--tone);
+	border-radius: 999px;
+	background: var(--tone-wash);
+	color: var(--tone);
+	font-size: 12px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+.tag {
+	display: inline-flex;
+	align-items: center;
+	flex: none;
+	gap: 6px;
+	height: 22px;
+	padding: 0 8px;
+	border-radius: 6px;
+	background: var(--hx-color-surface-raised);
+	color: var(--hx-color-text-supporting);
+	font-size: 12px;
+	white-space: nowrap;
+}
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: none;
+	gap: 8px;
+	min-height: 36px;
+	padding: 0 14px;
+	border: 1px solid var(--hx-color-border-strong);
+	border-radius: 6px;
+	background: var(--hx-color-surface);
+	font-size: 14px;
+	font-weight: 500;
+	white-space: nowrap;
+}
+.btn.primary {
+	border-color: var(--hx-color-primary);
+	background: var(--hx-color-primary);
+	color: var(--hx-color-primary-contrast);
+	font-weight: 600;
+}
+.btn.sm {
+	min-height: 28px;
+	padding: 0 10px;
+	font-size: 13px;
+}
+.btn.wide {
+	width: 100%;
+}
+.chip {
+	display: inline-flex;
+	align-items: center;
+	flex: none;
+	gap: 8px;
+	min-height: 32px;
+	padding: 0 12px;
+	border: 1px solid var(--hx-color-border-strong);
+	border-radius: 999px;
+	font-size: 13px;
+	white-space: nowrap;
+}
+.chip[aria-pressed='true'] {
+	border-color: var(--hx-color-primary);
+	background: var(--hx-color-primary-soft);
+	font-weight: 600;
+}
+.chip .num {
+	color: var(--hx-color-text-muted);
+	font-weight: 500;
+}
+.av {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 32px;
+	height: 32px;
+	border: 2px solid var(--hx-color-border-strong);
+	border-radius: 50%;
+	background: var(--hx-color-surface-raised);
+	font-size: 11px;
+	font-weight: 600;
+}
+.av[data-tone] {
+	border-color: var(--tone);
+}
+.meter {
+	height: 6px;
+	overflow: hidden;
+	border-radius: 3px;
+	background: var(--hx-color-surface-raised);
+}
+.meter i {
+	display: block;
+	height: 100%;
+	border-radius: 3px;
+	background: var(--tone, var(--hx-color-info));
+}

@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"title": "Hub home: the board (stats strip, four columns, agents dock)",
+	"artboards": [
+		{
+			"file": "BoardDesktop.html",
+			"title": "Board home (desktop)",
+			"x": 0,
+			"y": 0
+		},
+		{
+			"file": "BoardDesktopDock.html",
+			"title": "Agents dock open (desktop)",
+			"x": 1520,
+			"y": 0
+		},
+		{
+			"file": "BoardDesktopChat.html",
+			"title": "Dock: answer an agent in chat (desktop)",
+			"x": 3040,
+			"y": 0
+		},
+		{
+			"file": "BoardDesktopDetail.html",
+			"title": "Card detail: answer a blocked task (desktop)",
+			"x": 4560,
+			"y": 0
+		},
+		{
+			"file": "DockOtherPage.html",
+			"title": "Agents dock on another page (desktop)",
+			"x": 6080,
+			"y": 0
+		},
+		{
+			"file": "BoardPhone.html",
+			"title": "Board home (iPhone): In progress",
+			"x": 0,
+			"y": 1000
+		},
+		{
+			"file": "BoardPhoneBlocked.html",
+			"title": "Board home (iPhone): Blocked",
+			"x": 470,
+			"y": 1000
+		},
+		{
+			"file": "BoardPhoneDock.html",
+			"title": "Agents sheet (iPhone)",
+			"x": 940,
+			"y": 1000
+		},
+		{
+			"file": "BoardPhoneDetail.html",
+			"title": "Card detail sheet (iPhone)",
+			"x": 1410,
+			"y": 1000
+		},
+		{
+			"file": "SidebarDesktop.html",
+			"title": "Alternative: agents sidebar (desktop)",
+			"x": 0,
+			"y": 2000
+		},
+		{
+			"file": "SidebarPhone.html",
+			"title": "Alternative: agents sidebar (iPhone)",
+			"x": 1520,
+			"y": 2000
+		},
+		{
+			"file": "LanesDesktop.html",
+			"title": "Alternative: project lanes (desktop)",
+			"x": 1990,
+			"y": 2000
+		},
+		{
+			"file": "LanesPhone.html",
+			"title": "Alternative: project lanes (iPhone)",
+			"x": 3510,
+			"y": 2000
+		}
+	]
+}

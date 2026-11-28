@@ -1,0 +1,166 @@
+/* The two alternative directions: agents in a sidebar, and one lane per project. */
+.with-side {
+	display: grid;
+	grid-template-columns: 296px minmax(0, 1fr);
+	height: calc(100vh - 56px);
+}
+.side {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	min-height: 0;
+	padding: 16px;
+	border-right: 1px solid var(--hx-color-border);
+	background: var(--hx-color-surface);
+}
+.side .dock-body {
+	padding: 0;
+}
+.side .agent .pill,
+.side .when i,
+.with-side .card-top .sep {
+	display: none;
+}
+.side-foot {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin-top: auto;
+	padding-top: 16px;
+	border-top: 1px solid var(--hx-color-border);
+}
+.side-rows {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-top: 6px;
+}
+.side-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 13px;
+	line-height: 20px;
+}
+.side-row .end {
+	margin-left: auto;
+	color: var(--hx-color-text-muted);
+}
+.with-side .page {
+	height: auto;
+	min-height: 0;
+	padding: 16px 24px 24px;
+}
+.headline {
+	font-size: 22px;
+	line-height: 36px;
+	font-weight: 600;
+	letter-spacing: -0.02em;
+}
+.tabbar {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	padding: 6px 16px 26px;
+	border-top: 1px solid var(--hx-color-border);
+	background: var(--hx-color-surface);
+}
+.tabbar > span {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	min-height: 48px;
+	border-radius: 8px;
+	color: var(--hx-color-text-muted);
+	font-weight: 500;
+}
+.tabbar > span[aria-current] {
+	background: var(--hx-color-selected);
+	color: var(--hx-color-text);
+	font-weight: 600;
+}
+
+.lanes {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 8px;
+	min-height: 0;
+}
+.lane-heads,
+.lane {
+	display: grid;
+	grid-template-columns: 148px repeat(4, minmax(0, 1fr));
+	gap: 12px;
+	align-items: start;
+}
+.lane-heads {
+	padding: 0 8px;
+}
+.lane-heads .col-head {
+	min-height: 28px;
+	padding: 0;
+}
+.lane {
+	padding: 8px;
+	border-radius: 12px;
+	background: var(--hx-color-hover);
+}
+.lane-name {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	gap: 6px;
+	padding: 6px 0 6px 8px;
+}
+.lane-name b {
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+}
+.lane .cards {
+	overflow: visible;
+}
+.mini .card-top .project,
+.mini .card-top:not(:has(.when, .sep)) {
+	display: none;
+}
+.mini .card-top .when {
+	margin-left: 0;
+}
+.mini .card-top .sep::before {
+	content: none;
+}
+.plane {
+	display: flex;
+	flex: none;
+	flex-direction: column;
+	gap: 8px;
+}
+.plane-head {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 28px;
+	font-size: 15px;
+	font-weight: 600;
+}
+.plane-head .muted {
+	font-size: 13px;
+	font-weight: 400;
+}
+.plane-head .pill {
+	margin-left: auto;
+}
+.plane .cards {
+	flex: none;
+}
+.plane .col-more {
+	min-height: 44px;
+	margin-top: 0;
+	border: 1px solid var(--hx-color-border);
+}

@@ -1,0 +1,150 @@
+/* The board: four columns of short cards. A card never holds a form; a tap opens its detail. */
+.board {
+	display: grid;
+	flex: 1;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 12px;
+	min-height: 0;
+}
+.col {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 0;
+	padding: 8px;
+	border-radius: 12px;
+	background: var(--hx-color-hover);
+}
+.col-head {
+	display: flex;
+	align-items: center;
+	flex: none;
+	gap: 8px;
+	min-height: 40px;
+	padding: 0 8px 8px;
+	font-size: 13px;
+	font-weight: 600;
+}
+.col-head .mk {
+	color: var(--tone);
+}
+.col-head .count {
+	color: var(--hx-color-text-muted);
+	font-weight: 500;
+}
+.col-head .extra {
+	margin-left: auto;
+}
+.cards {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 8px;
+	min-height: 0;
+	overflow: hidden;
+}
+.card {
+	display: flex;
+	flex: none;
+	flex-direction: column;
+	gap: 4px;
+	width: 100%;
+	min-width: 0;
+	padding: 10px 12px;
+	border: 1px solid var(--hx-color-border);
+	border-radius: 8px;
+	background: var(--hx-color-surface);
+}
+.card-top {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--hx-color-text-muted);
+	font-size: 12px;
+	line-height: 18px;
+}
+.card-top .project {
+	flex: none;
+	font-weight: 600;
+	white-space: nowrap;
+}
+.card-top .sep {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.card-top .sep::before {
+	content: '· ';
+}
+.card-top .when {
+	margin-left: auto;
+	white-space: nowrap;
+}
+.card-title {
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 500;
+}
+.card-foot {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 6px;
+	min-height: 22px;
+	font-size: 12px;
+}
+.card-foot .end {
+	margin-left: auto;
+}
+.card-line {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+	color: var(--hx-color-text-supporting);
+	font-size: 13px;
+	line-height: 20px;
+}
+.card-line .mk {
+	color: var(--tone);
+}
+.card.needs {
+	border-color: var(--hx-color-primary-line);
+	background:
+		linear-gradient(var(--hx-color-primary-wash), var(--hx-color-primary-wash)),
+		var(--hx-color-surface);
+}
+.card.done .card-title {
+	color: var(--hx-color-text-supporting);
+}
+.card.selected {
+	border-color: var(--hx-color-primary);
+	box-shadow: 0 0 0 2px var(--hx-color-primary-tint);
+}
+.link {
+	color: var(--hx-color-info);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+.col-more {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: none;
+	min-height: 32px;
+	margin-top: 6px;
+	border-radius: 6px;
+	color: var(--hx-color-text-muted);
+	font-size: 13px;
+	font-weight: 500;
+}
+.col-empty {
+	display: grid;
+	flex: 1;
+	place-items: center;
+	border: 1px dashed var(--hx-color-border-strong);
+	border-radius: 8px;
+	color: var(--hx-color-text-muted);
+	font-size: 13px;
+}
