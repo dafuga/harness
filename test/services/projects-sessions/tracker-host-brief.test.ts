@@ -14,6 +14,10 @@ const item = {
 
 test('every session brief tells the agent to flag with 2 to 4 options and one recommendation', () => {
 	const brief = formatTrackerHostBrief(item, 'Finish by running tracker done.');
+	expect(brief).toContain('## Session rules');
+	expect(brief).toContain('tracker rule list');
+	expect(brief).toContain('secret-safe-computer-use/SKILL.md');
+	expect(brief).toContain('computer-hygiene/SKILL.md');
 	expect(brief).toContain('## Asking Daniel');
 	expect(brief).toContain('--option "<label>=<what happens if chosen>"');
 	expect(brief).toContain('--recommend');

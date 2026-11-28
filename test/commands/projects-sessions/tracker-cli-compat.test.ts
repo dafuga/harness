@@ -1,5 +1,9 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { compatibilityFixture, fixtureTitle } from '../../support/trackerCliCompatibilityFixture';
+import {
+	compatibilityFixture,
+	fixtureTime,
+	fixtureTitle
+} from '../../support/trackerCliCompatibilityFixture';
 import { measureWorkload } from '../../support/measureWorkload';
 
 afterEach(() => {
@@ -52,6 +56,54 @@ test('add still succeeds when the model pick cannot be read', async () => {
 	expect(added).toMatchObject({ code: 0, err: '' });
 	expect(added.out).toMatch(/^added \[\w{6}\] Repair the flamingo pond pump.*$/);
 });
+
+test('adds a versioned session rule to the incident and lists it without a restart', () =>
+	measureWorkload('command.projects-sessions-tracker', 'append-session-rule-cli', async () => {
+		const { run, runtime } = await compatibilityFixture();
+		const text = 'Keep the fixture report in its assigned directory.';
+		const add = () =>
+			run('rule', 'add', text, '--from', 'taskfi', '--skill', 'computer-hygiene', '--json');
+		expect(JSON.parse((await run('rule', 'list', '--json')).out)).not.toEqual(
+			expect.arrayContaining([expect.objectContaining({ text })])
+		);
+		const added = await add();
+		expect(added).toMatchObject({ code: 0, err: '' });
+		const rule = JSON.parse(added.out);
+		expect(rule).toMatchObject({
+			text,
+			skill: 'computer-hygiene',
+			incident: 'taskfixture',
+			at: fixtureTime
+		});
+		expect(JSON.parse((await add()).out)).toEqual(rule);
+		expect(JSON.parse((await run('rule', 'list', '--json')).out)).toContainEqual(rule);
+		expect(JSON.parse((await run('show', 'taskfi', '--json')).out).notes_log).toEqual([
+			expect.objectContaining({ text: expect.stringContaining(text) })
+		]);
+		const invalid = await run(
+			'rule',
+			'add',
+			'A rule.',
+			'--from',
+			'taskfi',
+			'--skill',
+			'../elsewhere'
+		);
+		expect(invalid.code).toBe(1);
+		const missing = await run(
+			'rule',
+			'add',
+			'Another rule.',
+			'--from',
+			'absent',
+			'--skill',
+			'computer-hygiene'
+		);
+		expect(missing.code).toBe(1);
+		expect(
+			runtime.store.opsSince(0).filter(({ fields }) => Object.hasOwn(fields, 'session_rule_v1'))
+		).toHaveLength(1);
+	}));
 
 test('history prints one line for each occurrence unless JSON is asked for', async () => {
 	const { run, route } = await compatibilityFixture();
