@@ -153,15 +153,15 @@
 							<hx-span class="hh-computer-label">
 								{machine.name}
 								{#if machine.agentCount !== undefined}
-									{` · ${count(machine.agentCount, 'agent')}`}
+									<hx-span>· {count(machine.agentCount, 'agent')}</hx-span>
 								{:else if machine.remoteRuns && machine.status !== 'offline'}
-									{` · ${count(machine.remoteRuns, 'remote run')}`}
+									<hx-span>· {count(machine.remoteRuns, 'remote run')}</hx-span>
 								{:else}
-									{' · Agents unavailable'}
+									<hx-span>· Agents unavailable</hx-span>
 								{/if}
-								<hx-span class="po-machine-status">{` · ${machine.status}`}</hx-span>
+								<hx-span class="po-machine-status">· {machine.status}</hx-span>
 								{#if (machine.status === 'busy' || machine.status === 'overloaded') && machine.reasons?.[0]}
-									{` · ${machine.reasons[0]}`}
+									<hx-span>· {machine.reasons[0]}</hx-span>
 								{/if}
 							</hx-span>
 						</hx-button>
