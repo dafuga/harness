@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.style.hub-home-board-cards",
+	"uid": "u_ycw5bcsk23",
+	"kind": "style",
+	"title": "board-cards",
+	"responsibility": "Owns the board-cards stylesheet.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/styles/hub-home/board-cards.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/styles/hub-home/board-cards.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/styles/hub-home/board-cards.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

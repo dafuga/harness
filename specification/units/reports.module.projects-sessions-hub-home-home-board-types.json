@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-home-board-types",
+	"uid": "u_ycw5btyp23",
+	"kind": "module",
+	"title": "homeBoard",
+	"responsibility": "Owns the homeBoard library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeBoard.types.ts"],
+		"symbols": [
+			"HomeBoardColumn",
+			"HomeBoardNote",
+			"HomeBoardPr",
+			"HomeBoardCard",
+			"HomeBoardCount",
+			"HomeBoard"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeBoard.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeBoard.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

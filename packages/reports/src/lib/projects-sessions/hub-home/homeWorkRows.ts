@@ -27,10 +27,11 @@ function runFacts(item: TrackerItemRecord, run: Partial<TrackerRunRecord> = {}) 
 
 /** @pure One row of an item, from a run when it has one. */
 export function workRow(
-	{ item }: ItemWork,
+	work: ItemWork,
 	state: HomeWorkState,
 	run?: TrackerRunRecord
 ): HomeWorkRow {
+	const { item } = work;
 	return {
 		key: run ? `run:${run.node ?? ''}:${run.id}` : `item:${item.id}`,
 		itemId: item.id,

@@ -1,0 +1,153 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-hub-home-hub-home-board-detail",
+	"uid": "u_ycw5bdtl23",
+	"kind": "component",
+	"title": "HubHomeBoardDetail",
+	"responsibility": "Owns the HubHomeBoardDetail Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-ask",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardDetail.svelte"
+		],
+		"symbols": ["HubHomeBoardDetail"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubHomeBoardDetail.card",
+				"type": "BoardViewCard",
+				"required": true
+			},
+			{
+				"name": "HubHomeBoardDetail.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "HubHomeBoardDetail.send",
+				"type": "SendHomeChat",
+				"required": true
+			},
+			{
+				"name": "HubHomeBoardDetail.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true
+			},
+			{
+				"name": "HubHomeBoardDetail.close",
+				"type": "() => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeBoardDetail",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-home-board-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-home-board-view",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardDetail.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardDetail.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

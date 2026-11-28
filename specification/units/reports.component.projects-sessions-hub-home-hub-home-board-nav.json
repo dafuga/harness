@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-hub-home-hub-home-board-nav",
+	"uid": "u_ycw5bnav23",
+	"kind": "component",
+	"title": "HubHomeBoardNav",
+	"responsibility": "Owns the HubHomeBoardNav Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-nav"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardNav.svelte"],
+		"symbols": ["HubHomeBoardNav"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubHomeBoardNav.open",
+				"type": "OpenHomeSection",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeBoardNav",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-nav",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardNav.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardNav.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

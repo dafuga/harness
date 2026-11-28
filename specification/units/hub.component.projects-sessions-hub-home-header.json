@@ -14,6 +14,7 @@
 			"reports.component.brand-mark",
 			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.projects-sessions-hub-home-hub-home-board-nav",
 			"reports.component.projects-sessions-hub-home-hub-home-computer-detail",
 			"reports.component.projects-sessions-hub-home-hub-home-preference",
 			"reports.component.shared-primitives-atoms-html-a",
@@ -90,6 +91,18 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional notification controls supplied by the web host."
+			},
+			{
+				"name": "HubHomeHeader.board",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "HubHomeHeader.open",
+				"type": "OpenHomeSection",
+				"required": false,
+				"default": "undefined (omitted)"
 			}
 		],
 		"outputs": [
@@ -137,6 +150,11 @@
 		},
 		{
 			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-home-board-nav",
 			"via": "import",
 			"origin": "derived"
 		},

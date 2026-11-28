@@ -77,8 +77,9 @@ function askedCards(cards: HomeBoardCard[], asks: HomeOpenAsk[]): View.BoardView
 export function boardView(
 	live: HomeLiveOverview | undefined,
 	asks: HomeOpenAsk[],
-	{ project, search }: View.BoardFilter
+	filter: View.BoardFilter
 ): View.BoardView {
+	const { project, search } = filter;
 	const full = live?.board;
 	const cards = askedCards(full?.cards ?? (live ? cardsFromRows(live) : []), asks);
 	const query = search.trim().toLowerCase();

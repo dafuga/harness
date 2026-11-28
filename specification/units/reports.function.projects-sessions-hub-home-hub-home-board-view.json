@@ -1,0 +1,170 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.projects-sessions-hub-home-hub-home-board-view",
+	"uid": "u_ycw5bvew23",
+	"kind": "function",
+	"title": "hubHomeBoardView",
+	"responsibility": "Owns the hubHomeBoardView shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeBoardView.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeBoardView.types.ts"
+		],
+		"symbols": [
+			"boardColumns",
+			"boardView",
+			"boardSessions",
+			"boardComputer",
+			"BoardViewCard",
+			"BoardFilter",
+			"BoardViewColumn",
+			"BoardView"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "boardView.live",
+				"type": "HomeLiveOverview | undefined",
+				"required": true
+			},
+			{
+				"name": "boardView.asks",
+				"type": "HomeOpenAsk[]",
+				"required": true
+			},
+			{
+				"name": "boardView.filter",
+				"type": "View.BoardFilter",
+				"required": true
+			},
+			{
+				"name": "boardSessions.live",
+				"type": "HomeLiveOverview | undefined",
+				"required": true
+			},
+			{
+				"name": "boardComputer.machine",
+				"type": "HomeComputer",
+				"required": true
+			},
+			{
+				"name": "boardComputer.live",
+				"type": "HomeLiveOverview | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "boardColumns",
+				"type": "{ id: HomeBoardColumn; label: string }[]"
+			},
+			{
+				"name": "boardView",
+				"type": "View.BoardView"
+			},
+			{
+				"name": "boardSessions",
+				"type": "unknown"
+			},
+			{
+				"name": "boardComputer",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "boardView",
+				"inputs": [
+					{
+						"name": "boardView.live",
+						"type": "HomeLiveOverview | undefined",
+						"required": true
+					},
+					{
+						"name": "boardView.asks",
+						"type": "HomeOpenAsk[]",
+						"required": true
+					},
+					{
+						"name": "boardView.filter",
+						"type": "View.BoardFilter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "boardView",
+						"type": "View.BoardView"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "boardSessions",
+				"inputs": [
+					{
+						"name": "boardSessions.live",
+						"type": "HomeLiveOverview | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "boardSessions",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "boardComputer",
+				"inputs": [
+					{
+						"name": "boardComputer.machine",
+						"type": "HomeComputer",
+						"required": true
+					},
+					{
+						"name": "boardComputer.live",
+						"type": "HomeLiveOverview | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "boardComputer",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeBoardView.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeBoardView.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

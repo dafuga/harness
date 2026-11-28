@@ -1,0 +1,149 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-hub-home-hub-home-board-strip",
+	"uid": "u_ycw5bstr23",
+	"kind": "component",
+	"title": "HubHomeBoardStrip",
+	"responsibility": "Owns the HubHomeBoardStrip Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.projects-sessions-hub-home-hub-home-computer-detail",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardStrip.svelte"
+		],
+		"symbols": ["HubHomeBoardStrip"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubHomeBoardStrip.view",
+				"type": "HomeView",
+				"required": true
+			},
+			{
+				"name": "HubHomeBoardStrip.live",
+				"type": "HomeLiveOverview",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "HubHomeBoardStrip.open",
+				"type": "OpenHomeSection",
+				"required": true
+			},
+			{
+				"name": "HubHomeBoardStrip.showColumn",
+				"type": "(column: 'progress' | 'blocked') => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeBoardStrip",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-home-computer-detail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-home-board-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-home-board-view",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardStrip.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardStrip.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

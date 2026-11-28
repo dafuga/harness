@@ -80,6 +80,36 @@
 			"unit": "hub.style.hub-home-states",
 			"via": "style-import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.hub-home-board",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.hub-home-board-cards",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.hub-home-board-columns",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.hub-home-board-detail",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.hub-home-board-phone",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.hub-home-header",
+			"via": "style-import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

@@ -3,7 +3,6 @@
 <!-- @harness-uid u_ycw5bbrd23 -->
 <script lang="ts">
 	import { tick } from 'svelte';
-	import { SvelteSet } from 'svelte/reactivity';
 	import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import type { HomeBoardColumn } from '$reports/lib/projects-sessions/hub-home/homeBoard.types';
 	import { boardView } from './hubHomeBoardView';
@@ -11,6 +10,7 @@
 	import HubHomeBoardCard from './HubHomeBoardCard.svelte';
 	import HubHomeBoardDetail from './HubHomeBoardDetail.svelte';
 	import HubHomeCosChat from './HubHomeCosChat.svelte';
+	import HubHomeReminders from './HubHomeReminders.svelte';
 	import { homeCosChat } from './hubHomeChatContext.svelte';
 	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
 
@@ -44,12 +44,8 @@
 		opened ? board.columns.flatMap((entry) => entry.cards).find((c) => c.row.key === opened) : null
 	);
 	/** A filtered-to project that has no work left shows everything again. */
-	const gone = new SvelteSet<string>();
 	$effect(() => {
-		if (project && !board.projects.some((entry) => entry.name === project)) {
-			gone.add(project);
-			project = '';
-		}
+		if (project && !board.projects.some((entry) => entry.name === project)) project = '';
 	});
 
 	function show(key: string, trigger: HTMLElement) {
@@ -177,6 +173,12 @@
 			</hx-section>
 		{/each}
 	</hx-div>
+	{#if view.reminders}<HubHomeReminders
+			reminders={view.reminders}
+			now={view.now}
+			{send}
+			{receipt}
+		/>{/if}
 	{#if view.agents && (view.owner || view.linkedComputers)}<HubHomeCosChat
 			agent={view.agents.find((agent) => agent.id === 'cos')}
 			now={new Date(view.now).toISOString()}

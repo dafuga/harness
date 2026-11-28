@@ -1,0 +1,121 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-hub-home-hub-home-board-card",
+	"uid": "u_ycw5bcmp23",
+	"kind": "component",
+	"title": "HubHomeBoardCard",
+	"responsibility": "Owns the HubHomeBoardCard Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardCard.svelte"
+		],
+		"symbols": ["HubHomeBoardCard"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubHomeBoardCard.card",
+				"type": "BoardViewCard",
+				"required": true
+			},
+			{
+				"name": "HubHomeBoardCard.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "HubHomeBoardCard.show",
+				"type": "(key: string, trigger: HTMLElement) => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeBoardCard",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-home-board-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-home-board-view",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardCard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeBoardCard.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -14,7 +14,6 @@
 			"hub.component.projects-sessions-hub-home-cards",
 			"hub.component.projects-sessions-hub-home-dialogs",
 			"hub.component.projects-sessions-hub-home-header",
-			"hub.component.projects-sessions-hub-home-live",
 			"hub.component.projects-sessions-hub-home-notifications",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-main",
@@ -89,11 +88,6 @@
 		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-header",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.projects-sessions-hub-home-live",
 			"via": "import",
 			"origin": "derived"
 		},

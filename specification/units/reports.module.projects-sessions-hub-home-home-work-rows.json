@@ -1,0 +1,143 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-home-work-rows",
+	"uid": "u_ycw5brow23",
+	"kind": "module",
+	"title": "homeWorkRows",
+	"responsibility": "Owns the homeWorkRows library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeWorkRows.ts"],
+		"symbols": ["workRow", "queuedReason"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "workRow.work",
+				"type": "ItemWork",
+				"required": true
+			},
+			{
+				"name": "workRow.state",
+				"type": "HomeWorkState",
+				"required": true
+			},
+			{
+				"name": "workRow.run",
+				"type": "TrackerRunRecord",
+				"required": false
+			},
+			{
+				"name": "queuedReason.run",
+				"type": "TrackerRunRecord",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "workRow",
+				"type": "HomeWorkRow"
+			},
+			{
+				"name": "queuedReason",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "workRow",
+				"inputs": [
+					{
+						"name": "workRow.work",
+						"type": "ItemWork",
+						"required": true
+					},
+					{
+						"name": "workRow.state",
+						"type": "HomeWorkState",
+						"required": true
+					},
+					{
+						"name": "workRow.run",
+						"type": "TrackerRunRecord",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "workRow",
+						"type": "HomeWorkRow"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "queuedReason",
+				"inputs": [
+					{
+						"name": "queuedReason.run",
+						"type": "TrackerRunRecord",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "queuedReason",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-work-now",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-items",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeWorkRows.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeWorkRows.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

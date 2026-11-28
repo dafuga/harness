@@ -1,0 +1,180 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-home-board-cards",
+	"uid": "u_ycw5bcrd23",
+	"kind": "module",
+	"title": "homeBoardCards",
+	"responsibility": "Owns the homeBoardCards library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeBoardCards.ts"],
+		"symbols": [
+			"homeBoardCardsPerProject",
+			"homeBoardColumn",
+			"HomeBoardWork",
+			"compareHomeBoardCards",
+			"buildHomeBoard"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "homeBoardColumn.row",
+				"type": "HomeWorkRow",
+				"required": true
+			},
+			{
+				"name": "compareHomeBoardCards.a",
+				"type": "HomeBoardCard",
+				"required": true
+			},
+			{
+				"name": "compareHomeBoardCards.b",
+				"type": "HomeBoardCard",
+				"required": true
+			},
+			{
+				"name": "buildHomeBoard.works",
+				"type": "HomeBoardWork[]",
+				"required": true
+			},
+			{
+				"name": "buildHomeBoard.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "homeBoardCardsPerProject",
+				"type": "unknown"
+			},
+			{
+				"name": "homeBoardColumn",
+				"type": "HomeBoardColumn"
+			},
+			{
+				"name": "compareHomeBoardCards",
+				"type": "unknown"
+			},
+			{
+				"name": "buildHomeBoard",
+				"type": "HomeBoard"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "homeBoardColumn",
+				"inputs": [
+					{
+						"name": "homeBoardColumn.row",
+						"type": "HomeWorkRow",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeBoardColumn",
+						"type": "HomeBoardColumn"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "compareHomeBoardCards",
+				"inputs": [
+					{
+						"name": "compareHomeBoardCards.a",
+						"type": "HomeBoardCard",
+						"required": true
+					},
+					{
+						"name": "compareHomeBoardCards.b",
+						"type": "HomeBoardCard",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "compareHomeBoardCards",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "buildHomeBoard",
+				"inputs": [
+					{
+						"name": "buildHomeBoard.works",
+						"type": "HomeBoardWork[]",
+						"required": true
+					},
+					{
+						"name": "buildHomeBoard.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildHomeBoard",
+						"type": "HomeBoard"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-board-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-items",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeBoardCards.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeBoardCards.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

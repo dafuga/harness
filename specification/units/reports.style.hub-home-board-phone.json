@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.style.hub-home-board-phone",
+	"uid": "u_ycw5bcsp23",
+	"kind": "style",
+	"title": "board-phone",
+	"responsibility": "Owns the board-phone stylesheet.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/styles/hub-home/board-phone.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/styles/hub-home/board-phone.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/styles/hub-home/board-phone.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

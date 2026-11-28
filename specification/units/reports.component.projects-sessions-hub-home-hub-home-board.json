@@ -1,0 +1,177 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-hub-home-hub-home-board",
+	"uid": "u_ycw5bbrd23",
+	"kind": "component",
+	"title": "HubHomeBoard",
+	"responsibility": "Owns the HubHomeBoard Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-cos-chat",
+			"hub.component.projects-sessions-hub-home-reminders",
+			"reports.component.projects-sessions-hub-home-hub-home-board-card",
+			"reports.component.projects-sessions-hub-home-hub-home-board-detail",
+			"reports.component.projects-sessions-hub-home-hub-home-board-strip",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-input",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeBoard.svelte"],
+		"symbols": ["HubHomeBoard"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubHomeBoard.view",
+				"type": "HomeView",
+				"required": true
+			},
+			{
+				"name": "HubHomeBoard.open",
+				"type": "OpenHomeSection",
+				"required": true
+			},
+			{
+				"name": "HubHomeBoard.send",
+				"type": "SendHomeChat",
+				"required": true
+			},
+			{
+				"name": "HubHomeBoard.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeBoard",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-cos-chat",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-reminders",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-home-board-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-home-board-detail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-home-board-strip",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-home-board-view",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeBoard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeBoard.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -57,8 +57,6 @@
 		</hx-ul>
 		{#if card.ask}
 			<HubHomeAsk ask={card.ask} {send} {receipt} />
-		{:else if card.column === 'blocked' && card.row.now}
-			<hx-p class="hb-why"><LinkifiedText text={card.row.now} /></hx-p>
 		{:else if card.row.now}<hx-p class="hb-why"><LinkifiedText text={card.row.now} /></hx-p>{/if}
 		<hx-div class="hb-detail-actions">
 			<hx-button

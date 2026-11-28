@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.style.hub-home-header",
+	"uid": "u_ycw5bcsh23",
+	"kind": "style",
+	"title": "header",
+	"responsibility": "Owns the header stylesheet.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/styles/hub-home/header.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/styles/hub-home/header.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/styles/hub-home/header.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
