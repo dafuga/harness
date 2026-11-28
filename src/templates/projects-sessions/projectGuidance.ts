@@ -53,7 +53,7 @@ function moduleTaskRules(): string {
 - When a Codex session assigns module implementation, use \`harness task feature <id> --goal <text> --tldr <text>\` then \`harness task add --input <file>\`.
 - Tasks require a registered module and a wantedContract with responsibility, inputs, outputs and errors. Harness commits the contract to refs/harness/tasks before pickup, preserving source HEAD and unrelated edits.
 - Task prompts start with the shared feature goal and TLDR, followed by the module's overall goal and pinned wanted contract. Keep shared context stable across related tasks.
-- Omitted models use auto: gpt-6-luna/medium for headless tasks, claude-haiku-5-5/medium when verificationFiles include a *.spec.* or e2e/ file (Chromium cannot start in the Codex sandbox). A confirmed quota rejection retries once on the other provider (claude-haiku-5-5/medium or gpt-6-luna/max). Explicit --model and --intelligence settings never silently fall back.
+- Omitted models use auto: gpt-6-luna/medium for headless tasks, claude-haiku-5-5/medium when verificationFiles include a \`*.spec.*\` or e2e/ file (Chromium cannot start in the Codex sandbox). A confirmed quota rejection retries once on the other provider (claude-haiku-5-5/medium or gpt-6-luna/max). Explicit --model and --intelligence settings never silently fall back.
 - Run \`harness task worker --worker <id> --watch\` for assignment pickup. Workers preserve isolated worktrees for review; normal verification is still required. Use one repository as the active queue owner and \`harness task sync <remote>\` for explicit handoff; divergence is never overwritten.
 `;
 }

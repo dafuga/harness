@@ -24,7 +24,7 @@ export const voidElements = new Set(
 	'area base br col embed hr img input link meta source track wbr'.split(' ')
 );
 
-export function elementName(tag) {
+export function elementName(/** @type {string} */ tag) {
 	return 'Html' + tag.replace(/(^|-)([a-z])/g, (_match, _dash, letter) => letter.toUpperCase());
 }
 
@@ -35,12 +35,12 @@ export const nativeAtoms = [
 	{ name: 'HtmlElement', tag: 'svelte:element' }
 ];
 
-export function atomTag(atom) {
+export function atomTag(/** @type {{ name: string }} */ atom) {
 	const name = atom.name === 'SvgSvg' ? 'Svg' : atom.name.replace(/^Html/, '');
 	return 'hx-' + name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
-export function nativeAtomSource(atom) {
+export function nativeAtomSource(/** @type {{ tag: string, type?: string }} */ atom) {
 	const descriptor = [atom.tag, atom.type].filter(Boolean).join(' ');
 	return `<!-- @harness-tier atom -->
 <!-- @harness-element ${descriptor} -->

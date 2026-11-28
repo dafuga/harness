@@ -22,7 +22,7 @@
 			},
 			{
 				"name": "walkAtomicMarkup.node",
-				"type": "AST.Fragment",
+				"type": "object",
 				"required": true,
 				"description": "An object subtree or array of subtrees that the walker inspects. Falsy and non-object values are ignored; traversal skips keys parent, metadata, expression, and attributes, and it has no general cycle guard.",
 				"examples": [
@@ -31,7 +31,7 @@
 			},
 			{
 				"name": "walkAtomicMarkup.callback",
-				"type": "(node: AtomicMarkupNode) => void",
+				"type": "(node: { type: string, name?: string }) => void",
 				"required": true,
 				"description": "A synchronous function called with each visited object whose type property is truthy. It is not called for untyped values, and any exception it throws propagates."
 			}
@@ -98,7 +98,7 @@
 				"inputs": [
 					{
 						"name": "walkAtomicMarkup.node",
-						"type": "AST.Fragment",
+						"type": "object",
 						"required": true,
 						"description": "An object subtree or array of subtrees that the walker inspects. Falsy and non-object values are ignored; traversal skips keys parent, metadata, expression, and attributes, and it has no general cycle guard.",
 						"examples": [
@@ -107,7 +107,7 @@
 					},
 					{
 						"name": "walkAtomicMarkup.callback",
-						"type": "(node: AtomicMarkupNode) => void",
+						"type": "(node: { type: string, name?: string }) => void",
 						"required": true,
 						"description": "A synchronous function called with each visited object whose type property is truthy. It is not called for untyped values, and any exception it throws propagates."
 					}
