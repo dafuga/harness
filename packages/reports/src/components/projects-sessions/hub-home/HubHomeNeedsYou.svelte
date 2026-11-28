@@ -33,18 +33,20 @@
 	const chat = homeCosChat() ?? provideHomeCosChat();
 	let detail = $state<{ key: string; content: Snippet } | null>(null);
 	const reduceMotion = new MediaQuery('(prefers-reduced-motion: reduce)');
-	let order: string[] = [];
+	// Keep existing rows in place as snapshots arrive, including when a different ask is reflagged.
+	let order = new Map<string, number>();
 	const shown = $derived.by(() => {
 		const list = asks.filter((ask) => !chat.answers.get(askKey(ask))?.dismissed);
-		for (const [key, held] of chat.answers) {
+		for (const held of chat.answers.values()) {
 			if (held.dismissed || asks.some((ask) => ask.itemId === held.ask.itemId)) continue;
-			const index = order.indexOf(key);
-			list.splice(index < 0 ? list.length : index, 0, held.ask);
+			list.push(held.ask);
 		}
-		return list;
+		return list.sort(
+			(a, b) => (order.get(a.itemId) ?? order.size) - (order.get(b.itemId) ?? order.size)
+		);
 	});
 	$effect(() => {
-		order = shown.map(askKey);
+		order = new Map(shown.map((ask, index) => [ask.itemId, index]));
 		for (const [key, held] of chat.answers) {
 			const current = asks.find((ask) => ask.itemId === held.ask.itemId);
 			if (current ? askKey(current) !== key : held.dismissed) chat.answers.delete(key);
@@ -65,7 +67,7 @@
 		{:else if reading === 'ready'}<hx-span class="po-sessions">0</hx-span>{/if}
 	</hx-div>
 	{#if shown.length}<hx-ul class="hh-needs-list">
-			{#each shown as ask (askKey(ask))}
+			{#each shown as ask (ask.itemId)}
 				<hx-li
 					class="hh-needs-item"
 					out:slide|global={{ duration: reduceMotion.current ? 0 : 320 }}

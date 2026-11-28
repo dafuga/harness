@@ -2,7 +2,7 @@
 	"name": "hub-blocked-choice-feedback",
 	"goal": "Show the chosen answer and Sending within 100 ms, retain a click during live updates, prevent duplicate writes and show recoverable errors.",
 	"createdAt": "2026-11-28T14:17:07.372Z",
-	"updatedAt": "2026-11-28T14:18:19.898Z",
+	"updatedAt": "2026-11-28T14:28:36.388Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T14:28:34.971Z",
+			"evidence": "735021a05a: 4 live-reorder cases failed on missing first-frame selection and Sending, including the seeded Tracker in throttled Chromium."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T14:28:36.388Z",
+			"evidence": "Preserve rendered row ordering by item ID across snapshots and reuse the row across revisions. Choice controls remain scoped to the current question revision."
 		},
 		{
 			"id": "green",
