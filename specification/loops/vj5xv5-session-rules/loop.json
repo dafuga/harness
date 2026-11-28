@@ -2,7 +2,7 @@
 	"name": "vj5xv5-session-rules",
 	"goal": "Record incident rules once in the signed Tracker journal, then verify that later Claude and Codex launches and Hub read the updated rules without restarting Tracker.",
 	"createdAt": "2026-11-28T11:52:26.524Z",
-	"updatedAt": "2026-11-28T12:08:10.413Z",
+	"updatedAt": "2026-11-28T12:11:36.684Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -55,7 +55,9 @@
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T12:11:36.684Z",
+			"evidence": "harbor-mbp-2 exact 54cd1566a9: removing only the rule lookup in an isolated checkout failed the managed foreground brief assertion; restoring the lookup and rerunning the identical case passed. Temporary fixture removed."
 		},
 		{
 			"id": "verify",
