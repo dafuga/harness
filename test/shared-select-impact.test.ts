@@ -8,7 +8,11 @@ import type { ImpactReport, ImpactSide } from '../src/core/development-tooling/i
 import { ImpactService } from '../src/services/reports-media/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
-import { readBuildAliases, readSelectImports } from './utils/shared-select-impact/imports';
+import {
+	hasExpectedSourceBinding,
+	readBuildAliases,
+	readSelectImports
+} from './utils/shared-select-impact/imports';
 import { loadUnits } from '../src/workflows/development-tooling/load-units/loadUnits';
 const select = 'packages/reports/src/components/Select.svelte';
 const canonicalSelect = 'packages/reports/src/components/shared-primitives/Select.svelte';
@@ -71,6 +75,7 @@ test('no import written through a build alias of any package is left as a packag
 		reports: { $reports: './src', $desktop: '../desktop/src', $shared: './src/components' }
 	});
 	const resolved = (item: Written) =>
+		hasExpectedSourceBinding(loaded.config.references, item) &&
 		loaded.index.files
 			.get(item.from)
 			?.references.some((found) => found.path === item.to && item.to);
