@@ -51,12 +51,20 @@ test('only the verified owner with the right resource reaches the outgoing gatew
 
 test('signs the exact proposed revision and keeps the Tracker authorization out of the response', async () => {
 	const { deps, resolve, fetcher } = fixture();
-	resolve.mockResolvedValueOnce({ ...session, kind: 'native' });
 	const body = JSON.stringify({
 		id: '77ecc6dd-7d69-4c9c-9981-2804ecc6f93c',
 		revision: 2,
 		action: 'send'
 	});
+	resolve.mockResolvedValueOnce(session);
+	const formPost = new Request(origin + path, {
+		method: 'POST',
+		body,
+		headers: { 'content-type': 'text/plain' }
+	});
+	expect(await serveOutgoingDrafts(formPost, deps)).toMatchObject({ status: 415 });
+	expect(fetcher).not.toHaveBeenCalled();
+	resolve.mockResolvedValueOnce({ ...session, kind: 'native' });
 	const request = new Request(origin + path, {
 		method: 'POST',
 		body,

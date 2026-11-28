@@ -108,6 +108,21 @@ func accountPolicyChecks() {
     check(disabled && unset.request("/api/projects")?.refusal == .notConfigured && unset.hub.seen.isEmpty && unset.opened.isEmpty, "account: a build without an origin is not configured, sends nothing and opens nothing")
     let asked = [("GET", "/api/projects"), ("GET", "\(hubProject)/snapshot"), ("GET", "\(hubProject)/artifact"), ("POST", "\(hubProject)/comments"), ("POST", "\(hubProject)/agent")]
     check(asked.allSatisfy { HubAccountPolicy.allowed(HubAccountCall(method: $0.0, path: $0.1)) }, "account: project reads, media, comments and agent calls may be asked")
+    let drafts = "/api/outgoing-drafts"
+    let action = Data(#"{"action":"send","id":"77ecc6dd-7d69-4c9c-9981-2804ecc6f93c","revision":2}"#.utf8)
+    let outgoing = [
+        HubAccountCall(method: "GET", path: drafts),
+        HubAccountCall(method: "POST", path: drafts, body: action)
+    ]
+    let blocked = [
+        HubAccountCall(method: "GET", path: drafts + "/"),
+        HubAccountCall(method: "GET", path: drafts, body: action),
+        HubAccountCall(method: "POST", path: drafts, query: ["send": "1"], body: action),
+        HubAccountCall(method: "POST", path: drafts),
+        HubAccountCall(method: "POST", path: drafts, body: Data(count: 96 * 1024 + 1))
+    ]
+    check(outgoing.allSatisfy(HubAccountPolicy.allowed) && blocked.allSatisfy { !HubAccountPolicy.allowed($0) },
+          "account: only exact owner draft reads and bounded revision actions reach the Hub")
     let denied = [("POST", "/api/auth/native/start"), ("GET", "/api/auth/status"), ("POST", "/api/auth/logout"), ("GET", "/api/github/status"), ("POST", "/api/projects"),
         ("DELETE", "\(hubProject)/members/x"), ("POST", "\(hubProject)/invitations"), ("POST", "\(hubProject)/snapshot"), ("GET", "\(hubProject)/../../auth/status"),
         ("GET", hubProject.uppercased() + "/snapshot"), ("GET", "https://other.example.invalid/api/projects"), ("GET", "/api/projects/"), ("GET", "\(hubProject)/snapshot?x=1")]

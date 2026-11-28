@@ -76,6 +76,7 @@ test('fleet creation returns a redacted receipt and only the owner grant can aut
 	expect(await listed.json()).toEqual([
 		{
 			...draft,
+			canSend: true,
 			by: 'agent-host',
 			at: now(),
 			revision: 1,
