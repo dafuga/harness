@@ -1,6 +1,7 @@
 import type { Handler } from './syncRoutes.types';
 import type { SyncCall, SyncDeps } from './syncPolicy.types';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
+import { approvalPush } from './syncApprovalPush';
 import { bootstrap, readRecovery } from './syncBootstrap';
 import { changeDevices } from './syncDevices';
 import { bindDeviceSession, readDeviceSession, requireApprovedAccess } from './syncDeviceSession';
@@ -18,6 +19,11 @@ const routes: Record<string, Record<string, { handler: Handler; parts: number[] 
 		POST: { handler: bootstrap, parts: [1] }
 	},
 	devices: { POST: { handler: changeDevices, parts: [1] } },
+	'approval-push': {
+		GET: { handler: approvalPush, parts: [1] },
+		POST: { handler: approvalPush, parts: [1] },
+		DELETE: { handler: approvalPush, parts: [1] }
+	},
 	'device-session': {
 		GET: { handler: readDeviceSession, parts: [1] },
 		POST: { handler: bindDeviceSession, parts: [1] }

@@ -1,6 +1,7 @@
 import type { EnrollmentDisplay } from '../../../../../relay/src/lib/networking-security/sync/SyncEnrollments.types';
 import type { SyncCall } from './syncPolicy.types';
 import { askAccount } from './syncAccount';
+import { notifyApprovalDevices } from './syncApprovalPush';
 import { requireEnrollmentApprover } from './syncDeviceSession';
 import { fromBase64Url, toBase64Url } from './syncBase64';
 import { isRecoverableAccount } from './syncRecovery';
@@ -35,7 +36,7 @@ export async function enroll(call: SyncCall): Promise<Response> {
 				: value;
 	const recoverable = id === undefined && (await isRecoverableAccount(call));
 	const bound = recoverable || (id !== undefined && typeof value.nonce === 'string');
-	return forward(call, path, {
+	const response = await forward(call, path, {
 		method: 'POST',
 		body: JSON.stringify({
 			by: call.device,
@@ -45,6 +46,8 @@ export async function enroll(call: SyncCall): Promise<Response> {
 			decision: value.deny === true ? { kind: 'deny' } : undefined
 		})
 	});
+	if (recoverable && response.status === 201) await notifyApprovalDevices(call);
+	return response;
 }
 
 async function readOne(call: SyncCall, path: string): Promise<Response> {

@@ -1,4 +1,5 @@
 import type { RequestSessionService } from '../../../lib/verification-evidence/server/auth/request-session-service/RequestSessionService';
+import type { ApprovalPush } from './syncApprovalPush.types';
 
 /** What the sealed sync API needs from the Hub. A missing store disables it. */
 export interface SyncDeps {
@@ -8,6 +9,7 @@ export interface SyncDeps {
 	bucket: R2Bucket | undefined;
 	/** The account objects of the relay Worker, reached through this binding and no public route. */
 	accounts: DurableObjectNamespace | null;
+	approvalPush?: ApprovalPush;
 	now: number;
 }
 

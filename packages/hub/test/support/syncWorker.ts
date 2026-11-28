@@ -58,6 +58,15 @@ export default {
 			db: env.DB,
 			bucket: env.CACHE,
 			accounts: env.ACCOUNT_SYNC,
+			approvalPush: {
+				publicKey: 'fixture-application-key',
+				deliver: async () => {
+					await env.DB.prepare(
+						"INSERT INTO fixture_approval_deliveries (kind) VALUES ('device-approval')"
+					).run();
+					return 'delivered';
+				}
+			},
 			now: Date.now()
 		});
 		await drain(framed);

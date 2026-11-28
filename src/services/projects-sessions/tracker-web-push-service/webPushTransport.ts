@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { webPushContract } from '../../../utils/projects-sessions/webPushContract';
 import { isWebPushEndpoint } from '../../../utils/projects-sessions/isWebPushEndpoint';
 import type {
-	NeedsYouPushMessage,
+	WebPushMessage,
 	PushSenderReport,
 	PushSenderView,
 	PushSubscriptionTarget
@@ -61,9 +61,10 @@ export async function reportPushDelivery(
 export async function sendWebPush(
 	config: WebPushConfig,
 	ports: PushPorts,
-	delivery: { target: PushSubscriptionTarget; message: NeedsYouPushMessage }
+	delivery: { target: PushSubscriptionTarget; message: WebPushMessage }
 ): Promise<PushDelivery> {
 	const { target, message } = delivery;
+	const approval = 'kind' in message;
 	try {
 		const body = encryptWebPush(Buffer.from(JSON.stringify(message)), target.keys);
 		const response = await ports.fetch(target.endpoint, {
@@ -73,8 +74,8 @@ export async function sendWebPush(
 				authorization: vapidAuthorization(config, target.endpoint, ports.now),
 				'content-encoding': 'aes128gcm',
 				'content-type': 'application/octet-stream',
-				ttl: '900',
-				topic: 'harness-needs-you',
+				ttl: approval ? '300' : '900',
+				topic: approval ? 'harness-device-approval' : 'harness-needs-you',
 				urgency: 'high'
 			},
 			redirect: 'error',

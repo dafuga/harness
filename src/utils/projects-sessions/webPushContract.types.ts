@@ -30,3 +30,6 @@ export interface NeedsYouPushMessage {
 	body: string;
 	needs: string;
 }
+
+/** Closed-browser approval alerts carry no account or device details. */
+export type WebPushMessage = NeedsYouPushMessage | { kind: 'device-approval' };

@@ -14,7 +14,8 @@ const baseMigrations = [
 	'0001-auth-ephemeral-state',
 	'0008-sealed-sync',
 	'0010-sealed-recoveries',
-	'0011-sealed-device-sessions'
+	'0011-sealed-device-sessions',
+	'0012-approval-push'
 ];
 
 async function bundle(entry: string, external: string[]): Promise<string> {
@@ -107,6 +108,7 @@ export async function startSync(options: SyncStart = {}): Promise<SyncFixture> {
 	const db = (await miniflare.getD1Database('DB', 'hub-sync')) as unknown as D1Database;
 	for (const name of new Set([...baseMigrations, ...(options.migrations ?? [])]))
 		for (const sql of statements(name)) await db.prepare(sql).run();
+	await db.prepare('CREATE TABLE fixture_approval_deliveries (kind TEXT NOT NULL)').run();
 	const sent: (string | Uint8Array)[] = [];
 	const bucket = (await miniflare.getR2Bucket('CACHE', 'hub-sync')) as unknown as R2Bucket;
 	return {
