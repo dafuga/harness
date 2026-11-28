@@ -2,7 +2,7 @@
 	"name": "k3y69b-haiku-context-admission",
 	"goal": "Reproduce false Haiku startup rotation, admit safe requests while keeping context limits, and verify the normal module worker path.",
 	"createdAt": "2026-11-28T16:02:30.442Z",
-	"updatedAt": "2026-11-28T16:04:34.608Z",
+	"updatedAt": "2026-11-28T16:08:08.484Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T16:08:04.200Z",
+			"evidence": "ddf94219c6: expected HTTP 200 for the rewritten Claude request, got HTTP 400; one upstream call instead of two."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T16:08:06.216Z",
+			"evidence": "03e678f4bd: count changed items by position. Keep the 190000-token hard gate, request framing and full incremental-input accounting."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T16:08:08.484Z",
+			"evidence": "03e678f4bd: the unchanged regression now forwards the rewritten request and refuses the oversized append. Harness retained paired red and green proof."
 		},
 		{
 			"id": "verify",
