@@ -126,21 +126,13 @@ function finishStoppedDispatch(
 			finishRun(current, { outcome: 'abandoned', reason, now: now() }),
 			node
 		);
-		return {
-			result: undefined,
-			operation: {
-				itemId: run.item_id,
-				fields: {
-					area_release: current.auto_token,
-					area_attempt: current.attempt,
-					'note+': 'Confirmed run stop; released code area claims',
-					...(canRequeueStoppedRun(snapshot, current) && {
-						status: 'open',
-						blocked_reason: null
-					})
-				}
-			}
+		const fields = {
+			area_release: current.auto_token,
+			area_attempt: current.attempt,
+			'note+': 'Confirmed run stop; released code area claims',
+			...(canRequeueStoppedRun(snapshot, current) && { status: 'open', blocked_reason: null })
 		};
+		return { result: undefined, operation: { itemId: run.item_id, fields } };
 	});
 }
 
