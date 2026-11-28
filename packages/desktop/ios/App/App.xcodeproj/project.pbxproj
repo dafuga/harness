@@ -141,6 +141,7 @@
 		8538B5A2F237765E6573D2C1 /* TrackerReplicaSQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE28E0BAF4DD29CC245822D /* TrackerReplicaSQLite.swift */; };
 		BB2BC599687224C72E766A49 /* TrackerReplicaStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2B61EA0D90CE974A2A5EDC /* TrackerReplicaStore.swift */; };
 		A1F3C07D5B2E49D8A6C4E10B /* TrackerReplicaPlanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E4D18E6C3F50A9B7D5F21C /* TrackerReplicaPlanning.swift */; };
+		A1F3C07D5B2E49D8A6C4E10C /* TrackerReplicaReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E4D18E6C3F50A9B7D5F21D /* TrackerReplicaReminder.swift */; };
 		C3A5E29F7D4061BAC8E6032D /* TrackerReplicaIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B6F3A08E5172CBD9F7143E /* TrackerReplicaIntent.swift */; };
 		06D587CB7FC6B410746F8B24 /* TrackerReplicaOutbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD52FB429F22D70824637ED3 /* TrackerReplicaOutbox.swift */; };
 		D699CCB9AABD37B7EB869653 /* TrackerReplicaWrites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588D145A5C198FBBE2C3453A /* TrackerReplicaWrites.swift */; };
@@ -289,6 +290,7 @@
 		3FE28E0BAF4DD29CC245822D /* TrackerReplicaSQLite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaSQLite.swift; sourceTree = "<group>"; };
 		BF2B61EA0D90CE974A2A5EDC /* TrackerReplicaStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaStore.swift; sourceTree = "<group>"; };
 		B2E4D18E6C3F50A9B7D5F21C /* TrackerReplicaPlanning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaPlanning.swift; sourceTree = "<group>"; };
+		B2E4D18E6C3F50A9B7D5F21D /* TrackerReplicaReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaReminder.swift; sourceTree = "<group>"; };
 		D4B6F3A08E5172CBD9F7143E /* TrackerReplicaIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaIntent.swift; sourceTree = "<group>"; };
 		DD52FB429F22D70824637ED3 /* TrackerReplicaOutbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaOutbox.swift; sourceTree = "<group>"; };
 		588D145A5C198FBBE2C3453A /* TrackerReplicaWrites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaWrites.swift; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				3FE28E0BAF4DD29CC245822D /* TrackerReplicaSQLite.swift */,
 				BF2B61EA0D90CE974A2A5EDC /* TrackerReplicaStore.swift */,
 				B2E4D18E6C3F50A9B7D5F21C /* TrackerReplicaPlanning.swift */,
+				B2E4D18E6C3F50A9B7D5F21D /* TrackerReplicaReminder.swift */,
 				D4B6F3A08E5172CBD9F7143E /* TrackerReplicaIntent.swift */,
 				DD52FB429F22D70824637ED3 /* TrackerReplicaOutbox.swift */,
 				588D145A5C198FBBE2C3453A /* TrackerReplicaWrites.swift */,
@@ -638,6 +641,7 @@
 				8538B5A2F237765E6573D2C1 /* TrackerReplicaSQLite.swift in Sources */,
 				BB2BC599687224C72E766A49 /* TrackerReplicaStore.swift in Sources */,
 				A1F3C07D5B2E49D8A6C4E10B /* TrackerReplicaPlanning.swift in Sources */,
+				A1F3C07D5B2E49D8A6C4E10C /* TrackerReplicaReminder.swift in Sources */,
 				C3A5E29F7D4061BAC8E6032D /* TrackerReplicaIntent.swift in Sources */,
 				06D587CB7FC6B410746F8B24 /* TrackerReplicaOutbox.swift in Sources */,
 				D699CCB9AABD37B7EB869653 /* TrackerReplicaWrites.swift in Sources */,
