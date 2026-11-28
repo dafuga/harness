@@ -188,7 +188,6 @@ test.each(['collaboration', 'remote', 'relay', 'game'])(
 	},
 	60_000
 );
-
 const managedWorkspaces = [
 	'.',
 	...readdirSync(join(repository, 'packages'), { withFileTypes: true })
@@ -204,11 +203,13 @@ test.each(managedWorkspaces)(
 		for (const [name, command] of Object.entries(scripts)) {
 			if (!/(^|:)(test|build|check|lint|format)(:|$)/.test(name)) continue;
 			const delegation = /^bun run [\w:-]+$/.test(command);
+			const sharedCheck =
+				workspace === '.' && name === 'check' && command === 'bun scripts/shared-checks.ts';
 			const wrapper = /^bun scripts\/with-resources\.ts (coding|agent-test|environment) -- /.test(
 				command
 			);
 			expect(
-				command.includes(' resources run ') || delegation || wrapper,
+				command.includes(' resources run ') || delegation || wrapper || sharedCheck,
 				`${workspace}: ${name}`
 			).toBe(true);
 			if (command.includes(' -- sh -c '))

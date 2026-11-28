@@ -17,8 +17,6 @@ import type { TrackerHostLaunchConfig } from './nativeTrackerHostEffects.types';
 import type { TrackerHostTarget } from './trackerHostLaunch.types';
 import type { TrackerOccupiedRun } from './trackerHostAdmission.types';
 
-const budgetHold = `${trackerResourceHoldPrefix}${trackerBudgetSessions}/${trackerBudgetSessions} non-Harbor sessions running`;
-
 /** Apply MB2's session budget, then this computer's RAM, disk, inode and load guards. */
 export function trackerHostResourceAdmission(
 	store: TrackerPersistenceService,
@@ -31,9 +29,11 @@ export function trackerHostResourceAdmission(
 	// A driver owns its own host; the managed launcher runs sessions on this computer.
 	const resources =
 		provided ?? ('managed' in config ? new TrackerHostResourceAdapter() : undefined);
+	const budget = config.nonHarborSessionLimit ?? trackerBudgetSessions;
+	const budgetHold = `${trackerResourceHoldPrefix}${budget}/${budget} non-Harbor sessions running`;
 	return (item: TrackerDispatchItem, route: TrackerHostTarget): string | null => {
 		const budgeted = Boolean(trackerCpuBudget(store.node, item.project ?? item.agent));
-		if (budgeted && budgetedRuns(store, occupied()) >= trackerBudgetSessions) return budgetHold;
+		if (budgeted && budgetedRuns(store, occupied()) >= budget) return budgetHold;
 		if (!resources) return null;
 		return trackerHostResourceHold(resources, {
 			node: store.node,

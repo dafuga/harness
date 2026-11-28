@@ -32,6 +32,8 @@ export interface TrackerHostEffects {
 
 export type TrackerHostLaunchConfig = TrackerHostResourceLimits & {
 	maxConcurrent?: number;
+	/** Concurrent non-Harbor sessions on a host with a Tracker CPU budget. */
+	nonHarborSessionLimit?: number;
 	legacyRunDirectory?: string;
 	repositories: Record<string, TrackerHostRepository>;
 	/** No Codex starts before this ISO time. */

@@ -1,5 +1,7 @@
+// @harness-uid u_y7fkzvhxby
 import { createInterface } from 'node:readline/promises';
 import { z } from 'zod';
+import { ExpectedCliError } from '../../../src/core/errors';
 import { trackerPersonalAgent } from '../../../src/utils/projects-sessions/trackerUnattendedHold';
 import type { TrackerFetch } from './verify-home-release.types';
 
@@ -36,7 +38,7 @@ async function readTracker(path: string, fetcher: TrackerFetch): Promise<unknown
 	} catch {
 		// Tracker sometimes returns private fields. Keep parse and transport details out of evidence.
 	}
-	throw new Error(`Tracker read failed for ${path}.`);
+	throw new ExpectedCliError(`Tracker read failed for ${path}.`);
 }
 
 async function readTrackerSnapshot(fetcher: TrackerFetch) {
@@ -44,8 +46,10 @@ async function readTrackerSnapshot(fetcher: TrackerFetch) {
 		readTracker(`/runs?limit=${runLimit}`, fetcher).then((rows) => trackerRuns.safeParse(rows)),
 		readTracker('/items?status=all&limit=-1', fetcher).then((rows) => trackerItems.safeParse(rows))
 	]);
-	if (!runs.success || !items.success) throw new Error('Tracker returned invalid runs or items.');
-	if (runs.data.length >= runLimit) throw new Error('Tracker run sample may be truncated.');
+	if (!runs.success || !items.success)
+		throw new ExpectedCliError('Tracker returned invalid runs or items.');
+	if (runs.data.length >= runLimit)
+		throw new ExpectedCliError('Tracker run sample may be truncated.');
 	return { runs: runs.data, items: items.data };
 }
 
@@ -55,11 +59,12 @@ async function sampleTracker(nodes: string[], fetcher: TrackerFetch) {
 	const byId = new Map(items.map((item) => [item.id, item]));
 	const running = runs.filter((run) => run.state === 'running' && run.ended_at === null);
 	for (const run of running) {
-		if (!run.node) throw new Error('A live Tracker run has no computer.');
+		if (!run.node) throw new ExpectedCliError('A live Tracker run has no computer.');
 		const node = live.get(run.node);
 		if (!node) continue;
 		const item = byId.get(run.item_id);
-		if (!item) throw new Error('A live Tracker run has no matching item. Check Tracker sync.');
+		if (!item)
+			throw new ExpectedCliError('A live Tracker run has no matching item. Check Tracker sync.');
 		if (
 			!item.deleted &&
 			!item.sensitive &&
@@ -80,7 +85,8 @@ function parseAgentsSummary(summary: string) {
 	const match = /^(\d+) working(?: \((\d+) sessions?\))? · \d+ idle or offline$/.exec(
 		summary.trim()
 	);
-	if (!match) throw new Error('Enter the settled Agents card summary from signed-in Home.');
+	if (!match)
+		throw new ExpectedCliError('Enter the settled Agents card summary from signed-in Home.');
 	return { working: Number(match[1]), sessions: Number(match[2] ?? 0) };
 }
 
@@ -90,23 +96,26 @@ export async function verifyHubHomeRelease(
 	fetcher: TrackerFetch = fetch
 ) {
 	if (!nodes.length || nodes.some((node) => !/^[\w.-]+$/.test(node))) {
-		throw new Error('Supply the Tracker node name of each online Mac in scope.');
+		throw new ExpectedCliError('Supply the Tracker node name of each online Mac in scope.');
 	}
 	const scope = [...new Set(nodes)].sort();
 	const before = await sampleTracker(scope, fetcher);
 	const home = parseAgentsSummary(await readSummary());
 	const after = await sampleTracker(scope, fetcher);
 	if (JSON.stringify(before.byNode) !== JSON.stringify(after.byNode)) {
-		throw new Error('Tracker runs changed during the browser observation. Repeat the check.');
+		throw new ExpectedCliError(
+			'Tracker runs changed during the browser observation. Repeat the check.'
+		);
 	}
 	const tracker = after.byNode.map(({ node, ids }) => ({ node, sessions: ids.length }));
 	const total = tracker.reduce((sum, { sessions }) => sum + sessions, 0);
-	if (!total) throw new Error('No eligible live Tracker runs. Repeat when there is active work.');
+	if (!total)
+		throw new ExpectedCliError('No eligible live Tracker runs. Repeat when there is active work.');
 	if (home.working === 0) {
-		throw new Error(`Home reports 0 working while Tracker has ${total} live sessions.`);
+		throw new ExpectedCliError(`Home reports 0 working while Tracker has ${total} live sessions.`);
 	}
 	if (home.sessions !== total) {
-		throw new Error(`Home reports ${home.sessions} session(s), Tracker has ${total}.`);
+		throw new ExpectedCliError(`Home reports ${home.sessions} session(s), Tracker has ${total}.`);
 	}
 	return { from: before.at, to: after.at, home, tracker, total };
 }

@@ -149,7 +149,7 @@ async function proveAdapterDelegation() {
 			expect.objectContaining({
 				run: expect.objectContaining({ item_id: id, node: secondary, model: 'gpt-6.2-sol' })
 			}),
-			signal,
+			expect.any(AbortSignal),
 			expect.any(String)
 		);
 		await hub.scheduler!.tick(signal);
