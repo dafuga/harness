@@ -38,6 +38,7 @@ export interface RecordedTracker {
 		node: string;
 		status: string;
 		remote_runs?: number;
+		reasons?: string[];
 		remote_run_refs?: { node: string; id: number }[];
 		cores?: number;
 		load?: number[];

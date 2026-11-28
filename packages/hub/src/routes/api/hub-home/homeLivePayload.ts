@@ -55,6 +55,7 @@ const liveOverview = z.object({
 				status: z.enum(['ok', 'busy', 'overloaded', 'offline']),
 				remoteRuns: count.optional(),
 				agentCount: count.optional(),
+				reasons: z.array(short).max(12).optional(),
 				resources: z
 					.object({
 						ramAvailableMB: z.number().nonnegative().optional(),

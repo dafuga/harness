@@ -39,8 +39,11 @@
 	const unlisted = $derived(Math.max(0, (machine.agentCount ?? 0) - sessions.length));
 </script>
 
-<Modal isOpen title={machine.name} variant="section" onClose={close}>
+<Modal isOpen title={machine.name} summary={machine.status} variant="section" onClose={close}>
 	<hx-div class="hh-computer-detail" data-harness-component="hub-home-computer-detail">
+		{#if machine.reasons?.length}
+			<hx-p class="po-sessions">{machine.reasons.join(' · ')}</hx-p>
+		{/if}
 		{#if machine.status !== 'offline' && reading}
 			<DetailList rows={readings} rowKey={(row) => row.label} className="hh-computer-readings">
 				{#snippet label(row: ResourceReading)}{row.label}{/snippet}

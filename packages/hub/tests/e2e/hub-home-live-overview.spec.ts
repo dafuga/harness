@@ -1,4 +1,4 @@
-import { expect, test } from '../../../../test/support/browserTest';
+import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { captureNeedsYou } from './hub-home-capture';
 import { recordedTracker, seedComputerWork } from '../../test/support/recordedTracker';
 import {
@@ -47,7 +47,7 @@ for (const [device, width, height] of [
 		});
 		const requests = await productionHome(page, answer);
 		await page.clock.setFixedTime(Date.parse(tracker.recordedAt));
-		await page.goto('/');
+		const navigation = await page.goto('/');
 
 		const live = tracker.runs.filter((run) => run.state === 'running' && run.ended_at === null);
 		const groups = overview(page).locator('details.hh-live-project');
@@ -72,15 +72,8 @@ for (const [device, width, height] of [
 			await page.screenshot({ path: test.info().outputPath(`home-top-${device}.png`) });
 		}
 		await expectComputerWorkload(page, device, remoteTitles);
-		if (process.env.TAKE_SCREENSHOT === 'true') {
-			const metrics = await page.evaluate(() => {
-				const [nav] = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
-				const memory = (performance as Performance & { memory?: { usedJSHeapSize: number } })
-					.memory;
-				return { loadEventEndMs: nav?.loadEventEnd, pageHeapBytes: memory?.usedJSHeapSize };
-			});
-			console.log('Home renderer', device, JSON.stringify(metrics));
-		}
+		if (process.env.TAKE_SCREENSHOT === 'true')
+			await recordRendererMetrics(page, device, navigation?.request().timing().responseEnd);
 		await checkProjectDisclosure(page, answer.liveOverview!.projects, device);
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
@@ -97,6 +90,22 @@ for (const [device, width, height] of [
 		expect(requests.filter((entry) => entry.path === '/api/tracker-overview')).toEqual([]);
 		expect(requests.filter((entry) => entry.method === 'PUT')).toEqual([]);
 	});
+}
+
+async function recordRendererMetrics(page: Page, device: string, responseEndMs?: number) {
+	const cdp = await page.context().newCDPSession(page);
+	try {
+		await cdp.send('Performance.enable');
+		const { metrics } = await cdp.send('Performance.getMetrics');
+		const usedHeap = metrics.find(({ name }) => name === 'JSHeapUsedSize');
+		console.log(
+			'Home renderer',
+			device,
+			JSON.stringify({ responseEndMs, pageHeapBytes: usedHeap?.value })
+		);
+	} finally {
+		await cdp.detach();
+	}
 }
 
 test('a paragraph-long title keeps its row short on a phone', async ({ page }) => {

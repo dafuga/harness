@@ -202,6 +202,7 @@ export async function expectComputerWorkload(page: Page, device: string, titles:
 	const detail = page.getByRole('dialog', { name: 'harbor-mbp-2' });
 	await expect(detail).toBeVisible();
 	await captureNeedsYou(page, `host-detail-${device}`);
+	await expect(detail).toContainText('memory pressure is critical');
 	await expect(detail).toContainText('12 GB free of 64 GB');
 	await expect(detail).toContainText('3.5 load / 10 cores');
 	await expect(detail).toContainText('6.5 estimated free cores');

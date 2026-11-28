@@ -74,6 +74,7 @@ export interface HomeComputerSession {
 /** Older linked apps and offline computers omit live details. */
 export interface HomeComputer extends OverviewMachine {
 	agentCount?: number;
+	reasons?: string[];
 	resources?: HomeComputerResources;
 	sessions?: HomeComputerSession[];
 }

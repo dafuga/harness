@@ -32,6 +32,7 @@ export function seedComputerWork(tracker: RecordedTracker) {
 		{
 			node: 'harbor-mbp-2',
 			status: 'overloaded',
+			reasons: ['memory pressure is critical'],
 			remote_runs: 2,
 			remote_run_refs: running.map(({ node, id }) => ({ node, id })),
 			cores: 10,

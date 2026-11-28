@@ -118,6 +118,7 @@ function parseMachine(value: unknown, includeHomeFields: boolean): Tracker.Track
 		status: oneOf(row.status, MACHINE_STATUSES, 'machine status') as MachineStatus,
 		...(includeHomeFields && {
 			remoteRunRefs: remoteRefs.safeParse(row.remote_run_refs).data,
+			reasons: z.array(z.string()).safeParse(row.reasons).data?.slice(0, 12),
 			resources: machineResources(row)
 		})
 	};

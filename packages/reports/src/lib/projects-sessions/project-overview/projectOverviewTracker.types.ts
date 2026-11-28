@@ -94,6 +94,7 @@ export type TrackerMachineRecord = {
 	node: string;
 	status: MachineStatus;
 	remoteRuns?: number;
+	reasons?: string[];
 	remoteRunRefs?: TrackerMachineRunRef[];
 	resources?: HomeComputerResources;
 };

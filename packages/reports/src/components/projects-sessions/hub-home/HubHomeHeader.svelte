@@ -138,6 +138,7 @@
 							type="button"
 							class="hh-computer-trigger"
 							aria-haspopup="dialog"
+							title={machine.reasons?.join(' · ') || undefined}
 							onclick={(event) => {
 								computerTrigger = event.currentTarget;
 								chosenComputer = machine.name;

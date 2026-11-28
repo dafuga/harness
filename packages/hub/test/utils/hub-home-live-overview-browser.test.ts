@@ -79,6 +79,7 @@ describe('how the browser receives it', () => {
 		const machine = snapshot!.liveOverview!.machines.find(({ name }) => name === 'harbor-mbp-2');
 		expect(machine).toMatchObject({
 			agentCount: 2,
+			reasons: ['memory pressure is critical'],
 			resources: {
 				ramAvailableMB: 12288,
 				ramTotalMB: 65536,
@@ -114,19 +115,19 @@ describe('how the browser receives it', () => {
 		expect(mergeHomeSnapshots([behind, fresh])?.liveOverview).toEqual(fresh.liveOverview);
 		expect(mergeHomeSnapshots([fresh, behind])?.liveOverview).toEqual(fresh.liveOverview);
 	});
+});
 
-	test('neither the uploaded snapshot nor what the Hub accepts for storage can carry it', async () => {
-		const answer = await recordedMacAnswer(tracker);
-		const uploaded = buildHomeSnapshot(
-			await readTrackerSources(recordedTrackerFetch(tracker), true),
-			noProviders,
-			now()
-		);
+test('neither the uploaded snapshot nor what the Hub accepts for storage can carry it', async () => {
+	const answer = await recordedMacAnswer(tracker);
+	const uploaded = buildHomeSnapshot(
+		await readTrackerSources(recordedTrackerFetch(tracker), true),
+		noProviders,
+		now()
+	);
 
-		expect(answer.liveOverview.projects.length).toBeGreaterThan(0);
-		expect(uploaded).not.toHaveProperty('liveOverview');
-		expect(parseHomePayload(answer)).not.toHaveProperty('liveOverview');
-	});
+	expect(answer.liveOverview.projects.length).toBeGreaterThan(0);
+	expect(uploaded).not.toHaveProperty('liveOverview');
+	expect(parseHomePayload(answer)).not.toHaveProperty('liveOverview');
 });
 
 describe('what the page says when there is nothing to show', () => {
