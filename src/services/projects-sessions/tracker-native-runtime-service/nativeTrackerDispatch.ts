@@ -1,3 +1,5 @@
+import { chooseTrackerFleetHost } from './composeTrackerFleet';
+import type { TrackerFleetRuntime } from './nativeTrackerDispatch.types';
 import type { PeerStarts } from './nativeTrackerDispatch.types';
 // @harness-uid u_bl6xl2h4a3
 import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
@@ -28,13 +30,13 @@ import { spokeAutomaticPermit, spokeGrant } from './trackerHubPermits';
 export function composeTrackerDispatch(
 	store: TrackerPersistenceService,
 	options: TrackerNativeRuntimeOptions,
-	machines?: PeerStarts
+	fleet?: TrackerFleetRuntime
 ) {
 	if (!options.dispatch) {
 		if (options.syncResponder || options.links?.length) store.database.exec(trackerRunSchema);
 		return emptyDispatch(store, options);
 	}
-	return nativeDispatch(store, { ...options, dispatch: options.dispatch }, machines);
+	return nativeDispatch(store, { ...options, dispatch: options.dispatch }, fleet);
 }
 
 function emptyDispatch(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
@@ -55,25 +57,11 @@ function nativeDispatch(
 	options: TrackerNativeRuntimeOptions & {
 		dispatch: NonNullable<TrackerNativeRuntimeOptions['dispatch']>;
 	},
-	machines?: PeerStarts
+	fleet?: TrackerFleetRuntime
 ) {
-	const {
-		policy: supplied,
-		due,
-		sessions,
-		runner,
-		scheduleDue,
-		grant: configuredGrant
-	} = options.dispatch;
-	const { node, now = Date.now, role } = options;
-	const policy = {
-		...supplied,
-		node,
-		now,
-		hub: role === 'hub',
-		allowDelegatedAdapterDue: role === 'spoke' && Boolean(options.links?.length),
-		automaticEnabled: supplied.automaticEnabled ?? options.automaticEnabled
-	};
+	const { due, sessions, runner, scheduleDue, grant: configuredGrant } = options.dispatch;
+	const { now = Date.now, role } = options;
+	const policy = nativeDispatchPolicy(options, options.dispatch.policy, fleet);
 	const duePolicy = due && (() => liveTrackerDuePolicy(store, due(), role));
 	const repository = new TrackerDispatchRepository(store, {
 		policy,
@@ -88,7 +76,12 @@ function nativeDispatch(
 			const { item, due: current } = repository.readSnapshot(itemId);
 			return Boolean(item && current && mayScheduleHere(item, current, policy));
 		});
-	const permits = dispatchPermits(repository, { store, options, policy, machines });
+	const permits = dispatchPermits(repository, {
+		store,
+		options,
+		policy,
+		machines: fleet?.machines
+	});
 	return {
 		dispatch,
 		permitAutomatic: permits.hubAutomatic,
@@ -103,6 +96,32 @@ function nativeDispatch(
 			alternateAdapterHost: role === 'hub' ? adapterFailover(options, now) : undefined
 		})
 	};
+}
+
+function nativeDispatchPolicy(
+	options: TrackerNativeRuntimeOptions,
+	supplied: NonNullable<TrackerNativeRuntimeOptions['dispatch']>['policy'],
+	fleet?: TrackerFleetRuntime
+) {
+	const { node, now = Date.now, role } = options;
+	const policy: TrackerDispatchPolicy = {
+		...supplied,
+		node,
+		now,
+		hub: role === 'hub',
+		allowDelegatedAdapterDue: role === 'spoke' && Boolean(options.links?.length),
+		automaticEnabled: supplied.automaticEnabled ?? options.automaticEnabled
+	};
+	if (fleet)
+		policy.chooseHost = chooseTrackerFleetHost(
+			{ ...policy },
+			{
+				machines: fleet.machines,
+				now,
+				samples: () => fleet.fleetSamples?.() ?? []
+			}
+		);
+	return policy;
 }
 
 function dispatchPermits(

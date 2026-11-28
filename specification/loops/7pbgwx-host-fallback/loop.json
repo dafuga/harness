@@ -1,0 +1,67 @@
+{
+	"name": "7pbgwx-host-fallback",
+	"goal": "A locally held preferred Mac transfers one automatic request to an eligible Mac before either host claims it",
+	"createdAt": "2026-11-28T10:28:57.053Z",
+	"updatedAt": "2026-11-28T11:15:47.054Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T10:29:28.089Z",
+			"evidence": "A resource-held preferred Mac prevented an otherwise eligible due task from starting on either Mac."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T10:29:29.002Z",
+			"evidence": "Strengthen existing signed hub/spoke due matrix with a fresh eligible alternate on the overload case."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:15:38.142Z",
+			"evidence": "Committed red replay 732546767ed37a8ff3c1ff8e4315c4534149aad4: the hub did not start mbtwo00001 when its preferred Mac was held."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:15:41.689Z",
+			"evidence": "Portable automatic requests may choose a healthy Mac before admission; an unclaimed request retains its token."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:15:47.054Z",
+			"evidence": "Unchanged overload and pending-request cases passed on replay fe504454a6114c156006a712cc72f31e33c020fb (same source tree as fe0356d613)."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -1,0 +1,148 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-tracker-schedule-hold",
+	"uid": "u_fsox5s2njk",
+	"kind": "function",
+	"title": "trackerScheduleHold",
+	"responsibility": "Read and describe Tracker launch pauses using the schedule journal clock and manual-intake policy.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/trackerScheduleHold.ts",
+			"src/utils/projects-sessions/trackerScheduleHold.types.ts"
+		],
+		"symbols": [
+			"manualIntakeReason",
+			"trackerScheduleHold",
+			"describeTrackerScheduleHold",
+			"TrackerScheduleFields"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "trackerScheduleHold.row",
+				"type": "TrackerScheduleFields",
+				"required": true,
+				"description": "Stored scheduling fields and the journal clocks for the opt-out and its reason."
+			},
+			{
+				"name": "trackerScheduleHold.now",
+				"type": "number",
+				"required": true,
+				"description": "Current Unix time in milliseconds for testing the expiry boundary."
+			},
+			{
+				"name": "describeTrackerScheduleHold.reason",
+				"type": "string",
+				"required": true,
+				"description": "Reason for the active operator pause or manual intake policy."
+			},
+			{
+				"name": "describeTrackerScheduleHold.until",
+				"type": "string | null",
+				"required": true,
+				"description": "Expiry in ISO 8601 format, or null for a manual-intake policy."
+			}
+		],
+		"outputs": [
+			{
+				"name": "manualIntakeReason",
+				"type": "string",
+				"description": "Shared label for an intake policy that requires an explicit launch."
+			},
+			{
+				"name": "trackerScheduleHold",
+				"type": "{ reason: string; until: string | null } | null",
+				"description": "Active pause reason and expiry, or null when there is no active pause."
+			},
+			{
+				"name": "describeTrackerScheduleHold",
+				"type": "string",
+				"description": "Display reason with the deadline appended for a temporary pause."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerScheduleHold",
+				"inputs": [
+					{
+						"name": "trackerScheduleHold.row",
+						"type": "TrackerScheduleFields",
+						"required": true,
+						"description": "Stored scheduling fields and the journal clocks for the opt-out and its reason."
+					},
+					{
+						"name": "trackerScheduleHold.now",
+						"type": "number",
+						"required": true,
+						"description": "Current Unix time in milliseconds for testing the expiry boundary."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerScheduleHold",
+						"type": "{ reason: string; until: string | null } | null",
+						"description": "Active pause reason and expiry, or null when there is no active pause."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "describeTrackerScheduleHold",
+				"inputs": [
+					{
+						"name": "describeTrackerScheduleHold.reason",
+						"type": "string",
+						"required": true,
+						"description": "Reason for the active operator pause or manual intake policy."
+					},
+					{
+						"name": "describeTrackerScheduleHold.until",
+						"type": "string | null",
+						"required": true,
+						"description": "Expiry in ISO 8601 format, or null for a manual-intake policy."
+					}
+				],
+				"outputs": [
+					{
+						"name": "describeTrackerScheduleHold",
+						"type": "string",
+						"description": "Display reason with the deadline appended for a temporary pause."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/trackerScheduleHold.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/trackerScheduleHold.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

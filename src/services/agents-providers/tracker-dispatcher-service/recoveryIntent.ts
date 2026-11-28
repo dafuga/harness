@@ -93,9 +93,11 @@ function unattendedTarget(
 ) {
 	if (wanted === 'auto')
 		return policy.chooseHost(item, { source: 'automatic', requestedNode: null });
-	return knownNode(wanted, policy)
-		? { node: canonicalNode(wanted, policy), why: '' }
-		: { node: null, why: 'computer must be mac, mb2, box, auto, or a known tracker node' };
+	if (!knownNode(wanted, policy))
+		return { node: null, why: 'computer must be mac, mb2, box, auto, or a known tracker node' };
+	const requestedNode = canonicalNode(wanted, policy);
+	const choice = policy.chooseHost(item, { source: 'automatic', requestedNode });
+	return choice.node ? choice : { node: requestedNode, why: '' };
 }
 export function unattendedIntent(
 	snapshot: TrackerDispatchSnapshot,

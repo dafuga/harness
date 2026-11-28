@@ -11,7 +11,7 @@
 		"source": [
 			"src/repositories/projects-sessions/tracker-item-read-repository/stampTrackerTime.ts"
 		],
-		"symbols": ["stampTrackerTime"]
+		"symbols": ["stampTrackerTime", "launchRequestedAt"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -25,12 +25,26 @@
 				"name": "stampTrackerTime.timeZone",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "launchRequestedAt.row",
+				"type": "TrackerItemRow",
+				"required": true
+			},
+			{
+				"name": "launchRequestedAt.now",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "stampTrackerTime",
 				"type": "string"
+			},
+			{
+				"name": "launchRequestedAt",
+				"type": "unknown"
 			}
 		],
 		"errors": [],
@@ -58,11 +72,45 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "launchRequestedAt",
+				"inputs": [
+					{
+						"name": "launchRequestedAt.row",
+						"type": "TrackerItemRow",
+						"required": true
+					},
+					{
+						"name": "launchRequestedAt.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "launchRequestedAt",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/repositories/projects-sessions/tracker-item-read-repository/stampTrackerTime.ts",

@@ -22,10 +22,11 @@ export function planTrackerManualLaunch(
 		return {
 			itemId: item.id,
 			fields: {
-				...(off && { auto: null }),
+				...(off && { auto: null, launch_target: null, launch_source: null, launch_pick: null }),
 				schedule_off: off ? 1 : 0,
+				schedule_hold_reason: off ? 'Automatic launch paused by operator' : null,
 				schedule_status: null,
-				'note+': off ? 'auto-launch turned off' : 'automatic due launch allowed'
+				'note+': off ? 'auto-launch turned off for 24 hours' : 'automatic due launch allowed'
 			}
 		};
 	}

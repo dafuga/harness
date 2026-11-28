@@ -10,15 +10,18 @@
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import { count, homeHeadline, summaryLine } from './hubHomePresentation';
 	import { compareOverviewMachines } from '../../../lib/projects-sessions/project-overview/projectOverviewItems';
-	import type { HomeComputer } from '../../../lib/projects-sessions/hub-home/homeLive.types';
+	import type {
+		HomeComputer,
+		HomeLiveOverview
+	} from '../../../lib/projects-sessions/hub-home/homeLive.types';
 	import HubHomeComputerDetail from './HubHomeComputerDetail.svelte';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import type { HomeView } from './hubHomeView.types';
 	let {
 		view,
+		localOverview,
 		link,
-		localMachines,
 		accountName = '',
 		accountMenu,
 		needsHref = resolve('/') + '?view=needs-you',
@@ -26,8 +29,8 @@
 		notifications
 	}: {
 		view: HomeView;
+		localOverview?: HomeLiveOverview;
 		link: RealtimeState | null;
-		localMachines?: HomeComputer[];
 		accountName?: string;
 		accountMenu?: Snippet;
 		needsHref?: string;
@@ -35,12 +38,10 @@
 		notifications?: Snippet;
 	} = $props();
 	const liveSessions = $derived(view.overview?.status === 'ready' ? view.overview.liveSessions : 0);
+	const live = $derived(localOverview ?? view.computers?.snapshot?.liveOverview);
+	const activeAgents = $derived(live?.hiddenRuns ? null : live?.runningAgentCount);
 	const machines: HomeComputer[] = $derived(
-		(
-			localMachines ??
-			view.computers?.snapshot?.liveOverview?.machines ??
-			(view.overview?.status === 'ready' ? view.overview.machines : [])
-		)
+		(live?.machines ?? (view.overview?.status === 'ready' ? view.overview.machines : []))
 			.slice()
 			.sort(compareOverviewMachines)
 	);
@@ -113,7 +114,7 @@
 				: view.agents === null
 					? 'Loading your home…'
 					: view.trackerConnected
-						? homeHeadline(view.agents, liveSessions, view.openAsks.length)
+						? homeHeadline(view.agents, liveSessions, view.openAsks.length, activeAgents)
 						: view.needsMac
 							? 'Connect your Mac'
 							: view.linkedComputers

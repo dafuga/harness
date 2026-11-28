@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import { describeTrackerScheduleHold } from '../../../utils/projects-sessions/trackerScheduleHold';
 import { attemptKey } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerRunReceipt } from '../../agents-providers/TrackerDispatcherService.types';
 import { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
@@ -148,6 +149,8 @@ export function blockMissingItem(
 	{ item, candidate, reason }: { item: TrackerItem; candidate?: TrackerItem; reason: string }
 ) {
 	if (candidate?.auto !== item.auto || candidate?.updated_at !== item.updated_at) return;
+	const pause = item.schedule_hold;
+	const temporary = pause?.until && reason === describeTrackerScheduleHold(pause);
 	store.commitLocal(() => {
 		if (
 			item.status !== 'in_progress' &&
@@ -163,8 +166,14 @@ export function blockMissingItem(
 			operation: {
 				itemId: item.id,
 				fields: {
-					status: 'blocked',
-					blocked_reason: reason,
+					status: temporary ? 'open' : 'blocked',
+					blocked_reason: temporary ? null : reason,
+					...(temporary && {
+						auto: null,
+						launch_target: null,
+						launch_source: null,
+						launch_pick: null
+					}),
 					'note+': `Tracker recovery held: ${reason}`
 				}
 			}

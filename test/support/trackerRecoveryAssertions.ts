@@ -43,8 +43,8 @@ export async function verifyStoppedRun(
 			.prepare('SELECT status, blocked_reason FROM items WHERE id = ?')
 			.get(itemId)
 	).toMatchObject({
-		status: 'blocked',
-		blocked_reason: expect.stringContaining('stopped by operator')
+		status: 'open',
+		blocked_reason: null
 	});
 	expect(
 		runtime.store.database

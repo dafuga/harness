@@ -199,7 +199,10 @@ operator verifies the stopped database and chooses a rollback.
   requests and their wait. If the task has no approved placement, the
   watchdog alerts Chief of Staff. Ordinary tasks added by Daniel or
   Chief of Staff queue by default. `tracker add ... --later` records a
-  persistent opt-out. `tracker launch on ITEM` re-enables automatic pickup.
+  24-hour pause. `tracker unlaunch ITEM` cancels a pending request and
+  pauses automatic pickup for 24 hours. `tracker launch on ITEM` clears
+  a pause early. The digest lists open pauses with the reason and expiry.
+  Explicit manual intake keeps its source's launch policy.
   For active context above
   150,000 tokens, Tracker requests a short handoff once an owned pane is
   idle. It closes that pane for a fresh launch only after it verifies the

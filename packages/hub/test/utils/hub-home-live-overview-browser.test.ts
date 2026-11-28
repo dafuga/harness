@@ -20,6 +20,7 @@ import {
 	recordedTrackerFetch,
 	expectedComputerOrder,
 	seedComputerWork,
+	seedLaunchPause,
 	type RecordedTracker
 } from '../support/recordedTracker';
 import { recordedMacAnswer } from '../support/recordedTrackerMac';
@@ -69,6 +70,7 @@ const linked = (answer: unknown) =>
 describe('how the browser receives it', () => {
 	test('the overview arrives from the linked computer, with credentials redacted', async () => {
 		const remoteTitles = seedComputerWork(tracker);
+		seedLaunchPause(tracker);
 		const secret = 'ghp_' + 'a'.repeat(36);
 		itemOf(liveRuns()[0].item_id).title = `Use ${secret}`;
 		const utilization = { actual: { cpu: 42, ram: 61 }, target: { cpu: 80, ram: 75 } };
@@ -104,6 +106,15 @@ describe('how the browser receives it', () => {
 			}))
 		});
 		expectInitialProjectList(snapshot!.liveOverview!);
+		expect(snapshot?.liveOverview?.runningAgentCount).toBe(14);
+		const paused = snapshot?.liveOverview?.projects
+			.flatMap(({ rows }) => rows)
+			.find(({ itemId }) => itemId === 'paused-fixture');
+		expect(paused).toMatchObject({
+			status: 'open',
+			state: 'blocked',
+			now: 'Automatic launch paused by operator'
+		});
 	});
 
 	test('an overview this Hub cannot read leaves the rest of Home in place', async () => {

@@ -47,6 +47,7 @@ export interface TrackerDispatchItem extends TrackerLaunchOptions {
 	adapterDueOwner?: string | null;
 	recurring?: boolean;
 	scheduleOff?: boolean;
+	scheduleHoldReason?: string;
 	deleted?: boolean;
 	awaitingAnswer?: boolean;
 	parkedUntil?: number;

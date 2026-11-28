@@ -8,11 +8,10 @@ import type {
 	TrackerRecurringProblem
 } from '../TrackerItemReadRepository.types';
 import type { TrackerRunReadRepository } from '../TrackerRunReadRepository';
-import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
-import { trackerChaseFields, trackerAskFields } from './serializeTrackerItem';
+import { openLaunchHold, trackerChaseFields, trackerAskFields } from './serializeTrackerItem';
 import { trackerPlanningStage } from '../../../utils/projects-sessions/trackerPlanning';
 import { splitTrackerAsks, listTrackerUnblocks, isStaleDecision } from './splitTrackerAsks';
-import { stampTrackerTime } from './stampTrackerTime';
+import { launchRequestedAt, stampTrackerTime } from './stampTrackerTime';
 import type { StoredRecurringResult, TrackerDigestSources } from './buildTrackerDigest.types';
 
 /** Group active items by the configured calendar day and current recurring outcome. */
@@ -34,12 +33,17 @@ export function buildTrackerDigest(
 		due_today: [],
 		recurring_missed: [],
 		chased_7d: [],
-		queued: []
+		queued: [],
+		launch_holds: []
 	};
 	for (const row of rows) {
 		const item = summarize(row, nowMs);
 		followThrough(groups, { row, item, nowMs, runs });
-		if (digestActive(row, nowMs)) groupActive(groups, row, item, { today, timeZone });
+		if (digestActive(row, nowMs)) {
+			groupActive(groups, row, item, { today, timeZone });
+			const held = openLaunchHold(row, item, nowMs);
+			if (held) groups.launch_holds.push(held);
+		}
 	}
 	splitTrackerAsks(groups);
 	groups.chased_7d.sort((a, b) => (b.chased_at ?? '').localeCompare(a.chased_at ?? ''));
@@ -150,18 +154,9 @@ function queuedLaunch(
 	return {
 		...item,
 		requested_at: new Date(at).toISOString(),
-		waiting_minutes: elapsedMinutes(now, at),
+		waiting_minutes: Math.max(0, Math.floor((now - at) / 60_000)),
 		computer: row.launch_target ?? row.computer
 	};
-}
-
-function launchRequestedAt(row: TrackerItemRow, now: number) {
-	const { auto } = JSON.parse(row.clocks) as { auto?: string };
-	return trackerClockMilliseconds(auto ?? '') || Date.parse(row.updated_at ?? '') || now;
-}
-
-function elapsedMinutes(now: number, at: number) {
-	return Math.max(0, Math.floor((now - at) / 60_000));
 }
 
 function recurringProblem(

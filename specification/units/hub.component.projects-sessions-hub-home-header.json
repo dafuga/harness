@@ -43,6 +43,13 @@
 				"description": "Home data, project snapshots, source availability and clock used for presentation."
 			},
 			{
+				"name": "HubHomeHeader.localOverview",
+				"type": "HomeLiveOverview",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional local Tracker projection used to count active project and owner pairs on the Mac."
+			},
+			{
 				"name": "HubHomeHeader.link",
 				"type": "RealtimeState | null",
 				"required": true,

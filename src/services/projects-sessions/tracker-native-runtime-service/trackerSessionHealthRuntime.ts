@@ -104,7 +104,8 @@ async function publishIssue(
 	}: { now: number; items: readonly TrackerItem[]; launch?: TrackerWatchdogLaunch }
 ) {
 	const candidate = items.find(({ id, deleted }) => id === issue.item_id && !deleted);
-	const item = candidate && new TrackerItemReadRepository(store.database).getStored(candidate.id);
+	const item =
+		candidate && new TrackerItemReadRepository(store.database, () => now).getStored(candidate.id);
 	if (resolveRecoveryHold(store, { item, candidate, launch }, issue, now)) return;
 	const recovery =
 		issue.recover && item && launch
@@ -194,7 +195,7 @@ export async function recheckTrackerRecovery(
 	launch: TrackerWatchdogLaunch,
 	now: number
 ): Promise<TrackerDispatchResult> {
-	const repository = new TrackerItemReadRepository(store.database);
+	const repository = new TrackerItemReadRepository(store.database, () => now);
 	const panes = await (driver.inventory?.(signal) ?? driver.scan(signal));
 	signal.throwIfAborted();
 	if (!panes) return { status: 'ignored', reason: 'tmux inventory unavailable' } as const;

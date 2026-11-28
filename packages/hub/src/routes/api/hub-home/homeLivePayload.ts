@@ -28,6 +28,7 @@ const row = z.object({
 	now: text(300)
 		.nullish()
 		.transform((value) => value ?? null),
+	launchHold: z.object({ until: time.nullable() }).optional(),
 	owner: short.nullable(),
 	computer: short.nullable(),
 	model: short.nullable(),
@@ -75,6 +76,7 @@ const liveOverview = z.object({
 		)
 		.max(200),
 	hiddenRuns: count,
+	runningAgentCount: count.optional(),
 	omittedRows: count
 });
 

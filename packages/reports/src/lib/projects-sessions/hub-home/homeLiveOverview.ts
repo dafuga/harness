@@ -17,6 +17,7 @@ import type {
 import { homeText } from './homeTrackerText';
 import { buildHomeMachines, isActiveHomeRun } from './buildHomeMachines';
 import { homeWorkNow } from './homeWorkNow';
+import { homeLaunchPause } from './homeSchedule';
 
 export const homeLiveLimits = { projects: 200, rows: 100 } as const;
 const stateOrder: HomeWorkState[] = ['running', 'offline', 'queued', 'blocked', 'finished'];
@@ -79,19 +80,28 @@ function restingRow(work: ItemWork): HomeWorkRow[] {
 		item.launchRequested &&
 		!runs.some((run) => run.auto_token && run.auto_token === item.launchToken);
 	if (pending && ['open', 'in_progress'].includes(item.status)) return [workRow(work, 'queued')];
-	if (item.status === 'in_progress') {
-		const last = endedToday(work);
-		const reason = homeText(item.blocked_reason ?? last?.failure_reason, 240);
+	if (item.status === 'in_progress') return [unreconciledRow(work)];
+	const hold = homeLaunchPause(item, work.now);
+	if (hold)
 		return [
 			{
 				...workRow(work, 'blocked'),
-				status: 'blocked',
-				now: reason ?? 'Waiting for Tracker to reconcile this item'
+				now: homeText(hold.reason, 200),
+				launchHold: { until: hold.until }
 			}
 		];
-	}
 	const last = endedToday(work);
 	return last ? [workRow(work, 'finished', last)] : [];
+}
+
+function unreconciledRow(work: ItemWork): HomeWorkRow {
+	const last = endedToday(work);
+	const reason = homeText(work.item.blocked_reason ?? last?.failure_reason, 240);
+	return {
+		...workRow(work, 'blocked'),
+		status: 'blocked',
+		now: reason ?? 'Waiting for Tracker to reconcile this item'
+	};
 }
 
 function itemRows(work: ItemWork): HomeWorkRow[] {
@@ -149,6 +159,26 @@ function listed(item: TrackerItemRecord): IncludedTrackerItem | null {
 	return isIncludedItem(named) ? named : null;
 }
 
+function activeAgentCount(
+	items: IncludedTrackerItem[],
+	runs: ReadonlyMap<string, TrackerRunRecord[]>,
+	offline: ReadonlySet<string>
+) {
+	const identities = new Set<string>();
+	for (const item of items) {
+		if (
+			!runs
+				.get(item.id)
+				?.some((run) => run.ended_at === null && liveState(run, offline) === 'running')
+		)
+			continue;
+		const project = (item.project?.trim() || item.agent).toLowerCase();
+		const owner = item.owner?.trim().toLowerCase() || null;
+		identities.add(JSON.stringify([project, owner]));
+	}
+	return identities.size;
+}
+
 /**
  * @pure Every project, session and run these Tracker records hold. Private and ignored items are
  * never described; their live runs are only counted, so the totals stay honest.
@@ -176,6 +206,7 @@ export function buildHomeLiveOverview(sources: TrackerSources, now: number): Hom
 		projects: projects.slice(0, homeLiveLimits.projects),
 		machines: buildHomeMachines(sources, runs, shown),
 		hiddenRuns,
+		runningAgentCount: activeAgentCount(items, runs, offline),
 		omittedRows:
 			built.reduce((sum, entry) => sum + entry.omitted, 0) +
 			projects.slice(homeLiveLimits.projects).reduce((sum, entry) => sum + entry.rows.length, 0)

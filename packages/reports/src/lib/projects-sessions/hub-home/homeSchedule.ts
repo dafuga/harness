@@ -1,4 +1,5 @@
 // @harness-uid u_q7tlm7xp4x
+import { describeTrackerScheduleHold } from '../../../../../../src/utils/projects-sessions/trackerScheduleHold';
 import {
 	trackerNonWorkAgent,
 	trackerUnattendedHold
@@ -35,9 +36,27 @@ function blocker(item: TrackerItemRecord): string | null {
 	return neverLaunches(item);
 }
 
+/** A pause visible on an open, unclaimed task in the live Home overview. */
+export function homeLaunchPause(item: TrackerItemRecord, now: number) {
+	const hold = item.scheduleHold;
+	if (!hold || !canShowLaunchPause(item)) return undefined;
+	return hold.until !== null && Date.parse(hold.until) <= now ? undefined : hold;
+}
+
+function canShowLaunchPause(item: TrackerItemRecord) {
+	return (
+		item.status === 'open' &&
+		!item.launchRequested &&
+		!item.recurring &&
+		(!item.kind || item.kind === 'task') &&
+		!(item.needs_daniel && !item.resolved)
+	);
+}
+
 function neverLaunches(item: TrackerItemRecord): string | null {
 	if (item.kind === 'reminder') return 'A reminder; it does not launch';
 	if (item.kind && item.kind !== 'task') return 'A plan; only tasks launch';
+	if (item.scheduleHold) return describeTrackerScheduleHold(item.scheduleHold);
 	if (item.scheduleOff) return 'Automatic launch is off';
 	if (item.recurring) return 'A repeating item that missed this run';
 	const hold = trackerUnattendedHold(item);

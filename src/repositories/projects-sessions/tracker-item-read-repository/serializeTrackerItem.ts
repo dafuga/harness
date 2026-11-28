@@ -1,8 +1,13 @@
 // @harness-uid u_xba7ieg4je
+import { trackerScheduleHold } from '../../../utils/projects-sessions/trackerScheduleHold';
 import { trackerAttachments } from '../../../utils/projects-sessions/trackerAttachments';
 import { trackerItemPriority } from '../../../utils/projects-sessions/trackerItemPriority';
 import type { SqliteStatement } from '../../../core/development-tooling/sqliteTypes';
-import type { TrackerItem, TrackerItemRow } from '../TrackerItemReadRepository.types';
+import type {
+	TrackerDigestItem,
+	TrackerItem,
+	TrackerItemRow
+} from '../TrackerItemReadRepository.types';
 import type { StoredTrackerCallback, StoredTrackerNote } from './serializeTrackerItem.types';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import {
@@ -13,7 +18,11 @@ import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOp
 import { TrackerItemReadError } from './TrackerItemReadError';
 
 /** Shape an item for public reads. SQLite-only fields and callback targets stay private. */
-export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement): TrackerItem {
+export function serializeTrackerItem(
+	row: TrackerItemRow,
+	notes: SqliteStatement,
+	now: number
+): TrackerItem {
 	return {
 		id: row.id,
 		...itemClassification(row),
@@ -35,8 +44,7 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		launch_target: nullIfEmpty(row.launch_target),
 		launch_source: nullIfEmpty(row.launch_source),
 		launch_pick: nullIfEmpty(row.launch_pick),
-		schedule_off: Boolean(Number(row.schedule_off)),
-		schedule_status: nullIfEmpty(row.schedule_status),
+		...scheduleFields(row, now),
 		model: nullIfEmpty(row.model),
 		sensitive: Boolean(Number(row.sensitive)),
 		recurring: Boolean(row.every),
@@ -63,6 +71,15 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		created_by: row.created_by,
 		updated_at: row.updated_at,
 		deleted: Boolean(row.deleted)
+	};
+}
+
+function scheduleFields(row: TrackerItemRow, now: number) {
+	const hold = row.kind === 'reminder' ? null : trackerScheduleHold(row, now);
+	return {
+		schedule_off: Boolean(hold) || (row.kind === 'reminder' && row.schedule_off === '1'),
+		...(hold && { schedule_hold: hold }),
+		schedule_status: nullIfEmpty(row.schedule_status)
 	};
 }
 
@@ -171,4 +188,17 @@ function webhookLabel(url: string): string {
 
 function itemClassification({ kind, priority }: TrackerItemRow) {
 	return { kind, priority: trackerItemPriority(priority, 'normal') };
+}
+
+export function openLaunchHold(row: TrackerItemRow, item: TrackerDigestItem, now: number) {
+	if (
+		row.status !== 'open' ||
+		(row.kind ?? 'task') !== 'task' ||
+		row.every ||
+		item.needs_daniel ||
+		row.auto
+	)
+		return undefined;
+	const hold = trackerScheduleHold(row, now);
+	return hold ? { ...item, ...hold } : undefined;
 }

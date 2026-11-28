@@ -122,6 +122,12 @@
 				"description": "How many open asks need the owner. Defaults to zero."
 			},
 			{
+				"name": "homeHeadline.runningAgentCount",
+				"type": "number | null",
+				"required": false,
+				"description": "Distinct active project and owner pairs, or null if the live count is unavailable. Omit to use the agent list."
+			},
+			{
 				"name": "currentAgent.agents",
 				"type": "HomeAgent[]",
 				"required": true,
@@ -591,6 +597,12 @@
 						"required": false,
 						"default": 0,
 						"description": "How many open asks need the owner. Defaults to zero."
+					},
+					{
+						"name": "homeHeadline.runningAgentCount",
+						"type": "number | null",
+						"required": false,
+						"description": "Distinct active project and owner pairs, or null if the live count is unavailable. Omit to use the agent list."
 					}
 				],
 				"outputs": [

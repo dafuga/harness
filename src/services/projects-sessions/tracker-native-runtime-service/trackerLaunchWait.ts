@@ -30,7 +30,7 @@ export function trackerLaunchWait(runtime: TrackerNativeRuntimeService, item: Tr
 
 /** Every request without a started run, split into launchable and held ones. */
 export function trackerRequestWaits(runtime: TrackerNativeRuntimeService) {
-	const items = new TrackerItemReadRepository(runtime.store.database);
+	const items = new TrackerItemReadRepository(runtime.store.database, runtime.now);
 	const requests = (runtime.scheduler?.status(0).stuck ?? []).map(({ id, title }) => ({
 		id,
 		title,

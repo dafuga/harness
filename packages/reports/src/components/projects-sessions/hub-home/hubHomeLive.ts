@@ -46,9 +46,15 @@ export function stageLabel(stage: HomeWorkRow['stage']) {
 /** @pure The run state in words, with the recorded outcome of the latest run when it has one. */
 export function workStateLabel(row: HomeWorkRow) {
 	const { state, outcome } = row;
+	if (row.launchHold) return row.launchHold.until ? 'Launch paused' : 'Manual launch';
 	if (state === 'queued' && row.runId) return `Queued #${row.runId.toLocaleString('en-US')}`;
 	const ended = state === 'finished' && outcome && (outcomes[outcome] ?? outcome);
 	return ended ? `Finished: ${ended}` : workStateLabels[state];
+}
+
+export function workNow(row: HomeWorkRow) {
+	const until = row.launchHold?.until;
+	return until && row.now ? `${row.now} until ${runMoment(until)}, Lisbon time` : row.now;
 }
 
 /** @pure A length of time in its largest whole unit. */

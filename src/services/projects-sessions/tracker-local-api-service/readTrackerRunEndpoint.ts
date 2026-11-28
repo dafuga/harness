@@ -1,4 +1,5 @@
 // @harness-uid u_g7kdpz7bel
+import { describeTrackerScheduleHold } from '../../../utils/projects-sessions/trackerScheduleHold';
 import { trackerRunCost } from '../../agents-providers/module-task-analytics-service/trackerRunRecords';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
@@ -25,7 +26,7 @@ function readSchedulePreview(
 	options: TrackerLocalApiOptions,
 	launch: ReturnType<typeof itemLaunchStatus>
 ) {
-	if (item.schedule_off) return 'automatic launch opted out';
+	if (item.schedule_hold) return describeTrackerScheduleHold(item.schedule_hold);
 	if (item.launch_source === 'due' && launch) return launch.reason;
 	return options.schedulePreview?.(item) ?? item.schedule_status;
 }

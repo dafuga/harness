@@ -1,4 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
+import { trackerManualIntakeProjection } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
+import { describeTrackerScheduleHold } from '../../../utils/projects-sessions/trackerScheduleHold';
 import { dispatchItem } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { TrackerDispatchRow } from '../../../repositories/projects-sessions/TrackerDispatchRepository.types';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
@@ -15,7 +17,7 @@ export function readTrackerDuePreview(runtime: TrackerNativeRuntimeService) {
 	const { enabled, adapterDue, paused } = duePreview.due();
 	const rows = store.database
 		.prepare(
-			`SELECT * FROM items WHERE deleted = 0 AND title IS NOT NULL AND due IS NOT NULL
+			`SELECT i.*, ${trackerManualIntakeProjection} FROM items i WHERE deleted = 0 AND title IS NOT NULL AND due IS NOT NULL
 		 AND status NOT IN ('done', 'ignored') ORDER BY due, created_at, id`
 		)
 		.all() as TrackerDispatchRow[];
@@ -47,7 +49,7 @@ export function readTrackerDuePreview(runtime: TrackerNativeRuntimeService) {
 }
 
 function holdWithoutRunner(row: TrackerDispatchRow, paused: boolean, now: number): string {
-	const item = dispatchItem(row, []);
+	const item = dispatchItem(row, [], now);
 	return (
 		schedulingHold(item, now) ??
 		(paused ? 'due scheduling is paused' : 'native due scheduler is disabled')
@@ -58,7 +60,7 @@ export function trackerDueItemPreview(
 	runtime: TrackerNativeRuntimeService,
 	item: TrackerItem
 ): string | null {
-	if (item.schedule_off) return 'automatic launch opted out';
+	if (item.schedule_hold) return describeTrackerScheduleHold(item.schedule_hold);
 	const { duePreview } = runtime;
 	if (
 		item.status === 'done' ||

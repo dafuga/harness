@@ -97,8 +97,6 @@ export function recoveryHold(
 	if (item.needs_daniel && !item.resolved && trackerFlagBlocksRecovery(item.question))
 		return item.question ?? 'Waiting on Daniel';
 	if (!latest) return stored;
-	if (latest.failure_reason === 'stopped by operator' && item.schedule_off)
-		return latest.failure_reason;
 	if (stored) return stored;
 	return previousRunHold(latest, changedAt, item.answered_at);
 }

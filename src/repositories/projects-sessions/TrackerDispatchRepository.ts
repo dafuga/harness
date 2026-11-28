@@ -1,4 +1,5 @@
 // @harness-uid u_ksy76trvsj
+import { trackerManualIntakeProjection } from './TrackerItemReadRepository';
 import {
 	trackerBudgetNode,
 	trackerHomeProject
@@ -54,7 +55,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 			store,
 			this.node,
 			(id) => this.readSnapshot(id),
-			options.now ?? Date.now
+			options.now ?? store.now
 		);
 		store.database.exec(trackerRunSchema);
 	}
@@ -63,7 +64,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		itemId: string,
 		decide: (snapshot: TrackerDispatchSnapshot) => TrackerDispatchDecision
 	): Promise<TrackerDispatchResult> {
-		const target = { store: this.store, node: this.node, now: this.options.now };
+		const target = { store: this.store, node: this.node, now: this.options.now ?? this.store.now };
 		const read = (id: string) => this.readSnapshot(id);
 		return commitDecision(target, { itemId, read }, decide);
 	}
@@ -73,7 +74,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 	}
 
 	legacyRuns(): TrackerRunReceipt[] {
-		const now = this.options.now?.() ?? Date.now();
+		const now = (this.options.now ?? this.store.now)();
 		return legacyDispatchRuns(this.store.database, this.node, now - launchStartupGrace);
 	}
 
@@ -83,7 +84,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 
 	retireLegacy(run: TrackerRunReceipt): void {
 		this.store.commitLocal(() => {
-			const now = this.options.now?.() ?? Date.now();
+			const now = (this.options.now ?? this.store.now)();
 			this.store.database
 				.prepare(
 					`UPDATE runs AS r SET state = 'finished', outcome = 'abandoned',
@@ -126,14 +127,16 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 	}
 
 	stuckRequests(minimumAge = 300_000) {
-		const now = this.options.now?.() ?? Date.now();
+		const now = (this.options.now ?? this.store.now)();
 		return trackerStuckRequests(this.store.database, { now, minimumAge });
 	}
 
 	readSnapshot(itemId: string): TrackerDispatchSnapshot {
 		const database = this.store.database;
 		const row = database
-			.prepare(`SELECT i.*, ${dispatchLaunchSource} AS dispatch_source FROM items i WHERE i.id = ?`)
+			.prepare(
+				`SELECT i.*, ${dispatchLaunchSource} AS dispatch_source, ${trackerManualIntakeProjection} FROM items i WHERE i.id = ?`
+			)
 			.get(itemId) as TrackerDispatchRow | undefined;
 		const runs = dispatchRunRows(database, this.node, itemId);
 		const { id } = database
@@ -145,7 +148,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		const lastDueStartAt =
 			this.store.getMeta(dueStartKey) ?? this.store.getMeta(previousDueStartKey);
 		return {
-			item: row ? dispatchItem(row, runs) : null,
+			item: row ? dispatchItem(row, runs, (this.options.now ?? this.store.now)()) : null,
 			runs,
 			nextRunId: id,
 			activeSessionKeys: sessions?.activeSessionKeys,

@@ -1,9 +1,14 @@
 // @harness-uid u_bl6xl2h4a3
+import { trackerManualIntakeProjection } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import { randomUUID } from 'node:crypto';
 import { dispatchLaunchSource } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
-import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
+import { trackerScheduleHold } from '../../../utils/projects-sessions/trackerScheduleHold';
+import type {
+	TrackerItem,
+	TrackerItemRow
+} from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
 import { watchdogManualPrefix } from '../WatchdogPaneService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
@@ -176,25 +181,25 @@ function retainLaunchAlerts(store: TrackerPersistenceService, kind: string, acti
 function unclaimedRequests(store: TrackerPersistenceService, now: number) {
 	const rows = store.database
 		.prepare(
-			`SELECT id, auto, priority, due, ${dispatchLaunchSource} AS source,
+			`SELECT i.*, ${dispatchLaunchSource} AS source, ${trackerManualIntakeProjection},
 			CASE WHEN auto IS NOT NULL THEN json_extract(clocks, '$.auto') ELSE json_extract(clocks, '$.due') END AS clock,
 			coalesce(nullif(launch_target,'auto'),nullif(computer,'auto'),created_by,?) AS target
 		FROM items i WHERE deleted = 0 AND title IS NOT NULL AND (
-			auto IS NOT NULL OR (priority = 'urgent' AND adapter_due_owner IS NOT NULL AND due IS NOT NULL AND coalesce(schedule_off, '0') <> '1')
+			auto IS NOT NULL OR (priority = 'urgent' AND adapter_due_owner IS NOT NULL AND due IS NOT NULL)
 		)
 		AND status IN ('open','in_progress') AND coalesce(kind, 'task') = 'task'
 		AND (needs_daniel = 0 OR resolved = 1)`
 		)
-		.all(store.node) as {
-		id: string;
+		.all(store.node) as (TrackerItemRow & {
 		auto: string;
 		clock: string | null;
 		target: string;
 		source: string;
 		priority: string | null;
-		due: string | null;
-	}[];
-	return rows.flatMap(({ id, auto, clock, target, source, priority, due }) => {
+	})[];
+	return rows.flatMap((row) => {
+		const { id, auto, clock, target, source, priority, due } = row;
+		if (!auto && trackerScheduleHold(row, now)) return [];
 		const at = trackerClockMilliseconds(clock ?? '');
 		return clock && at && (auto || Date.parse(due ?? '') <= now) && now - at >= requestGrace
 			? [{ id, auto, clock, source, priority, age: now - at, computer: canonicalNode(target, {}) }]

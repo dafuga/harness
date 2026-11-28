@@ -17,6 +17,7 @@
 		statusWords,
 		workAge,
 		workFacts,
+		workNow,
 		workStateLabel,
 		workTimes
 	} from './hubHomeLive';
@@ -37,9 +38,13 @@
 	};
 	const counts = $derived(projectWorkCounts(project));
 	const running = $derived(project.rows.filter((row) => row.state === 'running'));
-	const blocked = $derived(project.rows.filter((row) => row.state === 'blocked'));
+	const blocked = $derived(
+		project.rows.filter((row) => row.state === 'blocked' && !row.launchHold)
+	);
 	const waiting = $derived(
-		project.rows.filter((row) => row.state === 'queued' || row.state === 'offline')
+		project.rows.filter(
+			(row) => row.launchHold || row.state === 'queued' || row.state === 'offline'
+		)
 	);
 	const finished = $derived(project.rows.filter((row) => row.state === 'finished'));
 </script>
@@ -47,6 +52,7 @@
 {#snippet list(rows: HomeWorkProject['rows'], label: string)}
 	<hx-ul class="hh-live-rows" aria-label={label}>
 		{#each rows as row (row.key)}
+			{@const detail = workNow(row)}
 			{@const linked = hasWebLink(row.title)}
 			{@const due = dueById?.get(row.itemId)}
 			{@const label =
@@ -73,8 +79,8 @@
 						<hx-span class="hh-live-status">{statusWords[row.status]}</hx-span>
 					{/if}
 				</hx-span>
-				{#if row.now}<hx-span class="hh-live-now" title={row.now}
-						><LinkifiedText text={row.now} /></hx-span
+				{#if detail}<hx-span class="hh-live-now" title={detail}
+						><LinkifiedText text={detail} /></hx-span
 					>{/if}
 				<hx-span class="hh-live-facts">
 					{#each workFacts(row) as fact, name (name)}<hx-span>{fact}</hx-span>{/each}

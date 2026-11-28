@@ -85,7 +85,7 @@ export class TrackerNativeRuntimeService {
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
 		const dispatch =
 			options.dispatch ?? configuredHostDispatch(store, hostEffects, { ...options, now: this.now });
-		const composed = composeTrackerDispatch(store, { ...options, dispatch }, this.machines);
+		const composed = composeTrackerDispatch(store, { ...options, dispatch }, this);
 		({
 			dispatch: this.dispatch,
 			scheduler: this.scheduler,
@@ -148,7 +148,8 @@ function composeItemApi(
 	recurring?: ReturnType<typeof composeTrackerRecurrence>
 ) {
 	const { store } = runtime;
-	return new TrackerLocalApiService(store, new TrackerItemReadRepository(store.database), {
+	const items = new TrackerItemReadRepository(store.database, runtime.now);
+	return new TrackerLocalApiService(store, items, {
 		now,
 		phoneReplica:
 			role === 'hub' ? new TrackerPhoneReplicaService(store, runtime.now, phoneWrite) : undefined,

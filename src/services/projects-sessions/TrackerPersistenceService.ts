@@ -17,6 +17,7 @@ import type {
 export class TrackerPersistenceService {
 	readonly dbId: string;
 	readonly createdAt: number;
+	readonly now: () => number;
 	private readonly schema: TrackerSchemaAdapter;
 	private readonly journal: TrackerOperationRepository;
 	private readonly storage: SqliteAdapter;
@@ -28,8 +29,9 @@ export class TrackerPersistenceService {
 		options: TrackerSchemaAdapterConfig = {}
 	) {
 		if (!node || /\s/.test(node)) throw new TypeError('Tracker node name is required');
+		this.now = options.now ?? Date.now;
 		this.schema = new TrackerSchemaAdapter(database, options);
-		this.journal = new TrackerOperationRepository(database, options.now);
+		this.journal = new TrackerOperationRepository(database, this.now);
 		this.storage = new SqliteAdapter(database, []);
 		const identity = this.schema.initialize();
 		this.dbId = identity.dbId;

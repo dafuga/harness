@@ -6,7 +6,7 @@ import {
 	evidenceRequested,
 	recordCapture
 } from '../../../../src/utils/reports-media/record-capture/recordCapture';
-import type { Page } from '../../../../test/support/browserTest';
+import { expect, type Page } from '../../../../test/support/browserTest';
 import type { CapturePosition } from './hub-home-fixture.types';
 
 export async function fullDialog(page: Page, position: CapturePosition, screen: string) {
@@ -87,4 +87,29 @@ export async function captureNeedsYou(page: Page, name: string, target: Page | L
 		path: `${directory}/${process.env.SCREENSHOT_LABEL ?? 'current'}-${name}.png`,
 		animations: 'disabled'
 	});
+}
+
+export async function captureHomeTop(page: Page, path: string) {
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(() => document.fonts.ready.then(() => {}));
+		await page.screenshot({ path: path });
+	}
+}
+
+export async function expectLaunchPause(page: Page, overview: Locator, path: string) {
+	const hold = overview.locator('.hh-live-row', { hasText: 'Waiting on CI maintenance' });
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(async () => {
+			await document.fonts.ready;
+			await Promise.all([...document.images].map((img) => img.decode()));
+		});
+		await page.screenshot({
+			path,
+			animations: 'disabled',
+			fullPage: true
+		});
+	}
+	await expect(hold).toContainText('Launch paused');
+	await expect(hold).toContainText('Automatic launch paused by operator until');
+	await expect(page.getByRole('heading', { level: 1 })).toContainText('for 14 agents');
 }

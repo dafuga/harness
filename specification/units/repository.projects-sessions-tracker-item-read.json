@@ -19,6 +19,7 @@
 			"src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.types.ts"
 		],
 		"symbols": [
+			"trackerManualIntakeProjection",
 			"TrackerItemReadRepository",
 			"TrackerItemReadRepository.constructor",
 			"TrackerItemReadRepository.get",
@@ -50,6 +51,7 @@
 			"trackerChaseFields",
 			"trackerAskAge",
 			"trackerAskFields",
+			"openLaunchHold",
 			"StoredTrackerNote",
 			"StoredTrackerCallback"
 		]
@@ -62,6 +64,11 @@
 				"type": "SqliteDatabase",
 				"required": true,
 				"description": "Initialized SQLite connection owned by the caller."
+			},
+			{
+				"name": "TrackerItemReadRepository.constructor.now",
+				"type": "() => number",
+				"required": false
 			},
 			{
 				"name": "TrackerItemReadRepository.get.idOrPrefix",
@@ -170,6 +177,11 @@
 				"required": true
 			},
 			{
+				"name": "serializeTrackerItem.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "trackerChaseFields.row",
 				"type": "TrackerItemRow",
 				"required": true
@@ -198,6 +210,21 @@
 			},
 			{
 				"name": "trackerAskFields.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "openLaunchHold.row",
+				"type": "TrackerItemRow",
+				"required": true
+			},
+			{
+				"name": "openLaunchHold.item",
+				"type": "TrackerDigestItem",
+				"required": true
+			},
+			{
+				"name": "openLaunchHold.now",
 				"type": "number",
 				"required": true
 			}
@@ -539,6 +566,11 @@
 						"name": "serializeTrackerItem.notes",
 						"type": "SqliteStatement",
 						"required": true
+					},
+					{
+						"name": "serializeTrackerItem.now",
+						"type": "number",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -637,6 +669,34 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "openLaunchHold",
+				"inputs": [
+					{
+						"name": "openLaunchHold.row",
+						"type": "TrackerItemRow",
+						"required": true
+					},
+					{
+						"name": "openLaunchHold.item",
+						"type": "TrackerDigestItem",
+						"required": true
+					},
+					{
+						"name": "openLaunchHold.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openLaunchHold",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -648,6 +708,11 @@
 						"type": "SqliteDatabase",
 						"required": true,
 						"description": "Initialized SQLite connection owned by the caller."
+					},
+					{
+						"name": "TrackerItemReadRepository.constructor.now",
+						"type": "() => number",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -723,6 +788,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-schedule-hold",
 			"via": "import",
 			"origin": "derived"
 		},

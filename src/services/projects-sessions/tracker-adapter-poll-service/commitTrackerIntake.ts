@@ -1,4 +1,5 @@
 // @harness-uid u_wlip653voz
+import { manualIntakeReason } from '../../../utils/projects-sessions/trackerScheduleHold';
 import { randomBytes } from 'node:crypto';
 import type {
 	TrackerAdapterCandidate,
@@ -151,7 +152,6 @@ export function trackerEventFields(
 	}
 	if (link.owned && closed) {
 		fields.due = null;
-		fields.schedule_off = 1;
 		if (item.launch_source === 'due') fields.auto = null;
 	}
 	return fields;
@@ -183,7 +183,9 @@ function newItemFields(
 		title: record.title,
 		notes: record.notes,
 		...(instructions && { adapter_instructions: instructions }),
-		...(record.autoLaunch ? { due: time } : { schedule_off: 1 }),
+		...(record.autoLaunch
+			? { due: time }
+			: { schedule_off: 1, schedule_hold_reason: manualIntakeReason }),
 		...(dueOwner && { adapter_due_owner: dueOwner })
 	};
 }

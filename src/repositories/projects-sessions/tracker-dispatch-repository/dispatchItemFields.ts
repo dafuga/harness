@@ -1,4 +1,8 @@
 // @harness-uid u_ksy76trvsj
+import {
+	describeTrackerScheduleHold,
+	trackerScheduleHold
+} from '../../../utils/projects-sessions/trackerScheduleHold';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type {
 	TrackerDispatchItem,
@@ -7,16 +11,21 @@ import type {
 	TrackerLaunchIntent,
 	TrackerRunReceipt
 } from '../../../services/agents-providers/TrackerDispatcherService.types';
-import { schedulingHold } from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
+import {
+	canonicalNode,
+	schedulingHold
+} from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerItem } from '../TrackerItemReadRepository.types';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import type { TrackerDispatchRow } from '../TrackerDispatchRepository.types';
 
 export function dispatchItem(
 	row: TrackerDispatchRow,
-	runs: readonly TrackerRunReceipt[]
+	runs: readonly TrackerRunReceipt[],
+	now: number
 ): TrackerDispatchItem {
 	const clocks = JSON.parse(row.clocks) as Record<string, string>;
+	const hold = trackerScheduleHold(row, now);
 	return {
 		id: row.id,
 		title: row.title ?? '',
@@ -34,7 +43,8 @@ export function dispatchItem(
 		createdBy: row.created_by ?? undefined,
 		adapterDueOwner: row.adapter_due_owner,
 		recurring: Boolean(row.every),
-		scheduleOff: flag(row.schedule_off),
+		scheduleOff: Boolean(hold),
+		...(hold && { scheduleHoldReason: describeTrackerScheduleHold(hold) }),
 		deleted: Boolean(row.deleted),
 		awaitingAnswer: Boolean(row.needs_daniel && !row.resolved),
 		parkedUntil: Date.parse(row.parked_until ?? ''),
@@ -146,6 +156,7 @@ export function trackerStoredSchedulingHold(item: TrackerItem, now: number) {
 			deleted: item.deleted,
 			awaitingAnswer: item.needs_daniel && !item.resolved,
 			scheduleOff: item.schedule_off,
+			scheduleHoldReason: item.schedule_hold && describeTrackerScheduleHold(item.schedule_hold),
 			recurring: item.recurring,
 			parkedUntil: Date.parse(item.parked_until ?? '')
 		},
@@ -163,7 +174,7 @@ export const dispatchLaunchSource = `CASE
 	) THEN 'manual'
 	ELSE 'automatic' END`;
 
-export function canBlockStoppedRun(snapshot: TrackerDispatchSnapshot, run: TrackerRunReceipt) {
+export function canRequeueStoppedRun(snapshot: TrackerDispatchSnapshot, run: TrackerRunReceipt) {
 	const { item, runs, openSession, activeSessionKeys } = snapshot;
 	return (
 		item?.status === 'in_progress' &&
@@ -173,4 +184,34 @@ export function canBlockStoppedRun(snapshot: TrackerDispatchSnapshot, run: Track
 		!activeSessionKeys?.length &&
 		!runs.some((entry) => entry !== run && entry.state !== 'finished')
 	);
+}
+
+export function canMoveUnclaimedLaunch(
+	snapshot: TrackerDispatchSnapshot,
+	node: string,
+	token: string,
+	now: number
+) {
+	const { item, runs, openSession, activeSessionKeys } = snapshot;
+	if (!item || !portableLaunchItem(item, now) || openSession || activeSessionKeys?.length)
+		return false;
+	return (
+		ownsPortableLaunch(item, node, token) &&
+		!runs.some((run) => run.auto_token === token || run.state !== 'finished')
+	);
+}
+
+function ownsPortableLaunch(item: TrackerDispatchItem, node: string, token: string) {
+	if (item.adapterDueOwner && canonicalNode(item.adapterDueOwner, {}) !== node) return false;
+	const intent = item.launch;
+	return (
+		intent?.token === token &&
+		(intent.source === 'due' || intent.source === 'automatic') &&
+		intent.target !== null &&
+		canonicalNode(intent.target, {}) === node
+	);
+}
+
+function portableLaunchItem(item: TrackerDispatchItem, now: number) {
+	return !item.sensitive && !item.repo && schedulingHold(item, now) === null;
 }

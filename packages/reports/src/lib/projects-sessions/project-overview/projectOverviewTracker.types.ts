@@ -45,6 +45,7 @@ export type TrackerItemRecord = {
 	every?: string | null;
 	recurring?: boolean;
 	scheduleOff?: boolean;
+	scheduleHold?: { reason: string; until: string | null };
 	priority?: string | null;
 	/** A launch has been requested and not cancelled. */
 	launchRequested?: boolean;

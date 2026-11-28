@@ -140,6 +140,7 @@ export function schedulingHold(
 		| 'deleted'
 		| 'awaitingAnswer'
 		| 'scheduleOff'
+		| 'scheduleHoldReason'
 		| 'recurring'
 		| 'parkedUntil'
 	>,
@@ -147,13 +148,17 @@ export function schedulingHold(
 ): string | null {
 	if (item.deleted || item.status === 'done' || item.status === 'ignored')
 		return 'item is inactive';
-	if (item.scheduleOff) return 'automatic launch opted out';
+	if (item.scheduleOff) return schedulePauseReason(item.scheduleHoldReason);
 	if (item.kind !== 'task') return `item is a ${item.kind}; only tasks can launch`;
 	if (item.recurring) return 'recurring item';
 	if (item.awaitingAnswer) return 'waiting on Daniel';
 	if (item.status === 'blocked') return 'item is blocked';
 	if (Number(item.parkedUntil) > now) return 'item is parked';
 	return trackerUnattendedHold(item);
+}
+
+function schedulePauseReason(reason: string | undefined) {
+	return reason ?? 'automatic launch opted out';
 }
 
 export const finalReportPrefix = 'Final report:';
@@ -187,3 +192,18 @@ export function isDueNow(due: string | null | undefined, timezone: string, now: 
 
 export { activeRun, hasOpenSession, attemptKey, matchesRequest } from './runIdentity';
 export { trackerReminderTitle };
+
+export function chooseDueTarget(
+	item: TrackerDispatchItem,
+	owner: string | null,
+	policy: TrackerDispatchPolicy
+) {
+	const preferred = canonicalNode(item.computer ?? 'auto', policy);
+	const requestedNode = owner ?? (preferred === 'auto' ? null : preferred || null);
+	const choice = policy.chooseHost(item, { source: 'due', requestedNode });
+	const node = choice.node && canonicalNode(choice.node, policy);
+	const transferred = Boolean(node && requestedNode && node !== requestedNode);
+	if (transferred && requestedNode !== canonicalNode(policy.node, policy))
+		return { node: null, why: 'due launch assigned to a different computer' };
+	return { ...choice, node, transferred };
+}

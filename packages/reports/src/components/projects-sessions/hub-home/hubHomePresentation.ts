@@ -72,12 +72,18 @@ export function agentActivity(agent: HomeAgent) {
 }
 
 /** Leads with live sessions, so it agrees with the live overview's run count just below it. */
-export function homeHeadline(agents: HomeAgent[], liveSessions = 0, needs = 0) {
+export function homeHeadline(
+	agents: HomeAgent[],
+	liveSessions = 0,
+	needs = 0,
+	runningAgentCount?: number | null
+) {
 	const working = agents.filter(isWorking);
 	const sessions = Math.max(liveSessions, ...working.map(agentSessions), 0);
 	const asks = needs ? `${needs} ${needs === 1 ? 'needs' : 'need'} you` : '';
 	if (!sessions) return asks ? `Nothing is running, ${asks}` : 'Nothing is running yet';
-	const who = working.length ? ` for ${count(working.length, 'agent')}` : '';
+	const active = runningAgentCount === undefined ? working.length : runningAgentCount;
+	const who = active ? ` for ${count(active, 'agent')}` : '';
 	return `${count(sessions, 'session')} running${who}${asks ? `, ${asks}` : ''}`;
 }
 
