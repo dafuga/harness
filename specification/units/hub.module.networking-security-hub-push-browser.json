@@ -9,7 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/lib/networking-security/hubPushBrowser.ts"],
-		"symbols": ["pushSupport", "currentSubscription", "subscribe", "addressHash", "confirmOn"]
+		"symbols": [
+			"pushSupport",
+			"currentSubscription",
+			"subscribe",
+			"addressHash",
+			"confirmOn",
+			"showApprovalNotice"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -25,6 +32,11 @@
 				"type": "string",
 				"required": true,
 				"description": "A push address to name by its hash."
+			},
+			{
+				"name": "showApprovalNotice.signal",
+				"type": "AbortSignal",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -131,6 +143,24 @@
 						"name": "confirmOn",
 						"type": "Promise<void>",
 						"description": "Shows the notifications-are-on confirmation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "showApprovalNotice",
+				"inputs": [
+					{
+						"name": "showApprovalNotice.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "showApprovalNotice",
+						"type": "Promise<boolean>"
 					}
 				],
 				"errors": [],

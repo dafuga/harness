@@ -1,9 +1,11 @@
 // @harness-uid u_2z6ismqvvf
 import type {
 	DeviceApprovalAction,
+	DeviceApprovalRequest,
 	DeviceApprovalResult
 } from '$desktop/models/development-tooling/Environment.types';
 import { SealedError } from '../../../../../remote/src/models/networking-security/SealedError';
+import { showApprovalNotice } from '../../networking-security/hubPushBrowser';
 import { BrowserDeviceSessionService } from '../../../services/networking-security/BrowserDeviceSessionService';
 import type { EnrollmentResolution } from '../../../../../remote/src/services/networking-security/SealedEnrollmentRequestService.types';
 
@@ -12,6 +14,7 @@ export class BrowserApprovalState {
 	error = $state('');
 	private attempt: AbortController | null = null;
 	private reviewLifetime = new AbortController();
+	private announced = new Set<string>();
 
 	private readonly service = new BrowserDeviceSessionService();
 
@@ -32,25 +35,40 @@ export class BrowserApprovalState {
 		}
 	}
 
-	review(
+	async review(
 		account: string,
 		call: DeviceApprovalAction,
 		event?: MouseEvent
 	): Promise<DeviceApprovalResult> {
 		if (this.result?.state !== 'approved')
-			return Promise.reject(new SealedError('This browser needs device approval.'));
+			throw new SealedError('This browser needs device approval.');
 		if (call.action === 'approve' || call.action === 'deny') {
 			// Read transient activation while handling the actual click, before any network waits.
 			if (!event?.isTrusted || !navigator.userActivation?.isActive)
-				return Promise.reject(new SealedError('Confirm this decision on this device.'));
+				throw new SealedError('Confirm this decision on this device.');
 		}
-		return this.service.review(account, this.reviewLifetime.signal, call);
+		const signal = this.reviewLifetime.signal;
+		const result = await this.service.review(account, signal, call);
+		if ('requests' in result && !signal.aborted) this.announce(result.requests, signal);
+		return result;
+	}
+
+	private announce(requests: DeviceApprovalRequest[], signal: AbortSignal): void {
+		const active = new Set(requests.map(({ id }) => id));
+		const fresh = [...active].filter((id) => !this.announced.has(id));
+		this.announced = active;
+		if (!fresh.length) return;
+		void showApprovalNotice(signal).then((shown) => {
+			if (shown || signal.aborted) return;
+			for (const id of fresh) this.announced.delete(id);
+		});
 	}
 
 	reset(): void {
 		this.reviewLifetime.abort();
 		this.reviewLifetime = new AbortController();
 		this.service.clearReviews();
+		this.announced.clear();
 		this.attempt?.abort();
 		this.attempt = null;
 		this.result = null;

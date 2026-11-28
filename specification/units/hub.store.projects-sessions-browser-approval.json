@@ -64,7 +64,12 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown"
+			}
+		],
 		"errorStatus": "unknown",
 		"operations": [
 			{
@@ -110,7 +115,12 @@
 						"type": "Promise<DeviceApprovalResult>"
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{
@@ -147,6 +157,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "hub.module.networking-security-hub-push-browser",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.service.networking-security-browser-device-session",
 			"via": "import",

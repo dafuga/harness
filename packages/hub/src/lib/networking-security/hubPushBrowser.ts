@@ -58,3 +58,26 @@ export async function confirmOn(): Promise<void> {
 		data: { needs: 'all' }
 	});
 }
+
+/** The approved inbox may alert a browser that already enabled notifications. */
+export async function showApprovalNotice(signal: AbortSignal): Promise<boolean> {
+	if (
+		signal.aborted ||
+		typeof Notification === 'undefined' ||
+		Notification.permission !== 'granted'
+	)
+		return false;
+	try {
+		const registration = await navigator.serviceWorker?.getRegistration('/');
+		if (!registration?.active || signal.aborted) return false;
+		await registration.showNotification('Harness', {
+			body: 'A device sign-in is ready for review.',
+			tag: 'harness-device-approval',
+			icon: '/icons/harness-192.png'
+		});
+		return true;
+	} catch {
+		// The card is still available when system notifications are unavailable.
+		return false;
+	}
+}
