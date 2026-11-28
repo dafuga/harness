@@ -137,7 +137,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.projects-sessions-hub-home-reads",
+			"unit": "hub.function.projects-sessions-hub-home-source",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -148,21 +148,6 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-spec-document",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.module.realtime-hub-live-updates",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.page.tracker-overview",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.service.networking-security-linked-home",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -187,17 +172,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.module.projects-sessions-hub-home-home-direct-agents",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.module.projects-sessions-realtime-realtime-types",
 			"via": "import",
 			"origin": "derived"
 		}

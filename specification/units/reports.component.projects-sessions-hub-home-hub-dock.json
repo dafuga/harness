@@ -1,0 +1,154 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-hub-home-hub-dock",
+	"uid": "u_dk4m7qzr2a",
+	"kind": "component",
+	"title": "HubDock",
+	"responsibility": "Owns the HubDock Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.projects-sessions-hub-home-hub-dock-chat",
+			"reports.component.projects-sessions-hub-home-hub-dock-list",
+			"reports.component.projects-sessions-hub-home-hub-dock-pick",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-dialog",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-footer",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubDock.svelte"],
+		"symbols": ["HubDock"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubDock.source",
+				"type": "HubDockSource",
+				"required": true
+			},
+			{
+				"name": "HubDock.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "HubDock.send",
+				"type": "SendHomeChat",
+				"required": true
+			},
+			{
+				"name": "HubDock.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true
+			},
+			{
+				"name": "HubDock.followScheme",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubDock",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-dock-chat",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-dock-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-dock-pick",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-footer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-dock-model",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubDock.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubDock.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

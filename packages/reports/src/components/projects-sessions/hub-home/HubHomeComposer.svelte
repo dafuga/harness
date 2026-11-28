@@ -27,7 +27,8 @@
 		draft = $bindable(''),
 		pending = $bindable(false),
 		feedback = $bindable(''),
-		itemContext
+		itemContext,
+		sendText
 	}: {
 		agents: HomeAgent[];
 		agentId?: string;
@@ -37,6 +38,8 @@
 		pending?: boolean;
 		feedback?: string;
 		itemContext?: HomeChatItemContext;
+		/** Names the send button in words in place of its arrow. */
+		sendText?: string;
 		send: SendHomeChat;
 		submitted?: (message: HomeChatInput, receipt: HomeChatReceipt) => void;
 	} = $props();
@@ -99,7 +102,7 @@
 			aria-label="Send"
 			disabled={pending || !draft.trim() || draft.trim().length > maxLength}
 		>
-			<HarnessIcon name="arrow-right" size={18} />
+			{#if sendText}{sendText}{:else}<HarnessIcon name="arrow-right" size={18} />{/if}
 		</hx-button>
 	</hx-form>
 	{#if feedback}<hx-p class="po-item-meta" role="status">{feedback}</hx-p>{/if}

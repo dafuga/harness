@@ -9,23 +9,15 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
-	import type {
-		HomeChatReceipt,
-		HomeSection
-	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+	import type { HomeSection } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { onMount, tick } from 'svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
-	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot } from './hubHomeClient';
-	import { hubHomeReads } from './hubHomeReads';
+	import { hubHomeSource } from './hubHomeSource.svelte';
 	import { provideHubSpecDocuments } from '$reports/components/projects-sessions/hub-home/hubSpecDocument';
-	import { provideHomeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
-	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
-	import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
+	import { homeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
 	import * as presentation from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import type * as Home from '$reports/components/projects-sessions/hub-home/hubHomeView.types';
-	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
-	import { followHubUpdates, liveReadMs } from '../../lib/networking-security/hubLiveUpdates';
 	import HubHomeHeader from '$reports/components/projects-sessions/hub-home/HubHomeHeader.svelte';
 	import AccountMenu from '../accounts-access/AccountMenu.svelte';
 	import HubHomeNotifications from './HubHomeNotifications.svelte';
@@ -38,24 +30,22 @@
 	import '$reports/lib/styles/hub-home/index.css';
 	const { api, session, projects } = browserContext();
 	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
-	const cosChat = provideHomeCosChat(() => reads.read());
+	const source = hubHomeSource();
+	const cosChat = homeCosChat()!;
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
 	let list = $state<ProjectSummary[] | null>(null);
 	let projectSnapshots = $state<Record<string, ProjectSnapshot>>({});
 	const projectFlights = new SvelteMap<string, Promise<ProjectSnapshot>>();
 	let projectError = $state(false);
-	let home = $state<Home.ReadHomeResult | null>(null);
-	let live = $state<LinkedHome | null>(null);
-	let now = $state(Date.now());
 	let flight = 0;
 	let opener: HTMLElement | null = null;
-	let link = $state<RealtimeState | null>(null);
-	let readAllAt = 0;
-	const pushes = $derived(Boolean(home?.granted && home.live));
-	const controlled = $derived(home?.controlled ?? []);
-	const raw = $derived(live?.snapshot ?? homeSnapshot(home));
-	const snapshot = $derived(raw ? listedHomeSnapshot(raw, controlled) : null);
+	const home = $derived(source.home);
+	const live = $derived(source.live);
+	const link = $derived(source.link);
+	const now = $derived(source.now);
+	const controlled = $derived(source.controlled);
+	const snapshot = $derived(source.snapshot);
 	const settled = $derived(Boolean(snapshot) || (home !== null && live !== null));
 	const routinesConnected = $derived(
 		Array.isArray(snapshot?.providers.routines) &&
@@ -95,18 +85,10 @@
 		providerPreference: snapshot?.providerPreference,
 		now
 	});
-	const reads = hubHomeReads({
-		api,
-		actor: () => session.actor?.id,
-		home: (result) => ((home = result), (now = Date.now())),
-		linked: (result) => ((live = result), (now = Date.now()))
-	});
-	provideHubSpecDocuments(reads.readDocument);
-	function refresh() {
+	provideHubSpecDocuments(source.readDocument);
+	function listProjects() {
 		const actor = session.actor?.id;
 		const request = ++flight;
-		now = readAllAt = Date.now();
-		reads.read();
 		void projects.list().then(
 			(value) => {
 				if (request === flight && actor === session.actor?.id) {
@@ -120,36 +102,19 @@
 			}
 		);
 	}
-	$effect(() => {
-		if (!pushes) return;
-		const stop = followHubUpdates({
-			changed: () => ((now = Date.now()), reads.read()),
-			state: (state) => (link = state)
-		});
-		return () => {
-			stop();
-			link = null;
-		};
-	});
 	onMount(() => {
-		refresh();
-		const stop = watchWhileVisible(() => {
-			const pushed = link === 'live' && Date.now() - readAllAt < liveReadMs;
-			const actor = session.actor?.id;
-			void session.check().then(() => {
-				// Change notices cover the stored Home only: linked computers are asked every turn.
-				if (actor && session.actor?.id === actor) (pushed ? reads.computers : refresh)();
-			});
-		});
+		const stop = source.onRefresh(listProjects);
+		listProjects();
+		// A return to Home reads again; the first read is already under way.
+		source.refresh();
 		return () => {
 			flight++;
-			reads.close();
 			stop();
 		};
 	});
 	followNeedsLink(() => {
 		const dialog = selected !== null;
-		return { asks: view.openAsks, openAsk: cosChat.openAsk, close, dialog, reload: refresh };
+		return { asks: view.openAsks, openAsk: cosChat.openAsk, close, dialog, reload: source.refresh };
 	});
 	function open(section: HomeSection, id?: string) {
 		if (!selected)
@@ -180,10 +145,9 @@
 	async function changeSession(id: string, add: boolean) {
 		const method = add ? 'POST' : 'DELETE';
 		const result = await api.send<{ controlled: string[] }>(method, '/api/hub-home/agents', { id });
-		if (home) home = { ...home, controlled: result.controlled };
-		refresh();
+		source.setControlled(result.controlled);
+		source.refresh();
 	}
-	const receipt = (id: string) => api.get<HomeChatReceipt>('/api/hub-home/chat', { id });
 </script>
 
 <hx-div class="home-scheme">
@@ -199,8 +163,14 @@
 			</hx-p>
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			{#if needsOnly}<HubHomeCards {view} {open} send={reads.send} {receipt} {needsOnly} />
-			{:else}<HubHomeBoard {view} {open} send={reads.send} {receipt} />{/if}
+			{#if needsOnly}<HubHomeCards
+					{view}
+					{open}
+					send={source.send}
+					receipt={source.receipt}
+					{needsOnly}
+				/>
+			{:else}<HubHomeBoard {view} {open} send={source.send} receipt={source.receipt} />{/if}
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs
@@ -208,11 +178,11 @@
 				{view}
 				{agentId}
 				{open}
-				send={reads.send}
+				send={source.send}
 				{changeSession}
-				{receipt}
+				receipt={source.receipt}
 				{readProject}
-				reload={refresh}
+				reload={source.refresh}
 				{close}
 			/>
 		{/if}

@@ -56,6 +56,12 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Renders a choice or written-answer dialog beside the Home list when provided."
+			},
+			{
+				"name": "HubHomeAsk.kicker",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)"
 			}
 		],
 		"outputs": [

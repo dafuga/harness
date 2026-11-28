@@ -1,0 +1,217 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.projects-sessions-hub-home-hub-dock-model",
+	"uid": "u_dup47o3woo",
+	"kind": "function",
+	"title": "hubDockModel",
+	"responsibility": "Owns the hubDockModel shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubDockModel.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubDockModel.types.ts"
+		],
+		"symbols": [
+			"dockActivity",
+			"hubDockModel",
+			"dockWait",
+			"dockPillText",
+			"dockSummary",
+			"HubDockSource",
+			"HubDockRow",
+			"HubDockAsker",
+			"HubDockModel"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "dockActivity.agent",
+				"type": "HomeAgent",
+				"required": true
+			},
+			{
+				"name": "hubDockModel.source",
+				"type": "HubDockSource",
+				"required": true
+			},
+			{
+				"name": "hubDockModel.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "dockWait.since",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "dockWait.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "dockPillText.model",
+				"type": "HubDockModel",
+				"required": true
+			},
+			{
+				"name": "dockSummary.model",
+				"type": "HubDockModel",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "dockActivity",
+				"type": "string"
+			},
+			{
+				"name": "hubDockModel",
+				"type": "HubDockModel"
+			},
+			{
+				"name": "dockWait",
+				"type": "string"
+			},
+			{
+				"name": "dockPillText",
+				"type": "string | null"
+			},
+			{
+				"name": "dockSummary",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "dockActivity",
+				"inputs": [
+					{
+						"name": "dockActivity.agent",
+						"type": "HomeAgent",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dockActivity",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubDockModel",
+				"inputs": [
+					{
+						"name": "hubDockModel.source",
+						"type": "HubDockSource",
+						"required": true
+					},
+					{
+						"name": "hubDockModel.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubDockModel",
+						"type": "HubDockModel"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "dockWait",
+				"inputs": [
+					{
+						"name": "dockWait.since",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "dockWait.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dockWait",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "dockPillText",
+				"inputs": [
+					{
+						"name": "dockPillText.model",
+						"type": "HubDockModel",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dockPillText",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "dockSummary",
+				"inputs": [
+					{
+						"name": "dockSummary.model",
+						"type": "HubDockModel",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dockSummary",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubDockModel.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubDockModel.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
