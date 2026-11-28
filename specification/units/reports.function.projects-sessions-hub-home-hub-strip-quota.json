@@ -34,13 +34,8 @@
 				"type": "StripQuota[]"
 			}
 		],
-		"errors": [
-			{
-				"name": "Error",
-				"type": "thrown"
-			}
-		],
-		"errorStatus": "found",
+		"errors": [],
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "stripQuota",
@@ -62,18 +57,18 @@
 						"type": "StripQuota[]"
 					}
 				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown"
-					}
-				],
-				"errorStatus": "found"
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.function.projects-sessions-hub-home-hub-strip-computers",
 			"via": "import",

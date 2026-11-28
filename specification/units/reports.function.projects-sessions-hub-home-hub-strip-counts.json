@@ -39,13 +39,8 @@
 				"type": "StripCounts"
 			}
 		],
-		"errors": [
-			{
-				"name": "Error",
-				"type": "thrown"
-			}
-		],
-		"errorStatus": "found",
+		"errors": [],
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "stripCounts",
@@ -72,18 +67,19 @@
 						"type": "StripCounts"
 					}
 				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown"
-					}
-				],
-				"errorStatus": "found"
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubStripCounts.ts",

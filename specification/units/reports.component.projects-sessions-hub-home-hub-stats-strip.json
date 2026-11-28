@@ -9,11 +9,17 @@
 	"status": "active",
 	"composition": {
 		"level": "organism",
-		"uses": ["reports.component.shared-primitives-atoms-html-section"]
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong"
+		]
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubStatsStrip.svelte"],
-		"symbols": ["HubStatsStrip"]
+		"symbols": ["HubStatsStrip", "HubStatsStrip.bar", "HubStatsStrip.stat"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -67,11 +73,84 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubStatsStrip.bar",
+				"inputs": [
+					{
+						"name": "HubStatsStrip.bar.label",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubStatsStrip.bar.value",
+						"type": "number | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubStatsStrip.bar",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubStatsStrip.stat",
+				"inputs": [
+					{
+						"name": "HubStatsStrip.stat.tile",
+						"type": "StripCount",
+						"required": true
+					},
+					{
+						"name": "HubStatsStrip.stat.key",
+						"type": "'sessions' | 'needs-you'",
+						"required": true
+					},
+					{
+						"name": "HubStatsStrip.stat.onpress",
+						"type": "() => void",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubStatsStrip.stat",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
 			"via": "import",
 			"origin": "derived"
 		},
