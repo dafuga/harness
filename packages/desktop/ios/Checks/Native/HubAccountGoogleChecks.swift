@@ -47,6 +47,7 @@ func accountGoogleChecks() {
     _ = bench.status()
     check(bench.hub.asked("/api/auth/native/exchange").count == 1,
           "Google account: a replay does not exchange again")
+    nativeSignOutHistory(bench)
 
     let cancelled = AccountBench()
     _ = cancelled.waiting(google: true)
@@ -55,6 +56,19 @@ func accountGoogleChecks() {
     _ = cancelled.status()
     check(cancelled.hub.asked("/api/auth/native/exchange").isEmpty && cancelled.vault.credential == nil,
           "Google account: cancelling abandons the pending browser sign-in")
+}
+
+private func nativeSignOutHistory(_ bench: AccountBench) {
+    do {
+        guard let credential = bench.vault.credential else { throw HubAccountFailure.signedOut }
+        let keys = try HubLoginDeviceStore(credential, base: bench.session.loginKeys)
+        let pins = try HubLoginDeviceStore(credential, base: bench.session.loginPins)
+        let remembered = pins.load(HubLoginAdmission.pinName)
+        let hadInstallation = keys.load(SealedDeviceStore.name) != nil
+        _ = bench.disconnect()
+        check(hadInstallation && remembered != nil && pins.load(HubLoginAdmission.pinName) == remembered &&
+              keys.load(SealedDeviceStore.name) == nil, "grants: sign-out preserves the verified head and erases the installation key")
+    } catch { check(false, "grants: a signed-in fixture supplies the original installation and history") }
 }
 
 private func approvedDeviceReply(_ bench: AccountBench, path: String, signer: P256.Signing.PrivateKey) {
