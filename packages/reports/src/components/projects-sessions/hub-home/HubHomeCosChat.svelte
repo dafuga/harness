@@ -15,9 +15,13 @@
 		SendHomeChat
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { agentLabels, messageStatusText, overviewTone, runTime } from './hubHomePresentation';
+	import { tick } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
 	import HubHomeAsk from './HubHomeAsk.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';
+	import HubHomeOutgoingDraftCard from './HubHomeOutgoingDraftCard.svelte';
+	import HubHomeOutgoingDraftEditor from './HubHomeOutgoingDraftEditor.svelte';
+	import type { HomeOutgoingActions, HomeOutgoingDraft } from './hubHomeOutgoingDraft.types';
 
 	let {
 		agent,
@@ -25,6 +29,7 @@
 		send,
 		receipt,
 		asks = [],
+		outgoing,
 		showCard = true
 	}: {
 		agent?: HomeAgent;
@@ -32,6 +37,8 @@
 		send: SendHomeChat;
 		receipt?: (id: string) => Promise<HomeChatReceipt>;
 		asks?: HomeOpenAsk[];
+		/** Authoritative draft records and callbacks bound to their displayed revisions. */
+		outgoing?: HomeOutgoingActions;
 		showCard?: boolean;
 	} = $props();
 	const chat = homeCosChat() ?? provideHomeCosChat();
@@ -52,9 +59,27 @@
 	let pending = $state(false);
 	let feedback = $state('');
 	let draftItem = $state<string>();
+	let editing = $state.raw<{ draft: HomeOutgoingDraft; trigger: HTMLButtonElement }>();
+
+	function editOutgoing(record: HomeOutgoingDraft, trigger: HTMLButtonElement) {
+		const message = { ...record.message, to: [...record.message.to], cc: [...record.message.cc] };
+		editing = { draft: { ...record, message }, trigger };
+	}
+
+	async function closeOutgoing(record: HomeOutgoingDraft) {
+		if (editing?.draft !== record) return;
+		const trigger = editing.trigger;
+		editing = undefined;
+		await tick();
+		trigger?.focus({ preventScroll: true });
+	}
 
 	$effect(() => {
-		if (!chat.target || draftItem === draftKey) return;
+		if (!chat.target) {
+			editing = undefined;
+			return;
+		}
+		if (draftItem === draftKey) return;
 		draftItem = draftKey;
 		draft = '';
 		feedback = '';
@@ -131,7 +156,7 @@
 		{#if item && !askId}<hx-p class="po-sessions hh-cos-context" aria-label="Attached item">
 				About <LinkifiedText text={item.title} />
 			</hx-p>{/if}
-		{#if shown.length || ask || askId}
+		{#if shown.length || ask || askId || outgoing?.drafts.length}
 			<hx-div class="hh-cos-history">
 				<hx-ol class="hh-thread hh-cos-thread" aria-label="Chief of Staff conversation">
 					{#each shown as entry (entry.id)}
@@ -143,6 +168,18 @@
 							>
 						</hx-li>
 					{/each}
+					{#if outgoing}
+						{#each outgoing.drafts as record (record.id)}
+							<hx-li class="outgoing-entry">
+								<HubHomeOutgoingDraftCard
+									draft={record}
+									send={outgoing.send}
+									discard={outgoing.discard}
+									edit={editOutgoing}
+								/>
+							</hx-li>
+						{/each}
+					{/if}
 					{#if ask && receipt}
 						<hx-li class="hh-msg hh-msg-ask" data-from="agent">
 							{#key `${ask.itemId}:${ask.question}`}<HubHomeAsk {ask} {send} {receipt} />{/key}
@@ -167,4 +204,13 @@
 			label="Message {name}"
 		/>
 	</hx-div>
+	{#if editing && outgoing}
+		<HubHomeOutgoingDraftEditor draft={editing.draft} save={outgoing.edit} close={closeOutgoing} />
+	{/if}
 </Modal>
+
+<style>
+	.outgoing-entry + .outgoing-entry {
+		margin-top: var(--hx-space-12);
+	}
+</style>
