@@ -149,6 +149,11 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	page
 }) => {
 	const tracker = recordedTracker();
+	seedComputerWork(tracker);
+	const computer = page
+		.getByRole('list', { name: 'Computers' })
+		.getByRole('listitem')
+		.filter({ hasText: 'harbor-mbp-2' });
 	const answer = await macAnswer(tracker);
 	await page.routeWebSocket('**/api/sync/v1/live', () => {});
 	const requests = await productionHome(page, answer, true);
@@ -159,6 +164,7 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	const live = tracker.runs.filter((run) => run.ended_at === null);
 	await expect(liveRows(page)).toHaveCount(live.length);
 	await expect(page.getByRole('status', { name: 'Updates' })).toHaveText('Live');
+	await expect(computer).toHaveAttribute('data-state', 'overloaded');
 	const stored = () => requests.filter((entry) => entry.path === '/api/hub-home').length;
 	const projects = () => requests.filter((entry) => entry.path === '/api/projects').length;
 	const storedBefore = stored();
@@ -172,10 +178,15 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	finished.outcome = 'done';
 	item.status = 'done';
 	item.stage = 'build';
+	const reading = tracker.machines.find(({ node }) => node === 'harbor-mbp-2')!;
+	reading.status = 'ok';
+	reading.reasons = [];
 	Object.assign(answer, await macAnswer(tracker));
 	await page.clock.runFor(20_000);
 
 	await expect(liveRows(page)).toHaveCount(live.length - 1);
+	await expect(computer).toHaveAttribute('data-state', 'ok');
+	await expect(computer).not.toContainText('memory pressure is critical');
 	const group = overview(page)
 		.locator('details.hh-live-project')
 		.filter({ has: page.locator('summary.hh-live-head', { hasText: item.agent! }) });

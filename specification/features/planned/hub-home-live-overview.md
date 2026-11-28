@@ -35,8 +35,9 @@ queued runs do not count. Private runs can contribute to the count without expos
 
 Selecting a computer opens a read-only detail with available and total RAM, one-minute load and
 core count, estimated spare cores, startup disk space, and the sessions using that computer.
-The header and detail use the status and reasons from the same Tracker reading. An offline
-computer has no current resource reading. Earlier Trackers may report delegated work
+The computer pill shows the first current Tracker reason beside a busy or overloaded status.
+The detail shows all current reasons from that reading.
+An offline computer has no current resource reading. Earlier Trackers may report delegated work
 as a count only. Historic completed-item totals are omitted from project rows and retained in
 the source counts. The separate iPhone landing page does not mount the computer header. Its
 shared project summaries follow the same count rule.

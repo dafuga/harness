@@ -1,0 +1,65 @@
+{
+	"name": "current-machine-health",
+	"goal": "Prove the recorded primary Mac recovery clears the Hub overload chip on the next sample, with current machine reasons shared by Tracker and Hub.",
+	"createdAt": "2026-11-28T10:19:22.639Z",
+	"updatedAt": "2026-11-28T11:07:05.081Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T10:20:29.953Z",
+			"evidence": "Installed Tracker reported overloaded solely on 6146 MB swap growth at 10:19:23Z with macOS pressure normal, 62% free, load 5.7 on 18 cores and disk 76.6 GB free. Expect the first normal sample to clear the status."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T10:20:31.337Z",
+			"evidence": "The existing machine-status example asserted history alone was enough to overload a machine. Replay the retained baseline, pressure and recovery samples within the same ten-minute window."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T10:30:21.344Z",
+			"evidence": "Frozen 1fa490a143 browser replay failed on missing pill reason in five viewports on harbor-mbp-2. Frozen Tracker regression e35c69c7c9 failed on swap grew 6146 MB in 10 min and on peer recovery."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T10:30:24.592Z",
+			"evidence": "Require elevated current pressure for swap growth to count. Render the existing Tracker reason inline in the shared Home pill and wrap it within phone width."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:07:05.081Z",
+			"evidence": "Rebased Tracker red 8720a926b3 reproduced swap grew 6146 MB in 10 min and stale peer overload. Frozen command passed at 455420344d with the peer returning ok at its next one-minute sample while swap remains allocated."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Check consumers of current machine status and recent resource history",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

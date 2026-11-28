@@ -708,9 +708,11 @@ Sampling is read-only, so it also runs while host effects are held.
   one that fits.
 - A computer is overloaded when its 5-minute load exceeds 1.5 per core,
   available memory is under 10%, macOS reports critical pressure, swap grew
-  more than 512 MB in 10 minutes, or a disk has under 20 GB free. Busy uses 1.0
-  per core, 15%, pressure warnings, 256 MB and 30 GB. Unlike the retained
-  Tracker, a low free percentage alone does not count.
+  more than 512 MB in 10 minutes while memory pressure is elevated, or a disk
+  has under 20 GB free. Busy uses 1.0 per core, 15%, pressure warnings,
+  256 MB of swap growth during elevated pressure and 30 GB. Once pressure
+  returns to normal, the next sample clears any swap-based reason. Disk
+  thresholds use absolute free space.
 - When `hostEffects.watchdog.chiefOfStaff` is set on the hub, a computer
   overloaded for 10 minutes gets one `Computer overloaded: <node>` item and an
   `overload` watchdog alert with its heaviest sessions and a suggested move.

@@ -37,7 +37,7 @@
 				"name": "trackerMachineStatus.recent",
 				"type": "readonly TrackerResourceSample[]",
 				"required": true,
-				"description": "Earlier samples used to measure swap growth over ten minutes."
+				"description": "Earlier samples used to measure ten-minute swap growth during elevated memory pressure."
 			},
 			{
 				"name": "trackerMachineStatus.now",
@@ -104,7 +104,7 @@
 						"name": "trackerMachineStatus.recent",
 						"type": "readonly TrackerResourceSample[]",
 						"required": true,
-						"description": "Earlier samples used to measure swap growth over ten minutes."
+						"description": "Earlier samples used to measure ten-minute swap growth during elevated memory pressure."
 					},
 					{
 						"name": "trackerMachineStatus.now",
