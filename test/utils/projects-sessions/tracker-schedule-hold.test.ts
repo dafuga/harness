@@ -16,6 +16,11 @@ test('a synced pause expires at the opt-out clock, independent of later notes', 
 		until: new Date(at + 86_400_000).toISOString()
 	});
 	expect(trackerScheduleHold(row, at + 86_400_000)).toBeNull();
+	const optedOut = { ...row, schedule_never: '1' };
+	expect(trackerScheduleHold(optedOut, at + 86_400_000)).toEqual({
+		reason: 'Never auto-launch',
+		until: null
+	});
 	expect(
 		trackerScheduleHold({ ...row, clocks: JSON.stringify({ schedule_off: stamp }) }, at)
 	).toMatchObject({ reason: 'Legacy automatic launch pause' });

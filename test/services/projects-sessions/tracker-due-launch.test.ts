@@ -13,7 +13,11 @@ import { fixtureSecret, wire } from '../../support/trackerDispatchQueueFixture';
 import { trackerResourceHoldPrefix } from '../../../src/utils/projects-sessions/trackerHostResourceHold';
 import { resourceSample, runnerReport } from '../../support/trackerMachineFixture';
 import { expectHubSeenBySpoke } from '../../support/trackerFleetFixture';
-import { sweepIdleWork } from '../../support/trackerDueLaunchFixture';
+import {
+	sweepIdleWork,
+	trackerDueLaunchAction,
+	verifyNeverAutoLaunch
+} from '../../support/trackerDueLaunchFixture';
 
 const signal = new AbortController().signal;
 // 02:00 in Lisbon: due work launches through the night.
@@ -70,24 +74,16 @@ test('the default launcher honors due times across watchdog and scheduler ticks'
 	try {
 		const future = '2026-11-25T13:00:00.000Z';
 		runtime.store.appendLocal(task('later00001', future));
-		const enabled = await runtime.items.handle(
-			new Request('http://tracker-fixture.invalid/items/later00001/schedule-on', {
-				method: 'POST',
-				body: '{}'
-			})
-		);
+		const enabled = await trackerDueLaunchAction(runtime, 'later00001', 'schedule-on');
 		expect(enabled.status).toBe(200);
 		instant += 120 * 60_000;
 		expect.soft(await sweepIdleWork(runtime, 'later00001', signal)).toBeNull();
 		runtime.store.appendLocal(task('past000001', '2026-11-24T09:00:00.000Z'));
 		runtime.store.appendLocal(task('held000001', '2026-11-24T09:00:00.000Z'));
-		const held = await runtime.items.handle(
-			new Request('http://tracker-fixture.invalid/items/held000001/unlaunch', {
-				method: 'POST',
-				body: '{}'
-			})
-		);
+		const held = await trackerDueLaunchAction(runtime, 'held000001', 'unlaunch');
 		expect(held.status).toBe(200);
+		runtime.store.appendLocal(task('never00001', '2026-11-24T09:00:00.000Z'));
+		await verifyNeverAutoLaunch(runtime, 'never00001', 'set');
 		await runtime.scheduler!.tick(signal);
 		expect
 			.soft(start.mock.calls.map(([{ run }]) => [run.item_id, run.launch_source]))
@@ -100,6 +96,12 @@ test('the default launcher honors due times across watchdog and scheduler ticks'
 		instant = night + 26 * 60 * 60_000;
 		await runtime.scheduler!.tick(signal);
 		expect(start.mock.calls.map(([{ run }]) => run.item_id)).toContain('held000001');
+		expect(start.mock.calls.map(([{ run }]) => run.item_id)).not.toContain('never00001');
+		expect(await sweepIdleWork(runtime, 'never00001', signal)).toBeNull();
+		await verifyNeverAutoLaunch(runtime, 'never00001', 'clear');
+		instant += 15_000;
+		await runtime.scheduler!.tick(signal);
+		expect(start.mock.calls.map(([{ run }]) => run.item_id)).toContain('never00001');
 	} finally {
 		database.close();
 	}

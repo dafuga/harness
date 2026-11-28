@@ -38,15 +38,23 @@ test('initialize creates compatible tables and keeps the database identity on re
 test('initialize upgrades an older store and replays only newly supported item fields', () => {
 	seedOlderStore();
 	seedOp('a', early, JSON.stringify({ title: 'Already projected title', repo: '/first' }));
-	seedOp('b', later, JSON.stringify({ repo: '/second', adapter_closed: true }));
+	seedOp('b', later, JSON.stringify({ repo: '/second', adapter_closed: true, schedule_never: 1 }));
 	expect(schema.initialize()).toEqual({ createdAt: 800, dbId: 'legacy-db-id' });
 	expect(
-		database.prepare('SELECT title, repo, adapter_closed, clocks, updated_at FROM items').get()
+		database
+			.prepare('SELECT title, repo, adapter_closed, schedule_never, clocks, updated_at FROM items')
+			.get()
 	).toEqual({
 		title: 'Original row title',
 		repo: '/second',
 		adapter_closed: '1',
-		clocks: JSON.stringify({ title: early, repo: later, adapter_closed: later }),
+		schedule_never: '1',
+		clocks: JSON.stringify({
+			title: early,
+			repo: later,
+			adapter_closed: later,
+			schedule_never: later
+		}),
 		updated_at: 'stored-original-timestamp'
 	});
 	expect(database.prepare('SELECT op_id, actor FROM ops ORDER BY seq').all()).toEqual([
