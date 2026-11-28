@@ -105,7 +105,9 @@ export async function readApprovalPush(
 ): Promise<HubApprovalPushReading | null> {
 	const response = await call('GET');
 	if (!response.ok) return null;
-	const { publicKey } = await response.json();
+	const result = await response.json();
+	if (!result || typeof result !== 'object' || !('publicKey' in result)) return null;
+	const { publicKey } = result;
 	if (typeof publicKey !== 'string') return null;
 	const state = await notificationDevice(approvalPushScope);
 	const device = state === 'off' && alsoEnabled ? 'on' : state;
