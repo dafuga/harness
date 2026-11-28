@@ -131,6 +131,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.accounts-access-vault-payment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.accounts-access-vault-payment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "validator.accounts-access-vault-wire",
 			"via": "import",
 			"origin": "derived"

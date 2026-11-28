@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
 import { VaultBrokerClientAdapter } from '../../../src/adapters/accounts-access/VaultBrokerClientAdapter';
 import { VaultBrokerServerAdapter } from '../../../src/adapters/accounts-access/VaultBrokerServerAdapter';
+import { VaultPaymentService } from '../../../src/services/accounts-access/VaultPaymentService';
 import {
 	approval,
 	origin,
@@ -18,13 +19,24 @@ afterEach(async () => {
 	await Promise.all(open.splice(0).map((server) => server.close()));
 });
 
-async function served(peer: number | null = sessionUid) {
+async function served(peer: number | null = sessionUid, enablePayments = false) {
 	const fixture = vaultBroker();
 	const socketPath = join(fixture.state, 'sock', 'broker.sock');
-	const server = new VaultBrokerServerAdapter({ ...fixture, socketPath, peerUid: () => peer });
+	const payments = new VaultPaymentService({
+		...fixture,
+		host: 'mb2',
+		now: () => fixture.clock.now
+	});
+	payments.setEnabled(enablePayments);
+	const server = new VaultBrokerServerAdapter({
+		...fixture,
+		socketPath,
+		peerUid: () => peer,
+		payments: enablePayments ? payments : undefined
+	});
 	open.push(server);
 	await server.listen();
-	return { ...fixture, socketPath, client: new VaultBrokerClientAdapter({ socketPath }) };
+	return { ...fixture, payments, socketPath, client: new VaultBrokerClientAdapter({ socketPath }) };
 }
 
 test('a synthetic request goes from session to phone to lease over the socket', async () => {
@@ -108,4 +120,55 @@ test('without a kernel-verified peer the broker files requests but refuses a CDP
 	await expect(
 		run.client.call('/v1/session/lease', { ...ticket, identity: 'owner@example.test', teardown })
 	).rejects.toMatchObject({ status: 403 });
+});
+
+test('only signed device routes can see and approve a protected executor purchase offer', async () => {
+	const disabled = await served();
+	const queuePath = '/v1/device/purchase/requests';
+	const decisionPath = '/v1/device/purchase/decision';
+	await expect(disabled.client.call(queuePath, {})).rejects.toMatchObject({ status: 404 });
+	const run = await served(sessionUid, true);
+	const checkout = {
+		merchant: 'fixture-store',
+		origin: 'https://checkout.stripe.com',
+		binding: 'a'.repeat(64),
+		amountMinor: 3500,
+		currency: 'CAD',
+		mode: 'stripe-test'
+	};
+	const offer = run.payments.request({
+		checkout,
+		description: 'Fixture purchase',
+		item: '25e3ygwc13',
+		session: 'fixture-session',
+		card: { id: 'd'.repeat(32), lastFour: '4242' },
+		recipeDigest: 'b'.repeat(64),
+		runnerFingerprint: 'c'.repeat(64)
+	});
+	await expect(run.client.call('/v1/session/purchase/claim', offer)).rejects.toMatchObject({
+		status: 404
+	});
+	await expect(run.client.call(queuePath, {})).rejects.toMatchObject({ status: 400 });
+	const challenge = () =>
+		run.client.call<{ nonce: string }>('/v1/device/challenge', {
+			deviceId: run.phone.deviceId
+		});
+	const queue = await run.client.call(
+		queuePath,
+		run.phone.prove(origin, queuePath, (await challenge()).nonce)
+	);
+	expect(queue).toEqual([offer]);
+	const { requestId, scope } = offer;
+	const decision = run.phone.prove(origin, decisionPath, (await challenge()).nonce, {
+		requestId,
+		scope,
+		decision: 'approve',
+		expiresAt: run.clock.now + 30_000
+	});
+	expect(await run.client.call(decisionPath, decision)).toEqual({ status: 'approved' });
+	expect(run.payments.claim(requestId, checkout, scope.runnerFingerprint)).toEqual({
+		requestId,
+		scope,
+		expiresAt: run.clock.now + 30_000
+	});
 });

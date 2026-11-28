@@ -1,0 +1,159 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.accounts-access-vault-payment",
+	"uid": "u_uuanriimeu",
+	"kind": "validator",
+	"title": "VaultPaymentValidator",
+	"responsibility": "Owns the VaultPaymentValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/validators/accounts-access/VaultPaymentValidator.ts",
+			"src/validators/accounts-access/VaultPaymentValidator.types.ts"
+		],
+		"symbols": [
+			"vaultPaymentCheckout",
+			"vaultPaymentScope",
+			"vaultPurchaseProof",
+			"vaultPurchaseRoutes",
+			"VaultPaymentValidator",
+			"VaultPaymentValidator.scope",
+			"VaultPaymentValidator.proof",
+			"VaultPaymentValidator.decision",
+			"VaultPaymentScope"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "VaultPaymentValidator.scope.input",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "VaultPaymentValidator.proof.input",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "VaultPaymentValidator.decision.payload",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "vaultPaymentCheckout",
+				"type": "unknown"
+			},
+			{
+				"name": "vaultPaymentScope",
+				"type": "unknown"
+			},
+			{
+				"name": "vaultPurchaseProof",
+				"type": "unknown"
+			},
+			{
+				"name": "vaultPurchaseRoutes",
+				"type": "unknown"
+			},
+			{
+				"name": "VaultPaymentValidator.scope",
+				"type": "VaultPaymentScope"
+			},
+			{
+				"name": "VaultPaymentValidator.proof",
+				"type": "unknown"
+			},
+			{
+				"name": "VaultPaymentValidator.decision",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "VaultPaymentValidator.scope",
+				"inputs": [
+					{
+						"name": "VaultPaymentValidator.scope.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultPaymentValidator.scope",
+						"type": "VaultPaymentScope"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VaultPaymentValidator.proof",
+				"inputs": [
+					{
+						"name": "VaultPaymentValidator.proof.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultPaymentValidator.proof",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VaultPaymentValidator.decision",
+				"inputs": [
+					{
+						"name": "VaultPaymentValidator.decision.payload",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultPaymentValidator.decision",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "validator.accounts-access-vault-wire",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/accounts-access/VaultPaymentValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/accounts-access/VaultPaymentValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
