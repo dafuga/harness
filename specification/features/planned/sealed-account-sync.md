@@ -193,6 +193,44 @@ with hybrid clocks, append-only notes, tombstones, as decided on `egkyz7`).
 Any device may upload a sealed compaction snapshot so new devices do not
 replay the whole log.
 
+### Tracker changes on Hub Home (gghp6n)
+
+1. The Tracker daemon wakes its sealed journal after a committed Tracker
+   change and submits the affected account-scope envelopes to `POST ops/:scope`.
+   The journal retains unacknowledged writes and retries with the same opaque
+   operation IDs. The Hub commits ciphertext before the account object sends
+   a scope poke.
+2. Hub Home opens the same-origin account socket using the enrolled browser's
+   device ID in the existing WebSocket subprotocol. It subscribes after
+   verifying the signed chain and unwrapping its grant. A poke for that scope
+   wakes the browser's paged op-log reader. The browser authenticates and
+   decrypts the records locally, then requests a fresh Home reading from
+   the existing encrypted linked-computer connection. A poke alone carries
+   no Home data and does not confirm a Tracker change. The refreshed
+   reading must come from a Tracker authority that has applied the
+   operation, so a lagging linked replica cannot satisfy the refresh.
+3. Subscribe before catch-up. Coalesce concurrent notices, drain through
+   the announced cursor and check for missed records on reconnect, foreground
+   and fallback reads. Scope the saved cursor to the account and admitted
+   scope, and clear in-memory keys and pending reads on account change.
+   Use the verified chain and grants to select the record epoch.
+
+Keep `HARNESS_HUB_HOME_PUBLISH` off throughout. The integration depends on
+the Tracker journal (#332), device approval and grant delivery (#452 and
+#333), and the browser sealed client (#339). Use their account bindings and
+key stores when integrating. Tracker changes that do not enter the sealed
+journal still need an encrypted update before they qualify as live.
+
+The installed-path acceptance test starts with an enrolled browser and
+the plaintext publisher off. Make a real Tracker edit while Home is open.
+Measure commit to visible DOM update before the fallback read, tracing the
+sealed POST, account socket poke, browser decrypt and encrypted Home read.
+Repeat across a socket disconnect and verify the missed edit appears after
+reconnect. Record timing and inspect Home evidence. The Workerd transport
+test measures fixture encryption through client decryption and checks the
+Hub/relay wire and stored rows for plaintext, using synthetic keys and
+sessions.
+
 ## Client cache and speed
 
 Every client stores envelopes exactly as the server holds them, plus a

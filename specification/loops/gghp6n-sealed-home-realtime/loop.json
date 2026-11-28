@@ -1,0 +1,50 @@
+{
+	"name": "gghp6n-sealed-home-realtime",
+	"goal": "Prove a real Tracker change reaches an enrolled Hub Home browser over the sealed Hub and relay path with the plaintext publisher off, including a timed isolated live change and reconnect catch-up.",
+	"createdAt": "2026-11-27T22:31:42.447Z",
+	"updatedAt": "2026-11-27T22:34:58.390Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T22:32:28.820Z",
+			"evidence": "Tracker-to-Home transport, scope admission, missed update recovery, disabled plaintext publisher, and full-path acceptance are specified in specification/features/planned/sealed-account-sync.md."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		},
+		{
+			"id": "transport",
+			"title": "Verify sealed Tracker op transport through Hub and relay with the browser subprotocol.",
+			"status": "complete",
+			"completedAt": "2026-11-27T22:34:58.390Z",
+			"evidence": "Isolated harbor-mbp-2 Workerd, one worker: 15 focused Hub tests passed. Encrypted fixture write, account poke, ciphertext read, and client decrypt took 21 ms. No plaintext title or Home snapshot. Removing only the scope poke failed at the expected notice assertion; restored source passed. Real device enrollment, Tracker and DOM verification remain pending."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
