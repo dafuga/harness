@@ -18,6 +18,7 @@ final class HubAccountSession {
     var cancelAuthentication: () -> Void = {}
     var accountEnded: () -> Void = {}
     var approvalAlert: (() -> Void)?
+    var approvalPush = HubApprovalPushRegistration()
     var notifiedApprovals: [String: Date] = [:]
     var deviceName = "Harness iPhone"
     var enrollmentPlatform = HubEnrollmentPlatform.iphone
@@ -112,6 +113,7 @@ final class HubAccountSession {
         enrolledDevice = nil
         approvalReviews.removeAll()
         notifiedApprovals.removeAll()
+        approvalPush = HubApprovalPushRegistration(request: approvalPush.request)
         enrollment = HubAccountEnrollment()
         deviceCheck += 1
         deviceStage = .checking

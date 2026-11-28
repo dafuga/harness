@@ -41,6 +41,12 @@ production APNs endpoint for its environment. Local Workerd proof substitutes th
 provider boundary. Signed entitlements and suspended-device delivery are verified
 on the physical iPhone after release approval.
 
+In the signed app build, include `App/HarnessApprovalPush.entitlements` and
+set `HARNESS_APPROVAL_PUSH_ENABLED=YES`. Match
+`HARNESS_APPROVAL_PUSH_ENTITLEMENT_ENVIRONMENT` to the provisioning profile
+and the Hub's APNs environment. The legacy in-app approval inbox is also
+available in builds without remote notifications.
+
 The app fetches the authoritative inbox after opening an alert. A reference must match exactly one record from its source, and its category must match that record. Ambiguous, revoked, stale, and missing records cannot open review. Repeat delivery does not open another review. Decisions always require separate in-app confirmation.
 
 Agent host-file changes, tracked as metadata only:

@@ -25,6 +25,12 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
         let session = HubAccountSession(origin: hubOrigin)
         session.accountEnded = HarnessAccountPlugin.accountEnded
         HarnessAccountPlugin.registerApprovalAlerts(session)
+        if Bundle.main.object(forInfoDictionaryKey: "HarnessApprovalPushEnabled") as? String == "YES" {
+            session.approvalPush.request = { [weak session] generation in
+                guard let session else { return }
+                Task { @MainActor in await registerRemoteApprovalAlerts(generation, session) }
+            }
+        }
         return session
     }()
 
@@ -121,6 +127,7 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
 
 extension HarnessAccountPlugin {
     private static let approvalAlertID = "harness-device-approval"
+    @MainActor private static var nextApprovalRegistration = Date.distantPast
 
     private static func accountEnded() {
         TrackerRefresh.session.endAccount()
@@ -141,6 +148,26 @@ extension HarnessAccountPlugin {
                 }
             }
         }
+    }
+
+    @MainActor
+    private static func registerRemoteApprovalAlerts(_ generation: Int, _ session: HubAccountSession) async {
+        guard UIApplication.shared.applicationState == .active,
+            Date() >= nextApprovalRegistration else { return }
+        nextApprovalRegistration = Date().addingTimeInterval(30)
+        let center = UNUserNotificationCenter.current()
+        let settings = await center.notificationSettings()
+        let authorized = settings.authorizationStatus == .notDetermined
+            ? (try? await center.requestAuthorization(options: [.alert, .sound])) == true
+            : settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional
+        let current = session.queue.sync {
+            session.generation == generation && session.deviceStage == .approved
+        }
+        if authorized && current { UIApplication.shared.registerForRemoteNotifications() }
+    }
+
+    static func receivedApprovalPushToken(_ token: Data) {
+        sharedSession.receiveApprovalPushToken(token)
     }
 
     @MainActor
