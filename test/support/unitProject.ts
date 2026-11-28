@@ -79,26 +79,9 @@ export const utcDateExamples = [
 export async function checkGeneratedAppContracts(project: UnitProject): Promise<void> {
 	const { expect } = await import('vitest');
 	const checked = await project.harness(['units', 'check', '--json'], false);
-	expect(checked.exitCode).toBe(1);
 	const report = JSON.parse(checked.stdout) as CheckReport;
-	expect(report.contractFailures).toEqual({
-		entities: 2,
-		issues: 6,
-		unknownTypes: 2,
-		emptyProps: 0,
-		missingRequired: 0,
-		bareErrors: 0
-	});
-	expect([...new Set(report.errors)].sort()).toEqual(
-		[
-			'script.atomic-syntax: contract input atomicSyntax.content has unknown type',
-			'script.atomic-syntax: contract input walkAtomicMarkup.node has unknown type',
-			'script.atomic-syntax: contract input walkAtomicMarkup.callback has unknown type',
-			'script.html-elements: contract input elementName.tag has unknown type',
-			'script.html-elements: contract input atomTag.atom has unknown type',
-			'script.html-elements: contract input nativeAtomSource.atom has unknown type'
-		].sort()
-	);
+	expect(report.errors).toEqual([]);
+	expect(checked.exitCode).toBe(0);
 }
 
 export type { UnitProject } from './unitProject.types';
