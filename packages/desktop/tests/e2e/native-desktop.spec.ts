@@ -66,7 +66,7 @@ async function openDraftThroughUi(page: Page, root: string) {
 	await sections.getByRole('button', { name: 'Designs', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'No design image yet' })).toBeVisible();
 	const tip = git(root, 'rev-parse', 'HEAD');
-	expect(await currentRow(page, 'Choose commit')).toContainText(tip.slice(0, 7));
+	await expect(await currentRow(page, 'Choose commit')).toContainText(tip.slice(0, 7));
 	await page.keyboard.press('Escape');
 	await expect(await openRows(page, 'Choose branch')).toContainText(
 		`Branch tip ${tip.slice(0, 7)} committed`

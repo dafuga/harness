@@ -98,7 +98,10 @@ export async function completeNativeGoogle(
 	await button.click();
 	await expect(page.getByRole('status')).toHaveText('Waiting for Google…');
 	await hub.returnToApp();
-	await expect(page.getByRole('button', { name: 'Sign out' })).toBeVisible();
+	const account = page.getByRole('button', { name: 'Account', exact: true });
+	await account.click();
+	await expect(page.getByRole('button', { name: 'Sign out', exact: true })).toBeVisible();
+	await account.click();
 	const reported = await page.evaluate(async () => {
 		const bridge = (window as unknown as { harness: { hostedStatus: () => Promise<Status> } })
 			.harness;
