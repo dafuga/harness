@@ -2,8 +2,8 @@ import { expect, test, vi } from 'vitest';
 import { TrackerTmuxAdapter } from '../../../src/adapters/projects-sessions/TrackerTmuxAdapter';
 import { randomUUID } from 'node:crypto';
 import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/tracker-command/nativeTrackerRequest';
-import { assignTrackerLaunches } from '../../../src/services/projects-sessions/tracker-machine-service/assignTrackerLaunches';
 import {
+	assignUnnamedLaunch,
 	call,
 	checkRemoteWork,
 	exchangeFleetReport,
@@ -176,40 +176,41 @@ test('--computer auto picks the computer whose launcher maps the project', async
 	});
 	try {
 		await nodes.tick();
-		const add = async (...extra: string[]) =>
-			(await call(nodes.hub, ['add', `Fixture ${extra.join(' ')}`, '--auto', '--force', ...extra]))
-				.data;
+		const add = async (title: string, ...extra: string[]) =>
+			(await call(nodes.hub, ['add', title, '--auto', '--force', ...extra])).data;
 		const busy = fleetReport(nodes, peerNode, ['harbor']);
 		busy.resources.load = [23, 23, 5];
 		await exchangeFleetReport(nodes, busy);
-		expect(await add('--agent', 'harbor', '--computer', 'auto')).toMatchObject({
+		const harbor = ['--agent', 'harbor'];
+		expect(await add('Fix auto launch', ...harbor, '--computer', 'auto')).toMatchObject({
 			computer: peerNode
 		});
-		expect(await add('--agent', 'unmapped', '--computer', 'auto')).toMatchObject({
-			computer: 'auto'
+		expect(
+			await add('Fix unmapped launch', '--agent', 'unmapped', '--computer', 'auto')
+		).toMatchObject({ computer: 'auto' });
+		expect(await add('Fix unnamed launch', ...harbor)).toMatchObject({ computer: peerNode });
+		expect(await add('Fix explicit launch', ...harbor, '--computer', hubNode)).toMatchObject({
+			computer: hubNode
 		});
-		expect(await add('--agent', 'harbor')).toMatchObject({ computer: hubNode });
+		expect(
+			await add('Open Chrome to inspect a page', ...harbor, '--computer', 'auto')
+		).toMatchObject({ computer: hubNode });
 	} finally {
 		nodes.close();
 	}
 });
 
-test('the hub assigns a launch with no computer to the peer that can run it', async () => {
-	const nodes = fleet();
-	try {
-		await nodes.tick();
-		const { id } = (await call(nodes.hub, ['add', 'Fixture task', '--agent', 'harbor'])).data;
-		nodes.hub.store.appendLocal({ itemId: id, fields: { auto: 'fixture-token' } });
-		const view = {
-			machines: nodes.hub.machines,
-			now: () => nodes.clock.at,
-			samples: () => [fleetReport(nodes, peerNode, ['harbor'])]
-		};
-		assignTrackerLaunches(view);
-		const shown = (await call(nodes.hub, ['show', id])).data;
-		expect(shown).toMatchObject({ computer: peerNode, launch_target: peerNode });
-		expect(shown.notes_log.at(-1).text).toContain('auto-launch: assigned to harbor-mbp-2');
-	} finally {
-		nodes.close();
+test.each([
+	['Update a README', 1, 19, peerNode],
+	['Update a README', 10, 1, null],
+	['Run the full build', 1, 19, null],
+	['Run the full build', 0, 19, peerNode],
+	['Open Chrome to inspect a page', 0, 19, null]
+])(
+	'the hub assigns unnamed work by workload and slots (%s, %i vs %i)',
+	async (title, primarySlots, peerSlots, target) => {
+		const shown = await assignUnnamedLaunch(title, primarySlots, peerSlots);
+		expect(shown).toMatchObject({ computer: target, launch_target: target });
+		if (target) expect(shown.notes_log.at(-1).text).toContain(`auto-launch: assigned to ${target}`);
 	}
-});
+);

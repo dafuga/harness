@@ -13,6 +13,7 @@
 			"src/services/projects-sessions/tracker-machine-service/trackerLaunchPlacement.types.ts"
 		],
 		"symbols": [
+			"trackerDesktopLaunchHost",
 			"trackerLaunchPlacement",
 			"TrackerPlacementReservation",
 			"TrackerPlacedLaunch",
@@ -22,6 +23,11 @@
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "trackerDesktopLaunchHost.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
 			{
 				"name": "trackerLaunchPlacement.item",
 				"type": "TrackerModelItem & { repo?: string | null }",
@@ -40,6 +46,10 @@
 		],
 		"outputs": [
 			{
+				"name": "trackerDesktopLaunchHost",
+				"type": "string | undefined"
+			},
+			{
 				"name": "trackerLaunchPlacement",
 				"type": "TrackerPlacedLaunch | undefined"
 			}
@@ -47,6 +57,24 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "trackerDesktopLaunchHost",
+				"inputs": [
+					{
+						"name": "trackerDesktopLaunchHost.item",
+						"type": "TrackerModelItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerDesktopLaunchHost",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "trackerLaunchPlacement",
 				"inputs": [

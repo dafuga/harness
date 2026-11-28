@@ -46,7 +46,7 @@
 				"type": "TrackerPlacementRequest",
 				"required": false,
 				"default": {},
-				"description": "Kind of work, RAM it needs in GB and computers to leave out. Defaults to general work with none left out."
+				"description": "Work kind, CPU and RAM demand, available launcher slots, reservations and excluded computers. Defaults to general work."
 			},
 			{
 				"name": "trackerMachineTargets.row",
@@ -70,7 +70,7 @@
 			{
 				"name": "placeTrackerWork",
 				"type": "TrackerPlacement",
-				"description": "Candidates ranked with fitting ones first, their reasons, and the recommended computer or null."
+				"description": "Fitting computers first, ranked by RAM and slots for light work or CPU headroom for heavy work, with reasons and a recommendation."
 			}
 		],
 		"errors": [],
@@ -116,14 +116,14 @@
 						"type": "TrackerPlacementRequest",
 						"required": false,
 						"default": {},
-						"description": "Kind of work, RAM it needs in GB and computers to leave out. Defaults to general work with none left out."
+						"description": "Work kind, CPU and RAM demand, available launcher slots, reservations and excluded computers. Defaults to general work."
 					}
 				],
 				"outputs": [
 					{
 						"name": "placeTrackerWork",
 						"type": "TrackerPlacement",
-						"description": "Candidates ranked with fitting ones first, their reasons, and the recommended computer or null."
+						"description": "Fitting computers first, ranked by RAM and slots for light work or CPU headroom for heavy work, with reasons and a recommendation."
 					}
 				],
 				"errors": [],

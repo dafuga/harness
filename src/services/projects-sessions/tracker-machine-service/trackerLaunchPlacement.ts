@@ -4,7 +4,11 @@ import type {
 	TrackerPlacementReservation
 } from './trackerLaunchPlacement.types';
 // @harness-uid u_5hr7siszzq
-import { classifyTrackerTask, sizeOf } from '../../../utils/agents-providers/classifyTrackerTask';
+import {
+	classifyTrackerTask,
+	sizeOf,
+	trackerTaskRoute
+} from '../../../utils/agents-providers/classifyTrackerTask';
 import { pickTrackerModel } from '../../../utils/agents-providers/pickTrackerModel';
 import type { TrackerModelItem } from '../../../utils/agents-providers/classifyTrackerTask.types';
 import type { TrackerWorkKind } from '../../../utils/projects-sessions/trackerMachine.types';
@@ -13,6 +17,18 @@ import { trackerMachineSample } from '../tracker-native-runtime-service/trackerF
 const runnerAge = 120_000;
 const lightKinds = new Set(['docs', 'chore', 'triage']);
 const browserWork = /\b(browser|playwright|e2e)\b/i;
+const buildWork = /^(?:please\s+)?(?:run|start|execute)\b[^\n.!?]*\b(?:builds?|tests?|suites?)\b/i;
+const desktopChrome = /\b(?:chrome|chromium|cdp)\b/i;
+
+/** Desktop computer-use requires the primary Mac's browser and session. */
+export function trackerDesktopLaunchHost(item: TrackerModelItem): string | undefined {
+	if (
+		trackerTaskRoute(item) === 'computer-use' ||
+		desktopChrome.test(`${item.title ?? ''} ${item.notes ?? ''}`)
+	)
+		return 'daniel-primary-mbp';
+	return undefined;
+}
 
 /**
  * The best computer for a task, among those whose launcher is polling, maps the task's project
@@ -26,18 +42,23 @@ export function trackerLaunchPlacement(
 ): TrackerPlacedLaunch | undefined {
 	if (item.repo) return undefined;
 	const project = (item.project ?? item.agent)?.toLowerCase();
+	if (!project) return undefined;
+	const sessionSlots = launcherNodes(
+		view,
+		{ project, onlyNode: trackerDesktopLaunchHost(item) },
+		reserved
+	);
+	if (!sessionSlots.size) return undefined;
 	const cli = pickedCli(item, view.now());
-	if (!project || !cli) return undefined;
-	const eligible = launcherNodes(view, project);
+	if (!cli) return undefined;
 	const work = workShape(item, cli);
 	const placement = view.machines.place({
 		kind: work.kind,
 		reserved,
-		agentSession: true
+		sessionSlots,
+		agentSession: !work.heavy
 	});
-	const best = placement.ranked.find(
-		({ node, fits }) => fits && (eligible.get(node) ?? 0) > (reserved?.get(node)?.sessions ?? 0)
-	);
+	const best = placement.ranked.find(({ fits }) => fits);
 	if (!best) return undefined;
 	const reasons = best.reasons.slice(0, 2).join('; ');
 	return {
@@ -55,26 +76,37 @@ function pickedCli(item: TrackerModelItem, now: number): string | undefined {
 	}
 }
 
-function launcherNodes(view: TrackerFleetView, project: string): Map<string, number> {
+function launcherNodes(
+	view: TrackerFleetView,
+	{ project, onlyNode }: { project: string; onlyNode?: string },
+	reserved?: ReadonlyMap<string, TrackerPlacementReservation>
+): Map<string, number> {
 	const now = view.now();
 	const fresh = (at?: string | null) => Boolean(at) && Math.abs(now - Date.parse(at!)) <= runnerAge;
 	return new Map(
-		view.samples().flatMap((value) => {
-			const sample = trackerMachineSample.safeParse(value).data;
-			if (!sample || !fresh(sample.at)) return [];
-			const { enabled, last_error, last_tick_at, capacity } = sample.runner;
-			if (!enabled || last_error || !fresh(last_tick_at)) return [];
-			return capacity?.freeSlots && capacity.projects[project]
-				? [[sample.node, capacity.freeSlots] as const]
-				: [];
-		})
+		view
+			.samples()
+			.map((value) => trackerMachineSample.safeParse(value).data)
+			.filter((sample) => sample !== undefined)
+			.filter(({ node, at }) => fresh(at) && (!onlyNode || node === onlyNode))
+			.flatMap(({ node, runner: { enabled, last_error, last_tick_at, capacity } }) => {
+				if (!capacity?.projects[project] || !enabled || last_error || !fresh(last_tick_at))
+					return [];
+				const slots = capacity.freeSlots - (reserved?.get(node)?.sessions ?? 0);
+				return slots > 0 ? [[node, slots] as const] : [];
+			})
 	);
 }
 
 function workShape(item: TrackerModelItem, cli: string) {
 	const kind = classifyTrackerTask(item);
 	const browser = browserWork.test(`${item.title ?? ''} ${item.notes ?? ''}`);
-	const heavy = browser || kind === 'hard' || kind === 'refactor' || sizeOf(item) === 'large';
+	const heavy =
+		browser ||
+		kind === 'hard' ||
+		kind === 'refactor' ||
+		buildWork.test(item.title ?? '') ||
+		sizeOf(item) === 'large';
 	const light = !heavy && lightKinds.has(kind);
 	return {
 		heavy,
