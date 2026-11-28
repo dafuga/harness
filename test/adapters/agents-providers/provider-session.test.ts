@@ -103,7 +103,15 @@ test('pre-request refusal sends no upstream call and preserves scoped authentica
 	const operation = await runCommand(['bun', '-e', relayProbe], process.cwd());
 	expect(JSON.parse(operation.stdout.trim())).toEqual([
 		{ provider: 'codex', admitted: 200, refused: 400, otherRoute: 404, forwarded: 1, scoped: true },
-		{ provider: 'claude', admitted: 200, refused: 400, otherRoute: 404, forwarded: 1, scoped: true }
+		{
+			provider: 'claude',
+			admitted: 200,
+			rewritten: 200,
+			refused: 400,
+			otherRoute: 404,
+			forwarded: 2,
+			scoped: true
+		}
 	]);
 });
 
@@ -116,7 +124,7 @@ for (const provider of ['codex','claude']) {
   const field = codex ? 'input' : 'messages';
   const event = codex
     ? {type:'response.completed',response:{usage:{input_tokens:137000,output_tokens:1000}}}
-    : {type:'message_start',message:{usage:{input_tokens:30000,cache_read_input_tokens:100000,cache_creation_input_tokens:8000}}};
+    : {type:'message_start',message:{usage:{input_tokens:1000,cache_read_input_tokens:110000,cache_creation_input_tokens:8000}}};
   let forwarded = 0, scoped = false;
   const gate = new ProviderRequestGate(provider, () => null, async (destination, options) => {
     forwarded++;
@@ -130,10 +138,18 @@ for (const provider of ['codex','claude']) {
     const first = {role:'user',content:'A small first request.'};
     const message = (items) => fetch(gate.origin+path,{method:'POST',headers,body:JSON.stringify({[field]:items})});
     const otherRoute = await fetch(gate.origin+'/unexpected',{method:'POST',headers,body:'{}'});
-    const admitted = await message([first]);
+    const large = 'aA9!+'.repeat(codex ? 12000 : 19000);
+    const toolCall = {role:'assistant',content:[{type:'tool_use',id:'toolu_fixture',name:'Read',input:{file_path:'fixture.txt'}}]};
+    const toolResult = {role:'user',content:[{type:'tool_result',tool_use_id:'toolu_fixture',content:large}]};
+    const marker = {role:'system',content:[{type:'text',text:'Cache boundary',cache_control:{type:'ephemeral'}}]};
+    const history = codex ? [first] : [first,marker,toolCall,toolResult];
+    const admitted = await message(history);
     await admitted.text();
-    const refused = await message([first,{role:'user',content:'aA9!+'.repeat(12000)}]);
-    results.push({provider,admitted:admitted.status,refused:refused.status,otherRoute:otherRoute.status,forwarded,scoped});
+    const next = codex ? history : [first,{role:'system',content:''},toolCall,toolResult,marker];
+    const rewritten = codex ? undefined : await message(next);
+    await rewritten?.text();
+    const refused = await message([...next,{role:'user',content:large}]);
+    results.push({provider,admitted:admitted.status,rewritten:rewritten?.status,refused:refused.status,otherRoute:otherRoute.status,forwarded,scoped});
   } finally { await gate.close(); }
 }
 console.log(JSON.stringify(results));
