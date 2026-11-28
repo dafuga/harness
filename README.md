@@ -1304,7 +1304,7 @@ timeout is three minutes and the maximum is ten.
 ```
 
 After a nonzero exit, the worker sends a bounded diagnostic tail to the same
-provider session. It allows two repair turns and records each check outcome and
+provider session. It allows three repair turns and records each check outcome and
 duration in `task show`. A timeout, cancellation or command error stops the
 attempt. The offline Docker pilot does not run host checks. Only enable host
 checks in queues whose executable commands and task code you trust.

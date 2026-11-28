@@ -8,7 +8,8 @@ import type {
 import { taskWrites } from './taskClaim';
 import { runTaskCheck } from './taskCheck';
 
-const maxCheckRounds = 3;
+/** The first check plus at most three repair turns. */
+const maxCheckRounds = 4;
 
 /** Continue the completed provider session after a failed check, within the same attempt. */
 export async function taskCheckLoop(

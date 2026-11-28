@@ -71,7 +71,7 @@ const result = z.strictObject({
 	changedLines: z.number().int().nonnegative().optional(),
 	error: z.string().optional(),
 	failureCause: z.enum(['scope', 'workspace-error', 'check']).optional(),
-	checkRounds: z.array(checkRoundSchema).max(3).optional(),
+	checkRounds: z.array(checkRoundSchema).max(4).optional(),
 	fallback: z.boolean(),
 	finishedAt: z.iso.datetime(),
 	attempt: z.uuid().optional(),

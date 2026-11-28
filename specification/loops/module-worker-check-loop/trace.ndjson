@@ -4,3 +4,4 @@
 {"event":"step.completed","timestamp":"2026-11-28T16:47:06.441Z","loop":"module-worker-check-loop","step":"red","evidence":"Committed failing fixture 21415ecf88fd3bdd31fe4348d298a7f4f337d367 rejects the declared check; the Codex cases drop provider quota facts."}
 {"event":"step.completed","timestamp":"2026-11-28T16:47:08.087Z","loop":"module-worker-check-loop","step":"implement","evidence":"The committed worker runs up to three checks, sends diagnostics into the original session, and preserves rejected completion evidence."}
 {"event":"step.completed","timestamp":"2026-11-28T16:47:30.730Z","loop":"module-worker-check-loop","step":"green","evidence":"The unchanged Git-backed lifecycle and quota regressions pass in the same test runtime."}
+{"event":"step.completed","timestamp":"2026-11-28T16:56:26.116Z","loop":"module-worker-check-loop","step":"siblings","evidence":"siblings-20bf3095-3f12-4ca5-b926-ffe05359202a.json"}

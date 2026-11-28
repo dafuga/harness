@@ -2,7 +2,7 @@
 	"name": "module-worker-check-loop",
 	"goal": "Prove that declared worktree checks feed bounded failures into the same provider session and persist every outcome before review.",
 	"createdAt": "2026-11-28T16:33:01.645Z",
-	"updatedAt": "2026-11-28T16:47:30.730Z",
+	"updatedAt": "2026-11-28T16:56:26.116Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -48,7 +48,9 @@
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T16:56:26.116Z",
+			"evidence": "siblings-20bf3095-3f12-4ca5-b926-ffe05359202a.json"
 		},
 		{
 			"id": "verify",
