@@ -1,0 +1,74 @@
+{
+	"name": "hub-home-live-release-proof",
+	"goal": "Require signed-in Hub Home release proof to match stable live Tracker runs on the target account’s linked Macs, including a nonzero run sample.",
+	"createdAt": "2026-11-25T19:48:30.477Z",
+	"updatedAt": "2026-11-25T19:57:01.480Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-11-25T19:50:34.168Z",
+			"evidence": "cj88y7 retro: deployed health and assets passed with Home at 0 working while Tracker recorded 17 live runs. aq2z6t fixed the projection; this work closes the release proof gap."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-11-25T19:50:36.125Z",
+			"evidence": "The linked-Mac scenario renders mock Home data and checks generic wording. Release smoke lacked an independent run-count comparator against the signed-in Agents card. z1x1wk owns the projection fixture."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-25T19:54:01.924Z",
+			"evidence": "24eaa5e82c clean snapshot: the 0, undercount and overcount fixtures all failed with “instead of rejecting”; 4 control cases passed."
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "complete",
+			"completedAt": "2026-11-25T19:54:03.389Z",
+			"evidence": "Read local Tracker before and after the settled Agents summary. Require the same nonempty node/run cohort, an exact session total and at least one working agent."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "complete",
+			"completedAt": "2026-11-25T19:54:37.643Z",
+			"evidence": "The Hub release runbook now requires the scripted before/after Tracker comparator. The seven guard cases run in the Hub unit suite."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T19:56:58.800Z",
+			"evidence": "The unchanged focused Hub check passed 7 cases in a clean snapshot at 8111dba321, paired to 24eaa5e82c."
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "complete",
+			"completedAt": "2026-11-25T19:57:01.480Z",
+			"evidence": "The isolated pre-guard snapshot accepted zero working with two live runs and failed the same mismatch cases; the fix rejected zero, undercount and overcount. The real CLI also rejected a supplied zero-working summary against 17 live Tracker runs."
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
