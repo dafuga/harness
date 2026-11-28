@@ -4,8 +4,8 @@
 	"uid": "u_gobadi5tr6",
 	"kind": "adapter",
 	"title": "SlackWebApi",
-	"responsibility": "Owns the SlackWebApi integration boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Binds a Slack bot token to its workspace and bot identity before sending, and opens outbound Socket Mode connections.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/adapters/agents-providers/slack-adapter/SlackWebApi.ts"],
@@ -120,6 +120,16 @@
 	"dependencies": [
 		{
 			"unit": "adapter.agents-providers-slack",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-post-slack-message",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-request",
 			"via": "import",
 			"origin": "derived"
 		},

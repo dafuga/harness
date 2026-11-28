@@ -1,0 +1,267 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-slack-user",
+	"uid": "u_6jngysfyen",
+	"kind": "adapter",
+	"title": "SlackUserAdapter",
+	"responsibility": "Verifies workspace and member identity before using a user grant to list conversations, read messages or send a post.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/SlackUserAdapter.ts",
+			"src/adapters/agents-providers/SlackUserAdapter.types.ts"
+		],
+		"symbols": [
+			"SlackUserAdapter",
+			"SlackUserAdapter.constructor",
+			"SlackUserAdapter.identity",
+			"SlackUserAdapter.conversations",
+			"SlackUserAdapter.read",
+			"SlackUserAdapter.send",
+			"SlackUserBinding",
+			"SlackUserAdapterConfig",
+			"SlackUserMessage",
+			"SlackUserMessagePage",
+			"SlackUserConversationPage"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SlackUserAdapter.constructor.config",
+				"type": "SlackUserAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "SlackUserAdapter.conversations.types",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SlackUserAdapter.conversations.cursor",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "SlackUserAdapter.read.channel",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SlackUserAdapter.read.options",
+				"type": "{ threadTs?: string; oldest?: string; cursor?: string }",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "SlackUserAdapter.send.channel",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SlackUserAdapter.send.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SlackUserAdapter.send.threadTs",
+				"type": "string",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "SlackUserAdapter.identity",
+				"type": "Promise<SlackUserBinding & { workspace: string; user: string }>"
+			},
+			{
+				"name": "SlackUserAdapter.conversations",
+				"type": "Promise<SlackUserConversationPage>"
+			},
+			{
+				"name": "SlackUserAdapter.read",
+				"type": "Promise<SlackUserMessagePage>"
+			},
+			{
+				"name": "SlackUserAdapter.send",
+				"type": "Promise<PlatformReceipt>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SlackRequestError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SlackUserAdapter.identity",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SlackUserAdapter.identity",
+						"type": "Promise<SlackUserBinding & { workspace: string; user: string }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SlackUserAdapter.conversations",
+				"inputs": [
+					{
+						"name": "SlackUserAdapter.conversations.types",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SlackUserAdapter.conversations.cursor",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackUserAdapter.conversations",
+						"type": "Promise<SlackUserConversationPage>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SlackUserAdapter.read",
+				"inputs": [
+					{
+						"name": "SlackUserAdapter.read.channel",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SlackUserAdapter.read.options",
+						"type": "{ threadTs?: string; oldest?: string; cursor?: string }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackUserAdapter.read",
+						"type": "Promise<SlackUserMessagePage>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SlackRequestError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SlackUserAdapter.send",
+				"inputs": [
+					{
+						"name": "SlackUserAdapter.send.channel",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SlackUserAdapter.send.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SlackUserAdapter.send.threadTs",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackUserAdapter.send",
+						"type": "Promise<PlatformReceipt>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SlackRequestError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SlackUserAdapter.constructor",
+				"inputs": [
+					{
+						"name": "SlackUserAdapter.constructor.config",
+						"type": "SlackUserAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackUserAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "SlackRequestError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-slack-adapter-post-slack-message",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-request",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-request-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-user-pages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-platform-adapter-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/SlackUserAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/SlackUserAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

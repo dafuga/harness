@@ -10,6 +10,7 @@ const entries = {
 	atoms: 'development-tooling/atoms',
 	contracts: 'contracts',
 	runtime: 'runtime',
+	slackUser: 'agents-providers/slackUser',
 	verification: 'verification',
 	history: 'history',
 	projects: 'projects-sessions/projects',

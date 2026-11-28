@@ -1,0 +1,146 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-slack-adapter-slack-request",
+	"uid": "u_s6cbo3yjed",
+	"kind": "adapter",
+	"title": "slackRequest",
+	"responsibility": "Calls the Slack Web API without redirects and maps provider failures to bounded transport errors.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/slack-adapter/slackRequest.ts",
+			"src/adapters/agents-providers/slack-adapter/slackRequest.types.ts"
+		],
+		"symbols": [
+			"slackRequest",
+			"SlackMethod"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "slackRequest.fetchImpl",
+				"type": "typeof fetch",
+				"required": true,
+				"description": "HTTP fetch implementation used to send the request."
+			},
+			{
+				"name": "slackRequest.method",
+				"type": "SlackMethod",
+				"required": true,
+				"description": "Slack Web API operation, used to select the request method and classify delivery failures."
+			},
+			{
+				"name": "slackRequest.token",
+				"type": "string",
+				"required": true,
+				"description": "Bearer token from the calling adapter's scoped binding."
+			},
+			{
+				"name": "slackRequest.options",
+				"type": "{ body?: object; userGrant?: boolean }",
+				"required": false,
+				"default": {},
+				"description": "Provider parameters and whether the calling adapter is using a workspace member grant."
+			}
+		],
+		"outputs": [
+			{
+				"name": "slackRequest",
+				"type": "Promise<UntrustedValue>",
+				"description": "Decoded provider payload for the caller to validate, or null if JSON decoding fails."
+			}
+		],
+		"errors": [
+			{
+				"name": "SlackRequestError",
+				"type": "thrown",
+				"description": "Reports rate limits, provider refusal or unavailability, expired user grants, and ambiguous post delivery."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "slackRequest",
+				"inputs": [
+					{
+						"name": "slackRequest.fetchImpl",
+						"type": "typeof fetch",
+						"required": true,
+						"description": "HTTP fetch implementation used to send the request."
+					},
+					{
+						"name": "slackRequest.method",
+						"type": "SlackMethod",
+						"required": true,
+						"description": "Slack Web API operation, used to select the request method and classify delivery failures."
+					},
+					{
+						"name": "slackRequest.token",
+						"type": "string",
+						"required": true,
+						"description": "Bearer token from the calling adapter's scoped binding."
+					},
+					{
+						"name": "slackRequest.options",
+						"type": "{ body?: object; userGrant?: boolean }",
+						"required": false,
+						"default": {},
+						"description": "Provider parameters and whether the calling adapter is using a workspace member grant."
+					}
+				],
+				"outputs": [
+					{
+						"name": "slackRequest",
+						"type": "Promise<UntrustedValue>",
+						"description": "Decoded provider payload for the caller to validate, or null if JSON decoding fails."
+					}
+				],
+				"errors": [
+					{
+						"name": "SlackRequestError",
+						"type": "thrown",
+						"description": "Reports rate limits, provider refusal or unavailability, expired user grants, and ambiguous post delivery."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-request-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-platform-adapter-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/slack-adapter/slackRequest.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/slack-adapter/slackRequest.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

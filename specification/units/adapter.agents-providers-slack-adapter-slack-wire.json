@@ -4,8 +4,8 @@
 	"uid": "u_cc6eqlqdar",
 	"kind": "adapter",
 	"title": "slackWire",
-	"responsibility": "Owns the slackWire integration boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Validates Slack message inputs, bot identity replies and inbound Socket Mode events.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/adapters/agents-providers/slack-adapter/slackWire.ts"],
@@ -17,7 +17,6 @@
 			"botId",
 			"userId",
 			"authReply",
-			"postReply",
 			"socketAddress",
 			"envelope",
 			"callback",
@@ -60,10 +59,6 @@
 			},
 			{
 				"name": "authReply",
-				"type": "unknown"
-			},
-			{
-				"name": "postReply",
 				"type": "unknown"
 			},
 			{

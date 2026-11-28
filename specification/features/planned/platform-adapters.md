@@ -86,6 +86,16 @@ Rotation, reinstall and approval use Vault's private handoff.
 - [Posting messages and threads](https://docs.slack.dev/reference/methods/chat.postMessage/)
 - [Socket Mode and acknowledgments](https://docs.slack.dev/apis/events-api/using-socket-mode/)
 
+### User-bound Slack transport
+
+The Slack Web API transport also supports user grants for own-app desktop integrations. A user
+adapter binds to the workspace and member returned by OAuth and verifies both on every new access
+token, including a rotated token. It accepts only Slack user access tokens. The host restricts the
+conversations and owns authorization, posting approvals and its durable outbox. A bounded history
+page includes the next cursor so the caller can distinguish a partial result. An ambiguous response
+to a post is never replayed by the adapter. The bot adapter retains its independent Vault binding
+and Socket Mode contract.
+
 ## Acceptance criteria
 
 - An authorized host can register the Slack adapter, verify installation
