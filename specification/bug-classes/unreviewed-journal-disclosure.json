@@ -1,0 +1,109 @@
+{
+	"schemaVersion": 1,
+	"revision": "d5086824fe771176e0da29c685eec502f8eef114",
+	"bugClass": {
+		"id": "unreviewed-journal-disclosure",
+		"title": "Journal data reaches user-facing reads without review",
+		"cause": "Data written to a shared journal or event log can be read or forwarded to a user-facing surface by any actor because the read and notification paths have no review or approval gate.",
+		"criteria": "A site exhibits this cause when journaled flags, blockers, or similar entries become visible in user-facing reads or notifications without an intervening review decision. This qualifies whether the missing gate is in the write path, the read path, or the notification path.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "reviewed",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "approved",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "pendingReview",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "reviewStatus",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "actorId",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "publishedAt",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "append",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "publish",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "notify",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "send",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "emit",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"journal",
+			"review",
+			"approval",
+			"actor",
+			"notification",
+			"published"
+		],
+		"pathHints": [
+			{
+				"contains": "src/services/",
+				"weight": 4
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 3
+			},
+			{
+				"contains": "src/repositories/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 1
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -1
+			}
+		]
+	}
+}
