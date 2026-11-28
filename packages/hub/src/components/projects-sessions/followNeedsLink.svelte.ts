@@ -3,7 +3,7 @@ import { onMount, tick, untrack } from 'svelte';
 import { replaceState } from '$app/navigation';
 import { resolve } from '$app/paths';
 import { needsTarget } from './hubHomeNeedsTarget';
-import type { OpenHomeCosAsk } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeChatContext.types';
+import type { OpenHomeCosAsk } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.types';
 import type { NeedsLinkHome } from './followNeedsLink.svelte.types';
 
 /** The linked computers answer within this; after it, the list is shown as it stands. */

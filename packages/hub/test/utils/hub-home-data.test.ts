@@ -162,7 +162,6 @@ test('only Chief of Staff is an agent: every other project is a sub-agent counte
 	);
 	expect(home.projectDirectory?.some(({ name }) => name === 'Private project')).toBe(false);
 	expect(listed.agents.map((agent) => agent.name)).toEqual(['Chief of Staff']);
-	// Another project that needs Daniel is not listed, but its ask is kept with its question.
 	expect(listed.asks).toMatchObject([{ id: 'flagged', state: 'needs-you', question }]);
 	const [chiefOfStaff] = listed.agents;
 	expect(chiefOfStaff).toMatchObject({ id: 'cos', sessions: 0, state: 'working' });

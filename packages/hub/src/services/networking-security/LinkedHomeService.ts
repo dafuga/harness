@@ -8,7 +8,7 @@ import type {
 import { RemoteFailure } from '../../../../remote/src/index';
 import { homeChatReceipt, showsHomeChatTarget } from './linkedHomeChat';
 import { completeHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
-import { mergeHomeSnapshots } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
+import { mergeHomeSnapshots } from '$reports/components/projects-sessions/hub-home/hubHomeMerge';
 import { parseLinkedHome } from '../../routes/api/hub-home/homeLivePayload';
 import type { BrowserApi } from '../../utils/browserApi';
 import { browserDeviceKeys } from '../../utils/networking-security/browserDeviceKeys';
