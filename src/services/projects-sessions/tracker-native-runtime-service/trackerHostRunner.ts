@@ -16,8 +16,10 @@ import { TrackerItemReadRepository } from '../../../repositories/projects-sessio
 import {
 	attemptKey,
 	canonicalNode,
+	isDueNow,
 	trackerReminderTitle
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
 import type {
 	TrackerDispatchEvent,
 	TrackerRunReceipt
@@ -192,9 +194,12 @@ function automaticHostHold(
 	run: TrackerRunReceipt,
 	{ now, automaticEnabled }: { now: () => number; automaticEnabled?: () => boolean }
 ) {
+	const at = now();
 	return (
 		(run.launch_source !== 'manual' || run.attempt > 1) &&
-		(automaticEnabled?.() === false || trackerStoredSchedulingHold(item, now()))
+		(automaticEnabled?.() === false ||
+			trackerStoredSchedulingHold(item, at) ||
+			(item.due && !isDueNow(item.due, trackerTimeZone, at)))
 	);
 }
 

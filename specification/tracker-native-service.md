@@ -196,7 +196,8 @@ operator verifies the stopped database and chooses a rollback.
   dispatch. It checks at any hour, after two idle hours by default. Configure `hostEffects.watchdog.idleWorkMinutes` to change
   that threshold. The dispatcher chooses an approved computer, applies
   normal capacity and retries pending requests. The digest lists queued
-  requests and their wait. If the task has no approved placement, the
+  requests and their wait. A future due time holds unattended requests,
+  claims and retries until the item is due. If the task has no approved placement, the
   watchdog alerts Chief of Staff. Ordinary tasks added by Daniel or
   Chief of Staff queue by default. `tracker add ... --later` records a
   24-hour pause. `tracker unlaunch ITEM` cancels a pending request and
