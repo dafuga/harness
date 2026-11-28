@@ -7,6 +7,7 @@ export interface InputPart {
 export interface RequestContext {
 	fields: Map<string, InputPart>;
 	items: InputPart[];
+	tools: InputPart[];
 	incremental: boolean;
 	tokens: number;
 }

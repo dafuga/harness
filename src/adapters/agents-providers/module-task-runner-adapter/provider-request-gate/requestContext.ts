@@ -10,17 +10,18 @@ export function requestContext(
 ): RequestContext | undefined {
 	const payload = JSON.parse(body) as Record<string, unknown> | null;
 	if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return undefined;
-	const { input, messages, ...metadata } = payload;
+	const { input, messages, tools, ...metadata } = payload;
 	const content = input ?? messages;
 	if (typeof content !== 'string' && !Array.isArray(content)) return undefined;
 	const incremental = typeof payload.previous_response_id === 'string';
 	const items = Array.isArray(content) ? content : [content];
 	const fields = Object.entries(metadata).map(
-		([key, value]) => [key, fingerprint([key, value], prior?.fields.get(key), count)] as const
+		([key, value]) => [key, fingerprint([key, value], () => prior?.fields.get(key), count)] as const
 	);
 	return {
 		fields: new Map(fields),
-		items: items.map((value, index) => fingerprint(value, prior?.items[index], count)),
+		tools: toolParts(tools, prior, count),
+		items: items.map((value, index) => fingerprint(value, () => prior?.items[index], count)),
 		incremental,
 		tokens: !prior || incremental ? count(body) : 0
 	};
@@ -34,17 +35,31 @@ export function pendingInputTokens(next: RequestContext, prior?: RequestContext)
 	const changed = Array.from(next.fields).filter(
 		([key, part]) => prior.fields.get(key)?.hash !== part.hash
 	);
-	const parts = [...next.items.slice(shared), ...changed.map(([, part]) => part)];
+	// MCP tools connect mid-session and move others. Only a new or changed definition is new input.
+	const admitted = new Set(prior.tools.map((part) => part.hash));
+	const added = next.tools.filter((part) => !admitted.has(part.hash));
+	const parts = [...next.items.slice(shared), ...added, ...changed.map(([, part]) => part)];
 	return parts.reduce((tokens, part) => tokens + part.tokens + 1, 0);
+}
+
+function toolParts(
+	tools: unknown = [],
+	prior: RequestContext | undefined,
+	count: CountInputTokens
+): InputPart[] {
+	const known = new Map(prior?.tools.map((part) => [part.hash, part]));
+	const list = Array.isArray(tools) ? tools : [tools];
+	return list.map((tool) => fingerprint(tool, (hash) => known.get(hash), count));
 }
 
 function fingerprint(
 	value: unknown,
-	prior: InputPart | undefined,
+	previous: (hash: string) => InputPart | undefined,
 	count: CountInputTokens
 ): InputPart {
 	const text = JSON.stringify(value);
 	const hash = createHash('sha256').update(text).digest('hex');
+	const prior = previous(hash);
 	return prior?.hash === hash ? prior : { hash, tokens: count(text) };
 }
 
