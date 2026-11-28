@@ -6,7 +6,7 @@ The helper returns page viewport PNGs and accepts clicks and ordinary form text.
 
 Use the route when credentials stay out of the rendered page. If a page can show a secret in the viewport or an action can reveal one, use the reviewed script-only Vault path. Type only nonsecret form data. Keep screenshots in memory and return them as images through the tool.
 
-From the verified Harness checkout, bundle the helper into a task-owned private directory. The persistent Node REPL loads the bundled JavaScript.
+From the verified Harness checkout, bundle the helper into a task-owned private directory.
 
 ```sh
 bundle_dir=$(mktemp -d)
@@ -14,11 +14,12 @@ bun build scripts/tracker-screenshot-browser.ts --target node --outfile "$bundle
 printf '%s\n' "$bundle_dir/tracker-screenshot-browser.mjs"
 ```
 
-Use a persistent Node REPL with Node 22.18 or later. Use a fresh screenshot for coordinates after the page moves or changes size.
+Use a persistent Node REPL with Node 22.18 or later. Load the bundle through Node's module loader so it can use Node's WebSocket API. Use a fresh screenshot for coordinates after the page moves or changes size.
 
 ```js
-const { openScreenshotBrowser } =
-	await import('/absolute/path/to/the/bundle/tracker-screenshot-browser.mjs');
+const { createRequire } = await import('node:module');
+const bundle = '/absolute/path/to/the/bundle/tracker-screenshot-browser.mjs';
+const { openScreenshotBrowser } = createRequire(bundle)(bundle);
 const page = await openScreenshotBrowser('https://example.invalid');
 await nodeRepl.emitImage({ bytes: await page.screenshot(), mimeType: 'image/png' });
 // Choose these coordinates from the screenshot.

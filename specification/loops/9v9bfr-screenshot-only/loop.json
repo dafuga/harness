@@ -2,7 +2,7 @@
 	"name": "9v9bfr-screenshot-only",
 	"goal": "Prove screenshot and tab-scoped click and type without accessibility or page metadata, then verify the installed route on the primary Mac.",
 	"createdAt": "2026-11-28T14:52:41.375Z",
-	"updatedAt": "2026-11-28T14:58:39.901Z",
+	"updatedAt": "2026-11-28T15:13:03.789Z",
 	"steps": [
 		{
 			"id": "siblings",
@@ -15,6 +15,13 @@
 			"id": "verify",
 			"title": "Verify the installed route and observe the Persona form on the primary Mac",
 			"status": "pending"
+		},
+		{
+			"id": "primary-synthetic",
+			"title": "Load the documented bundle in the primary Mac Node REPL and drive a local form through screenshots and coordinates",
+			"status": "complete",
+			"completedAt": "2026-11-28T15:13:03.789Z",
+			"evidence": "Direct dynamic import failed with the fixed preparation error and the REPL WebSocket global was absent. Running the unchanged bundle through node:module createRequire produced viewport PNGs in Chrome 156 on port 9333. Inspected PNGs before and after a fake company entry and submit; the page read Received Sample Workshop. Closed the owned tab and fixture. Live Persona remains pending."
 		}
 	]
 }
