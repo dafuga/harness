@@ -2,11 +2,9 @@
 	"name": "planner-mock-mode",
 	"goal": "Costly app plans require a mock mode first task and module and Tracker briefs name the mock-mode skill",
 	"createdAt": "2026-11-28T14:25:37.812Z",
-	"updatedAt": "2026-11-28T14:27:18.922Z",
+	"updatedAt": "2026-11-28T14:37:35.648Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -26,7 +24,9 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T14:37:35.648Z",
+			"evidence": "Paid and slow-app fixture cases save Mock mode first through the desktop planner. Headless revision, module CLI, and long native Docker brief checks cover their prompt boundaries."
 		},
 		{
 			"id": "verify",
