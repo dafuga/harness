@@ -81,6 +81,27 @@ test('fits demand to live CPU and RAM across different host shapes', () => {
 	);
 	expect(trackerObservedDemand('browser-tests', samples)).toEqual({ cores: 2.5, ramGB: 3 });
 	expect(trackerObservedDemand('codex', samples)).toEqual({ cores: 0.25, ramGB: 1.5 });
+	const busyPrimary = row(primary.node, {
+		cores: 18,
+		load: [22, 28.2, 25],
+		cpu_busy_pct: 75,
+		ram: {
+			total_mb: 36_864,
+			used_mb: 29_491,
+			available_mb: 7373,
+			available_pct: 20,
+			pressure_free_pct: 42
+		}
+	});
+	const mb2WithHeadroom = row(mb2.node, {
+		load: [5.4, 5.4, 5.4],
+		cpu_busy_pct: 15,
+		ram: { total_mb: 65_536, used_mb: 19_456, available_mb: 46_080, available_pct: 70 }
+	});
+	const learned = { kind: 'codex' as const, needsRamGB: 0.6, needsCores: 0.19 };
+	const placement = placeTrackerWork([busyPrimary, mb2WithHeadroom], learned);
+	expect(placement.ranked.every(({ fits }) => fits)).toBe(true);
+	expect(placement.recommended).toBe(mb2.node);
 	const memoryBusy = row(mb2.node, {
 		ram: { total_mb: 65_536, used_mb: 49_152, available_mb: 16_384, available_pct: 25 }
 	});

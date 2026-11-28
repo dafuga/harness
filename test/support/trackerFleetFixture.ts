@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { assignTrackerLaunches } from '../../src/services/projects-sessions/tracker-machine-service/assignTrackerLaunches';
 import { expect } from 'vitest';
 import { expect as verify } from '../verificationExpect';
 import { trackerSupervisorStatus } from '../../src/services/projects-sessions/tracker-supervisor-service/trackerSupervisorStatus';
@@ -98,12 +99,17 @@ export function hostLease(
 	);
 }
 
-export function fleetReport(nodes: ReturnType<typeof fleet>, node: string, projects: string[]) {
+export function fleetReport(
+	nodes: ReturnType<typeof fleet>,
+	node: string,
+	projects: string[],
+	freeSlots = 2
+) {
 	const at = nodes.clock.at;
 	return {
 		node,
 		at: new Date(at).toISOString(),
-		runner: runnerReport(at, projects),
+		runner: runnerReport(at, projects, freeSlots),
 		resources: resourceSample(at)
 	};
 }
@@ -179,4 +185,28 @@ export async function expectHubSeenBySpoke(
 			verify.objectContaining({ computer: hubNode, state: 'polling', last_tick_at: stamp })
 		])
 	);
+}
+
+export async function assignUnnamedLaunch(title: string, primarySlots: number, peerSlots: number) {
+	const nodes = fleet();
+	try {
+		nodes.readings[hubNode] = {
+			cores: 18,
+			ram: { total_mb: 36_864, used_mb: 8192, available_mb: 28_672, available_pct: 78 }
+		};
+		await nodes.tick();
+		const { id } = (await call(nodes.hub, ['add', title, '--agent', 'harbor'])).data;
+		nodes.hub.store.appendLocal({ itemId: id, fields: { auto: 'fixture-token' } });
+		assignTrackerLaunches({
+			machines: nodes.hub.machines,
+			now: () => nodes.clock.at,
+			samples: () => [
+				fleetReport(nodes, hubNode, ['harbor'], primarySlots),
+				fleetReport(nodes, peerNode, ['harbor'], peerSlots)
+			]
+		});
+		return (await call(nodes.hub, ['show', id])).data;
+	} finally {
+		nodes.close();
+	}
 }
