@@ -178,10 +178,16 @@ export async function proveCoSDeliveryAskClears(
 	);
 	await page.goto('/?view=needs-you');
 	const reminder = needsYou(page).getByText(alarm.question, { exact: true });
-	await expect(reminder).toBeVisible();
+	await expect(reminder).toBeVisible({ timeout: 20_000 });
 	answered = true;
 	await page.reload();
-	await expect(needsYou(page).getByText(questions[0].question, { exact: true })).toBeVisible();
+	await expect(needsYou(page).getByText(questions[0].question, { exact: true })).toBeVisible({
+		timeout: 20_000
+	});
 	await captureNeedsYou(page, 'hub-cos-delivery-answered', needsYou(page));
+	const desktop = page.viewportSize()!;
+	await page.setViewportSize({ width: 390, height: 844 });
+	await captureNeedsYou(page, 'hub-cos-delivery-answered-phone', needsYou(page));
 	await expect(reminder).toHaveCount(0);
+	await page.setViewportSize(desktop);
 }

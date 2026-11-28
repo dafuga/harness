@@ -32,11 +32,11 @@ for (const kind of [
 	'cos-message',
 	'urgent-launch-queue-stuck'
 ])
-	test(`an undelivered ${kind} alert is raised after 15 minutes`, () =>
+	test(`an undelivered ${kind} alert is raised at 30 minutes`, () =>
 		cosDeliveryFixture(({ store, items }) => {
-			round(store, [alert(kind, noon - 14 * minute)], noon);
+			round(store, [alert(kind, noon - 29 * minute)], noon);
 			expect(alarmAsks(items, noon)).toEqual([]);
-			round(store, [alert(kind, noon - 16 * minute)], noon);
+			round(store, [alert(kind, noon - 30 * minute)], noon);
 			expect(alarmAsks(items, noon)).toHaveLength(1);
 		}));
 
