@@ -1,6 +1,7 @@
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { measureWorkload } from '../../support/measureWorkload';
+import { readWatchdogAlerts } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState';
 import {
 	finishBatchWindow,
 	launchEventFixture,
@@ -78,7 +79,50 @@ test('records failures, the retry, giving up and a refused model pick', async ()
 		['gave_up', 'fails00001'],
 		['launch_failed', 'nopick0001']
 	]);
+	await proveManualStartupRetry(1);
+	await proveManualStartupRetry(2);
 });
+
+async function proveManualStartupRetry(failures: number) {
+	const fixture = launchEventFixture();
+	const id = 'startup001';
+	const cause = 'Git worktree add: Tracker host command did not complete';
+	fixture.state.startupFailures.set(id, failures);
+	fixture.add(id, {
+		launch_source: 'manual',
+		schedule_off: 1,
+		'note+': 'auto-launch requested on daniel-primary-mbp'
+	});
+	await fixture.tick();
+	await fixture.tick();
+	const pending = await fixture.show(id);
+	expect(pending.runs).toMatchObject([
+		{ attempt: 1, state: 'queued', failure_reason: cause, started_at: null }
+	]);
+	expect(readWatchdogAlerts(fixture.runtime.store)).toEqual({});
+	for (let attempt = 0; attempt < failures; attempt++) {
+		fixture.state.at += 5 * 60_000;
+		await fixture.tick();
+		await fixture.tick();
+	}
+	const item = await fixture.show(id);
+	expect(item.schedule_off).toBe(true);
+	expect(item.runs, 'explicit startup retry must survive scheduling opt-out').toMatchObject([
+		{ attempt: 1, outcome: 'abandoned', failure_reason: `launch expired before startup: ${cause}` },
+		{ attempt: 2, state: failures === 1 ? 'running' : 'finished', auto_token: pending.auto }
+	]);
+	if (failures === 1) {
+		expect(readWatchdogAlerts(fixture.runtime.store)).toEqual({});
+		return;
+	}
+	expect(item.status).toBe('blocked');
+	expect(Object.values(readWatchdogAlerts(fixture.runtime.store))).toMatchObject([
+		{ kind: 'launch-startup-failed', item_id: id, reason: expect.stringContaining(cause) }
+	]);
+	await fixture.tick();
+	expect((await fixture.show(id)).runs).toHaveLength(2);
+	expect(Object.values(readWatchdogAlerts(fixture.runtime.store))).toHaveLength(1);
+}
 
 test('notes a due request and says why each request is still waiting', async () => {
 	const fixture = launchEventFixture({ scheduleDue: true });
