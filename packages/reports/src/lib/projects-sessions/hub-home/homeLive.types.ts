@@ -8,6 +8,7 @@ import type {
 	IncludedTrackerItem,
 	TrackerRunRecord
 } from '../project-overview/projectOverviewTracker.types';
+import type { HomeBoard } from './homeBoard.types';
 import type { HomeAgent, HomePastDue, OwnerHomeSnapshot } from './hubHome.types';
 import type { TrackerStage } from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
 
@@ -90,6 +91,8 @@ export interface HomeLiveOverview {
 	hiddenRuns: number;
 	/** Distinct project and owner pairs with visible live runs, before project or row truncation. */
 	runningAgentCount?: number;
+	/** Every task by column with a week of finished ones. Older Mac apps omit it. */
+	board?: HomeBoard;
 	/** Rows left out because a project had more than the list holds. */
 	omittedRows: number;
 }

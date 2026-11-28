@@ -1,0 +1,70 @@
+/* @harness-uid u_ycw5bcsd23 */
+/* The card detail is a side panel on a wide screen and a full-screen sheet on a phone. */
+.hh-home :is(dialog, [role='dialog']):has(.hb-detail) {
+	width: min(36rem, 100vw);
+	max-width: 100vw;
+	height: 100dvh;
+	max-height: 100dvh;
+	margin: 0 0 0 auto;
+	border-radius: 0;
+}
+.hh-home .hb-detail {
+	display: grid;
+	align-content: start;
+	gap: var(--hx-space-16);
+	min-width: 0;
+	padding: var(--hx-space-16) var(--hx-space-24) var(--hx-space-24);
+	overflow-wrap: anywhere;
+}
+.hh-home .hb-detail-state,
+.hh-home .hb-detail-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--hx-space-8);
+}
+.hh-home .hb-facts {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--hx-space-12);
+}
+.hh-home .hb-facts > * {
+	display: grid;
+	gap: var(--hx-space-2);
+}
+.hh-home .hb-notes > * {
+	display: grid;
+	grid-template-columns: 4.5rem minmax(0, 1fr);
+	gap: var(--hx-space-12);
+	padding-block: var(--hx-space-12);
+	border-block-end: 1px solid var(--hx-color-border);
+	font-size: 0.875rem;
+}
+.hh-home .hb-nav {
+	display: flex;
+	gap: var(--hx-space-8);
+	min-width: 0;
+	margin-inline-start: auto;
+	overflow-x: auto;
+}
+.hh-home .hb-nav + .hh-account {
+	margin-inline-start: 0;
+}
+.hh-home .hb-header-extras {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: var(--hx-space-8);
+	padding-block-start: var(--hx-space-8);
+}
+/* Choices read as a two-by-two grid in the panel and stack on a phone. */
+.hh-home .hb-detail .hh-choices {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--hx-space-8);
+}
+@media (max-width: 700px) {
+	.hh-home .hb-detail .hh-choices {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}

@@ -17,8 +17,9 @@
 	import HubHomeComputerDetail from './HubHomeComputerDetail.svelte';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
 	import HubHomePreference from './HubHomePreference.svelte';
+	import HubHomeBoardNav from './HubHomeBoardNav.svelte';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
-	import type { HomeView } from './hubHomeView.types';
+	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
 	let {
 		view,
 		localOverview,
@@ -27,7 +28,9 @@
 		accountMenu,
 		needsHref = resolve('/') + '?view=needs-you',
 		needsOnly = false,
-		notifications
+		notifications,
+		board = false,
+		open
 	}: {
 		view: HomeView;
 		localOverview?: HomeLiveOverview;
@@ -37,6 +40,9 @@
 		needsHref?: string;
 		needsOnly?: boolean;
 		notifications?: Snippet;
+		/** The board draws its own numbers and computers, so the heading is left out. */
+		board?: boolean;
+		open?: OpenHomeSection;
 	} = $props();
 	const liveSessions = $derived(view.overview?.status === 'ready' ? view.overview.liveSessions : 0);
 	const live = $derived(localOverview ?? view.computers?.snapshot?.liveOverview);
@@ -68,7 +74,8 @@
 		<hx-span class="hh-brand-mark"><BrandMark size={22} /></hx-span>
 	</hx-a>
 	<hx-span class="hh-crumb">{needsOnly ? 'Needs you' : 'Home'}</hx-span>
-	{#if needsHref}
+	{#if board && open}<HubHomeBoardNav {open} />{/if}
+	{#if needsHref && !board}
 		<!-- Both renderers supply the same query on their home route. -->
 		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 		<hx-a class="po-action hh-inbox-link" href={needsOnly ? resolve('/') : needsHref}>
@@ -94,10 +101,10 @@
 	</hx-div>
 </hx-header>
 
-{#if offline.length || systemNotice || link === 'reconnecting'}
+{#if (!board && offline.length) || systemNotice || link === 'reconnecting'}
 	<hx-div class="po-page hh-page hh-system-alert">
 		<Notice as="div" className="po-notice" role="status" label="System alerts">
-			{#if offline.length}<hx-p>Offline: {offline.join(', ')}</hx-p>{/if}
+			{#if !board && offline.length}<hx-p>Offline: {offline.join(', ')}</hx-p>{/if}
 			{#if systemNotice}<hx-p>{systemNotice}</hx-p>{/if}
 			{#if link === 'reconnecting'}<hx-p role="status" aria-label="Updates" data-state={link}
 					>Reconnecting</hx-p
@@ -106,113 +113,93 @@
 	</hx-div>
 {/if}
 
-<hx-header class="po-page hh-page hh-heading">
-	<hx-div class="po-head hh-head">
-		{#if !needsOnly}<hx-p class="po-kicker">Home</hx-p>{/if}
-		<hx-h1 class="po-title" id="hh-title"
-			>{needsOnly
-				? 'Needs you'
-				: view.agents === null
-					? 'Loading your home…'
-					: view.trackerConnected
-						? homeHeadline(view.agents, liveSessions, view.openAsks.length, activeAgents)
-						: view.needsMac
-							? 'Connect your Mac'
-							: view.linkedComputers
-								? 'Your Mac is offline'
-								: 'Your workspace'}</hx-h1
-		>
-		{#if !needsOnly}<hx-p class="po-totals" role="status"
-				>{view.agents === null
-					? 'Reading agents, plans, schedules and projects'
-					: view.needsMac
-						? 'Open Harness on your Mac and sign in with the same Google account.'
+{#if board}
+	{#if view.providerPreference || (view.owner && notifications)}
+		<hx-div class="po-page hh-page hb-header-extras">
+			<HubHomePreference preference={view.providerPreference} now={view.now} />
+			{#if view.owner}{@render notifications?.()}{/if}
+		</hx-div>
+	{/if}
+{:else}
+	<hx-header class="po-page hh-page hh-heading">
+		<hx-div class="po-head hh-head">
+			{#if !needsOnly}<hx-p class="po-kicker">Home</hx-p>{/if}
+			<hx-h1 class="po-title" id="hh-title"
+				>{needsOnly
+					? 'Needs you'
+					: view.agents === null
+						? 'Loading your home…'
 						: view.trackerConnected
-							? summaryLine(view.work, view.schedule?.length ?? 0)
-							: view.linkedComputers
-								? 'Open Harness on a linked Mac and its running sessions appear here.'
-								: view.native
-									? 'Tracker activity could not be read on this Mac.'
-									: view.owner
-										? 'Check Tracker on your Mac to resume sharing your work.'
-										: 'Your shared projects and activity appear here when available.'}</hx-p
-			>{/if}
-		{#if machines.length}
-			<hx-ul class="po-machines" aria-label="Computers">
-				{#each machines as machine (machine.name)}
-					<Pill
-						as="li"
-						tone={machine.utilization
-							? 'po-machine hh-computer-pill hh-machine-with-usage'
-							: 'po-machine hh-computer-pill'}
-						state={machine.status}
-					>
-						<hx-button
-							type="button"
-							class="hh-computer-trigger"
-							aria-haspopup="dialog"
-							title={machine.reasons?.join(' · ') || undefined}
-							onclick={(event) => {
-								computerTrigger = event.currentTarget;
-								chosenComputer = machine.name;
-							}}
+							? homeHeadline(view.agents, liveSessions, view.openAsks.length, activeAgents)
+							: view.needsMac
+								? 'Connect your Mac'
+								: view.linkedComputers
+									? 'Your Mac is offline'
+									: 'Your workspace'}</hx-h1
+			>
+			{#if !needsOnly}<hx-p class="po-totals" role="status"
+					>{view.agents === null
+						? 'Reading agents, plans, schedules and projects'
+						: view.needsMac
+							? 'Open Harness on your Mac and sign in with the same Google account.'
+							: view.trackerConnected
+								? summaryLine(view.work, view.schedule?.length ?? 0)
+								: view.linkedComputers
+									? 'Open Harness on a linked Mac and its running sessions appear here.'
+									: view.native
+										? 'Tracker activity could not be read on this Mac.'
+										: view.owner
+											? 'Check Tracker on your Mac to resume sharing your work.'
+											: 'Your shared projects and activity appear here when available.'}</hx-p
+				>{/if}
+			{#if machines.length}
+				<hx-ul class="po-machines" aria-label="Computers">
+					{#each machines as machine (machine.name)}
+						<Pill
+							as="li"
+							tone={machine.utilization
+								? 'po-machine hh-computer-pill hh-machine-with-usage'
+								: 'po-machine hh-computer-pill'}
+							state={machine.status}
 						>
-							<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
-							{machine.name}
-							{#if machine.agentCount !== undefined}
-								<hx-span>· {count(machine.agentCount, 'agent')}</hx-span>
-							{:else if machine.remoteRuns && machine.status !== 'offline'}
-								<hx-span>· {count(machine.remoteRuns, 'remote run')}</hx-span>
-							{:else}
-								<hx-span>· Agents unavailable</hx-span>
-							{/if}
-							<hx-span class="po-machine-status">· {machine.status}</hx-span>
-							{#if machine.utilization}
-								<hx-span class="po-machine-utilization">
-									CPU {machine.utilization.actual.cpu === null
-										? 'unknown'
-										: `${machine.utilization.actual.cpu}%`} / {machine.utilization.target.cpu}% ·
-									RAM {machine.utilization.actual.ram}% / {machine.utilization.target.ram}% target
-								</hx-span>
-							{/if}
-						</hx-button>
-					</Pill>
-				{/each}
-			</hx-ul>
-		{/if}
-		<HubHomePreference preference={view.providerPreference} now={view.now} />
-		{#if view.quota?.length}<HubHomeQuotaPills subscriptions={view.quota} now={view.now} />{/if}
-		{#if view.owner}{@render notifications?.()}{/if}
-	</hx-div>
-</hx-header>
+							<hx-button
+								type="button"
+								class="hh-computer-trigger"
+								aria-haspopup="dialog"
+								title={machine.reasons?.join(' · ') || undefined}
+								onclick={(event) => {
+									computerTrigger = event.currentTarget;
+									chosenComputer = machine.name;
+								}}
+							>
+								<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
+								{machine.name}
+								{#if machine.agentCount !== undefined}
+									<hx-span>· {count(machine.agentCount, 'agent')}</hx-span>
+								{:else if machine.remoteRuns && machine.status !== 'offline'}
+									<hx-span>· {count(machine.remoteRuns, 'remote run')}</hx-span>
+								{:else}
+									<hx-span>· Agents unavailable</hx-span>
+								{/if}
+								<hx-span class="po-machine-status">· {machine.status}</hx-span>
+								{#if machine.utilization}
+									<hx-span class="po-machine-utilization">
+										CPU {machine.utilization.actual.cpu === null
+											? 'unknown'
+											: `${machine.utilization.actual.cpu}%`} / {machine.utilization.target.cpu}% ·
+										RAM {machine.utilization.actual.ram}% / {machine.utilization.target.ram}% target
+									</hx-span>
+								{/if}
+							</hx-button>
+						</Pill>
+					{/each}
+				</hx-ul>
+			{/if}
+			<HubHomePreference preference={view.providerPreference} now={view.now} />
+			{#if view.quota?.length}<HubHomeQuotaPills subscriptions={view.quota} now={view.now} />{/if}
+			{#if view.owner}{@render notifications?.()}{/if}
+		</hx-div>
+	</hx-header>
+{/if}
 
 {#if selected}<HubHomeComputerDetail machine={selected} close={closeComputer} />{/if}
-
-<style>
-	:global(.po-machine.hh-computer-pill) {
-		padding: 0;
-	}
-	.hh-computer-trigger {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--hx-space-8);
-		min-height: 44px;
-		padding-inline: var(--hx-space-12);
-		border: 0;
-		border-radius: var(--hx-radius-pill);
-		background: transparent;
-		color: inherit;
-		font: inherit;
-		cursor: pointer;
-	}
-	.hh-computer-trigger:hover {
-		background: var(--hx-color-hover);
-	}
-	.hh-inbox-link {
-		margin-inline-start: auto;
-		white-space: nowrap;
-	}
-	.hh-inbox-link + .hh-account {
-		margin-inline-start: 0;
-	}
-</style>

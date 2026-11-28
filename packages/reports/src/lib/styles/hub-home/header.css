@@ -1,0 +1,27 @@
+/* @harness-uid u_ycw5bcsh23 */
+.hh-home .po-machine.hh-computer-pill {
+	padding: 0;
+}
+.hh-computer-trigger {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--hx-space-8);
+	min-height: 44px;
+	padding-inline: var(--hx-space-12);
+	border: 0;
+	border-radius: var(--hx-radius-pill);
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+}
+.hh-computer-trigger:hover {
+	background: var(--hx-color-hover);
+}
+.hh-inbox-link {
+	margin-inline-start: auto;
+	white-space: nowrap;
+}
+.hh-inbox-link + .hh-account {
+	margin-inline-start: 0;
+}

@@ -16,45 +16,12 @@ import type {
 } from './homeLive.types';
 import { homeText } from './homeTrackerText';
 import { buildHomeMachines, isActiveHomeRun } from './buildHomeMachines';
-import { homeWorkNow } from './homeWorkNow';
 import { homeLaunchPause } from './homeSchedule';
+import { queuedReason, workRow } from './homeWorkRows';
+import { buildHomeBoard } from './homeBoardCards';
 
 export const homeLiveLimits = { projects: 200, rows: 100 } as const;
 const stateOrder: HomeWorkState[] = ['running', 'offline', 'queued', 'blocked', 'finished'];
-
-const at = (time: number | null | undefined) => (time ? new Date(time).toISOString() : null);
-
-/** The model and effort a run used. */
-function runModel(run: TrackerRunRecord | undefined) {
-	if (!run?.model) return null;
-	return run.effort ? `${run.model}:${run.effort}` : run.model;
-}
-
-/** What a run records about itself; without a run, what the item asks for. */
-function runFacts(item: TrackerItemRecord, run: Partial<TrackerRunRecord> = {}) {
-	return {
-		outcome: homeText(run.outcome, 200),
-		computer: homeText(run.node ?? item.computer, 200),
-		startedAt: at(run.started_at ?? run.queued_at)
-	};
-}
-
-function workRow({ item }: ItemWork, state: HomeWorkState, run?: TrackerRunRecord): HomeWorkRow {
-	return {
-		key: run ? `run:${run.node ?? ''}:${run.id}` : `item:${item.id}`,
-		itemId: item.id,
-		...(run && { runId: run.id }),
-		title: homeText(item.title, 500) ?? 'Untitled task',
-		state,
-		status: item.status,
-		stage: item.stage ?? null,
-		now: state === 'queued' ? queuedReason(run) : homeWorkNow(item),
-		owner: homeText(item.owner, 200),
-		model: homeText(runModel(run) ?? item.model, 200),
-		updatedAt: isoTime(item.updated_at),
-		...runFacts(item, run)
-	};
-}
 
 function liveState(run: TrackerRunRecord, offline: ReadonlySet<string>): HomeWorkState {
 	if (!isActiveHomeRun(run)) return 'queued';
@@ -65,11 +32,6 @@ function endedToday(work: ItemWork) {
 	return work.runs
 		.filter((run) => run.ended_at !== null && work.now - run.ended_at <= DAY_MS)
 		.sort((a, b) => (b.ended_at ?? 0) - (a.ended_at ?? 0))[0];
-}
-
-function queuedReason(run?: TrackerRunRecord) {
-	if (run?.failure_reason === 'Tracker host is at session capacity') return 'Waiting for a slot';
-	return homeText(run?.failure_reason, 240) ?? 'Waiting to start';
 }
 
 /** The current request can be pending before Tracker creates a run. */
@@ -179,6 +141,15 @@ function activeAgentCount(
 	return identities.size;
 }
 
+/** The row an item's card shows: its most pressing one, or its state at rest. */
+function boardWork(work: ItemWork) {
+	const { item } = work;
+	if (item.status === 'done') return { item, row: workRow(work, 'finished') };
+	const live = itemRows(work).sort(byAttention)[0];
+	const row = live && live.state !== 'finished' ? live : { ...workRow(work, 'queued'), now: null };
+	return { item, row: item.status === 'blocked' ? workRow(work, 'blocked') : row };
+}
+
 /**
  * @pure Every project, session and run these Tracker records hold. Private and ignored items are
  * never described; their live runs are only counted, so the totals stay honest.
@@ -201,12 +172,17 @@ export function buildHomeLiveOverview(sources: TrackerSources, now: number): Hom
 		)
 	);
 	const projects = built.map((entry) => entry.project).sort(byActivity);
+	const board = buildHomeBoard(
+		items.map((item) => boardWork({ item, runs: runs.get(item.id) ?? [], offline, now })),
+		now
+	);
 	return {
 		readAt: new Date(now).toISOString(),
 		projects: projects.slice(0, homeLiveLimits.projects),
 		machines: buildHomeMachines(sources, runs, shown),
 		hiddenRuns,
 		runningAgentCount: activeAgentCount(items, runs, offline),
+		board,
 		omittedRows:
 			built.reduce((sum, entry) => sum + entry.omitted, 0) +
 			projects.slice(homeLiveLimits.projects).reduce((sum, entry) => sum + entry.rows.length, 0)

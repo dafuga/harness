@@ -30,7 +30,7 @@
 	import AccountMenu from '../accounts-access/AccountMenu.svelte';
 	import HubHomeNotifications from './HubHomeNotifications.svelte';
 	import HubHomeCards from '$reports/components/projects-sessions/hub-home/HubHomeCards.svelte';
-	import HubHomeLive from '$reports/components/projects-sessions/hub-home/HubHomeLive.svelte';
+	import HubHomeBoard from '$reports/components/projects-sessions/hub-home/HubHomeBoard.svelte';
 	import HubHomeDialogs from '$reports/components/projects-sessions/hub-home/HubHomeDialogs.svelte';
 	import { followNeedsLink } from './followNeedsLink.svelte';
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
@@ -188,7 +188,8 @@
 
 <hx-div class="home-scheme">
 	<hx-div class="home-page hh-home">
-		<HubHomeHeader {view} {link} {needsOnly} accountName={session.actor?.name}>
+		<!-- prettier-ignore -->
+		<HubHomeHeader {view} {link} {needsOnly} {open} board={!needsOnly} accountName={session.actor?.name}>
 			{#snippet accountMenu()}<AccountMenu />{/snippet}
 			{#snippet notifications()}<HubHomeNotifications />{/snippet}
 		</HubHomeHeader>
@@ -198,8 +199,8 @@
 			</hx-p>
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			<HubHomeCards {view} {open} send={reads.send} {receipt} {needsOnly} />
-			{#if !needsOnly}<HubHomeLive reading={live} {now} {pastDue} />{/if}
+			{#if needsOnly}<HubHomeCards {view} {open} send={reads.send} {receipt} {needsOnly} />
+			{:else}<HubHomeBoard {view} {open} send={reads.send} {receipt} />{/if}
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs

@@ -47,7 +47,42 @@ const project = z.object({
 	updatedAt: time
 });
 
+const boardColumn = z.enum(['todo', 'progress', 'blocked', 'done']);
+
+const board = z.object({
+	cards: z
+		.array(
+			z.object({
+				column: boardColumn,
+				project: short,
+				row,
+				priority: z.enum(['urgent', 'normal', 'low']).optional(),
+				due: time.nullish(),
+				pr: z
+					.object({
+						number: z.number().int().positive(),
+						url: z
+							.string()
+							.max(300)
+							.regex(/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/pull\/\d+$/),
+						merged: z.literal(true).optional()
+					})
+					.optional(),
+				notes: z
+					.array(z.object({ at: time, text: text(300) }))
+					.max(3)
+					.optional()
+			})
+		)
+		.max(8000),
+	counts: z
+		.array(z.object({ project: short, todo: count, progress: count, blocked: count, done: count }))
+		.max(400)
+});
+
 const liveOverview = z.object({
+	// A board this Hub cannot read is dropped; the rows still draw one.
+	board: board.optional().catch(undefined),
 	readAt: time,
 	projects: z.array(project).max(200),
 	machines: z
