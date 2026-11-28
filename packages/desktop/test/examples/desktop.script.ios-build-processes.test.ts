@@ -1,4 +1,4 @@
-import { test } from 'vitest';
+import { test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { followed } from '../../scripts/ios-build-processes';
@@ -16,7 +16,13 @@ function fakeTool(directory: string, name: string, body: string): string {
 test('returns exit code and output from a completed build', async () => {
 	const directory = mkdtempSync(join(tmpdir(), 'ios-build-processes-'));
 	try {
-		const executable = fakeTool(directory, 'xcodebuild', "printf '** BUILD FAILED **\\n'; exit 65");
+		vi.stubEnv('LC_ALL', 'en_CA.UTF-8');
+		const executable = fakeTool(
+			directory,
+			'xcodebuild',
+			`[ "$LC_ALL" = en_CA.UTF-8 ] || exit 1
+printf '** BUILD FAILED **\\n'; exit 65`
+		);
 		const command = [executable, '-version'];
 		const result = await followed(command);
 		expect(result).toEqual({ code: 65, output: '** BUILD FAILED **\n', left: null });
@@ -31,6 +37,7 @@ test('returns exit code and output from a completed build', async () => {
 			[{ name: 'xcodebuild failure output', input: ['xcodebuild', '-version'], output: result }]
 		);
 	} finally {
+		vi.unstubAllEnvs();
 		rmSync(directory, { recursive: true, force: true });
 	}
 });
