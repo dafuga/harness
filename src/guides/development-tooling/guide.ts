@@ -131,10 +131,16 @@ export const guides: Guide[] = [
 		steps: [
 			'Generate a planned feature spec.',
 			'List acceptance criteria as measurable gates.',
+			'At spec review for native onboarding, device linking, approval or permission changes, define the installed acceptance for each affected shipped surface: entry state, signed installed build, expected approval and host, first meaningful in-app action, authoritative readback, proof owner and release boundary.',
 			'Implement only the scoped behavior.',
+			'Verify the real installed paths and attach one versioned proof record. Keep any incomplete installed-path milestone blocked with the missing hop. Link it from a source-only closeout.',
 			'Move the spec to implemented when complete.'
 		],
-		rules: ['Specs are the source of truth.', 'Acceptance criteria define done.'],
+		rules: [
+			'Specs are the source of truth.',
+			'Acceptance criteria define done.',
+			'The installed-device proof record and check are documented at https://github.com/dafuga/harness/blob/main/specification/features/implemented/installed-device-acceptance.md.'
+		],
 		antiPatterns: ['Do not implement hidden scope without updating the spec.'],
 		exampleCommands: ['harness generate feature scheduled-posts']
 	},

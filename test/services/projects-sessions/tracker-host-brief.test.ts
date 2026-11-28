@@ -81,6 +81,11 @@ test('every session brief rejects substitutes for live proof and partial release
 		expect(brief).toContain('reads back each installed version');
 		expect(brief).toContain('a required live check is `not seen`');
 		expect(brief).toContain('stays open or blocked');
+		expect(brief).toContain('physical iPhone');
+		expect(brief).toContain('real Google return');
+		expect(brief).toContain('authoritative readback');
+		expect(brief).toContain('one versioned proof record');
+		expect(brief).toContain('link the open installed-path acceptance');
 	}
 });
 
