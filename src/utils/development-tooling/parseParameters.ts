@@ -46,11 +46,16 @@ function parameterItems(node: ts.ParameterDeclaration, owner: string): ContractI
 	return [
 		{
 			name: `${owner}.${node.name.getText()}`,
-			type: normalizeType(node.type?.getText() ?? parameterType(node.initializer)),
+			type: normalizeType(declaredType(node) ?? parameterType(node.initializer)),
 			required: !node.questionToken && !node.initializer && !node.dotDotDotToken,
 			...parameterDefault(node.initializer)
 		}
 	];
+}
+
+/** A TypeScript annotation, else the inline JSDoc type that plain JavaScript declares. */
+function declaredType(node: ts.ParameterDeclaration): string | undefined {
+	return (node.type ?? ts.getJSDocType(node))?.getText();
 }
 
 function bindingItem(

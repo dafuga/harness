@@ -53,7 +53,7 @@
 			},
 			{
 				"name": "nativeAtomSource.atom",
-				"type": "{ tag: string; type?: string }",
+				"type": "{ tag: string, type?: string }",
 				"required": true,
 				"description": "A native atom object from nativeAtoms whose tag and optional type fields set the generated Svelte source. It matters because a null or undefined atom throws, a missing tag does not throw but makes the element name the literal 'undefined', and a missing type leaves the type attribute out.",
 				"examples": [
@@ -257,7 +257,7 @@
 				"inputs": [
 					{
 						"name": "nativeAtomSource.atom",
-						"type": "{ tag: string; type?: string }",
+						"type": "{ tag: string, type?: string }",
 						"required": true,
 						"description": "A native atom object from nativeAtoms whose tag and optional type fields set the generated Svelte source. It matters because a null or undefined atom throws, a missing tag does not throw but makes the element name the literal 'undefined', and a missing type leaves the type attribute out.",
 						"examples": [

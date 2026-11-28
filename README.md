@@ -6,17 +6,55 @@ and loop driven development that agents can query before making a change.
 
 Game projects retain app pages and add independent mechanics and executable checkpoint graphs. See [the game engine guide](packages/game/README.md) for authoring, AI preview costs and verification.
 
-## Install this checkout's CLI
+## Install
 
-Run these setup commands from the intended primary checkout, not a task worktree. On Daniel's Mac that checkout is `/Users/danielfugere/projects/harness-integration`:
+Harness runs on [Bun](https://bun.sh) 1.2 or later. Install the published CLI:
 
 ```sh
+bun add -g @dafuga01/harness
+harness --version
+```
+
+If `harness` is not found, add Bun's global bin directory, `~/.bun/bin`, to `PATH`.
+
+## Quick start
+
+```sh
+harness new app my-app
+cd my-app
+git init
+bun install
+harness generate resource Article
+bun run check
+```
+
+`bun run check` formats, type checks, lints, tests, builds and audits the new project. Its audit step
+runs the `harness` on your `PATH`. Commit once, then try the registry and a loop:
+
+```sh
+git add -A && git commit -m "chore: scaffold"
+harness units index --write
+harness loop create first-feature --from feature --goal "Readers can open an article"
+harness loop next first-feature
+harness info scaffolds
+```
+
+Use `harness new lib my-lib` for a Bun library, or `harness new game my-game --dimension 3d` for a
+game. `harness <command> --help` describes every command.
+
+## Install this checkout's CLI
+
+To work on Harness itself, run these setup commands from the intended primary checkout, not a task
+worktree. On Daniel's Mac that checkout is `/Users/danielfugere/projects/harness-integration`:
+
+```sh
+bun install
 bun run build:cli
 bun link
 chmod 755 dist/index.js
 ```
 
-The package's `bin.harness` registration makes `harness` available through the existing package-manager bin directory. The mode step preserves normal executable permissions after linking. Use `harness` from any directory; contract queries can select another project with `--root <project>`.
+The package's `bin.harness` registration makes `harness` available through the existing package-manager bin directory. The mode step preserves normal executable permissions after linking. Use `harness` from any directory; contract queries can select another project with `--root <project>`. A linked build warns when its source is newer than `dist`; run `bun run build:cli` again after updating the checkout. The full package (`bun run build`, which `npm pack` runs) also needs [rustup](https://rustup.rs) for the pinned Rust toolchain.
 
 ## Commands
 
@@ -331,7 +369,7 @@ full `commit` in the query options or relationship method to select a revision.
 `records` and `scenarios` return their recorded summaries at the selected commit.
 Direct SQL joins are available through `catalog.adapter.query(sql, bindings)`.
 
-Other projects can use the same adapter with their own models in Harness 0.1.4.
+Other projects can use the same adapter with their own models in Harness 0.1.5.
 The generator adds Harness as a runtime dependency and preserves explicit local
 package specifiers. For an unreleased checkout, install its packed tarball with
 `bun add ./harness.tgz`. Generate a model, apply its SQL migration, and register
@@ -1320,7 +1358,7 @@ timeout is three minutes and the maximum is ten.
 
 After a nonzero exit, the worker sends a bounded diagnostic tail to the same
 provider session. It allows three repair turns and records each check outcome and
-duration in `task show`. A timeout, cancellation or command error stops the
+duration in `harness task show`. A timeout, cancellation or command error stops the
 attempt. The offline Docker pilot does not run host checks. Only enable host
 checks in queues whose executable commands and task code you trust.
 

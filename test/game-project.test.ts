@@ -173,6 +173,8 @@ test('Godot game scaffolds expose headless tests and native and web builds', asy
 	expect(contents.get('export_presets.cfg')).toContain('platform="Web"');
 	expect(contents.get('export_presets.cfg')).toContain('platform="macOS"');
 	expect(contents.get('scripts/godot.ts')).toContain('--headless');
+	// The unit contract gate refuses a bare Error in a freshly generated project.
+	expect(contents.get('scripts/godot.ts')).not.toContain('new Error(');
 	expect(contents.has('svelte.config.js')).toBe(false);
 	const files3d = projectFiles({ ...input, dimension: '3d' });
 	expect(files3d.find((file) => file.path === 'game.tscn')?.contents).toContain('type="Node3D"');

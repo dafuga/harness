@@ -1,3 +1,4 @@
+import { ExpectedCliError } from '../../src/core/development-tooling/errors';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { JobsOptions } from '../../src/commands/execution-runtimes/JobsCommand.types';
@@ -88,6 +89,8 @@ test('Builds bounded what-if queues without live jobs', () => {
 			'What-if only: 2 jobs; excludes live work. Capacity is observed or explicitly overridden.'
 		]
 	});
+	// A missing flag is the caller's mistake: the CLI prints it without a stack trace.
+	expect(() => jobsQueue({ whatIf: '2' }, live)).toThrow(ExpectedCliError);
 	expect(zeroJobs.queued).toEqual([]);
 	expect(zeroJobs.running).toEqual([]);
 	recordExampleCases(
@@ -168,8 +171,8 @@ test('Rejects malformed queue JSON and invalid what-if flags', async () => {
 		const requiredError = captureError(() => jobsQueue(requiredInput.options, live));
 
 		expect(malformedError).toBeInstanceOf(SyntaxError);
-		expect(countError).toBeInstanceOf(RangeError);
-		expect(requiredError).toBeInstanceOf(RangeError);
+		expect(countError).toBeInstanceOf(ExpectedCliError);
+		expect(requiredError).toBeInstanceOf(ExpectedCliError);
 		recordExampleCases(
 			{
 				unitId: 'command.execution-runtimes-jobs-command-jobs-queue',

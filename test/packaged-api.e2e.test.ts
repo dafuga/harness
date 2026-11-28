@@ -8,6 +8,7 @@ import { runCommand } from './support/cli';
 import { measureProcess } from './support/cli-measurement/measureProcess';
 import { seedConsumerLock } from './support/packagedConsumerLock';
 import { expectPackagedSqlite } from './support/packagedSqliteConsumer';
+import { expectPackedCliKernel } from './support/packedCliKernel';
 import { packedApiConsumer, packedApiConsumerConfig } from './support/packedApiConsumer';
 
 /**
@@ -36,6 +37,7 @@ async function withPackedConsumer(use: (project: string) => Promise<void>): Prom
 		await writeFile(join(project, 'consumer.ts'), packedApiConsumer);
 		await seedConsumerLock({ project, tarball, consumer: manifest });
 		await runCommand(['bun', 'install', '--prefer-offline'], project);
+		await expectPackedCliKernel(project);
 		await use(project);
 	} finally {
 		await rm(root, { recursive: true, force: true });

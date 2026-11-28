@@ -12,7 +12,7 @@ export const uiDesignPatternRules = [
 	'Group by job, in this order: primary actions, the main piece, quiet status. Keep to about three groups and let spacing, not borders or headings, separate them.',
 	'Lists follow the approved project overview cards (n79x63): one card with a title and at most one quiet link in its header, rows with the name on the left and muted metadata on the right, hairline separators, and an empty-state line instead of a hidden card.',
 	'A gate screen, such as Sign in with Google, has only its one primary action and one muted line. Nothing else is usable until it is passed.',
-	'Use the shared design tokens and components: --hx-* tokens, Modal, Select and BrandMark. No literal colours, touch targets of at least 44px, and no horizontal overflow at 390px wide.',
+	'Use the shared design tokens and components: `--hx-*` tokens, Modal, Select and BrandMark. No literal colours, touch targets of at least 44px, and no horizontal overflow at 390px wide.',
 	'A floating button never covers content or another control; hide it while a panel it opens, or any side panel, is open, and pad the content by its height.',
 	'Absence is not failure: "not recorded" or "not measured" is muted text; red is for a failed check only.',
 	'Pickers use the shared list rows, never a native list box (`select[size]`) or the system highlight.',

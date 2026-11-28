@@ -2,7 +2,7 @@ import { parse } from 'svelte/compiler';
 import { atomTag, nativeAtoms } from './htmlElements.js';
 
 /** Source facts shared by compilation, audit and dependency indexing. */
-export function atomicSyntax(content) {
+export function atomicSyntax(/** @type {string} */ content) {
 	const tree = parse(content, { modern: true });
 	const comments = tree.fragment.nodes.filter((node) => node.type === 'Comment');
 	const directory = comments
@@ -25,7 +25,10 @@ export function atomicSyntax(content) {
 	return { tree, directory, tier, element, atoms };
 }
 
-export function walkAtomicMarkup(node, callback) {
+export function walkAtomicMarkup(
+	/** @type {object} */ node,
+	/** @type {(node: { type: string, name?: string }) => void} */ callback
+) {
 	if (!node || typeof node !== 'object') return;
 	if (Array.isArray(node)) {
 		for (const child of node) walkAtomicMarkup(child, callback);
