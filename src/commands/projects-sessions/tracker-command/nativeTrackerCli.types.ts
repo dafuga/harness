@@ -51,6 +51,7 @@ export interface NativeTrackerItem {
 	remind_at?: string | null;
 	next_step?: string;
 	parked_until?: string;
+	schedule_hold?: { reason: string; until: string | null };
 	owner?: string;
 	agent?: string;
 	auto?: string;

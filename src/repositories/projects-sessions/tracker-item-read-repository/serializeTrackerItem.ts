@@ -77,7 +77,7 @@ export function serializeTrackerItem(
 function scheduleFields(row: TrackerItemRow, now: number) {
 	const hold = row.kind === 'reminder' ? null : trackerScheduleHold(row, now);
 	return {
-		schedule_off: Boolean(hold) || (row.kind === 'reminder' && row.schedule_off === '1'),
+		schedule_off: Boolean(hold) || (row.kind === 'reminder' && Number(row.schedule_off) === 1),
 		...(hold && { schedule_hold: hold }),
 		schedule_status: nullIfEmpty(row.schedule_status)
 	};

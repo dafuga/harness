@@ -1,0 +1,58 @@
+{
+	"name": "tracker-never-auto-launch",
+	"goal": "Prove an explicit per-item auto-launch opt-out survives temporary pause expiry without changing flags, reminders or manual launch",
+	"createdAt": "2026-11-28T14:03:49.626Z",
+	"updatedAt": "2026-11-28T14:11:52.478Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T14:05:54.675Z",
+			"evidence": "The #485 temporary pause expires at schedule_off journal time plus 24 hours. Operators need a durable per-item hold with no next step and unchanged flag and reminder delivery."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T14:05:56.119Z",
+			"evidence": "Extend existing scheduler/idle, hold evaluation, schema replay and host reminder cases to prove the durable setting across the expiry boundary, an explicit clear and ordinary notifications."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T14:11:50.696Z",
+			"evidence": "Clean red checkpoint 504f52d91d returns no durable hold at the 24-hour cutoff and lacks an operator command."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T14:11:52.478Z",
+			"evidence": "Store the durable opt-out independently from the pause and preserve existing dispatch, manual launch, flag and reminder behavior."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

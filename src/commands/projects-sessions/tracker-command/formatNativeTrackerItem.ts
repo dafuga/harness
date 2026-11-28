@@ -48,12 +48,17 @@ function trackerItemMetadata(item: NativeTrackerItem) {
 
 function trackerFollowThroughMetadata(item: NativeTrackerItem) {
 	return [
+		item.schedule_hold && formatScheduleHold(item.schedule_hold),
 		item.next_step && `next step: ${item.next_step}`,
 		item.parked_until && `parked until ${item.parked_until}`,
 		item.chased_at && `chased ${item.chased_at}`,
 		item.chased_by && `by ${item.chased_by}`,
 		item.chased_reason
 	];
+}
+
+function formatScheduleHold(hold: NonNullable<NativeTrackerItem['schedule_hold']>) {
+	return hold.until ? `auto-launch paused until ${hold.until}` : hold.reason;
 }
 
 function itemStatus(item: NativeTrackerItem): string {

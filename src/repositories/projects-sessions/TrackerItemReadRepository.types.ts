@@ -9,15 +9,15 @@ import type {
 	TrackerStage
 } from '../../utils/projects-sessions/trackerPlanning.types';
 
-type LegacySchedule = 'schedule_hold_reason';
+type OptionalSchedule = 'schedule_hold_reason' | 'schedule_never';
 
 type ItemFlags = 'needs_daniel' | 'resolved' | 'deleted';
 
 export type TrackerItemRow = Omit<
 	Record<(typeof trackerItemFields)[number], string | null>,
-	ItemFlags | LegacySchedule
+	ItemFlags | OptionalSchedule
 > &
-	Partial<Record<LegacySchedule, string | null>> &
+	Partial<Record<OptionalSchedule, string | null>> &
 	Record<ItemFlags, number> & {
 		legacy_adapter_manual?: number | null;
 		id: string;

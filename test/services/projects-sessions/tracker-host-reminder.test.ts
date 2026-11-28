@@ -5,6 +5,7 @@ import { expect, test } from 'vitest';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
+import { verifyNeverAutoLaunch } from '../../support/trackerDueLaunchFixture';
 
 test('the primary hub delivers reminders through its CoS host binding without a webhook', () =>
 	withTempDir('hnt-reminder-', proveHostReminders));
@@ -23,10 +24,12 @@ async function proveHostReminders(root: string) {
 			itemId: 'fixture123',
 			fields: {
 				title: 'Synthetic reminder',
+				kind: 'task',
 				status: 'open',
 				remind_at: new Date(wake).toISOString()
 			}
 		});
+		await verifyNeverAutoLaunch(runtime, 'fixture123', 'set');
 		await runtime.notifications?.tick();
 		expect(existsSync(receipts)).toBe(false);
 		now = wake;
@@ -70,8 +73,15 @@ async function verifyAskFollowThrough(
 ) {
 	runtime.store.appendLocal({
 		itemId: 'decision01',
-		fields: { title: 'Synthetic ask', status: 'open', needs_daniel: 1, question: 'Proceed?' }
+		fields: {
+			title: 'Synthetic ask',
+			kind: 'task',
+			status: 'open',
+			needs_daniel: 1,
+			question: 'Proceed?'
+		}
 	});
+	await verifyNeverAutoLaunch(runtime, 'decision01', 'set');
 	const asked = now();
 	await runtime.notifications?.tick();
 	at(asked + 120 * 60_000);
@@ -153,6 +163,7 @@ function hostReminderRuntime(db: DatabaseSync, executable: string, now: () => nu
 		node: 'daniel-primary-mbp',
 		role: 'hub',
 		now,
+		manualLaunch: true,
 		hostEffects: { watchdog: { driver: executable, chiefOfStaff: true } }
 	});
 }

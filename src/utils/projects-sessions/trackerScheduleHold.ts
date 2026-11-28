@@ -6,8 +6,9 @@ export const manualIntakeReason = 'External intake requires an explicit launch';
 
 const holdDurationMs = 86_400_000;
 
-/** @pure Read an active pause from the journal version that set the item opt-out. */
+/** @pure Read the permanent opt-out or the active pause from the scheduling journal fields. */
 export function trackerScheduleHold(row: TrackerScheduleFields, now: number) {
+	if (Number(row.schedule_never) === 1) return { reason: 'Never auto-launch', until: null };
 	if (Number(row.schedule_off) !== 1) return null;
 	const clocks = JSON.parse(row.clocks) as Record<string, string>;
 	if (row.legacy_adapter_manual || row.schedule_hold_reason === manualIntakeReason)

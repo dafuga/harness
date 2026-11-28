@@ -12,6 +12,7 @@ export function printNativeTrackerHelp(): number {
 	console.log(
 		`Usage: tracker <command> [arguments] [--json]\nNative commands: ${nativeTrackerCommands}\n` +
 			'Local: instructions [--check] [file...]\n' +
+			'Scheduling: unlaunch <id> [--never], launch on <id>\n' +
 			'Run work on another computer: host-work <ssh|colima> <computer> -- <command> [args...]\n' +
 			'Subcommands: autolaunch [status|dry-run|pause|resume|clear-quota <codex|claude>], ' +
 			`${nativeTrackerAdapterUsage}, ` +

@@ -8,7 +8,11 @@ import type { TrackerItemMutationContext } from '../../../utils/projects-session
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
 
 export function isTrackerManualLaunch(verb: string | undefined): boolean {
-	return verb === 'launch' || verb === 'unlaunch' || verb === 'schedule-on';
+	return verb === 'launch' || verb === 'schedule-on' || isTrackerLaunchCancellation(verb);
+}
+
+export function isTrackerLaunchCancellation(verb: string | undefined): boolean {
+	return verb === 'unlaunch' || verb === 'unlaunch-never';
 }
 
 export function planTrackerManualLaunch(
@@ -18,19 +22,27 @@ export function planTrackerManualLaunch(
 	context: TrackerItemMutationContext
 ) {
 	if (verb !== 'launch') {
-		const off = verb === 'unlaunch';
+		const off = isTrackerLaunchCancellation(verb);
+		const never = verb === 'unlaunch-never';
 		return {
 			itemId: item.id,
 			fields: {
 				...(off && { auto: null, launch_target: null, launch_source: null, launch_pick: null }),
 				schedule_off: off ? 1 : 0,
+				...(never || !off ? { schedule_never: never ? '1' : '0' } : {}),
 				schedule_hold_reason: off ? 'Automatic launch paused by operator' : null,
 				schedule_status: null,
-				'note+': off ? 'auto-launch turned off for 24 hours' : 'automatic due launch allowed'
+				'note+': scheduleChangeNote(verb)
 			}
 		};
 	}
 	return planTrackerExplicitLaunch(item, body, context);
+}
+
+function scheduleChangeNote(verb: string): string {
+	if (verb === 'unlaunch-never') return 'automatic launch disabled until explicitly re-enabled';
+	if (verb === 'unlaunch') return 'auto-launch turned off for 24 hours';
+	return 'automatic due launch allowed';
 }
 
 function planTrackerExplicitLaunch(
