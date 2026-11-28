@@ -2,7 +2,7 @@
 	"name": "k3y69b-haiku-connectors",
 	"goal": "Haiku module workers no longer receive claude.ai connector tools mid-session, so fresh sessions stop hitting the context limit at startup",
 	"createdAt": "2026-11-28T17:04:26.283Z",
-	"updatedAt": "2026-11-28T17:25:31.035Z",
+	"updatedAt": "2026-11-28T17:27:28.639Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T17:27:28.639Z",
+			"evidence": "siblings-123f620a-457d-45b5-8b2b-85a7e28e8a06.json"
 		},
 		{
 			"id": "verify",

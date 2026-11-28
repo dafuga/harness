@@ -4,3 +4,4 @@
 {"event":"step.completed","timestamp":"2026-11-28T17:25:17.733Z","loop":"k3y69b-haiku-connectors","step":"red","evidence":"8e0eae8495: module-worker-mcp.test.ts failed on the --strict-mcp-config assertion (loop record red)."}
 {"event":"step.completed","timestamp":"2026-11-28T17:25:28.095Z","loop":"k3y69b-haiku-connectors","step":"implement","evidence":"f7c0d80c3d: add --strict-mcp-config to the Claude module worker command. The admission gate is unchanged from main."}
 {"event":"step.completed","timestamp":"2026-11-28T17:25:31.035Z","loop":"k3y69b-haiku-connectors","step":"green","evidence":"f7c0d80c3d: the unchanged test passes (loop record green)."}
+{"event":"step.completed","timestamp":"2026-11-28T17:27:28.639Z","loop":"k3y69b-haiku-connectors","step":"siblings","evidence":"siblings-123f620a-457d-45b5-8b2b-85a7e28e8a06.json"}

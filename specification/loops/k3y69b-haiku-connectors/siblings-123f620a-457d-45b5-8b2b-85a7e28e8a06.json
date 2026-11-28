@@ -1,0 +1,7771 @@
+{
+	"schemaVersion": 1,
+	"revision": "4868e5794c1deeb5510ef613c9c0827796bfbe57",
+	"bugClass": {
+		"id": "worker-mcp-context-overflow",
+		"title": "Headless worker sessions exceed context limits due to enabled MCP servers",
+		"cause": "Automated headless CLI launches constrain tools but leave MCP servers enabled. Account or user MCP connectors can be added during the session, consuming enough context to exceed admission limits for bounded workers.",
+		"criteria": "Applies when an automated headless CLI launch creates a bounded worker session and does not disable account/user MCP servers. Assess launch construction and configuration independently: restricted tool lists alone do not disable MCP; accept any launch path that permits MCP servers to join and add context, even if it uses different CLI flags or configuration files.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "--strict-mcp-config",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "--tools",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "tool_addition",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "mcpServers",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "allowedTools",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "spawn",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "execFile",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "exec",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "claude",
+				"weight": 3
+			},
+			{
+				"kind": "construct",
+				"value": "Claude",
+				"weight": 2
+			}
+		],
+		"contextTerms": [
+			"mcp",
+			"tools",
+			"claude",
+			"context",
+			"worker",
+			"headless",
+			"strict"
+		],
+		"pathHints": [
+			{
+				"contains": "src/cli/",
+				"weight": 5
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 4
+			},
+			{
+				"contains": "src/services/",
+				"weight": 3
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			}
+		]
+	},
+	"model": "gpt-6-luna",
+	"scannedFiles": 9762,
+	"skipped": [],
+	"candidates": [
+		{
+			"id": "4cae60c466e14ee5426b",
+			"path": "packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeTurn.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "--tools",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 2,
+			"evidence": "Lines 20–32 construct a Claude CLI turn and add `--tools Read,Glob,Grep` for read-only access, but the excerpt does not show the complete launch configuration or whether another config disables MCP servers. Restricted tools alone do not establish MCP is disabled; the triggering worker/session scope is also not established here."
+		},
+		{
+			"id": "7ea0fc3cae0cdeb9f877",
+			"path": "packages/desktop/test/cli-integration.test.ts",
+			"line": 82,
+			"lastLine": 82,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "--tools",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 2,
+			"evidence": "Lines 70–82 show a Claude run using `--tools Read,Glob,Grep`, but this is test evidence and does not establish its launch configuration disables MCP servers; it also does not show a bound on worker context."
+		},
+		{
+			"id": "c12b3cc695ccb5bfcd47",
+			"path": "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts",
+			"line": 35,
+			"lastLine": 36,
+			"score": 25,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "mcpServers",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "allowedTools",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 35–36 set only the `codex` server in `mcpServers` and restrict `allowedTools` to `mcp__codex__*`. The excerpt does not establish whether account/user MCP servers are also disabled, nor whether this query creates a bounded automated worker."
+		},
+		{
+			"id": "c2ad565c1efb444e40a9",
+			"path": "src/utils/projects-sessions/trackerEgressPolicy.ts",
+			"line": 110,
+			"lastLine": 111,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "--strict-mcp-config",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "allowedTools",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 98–111 add `--strict-mcp-config` and disallow WebFetch/WebSearch, but do not show an empty MCP configuration or establish this is the launch path for bounded workers. The available excerpt is insufficient to confirm that account/user MCP servers can join."
+		},
+		{
+			"id": "ebb2818c150842c3cf9a",
+			"path": "src/adapters/agents-providers/ModuleTaskRunnerAdapter.ts",
+			"line": 39,
+			"lastLine": 39,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "claude",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 39–47 route Claude task execution through `completionCommand(this.command(...))` and `execute`, but do not show the command arguments or MCP configuration. The bounded-worker launch and presence or absence of an MCP-disabling guard cannot be established here."
+		},
+		{
+			"id": "47aec0ebb89884fd1e94",
+			"path": "src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 94–106 spawn a guarded Claude provider command, but the excerpt does not show whether its construction disables account/user MCP servers or whether this is a bounded worker launch. The guard's name alone does not establish MCP handling."
+		},
+		{
+			"id": "9d40fd9198fa37625e63",
+			"path": "packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts",
+			"line": 15,
+			"lastLine": 15,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Line 15 spawns `command.command` with `command.args` and an environment, but the excerpt does not establish that this is an automated headless Claude launch or a bounded worker session. It also does not show whether MCP servers are disabled or can join."
+		},
+		{
+			"id": "8baee08d76baad5f063c",
+			"path": "src/adapters/execution-runtimes/BoundedCommandAdapter.ts",
+			"line": 153,
+			"lastLine": 153,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 147–159 launch an arbitrary command through a bounded command adapter, which makes bounded execution plausible. The excerpt does not establish the command is a Claude CLI or that this automated launch permits MCP servers to join."
+		},
+		{
+			"id": "19c27b1965d02b17690f",
+			"path": "src/adapters/execution-runtimes/process-runtime-adapter/lineProcess.ts",
+			"line": 29,
+			"lastLine": 29,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 28–29 spawn a caller-supplied command and args without showing a Claude worker launch or MCP configuration. The excerpt does not establish a bounded headless worker trigger or whether MCP servers are disabled."
+		},
+		{
+			"id": "87bf8d4235a6324a2a5f",
+			"path": "src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter.ts",
+			"line": 65,
+			"lastLine": 65,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 64–65 spawn the configured command and args, but the excerpt does not show this is a bounded headless worker session or whether MCP servers can join. A timeout is present at line 74, which limits execution duration but does not establish MCP behavior."
+		},
+		{
+			"id": "ebad25c0bc9e5ffe78a3",
+			"path": "src/adapters/projects-sessions/tracker-host-process-adapter/trackerHostCommand.ts",
+			"line": 30,
+			"lastLine": 30,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 29–30 spawn a supplied executable with args and a controlled environment, but no bounded Claude worker launch or MCP configuration is visible. The 30-second deadline at line 39 limits execution time, not MCP context."
+		},
+		{
+			"id": "91b653421426bcb5f496",
+			"path": "src/adapters/projects-sessions/tracker-job-process-adapter/runTrackerJobCommand.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 31–33 delegate to spawnJob, which launches a shell command, but the excerpt does not show a bounded Claude worker or its MCP settings. The job timeout is passed at line 26, with no visible MCP guard."
+		},
+		{
+			"id": "9eccf9a694352a7cbb96",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedVerification.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 34–38 launch a verification shell with a clean login environment; no Claude worker construction or MCP configuration is shown. The excerpt therefore cannot establish that account/user MCP servers remain enabled."
+		},
+		{
+			"id": "72c0353f5b4c3d69295b",
+			"path": "src/services/projects-sessions/tracker-host-supervisor-service/appendingTrackerChild.ts",
+			"line": 18,
+			"lastLine": 18,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 15–18 spawn a supplied executable and args, but no bounded headless worker launch or MCP settings are visible. Logging and abort handling do not establish MCP behavior."
+		},
+		{
+			"id": "9d1ac495f71e4be39daa",
+			"path": "packages/desktop/src/utils/agents-providers/cliProcess.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 14–23 show a generic CLI process spawned with command arguments and an environment, but do not establish a bounded worker session, Claude launch construction, or whether MCP servers are enabled or disabled."
+		},
+		{
+			"id": "5eb2fa9d5c26d33ae8db",
+			"path": "src/workflows/agents-providers/task-orchestration/runTaskOrchestration.ts",
+			"line": 39,
+			"lastLine": 39,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 27–39 read a brief, derive a context threshold, and enter an orchestration supervisor while holding a tracker/repository lock. This suggests orchestration, but the excerpt does not show how bounded workers are launched or whether MCP servers are disabled, so the candidate cause and trigger are not established."
+		},
+		{
+			"id": "eb1b411ccb72ed833150",
+			"path": "packages/desktop/src/services/development-tooling/tracker-bundle/startBundledTracker.ts",
+			"line": 15,
+			"lastLine": 15,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 15–24 show `execFile` launching a generic program with a 60-second timeout; no Claude worker, tool restriction, or MCP configuration is visible, so the candidate's relationship to the bug class is unestablished."
+		},
+		{
+			"id": "46ec428454781446f85a",
+			"path": "src/adapters/agents-providers/ModuleTaskRunnerAdapter.ts",
+			"line": 99,
+			"lastLine": 99,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "--tools",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": "allowedTools",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9704afb555596ff52dc0",
+			"path": "packages/desktop/scripts/ios-build-processes.ts",
+			"line": 161,
+			"lastLine": 161,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "68152672c308e7f775ce",
+			"path": "specification/designs/hub-home/mockup/data-quota.js",
+			"line": 54,
+			"lastLine": 61,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "claude",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cd3842f12f42581b0461",
+			"path": "packages/desktop/test/cli-integration.test.ts",
+			"line": 99,
+			"lastLine": 99,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "be8e94cd5d0b9270a2a8",
+			"path": "packages/desktop/test/ios-build-processes.test.ts",
+			"line": 183,
+			"lastLine": 183,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d565b172a0066c1812ca",
+			"path": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
+			"line": 39,
+			"lastLine": 39,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "50e675162a007ef2b891",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/readClaudeCosReceipt.ts",
+			"line": 90,
+			"lastLine": 90,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f7eae390159e24ebceaf",
+			"path": "src/commands/projects-sessions/TrackerServiceCommand.ts",
+			"line": 25,
+			"lastLine": 25,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a640da9b298758b0f524",
+			"path": "src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.ts",
+			"line": 75,
+			"lastLine": 75,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "430ffd71411f2ef8ecf3",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerFinishedSessions.ts",
+			"line": 73,
+			"lastLine": 73,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8c2d280a722e5e38e2a3",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdog.ts",
+			"line": 46,
+			"lastLine": 46,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b643d20a0eede0124052",
+			"path": "src/services/verification-evidence/video-evidence-service/clipGeneratedInputs.ts",
+			"line": 83,
+			"lastLine": 83,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2f17437b148310f7f5f0",
+			"path": "src/utils/execution-runtimes/resourceCommand.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "745ad85f587b45ce0aa2",
+			"path": "src/workflows/agents-providers/runQaSync.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "650938de35597b2c74cc",
+			"path": "src/workflows/projects-sessions/generate-code/groupedFiles.ts",
+			"line": 40,
+			"lastLine": 40,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "39af8100bf92c7f36b35",
+			"path": "src/workflows/projects-sessions/generate-code/groupedImports.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7870aff5cb29b7c54573",
+			"path": "src/workflows/verification-evidence/run-verify/capturePage.ts",
+			"line": 67,
+			"lastLine": 67,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c2657f20422462d41fc4",
+			"path": "packages/desktop/scripts/ios-build-processes.ts",
+			"line": 68,
+			"lastLine": 68,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "aa778b99772e2be32099",
+			"path": "packages/desktop/scripts/remote-fixture-project.ts",
+			"line": 82,
+			"lastLine": 82,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "df9f14f5e7c03cbb5797",
+			"path": "packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte",
+			"line": 63,
+			"lastLine": 63,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "adb40f67a60fe52989a8",
+			"path": "packages/desktop/test/ios-native-profile.test.ts",
+			"line": 14,
+			"lastLine": 14,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "be7280234a74a10fba0e",
+			"path": "packages/desktop/test/ios-simulator-build.test.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f9c78ca4a988f9c98974",
+			"path": "packages/desktop/test/test-preview-refusal.test.ts",
+			"line": 40,
+			"lastLine": 40,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "14a77138ae92b408d334",
+			"path": "packages/desktop/test/utils/repository-lease.test.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "57701b861de0eedc12a9",
+			"path": "packages/planning/src/lib/planning-collaboration/planning/planGit.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1db65e3ab1b95b02b1c7",
+			"path": "packages/reports/src/utils/reports-media/reportProcess.ts",
+			"line": 11,
+			"lastLine": 11,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "228cbdbc3eeda3416b55",
+			"path": "packages/reports/src/utils/reports-media/reportServerRecord.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f5c93180b38471b4c13b",
+			"path": "scripts/deliver-feature/deliveryProcess.ts",
+			"line": 7,
+			"lastLine": 7,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c3b1e549620895a4fd76",
+			"path": "scripts/desktop-experiment-launcher.ts",
+			"line": 7,
+			"lastLine": 7,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b55be5e8a4358d372a20",
+			"path": "scripts/prepare-desktop-experiment.ts",
+			"line": 15,
+			"lastLine": 15,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3ea305b39e561bd9b370",
+			"path": "scripts/prepare-desktop-experiment.ts",
+			"line": 56,
+			"lastLine": 56,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0acc8b2cbabff5b61d9f",
+			"path": "scripts/prepare-desktop-experiment.ts",
+			"line": 70,
+			"lastLine": 70,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7af82f8c2d4a3011bfee",
+			"path": "scripts/run-checks.ts",
+			"line": 114,
+			"lastLine": 114,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3840b053ca29dfe63f1a",
+			"path": "scripts/shared-checks.ts",
+			"line": 127,
+			"lastLine": 127,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3149c7890caccf85d7c8",
+			"path": "src/adapters/agents-providers/module-task-runner-adapter/codexTaskCommand.ts",
+			"line": 63,
+			"lastLine": 63,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "970149300e15cb4aa588",
+			"path": "src/adapters/agents-providers/module-task-runner-adapter/trackerHandoff.ts",
+			"line": 49,
+			"lastLine": 53,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8dab9370446d32cf9ba0",
+			"path": "src/adapters/development-tooling/SqliteAdapter.ts",
+			"line": 67,
+			"lastLine": 74,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "168e57cbb29341a3d7d0",
+			"path": "src/adapters/development-tooling/SqliteAdapter.ts",
+			"line": 79,
+			"lastLine": 82,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "82e224d0056dba5fb1dd",
+			"path": "src/adapters/execution-runtimes/container-cdp-adapter/pipeHttpJson.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2b836e618497f67f55d7",
+			"path": "src/adapters/git-source-history/CommitTreeAdapter.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8f8a5552168c8d691062",
+			"path": "src/adapters/git-source-history/GitAdapter.ts",
+			"line": 17,
+			"lastLine": 24,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e1a555746217175049c5",
+			"path": "src/adapters/git-source-history/LfsAdapter.ts",
+			"line": 65,
+			"lastLine": 65,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e3e810be1609526b1626",
+			"path": "src/adapters/projects-sessions/tracker-machine-sampler-adapter/trackerMemoryParsers.ts",
+			"line": 8,
+			"lastLine": 8,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e1627e246ca2bd6b7366",
+			"path": "src/adapters/projects-sessions/tracker-machine-sampler-adapter/trackerMemoryParsers.ts",
+			"line": 22,
+			"lastLine": 24,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bd0a1801f0765bdf64a0",
+			"path": "src/adapters/projects-sessions/tracker-machine-sampler-adapter/trackerMemoryParsers.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1f2c0bdac3939acd29ef",
+			"path": "src/adapters/projects-sessions/tracker-machine-sampler-adapter/trackerMemoryParsers.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "61c827d650a509e1b487",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.ts",
+			"line": 46,
+			"lastLine": 46,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bca9e5b24a73ebf21049",
+			"path": "src/adapters/projects-sessions/TrackerAdapterLeaseAdapter.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1c56158321f7cb3d1563",
+			"path": "src/adapters/projects-sessions/TrackerHostResourceAdapter.ts",
+			"line": 55,
+			"lastLine": 55,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "845b2f9da4a8e96f1b16",
+			"path": "src/adapters/projects-sessions/TrackerHostResourceAdapter.ts",
+			"line": 69,
+			"lastLine": 69,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e240f6c98cb28e2d8bcb",
+			"path": "src/adapters/projects-sessions/TrackerMachineSamplerAdapter.ts",
+			"line": 58,
+			"lastLine": 58,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f886ca4da395c6160a09",
+			"path": "src/adapters/projects-sessions/TrackerMachineSamplerAdapter.ts",
+			"line": 76,
+			"lastLine": 76,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7610c89be37fdf394bc5",
+			"path": "src/adapters/projects-sessions/TrackerSchemaAdapter.ts",
+			"line": 130,
+			"lastLine": 138,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "497c6d439fb6a4fc6252",
+			"path": "src/adapters/projects-sessions/TrackerSchemaAdapter.ts",
+			"line": 141,
+			"lastLine": 141,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a92daad4462724612334",
+			"path": "src/adapters/projects-sessions/TrackerSchemaAdapter.ts",
+			"line": 161,
+			"lastLine": 164,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "186edd439132018d44fc",
+			"path": "src/adapters/projects-sessions/TrackerSnapshotAdapter.ts",
+			"line": 95,
+			"lastLine": 95,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c354ac739e342ec9edaa",
+			"path": "src/adapters/verification-evidence/EvidenceTreeAdapter.ts",
+			"line": 33,
+			"lastLine": 38,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c2546e8fe61dd1146d42",
+			"path": "src/adapters/verification-evidence/EvidenceTreeAdapter.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d7f0ce06f796145b3fa9",
+			"path": "src/adapters/verification-evidence/EvidenceTreeAdapter.ts",
+			"line": 122,
+			"lastLine": 122,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "acd151fa2100c8687eeb",
+			"path": "src/adapters/verification-evidence/EvidenceTreeAdapter.ts",
+			"line": 165,
+			"lastLine": 165,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "61a8c1f1897e3484b08c",
+			"path": "src/adapters/verification-evidence/EvidenceTreeAdapter.ts",
+			"line": 190,
+			"lastLine": 190,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "757e8638a72fc280e22c",
+			"path": "src/commands/agents-providers/ProviderSignInCommand.ts",
+			"line": 117,
+			"lastLine": 117,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "45a5a3e8dde112626061",
+			"path": "src/commands/projects-sessions/tracker-command/runTrackerHostWork.ts",
+			"line": 149,
+			"lastLine": 149,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2dedd19c79cd218d3c87",
+			"path": "src/core/execution-runtimes/scripted-deploy/runProcess.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a707fd0c6eee30560b23",
+			"path": "src/services/agents-providers/qa-sync-service/matchQaThread.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "70d57d65c1a877bca5bf",
+			"path": "src/services/agents-providers/x-feed-reader-service/parseXPosts.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1e519a4f12f83874f40e",
+			"path": "src/services/development-tooling/source-index-service/scanImports.ts",
+			"line": 84,
+			"lastLine": 84,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "436677fe0ba32295333c",
+			"path": "src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/hostMemory.ts",
+			"line": 8,
+			"lastLine": 10,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dae9e3b51d1cb26d1df8",
+			"path": "src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/hostMemory.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "32812a3136c7755268c4",
+			"path": "src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/hostResourceLimits.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "19e211c5f64c3f7de466",
+			"path": "src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/hostResourceLimits.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "df10ea718251571054f8",
+			"path": "src/services/execution-runtimes/resource-queue-service/resourceDatabase.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b7aebab910c0bc7ed462",
+			"path": "src/services/execution-runtimes/resource-queue-service/resourceDatabase.ts",
+			"line": 37,
+			"lastLine": 37,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "21c192720d524c0d6c0b",
+			"path": "src/services/execution-runtimes/resource-queue-service/ResourceQueueRepository.ts",
+			"line": 82,
+			"lastLine": 88,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a553bf07fb6ebe096cf4",
+			"path": "src/services/module-system/ModuleCatalogService.ts",
+			"line": 56,
+			"lastLine": 56,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f87a02bb4eea176f036b",
+			"path": "src/services/module-system/ModulePackageService.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d2095ae8fd31749d8abb",
+			"path": "src/services/networking-security/PermissionCatalogService.ts",
+			"line": 50,
+			"lastLine": 50,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b94c24fd0f093920f5e1",
+			"path": "src/services/networking-security/TrackerSyncAuthService.ts",
+			"line": 27,
+			"lastLine": 27,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0092c386fadab80d92d0",
+			"path": "src/services/planning-collaboration/design-canvas-service/artboardSource.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5296b16262f10fe13406",
+			"path": "src/services/planning-collaboration/design-canvas-service/committedCanvas.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "11f3f9fd88c63f87a34d",
+			"path": "src/services/projects-sessions/tracker-backup-service/restoreTrackerBackup.ts",
+			"line": 84,
+			"lastLine": 92,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e46c649f67439077cbb4",
+			"path": "src/services/projects-sessions/tracker-backup-service/restoreTrackerBackup.ts",
+			"line": 93,
+			"lastLine": 93,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b3bcc26b2b61bda31c6b",
+			"path": "src/services/projects-sessions/tracker-backup-service/restoreTrackerBackup.ts",
+			"line": 104,
+			"lastLine": 111,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c04fcc8f8a0212f7e736",
+			"path": "src/services/projects-sessions/tracker-backup-service/writeTrackerBackup.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3403a1548f394568a588",
+			"path": "src/services/projects-sessions/tracker-health-service/localTrackerHealthHost.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cb0ae00691603bb91903",
+			"path": "src/services/projects-sessions/tracker-health-service/trackerProcessRows.ts",
+			"line": 9,
+			"lastLine": 9,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "358bd6d005219d92c7ac",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.ts",
+			"line": 35,
+			"lastLine": 35,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "95928ca338c88da242c3",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHandLaunchSelection.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4f82e081a373f54f830e",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHandLaunchSelection.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3cb9ae7d09378ed26931",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostInventory.ts",
+			"line": 90,
+			"lastLine": 90,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b8e38a300aab21e5d348",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthPanes.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6c41a403f5ccaf4d4e55",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthPanes.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "711d937d7df553c256d4",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerSlotInvariants.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0fa5f9aa3c2fdc5723d1",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptScan.ts",
+			"line": 57,
+			"lastLine": 57,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "89869193b72fba190195",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptScan.ts",
+			"line": 112,
+			"lastLine": 112,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "42106368d6c2d757ae69",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPort.ts",
+			"line": 140,
+			"lastLine": 140,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2ce4832d0ba49f77bee9",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests.ts",
+			"line": 101,
+			"lastLine": 101,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7b0b2c8d8cea3d2e73ef",
+			"path": "src/services/projects-sessions/tracker-node-service/readTrackerBackupList.ts",
+			"line": 46,
+			"lastLine": 46,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9178a8267ffe854ef4fb",
+			"path": "src/services/projects-sessions/tracker-node-service/trackerAdapterRoutes.ts",
+			"line": 27,
+			"lastLine": 27,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cb883b673a1cb19ba2cc",
+			"path": "src/services/projects-sessions/tracker-notification-service/notificationRules.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "661c57c4997027f7a7a3",
+			"path": "src/services/projects-sessions/tracker-notification-service/notificationRules.ts",
+			"line": 71,
+			"lastLine": 71,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "45427bd151899c81403d",
+			"path": "src/services/projects-sessions/tracker-phone-replica-service/PhoneReplicaFeed.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "da09faa502d8985b49c3",
+			"path": "src/services/projects-sessions/tracker-phone-replica-service/phoneReplicaRows.ts",
+			"line": 148,
+			"lastLine": 148,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a6a41ed02f766555789a",
+			"path": "src/services/projects-sessions/tracker-phone-replica-service/PhoneReplicaWriteService.ts",
+			"line": 69,
+			"lastLine": 69,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "20af1658531752825b87",
+			"path": "src/services/projects-sessions/TrackerPhoneReplicaService.ts",
+			"line": 93,
+			"lastLine": 93,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bcea0d42762002228ab6",
+			"path": "src/services/projects-sessions/WatchdogPaneService.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c6c0d6a719752e336c05",
+			"path": "src/services/projects-sessions/WatchdogRecoveryService.ts",
+			"line": 61,
+			"lastLine": 61,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "852a61792a80fa61019b",
+			"path": "src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.ts",
+			"line": 107,
+			"lastLine": 107,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "61b85cad433f86e9d429",
+			"path": "src/services/verification-evidence/history-status-service/attached-record-service/lfsPointer.ts",
+			"line": 6,
+			"lastLine": 6,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9a836d79be749d534e37",
+			"path": "src/services/verification-evidence/video-archive-service/fetch.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f5994a73b62a39c3359f",
+			"path": "src/services/verification-evidence/video-evidence-service/clipStyleInputs.ts",
+			"line": 34,
+			"lastLine": 34,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "aff5217499e3c165bf6e",
+			"path": "src/utils/execution-runtimes/withMacHeavyTestLane.ts",
+			"line": 118,
+			"lastLine": 118,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "63d33f1842b6b70266d3",
+			"path": "src/utils/reports-media/run-isolated/isolatedChild.ts",
+			"line": 6,
+			"lastLine": 6,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "24ad19acabc06cab73c0",
+			"path": "packages/desktop/scripts/check-ios-limits.ts",
+			"line": 51,
+			"lastLine": 53,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8b8a67d5d2b3e1073225",
+			"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+			"line": 197,
+			"lastLine": 197,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "590c5053ee418e7dab16",
+			"path": "packages/desktop/src/utils/networking-security/hostedAttestation.ts",
+			"line": 17,
+			"lastLine": 17,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "608ff25682f1eb2f358c",
+			"path": "packages/desktop/tests/e2e/mac-tracker-inbox.spec.ts",
+			"line": 66,
+			"lastLine": 66,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8acd20036300d87247f6",
+			"path": "packages/desktop/tests/e2e/support/macTrackerFixture.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3719cb6cc2d4931078cb",
+			"path": "packages/reports/test/support/previewFixture.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "90cddf057a0a4374ea25",
+			"path": "src/utils/projects-sessions/groupTrackerProcesses.ts",
+			"line": 18,
+			"lastLine": 18,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9f8ebb23a1ccb454cb0c",
+			"path": "src/utils/reports-media/platformServices.ts",
+			"line": 39,
+			"lastLine": 39,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "59aa0c1c4739c5d47d74",
+			"path": "test/cli.e2e.test.ts",
+			"line": 64,
+			"lastLine": 64,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b724b59b0b1d17b9a3ac",
+			"path": "test/resource-queue.e2e.test.ts",
+			"line": 91,
+			"lastLine": 91,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c2824d51cc9a0c21777d",
+			"path": "test/support/managedProviderDockerFixtureState.ts",
+			"line": 25,
+			"lastLine": 25,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6f561fd8436692bfba01",
+			"path": "test/support/playableGame.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d2d3708911889c43c915",
+			"path": "test/support/realProbes.ts",
+			"line": 10,
+			"lastLine": 18,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				},
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0595d4693565acff753f",
+			"path": "test/support/verificationObservation.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d5f7091803a03d3e7638",
+			"path": "test/support/workers.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "62eff21bc02d3e108e37",
+			"path": "test/utils/development-tooling/harborMcpFixture.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e89812f19fd395eddfcc",
+			"path": "packages/desktop/test/run-context-references.test.ts",
+			"line": 40,
+			"lastLine": 40,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "60438ebb325acb3d8794",
+			"path": "packages/desktop/test/run-fixture.ts",
+			"line": 28,
+			"lastLine": 28,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c1df8deec0b2f28123ff",
+			"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesignCanvases.ts",
+			"line": 70,
+			"lastLine": 70,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "31923b548d44213999c7",
+			"path": "packages/hub/src/utils/development-tooling/hubRaw.ts",
+			"line": 46,
+			"lastLine": 46,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "71b9bd0887558cdb63a5",
+			"path": "packages/hub/test/test-preview-refusal.test.ts",
+			"line": 48,
+			"lastLine": 48,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ac4ef8cc11b9461ff351",
+			"path": "packages/reports/src/components/projects-sessions/hub-home/hubQuotaPills.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1df1b9ff9ea0b6477523",
+			"path": "packages/reports/test/utils/report-server-record.test.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0b1891d5e142390945e6",
+			"path": "packages/reports/tests/e2e/support/component-previews/previewApi.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e280d96519386ea3976c",
+			"path": "scripts/deliver-feature/recordDelivery.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d293eb39a8c8d5370fd6",
+			"path": "scripts/shared-checks/checkQueue.ts",
+			"line": 16,
+			"lastLine": 17,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fabcd2c0d4e608c8c51e",
+			"path": "scripts/shared-checks/checkQueue.ts",
+			"line": 103,
+			"lastLine": 105,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "29a51aa8b528009f09ee",
+			"path": "test/activity-agents.e2e.test.ts",
+			"line": 140,
+			"lastLine": 140,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ea2250c6120e6e59c471",
+			"path": "test/adapters/execution-runtimes/bounded-command.test.ts",
+			"line": 114,
+			"lastLine": 114,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "42777c2866c6a12e55b9",
+			"path": "test/credential-vault-ios.e2e.test.ts",
+			"line": 73,
+			"lastLine": 73,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "77ac69d044b48ef626bb",
+			"path": "test/examples/script.desktop-experiment-launcher.test.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c17f718e8b0d04acc52d",
+			"path": "test/history-fresh-viewer.e2e.test.ts",
+			"line": 113,
+			"lastLine": 113,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8967f10b41f402b31552",
+			"path": "test/kernel.e2e.test.ts",
+			"line": 121,
+			"lastLine": 121,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6b8b5cf097f5f377e840",
+			"path": "test/reports-frozen-build.e2e.test.ts",
+			"line": 36,
+			"lastLine": 36,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "461b108b9043a89ef9af",
+			"path": "test/run-gate-cleanup.test.ts",
+			"line": 79,
+			"lastLine": 79,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "57ff142c6e3e4c3c7a58",
+			"path": "test/run-gate-cleanup.test.ts",
+			"line": 88,
+			"lastLine": 88,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "390a42a767d59a162ebe",
+			"path": "test/shared-checks.fixture.ts",
+			"line": 127,
+			"lastLine": 127,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e82239c6d28270403997",
+			"path": "test/support/browserRun.ts",
+			"line": 76,
+			"lastLine": 76,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ffe34a3d9b8e34778770",
+			"path": "test/support/cli.ts",
+			"line": 51,
+			"lastLine": 51,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2148166daa463ee023c6",
+			"path": "test/support/credential-vault/crashFixture.ts",
+			"line": 34,
+			"lastLine": 34,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "abfae2258659ea76b3f0",
+			"path": "test/support/gatedRuns.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f9916c622d32959fe156",
+			"path": "test/support/gatedRuns.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e7ab8d220f4d95e3fe1c",
+			"path": "test/support/jevCli.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8404e49089ad769eb941",
+			"path": "test/support/managedProviderProcessFixture.ts",
+			"line": 120,
+			"lastLine": 120,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5430bcffb5f03793ca73",
+			"path": "test/support/proveTrackerRehearsal.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4305dc84b3260dcda306",
+			"path": "test/support/rustModuleScenario.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1e1bc6388b59cde1fc8d",
+			"path": "test/support/syntheticServices.ts",
+			"line": 128,
+			"lastLine": 128,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bc94e044c8b26a65d066",
+			"path": "test/support/trackerNodeProcess.ts",
+			"line": 107,
+			"lastLine": 107,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cccccfa333e79fcea4e4",
+			"path": "test/support/trackerObservedRunFixture.ts",
+			"line": 184,
+			"lastLine": 184,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e75306d4c79a9c3bc4ea",
+			"path": "test/utils/process-descendants.test.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6ce18cc319dafd02afbc",
+			"path": "test/verify-snapshot.e2e.test.ts",
+			"line": 140,
+			"lastLine": 140,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6445c871f04654492088",
+			"path": "packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubLfs.ts",
+			"line": 25,
+			"lastLine": 25,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ec20b5e1db9d0ea0c2da",
+			"path": "packages/desktop/test/agent-picker-cleanup.test.ts",
+			"line": 12,
+			"lastLine": 12,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fb6fb95ad7cd2dd8cee4",
+			"path": "packages/desktop/test/agent-picker-cleanup.test.ts",
+			"line": 181,
+			"lastLine": 181,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5ab535a6379475f92272",
+			"path": "packages/desktop/test/message-references.test.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "36dfde57c5d2d76d119c",
+			"path": "packages/desktop/test/project-run-references.test.ts",
+			"line": 91,
+			"lastLine": 91,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "958f988bb2b4c4f0a5e4",
+			"path": "packages/desktop/test/utils/proposal-units.test.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9725c977dff02550e81d",
+			"path": "packages/desktop/test/utils/reference-prompt.test.ts",
+			"line": 7,
+			"lastLine": 7,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "627236f9cb9bd3278317",
+			"path": "packages/hub/scripts/verify-home-release.ts",
+			"line": 85,
+			"lastLine": 85,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "670c10420acd82e4756c",
+			"path": "packages/hub/src/lib/verification-evidence/server/auth/installation-token-service/githubAppJwt.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d39473f9a0776c4a6018",
+			"path": "packages/hub/src/lib/verification-evidence/server/auth/request-session-service/authHttp.ts",
+			"line": 9,
+			"lastLine": 9,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f0cc240bc87ea3eb9204",
+			"path": "packages/hub/src/routes/api/push/pushSenderProof.ts",
+			"line": 19,
+			"lastLine": 19,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9736a9637a93d07a47f7",
+			"path": "packages/hub/src/routes/api/tracker-overview/deliveries/deliveryRange.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e3351aca8367e95e8108",
+			"path": "packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceViews.ts",
+			"line": 58,
+			"lastLine": 58,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f976555a88f8fa5c3f42",
+			"path": "packages/hub/tests/e2e/hub-realtime-chain.ts",
+			"line": 57,
+			"lastLine": 57,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c4d733b4483d0534de73",
+			"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planHistory.ts",
+			"line": 10,
+			"lastLine": 14,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ca9b99f3e426cafdd775",
+			"path": "packages/planning/src/utils/planning-collaboration/planGit.ts",
+			"line": 40,
+			"lastLine": 40,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "40ee1c528890af8e6c74",
+			"path": "packages/planning/src/utils/planning-collaboration/planValidate.ts",
+			"line": 43,
+			"lastLine": 43,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "57ab7ecc0eaf6f54d561",
+			"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostStorageAdapter.ts",
+			"line": 87,
+			"lastLine": 95,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3793d2f21cfaa9ad293d",
+			"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostStorageAdapter.ts",
+			"line": 101,
+			"lastLine": 108,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4d5609cc3ca07a5b2538",
+			"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostStorageAdapter.ts",
+			"line": 116,
+			"lastLine": 123,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8e9c8bb31e1d69b96932",
+			"path": "packages/relay/src/lib/networking-security/sync/SyncEnrollments.ts",
+			"line": 12,
+			"lastLine": 12,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0ce9a61049307aa63f2a",
+			"path": "packages/relay/src/lib/networking-security/sync/SyncEnrollments.ts",
+			"line": 24,
+			"lastLine": 28,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e29a8a30fe310eecc965",
+			"path": "packages/relay/src/lib/networking-security/sync/SyncEnrollments.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7fe3c1e0003611076b9f",
+			"path": "packages/relay/src/lib/networking-security/sync/SyncEnrollments.ts",
+			"line": 47,
+			"lastLine": 47,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eb415e58b1bde7fc11c8",
+			"path": "packages/relay/src/lib/networking-security/sync/SyncEnrollments.ts",
+			"line": 62,
+			"lastLine": 62,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "12f676387a04f5ba877e",
+			"path": "packages/relay/src/lib/networking-security/sync/SyncEnrollments.ts",
+			"line": 71,
+			"lastLine": 76,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5106d235cb65636a54b1",
+			"path": "packages/relay/src/lib/networking-security/sync/SyncRing.ts",
+			"line": 11,
+			"lastLine": 11,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7d89a4d0098ef8e26376",
+			"path": "packages/relay/src/lib/networking-security/sync/SyncRing.ts",
+			"line": 23,
+			"lastLine": 28,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5ff6ec0f76191eea9a14",
+			"path": "packages/relay/src/lib/networking-security/sync/SyncRing.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1d2019ab0b074875fe53",
+			"path": "packages/relay/src/lib/networking-security/sync/SyncRing.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "38eed25443467b3e853a",
+			"path": "packages/relay/src/utils/development-tooling/connectClaims.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f36c76ca3fbd76b804a2",
+			"path": "packages/relay/src/utils/development-tooling/publicRoute.ts",
+			"line": 21,
+			"lastLine": 29,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bb4ba23c38cf42c3d037",
+			"path": "packages/relay/test/support/relayFixture.ts",
+			"line": 71,
+			"lastLine": 71,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1da82e444c02671d1287",
+			"path": "packages/reports/src/components/explorer-ui/entity-sections/entityMeasure.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1a607cae37ed3e0953bc",
+			"path": "packages/reports/src/components/explorer-ui/entity-sections/entityMeasure.ts",
+			"line": 71,
+			"lastLine": 71,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "52d261e01a1b13324860",
+			"path": "packages/reports/src/components/explorer-ui/harness-failures/harnessFailures.ts",
+			"line": 14,
+			"lastLine": 14,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "990465669053e253fbdf",
+			"path": "packages/reports/src/components/explorer-ui/harness-failures/harnessFailures.ts",
+			"line": 30,
+			"lastLine": 30,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c0bf1a979ead8ed034ae",
+			"path": "packages/reports/src/components/verification-evidence/AudioEvidence.svelte",
+			"line": 54,
+			"lastLine": 54,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dd281c9503d9062ebd30",
+			"path": "packages/reports/src/utils/development-tooling/mediaResponse.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "209ad799546e78b5367a",
+			"path": "packages/reports/src/utils/explorer-ui/console-server/consoleAccess.ts",
+			"line": 110,
+			"lastLine": 110,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3bd038d8d5aca70ef71d",
+			"path": "packages/reports/src/utils/explorer-ui/console-server/consoleServer.ts",
+			"line": 43,
+			"lastLine": 43,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e23ae33ca3256e01f03f",
+			"path": "packages/reports/src/utils/explorer-ui/contractFields.ts",
+			"line": 35,
+			"lastLine": 35,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9b68b45f5a164463e275",
+			"path": "packages/reports/src/utils/explorer-ui/contractFields.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "03f2a67e5bc9a37e679b",
+			"path": "packages/reports/src/utils/planning-collaboration/artboardSize.ts",
+			"line": 16,
+			"lastLine": 22,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "767537e86196b6e03501",
+			"path": "packages/reports/tests/e2e/support/component-previews/previewApi.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d883218bd07250ccc87b",
+			"path": "packages/reports/tests/e2e/support/component-previews/router.svelte.ts",
+			"line": 32,
+			"lastLine": 38,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "36cfc9e24d2fce2c1381",
+			"path": "packages/reports/tests/e2e/support/component-previews/shellArtworkImages.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "882af518f8b605542d3f",
+			"path": "packages/reports/tests/e2e/support/pageBenchmark.ts",
+			"line": 187,
+			"lastLine": 187,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5b86edcb9163110b672f",
+			"path": "packages/reports/tests/e2e/support/shellFixture.ts",
+			"line": 74,
+			"lastLine": 74,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "441fb4fd3cb361b20c79",
+			"path": "scripts/check-doc-links.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e87e2da9ed99201763f3",
+			"path": "scripts/check-verification-forwards.ts",
+			"line": 192,
+			"lastLine": 192,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5087d037e48343a0e97a",
+			"path": "scripts/report-feature-status/featureStatusSources.ts",
+			"line": 66,
+			"lastLine": 70,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0bfbe7aa3eb391d46234",
+			"path": "scripts/shared-checks/checkLease.ts",
+			"line": 75,
+			"lastLine": 75,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3a3bd92dae5a3d47f7c4",
+			"path": "src/audit/development-tooling/audit.ts",
+			"line": 171,
+			"lastLine": 171,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bf038ce474a2a315cc41",
+			"path": "src/audit/development-tooling/structure-rules/structureRules.ts",
+			"line": 202,
+			"lastLine": 202,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "39c28c19ccaa1d410f7c",
+			"path": "src/commands/development-tooling/contracts-command/searchContracts.ts",
+			"line": 53,
+			"lastLine": 53,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dcb3a6641ac01fa07bb1",
+			"path": "src/commands/execution-runtimes/jobs-command/jobsQueue.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9f02527c33f8a9fff6b5",
+			"path": "src/commands/planning-collaboration/design-command/artboardOptions.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a6c121cb6e2e6636939d",
+			"path": "src/commands/projects-sessions/tracker-command/nativeTrackerAskOptions.ts",
+			"line": 57,
+			"lastLine": 57,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "12ca63c2dae75c15b8b9",
+			"path": "src/helpers/attention-timing/clockMinutes.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "782505e33369b408cb7b",
+			"path": "src/repositories/agents-providers/module-task-repository/syncTaskQueue.ts",
+			"line": 18,
+			"lastLine": 19,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4c6c0d2fda64e09f918f",
+			"path": "src/repositories/agents-providers/ModuleTaskRepository.ts",
+			"line": 40,
+			"lastLine": 40,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "254db5d6d5de0cdf04ab",
+			"path": "src/repositories/agents-providers/ProviderSwitchRepository.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c7681d61019ae8b30852",
+			"path": "src/repositories/execution-runtimes/JobHistoryRepository.ts",
+			"line": 22,
+			"lastLine": 23,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "317c2fdb7ffec723e5fb",
+			"path": "src/repositories/execution-runtimes/JobHistoryRepository.ts",
+			"line": 35,
+			"lastLine": 35,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "872b14df71067c036050",
+			"path": "src/repositories/execution-runtimes/JobHistoryRepository.ts",
+			"line": 51,
+			"lastLine": 54,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ee0ad855d8da85859ba2",
+			"path": "src/repositories/git-source-history/history-note-repository/HistoryNoteRepository.ts",
+			"line": 36,
+			"lastLine": 36,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "916bdd4e8c3a4edbdbee",
+			"path": "src/repositories/git-source-history/history-note-repository/HistoryNoteRepository.ts",
+			"line": 50,
+			"lastLine": 50,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f9d5fe590804ff0203b6",
+			"path": "src/repositories/git-source-history/history-note-repository/HistoryNoteRepository.ts",
+			"line": 86,
+			"lastLine": 89,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d5c517bd51b1a2746fd9",
+			"path": "src/repositories/git-source-history/history-note-repository/HistoryNoteRepository.ts",
+			"line": 126,
+			"lastLine": 126,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3d63aac2a972070718bb",
+			"path": "src/repositories/projects-sessions/ProjectWorkRepository.ts",
+			"line": 103,
+			"lastLine": 103,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "de937ea36cfa983fc1f7",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl.ts",
+			"line": 136,
+			"lastLine": 136,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "19b1fdd53fc1b0fb447f",
+			"path": "src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.ts",
+			"line": 164,
+			"lastLine": 164,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d6ce7736fd100effd74d",
+			"path": "src/repositories/projects-sessions/tracker-notification-queue-repository/legacyQueueSchema.ts",
+			"line": 31,
+			"lastLine": 34,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "97dedb3696cddad7c756",
+			"path": "src/repositories/projects-sessions/TrackerAdapterSourceRepository.ts",
+			"line": 42,
+			"lastLine": 42,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "17fa5ff15c17597e9fea",
+			"path": "src/repositories/projects-sessions/TrackerDispatchRepository.ts",
+			"line": 60,
+			"lastLine": 60,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "12deb851495e28facf4a",
+			"path": "src/repositories/projects-sessions/TrackerMachineRepository.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a8eae23b6614ce46f844",
+			"path": "src/repositories/projects-sessions/TrackerOperationRepository.ts",
+			"line": 201,
+			"lastLine": 207,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9b85cab8baea028a6de0",
+			"path": "src/repositories/projects-sessions/TrackerRecurringRepository.ts",
+			"line": 30,
+			"lastLine": 30,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7e21541bfd8a1bbe1551",
+			"path": "src/repositories/reports-media/AnalyticsRepository.ts",
+			"line": 28,
+			"lastLine": 28,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e8b4709f9f08ce00a93d",
+			"path": "src/repositories/reports-media/AnalyticsRepository.ts",
+			"line": 44,
+			"lastLine": 46,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "04bd1e18d52f405e2ced",
+			"path": "src/repositories/reports-media/AnalyticsRepository.ts",
+			"line": 125,
+			"lastLine": 125,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d5b7b0c26c6fd2575e4b",
+			"path": "src/repositories/reports-media/AnalyticsRepository.ts",
+			"line": 141,
+			"lastLine": 141,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "477b0128d2776b7498a2",
+			"path": "src/repositories/reports-media/AnalyticsRepository.ts",
+			"line": 166,
+			"lastLine": 167,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "567bca89a0879b21c9be",
+			"path": "src/templates/development-tooling/atomicPreprocess.js",
+			"line": 52,
+			"lastLine": 52,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "80a70760799fc1b7a043",
+			"path": "src/templates/development-tooling/atomicSyntax.js",
+			"line": 9,
+			"lastLine": 17,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8a070cb56d34454e0152",
+			"path": "src/utils/accounts-access/repository-identity/repositoryIdentity.ts",
+			"line": 64,
+			"lastLine": 65,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8871f0393da306848fdb",
+			"path": "src/utils/development-tooling/block-spans/blockSpans.ts",
+			"line": 122,
+			"lastLine": 122,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ff7fc76571f0e77f9bc9",
+			"path": "src/utils/development-tooling/moduleGroup.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "05c771579cb8819d66ee",
+			"path": "src/utils/development-tooling/processDescendants.ts",
+			"line": 35,
+			"lastLine": 35,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4f3c3a3006ab8d0b3eac",
+			"path": "src/utils/development-tooling/processProbes.ts",
+			"line": 27,
+			"lastLine": 27,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "115d08aa6c1ebccf2743",
+			"path": "src/utils/development-tooling/scanExports.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "506e2fb8e3a57584d3d6",
+			"path": "src/utils/development-tooling/scanExports.ts",
+			"line": 68,
+			"lastLine": 76,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3a27f89ce8d807d34471",
+			"path": "src/utils/development-tooling/sibling-bug-sweep/committedSourcePaths.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5c674a76cd60715c5d80",
+			"path": "src/utils/development-tooling/unitUid.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b7cee041c4a89f952e58",
+			"path": "src/utils/projects-sessions/console-canonical/consoleRoute.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "83cece96ee7108a3444e",
+			"path": "src/utils/projects-sessions/hubSessionMessages.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bb6fded802ba52ff5182",
+			"path": "src/utils/projects-sessions/hubSessionMessages.ts",
+			"line": 74,
+			"lastLine": 82,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6d8aa0d05e7fa48345d7",
+			"path": "src/utils/projects-sessions/hubSessionMessages.ts",
+			"line": 90,
+			"lastLine": 94,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "55af7aecd3db4ffc4b41",
+			"path": "src/utils/projects-sessions/nextTrackerClock.ts",
+			"line": 5,
+			"lastLine": 10,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e5655cd5c5b6b336c1fa",
+			"path": "src/utils/projects-sessions/normalizeTrackerDue.ts",
+			"line": 53,
+			"lastLine": 53,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4e542630877be27f8b8f",
+			"path": "src/utils/projects-sessions/normalizeTrackerDue.ts",
+			"line": 80,
+			"lastLine": 80,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cfb6b7fa9acb3b3bedab",
+			"path": "src/utils/projects-sessions/normalizeTrackerDue.ts",
+			"line": 97,
+			"lastLine": 97,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c86ac0efa611fc8093fe",
+			"path": "src/utils/projects-sessions/parseTrackerAttachmentWord.ts",
+			"line": 9,
+			"lastLine": 9,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "625828933298ee1de8eb",
+			"path": "src/utils/projects-sessions/planTrackerIgnoreExpiry.ts",
+			"line": 26,
+			"lastLine": 26,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b1f343d318f476733ecb",
+			"path": "src/utils/projects-sessions/trackerRepeatLabel.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ab4df0e30d8bacad9c11",
+			"path": "src/utils/verification-evidence/lfsPointer.ts",
+			"line": 27,
+			"lastLine": 27,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c7fcd7001bfe0e4262b7",
+			"path": "src/validators/development-tooling/GatewayImageValidator.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5ec07f3f61d6be8e1f56",
+			"path": "packages/hub/test/support/githubFake.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9294d98024264ef32c10",
+			"path": "packages/relay/test/support/relayFixture.ts",
+			"line": 164,
+			"lastLine": 166,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bc6d4ab3f2efd7721fcd",
+			"path": "test/container-browser.e2e.test.ts",
+			"line": 19,
+			"lastLine": 19,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f2e65a8a790af8a4357d",
+			"path": "test/reports-frozen-build.e2e.test.ts",
+			"line": 122,
+			"lastLine": 123,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "39dc85ee04a308cacf0b",
+			"path": "test/repositories/projects-sessions/tracker-item-read-digest.test.ts",
+			"line": 94,
+			"lastLine": 94,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c1148656224f30a6ee9e",
+			"path": "test/services/execution-runtimes/container-viewer-gate.test.ts",
+			"line": 78,
+			"lastLine": 78,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d995e4bc296c678ceb86",
+			"path": "test/services/projects-sessions/tracker-quota-notice.test.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2d3f9eadced598705bf4",
+			"path": "test/services/projects-sessions/tracker-watchdog-context.test.ts",
+			"line": 213,
+			"lastLine": 213,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eec7a8c6a4dd790d7cab",
+			"path": "test/support/cli-measurement/measureHarness.ts",
+			"line": 181,
+			"lastLine": 182,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6ad17c261d01e2411f48",
+			"path": "test/support/cli-measurement/measureProcess.ts",
+			"line": 42,
+			"lastLine": 43,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "37b2d1b7a91c39673112",
+			"path": "test/support/trackerObservedRunFixture.ts",
+			"line": 100,
+			"lastLine": 100,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "54baaf1a30990662241c",
+			"path": "packages/hub/test/adapters/d1-auth-store.test.ts",
+			"line": 40,
+			"lastLine": 40,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "68d2d1c3c2b60a45bcdd",
+			"path": "packages/hub/test/adapters/d1-auth-store.test.ts",
+			"line": 58,
+			"lastLine": 59,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f152d5f8cb07acb29e7e",
+			"path": "packages/hub/test/adapters/d1-auth-store.test.ts",
+			"line": 82,
+			"lastLine": 82,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b51c165a9739609e7c52",
+			"path": "packages/hub/test/adapters/d1-auth-store.test.ts",
+			"line": 93,
+			"lastLine": 96,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2bfc62c562f7cc74a944",
+			"path": "packages/hub/test/adapters/d1-auth-store.test.ts",
+			"line": 132,
+			"lastLine": 132,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3b3310ce3a5fd7d9910d",
+			"path": "packages/hub/test/examples/hub.migration.0003-auth-grant-generations.test.ts",
+			"line": 25,
+			"lastLine": 32,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5c08acf9038664cf6f8b",
+			"path": "packages/hub/test/examples/hub.migration.0003-auth-grant-generations.test.ts",
+			"line": 60,
+			"lastLine": 60,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b4377fc498e2463ed3eb",
+			"path": "packages/hub/test/routes/push.test.ts",
+			"line": 119,
+			"lastLine": 119,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8d9afffcd52b542db9df",
+			"path": "packages/hub/test/support/evidenceGit.ts",
+			"line": 142,
+			"lastLine": 142,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "493f03a75cac0878fbf1",
+			"path": "packages/hub/test/support/githubFakeRoutes.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "717eb769482f4328b58a",
+			"path": "packages/hub/test/support/githubFakeRoutes.ts",
+			"line": 112,
+			"lastLine": 112,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "60d68efc020dd1212eb8",
+			"path": "packages/hub/test/support/syncFixture.ts",
+			"line": 133,
+			"lastLine": 133,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "07e9ce99f78b217a53b8",
+			"path": "packages/hub/test/test-preview-refusal.test.ts",
+			"line": 87,
+			"lastLine": 87,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e0f4cac97de78972d7e4",
+			"path": "packages/reports/test/components/entity-details-screen.test.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d241ad7200e6ff3e3d58",
+			"path": "packages/reports/test/components/entity-details.test.ts",
+			"line": 88,
+			"lastLine": 95,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a3cc910be34b8e92ce70",
+			"path": "packages/reports/test/components/entity-history-row.test.ts",
+			"line": 56,
+			"lastLine": 56,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f9be74995e777e29e770",
+			"path": "packages/reports/test/components/entity-overview.test.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f6b39ede4b35954c1caa",
+			"path": "packages/reports/test/components/entity-overview.test.ts",
+			"line": 196,
+			"lastLine": 196,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "db4155096a470fe05422",
+			"path": "packages/reports/test/components/entity-relations.test.ts",
+			"line": 66,
+			"lastLine": 66,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a269fce81e9689c8c6dd",
+			"path": "packages/reports/test/components/entity-relations.test.ts",
+			"line": 145,
+			"lastLine": 145,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1e99a2c6877e5e1ec0cb",
+			"path": "packages/reports/test/components/entity-search-results.test.ts",
+			"line": 43,
+			"lastLine": 45,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0612f66e0cb7717d1c6c",
+			"path": "packages/reports/test/components/entity-tests.test.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e5de41c51a849826615c",
+			"path": "packages/reports/test/components/explorer-catalog-screen.test.ts",
+			"line": 92,
+			"lastLine": 92,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b4d9b0759f0adf21c4e7",
+			"path": "packages/reports/test/components/explorer-function-card.test.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "91bdd3377230f6dff27a",
+			"path": "packages/reports/test/components/explorer-function-card.test.ts",
+			"line": 85,
+			"lastLine": 85,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f56906acebfaaf4e4e36",
+			"path": "packages/reports/test/components/explorer-function-card.test.ts",
+			"line": 126,
+			"lastLine": 126,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "70501fa0b7b0b415366e",
+			"path": "packages/reports/test/components/harness-navbar.test.ts",
+			"line": 35,
+			"lastLine": 41,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "93af0d510afe8e610ea6",
+			"path": "packages/reports/test/components/harness-navbar.test.ts",
+			"line": 47,
+			"lastLine": 49,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8d78be81be00ffb73416",
+			"path": "packages/reports/test/components/harness-navbar.test.ts",
+			"line": 84,
+			"lastLine": 92,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "006433f25208c2615258",
+			"path": "packages/reports/test/components/harness-navbar.test.ts",
+			"line": 122,
+			"lastLine": 122,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ad7686678ad54e83449b",
+			"path": "packages/reports/test/components/harness-navbar.test.ts",
+			"line": 169,
+			"lastLine": 169,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5d9d2fd29bb3c0a07116",
+			"path": "packages/reports/test/components/harness-shell-address.test.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5af3518ce6ae5dab7714",
+			"path": "packages/reports/test/components/harness-shell-legacy.test.ts",
+			"line": 82,
+			"lastLine": 82,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8f042811b9c37c0842ff",
+			"path": "packages/reports/test/components/harness-shell-legacy.test.ts",
+			"line": 101,
+			"lastLine": 101,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "658dd8e03779f1495c8c",
+			"path": "packages/reports/test/components/harness-verdict.test.ts",
+			"line": 15,
+			"lastLine": 18,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "16e84fa81a48a3875130",
+			"path": "packages/reports/test/components/harness-verdict.test.ts",
+			"line": 103,
+			"lastLine": 103,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3e978eab4a88c9596689",
+			"path": "packages/reports/test/entityConfigFixtures.ts",
+			"line": 77,
+			"lastLine": 77,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5d1ba1f8f8ea47b8066b",
+			"path": "packages/reports/test/entityPreviewPlatformEvidence.ts",
+			"line": 42,
+			"lastLine": 42,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7a4fa8c697533ebffad6",
+			"path": "packages/reports/test/entityRender.ts",
+			"line": 61,
+			"lastLine": 61,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "30ce5786162f85c4c24c",
+			"path": "packages/reports/test/entityRender.ts",
+			"line": 82,
+			"lastLine": 82,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5647b497826135abc334",
+			"path": "packages/reports/test/entityRender.ts",
+			"line": 142,
+			"lastLine": 142,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a5e7c7f646f54032f947",
+			"path": "packages/reports/test/examples/reports.page.harness-branch-branch-at-components-entity-details.test.ts",
+			"line": 42,
+			"lastLine": 42,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ab0d1da9b86f9f8ae022",
+			"path": "packages/reports/test/examples/reports.page.harness-branch-branch-at-layouts-entity-details.test.ts",
+			"line": 68,
+			"lastLine": 68,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "21418f5e4c7dcad3b30b",
+			"path": "packages/reports/test/examples/reports.page.harness-branch-branch-at-layouts-entity-details.test.ts",
+			"line": 100,
+			"lastLine": 100,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "32b29f10f99e4d1c2e67",
+			"path": "packages/reports/test/examples/reports.page.harness-branch-branch-at-services-entity-details.test.ts",
+			"line": 68,
+			"lastLine": 68,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8830fa529a9cba6d87a3",
+			"path": "packages/reports/test/examples/reports.page.harness-branch-branch-at-services-entity-details.test.ts",
+			"line": 100,
+			"lastLine": 100,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "466a5cc720e25d903a77",
+			"path": "packages/reports/test/examples/reports.page.harness-branch-branch-at-shells-entity-details.test.ts",
+			"line": 67,
+			"lastLine": 67,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0260af9a4410846a88b7",
+			"path": "packages/reports/test/examples/reports.page.harness-branch-branch-at-shells-entity-details.test.ts",
+			"line": 100,
+			"lastLine": 100,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9a2991c30cf86ad62fe2",
+			"path": "packages/reports/test/examples/reports.page.harness-branch-branch-at-shells-entity.test.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5953cba645f309a894a0",
+			"path": "packages/reports/test/examples/reports.page.harness-branch-branch-at-shells-entity.test.ts",
+			"line": 68,
+			"lastLine": 68,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "70b3eeb8805c9da2eac2",
+			"path": "packages/reports/test/support/previewFixture.ts",
+			"line": 60,
+			"lastLine": 60,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "26bc5f1f018541d83ed9",
+			"path": "test/adapters/git.test.ts",
+			"line": 51,
+			"lastLine": 51,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b4fcde97dec879055b91",
+			"path": "test/adapters/git.test.ts",
+			"line": 68,
+			"lastLine": 68,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "caf629110facfca23ef8",
+			"path": "test/adapters/git.test.ts",
+			"line": 85,
+			"lastLine": 88,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b9c34060bc6cd5dcb082",
+			"path": "test/adapters/projects-sessions/tracker-adapter-lease.test.ts",
+			"line": 14,
+			"lastLine": 21,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eda268431a921f1b9d4f",
+			"path": "test/adapters/projects-sessions/tracker-adapter-lease.test.ts",
+			"line": 27,
+			"lastLine": 27,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1234f45ab5fc2c53f395",
+			"path": "test/adapters/projects-sessions/tracker-schema.test.ts",
+			"line": 89,
+			"lastLine": 89,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fd9981a5ec0d596fb330",
+			"path": "test/adapters/projects-sessions/tracker-snapshot.test.ts",
+			"line": 19,
+			"lastLine": 19,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d5065a3c506e4e73b63c",
+			"path": "test/adapters/projects-sessions/tracker-snapshot.test.ts",
+			"line": 155,
+			"lastLine": 155,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0f8da29bdd8e129915ef",
+			"path": "test/adapters/sqlite.test.ts",
+			"line": 85,
+			"lastLine": 90,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "92172fe36914aa4b96af",
+			"path": "test/cli-output.e2e.test.ts",
+			"line": 99,
+			"lastLine": 99,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5792d2f4c734ba676549",
+			"path": "test/cli-output.e2e.test.ts",
+			"line": 128,
+			"lastLine": 128,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "34fccacbf95cb4bd6e8b",
+			"path": "test/examples/adapter.git.test.ts",
+			"line": 90,
+			"lastLine": 90,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e9931160969eb7a05c6b",
+			"path": "test/examples/adapter.open-sqlite.test.ts",
+			"line": 14,
+			"lastLine": 14,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "40867771bdd727a81172",
+			"path": "test/examples/adapter.open-sqlite.test.ts",
+			"line": 58,
+			"lastLine": 58,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "36987fbc857b51790cd1",
+			"path": "test/examples/function.resource-database.test.ts",
+			"line": 85,
+			"lastLine": 85,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "72c58eb243681303e301",
+			"path": "test/needs-you-canary-restart.test.ts",
+			"line": 14,
+			"lastLine": 15,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d1160fdb51f1210e8243",
+			"path": "test/needs-you-canary.test.ts",
+			"line": 12,
+			"lastLine": 13,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8f345b452a8b46e03d8b",
+			"path": "test/needs-you-canary.test.ts",
+			"line": 95,
+			"lastLine": 95,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bd8d6527f392030a5628",
+			"path": "test/pinned-toolchain-runtime.test.ts",
+			"line": 8,
+			"lastLine": 8,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "92bc349fd1487fe29b57",
+			"path": "test/preview-shells-runner.test.ts",
+			"line": 101,
+			"lastLine": 101,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "714e5fe5ac06e3bc614a",
+			"path": "test/repositories/projects-sessions/tracker-dispatch.test.ts",
+			"line": 56,
+			"lastLine": 62,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0ef097d82a1cfb410817",
+			"path": "test/repositories/projects-sessions/tracker-dispatch.test.ts",
+			"line": 66,
+			"lastLine": 66,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c9313a438865ae4cf889",
+			"path": "test/repositories/projects-sessions/tracker-dispatch.test.ts",
+			"line": 81,
+			"lastLine": 81,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d860dc582c11905e113b",
+			"path": "test/repositories/projects-sessions/tracker-dispatch.test.ts",
+			"line": 100,
+			"lastLine": 100,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3a105966175eb038b940",
+			"path": "test/repositories/projects-sessions/tracker-notification-queue.test.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0b3e794f62e435468e2c",
+			"path": "test/repositories/projects-sessions/tracker-notification-queue.test.ts",
+			"line": 67,
+			"lastLine": 67,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "36a30e510fb08aa30f81",
+			"path": "test/repositories/projects-sessions/tracker-notification-queue.test.ts",
+			"line": 108,
+			"lastLine": 115,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ee240eecb934adea6102",
+			"path": "test/repositories/projects-sessions/tracker-notification-queue.test.ts",
+			"line": 147,
+			"lastLine": 147,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cd5f7d461bc8b7ed8498",
+			"path": "test/repositories/projects-sessions/tracker-notification-queue/runtimeFixture.ts",
+			"line": 69,
+			"lastLine": 69,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bbb6bfad8c056514fecd",
+			"path": "test/repositories/projects-sessions/tracker-operation.test.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d4b95609cd0690d7b8f7",
+			"path": "test/repositories/projects-sessions/tracker-operation.test.ts",
+			"line": 100,
+			"lastLine": 100,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "571310c0e75580565239",
+			"path": "test/repositories/projects-sessions/tracker-operation.test.ts",
+			"line": 109,
+			"lastLine": 109,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "23a3af814ac76a11d6cc",
+			"path": "test/repositories/projects-sessions/tracker-run-read.test.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2c5708196cd1a28605b3",
+			"path": "test/services/projects-sessions/tracker-adapter-poll.test.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "35067d6afa992a9e1cf9",
+			"path": "test/services/projects-sessions/tracker-adapter-poll.test.ts",
+			"line": 65,
+			"lastLine": 67,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9257ce7d793058906073",
+			"path": "test/services/projects-sessions/tracker-backup.test.ts",
+			"line": 98,
+			"lastLine": 99,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1d940d38dfe1b2ced2b1",
+			"path": "test/services/projects-sessions/tracker-backup.test.ts",
+			"line": 135,
+			"lastLine": 136,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5ff352627f4d3bae8da2",
+			"path": "test/services/projects-sessions/tracker-change-feed.test.ts",
+			"line": 9,
+			"lastLine": 9,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "657deea1e0be9d17a06f",
+			"path": "test/services/projects-sessions/tracker-change-feed.test.ts",
+			"line": 39,
+			"lastLine": 44,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7d4fffd269d57696c12c",
+			"path": "test/services/projects-sessions/tracker-finished-sessions.test.ts",
+			"line": 146,
+			"lastLine": 146,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "220b137365563470af19",
+			"path": "test/services/projects-sessions/tracker-host-adapter.test.ts",
+			"line": 65,
+			"lastLine": 65,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "28a20b0a92fe145e424e",
+			"path": "test/services/projects-sessions/tracker-host-resources.test.ts",
+			"line": 126,
+			"lastLine": 126,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "af8d0308ea77b7b4cef9",
+			"path": "test/services/projects-sessions/tracker-host-watchdog.test.ts",
+			"line": 149,
+			"lastLine": 149,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "96e9240552814e11751f",
+			"path": "test/services/projects-sessions/tracker-hub-chief-messages.test.ts",
+			"line": 29,
+			"lastLine": 29,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "901b4873d16c24485586",
+			"path": "test/services/projects-sessions/tracker-hub-messages.test.ts",
+			"line": 29,
+			"lastLine": 29,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8a5ba9cd1cbd4c123036",
+			"path": "test/services/projects-sessions/tracker-local-api-models.test.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "735af92ba48db4dffa7b",
+			"path": "test/services/projects-sessions/tracker-persistence.test.ts",
+			"line": 37,
+			"lastLine": 37,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5aeb387a053419232013",
+			"path": "test/services/projects-sessions/tracker-phone-replica.test.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "48d8faefb5c0594d6349",
+			"path": "test/services/projects-sessions/tracker-phone-replica.test.ts",
+			"line": 64,
+			"lastLine": 64,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3f76903da75913f2595b",
+			"path": "test/shared-alias-index.test.ts",
+			"line": 41,
+			"lastLine": 47,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "83047586a2c2c766a03e",
+			"path": "test/shared-workspace-registry.test.ts",
+			"line": 74,
+			"lastLine": 74,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "324638cf67a885f49281",
+			"path": "test/support/needsYouCanaryWorld.ts",
+			"line": 67,
+			"lastLine": 67,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "419d1b8b4e05b6cbdf7e",
+			"path": "test/support/rustModuleScenario.ts",
+			"line": 66,
+			"lastLine": 66,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2e6cc9175959d5a252aa",
+			"path": "test/support/trackerAdapterFixture.ts",
+			"line": 89,
+			"lastLine": 89,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ac8e13b02e266246374c",
+			"path": "test/support/trackerDispatcherFixture.ts",
+			"line": 43,
+			"lastLine": 43,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bd4608120e87c2ef3173",
+			"path": "test/support/trackerDispatcherFixture.ts",
+			"line": 102,
+			"lastLine": 110,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "16100dfa3fdc78e5ae13",
+			"path": "test/support/trackerWebPushWorld.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "748b783732da70deea93",
+			"path": "test/tracker-adapter.e2e.test.ts",
+			"line": 90,
+			"lastLine": 90,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "01b5eed3722ea0948801",
+			"path": "test/tracker-adapter.e2e.test.ts",
+			"line": 113,
+			"lastLine": 113,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bfeb2d30cbd09036a18f",
+			"path": "test/tracker-adapter.e2e.test.ts",
+			"line": 217,
+			"lastLine": 217,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d3b2f3fdb30e4c30b32c",
+			"path": "test/unit-examples-verification-scopes.ts",
+			"line": 68,
+			"lastLine": 71,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "17653a2bdffdd5aa3454",
+			"path": "test/utils/pinned-toolchain.test.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e1bc4bd05831a8e9c2e5",
+			"path": "test/utils/pinned-toolchain.test.ts",
+			"line": 120,
+			"lastLine": 120,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "314bc04aaaf1fa9effa3",
+			"path": "test/utils/shared-select-impact/imports.ts",
+			"line": 9,
+			"lastLine": 9,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e801d7102b4f0ab35294",
+			"path": "test/utils/shared-select-impact/imports.ts",
+			"line": 19,
+			"lastLine": 20,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0b8c55d4109466f6ffd7",
+			"path": "src/cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter.ts",
+			"line": 56,
+			"lastLine": 59,
+			"score": 31,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "--strict-mcp-config",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "mcpServers",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "--tools",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 56–59 pass `--strict-mcp-config` and an explicit `--mcp-config` with `{\"mcpServers\":{}}`, disabling configured MCP servers; `--tools` further restricts tools. No matching MCP context-overflow mechanism is visible."
+		},
+		{
+			"id": "f7b01671fc3536f439c5",
+			"path": "test/adapters/agents-providers/module-worker-mcp.test.ts",
+			"line": 5,
+			"lastLine": 13,
+			"score": 25,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "tool_addition",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "--tools",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": "--strict-mcp-config",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 5–13 are a test, not a launch path. Its assertions expect `--strict-mcp-config` and no `--mcp-config`; the excerpt describes the guard but does not show a worker missing it."
+		},
+		{
+			"id": "b7f0dc28d73d280b9352",
+			"path": "test/adapters/adapter.claude-benchmark.test.ts",
+			"line": 49,
+			"lastLine": 52,
+			"score": 24,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "--strict-mcp-config",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "mcpServers",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "--tools",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 49–52 are expected arguments in a test fixture. They include `--strict-mcp-config` and an empty `mcpServers` configuration, but do not establish a vulnerable launch site."
+		},
+		{
+			"id": "aafa03d2f5e11944f103",
+			"path": "test/utils/projects-sessions/tracker-egress-policy.test.ts",
+			"line": 61,
+			"lastLine": 62,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "--strict-mcp-config",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "allowedTools",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 57–62 are assertions for `claudeEgressArguments`; they explicitly require `--strict-mcp-config` alongside sandbox settings and web tools disabled. This is test evidence of a guard, not an unguarded worker launch."
+		},
+		{
+			"id": "23fc2dda2dca791b024e",
+			"path": "test/gateway-images.test.ts",
+			"line": 16,
+			"lastLine": 22,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "mcpServers",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 16–22 mock the Claude Agent SDK `query` and an MCP server in an image-processing test. This is test scaffolding, not a headless CLI worker launch or evidence of account/user MCP servers joining."
+		},
+		{
+			"id": "53d1eed3e668dad51904",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedUsage.ts",
+			"line": 17,
+			"lastLine": 17,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "claude",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 7–17 select a Claude usage reader for completed native macOS runs and route usage reads by CLI. This reads counters and does not construct a worker launch or configure MCP."
+		},
+		{
+			"id": "cdc18ac627a09d7ba1f8",
+			"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitBlobs.ts",
+			"line": 11,
+			"lastLine": 11,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 6–20 run `git cat-file --batch` to read requested repository blobs, with an empty-request guard and 64 MB buffer. The call is unrelated to Claude worker launches or MCP context."
+		},
+		{
+			"id": "88c04cb6ca217887d6de",
+			"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
+			"line": 185,
+			"lastLine": 185,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 178–185 spawn the CLI as a kernel HTTP server with kernel-specific arguments and an analytics-disabled environment. The excerpt shows no Claude headless worker creation or MCP settings."
+		},
+		{
+			"id": "dda34645d15191ed26c8",
+			"path": "src/cli/program/run-report/runReport.ts",
+			"line": 15,
+			"lastLine": 15,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 8–19 spawn a reports CLI entry with report-specific paths and environment variables. The excerpt shows no Claude worker launch or MCP configuration."
+		},
+		{
+			"id": "ca7aba5d3472194093eb",
+			"path": "packages/desktop/scripts/ios-build-processes.ts",
+			"line": 45,
+			"lastLine": 51,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				},
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 41–51 invoke `ps` via `execFile` with a 5-second timeout and 16 MB buffer to read the process table. This is process inspection during an iOS build; the excerpt shows no Claude worker launch, MCP configuration, or context trigger."
+		},
+		{
+			"id": "4b42fe3f0d53a1329386",
+			"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/claudeQuotaSource.ts",
+			"line": 98,
+			"lastLine": 98,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "execFile",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 98–107 invoke `execFile` to read a macOS Keychain credential. This is not an automated headless CLI launch creating a bounded worker session, and the excerpt shows no MCP configuration behavior."
+		},
+		{
+			"id": "feb41928e479317dc5b5",
+			"path": "packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
+			"line": 87,
+			"lastLine": 87,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 87–92 spawn the built project-reports server with its own environment and detached process settings. The excerpt does not show a Claude CLI launch, bounded worker session, or MCP configuration."
+		},
+		{
+			"id": "ddb62d558120222a6aac",
+			"path": "src/adapters/accounts-access/VaultBrowserDockerAdapter.ts",
+			"line": 114,
+			"lastLine": 114,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 114–118 spawn Docker to run `/opt/vault/pipe_client.py` for a browser session. This is not a headless CLI worker launch, and no MCP configuration is shown."
+		},
+		{
+			"id": "d9e0c16a6ebbbcb238dc",
+			"path": "src/adapters/agents-providers/managed-provider-docker-adapter/dockerWorkspace.ts",
+			"line": 95,
+			"lastLine": 97,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 91–97 use `Bun.spawn` to transfer workspace data between commands. This is not a Claude headless worker launch and does not establish any MCP behavior."
+		},
+		{
+			"id": "7c1457c8e26422af964d",
+			"path": "src/adapters/agents-providers/ManagedProviderDockerAdapter.ts",
+			"line": 144,
+			"lastLine": 144,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 144–148 attach to an existing Docker task container using `docker start --attach --interactive`. The excerpt does not create a Claude CLI worker session or show MCP settings."
+		},
+		{
+			"id": "619ca86d943e033bd87e",
+			"path": "src/adapters/execution-runtimes/container-browser-adapter/dockerHost.ts",
+			"line": 71,
+			"lastLine": 71,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 71–80 spawn a command to provide a duplex byte stream for a container browser adapter. The visible purpose is browser I/O, not a Claude headless bounded worker launch, and there is no MCP configuration shown."
+		},
+		{
+			"id": "c05e0c1a98fcee210651",
+			"path": "packages/desktop/scripts/start-electron.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 4–5 spawn Electron with the current working directory; this is desktop process startup, with no bounded headless CLI worker or MCP configuration visible."
+		},
+		{
+			"id": "3654d5e359d031f46888",
+			"path": "packages/desktop/src/adapters/networking-security/hosted-http-adapter/HostedHttpAdapter.ts",
+			"line": 102,
+			"lastLine": 102,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 98–102 use a regular-expression exec on an API path to extract a project ID after an HTTP denial. This is not a process launch or worker session."
+		},
+		{
+			"id": "13d8426a2d747f6d2d61",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/projectProposal.ts",
+			"line": 43,
+			"lastLine": 43,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 31–43 show JSON proposal parsing and field validation; there is no automated headless CLI worker launch or MCP configuration path in the excerpt."
+		},
+		{
+			"id": "325ad028705c2d69d48f",
+			"path": "packages/desktop/src/utils/projects-sessions/deploymentCommand.ts",
+			"line": 11,
+			"lastLine": 11,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 7–11 spawn a deployment command with its supplied arguments and environment; the excerpt does not establish a Claude worker session or MCP behavior."
+		},
+		{
+			"id": "409cb63646bea04f825b",
+			"path": "packages/desktop/src/utils/projects-sessions/repositoryLease.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 9–21 spawn a shell helper to hold an advisory repository lock. This is not a headless Claude worker launch and exposes no MCP configuration."
+		},
+		{
+			"id": "dd96e418b9a7e39e2957",
+			"path": "specification/designs/hub-home/mockup/data-quota.js",
+			"line": 45,
+			"lastLine": 45,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "claude",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 33–45 build mock quota display data, including a Claude quota entry; no worker launch or MCP configuration is visible."
+		},
+		{
+			"id": "909398496d9f8f11579e",
+			"path": "src/cli/program/console-install-service/consoleDataModules.ts",
+			"line": 42,
+			"lastLine": 42,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 30–42 convert indexed data and media files into host bundle modules. This mechanism is unrelated to headless worker launches or MCP configuration."
+		},
+		{
+			"id": "7ba5d914eb76c285b949",
+			"path": "src/cli/program/history-index-service/history-media-service/mediaPlace.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 4–16 resolve a captured media file by checking its SHA-256 and deriving a path; no worker launch or MCP configuration is present."
+		},
+		{
+			"id": "3613713aa6b7693ed2c8",
+			"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
+			"line": 81,
+			"lastLine": 81,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 69–81 construct Git history metadata by reading revisions and parsing the Git origin URL. The visible `exec` match is unrelated to launching a bounded headless worker or configuring MCP servers."
+		},
+		{
+			"id": "d05ff36f0ea990a13d39",
+			"path": "src/cli/program/legacy-import-service/LegacyImportService.ts",
+			"line": 107,
+			"lastLine": 107,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 95–107 append legacy report metadata and update a Git ref. The visible Git command does not launch a worker session or configure MCP availability."
+		},
+		{
+			"id": "d9936f9760e14d359414",
+			"path": "src/cli/program/loopSiblings.ts",
+			"line": 148,
+			"lastLine": 148,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 136–148 resolve the project root and parse a repository path plus positive line number. No headless worker launch or MCP configuration is shown."
+		},
+		{
+			"id": "a2232efb9f74dfeeba9d",
+			"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/peakMemory.ts",
+			"line": 24,
+			"lastLine": 25,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "exec",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 12–25 run a bounded memory-reporting command with a 60-second timeout and 1 MiB output buffer. This is a resource measurement helper, not a worker-session launch or MCP configuration path."
+		},
+		{
+			"id": "0a7634721b9f01dfeed8",
+			"path": "src/commands/projects-sessions/registerHarborAppTools.ts",
+			"line": 62,
+			"lastLine": 62,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 50–62 expose a command that streams the Harbor SDK MCP process over inherited stdio using fixed arguments. The excerpt shows an MCP server executable, not an automated headless CLI worker launch that leaves account/user MCP servers enabled."
+		},
+		{
+			"id": "1a1e35e9b97751b40527",
+			"path": "packages/desktop/test/ios-build-processes.test.ts",
+			"line": 165,
+			"lastLine": 165,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 153–165 are tests that spawn a sleep-process bystander while exercising iOS build process cleanup. This does not show an automated Claude worker launch or MCP configuration."
+		},
+		{
+			"id": "b15d6f52a741e57df5cf",
+			"path": "packages/desktop/test/ios-build-shared-daemons.test.ts",
+			"line": 84,
+			"lastLine": 84,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 72–84 define process-liveness helpers and spawn a stand-in build tool for iOS shared-daemon tests. No bounded worker session or MCP server configuration is shown."
+		}
+	],
+	"errors": [],
+	"classPath": "specification/bug-classes/worker-mcp-context-overflow.json"
+}
