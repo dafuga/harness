@@ -109,7 +109,7 @@ test('escalates a failed attempt up its own Claude route', () => {
 	const sonnetHigh = run('sonnet', 'claude-sonnet-5-5', 'high');
 	const opus = run('opus', 'claude-opus-5-5', 'high');
 	const next = (item: { title: string }, previous: ReturnType<typeof run>) => {
-		const { id, effort } = retryTrackerModel(item, previous, undefined, before);
+		const { id, effort } = retryTrackerModel(item, previous, { now: before });
 		return `${id} ${effort}`;
 	};
 	const docs = { title: 'Update the README' };
@@ -132,8 +132,7 @@ test('retries after the reset use the post-reset table', () => {
 		retryTrackerModel(
 			{ title: 'Add CSV export' },
 			{ rung: 'sonnet', model: 'claude-sonnet-5-5', effort: 'medium' },
-			undefined,
-			reset
+			{ now: reset }
 		)
 	).toMatchObject({ id: 'sol', effort: 'medium' });
 });

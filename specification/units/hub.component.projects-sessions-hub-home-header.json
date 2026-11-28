@@ -15,6 +15,7 @@
 			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.projects-sessions-hub-home-hub-home-computer-detail",
+			"reports.component.projects-sessions-hub-home-hub-home-preference",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -141,6 +142,11 @@
 		},
 		{
 			"unit": "reports.component.projects-sessions-hub-home-hub-home-computer-detail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-home-preference",
 			"via": "import",
 			"origin": "derived"
 		},

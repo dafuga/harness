@@ -133,6 +133,7 @@ const plan = z
 
 const snapshot = z.object({
 	overview: z.unknown(),
+	providerPreference: z.object({ provider: z.literal('claude'), until: time }).optional(),
 	projectDirectory: z
 		.array(
 			z.object({

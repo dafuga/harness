@@ -20,7 +20,8 @@ export function nativeTrackerInspectionRequest(
 	if (command === 'backup' && words.join() === 'now')
 		return { method: 'POST', path: '/backup/now' };
 	const adapter = command === 'adapter' ? nativeTrackerAdapterRequest(words, values) : undefined;
-	const admin = command === 'autolaunch' ? nativeTrackerAutolaunchRequest(words) : undefined;
+	const admin =
+		command === 'autolaunch' ? nativeTrackerAutolaunchRequest(words, values.until) : undefined;
 	return (
 		admin ??
 		adapter ??

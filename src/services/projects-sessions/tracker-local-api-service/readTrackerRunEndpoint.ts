@@ -6,7 +6,7 @@ import type { TrackerItem } from '../../../repositories/projects-sessions/Tracke
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
 import { ladderFrom } from '../../../utils/agents-providers/parseTrackerModelSpec';
-import type { TrackerLadderConfig } from '../../../utils/agents-providers/parseTrackerModelSpec.types';
+import type { TrackerRetryOptions } from '../../../utils/agents-providers/pickTrackerModel.types';
 import { pickTrackerModelFromRuns } from '../../../utils/agents-providers/pickTrackerModelFromRuns';
 import { trackerRunReport } from '../../../utils/agents-providers/trackerRunReport';
 import type { TrackerLocalApiOptions } from '../TrackerLocalApiService.types';
@@ -69,7 +69,10 @@ export function readTrackerRunEndpoint(
 			return undefined;
 		case 'items':
 			if (parts.length === 3 && parts[2] === 'pick') {
-				return itemPick(items.get(parts[1]), runs, ladderConfig);
+				return itemPick(items.get(parts[1]), runs, {
+					cfg: ladderConfig,
+					claudePreferredUntil: options.claudePreferredUntil?.()
+				});
 			}
 			return undefined;
 		default:
@@ -77,8 +80,12 @@ export function readTrackerRunEndpoint(
 	}
 }
 
-function itemPick(item: TrackerItem, runs: TrackerRunReadRepository, cfg?: TrackerLadderConfig) {
-	const { rung, kind, reason } = pickTrackerModelFromRuns(item, () => runs.finished(), { cfg });
+function itemPick(
+	item: TrackerItem,
+	runs: TrackerRunReadRepository,
+	selection: TrackerRetryOptions
+) {
+	const { rung, kind, reason } = pickTrackerModelFromRuns(item, () => runs.finished(), selection);
 	return {
 		item_id: item.id,
 		rung: rung.id,

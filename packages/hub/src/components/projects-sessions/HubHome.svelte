@@ -92,6 +92,7 @@
 		computers: live,
 		trackerConnected: overview?.status === 'ready',
 		quotaConnected: Array.isArray(snapshot?.providers.quota),
+		providerPreference: snapshot?.providerPreference,
 		now
 	});
 	const reads = hubHomeReads({

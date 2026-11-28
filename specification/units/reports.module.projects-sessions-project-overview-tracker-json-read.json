@@ -8,12 +8,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/lib/projects-sessions/project-overview/trackerJsonRead.ts"],
-		"symbols": ["getTrackerJson"]
+		"source": [
+			"packages/reports/src/lib/projects-sessions/project-overview/readTrackerPreference.ts",
+			"packages/reports/src/lib/projects-sessions/project-overview/trackerJsonRead.ts"
+		],
+		"symbols": ["readTrackerPreference", "getTrackerJson"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "readTrackerPreference.fetcher",
+				"type": "typeof fetch",
+				"required": true
+			},
 			{
 				"name": "getTrackerJson.fetcher",
 				"type": "typeof fetch",
@@ -27,6 +35,10 @@
 		],
 		"outputs": [
 			{
+				"name": "readTrackerPreference",
+				"type": "Promise<HomeProviderPreference | undefined>"
+			},
+			{
 				"name": "getTrackerJson",
 				"type": "Promise<unknown>"
 			}
@@ -39,6 +51,24 @@
 		],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "readTrackerPreference",
+				"inputs": [
+					{
+						"name": "readTrackerPreference.fetcher",
+						"type": "typeof fetch",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerPreference",
+						"type": "Promise<HomeProviderPreference | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "getTrackerJson",
 				"inputs": [
@@ -66,6 +96,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-project-overview-tracker-read-error",
 			"via": "import",
