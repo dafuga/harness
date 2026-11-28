@@ -166,10 +166,8 @@ test('only Chief of Staff is an agent: every other project is a sub-agent counte
 	const [chiefOfStaff] = listed.agents;
 	expect(chiefOfStaff).toMatchObject({ id: 'cos', sessions: 0, state: 'working' });
 	expect(chiefOfStaff.subAgents.sessions).toBe(2);
-	expect(chiefOfStaff.subAgents.tasks.map((task) => task.itemId).sort()).toEqual([
-		'flagged',
-		'live'
-	]);
+	const taskIds = chiefOfStaff.subAgents.tasks.map((task) => task.itemId);
+	expect(taskIds.sort()).toEqual(['flagged', 'live']);
 	expect(JSON.stringify(listed)).not.toContain('touched');
 	expect(soonestWork(home.overview).map((item) => item.id)).toContain('touched');
 });
