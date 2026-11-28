@@ -85,8 +85,9 @@ export async function turnOffHubPush(api: BrowserApi): Promise<HubPushReading | 
  */
 export async function forgetHubPush(api: BrowserApi): Promise<void> {
 	if (pushSupport() !== 'supported') return;
-	const approval = await currentSubscription(approvalPushScope);
-	await approval?.unsubscribe();
+	await currentSubscription(approvalPushScope)
+		.then((held) => held?.unsubscribe())
+		.catch(() => {});
 	const held = await currentSubscription();
 	if (!held) return;
 	await api.send('DELETE', subscriptionPath, { endpoint: held.endpoint }).catch(() => {});

@@ -15,6 +15,7 @@
 			"BrowserDeviceSessionService.resolve",
 			"BrowserDeviceSessionService.review",
 			"BrowserDeviceSessionService.clearReviews",
+			"BrowserDeviceSessionService.push",
 			"BrowserDeviceSessionService.forget"
 		]
 	},
@@ -52,6 +53,16 @@
 				"required": true
 			},
 			{
+				"name": "BrowserDeviceSessionService.push.account",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "BrowserDeviceSessionService.push.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
 				"name": "BrowserDeviceSessionService.forget.account",
 				"type": "string",
 				"required": true
@@ -69,6 +80,10 @@
 			{
 				"name": "BrowserDeviceSessionService.clearReviews",
 				"type": "void"
+			},
+			{
+				"name": "BrowserDeviceSessionService.push",
+				"type": "ApprovalPushRequest"
 			},
 			{
 				"name": "BrowserDeviceSessionService.forget",
@@ -147,6 +162,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "BrowserDeviceSessionService.push",
+				"inputs": [
+					{
+						"name": "BrowserDeviceSessionService.push.account",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "BrowserDeviceSessionService.push.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserDeviceSessionService.push",
+						"type": "ApprovalPushRequest"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "BrowserDeviceSessionService.forget",
 				"inputs": [
 					{
@@ -187,6 +225,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "hub.module.networking-security-hub-push",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.service.networking-security-browser-device-session-service-browser-enrollment-store",
 			"via": "import",

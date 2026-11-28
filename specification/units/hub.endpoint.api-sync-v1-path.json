@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/routes/api/sync/v1/[...path]/+server.ts"],
-		"symbols": ["GET", "POST", "PUT"]
+		"symbols": ["GET", "POST", "PUT", "DELETE"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -26,6 +26,10 @@
 			{
 				"name": "PUT",
 				"type": "unknown"
+			},
+			{
+				"name": "DELETE",
+				"type": "unknown"
 			}
 		],
 		"errors": [],
@@ -41,6 +45,11 @@
 		},
 		{
 			"unit": "hub.module.tracker-overview-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-transport",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -224,6 +224,7 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	expect(await (await fixture.call(session, 'GET', 'enroll', { headers })).json()).toEqual({
 		requests: []
 	});
+	await verifySignedOutPushDelivery(browserRequest);
 }, 60_000);
 
 async function verifyPushRegistration(
@@ -240,6 +241,14 @@ async function verifyPushRegistration(
 		status: 403,
 		body: { error: 'device-approval-required' }
 	});
+	expect(
+		await snapshot(
+			await fixture.call(session, 'POST', pushPath, {
+				headers: { ...headers, Origin: 'https://unrelated.example' },
+				body
+			})
+		)
+	).toEqual({ status: 403, body: { error: 'origin-denied' } });
 	expect(await snapshot(await fixture.call(session, 'GET', pushPath, { headers }))).toEqual({
 		status: 200,
 		body: { publicKey: pushKey }
@@ -248,6 +257,28 @@ async function verifyPushRegistration(
 		status: 200,
 		body: { subscribed: true }
 	});
+}
+
+async function verifySignedOutPushDelivery(
+	request: (path: string, init: RequestInit) => Promise<Response>
+) {
+	await fixture.db
+		.prepare('UPDATE auth_sessions SET revoked_at = ? WHERE id_hash = ?')
+		.bind(Date.now(), 'test-' + session)
+		.run();
+	const device = await sealedDevice();
+	const flow = new SealedEnrollmentRequestService({
+		account,
+		device,
+		signal: new AbortController().signal,
+		request
+	});
+	const nonce = crypto.getRandomValues(new Uint8Array(32));
+	expect(await flow.resolve({ nonce }, async () => {})).toEqual({
+		state: 'waiting-for-approval',
+		code: null
+	});
+	await verifyPushDelivery(1);
 }
 
 async function verifyPushDelivery(count: number) {

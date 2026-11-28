@@ -14,6 +14,7 @@
 			"BrowserApprovalState.check",
 			"BrowserApprovalState.review",
 			"BrowserApprovalState.reset",
+			"BrowserApprovalState.push",
 			"BrowserApprovalState.forget"
 		]
 	},
@@ -41,6 +42,11 @@
 				"required": false
 			},
 			{
+				"name": "BrowserApprovalState.push.account",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "BrowserApprovalState.forget.account",
 				"type": "string",
 				"required": true
@@ -58,6 +64,10 @@
 			{
 				"name": "BrowserApprovalState.reset",
 				"type": "void"
+			},
+			{
+				"name": "BrowserApprovalState.push",
+				"type": "unknown"
 			},
 			{
 				"name": "BrowserApprovalState.forget",
@@ -130,6 +140,24 @@
 					{
 						"name": "BrowserApprovalState.reset",
 						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserApprovalState.push",
+				"inputs": [
+					{
+						"name": "BrowserApprovalState.push.account",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserApprovalState.push",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

@@ -10,6 +10,7 @@
 	"owns": {
 		"source": ["packages/hub/src/lib/networking-security/hubPushBrowser.ts"],
 		"symbols": [
+			"approvalPushScope",
 			"pushSupport",
 			"currentSubscription",
 			"subscribe",
@@ -22,10 +23,22 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "currentSubscription.scope",
+				"type": "string",
+				"required": false,
+				"default": "/"
+			},
+			{
 				"name": "subscribe.publicKey",
 				"type": "string",
 				"required": true,
 				"description": "The Hub's application server public key, base64url."
+			},
+			{
+				"name": "subscribe.scope",
+				"type": "string",
+				"required": false,
+				"default": "/"
 			},
 			{
 				"name": "addressHash.address",
@@ -84,7 +97,14 @@
 			},
 			{
 				"name": "currentSubscription",
-				"inputs": [],
+				"inputs": [
+					{
+						"name": "currentSubscription.scope",
+						"type": "string",
+						"required": false,
+						"default": "/"
+					}
+				],
 				"outputs": [
 					{
 						"name": "currentSubscription",
@@ -103,6 +123,12 @@
 						"type": "string",
 						"required": true,
 						"description": "The Hub's application server public key, base64url."
+					},
+					{
+						"name": "subscribe.scope",
+						"type": "string",
+						"required": false,
+						"default": "/"
 					}
 				],
 				"outputs": [

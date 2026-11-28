@@ -18,10 +18,15 @@
 			"turnOffHubPush",
 			"forgetHubPush",
 			"saveQuietHours",
+			"readApprovalPush",
+			"turnOnApprovalPush",
+			"turnOffApprovalPush",
 			"PushQuietHours",
 			"HubPushSettings",
 			"HubPushDevice",
-			"HubPushReading"
+			"HubPushReading",
+			"ApprovalPushRequest",
+			"HubApprovalPushReading"
 		]
 	},
 	"contract": {
@@ -67,6 +72,36 @@
 				"type": "PushQuietHours",
 				"required": true,
 				"description": "The quiet hours to save."
+			},
+			{
+				"name": "readApprovalPush.call",
+				"type": "ApprovalPushRequest",
+				"required": true
+			},
+			{
+				"name": "readApprovalPush.alsoEnabled",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "turnOnApprovalPush.call",
+				"type": "ApprovalPushRequest",
+				"required": true
+			},
+			{
+				"name": "turnOnApprovalPush.publicKey",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "turnOffApprovalPush.call",
+				"type": "ApprovalPushRequest",
+				"required": true
+			},
+			{
+				"name": "turnOffApprovalPush.publicKey",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -202,6 +237,80 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readApprovalPush",
+				"inputs": [
+					{
+						"name": "readApprovalPush.call",
+						"type": "ApprovalPushRequest",
+						"required": true
+					},
+					{
+						"name": "readApprovalPush.alsoEnabled",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readApprovalPush",
+						"type": "Promise<HubApprovalPushReading | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "turnOnApprovalPush",
+				"inputs": [
+					{
+						"name": "turnOnApprovalPush.call",
+						"type": "ApprovalPushRequest",
+						"required": true
+					},
+					{
+						"name": "turnOnApprovalPush.publicKey",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "turnOnApprovalPush",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "turnOffApprovalPush",
+				"inputs": [
+					{
+						"name": "turnOffApprovalPush.call",
+						"type": "ApprovalPushRequest",
+						"required": true
+					},
+					{
+						"name": "turnOffApprovalPush.publicKey",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "turnOffApprovalPush",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			}
 		],
