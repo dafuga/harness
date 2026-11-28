@@ -1,0 +1,65 @@
+{
+	"name": "78ceb9-google-session",
+	"goal": "Prove a stock Chrome website session survives container recreation, detect ended Google sessions without DevTools and notify Chief of Staff only on confirmed expiry.",
+	"createdAt": "2026-11-27T19:48:06.038Z",
+	"updatedAt": "2026-11-27T19:57:44.139Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:48:07.100Z",
+			"evidence": "Review of #445: the guest uses a real Chrome profile but never checks Google state and the E2E only persists a fixture file. Desired behavior: check a normal Google Account page from the existing browser, return a closed status only, and retain the website session on encrypted executor storage."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:48:08.189Z",
+			"evidence": "Strengthen the protected Chrome source assertion and existing no-network Docker smoke. Check a synthetic HTTP session before sign-in, after the website sets a cookie, after Chrome and the container restart, and after expiry. Unknown or failed navigation is distinct from expiry."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:52:11.866Z",
+			"evidence": "Loop record captured f455091690 with the existing protected Chrome case failing because the installed website session probe was absent. Same suite: bunx --no-install vitest run test/adapters/execution-runtimes/container-browser.test.ts."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:52:23.655Z",
+			"evidence": "b716bd6e9b installs an executor-only fixed-site Chrome probe, opens and closes a separate window, uses Linux accessibility only for the top-level destination, and retains the existing X browser target."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:57:44.139Z",
+			"evidence": "The unchanged focused test passed at b716bd6e9b under the same environment and command as failed f455091690. Real Docker browser startup and full session lifecycle are verified separately."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

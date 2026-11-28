@@ -80,6 +80,34 @@ test('screen and DevTools are reached only through docker exec', () => {
 	]);
 });
 
+test('the protected Chrome image has a separate profile and disables remote debugging', async () => {
+	const image = new URL('../../../deploy/container-browser/', import.meta.url);
+	const dockerfile = await readFile(new URL('Dockerfile', image), 'utf8');
+	const entrypoint = await readFile(new URL('entrypoint.sh', image), 'utf8');
+	expect(dockerfile).toContain('AS protected-chrome');
+	expect(dockerfile).toContain('/etc/opt/chrome/policies/managed');
+	expect(dockerfile.split('FROM desktop AS chromium')[0]).toContain(
+		'protected-chrome-health.py /opt/browser/protected-chrome-health.py'
+	);
+	expect(dockerfile.split('FROM desktop AS chromium')[1]).not.toContain('protected-chrome-health');
+	const policy = JSON.parse(await readFile(new URL('protected-chrome-policy.json', image), 'utf8'));
+	expect(policy).toMatchObject({
+		RemoteDebuggingAllowed: false,
+		PasswordManagerEnabled: false,
+		AutofillAddressEnabled: false,
+		AutofillCreditCardEnabled: false,
+		AutofillSettings: [
+			{ url_pattern: '*', blocked_types: ['contact_info', 'payments', 'identity_docs'] }
+		]
+	});
+	const protectedMode = entrypoint.match(/\n\s*protected-chrome\)([\s\S]*?);;/u)?.[1];
+	expect(protectedMode).toContain('/profile/google-chrome');
+	expect(protectedMode).toContain('google-chrome-stable');
+	expect(protectedMode).not.toMatch(
+		/--remote-debugging|--enable-automation|--headless|--no-sandbox/u
+	);
+});
+
 test('the dedicated VM is small, mounts nothing and leaves the active context alone', async () => {
 	expect(colimaStartArgs('/image.qcow2')).toEqual(
 		expect.arrayContaining(['--cpus=2', '--memory=4', '--mount=none', '--activate=false'])

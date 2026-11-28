@@ -1,0 +1,14 @@
+{
+	"RemoteDebuggingAllowed": false,
+	"BrowserSignin": 0,
+	"BackgroundModeEnabled": false,
+	"PasswordManagerEnabled": false,
+	"AutofillAddressEnabled": false,
+	"AutofillCreditCardEnabled": false,
+	"AutofillSettings": [
+		{
+			"url_pattern": "*",
+			"blocked_types": ["contact_info", "payments", "identity_docs"]
+		}
+	]
+}

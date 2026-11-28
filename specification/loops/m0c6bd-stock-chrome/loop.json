@@ -1,0 +1,60 @@
+{
+	"name": "m0c6bd-stock-chrome",
+	"goal": "Prove stock Chrome starts on the container virtual display with an isolated persistent profile and no DevTools during manual Google sign-in, then prove Slack SSO through the protected executor.",
+	"createdAt": "2026-11-27T16:15:59.805Z",
+	"updatedAt": "2026-11-27T16:24:10.014Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:16:24.815Z",
+			"evidence": "Run 834 on mn6ffm reports Google rejected the automated Chrome for Testing login. bbwxfs starts headed Debian Chromium with port 9222 enabled before authentication. Expected manual private entry in Google Chrome Stable with no DevTools, followed by a protected Slack SSO check."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:16:26.911Z",
+			"evidence": "Existing real container E2E checks Chromium with DevTools enabled and an X-shaped fixture. Extend that E2E matrix with a disposable Google Chrome profile, check stock package and process, virtual desktop, no debug transport, no published port, and profile reuse. Real Google and Slack require separate live proof."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:22:29.541Z",
+			"evidence": "Harness recorded 96941dcfff: stock Chrome startup check failed because the protected-chrome image target was absent."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:22:31.866Z",
+			"evidence": "The ARM64 stock Chrome target verifies the pinned package, uses its own profile, omits DevTools flags and loads the managed debugging and autofill policy."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:24:10.014Z",
+			"evidence": "Harness recorded the same startup assertion passing at d3b84501f8. This proves the source and policy configuration. The isolated MB2 image test and live SSO remain pending."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
