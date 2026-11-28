@@ -8,6 +8,7 @@ import { sealedDevice } from '../../../remote/src/utils/networking-security/seal
 import type { SyncFixture } from './syncFixture.types';
 
 const pushPath = 'approval-push';
+const nativePushPath = 'approval-apns';
 const pushKey =
 	'BP4z9KsN6nGRTbVYI_c7VJSPQTBtkgcy27mlmlMoZIIgDll6e3vCYLocInmYWAmS6TlzAC8wEqKK6PBru3jl7A8';
 
@@ -47,6 +48,15 @@ export async function verifyPushRegistration(
 		status: 200,
 		body: { subscribed: true }
 	});
+	const native = { headers, body: { token: 'a4'.repeat(32) } };
+	expect(await snapshot(await fixture.call(otherSession, 'POST', nativePushPath, native))).toEqual({
+		status: 403,
+		body: { error: 'device-approval-required' }
+	});
+	expect(await snapshot(await fixture.call(session, 'POST', nativePushPath, native))).toEqual({
+		status: 200,
+		body: { subscribed: true }
+	});
 }
 
 export async function verifySignedOutPushDelivery(
@@ -75,9 +85,12 @@ export async function verifySignedOutPushDelivery(
 
 export async function verifyPushDelivery(fixture: SyncFixture, count: number) {
 	const rows = await fixture.db
-		.prepare('SELECT kind FROM fixture_approval_deliveries ORDER BY rowid')
+		.prepare('SELECT kind FROM fixture_approval_deliveries ORDER BY kind')
 		.all<{ kind: string }>();
-	expect(rows.results).toEqual(Array.from({ length: count }, () => ({ kind: 'device-approval' })));
+	expect(rows.results.map(({ kind }) => kind)).toEqual([
+		...Array<string>(count).fill('apple-device-approval'),
+		...Array<string>(count).fill('device-approval')
+	]);
 }
 
 export async function signedIn(fixture: SyncFixture, account: string, session: string) {
