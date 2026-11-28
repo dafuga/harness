@@ -62,6 +62,13 @@
 				"description": "Optional Tracker project name. The view shows only its card and uses its name as the heading."
 			},
 			{
+				"name": "ProjectOverview.deliveries",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional feature delivery content rendered after the project heading and before Tracker status."
+			},
+			{
 				"name": "ProjectOverview.snapshot",
 				"type": "OverviewSnapshot | null",
 				"required": true,

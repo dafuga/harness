@@ -1,0 +1,243 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-feature-delivery",
+	"kind": "function",
+	"title": "featureDelivery",
+	"responsibility": "Validates delivery receipts and derives project listing, storage and playback addresses.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/featureDelivery.ts",
+			"src/utils/projects-sessions/featureDelivery.types.ts"
+		],
+		"symbols": [
+			"featureDeliveryStages",
+			"featureDeliveryStage",
+			"featureDeliveryId",
+			"featureDeliveryDigest",
+			"featureDeliveryProject",
+			"featureDeliveryDuration",
+			"featureDeliverySchema",
+			"featureDeliveryPageSchema",
+			"featureDeliveryApi",
+			"featureDeliveryPrefix",
+			"featureDeliveryReceiptKey",
+			"featureDeliverySource",
+			"featureDeliveryVideoKey",
+			"FeatureDelivery",
+			"FeatureDeliveryPage",
+			"FeatureDeliveryStage"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "featureDeliveryPrefix.project",
+				"type": "string",
+				"required": true,
+				"description": "The canonical Tracker project label, prior to URI encoding."
+			},
+			{
+				"name": "featureDeliveryReceiptKey.value",
+				"type": "FeatureDelivery",
+				"required": true,
+				"description": "The validated receipt supplying the project, delivery date, item ID and release stage."
+			},
+			{
+				"name": "featureDeliverySource.value",
+				"type": "Pick<FeatureDelivery, 'id' | 'sha256'>",
+				"required": true,
+				"description": "The full Tracker item ID and SHA-256 of the recording named by the playback URL."
+			},
+			{
+				"name": "featureDeliveryVideoKey.id",
+				"type": "string",
+				"required": true,
+				"description": "The validated full Tracker item ID."
+			},
+			{
+				"name": "featureDeliveryVideoKey.sha256",
+				"type": "string",
+				"required": true,
+				"description": "The lowercase SHA-256 of the recording bytes."
+			}
+		],
+		"outputs": [
+			{
+				"name": "featureDeliveryStages",
+				"type": "unknown",
+				"description": "The dev, staging and live delivery stages in release order."
+			},
+			{
+				"name": "featureDeliveryStage",
+				"type": "unknown",
+				"description": "The validator that accepts one supported delivery stage."
+			},
+			{
+				"name": "featureDeliveryId",
+				"type": "unknown",
+				"description": "The validator for lowercase alphanumeric Tracker IDs between six and 64 characters."
+			},
+			{
+				"name": "featureDeliveryDigest",
+				"type": "unknown",
+				"description": "The validator for a 64-character lowercase SHA-256 digest."
+			},
+			{
+				"name": "featureDeliveryProject",
+				"type": "unknown",
+				"description": "The validator for a nonempty project name up to 200 characters with no slash or control character."
+			},
+			{
+				"name": "featureDeliveryDuration",
+				"type": "unknown",
+				"description": "The validator for a recording duration between 20 and 60 seconds, inclusive."
+			},
+			{
+				"name": "featureDeliverySchema",
+				"type": "unknown",
+				"description": "The strict schema for a delivery receipt with a clip digest and millisecond-precision delivery date."
+			},
+			{
+				"name": "featureDeliveryPageSchema",
+				"type": "unknown",
+				"description": "The strict schema for up to 12 delivery receipts and a nullable continuation cursor."
+			},
+			{
+				"name": "featureDeliveryApi",
+				"type": "unknown",
+				"description": "The owner-authenticated relative endpoint for delivery listings and playback."
+			},
+			{
+				"name": "featureDeliveryPrefix",
+				"type": "unknown",
+				"description": "The private evidence bucket prefix used to list the receipts for one project."
+			},
+			{
+				"name": "featureDeliveryReceiptKey",
+				"type": "unknown",
+				"description": "The project-scoped JSON receipt key ordered by newest delivery first."
+			},
+			{
+				"name": "featureDeliverySource",
+				"type": "unknown",
+				"description": "The relative owner-only playback URL with encoded item ID and digest."
+			},
+			{
+				"name": "featureDeliveryVideoKey",
+				"type": "unknown",
+				"description": "The private evidence bucket key for the original WebM bytes."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "featureDeliveryPrefix",
+				"inputs": [
+					{
+						"name": "featureDeliveryPrefix.project",
+						"type": "string",
+						"required": true,
+						"description": "The canonical Tracker project label, prior to URI encoding."
+					}
+				],
+				"outputs": [
+					{
+						"name": "featureDeliveryPrefix",
+						"type": "unknown",
+						"description": "The private evidence bucket prefix used to list the receipts for one project."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "featureDeliveryReceiptKey",
+				"inputs": [
+					{
+						"name": "featureDeliveryReceiptKey.value",
+						"type": "FeatureDelivery",
+						"required": true,
+						"description": "The validated receipt supplying the project, delivery date, item ID and release stage."
+					}
+				],
+				"outputs": [
+					{
+						"name": "featureDeliveryReceiptKey",
+						"type": "unknown",
+						"description": "The project-scoped JSON receipt key ordered by newest delivery first."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "featureDeliverySource",
+				"inputs": [
+					{
+						"name": "featureDeliverySource.value",
+						"type": "Pick<FeatureDelivery, 'id' | 'sha256'>",
+						"required": true,
+						"description": "The full Tracker item ID and SHA-256 of the recording named by the playback URL."
+					}
+				],
+				"outputs": [
+					{
+						"name": "featureDeliverySource",
+						"type": "unknown",
+						"description": "The relative owner-only playback URL with encoded item ID and digest."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "featureDeliveryVideoKey",
+				"inputs": [
+					{
+						"name": "featureDeliveryVideoKey.id",
+						"type": "string",
+						"required": true,
+						"description": "The validated full Tracker item ID."
+					},
+					{
+						"name": "featureDeliveryVideoKey.sha256",
+						"type": "string",
+						"required": true,
+						"description": "The lowercase SHA-256 of the recording bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "featureDeliveryVideoKey",
+						"type": "unknown",
+						"description": "The private evidence bucket key for the original WebM bytes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/featureDelivery.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/featureDelivery.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

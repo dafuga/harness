@@ -38,7 +38,8 @@
 		snapshot,
 		homeHref = '/harness',
 		standalone = true,
-		project
+		project,
+		deliveries
 	}: ProjectOverviewProps = $props();
 	const ready = $derived(snapshot !== null && snapshot.status === 'ready' ? snapshot : null);
 	const cards = $derived(
@@ -109,6 +110,7 @@
 			<hx-h1 id="po-title" class="po-title">Projects</hx-h1>
 		{/if}
 	</hx-header>
+	{#if deliveries}{@render deliveries()}{/if}
 
 	{#if snapshot === null}
 		<EmptyState as="div" className="po-empty" role="status">Loading projects…</EmptyState>
