@@ -19,7 +19,8 @@ test.skipIf(!live)(
 		const child = exec('bun', [script], { timeout: 170_000 });
 		const { stdout } = await child;
 		if (child.child.exitCode === null) await once(child.child, 'exit');
-		expect(JSON.parse(stdout.trim().split('\n').at(-1)!)).toEqual({
+		const { policies, ...browser } = JSON.parse(stdout.trim().split('\n').at(-1)!);
+		expect(browser).toEqual({
 			published: '',
 			screen: 'RFB 003.008',
 			webdriver: false,
@@ -27,5 +28,12 @@ test.skipIf(!live)(
 			posts: [{ id: '12345', author: 'fixture', text: 'Hello from a fixture', likes: 1204 }],
 			tab: 'clicked'
 		});
+		expect(policies, 'Chromium must enforce managed saving restrictions').toMatchObject([
+			{ name: 'AutofillSettings', level: 'Mandatory', status: 'OK' },
+			{ name: 'PasswordManagerEnabled', value: 'false', level: 'Mandatory', status: 'OK' }
+		]);
+		expect(JSON.parse(policies[0].value)).toEqual([
+			{ url_pattern: '*', blocked_types: ['contact_info', 'payments', 'identity_docs'] }
+		]);
 	}
 );

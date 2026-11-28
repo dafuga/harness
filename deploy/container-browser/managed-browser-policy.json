@@ -1,0 +1,9 @@
+{
+	"PasswordManagerEnabled": false,
+	"AutofillSettings": [
+		{
+			"url_pattern": "*",
+			"blocked_types": ["contact_info", "payments", "identity_docs"]
+		}
+	]
+}

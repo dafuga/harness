@@ -1,5 +1,6 @@
 import { ContainerBrowserAdapter } from '../../src/adapters/execution-runtimes/ContainerBrowserAdapter';
 import { ContainerCdpAdapter } from '../../src/adapters/execution-runtimes/ContainerCdpAdapter';
+import type { ContainerPage } from '../../src/adapters/execution-runtimes/ContainerCdpAdapter.types';
 import { dockerHost } from '../../src/adapters/execution-runtimes/container-browser-adapter/dockerHost';
 import { parseXPosts } from '../../src/services/agents-providers/x-feed-reader-service/parseXPosts';
 import {
@@ -41,13 +42,44 @@ try {
 		posts,
 		tab: await page.evaluate(selectHomeTabScript(1))
 	};
+	const policies = await readSavingPolicies(page);
 	page.close();
-	console.log(JSON.stringify(result));
+	console.log(JSON.stringify({ ...result, policies }));
 } finally {
 	await browser.remove();
 	await docker.docker(['volume', 'rm', `harness-browser-${profile}-profile`]).catch(() => '');
 }
 process.exit(0);
+
+async function readSavingPolicies(page: ContainerPage) {
+	await page.navigate('chrome://policy/');
+	return page.evaluate(`(async () => {
+		const find = (root, selector) => [
+			...root.querySelectorAll(selector),
+			...Array.from(root.querySelectorAll('*'))
+				.flatMap(element => element.shadowRoot ? find(element.shadowRoot, selector) : [])
+		];
+		let rows = find(document, 'policy-row');
+		for (let attempt = 0; attempt < 60 && !rows.length; attempt++) {
+			await new Promise(resolve => setTimeout(resolve, 100));
+			rows = find(document, 'policy-row');
+		}
+		if (!rows.length) throw new Error('Chromium did not render the policy table.');
+		const names = ['PasswordManagerEnabled', 'AutofillSettings'];
+		return rows.flatMap(row => {
+			const content = row.shadowRoot ?? row;
+			const name = row.policy?.name;
+			if (!names.includes(name) || row.hidden) return [];
+			const value = content.querySelector('.value')?.textContent.trim();
+			return [{
+				name,
+				value: row.getFormattedValue?.() ?? value,
+				level: content.querySelector('.level')?.textContent.trim(),
+				status: content.querySelector('.messages')?.textContent.trim()
+			}];
+		}).sort((left, right) => left.name.localeCompare(right.name));
+	})()`);
+}
 
 function greeting(): Promise<string> {
 	const stream = browser.pipe('screen');

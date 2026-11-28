@@ -68,8 +68,57 @@ every cookie older than the browser's periodic save, about 30 seconds.
 
 The screen is portrait (600×1100), so a sign-in can be finished from a phone.
 
+## Private entry
+
+Tracker `9z0dtppezb` covers private entry on MB2 and the primary Mac. The same
+entry flow is intended for Azure (`ybp5be`) and later sign-ups. It requires
+isolation before use with real cards, passwords or identity documents.
+
+- **Default entry.** The agent requests an approved card or password field.
+  Harness on iPhone or Mac shows the website and action in its Credential Vault
+  form. Daniel confirms on the device with biometrics. Reuse the Vault’s enrolled
+  device proof and sealed delivery. Bind the approval to the executor, request,
+  tab, exact origin, reviewed field and action, and an expiry. A script in the
+  executor fills and submits. Daniel can opt in to saving supported values in
+  the Vault. Without that choice, the payload is transient. Hub web is later.
+- **Optional viewer.** The Tracker ask links to the viewer without a credential
+  in the URL. Only the paired viewer can see or type into the private form over
+  a verified encrypted connection. Its Done action is authenticated and bound
+  to that request. The agent has no Done action.
+- **Isolation.** The executor owns the browser, VM, volumes, gate and private
+  endpoints. Agent processes run as an unprivileged OS user without access to
+  the executor account or a way to invoke sudo as that account. The primary Mac
+  needs a protected browser, since its existing loopback debugging port is
+  visible to local agents. The MB2 X profile and viewer require their own
+  coordinated cutover after the current X sign-in work.
+- **Handoff.** Acquire the private window before accepting input and revoke
+  existing agent connections and in-flight reads before it starts. Deny
+  screenshots, DOM, accessibility, DevTools, recording and logs during it.
+  Done or successful script submission permits resumption only after the
+  executor closes the form tab and verifies an approved result page. Cancel,
+  expiry, crash or failed cleanup keeps agent access closed until disposal.
+  The agent receives only a status receipt.
+- **Browser storage.** Use a fresh protected profile. The Chromium image
+  installs mandatory password saving and autofill restrictions for contact,
+  payment, and identity data. Verify the effective policies in each installed
+  browser before enabling private entry.
+
+### Acceptance for private entry
+
+Use synthetic values. On each Mac run the probes under the real agent UID
+before, during and after entry. Prove already-open sessions cannot read, and
+that Docker exec, VM sockets, volume reads, CDP and screen access are denied.
+Check that a copied request identifier, a different viewer, an expired approval
+and an agent caller cannot finish the window. Exercise cancellation, expiry
+and executor restart. Confirm the form is gone before agent reads resume.
+Inspect allowed output and persisted artifacts for synthetic values and private
+URLs. Exercise the installed iPhone and Mac forms and the optional viewer on
+Daniel's paired devices. Record the browser, app and host versions and the
+effective saving policy per host.
+
 ## Proof
 
 `HARNESS_TEST_CONTAINER_BROWSER=1 bunx vitest run test/container-browser.e2e.test.ts`
 runs a throwaway profile in a real container: no published port, a VNC greeting
 over the pipe, and the page scripts reading a fixture over DevTools.
+It also checks the active saving policies reported by Chromium.
