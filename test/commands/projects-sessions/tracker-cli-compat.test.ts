@@ -101,7 +101,9 @@ test('adds a versioned session rule to the incident and lists it without a resta
 		);
 		expect(missing.code).toBe(1);
 		expect(
-			runtime.store.opsSince(0).filter(({ fields }) => Object.hasOwn(fields, 'session_rule_v1'))
+			runtime.store
+				.opsSince(0, 100)
+				.filter(({ fields }) => Object.hasOwn(fields, 'session_rule_v1'))
 		).toHaveLength(1);
 	}));
 

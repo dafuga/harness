@@ -114,6 +114,17 @@ for (const viewport of viewports) {
 			await expect(page.getByRole('heading', { name: band })).toBeVisible();
 		}
 		await expectFitted(page);
+		const rules = page.getByRole('region', { name: 'Recent session rules' });
+		await expect(rules).toContainText(
+			'Close synthetic browser windows after checking the fixture.'
+		);
+		const textWidth = await rules.evaluate(
+			(section) =>
+				(section.querySelector('dd')?.getBoundingClientRect().width ?? 0) /
+				section.getBoundingClientRect().width
+		);
+		expect(textWidth).toBeGreaterThan(0.8);
+		await expect(rules).toContainText('Use bounded log reads for long-running checks.');
 		await capture(page, testInfo, 'ready', viewport);
 	});
 
