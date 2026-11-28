@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-agent-dock",
+	"kind": "component",
+	"title": "HubAgentDock",
+	"responsibility": "Owns the HubAgentDock Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.shared-primitives-atoms-html-div"]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubAgentDock.svelte"],
+		"symbols": ["HubAgentDock"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "HubAgentDock",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubAgentDock.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubAgentDock.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

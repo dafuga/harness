@@ -9,7 +9,7 @@
 	"status": "active",
 	"composition": {
 		"level": "layout",
-		"uses": []
+		"uses": ["hub.component.projects-sessions-hub-agent-dock"]
 	},
 	"catalog": {
 		"visibility": "internal"
@@ -58,7 +58,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.component.projects-sessions-hub-agent-dock",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.networking-security-hub-dock-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-source",
 			"via": "import",
 			"origin": "derived"
 		},

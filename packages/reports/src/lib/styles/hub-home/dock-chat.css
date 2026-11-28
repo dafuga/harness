@@ -1,0 +1,73 @@
+/* @harness-uid u_dk3v6pnw9b */
+/* Chat inside the dock: the thread, the question with its choices in a grid, and one composer. */
+.hh-home .hd-chat {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	gap: var(--hx-space-12);
+	min-height: 0;
+	padding: var(--hx-space-16);
+	overflow-y: auto;
+}
+.hh-home .hd-chat .hh-msg {
+	max-width: 88%;
+}
+.hh-home .hd-ask .hh-ask {
+	gap: var(--hx-space-10);
+	padding: var(--hx-space-12);
+	border-color: var(--hx-color-primary-line);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-primary-wash);
+}
+.hh-home .hd-ask .hh-ask p {
+	margin: 0;
+}
+.hh-home .hh-ask-kicker {
+	color: var(--home-accent);
+	font-size: var(--hx-type-size-2xs);
+	font-weight: var(--hx-style-weight-semibold);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+.hh-home .hd-ask .hh-choices {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.hh-home .hd-ask .hh-choice {
+	background: var(--hx-color-surface);
+	border-color: var(--hx-color-border-strong);
+	cursor: pointer;
+}
+.hh-home .hd-ask .hh-choice[data-recommended='true'] {
+	border-color: var(--hx-color-primary-line);
+}
+/* The badge sits above its label. */
+.hh-home .hd-ask .hh-choice-badge {
+	order: -1;
+	color: var(--home-accent);
+	font-size: var(--hx-type-size-2xs);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.hh-home .hd-ask .hh-choice:active:not(:disabled) {
+	background: var(--hx-color-selected);
+}
+.hh-home .hd-ask .hh-choice[data-chosen] {
+	opacity: 1;
+	border-color: var(--home-accent);
+}
+.hh-home .hd-compose .hh-send {
+	width: auto;
+	min-width: var(--hx-space-48);
+	padding: 0 var(--hx-space-12);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.hh-home .hd-compose {
+	display: grid;
+	flex: none;
+	gap: var(--hx-space-6);
+	padding: 0 var(--hx-space-16) var(--hx-space-16);
+}
+@media (max-width: 560px) {
+	.hh-home .hd-ask .hh-choices {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
