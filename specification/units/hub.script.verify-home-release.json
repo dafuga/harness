@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.script.verify-home-release",
+	"kind": "script",
+	"title": "verify-home-release",
+	"responsibility": "Verifies that the signed-in Hub Home Agents card counts the live Tracker sessions across the requested computers.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/scripts/verify-home-release.ts",
+			"packages/hub/scripts/verify-home-release.types.ts"
+		],
+		"symbols": [
+			"verifyHubHomeRelease",
+			"TrackerFetch"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "verifyHubHomeRelease.nodes",
+				"type": "string[]",
+				"required": true,
+				"description": "Tracker node names of the online computers included in the release check."
+			},
+			{
+				"name": "verifyHubHomeRelease.readSummary",
+				"type": "() => Promise<string>",
+				"required": true,
+				"description": "Reads the settled Agents card summary from signed-in Hub Home between Tracker samples."
+			},
+			{
+				"name": "verifyHubHomeRelease.fetcher",
+				"type": "TrackerFetch",
+				"required": false,
+				"description": "Reads the local Tracker API. Defaults to the runtime fetch implementation."
+			}
+		],
+		"outputs": [
+			{
+				"name": "verifyHubHomeRelease",
+				"type": "Promise<{ from: string; to: string; home: { working: number; sessions: number }; tracker: { node: string; sessions: number }[]; total: number }>",
+				"description": "Sample times, displayed working and session counts, live counts by computer, and the total across the requested computers."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Tracker data was inaccessible, invalid, incomplete or changing, or the Hub summary could not be read or did not match the live session total."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "verifyHubHomeRelease",
+				"inputs": [
+					{
+						"name": "verifyHubHomeRelease.nodes",
+						"type": "string[]",
+						"required": true,
+						"description": "Tracker node names of the online computers included in the release check."
+					},
+					{
+						"name": "verifyHubHomeRelease.readSummary",
+						"type": "() => Promise<string>",
+						"required": true,
+						"description": "Reads the settled Agents card summary from signed-in Hub Home between Tracker samples."
+					},
+					{
+						"name": "verifyHubHomeRelease.fetcher",
+						"type": "TrackerFetch",
+						"required": false,
+						"description": "Reads the local Tracker API. Defaults to the runtime fetch implementation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyHubHomeRelease",
+						"type": "Promise<{ from: string; to: string; home: { working: number; sessions: number }; tracker: { node: string; sessions: number }[]; total: number }>",
+						"description": "Sample times, displayed working and session counts, live counts by computer, and the total across the requested computers."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Tracker data was inaccessible, invalid, incomplete or changing, or the Hub summary could not be read or did not match the live session total."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-unattended-hold",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/scripts/verify-home-release.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/scripts/verify-home-release.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
