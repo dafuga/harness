@@ -100,16 +100,21 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 		async send(alerts, signal, queue) {
 			const now = Date.now();
 			if (cosSendWindowStart(now) === null) return false;
-			const [pane, extra] = await tmux.scan(signal, /^cos$/);
-			if (!pane?.ready || extra) return false;
-			if (panes.idlePrompt(pane) !== 'claude') return workingCosPane(pane) ? 'deferred' : false;
+			const destination = cosDestination(await tmux.scan(signal, /^cos$/));
+			if (typeof destination !== 'object') return destination;
 			if (now < nextCosTick && !alerts.some(bypassesCosCadence)) return 'deferred';
 			const message = cosMessage(alerts);
-			const sent = await tmux.nudge({ pane, cli: 'claude', message }, signal);
+			const sent = await tmux.nudge({ pane: destination, cli: 'claude', message }, signal);
 			if (sent) nextCosTick = now + (queue?.backlog ? backlogInterval : cosInterval);
 			return sent;
 		}
 	};
+}
+
+function cosDestination([pane, extra]: WatchdogPane[]) {
+	if (!pane?.ready || extra) return false;
+	if (panes.idlePrompt(pane) === 'claude') return pane;
+	return workingCosPane(pane) ? 'deferred' : false;
 }
 
 function bypassesCosCadence({ kind }: TrackerWatchdogAlert) {
