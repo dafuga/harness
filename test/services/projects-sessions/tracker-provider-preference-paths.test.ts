@@ -68,7 +68,7 @@ test.each(paths)(
 								'idle000001'
 							)
 						],
-						snapshot: { now: host.clock.now, panes: [] },
+						snapshot: { host: quotaNode, now: host.clock.now, items: [], runs: [], panes: [] },
 						dispatch: dispatch!,
 						minutes: 30
 					},
