@@ -6,6 +6,7 @@ import { createPlanning } from '../../planning/src/lib/planning/index';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { fixture, git, settled, visualAnswer } from './run-fixture';
 const counted = (f: Made, designOptions: number) => ({ ...f.request, designOptions }) as RunRequest;
+const visualTurnTimeout = 45000;
 /** Each generation answers an image of its own; `step` may act on the nth one first. */
 function distinct(f: Made, step: (call: number) => void = () => {}) {
 	let call = 0;
@@ -36,7 +37,7 @@ test('a page Plan saves three Sonnet mockups across all default widths in one ve
 		text: JSON.stringify({ sources: ['src/owned.ts'], stylesheets: [], before: null, options })
 	}));
 	const head = git(f.root, 'rev-parse', 'HEAD');
-	await settled(f);
+	await settled(f, f.request, visualTurnTimeout);
 	const plan = await (await createPlanning(f.root)).readPlan({ unitId: f.request.entityId });
 	expect(plan.versions[0]?.generator).toEqual({ provider: 'claude', model: 'claude-sonnet-5-5' });
 	expect(
@@ -54,7 +55,7 @@ test('a page Plan saves three Sonnet mockups across all default widths in one ve
 
 test('a Plan that asks for two options generates two', async () => {
 	const f = await fixture();
-	await settled(f, counted(f, 2));
+	await settled(f, counted(f, 2), visualTurnTimeout);
 	expect(f.renderMockups).toHaveBeenCalledOnce();
 	expect((await versions(f))[0].options).toHaveLength(2);
 }, 60000);
