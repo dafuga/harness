@@ -2,7 +2,26 @@ import Foundation
 
 extension HubAccountSession {
     func approvalRequests(_ done: @escaping Status) {
-        withApprovalTransport(done) { $0.requests(done) }
+        withApprovalTransport(done) { transport in
+            transport.requests { result in
+                if case .success(let reply) = result, let rows = reply["requests"] as? [[String: Any]] {
+                    self.notifyNewApprovals(rows.compactMap { $0["id"] as? String })
+                }
+                done(result)
+            }
+        }
+    }
+
+    private func notifyNewApprovals(_ ids: [String]) {
+        guard let approvalAlert else { return }
+        let time = now()
+        let expires = time.addingTimeInterval(15 * 60)
+        notifiedApprovals = notifiedApprovals.filter { $0.value > time }
+        var changed = false
+        for id in ids {
+            if notifiedApprovals.updateValue(expires, forKey: id) == nil { changed = true }
+        }
+        if changed { approvalAlert() }
     }
 
     func reviewApproval(_ id: String, done: @escaping Status) {
