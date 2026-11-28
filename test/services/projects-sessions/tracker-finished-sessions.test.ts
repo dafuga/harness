@@ -2,13 +2,13 @@ import { expect, test, vi } from 'vitest';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
 import {
-	codexComposer,
 	composer,
 	protectedPanes,
 	trackerSlotFixture,
 	verifyAnswerAfterExit,
 	verifyManualLaunchWithBlockedPane
 } from '../../support/trackerSlotFixture';
+import { verifyLiveAnswerDelivery } from '../../support/trackerSlotAnswerChecks';
 import type { TrackerSlotFixture } from '../../support/trackerSlotFixture.types';
 const noon = Date.parse('2026-11-25T12:00:00Z');
 const minute = 60_000;
@@ -66,49 +66,6 @@ test('a session idle with a final report finishes its run and is not relaunched'
 		for (let poll = 0; poll < 15; poll++) await hub.advance(2 * minute);
 		await verifyAnswerAfterExit(hub, 'report0001');
 	}));
-
-async function verifyLiveAnswerDelivery(hub: TrackerSlotFixture) {
-	for (const [item, model, prompt] of [
-		['liveclaude', 'claude-sonnet-5-5:high', composer()],
-		['livecodex0', 'gpt-6.2-sol:medium', codexComposer()]
-	]) {
-		hub.queue(item, model);
-		await hub.advance(5_000);
-		await hub.request(`/items/${item}/start`);
-		await hub.request(`/items/${item}/flag`, {
-			question: 'Choose the synthetic region',
-			options: [
-				{ label: 'First region', detail: 'Use the first synthetic region' },
-				{ label: 'Second region', detail: 'Use the second synthetic region' }
-			]
-		});
-		await hub.request(
-			`/items/${item}/answer`,
-			item === 'liveclaude' ? { answer: 'Synthetic free text' } : { option: 1 }
-		);
-		await hub.advance(3 * minute);
-		expect.soft(hub.runtime.watchdog!.alerts()).toContainEqual(
-			expect.objectContaining({
-				item_id: item,
-				kind: 'answer-delivery'
-			})
-		);
-		const name = hub.panes().find((pane) => pane.startsWith(`auto-${item.slice(0, 6)}-`))!;
-		expect(name).toBeDefined();
-		hub.screen(name, prompt);
-		await hub.advance(minute);
-		await hub.advance(minute);
-		expect
-			.soft(hub.tmuxInput().match(new RegExp(`Tracker answer for item ${item}`, 'g')) ?? [])
-			.toHaveLength(1);
-		const notes = hub.database.prepare('SELECT text FROM item_notes WHERE item_id = ?').all(item);
-		expect
-			.soft(notes.map(({ text }) => text))
-			.toContainEqual(expect.stringContaining(`delivered to ${name}`));
-		await hub.request(`/items/${item}/done`);
-		await hub.advance(minute);
-	}
-}
 
 async function verifyAnsweredPaneRetained(hub: TrackerSlotFixture) {
 	const id = 'resumetest';
