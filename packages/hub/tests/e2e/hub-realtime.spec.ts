@@ -1,4 +1,5 @@
 import type { Page, WebSocketRoute } from '@playwright/test';
+import type { LinkedHome } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 import { expect, test } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
 import { captureNeedsYou } from './hub-home-capture';
@@ -100,10 +101,9 @@ async function answerElsewhere(chain: Chain, page: Page, phone: Page) {
 	const started = performance.now();
 	const status = await phone.evaluate(async (question) => {
 		const response = await fetch('/api/hub-home');
-		const { snapshot } = await response.json();
-		const agent = snapshot.agents.find(
-			(entry: { question?: string }) => entry.question === question
-		);
+		const { snapshot } = (await response.json()) as LinkedHome;
+		const agent = snapshot?.agents.find((entry) => entry.question === question);
+		if (!agent) throw new Error(`Home did not return the decision: ${question}`);
 		const message = {
 			id: crypto.randomUUID(),
 			agentId: agent.id,
