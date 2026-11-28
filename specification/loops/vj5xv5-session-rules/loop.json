@@ -2,7 +2,7 @@
 	"name": "vj5xv5-session-rules",
 	"goal": "Record incident rules once in the signed Tracker journal, then verify that later Claude and Codex launches and Hub read the updated rules without restarting Tracker.",
 	"createdAt": "2026-11-28T11:52:26.524Z",
-	"updatedAt": "2026-11-28T12:00:41.417Z",
+	"updatedAt": "2026-11-28T12:08:10.413Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -48,7 +48,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T12:08:10.413Z",
+			"evidence": "Frozen cases e1a3e09092 failed; exact fix 84a4972bb0 passed the unchanged three-case command with the same environment/profile. Broader CLI, projection and brief suite passed 12/12."
 		},
 		{
 			"id": "guard",

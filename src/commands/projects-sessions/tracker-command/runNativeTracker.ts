@@ -164,9 +164,6 @@ function renderNativeTracker(
 		return;
 	}
 	switch (command) {
-		case 'rule':
-			console.log(formatNativeTrackerRules(data as TrackerSessionRule | TrackerSessionRule[]));
-			return;
 		case 'job':
 			console.log(formatNativeTrackerJob(options.first, data as NativeTrackerJobResponse));
 			return;
@@ -196,6 +193,10 @@ function renderNativeTracker(
 }
 
 function renderNativeTrackerItemOrReport(command: string, data: unknown, first?: string): void {
+	if (command === 'rule') {
+		console.log(formatNativeTrackerRules(data as TrackerSessionRule | TrackerSessionRule[]));
+		return;
+	}
 	if (command === 'reply') {
 		console.log(`reply sent to Daniel in the Hub (${(data as { id?: string }).id ?? 'message'})`);
 		return;

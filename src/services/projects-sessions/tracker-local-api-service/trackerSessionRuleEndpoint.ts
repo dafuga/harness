@@ -19,21 +19,7 @@ export async function trackerSessionRuleEndpoint(
 	const rules = new TrackerSessionRuleRepository(store.database);
 	if (request.method === 'GET') return listRules(request, rules);
 	if (request.method !== 'POST') return trackerResponse(405, { error: 'method not allowed' });
-	const input = (await readItemBody(request)) as Record<string, unknown>;
-	const skill = input.skill;
-	const text = typeof input.text === 'string' ? input.text.trim() : input.text;
-	const from = input.from;
-	if (
-		typeof from !== 'string' ||
-		!from ||
-		typeof skill !== 'string' ||
-		!trackerRuleSkill(skill) ||
-		typeof text !== 'string' ||
-		!trackerRuleText(text)
-	)
-		throw new TrackerItemReadError(
-			'supply an incident, a skill name and a single-line rule of up to 500 characters without credentials or private paths'
-		);
+	const { from, skill, text } = await readRuleDraft(request);
 	request.signal.throwIfAborted();
 	const { incident, existing } = store.commitLocal(() => {
 		const incident = items.resolve(from).id;
@@ -50,6 +36,25 @@ export async function trackerSessionRuleEndpoint(
 	const rule =
 		existing ?? rules.list(skill).find((rule) => rule.incident === incident && rule.text === text);
 	return trackerResponse(existing ? 200 : 201, rule);
+}
+
+async function readRuleDraft(request: Request) {
+	const input = (await readItemBody(request)) as Record<string, unknown>;
+	const skill = input.skill;
+	const text = typeof input.text === 'string' ? input.text.trim() : input.text;
+	const from = input.from;
+	if (
+		typeof from !== 'string' ||
+		!from ||
+		typeof skill !== 'string' ||
+		!trackerRuleSkill(skill) ||
+		typeof text !== 'string' ||
+		!trackerRuleText(text)
+	)
+		throw new TrackerItemReadError(
+			'supply an incident, a skill name and a single-line rule of up to 500 characters without credentials or private paths'
+		);
+	return { from, skill, text };
 }
 
 function listRules(request: Request, rules: TrackerSessionRuleRepository): Response {
