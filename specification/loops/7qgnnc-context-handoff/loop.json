@@ -2,7 +2,7 @@
 	"name": "7qgnnc-context-handoff",
 	"goal": "When a managed session reaches the context limit, preserve its checkpoint and continue the same Tracker item and model in a fresh session exactly once.",
 	"createdAt": "2026-11-28T11:03:23.056Z",
-	"updatedAt": "2026-11-28T11:07:49.844Z",
+	"updatedAt": "2026-11-28T11:13:22.731Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T11:13:22.731Z",
+			"evidence": "Formal unchanged case red 7ac113b3 at c4a09cd709 and green 48da96e3 at fc54848517 under the same profile. MB2 native tmux fixture red on abbae47c79 plus the test patch (original pane still alive) and green on 3e76f36f0f (original pane gone, one matching fresh run and brief)."
 		},
 		{
 			"id": "verify",
