@@ -26,7 +26,7 @@
 				"name": "resourceCommand.args",
 				"type": "string[]",
 				"required": true,
-				"description": "The command and its arguments: element 0 is the executable, run in the current working directory (process.cwd()), and the rest are passed to it as its arguments. An empty array rejects with 'A managed command is required after --' before anything starts.",
+				"description": "The command and its arguments: element 0 is the executable, run in the current working directory (process.cwd()), and the rest are passed to it as its arguments. On macOS, agent-test jobs run under taskpolicy -b at nice +10 or their already lower inherited priority. An empty array rejects with 'A managed command is required after --' before anything starts.",
 				"examples": [
 					["npm", "test"],
 					["node", "scripts/verify.mjs", "--strict"],
@@ -94,7 +94,7 @@
 						"name": "resourceCommand.args",
 						"type": "string[]",
 						"required": true,
-						"description": "The command and its arguments: element 0 is the executable, run in the current working directory (process.cwd()), and the rest are passed to it as its arguments. An empty array rejects with 'A managed command is required after --' before anything starts.",
+						"description": "The command and its arguments: element 0 is the executable, run in the current working directory (process.cwd()), and the rest are passed to it as its arguments. On macOS, agent-test jobs run under taskpolicy -b at nice +10 or their already lower inherited priority. An empty array rejects with 'A managed command is required after --' before anything starts.",
 						"examples": [
 							["npm", "test"],
 							["node", "scripts/verify.mjs", "--strict"],
