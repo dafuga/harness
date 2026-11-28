@@ -7,14 +7,17 @@ import type {
 } from '../../models/networking-security/Sealed.types';
 import type { SealedSessionRequest } from '../../utils/networking-security/readSealedDeviceSession.types';
 
-export interface EnrollmentReviewOptions {
+export interface EnrollmentTransportOptions {
 	account: string;
 	device: SealedDeviceKeys;
-	/** The local head verified when this installation was admitted. */
-	pin: SealedChainPin;
 	/** Cancel on sign-out or account change, including during the local presence check. */
 	signal: AbortSignal;
 	request: SealedSessionRequest;
+}
+
+export interface EnrollmentReviewOptions extends EnrollmentTransportOptions {
+	/** The local head verified when this installation was admitted. */
+	pin: SealedChainPin;
 }
 
 export interface MailboxStep {

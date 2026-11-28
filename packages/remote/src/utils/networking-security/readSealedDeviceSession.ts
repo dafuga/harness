@@ -13,20 +13,23 @@ const path = '/api/sync/v1/device-session';
 export async function readSealedDeviceSession(
 	request: SealedSessionRequest,
 	device: SealedDeviceKeys,
-	signal?: AbortSignal
+	signal?: AbortSignal,
+	verifyApproval?: () => Promise<void>
 ): Promise<SealedDeviceSessionState> {
 	const headers = { 'X-Harness-Device': device.deviceId };
 	const options = { cache: 'no-store', redirect: 'error', signal } as const;
 	const status = await read(await request(path, { ...options, method: 'GET', headers }));
-	if (
-		status.state === 'first-device' ||
-		status.state === 'waiting-for-approval' ||
-		status.state === 'approved'
-	)
+	if (status.state === 'first-device' || status.state === 'waiting-for-approval')
 		return status.state;
+	if (status.state === 'approved') {
+		await verifyApproval?.();
+		signal?.throwIfAborted();
+		return status.state;
+	}
 	const challenge = status.challenge;
 	if (status.state !== 'proof-required' || !validChallenge(challenge))
 		throw new SealedError('Hub returned an invalid device approval stage.');
+	await verifyApproval?.();
 	const signature = await signChallenge(device, challenge);
 	signal?.throwIfAborted();
 	const confirmed = await read(

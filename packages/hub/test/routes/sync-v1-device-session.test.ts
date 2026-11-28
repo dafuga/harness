@@ -110,15 +110,27 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 			...init,
 			headers: { ...init.headers, 'X-Test-Session': otherSession, 'CF-IPCountry': 'CA' }
 		});
-	const login = () => new SealedEnrollmentRequestService({
-		account, device: pending, signal: new AbortController().signal, request: browserRequest
-	});
+	const login = () =>
+		new SealedEnrollmentRequestService({
+			account,
+			device: pending,
+			signal: new AbortController().signal,
+			request: browserRequest
+		});
 	let progress: EnrollmentProgress = { nonce: requestNonce };
-	const save = async (next: EnrollmentProgress) => { progress = structuredClone(next); };
-	expect(await login().resolve(progress, save)).toEqual({ state: 'waiting-for-approval', code: null });
+	const save = async (next: EnrollmentProgress) => {
+		progress = structuredClone(next);
+	};
+	expect(await login().resolve(progress, save)).toEqual({
+		state: 'waiting-for-approval',
+		code: null
+	});
 	const id = progress.mailbox!;
 	expect(id).toMatch(/^[a-f0-9]{32}$/);
-	expect(await login().resolve(progress, save)).toEqual({ state: 'waiting-for-approval', code: null });
+	expect(await login().resolve(progress, save)).toEqual({
+		state: 'waiting-for-approval',
+		code: null
+	});
 	expect(progress.mailbox).toBe(id);
 	const visible = await fixture.call(session, 'GET', 'enroll', { headers });
 	expect(await visible.json()).toEqual({
@@ -156,7 +168,10 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	await review.claim();
 	expect(await review.comparison()).toBeNull();
 	const waiting = await login().resolve(progress, save);
-	expect(waiting).toEqual({ state: 'waiting-for-approval', code: expect.stringMatching(/^\d{6}$/) });
+	expect(waiting).toEqual({
+		state: 'waiting-for-approval',
+		code: expect.stringMatching(/^\d{6}$/)
+	});
 	if (waiting.state !== 'waiting-for-approval' || !waiting.code) throw new Error('Missing code');
 	const code = waiting.code;
 	expect(progress.claim?.approver).toBe(device.deviceId);
@@ -175,11 +190,17 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	});
 	expect(nextPin?.seq).toBe(1);
 	const withoutGrants = new SealedEnrollmentRequestService({
-		account, device: pending, signal: new AbortController().signal,
+		account,
+		device: pending,
+		signal: new AbortController().signal,
 		request: (path, init) =>
-			path.includes('/grants?') ? Promise.resolve(Response.json({ grants: [] })) : browserRequest(path, init)
+			path.includes('/grants?')
+				? Promise.resolve(Response.json({ grants: [] }))
+				: browserRequest(path, init)
 	});
-	await expect(withoutGrants.resolve(progress, save)).rejects.toThrow('A current grant is missing.');
+	await expect(withoutGrants.resolve(progress, save)).rejects.toThrow(
+		'A current grant is missing.'
+	);
 	expect((await fixture.call(otherSession, 'GET', path, { headers: newHeaders })).status).toBe(403);
 	const admitted = await login().resolve(progress, save);
 	expect(admitted.state).toBe('approved');
