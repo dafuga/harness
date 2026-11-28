@@ -9,6 +9,8 @@ import { ladderFrom } from '../../../utils/agents-providers/parseTrackerModelSpe
 import type { TrackerRetryOptions } from '../../../utils/agents-providers/pickTrackerModel.types';
 import { pickTrackerModelFromRuns } from '../../../utils/agents-providers/pickTrackerModelFromRuns';
 import { trackerRunReport } from '../../../utils/agents-providers/trackerRunReport';
+import { trackerBrief } from '../../../utils/projects-sessions/trackerBrief';
+import { trackerItemModelEvidence } from '../tracker-native-runtime-service/trackerItemModelEvidence';
 import type { TrackerLocalApiOptions } from '../TrackerLocalApiService.types';
 
 export function readTrackerItemDetail(item: TrackerItem, options: TrackerLocalApiOptions) {
@@ -69,8 +71,10 @@ export function readTrackerRunEndpoint(
 			return undefined;
 		case 'items':
 			if (parts.length === 3 && parts[2] === 'pick') {
-				return itemPick(items.get(parts[1]), runs, {
+				const item = items.get(parts[1]);
+				return itemPick(item, runs, {
 					cfg: ladderConfig,
+					evidence: trackerItemModelEvidence(runs.list({ itemId: item.id }), item.notes_log),
 					claudePreferredUntil: options.claudePreferredUntil?.()
 				});
 			}
@@ -85,7 +89,12 @@ function itemPick(
 	runs: TrackerRunReadRepository,
 	selection: TrackerRetryOptions
 ) {
-	const { rung, kind, reason } = pickTrackerModelFromRuns(item, () => runs.finished(), selection);
+	const input = { ...item, brief: trackerBrief(item.notes_log) };
+	const { rung, kind, reason, taskType } = pickTrackerModelFromRuns(
+		input,
+		() => runs.finished(),
+		selection
+	);
 	return {
 		item_id: item.id,
 		rung: rung.id,
@@ -93,6 +102,7 @@ function itemPick(
 		cli: rung.cli,
 		effort: rung.effort,
 		kind,
+		task_type: taskType,
 		pinned: Boolean(rung.pinned),
 		reason,
 		auto: Boolean(item.auto),

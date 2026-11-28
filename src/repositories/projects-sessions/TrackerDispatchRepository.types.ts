@@ -23,6 +23,7 @@ export interface TrackerDispatchCandidate {
 
 export type TrackerDispatchRow = TrackerItemRow & {
 	dispatch_source: TrackerRunReceipt['launch_source'];
+	brief?: string | null;
 };
 
 export type TrackerStoredDispatchRun = Omit<

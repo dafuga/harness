@@ -139,6 +139,41 @@ service. Restore never changes the live database: it writes a checked copy that 
 current run and delivery records and has a new database identity, so spokes send their journals again,
 then prints the steps to swap it in, including moving the old identity's backups into a subfolder. Add `--without-local-state` if the live database is unreadable.
 
+### Task types and model routing
+
+Every task has a type: `coordinator`, `design`, `deploy`, `computer-use`,
+`module-job`, `simple`, `default` or `hard`. Set it with `tracker add --kind
+<type>` or `tracker update <id> --kind <type>`; `--kind auto` goes back to the
+type inferred from the title and brief. Coordinator means the work steers
+sessions, orchestrates or writes module contracts. Design means mockups, visual
+design or design review (UI polish is build work). `tracker show` marks an
+inferred type, `tracker list --kind <type>` filters by it, Hub Home shows it,
+and each run records it next to the chosen rung (`tracker runs --json`).
+
+| Type            | Route                                                                |
+| --------------- | -------------------------------------------------------------------- |
+| coordinator     | Opus 5.5 high                                                        |
+| design          | Fable 5.2 high                                                       |
+| deploy          | BuildFlexity: Opus 5.5 high. Others: Sonnet 5.5 high, then Opus high |
+| everything else | the cheapest rung, one rung up per failed attempt                    |
+
+Failed, rejected, redone and timed-out attempts climb a rung. So does a watchdog
+relaunch of a session that disappeared; a context handoff keeps its model. After
+two failed Opus attempts on an item, or one model-quality incident on Opus, the
+next attempt goes to Fable 5.2 high, then `gpt-6.2-astra` high. Astra is never a
+first choice. Record an incident as a note that starts
+`model-quality incident: <model> <what went wrong>`.
+
+An explicit `--model` always wins: no preference, safety floor, climb or
+escalation replaces it. A model saved before Tracker recorded `--model` choices
+is not explicit, so the rules below still apply to it.
+
+The `routing` section of the Tracker node config can change the table with
+`taskRoutes`, for example `{"simple": ["haiku:medium", "sonnet:low"]}`. The
+first entry is the starting model and the rest are its retry steps.
+`gemini: {"enabled": true}` adds Gemini after Astra once a Gemini launch route
+exists; there is none today, so the setting has no effect yet.
+
 ### Model provider preference
 
 `harness tracker autolaunch prefer claude --until <ISO>` sends every launch to
@@ -146,8 +181,9 @@ Claude until that time: auto-launches, retries, watchdog handoffs, and choices
 saved before the switch. `pause codex --until <ISO>` does the same, and
 `prefer default` or `resume codex` ends it early. Simple work uses Sonnet low,
 default work Sonnet medium, hard work Sonnet high and Harness module jobs Haiku
-medium. Deploys keep their model and computer use stays on Terra. A Codex model
-named on an item is replaced; a Claude one is kept.
+medium. Computer use stays on Terra, and hard escalation stops at Fable. An
+older saved Codex model is replaced; an explicit `--model` and a saved Claude
+model are kept.
 
 Set it on the hub to reach every computer through sync. Set on another computer,
 it applies there until the hub sets a newer one. `autolaunch status` and Hub

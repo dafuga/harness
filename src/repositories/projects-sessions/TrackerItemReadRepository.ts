@@ -13,6 +13,7 @@ import type {
 	TrackerItemRow
 } from './TrackerItemReadRepository.types';
 
+import { isTrackerTaskType } from '../../utils/agents-providers/trackerTaskType';
 import {
 	trackerPlanningStageSql,
 	trackerStage
@@ -69,7 +70,8 @@ export class TrackerItemReadRepository {
 		const where = [visibleItems];
 		const values: string[] = [];
 		addStatusFilter(filters, where, values);
-		addFieldFilters(filters, where, values);
+		const taskType = isTrackerTaskType(filters.kind) ? filters.kind : undefined;
+		addFieldFilters(taskType ? { ...filters, kind: undefined } : filters, where, values);
 		if (queryFlag(filters.flagged)) {
 			where.push(
 				'needs_daniel = 1 AND resolved = 0',
@@ -80,14 +82,17 @@ export class TrackerItemReadRepository {
 			values.push(now, now);
 		}
 		if (queryFlag(filters.recurring)) where.push('every IS NOT NULL');
+		const limit = Number(filters.limit) || 500;
 		const rows = this.database
 			.prepare(
 				`SELECT ${itemProjection} FROM ${itemChases} WHERE ${where.join(' AND ')}
 				 ORDER BY (due IS NULL), due, created_at LIMIT ?`
 			)
-			.all(...values, Number(filters.limit) || 500) as TrackerItemRow[];
+			.all(...values, taskType ? -1 : limit) as TrackerItemRow[];
 		const notes = this.noteQuery();
-		return rows.map((row) => serializeTrackerItem(row, notes, nowMs));
+		const items = rows.map((row) => serializeTrackerItem(row, notes, nowMs));
+		// An inferred task type exists only after reading, so that filter and its limit apply here.
+		return taskType ? items.filter((item) => item.task_type === taskType).slice(0, limit) : items;
 	}
 
 	/** Build the digest with an explicit clock and the store's configured time zone. */

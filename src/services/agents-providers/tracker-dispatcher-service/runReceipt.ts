@@ -50,6 +50,7 @@ export function queueRun(
 		attempt: (previous?.attempt ?? 0) + 1,
 		escalated_from: previous?.id ?? null,
 		...modelFields(item, pick, previous),
+		task_type: policy.taskType?.(item) ?? previous?.task_type ?? null,
 		state: 'queued',
 		outcome: null,
 		failure_reason: null,

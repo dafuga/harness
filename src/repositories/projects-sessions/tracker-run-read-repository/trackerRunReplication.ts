@@ -35,7 +35,8 @@ const columns = [
 	'session_id',
 	'escalated_from',
 	'credits_balance',
-	'resumed_at'
+	'resumed_at',
+	'task_type'
 ] as const;
 const projection = columns.join(', ');
 
@@ -57,6 +58,15 @@ export function relayedTrackerRunHistory(db: SqliteDatabase, peer: string): unkn
 		.all(peer);
 }
 
+// An older computer reports no task type, which must not erase one already recorded.
+function mergedColumn(column: (typeof columns)[number]) {
+	if (column === 'idle_nudges')
+		return 'idle_nudges = max(remote_runs.idle_nudges, excluded.idle_nudges)';
+	if (column === 'task_type')
+		return 'task_type = coalesce(excluded.task_type, remote_runs.task_type)';
+	return `${column} = excluded.${column}`;
+}
+
 export function importTrackerRunHistory(
 	db: SqliteDatabase,
 	rows: readonly TrackerWireValue[],
@@ -66,7 +76,7 @@ export function importTrackerRunHistory(
 		VALUES (${Array(columns.length + 2)
 			.fill('?')
 			.join(', ')}) ON CONFLICT(node, id) DO UPDATE SET
-		${columns.map((c) => (c === 'idle_nudges' ? 'idle_nudges = max(remote_runs.idle_nudges, excluded.idle_nudges)' : `${c} = excluded.${c}`)).join(', ')}
+		${columns.map(mergedColumn).join(', ')}
 		WHERE coalesce(excluded.resumed_at, 0) > coalesce(remote_runs.resumed_at, 0)
 		OR (coalesce(excluded.resumed_at, 0) = coalesce(remote_runs.resumed_at, 0)
 		AND (remote_runs.ended_at IS NULL OR excluded.ended_at >= remote_runs.ended_at)

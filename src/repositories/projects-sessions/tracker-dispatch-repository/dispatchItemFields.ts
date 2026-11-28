@@ -39,6 +39,9 @@ export function dispatchItem(
 		repo: row.repo,
 		computer: row.computer,
 		model: row.model,
+		explicit_model: row.explicit_model,
+		task_type: row.task_type,
+		brief: row.brief,
 		sensitive: flag(row.sensitive),
 		createdBy: row.created_by ?? undefined,
 		adapterDueOwner: row.adapter_due_owner,
@@ -130,11 +133,17 @@ function launchRequestNote({ source, target, scheduledPick }: TrackerLaunchInten
 	return `due scheduler requested launch on ${target} (${pick})`;
 }
 
+// Only a manual launch writes the model through here, from its --model.
+function launchModelChoice({ model }: NonNullable<TrackerDispatchWrites['item']>) {
+	return model === undefined ? {} : { explicit_model: model };
+}
+
 export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['item']>) {
 	const fields = replacedAsk(item.question);
 	for (const key of ['computer', 'project', 'repo', 'model', 'sensitive', 'status'] as const) {
 		if (item[key] !== undefined) fields[key] = item[key];
 	}
+	Object.assign(fields, launchModelChoice(item));
 	if (item.launch !== undefined) Object.assign(fields, launchJournalFields(item.launch));
 	const requested = item.launch && launchRequestNote(item.launch);
 	if (requested) fields['note+'] = requested;

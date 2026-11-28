@@ -70,6 +70,7 @@ const agent = z.object({
 	task: title,
 	machine: short.nullable(),
 	model: short.nullable(),
+	taskType: short.nullable().optional(),
 	since: time,
 	question: text(2000).nullable(),
 	options,

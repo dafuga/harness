@@ -16,6 +16,7 @@
 			"src/services/agents-providers/tracker-dispatcher-service/launchIntent.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/providerRedirect.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/recoveryIntent.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/recoveryPick.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runGiveUp.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runIdentity.ts",
@@ -62,9 +63,11 @@
 			"TrackerItemStatus",
 			"TrackerDispatchOutcome",
 			"TrackerLaunchOptions",
+			"TrackerDispatchItemModel",
 			"TrackerLaunchIntent",
 			"TrackerDispatchItem",
 			"TrackerLaunchRung",
+			"TrackerRetryAttempt",
 			"TrackerLaunchPick",
 			"TrackerDispatchPolicy",
 			"TrackerDuePolicy",
@@ -109,6 +112,7 @@
 			"retryStart",
 			"recoveryIntent",
 			"unattendedIntent",
+			"recoveryPick",
 			"launchStartupGrace",
 			"claimLaunch",
 			"prepareRetry",
@@ -572,6 +576,21 @@
 			{
 				"name": "unattendedIntent.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "recoveryPick.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "recoveryPick.rung",
+				"type": "TrackerLaunchRung | undefined",
+				"required": true
+			},
+			{
+				"name": "recoveryPick.policy",
+				"type": "TrackerDispatchPolicy",
 				"required": true
 			},
 			{
@@ -1898,6 +1917,34 @@
 					{
 						"name": "unattendedIntent",
 						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoveryPick",
+				"inputs": [
+					{
+						"name": "recoveryPick.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "recoveryPick.rung",
+						"type": "TrackerLaunchRung | undefined",
+						"required": true
+					},
+					{
+						"name": "recoveryPick.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoveryPick",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

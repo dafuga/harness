@@ -2,7 +2,7 @@
 import { classifyTrackerTask, projectOf } from './classifyTrackerTask';
 import type { TrackerModelItem } from './classifyTrackerTask.types';
 import { pickTrackerModel } from './pickTrackerModel';
-import type { TrackerLadderConfig } from './parseTrackerModelSpec.types';
+import type { TrackerModelSelectionOptions } from './pickTrackerModel.types';
 import { trackerModelHistory } from './trackerRunReport';
 import type { TrackerRunRow } from './trackerRunReport.types';
 
@@ -10,11 +10,7 @@ import type { TrackerRunRow } from './trackerRunReport.types';
 export function pickTrackerModelFromRuns(
 	item: TrackerModelItem,
 	finished: () => readonly TrackerRunRow[],
-	{
-		cfg,
-		now,
-		claudePreferredUntil
-	}: { cfg?: TrackerLadderConfig; now?: number; claudePreferredUntil?: string } = {}
+	{ cfg, now, claudePreferredUntil, evidence }: Omit<TrackerModelSelectionOptions, 'history'> = {}
 ) {
 	const history = item.model
 		? undefined
@@ -23,5 +19,5 @@ export function pickTrackerModelFromRuns(
 				{ kind: classifyTrackerTask(item), project: projectOf(item) },
 				cfg?.autolaunch?.learning?.minSamples
 			);
-	return pickTrackerModel(item, { cfg, history, now, claudePreferredUntil });
+	return pickTrackerModel(item, { cfg, history, now, claudePreferredUntil, evidence });
 }

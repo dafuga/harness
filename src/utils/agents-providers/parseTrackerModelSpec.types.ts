@@ -1,4 +1,6 @@
 // @harness-uid u_b5x7mlx577
+import type { TrackerTaskType } from './classifyTrackerTask.types';
+
 export interface TrackerFlatPrice {
 	input: number;
 	output: number;
@@ -21,6 +23,10 @@ export interface TrackerLadderConfig {
 		learning?: TrackerLearningConfig;
 		/** ISO time of the Codex weekly reset; automatic routing is Claude-only before it. */
 		claudeOnlyUntil?: string;
+		/** The operator's task-type table; each list is the first model then its retry steps. */
+		taskRoutes?: Partial<Record<TrackerTaskType, readonly string[]>>;
+		/** Gemini joins hard escalation only when enabled and a launch route exists. */
+		gemini?: { enabled?: boolean; model?: string };
 	};
 }
 

@@ -66,7 +66,9 @@
 			"legacyDispatchRuns",
 			"adoptLegacyDispatchRun",
 			"persistDispatchRun",
-			"trackerRunSchema"
+			"trackerRunSchema",
+			"trackerBriefProjection",
+			"ensureTrackerRunSchema"
 		]
 	},
 	"contract": {
@@ -353,6 +355,11 @@
 				"name": "persistDispatchRun.node",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "ensureTrackerRunSchema.database",
+				"type": "SqliteDatabase",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -487,6 +494,14 @@
 			{
 				"name": "trackerRunSchema",
 				"type": "unknown"
+			},
+			{
+				"name": "trackerBriefProjection",
+				"type": "unknown"
+			},
+			{
+				"name": "ensureTrackerRunSchema",
+				"type": "void"
 			}
 		],
 		"errors": [
@@ -1148,6 +1163,24 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ensureTrackerRunSchema",
+				"inputs": [
+					{
+						"name": "ensureTrackerRunSchema.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ensureTrackerRunSchema",
+						"type": "void"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			}
 		],

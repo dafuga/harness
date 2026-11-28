@@ -90,6 +90,7 @@ test('launch and model collaborators receive the original command context', () =
 	).toEqual({
 		auto: `fixture-node@${now}#fixture-nonce`,
 		model,
+		explicit_model: model,
 		computer: 'fixture-target',
 		launch_target: 'fixture-target',
 		launch_source: 'manual'

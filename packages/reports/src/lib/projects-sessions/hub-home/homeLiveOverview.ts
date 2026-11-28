@@ -51,6 +51,7 @@ function workRow({ item }: ItemWork, state: HomeWorkState, run?: TrackerRunRecor
 		now: state === 'queued' ? queuedReason(run) : homeWorkNow(item),
 		owner: homeText(item.owner, 200),
 		model: homeText(runModel(run) ?? item.model, 200),
+		taskType: homeText(item.taskType, 200),
 		updatedAt: isoTime(item.updated_at),
 		...runFacts(item, run)
 	};

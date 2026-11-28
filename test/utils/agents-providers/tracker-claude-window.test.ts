@@ -1,8 +1,6 @@
 import { expect, test } from 'vitest';
-import {
-	pickTrackerModel,
-	retryTrackerModel
-} from '../../../src/utils/agents-providers/pickTrackerModel';
+import { pickTrackerModel } from '../../../src/utils/agents-providers/pickTrackerModel';
+import { retryTrackerModel } from '../../../src/utils/agents-providers/retryTrackerModel';
 
 // Codex resets 27 Nov 2026 10:39 Europe/Lisbon, which is UTC+0 in November.
 const reset = Date.parse('2026-11-27T10:39:00Z');
@@ -18,7 +16,7 @@ test('routes work by task type to the cheapest Claude rung until the Codex reset
 		['Fix a race condition in the queue', 'claude-sonnet-5-5', 'high'],
 		['Open the dashboard in Chrome and review its layout', 'claude-sonnet-5-5', 'high'],
 		['Record a QA video of the checkout flow', 'claude-sonnet-5-5', 'high'],
-		['Design a dashboard mockup', 'claude-sonnet-5-5', 'medium'],
+		['Design a dashboard mockup', 'claude-fable-5-2', 'high'],
 		['Review screenshots', 'claude-sonnet-5-5', 'medium'],
 		['Update the README', 'claude-haiku-5-5', 'high'],
 		['Add tests for the parser', 'claude-haiku-5-5', 'high'],
@@ -26,8 +24,9 @@ test('routes work by task type to the cheapest Claude rung until the Codex reset
 		['Remind Daniel about the renewal', 'claude-haiku-5-5', 'high'],
 		['Rename the helper', 'claude-haiku-5-5', 'high'],
 		['Update the README for the payments API', 'claude-sonnet-5-5', 'medium'],
-		['Deploy to preprod', 'claude-opus-5-5', 'high'],
-		['Promote preprod to production', 'claude-opus-5-5', 'high'],
+		['Deploy to preprod', 'claude-sonnet-5-5', 'high'],
+		['Promote preprod to production', 'claude-sonnet-5-5', 'high'],
+		['Deploy BuildFlexity to preprod', 'claude-opus-5-5', 'high'],
 		['[hard] Fix an intermittent crash', 'claude-opus-5-5', 'high']
 	];
 	for (const [title, model, effort] of routes) {
@@ -61,7 +60,10 @@ test('switches to the post-reset table at 10:39 Lisbon on 27 November', () => {
 		effort: 'medium'
 	});
 	expect(pickTrackerModel({ title: 'Update the README' }, { now: reset }).rung.id).toBe('sol');
-	expect(pickTrackerModel({ title: 'Deploy to preprod' }, { now: reset }).rung.id).toBe('opus');
+	expect(pickTrackerModel({ title: 'Deploy to preprod' }, { now: reset }).rung).toMatchObject({
+		id: 'sonnet',
+		effort: 'high'
+	});
 	expect(pickTrackerModel({ title: 'Open the dashboard in Chrome' }, { now: reset }).rung.id).toBe(
 		'terra'
 	);
@@ -99,7 +101,7 @@ test('keeps explicit pins, and still floors Haiku for risky work', () => {
 	});
 	expect(
 		pickTrackerModel({ title: 'Deploy to preprod', model: 'haiku' }, { now }).rung
-	).toMatchObject({ id: 'opus', effort: 'high' });
+	).toMatchObject({ id: 'sonnet', effort: 'high' });
 });
 
 test('escalates a failed attempt up its own Claude route', () => {

@@ -1,4 +1,5 @@
 // @harness-uid u_xba7ieg4je
+import type { TrackerTaskType } from '../../utils/agents-providers/classifyTrackerTask.types';
 import type { TrackerAttachment } from '../../utils/projects-sessions/trackerAttachment.types';
 import type { TrackerItemPriority } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type { TrackerAskOption } from '../../utils/projects-sessions/trackerAskOptions.types';
@@ -94,6 +95,11 @@ export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> & {
 		schedule_hold?: { reason: string; until: string | null };
 		schedule_status: string | null;
 		model: string | null;
+		/** The model last named with --model; while it equals `model` it always wins. */
+		explicit_model?: string;
+		/** Set with --kind or inferred from the title and brief; only work items have one. */
+		task_type?: TrackerTaskType;
+		task_type_inferred?: boolean;
 		sensitive: boolean;
 		recurring: boolean;
 		every: string | null;

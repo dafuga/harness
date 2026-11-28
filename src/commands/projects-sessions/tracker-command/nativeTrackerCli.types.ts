@@ -32,6 +32,8 @@ export interface NativeTrackerItem {
 	rejected_run?: { id: number; rung: string } | null;
 	id: string;
 	kind: string;
+	task_type?: string;
+	task_type_inferred?: boolean;
 	priority?: 'urgent' | 'normal' | 'low';
 	title: string;
 	status: string;
@@ -137,6 +139,7 @@ export interface NativeTrackerListedRun extends TrackerListedRun {
 	session_id?: string | null;
 	tmux?: string | null;
 	failure_reason?: string | null;
+	task_type?: string | null;
 }
 
 export interface NativeTrackerRunReport {
@@ -145,6 +148,7 @@ export interface NativeTrackerRunReport {
 }
 
 export interface NativeTrackerPick {
+	task_type?: string;
 	rung: string;
 	model: string;
 	effort?: string | null;

@@ -16,7 +16,8 @@
 			"src/repositories/projects-sessions/tracker-item-read-repository/buildTrackerDigest.types.ts",
 			"src/repositories/projects-sessions/tracker-item-read-repository/formatTrackerDigest.ts",
 			"src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.ts",
-			"src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.types.ts"
+			"src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.types.ts",
+			"src/repositories/projects-sessions/tracker-item-read-repository/trackerTaskTypeFields.ts"
 		],
 		"symbols": [
 			"trackerManualIntakeProjection",
@@ -53,7 +54,8 @@
 			"trackerAskFields",
 			"openLaunchHold",
 			"StoredTrackerNote",
-			"StoredTrackerCallback"
+			"StoredTrackerCallback",
+			"trackerTaskTypeFields"
 		]
 	},
 	"contract": {
@@ -226,6 +228,16 @@
 			{
 				"name": "openLaunchHold.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerTaskTypeFields.row",
+				"type": "TrackerItemRow",
+				"required": true
+			},
+			{
+				"name": "trackerTaskTypeFields.notes",
+				"type": "TrackerItem['notes_log']",
 				"required": true
 			}
 		],
@@ -697,6 +709,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerTaskTypeFields",
+				"inputs": [
+					{
+						"name": "trackerTaskTypeFields.row",
+						"type": "TrackerItemRow",
+						"required": true
+					},
+					{
+						"name": "trackerTaskTypeFields.notes",
+						"type": "TrackerItem['notes_log']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTaskTypeFields",
+						"type": "Pick<TrackerItem, 'task_type' | 'task_type_inferred' | 'explicit_model'>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -757,6 +792,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.agents-providers-classify-tracker-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-is-tracker-phase4-worker",
 			"via": "import",
 			"origin": "derived"
@@ -768,6 +808,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-plan-tracker-item-mutation",
 			"via": "import",
 			"origin": "derived"
 		},

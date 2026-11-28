@@ -1,21 +1,15 @@
 // @harness-uid u_gs5pnxnxt4
-import {
-	classifyTrackerTask,
-	floorReasons,
-	isExplicitlyHard,
-	isHarnessModule,
-	isLightClaudeWork,
-	sizeOf,
-	trackerTaskRoute
-} from './classifyTrackerTask';
+import { floorReasons } from './classifyTrackerTask';
 import type { TrackerModelItem } from './classifyTrackerTask.types';
 import type { TrackerModelRung } from './parseTrackerModelSpec.types';
 import type {
 	ClaudeRoute,
-	PreferredSelectionContext,
 	TrackerModelSelection,
-	TrackerRetryRun
+	TrackerRetryRun,
+	TrackerRouteContext
 } from './pickTrackerModel.types';
+import { claudeTaskRoute, configuredTaskRoute, fixedTaskRoute } from './trackerTaskRoutes';
+import { trackerTaskType } from './trackerTaskType';
 
 /** The reason text every run records while the provider preference is on. */
 export function claudePreferenceNote(until: string) {
@@ -28,37 +22,31 @@ export function activePreferenceEnd(until: string | null | undefined, now: numbe
 }
 
 /**
- * model-status.md's Claude rung for each work kind while Daniel prefers Claude. Deploys keep
- * their model and computer use stays on Terra. Later steps are the retry escalation.
+ * The route while Daniel prefers Claude: the operator's table, then the fixed coordinator,
+ * design and deploy rules, then model-status.md's Claude rung. Computer use stays on Terra.
  */
 export function preferredClaudeRoute(
 	item: TrackerModelItem,
 	ladder: TrackerModelRung[],
-	restricted: boolean
+	restricted: boolean,
+	context: TrackerRouteContext = {}
 ): ClaudeRoute {
-	const [haiku, sonnet, terra, , opus] = ladder;
-	const [low, medium, high] = ['low', 'medium', 'high'].map((effort) => ({ ...sonnet, effort }));
-	const top = { ...opus, effort: 'high' };
-	const plan = (steps: TrackerModelRung[], why: string): ClaudeRoute => ({ steps, why });
-	const route = trackerTaskRoute(item);
-	const kind = classifyTrackerTask(item);
-	if (route === 'live-deploy') return plan([top], 'deploy: Opus high');
-	if (route === 'computer-use') return plan([terra], 'computer use: Terra');
-	if (kind === 'hard' || isExplicitlyHard(item)) return plan([high, top], 'hard work: Sonnet high');
-	if (!restricted && isHarnessModule(item))
-		return plan([{ ...haiku, effort: 'medium' }, medium, high, top], 'module job: Haiku medium');
-	if (!restricted && route === 'default' && isLightClaudeWork(item, kind, sizeOf(item)))
-		return plan([low, medium, high, top], 'simple work: Sonnet low');
-	return plan([medium, high, top], 'default work: Sonnet medium');
+	const type = trackerTaskType(item);
+	return (
+		configuredTaskRoute(ladder, type, { ...context, claudeOnly: true }) ??
+		fixedTaskRoute(item, ladder, type) ??
+		claudeTaskRoute(type, ladder, restricted)
+	);
 }
 
 /** A Codex pin cannot start while Daniel prefers Claude, so it takes the work kind's Claude rung. */
 export function switchedSelection(
 	item: TrackerModelItem,
 	ladder: TrackerModelRung[],
-	{ kind, until }: { kind: TrackerModelSelection['kind']; until: string }
-): TrackerModelSelection {
-	const { steps, why } = preferredClaudeRoute(item, ladder, floorReasons(item).length > 0);
+	{ kind, until, cfg }: { kind: TrackerModelSelection['kind']; until: string } & TrackerRouteContext
+): Omit<TrackerModelSelection, 'taskType'> {
+	const restricted = floorReasons(item).length > 0;
+	const { steps, why } = preferredClaudeRoute(item, ladder, restricted, { cfg });
 	const [rung] = steps;
 	return {
 		rung: { ...rung, pinned: true },
@@ -67,24 +55,17 @@ export function switchedSelection(
 	};
 }
 
-export function preferredSelection(
-	item: TrackerModelItem,
-	ladder: TrackerModelRung[],
-	context: PreferredSelectionContext
-): TrackerModelSelection {
-	const { steps, why } = preferredClaudeRoute(item, ladder, context.restrictions.length > 0);
-	const [rung] = steps;
-	return {
-		rung,
-		kind: context.kind,
-		reason: `${context.kind}/${context.size}: ${rung.id} ${rung.effort}; ${why}; ${claudePreferenceNote(context.preferred)}`
-	};
-}
+const efforts = ['low', 'medium', 'high', 'xhigh', 'max'];
 
-// A failed Claude rung moves to the next step of its route; an unknown rung restarts at the first.
-export function nextClaudeRung(route: ClaudeRoute, run: TrackerRetryRun) {
-	const { steps } = route;
-	const exact = steps.findIndex((step) => step.id === run.rung && step.effort === run.effort);
-	const found = exact >= 0 ? exact : steps.map(({ id }) => id).lastIndexOf(run.rung);
-	return steps[Math.min(found + 1, steps.length - 1)];
+// A failed rung moves to the next step of its route; an unknown rung restarts at the first.
+export function nextRouteRung({ steps }: ClaudeRoute, run: TrackerRetryRun) {
+	const id = run.rung === 'sol-xhigh' ? 'sol' : run.rung;
+	const exact = steps.findIndex((step) => step.id === id && step.effort === run.effort);
+	if (exact >= 0) return steps[Math.min(exact + 1, steps.length - 1)];
+	// The same model at an effort the route lacks moves to the next effort above it.
+	const ran = efforts.indexOf(run.effort ?? '');
+	const above =
+		ran < 0 ? undefined : steps.find((s) => s.id === id && efforts.indexOf(s.effort) > ran);
+	const last = steps.map((step) => step.id).lastIndexOf(id);
+	return above ?? steps[Math.min(last + 1, steps.length - 1)];
 }

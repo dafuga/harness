@@ -32,6 +32,8 @@ export interface TrackerRunReceipt extends TrackerReceiptUsage {
 	kind: string | null;
 	project: string | null;
 	reason: string | null;
+	/** The item's task type when this attempt was queued. */
+	task_type?: string | null;
 	state: 'queued' | 'running' | 'verifying' | 'finished';
 	outcome: TrackerDispatchOutcome | null;
 	failure_reason: string | null;

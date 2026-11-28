@@ -1,11 +1,13 @@
 // @harness-uid u_ksy76trvsj
+import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
+
 /** The pinned Tracker RunLog layout, shared by the legacy and native readers. */
 export const trackerRunSchema = `
 CREATE TABLE IF NOT EXISTS runs(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   item_id TEXT NOT NULL, auto_token TEXT, attempt INTEGER NOT NULL DEFAULT 1,
   rung TEXT NOT NULL, cli TEXT NOT NULL, model TEXT NOT NULL, effort TEXT, pinned INTEGER NOT NULL DEFAULT 0,
-  kind TEXT, project TEXT, repo TEXT, reason TEXT,
+  kind TEXT, project TEXT, repo TEXT, reason TEXT, task_type TEXT,
   state TEXT NOT NULL, outcome TEXT, failure_reason TEXT,
   queued_at INTEGER NOT NULL, started_at INTEGER, ended_at INTEGER, resumed_at INTEGER, eta_at INTEGER, kill_at INTEGER,
   tmux TEXT, session_name TEXT, session_id TEXT, exit_code INTEGER,
@@ -36,7 +38,7 @@ CREATE TABLE IF NOT EXISTS remote_runs(
   failure_reason TEXT, queued_at INTEGER, started_at INTEGER, ended_at INTEGER, resumed_at INTEGER, redone_by TEXT,
   input_tokens INTEGER, output_tokens INTEGER, cache_read_tokens INTEGER, cache_write_tokens INTEGER, cost_usd REAL,
   auto_token TEXT, tmux TEXT, session_name TEXT, session_id TEXT, escalated_from INTEGER, credits_balance TEXT,
-  idle_nudges INTEGER NOT NULL DEFAULT 0,
+  idle_nudges INTEGER NOT NULL DEFAULT 0, task_type TEXT,
   PRIMARY KEY(node, id)
 );
 CREATE INDEX IF NOT EXISTS remote_runs_item ON remote_runs(item_id, auto_token);
@@ -46,3 +48,17 @@ CREATE TABLE IF NOT EXISTS launch_events(
 );
 CREATE UNIQUE INDEX IF NOT EXISTS runs_watch_pane ON runs(watch_pane) WHERE watch_pane IS NOT NULL;
 `;
+
+/** The item's first BRIEF note, which task-type inference reads. */
+export const trackerBriefProjection = `(SELECT n.text FROM item_notes n WHERE n.item_id = i.id
+	AND n.text GLOB 'BRIEF*' ORDER BY n.hlc LIMIT 1) AS brief`;
+
+/** Create the run tables and add the columns that older databases do not have yet. */
+export function ensureTrackerRunSchema(database: SqliteDatabase): void {
+	database.exec(trackerRunSchema);
+	for (const table of ['runs', 'remote_runs']) {
+		const columns = database.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[];
+		if (!columns.some(({ name }) => name === 'task_type'))
+			database.exec(`ALTER TABLE ${table} ADD COLUMN task_type TEXT`);
+	}
+}

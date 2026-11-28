@@ -10,6 +10,7 @@ import type {
 } from './planTrackerItemMutation.types';
 import { normalizeTrackerParkUntil, trackerIsoTime, trackerTimeZone } from './normalizeTrackerDue';
 import { trackerItemLaunchFields } from './trackerItemLaunchFields';
+import { trackerModelChoiceFields } from './trackerModelChoiceFields';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 
@@ -48,6 +49,7 @@ export function trackerItemInput(
 	}
 	applyRecurrenceFields(fields, current);
 	validateNamedModel(fields, context, current);
+	Object.assign(fields, trackerModelChoiceFields(fields, body));
 	applyAliases(fields, body, context.node);
 	if (body.next_step !== undefined) Object.assign(fields, trackerNextStepFields(body.next_step));
 	if (!current && body.later === true) {

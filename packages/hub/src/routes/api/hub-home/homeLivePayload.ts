@@ -32,6 +32,7 @@ const row = z.object({
 	owner: short.nullable(),
 	computer: short.nullable(),
 	model: short.nullable(),
+	taskType: short.nullable().optional(),
 	startedAt: time.nullable(),
 	updatedAt: time
 });

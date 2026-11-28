@@ -77,8 +77,13 @@ async function submitRecovery(
 	saveRecovery(store, key, pending);
 	const result = await launch(item, { token: pending.token, rung }).catch(() => undefined);
 	if (result?.status === 'requested' || result?.status === 'existing')
-		return `Tracker requested relaunch ${state.failures.length + 1}/${maxRecoveryAttempts} on ${store.node}${rung ? ` using ${rung.model}` : ''}.`;
+		return `Tracker requested relaunch ${state.failures.length + 1}/${maxRecoveryAttempts} on ${store.node}${relaunchModel(rung)}.`;
 	return rejectRecoverySubmission(store, { item, key, state }, now, result);
+}
+
+function relaunchModel(rung?: TrackerLaunchRung) {
+	if (!rung) return '';
+	return rung.climbFrom ? `, one rung up from ${rung.model}` : ` using ${rung.model}`;
 }
 
 function rejectRecoverySubmission(

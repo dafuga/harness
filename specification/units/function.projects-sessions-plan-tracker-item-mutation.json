@@ -11,9 +11,11 @@
 		"source": [
 			"src/utils/projects-sessions/planTrackerItemMutation.ts",
 			"src/utils/projects-sessions/planTrackerItemMutation.types.ts",
+			"src/utils/projects-sessions/trackerBrief.ts",
 			"src/utils/projects-sessions/trackerItemInput.ts",
 			"src/utils/projects-sessions/trackerItemLaunchFields.ts",
-			"src/utils/projects-sessions/trackerItemTransitions.ts"
+			"src/utils/projects-sessions/trackerItemTransitions.ts",
+			"src/utils/projects-sessions/trackerModelChoiceFields.ts"
 		],
 		"symbols": [
 			"TrackerItemMutation",
@@ -29,6 +31,7 @@
 			"TrackerItemChange",
 			"TrackerItemTransition",
 			"TrackerDuplicateProbe",
+			"trackerBrief",
 			"trackerItemInput",
 			"trackerNextStepFields",
 			"trackerMoveOn",
@@ -37,7 +40,8 @@
 			"guardTrackerDuplicate",
 			"trackerReminderLaunchFields",
 			"trackerItemLaunchFields",
-			"trackerItemTransitions"
+			"trackerItemTransitions",
+			"trackerModelChoiceFields"
 		]
 	},
 	"contract": {
@@ -54,6 +58,11 @@
 				"type": "TrackerItemMutationContext",
 				"required": true,
 				"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
+			},
+			{
+				"name": "trackerBrief.notes",
+				"type": "readonly { text: string }[]",
+				"required": true
 			},
 			{
 				"name": "trackerItemInput.body",
@@ -150,6 +159,16 @@
 				"type": "TrackerItemSnapshot",
 				"required": false,
 				"description": "Existing item used for updates. Missing when this request creates an item."
+			},
+			{
+				"name": "trackerModelChoiceFields.fields",
+				"type": "TrackerItemInput",
+				"required": true
+			},
+			{
+				"name": "trackerModelChoiceFields.body",
+				"type": "TrackerItemInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -189,6 +208,24 @@
 						"name": "planTrackerItemMutation",
 						"type": "TrackerItemMutationPlan<Receipt>",
 						"description": "Target item ID, journal fields and the original receipt when supplied."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerBrief",
+				"inputs": [
+					{
+						"name": "trackerBrief.notes",
+						"type": "readonly { text: string }[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerBrief",
+						"type": "string | null"
 					}
 				],
 				"errors": [],
@@ -407,11 +444,39 @@
 					}
 				],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerModelChoiceFields",
+				"inputs": [
+					{
+						"name": "trackerModelChoiceFields.fields",
+						"type": "TrackerItemInput",
+						"required": true
+					},
+					{
+						"name": "trackerModelChoiceFields.body",
+						"type": "TrackerItemInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerModelChoiceFields",
+						"type": "Record<string, TrackerItemValue>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.agents-providers-classify-tracker-task",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.projects-sessions-check-tracker-item",
 			"via": "import",

@@ -37,6 +37,8 @@ const textFields = new Set([
 	'project',
 	'computer',
 	'model',
+	'explicit_model',
+	'task_type',
 	'launch_target',
 	'launch_source',
 	'launch_pick',

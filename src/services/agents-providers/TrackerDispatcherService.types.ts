@@ -27,6 +27,13 @@ export interface TrackerLaunchOptions {
 	sensitive?: boolean;
 }
 
+export interface TrackerDispatchItemModel {
+	explicit_model?: string | null;
+	task_type?: string | null;
+	/** The item's BRIEF note. */
+	brief?: string | null;
+}
+
 export interface TrackerLaunchIntent {
 	token: string;
 	source: TrackerLaunchSource;
@@ -34,7 +41,7 @@ export interface TrackerLaunchIntent {
 	scheduledPick?: TrackerLaunchPick;
 }
 
-export interface TrackerDispatchItem extends TrackerLaunchOptions {
+export interface TrackerDispatchItem extends TrackerLaunchOptions, TrackerDispatchItemModel {
 	id: string;
 	title: string;
 	notes?: string | null;
@@ -68,7 +75,15 @@ export interface TrackerLaunchRung {
 	model: string;
 	effort?: string | null;
 	pinned?: boolean;
+	/** A watchdog relaunch of this lost run climbs one rung instead of resuming it. */
+	climbFrom?: TrackerRetryAttempt;
 }
+
+/** What choosing the next rung needs to know about the attempt that failed. */
+export type TrackerRetryAttempt = Pick<
+	TrackerRunReceipt,
+	'node' | 'id' | 'rung' | 'cli' | 'model' | 'effort' | 'pinned' | 'kind'
+>;
 
 export interface TrackerLaunchPick {
 	rung: TrackerLaunchRung;
@@ -105,11 +120,13 @@ export interface TrackerDispatchPolicy {
 	/** Why this computer may not start the provider now. */
 	providerHold?(cli: string): string | null;
 	pickModel(item: TrackerDispatchItem): TrackerLaunchPick | { error: string };
-	retryModel(item: TrackerDispatchItem, run: TrackerRunReceipt): TrackerLaunchRung | null;
+	/** The item's task type, recorded on each run for analytics. */
+	taskType?(item: TrackerDispatchItem): string;
+	retryModel(item: TrackerDispatchItem, run: TrackerRetryAttempt): TrackerLaunchRung | null;
 	/** The replacement for an earlier choice the operator's provider preference now rules out. */
 	redirectPick?(
 		item: TrackerDispatchItem,
-		rung: Pick<TrackerLaunchRung, 'cli' | 'model'>
+		rung: Pick<TrackerLaunchRung, 'cli' | 'model' | 'effort'>
 	): TrackerLaunchPick | null;
 	maxRetries?: number;
 	maxRunMinutes?: number;

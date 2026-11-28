@@ -50,6 +50,7 @@
 			"runTime",
 			"when",
 			"pastDueLabel",
+			"taskTypeText",
 			"currentWorkLabel",
 			"pastDueSummary",
 			"messageStatusText",
@@ -264,6 +265,11 @@
 				"type": "Pick<HomePastDue, 'state' | 'position'>",
 				"required": true,
 				"description": "The state and optional queue position of one past-due run."
+			},
+			{
+				"name": "taskTypeText.type",
+				"type": "string | null | undefined",
+				"required": true
 			},
 			{
 				"name": "currentWorkLabel.run",
@@ -982,6 +988,24 @@
 				"outputs": [
 					{
 						"name": "pastDueLabel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "taskTypeText",
+				"inputs": [
+					{
+						"name": "taskTypeText.type",
+						"type": "string | null | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskTypeText",
 						"type": "unknown"
 					}
 				],

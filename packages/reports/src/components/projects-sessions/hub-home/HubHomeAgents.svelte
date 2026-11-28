@@ -26,6 +26,7 @@
 		isPending,
 		receiptText
 	} from './hubHomeMessages';
+	import { taskTypeText } from './hubHomeStatusText';
 	import type { ChangeSession, SendHomeChat } from './hubHomeView.types';
 	import HubHomeAddSession from './HubHomeAddSession.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';
@@ -118,7 +119,7 @@
 											<hx-span class="po-item-title">{agent.name}</hx-span>
 											{#if !linkedActivity}<hx-span class="po-item-meta">{activity}</hx-span>{/if}
 											<hx-span class="po-item-meta hh-agent-where"
-												>{[agent.machine, agent.model].filter(Boolean).join(' · ')}</hx-span
+												>{[agent.machine, agent.model, taskTypeText(agent.taskType)].filter(Boolean).join(' · ')}</hx-span
 											>
 										</hx-span>
 										<Pill
@@ -148,7 +149,7 @@
 				<hx-div
 					><hx-h3 class="po-name">{active.name}</hx-h3>
 					<hx-p class="po-sessions"
-						>{[active.machine, active.model].filter(Boolean).join(' · ')}</hx-p
+						>{[active.machine, active.model, taskTypeText(active.taskType)].filter(Boolean).join(' · ')}</hx-p
 					>
 				</hx-div>
 				<Pill

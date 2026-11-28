@@ -125,7 +125,13 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-classify-tracker-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/agents-providers/parseTrackerModelSpec.ts",

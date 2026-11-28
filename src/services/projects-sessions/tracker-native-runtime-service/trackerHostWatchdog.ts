@@ -1,7 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
-import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
+import { ensureTrackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import { WatchdogIdleService } from '../WatchdogIdleService';
 import { WatchdogStartupService } from '../WatchdogStartupService';
@@ -43,7 +43,7 @@ export function trackerHostWatchdog(
 ) {
 	const { now, automaticEnabled } = options;
 	const driver = trackerWatchdogPort(config, store.node);
-	store.database.exec(trackerRunSchema);
+	ensureTrackerRunSchema(store.database);
 	const scanTranscripts = trackerTranscriptScan(store, config.transcriptRoots ?? [], now);
 	const items = new TrackerItemReadRepository(store.database, now);
 	const chiefOfStaff = config.chiefOfStaff === true && store.node === 'daniel-primary-mbp';

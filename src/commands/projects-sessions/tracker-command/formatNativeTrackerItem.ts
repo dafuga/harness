@@ -34,6 +34,7 @@ function flagLabel(item: NativeTrackerItem) {
 function trackerItemMetadata(item: NativeTrackerItem) {
 	return [
 		item.kind,
+		taskTypeLabel(item),
 		item.stage,
 		item.priority && `priority ${item.priority}`,
 		item.every && `every '${item.every}' ${item.every_tz}`,
@@ -44,6 +45,10 @@ function trackerItemMetadata(item: NativeTrackerItem) {
 		item.auto && 'auto-launch',
 		...trackerFollowThroughMetadata(item)
 	].filter(Boolean);
+}
+
+function taskTypeLabel({ task_type, task_type_inferred }: NativeTrackerItem) {
+	return task_type && `type ${task_type}${task_type_inferred ? ' (inferred)' : ''}`;
 }
 
 function trackerFollowThroughMetadata(item: NativeTrackerItem) {
@@ -131,6 +136,7 @@ export function formatListedRun(run: NativeTrackerListedRun): string {
 	return [
 		`#${run.id} [${run.item_id.slice(0, 6)}] ${run.node || '?'} ${run.model}`,
 		run.effort ? `:${run.effort}` : '',
+		runTaskType(run),
 		` try ${run.attempt}  ${run.state}`,
 		run.outcome ? `/${run.outcome}` : '',
 		`  ${stamp(run.started_at)} → ${stamp(run.ended_at)}`,
@@ -143,6 +149,10 @@ export function formatListedRun(run: NativeTrackerListedRun): string {
 	].join('');
 }
 
+function runTaskType({ rung, task_type }: NativeTrackerListedRun) {
+	return task_type ? ` [${rung} for ${task_type}]` : '';
+}
+
 /** Only runs launched with a derived session id have a session name. */
 function claudeResumeHint({ cli, session_name, session_id }: NativeTrackerListedRun) {
 	const id = cli === 'claude' && session_name && trackerClaudeSessionId(session_id ?? '');
@@ -153,7 +163,8 @@ function formatModelPick(pick: NativeTrackerPick): string {
 	const effort = pick.effort ? ` ${pick.effort}` : '';
 	const pin = pick.pinned ? ' - named on the item' : '';
 	const computer = pick.computer ? `\n  computer: ${pick.computer}` : '';
-	return `${pick.rung} (${pick.model}${effort}, ${pick.cli})${pin}\n  ${pick.reason}${computer}`;
+	const type = pick.task_type ? `\n  task type: ${pick.task_type}` : '';
+	return `${pick.rung} (${pick.model}${effort}, ${pick.cli})${pin}\n  ${pick.reason}${type}${computer}`;
 }
 
 function formatRunReport({ ladder, rows }: NativeTrackerRunReport): string {

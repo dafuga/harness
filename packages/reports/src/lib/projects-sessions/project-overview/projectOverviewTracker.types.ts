@@ -40,6 +40,8 @@ export type TrackerItemRecord = {
 	parent?: string | null;
 	computer?: string | null;
 	model?: string | null;
+	/** The Tracker task type that selects its model route. */
+	taskType?: string | null;
 	occurrence?: string | null;
 	/** When the item next reminds, and the schedule it repeats on. */
 	remindAt?: string | null;

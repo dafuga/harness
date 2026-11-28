@@ -37,7 +37,10 @@ import {
 import { commitDecision, dueStartKey } from './tracker-dispatch-repository/dispatchCommit';
 import { humanRedoCandidates } from './tracker-dispatch-repository/dispatchHumanRedo';
 import { trackerDispatchControl } from './tracker-dispatch-repository/dispatchLaunchControl';
-import { trackerRunSchema } from './tracker-dispatch-repository/trackerRunSchema';
+import {
+	ensureTrackerRunSchema,
+	trackerBriefProjection
+} from './tracker-dispatch-repository/trackerRunSchema';
 
 const previousDueStartKey = 'harness_dispatch_last_due_start';
 
@@ -57,7 +60,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 			(id) => this.readSnapshot(id),
 			options.now ?? store.now
 		);
-		store.database.exec(trackerRunSchema);
+		ensureTrackerRunSchema(store.database);
 	}
 
 	async update(
@@ -135,7 +138,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		const database = this.store.database;
 		const row = database
 			.prepare(
-				`SELECT i.*, ${dispatchLaunchSource} AS dispatch_source, ${trackerManualIntakeProjection} FROM items i WHERE i.id = ?`
+				`SELECT i.*, ${dispatchLaunchSource} AS dispatch_source, ${trackerManualIntakeProjection}, ${trackerBriefProjection} FROM items i WHERE i.id = ?`
 			)
 			.get(itemId) as TrackerDispatchRow | undefined;
 		const runs = dispatchRunRows(database, this.node, itemId);

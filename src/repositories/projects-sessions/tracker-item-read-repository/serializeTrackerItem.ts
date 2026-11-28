@@ -15,6 +15,7 @@ import {
 	trackerPlanningStage
 } from '../../../utils/projects-sessions/trackerPlanning';
 import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
+import { trackerTaskTypeFields } from './trackerTaskTypeFields';
 import { TrackerItemReadError } from './TrackerItemReadError';
 
 /** Shape an item for public reads. SQLite-only fields and callback targets stay private. */
@@ -23,8 +24,10 @@ export function serializeTrackerItem(
 	notes: SqliteStatement,
 	now: number
 ): TrackerItem {
+	const log = notesLog(row, notes);
 	return {
 		id: row.id,
+		...trackerTaskTypeFields(row, log),
 		...itemClassification(row),
 		title: row.title,
 		status: row.status,
@@ -47,18 +50,13 @@ export function serializeTrackerItem(
 		...scheduleFields(row, now),
 		model: nullIfEmpty(row.model),
 		sensitive: Boolean(Number(row.sensitive)),
-		recurring: Boolean(row.every),
-		every: nullIfEmpty(row.every),
-		every_tz: row.every ? (nullIfEmpty(row.every_tz) ?? 'Europe/Lisbon') : null,
-		occurrence: nullIfEmpty(row.occurrence),
-		last_result: row.last_result ? JSON.parse(row.last_result) : null,
-		missed: nullIfEmpty(row.missed),
+		...recurrenceFields(row),
 		owner: row.owner,
 		agent: row.agent,
 		parent: row.parent,
 		notes: row.notes,
 		...(row.adapter_instructions ? { adapter_instructions: row.adapter_instructions } : {}),
-		notes_log: notesLog(row, notes),
+		notes_log: log,
 		needs_daniel: Boolean(row.needs_daniel),
 		question: row.question,
 		...askFields(row),
@@ -71,6 +69,17 @@ export function serializeTrackerItem(
 		created_by: row.created_by,
 		updated_at: row.updated_at,
 		deleted: Boolean(row.deleted)
+	};
+}
+
+function recurrenceFields(row: TrackerItemRow) {
+	return {
+		recurring: Boolean(row.every),
+		every: nullIfEmpty(row.every),
+		every_tz: row.every ? (nullIfEmpty(row.every_tz) ?? 'Europe/Lisbon') : null,
+		occurrence: nullIfEmpty(row.occurrence),
+		last_result: row.last_result ? JSON.parse(row.last_result) : null,
+		missed: nullIfEmpty(row.missed)
 	};
 }
 

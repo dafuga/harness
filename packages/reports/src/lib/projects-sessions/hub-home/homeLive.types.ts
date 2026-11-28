@@ -37,6 +37,8 @@ export interface HomeWorkRow {
 	owner: string | null;
 	computer: string | null;
 	model: string | null;
+	/** The item's task type. Older Macs omit it. */
+	taskType?: string | null;
 	/** When the run started, or was queued. Null when there is no run. */
 	startedAt: string | null;
 	updatedAt: string;

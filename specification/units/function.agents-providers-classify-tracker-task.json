@@ -4,13 +4,14 @@
 	"uid": "u_6owiaffoxw",
 	"kind": "function",
 	"title": "classifyTrackerTask",
-	"responsibility": "Classify Tracker work, identify its automatic model route, eligibility and explicit hardness, and set initial Sol effort.",
+	"responsibility": "Classify Tracker work and infer its task type, identify its automatic model route, eligibility and explicit hardness, and set initial Sol effort.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/utils/agents-providers/classifyTrackerTask.ts",
-			"src/utils/agents-providers/classifyTrackerTask.types.ts"
+			"src/utils/agents-providers/classifyTrackerTask.types.ts",
+			"src/utils/agents-providers/trackerTaskType.ts"
 		],
 		"symbols": [
 			"trackerTaskRoute",
@@ -26,7 +27,11 @@
 			"TrackerModelItem",
 			"TrackerTaskKind",
 			"TrackerTaskSize",
-			"TrackerTaskRoute"
+			"TrackerTaskRoute",
+			"trackerTaskTypes",
+			"TrackerTaskType",
+			"isTrackerTaskType",
+			"trackerTaskType"
 		]
 	},
 	"contract": {
@@ -109,6 +114,17 @@
 				"type": "TrackerTaskSize",
 				"required": true,
 				"description": "Estimated work size; only small chores qualify as mechanical units."
+			},
+			{
+				"name": "isTrackerTaskType.value",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "A --kind word or stored value to test against the task types."
+			},
+			{
+				"name": "trackerTaskType.item",
+				"type": "TrackerModelItem",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -379,6 +395,43 @@
 						"name": "isLightClaudeWork",
 						"type": "boolean",
 						"description": "True for tests, docs, small mechanical chores and watch or check items."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isTrackerTaskType",
+				"inputs": [
+					{
+						"name": "isTrackerTaskType.value",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "A --kind word or stored value to test against the task types."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerTaskType",
+						"type": "value is TrackerTaskType"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerTaskType",
+				"inputs": [
+					{
+						"name": "trackerTaskType.item",
+						"type": "TrackerModelItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTaskType",
+						"type": "TrackerTaskType"
 					}
 				],
 				"errors": [],

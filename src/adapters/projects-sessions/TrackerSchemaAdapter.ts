@@ -46,6 +46,8 @@ export const trackerItemFields = [
 	'repo',
 	'computer',
 	'model',
+	'explicit_model',
+	'task_type',
 	'sensitive',
 	'launch_target',
 	'launch_source',

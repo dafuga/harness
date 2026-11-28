@@ -1,7 +1,7 @@
 import { chooseTrackerFleetHost } from './composeTrackerFleet';
 import type { PeerStarts, TrackerFleetRuntime } from './nativeTrackerDispatch.types';
 // @harness-uid u_bl6xl2h4a3
-import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
+import { ensureTrackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { adapterFailover } from './trackerAdapterFailover';
 import { TrackerDispatchRepository } from '../../../repositories/projects-sessions/TrackerDispatchRepository';
 import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
@@ -32,7 +32,7 @@ export function composeTrackerDispatch(
 	fleet?: TrackerFleetRuntime
 ) {
 	if (!options.dispatch) {
-		if (options.syncResponder || options.links?.length) store.database.exec(trackerRunSchema);
+		if (options.syncResponder || options.links?.length) ensureTrackerRunSchema(store.database);
 		return emptyDispatch(store, options);
 	}
 	return nativeDispatch(store, { ...options, dispatch: options.dispatch }, fleet);

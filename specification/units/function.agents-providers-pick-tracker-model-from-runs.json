@@ -42,6 +42,12 @@
 				"name": "pickTrackerModelFromRuns.claudePreferredUntil",
 				"type": "string",
 				"required": false
+			},
+			{
+				"name": "pickTrackerModelFromRuns.evidence",
+				"type": "TrackerModelEvidence | undefined",
+				"required": false,
+				"description": "Failed attempts and quality incidents on this item."
 			}
 		],
 		"outputs": [
@@ -85,6 +91,12 @@
 						"name": "pickTrackerModelFromRuns.claudePreferredUntil",
 						"type": "string",
 						"required": false
+					},
+					{
+						"name": "pickTrackerModelFromRuns.evidence",
+						"type": "TrackerModelEvidence | undefined",
+						"required": false,
+						"description": "Failed attempts and quality incidents on this item."
 					}
 				],
 				"outputs": [
@@ -103,11 +115,6 @@
 	"dependencies": [
 		{
 			"unit": "function.agents-providers-classify-tracker-task",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.agents-providers-parse-tracker-model-spec",
 			"via": "import",
 			"origin": "derived"
 		},

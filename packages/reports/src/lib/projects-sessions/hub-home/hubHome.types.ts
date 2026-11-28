@@ -64,6 +64,8 @@ export interface HomeAgent {
 	task: string;
 	machine: string | null;
 	model: string | null;
+	/** The current item's task type. Older Macs omit it. */
+	taskType?: string | null;
 	since: string;
 	question: string | null;
 	/** Two to four choices for the open question; empty when the ask has none. */

@@ -19,6 +19,11 @@ export function pastDueLabel(run: Pick<HomePastDue, 'state' | 'position'>) {
 	return run.position ? `Queued #${run.position}` : pastDueLabels[run.state];
 }
 
+/** The task type that selects an item's model, as Home shows it beside the model. */
+export function taskTypeText(type: string | null | undefined) {
+	return type ? `${type} task` : null;
+}
+
 /** A current work badge on Home, including the reported blocker. */
 export function currentWorkLabel(run: HomePastDue) {
 	return [pastDueLabel(run), run.state === 'blocked' && run.reason].filter(Boolean).join(' · ');

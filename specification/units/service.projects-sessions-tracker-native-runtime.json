@@ -92,6 +92,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessages.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessages.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubPermits.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerItemModelEvidence.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchEventBatch.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchWait.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLegacyExitReceipt.ts",
@@ -297,6 +298,9 @@
 			"LocalRun",
 			"spokeGrant",
 			"spokeAutomaticPermit",
+			"trackerItemModelEvidence",
+			"lostWithoutHandoff",
+			"hasContextCheckpoint",
 			"batchTrackerLaunchEvents",
 			"trackerItemViews",
 			"trackerLaunchWait",
@@ -1610,6 +1614,36 @@
 			{
 				"name": "spokeAutomaticPermit.localPermit",
 				"type": "() => boolean",
+				"required": true
+			},
+			{
+				"name": "trackerItemModelEvidence.runs",
+				"type": "readonly EvidenceRun[]",
+				"required": true
+			},
+			{
+				"name": "trackerItemModelEvidence.notes",
+				"type": "Notes",
+				"required": true
+			},
+			{
+				"name": "lostWithoutHandoff.run",
+				"type": "EvidenceRun",
+				"required": true
+			},
+			{
+				"name": "lostWithoutHandoff.notes",
+				"type": "Notes",
+				"required": true
+			},
+			{
+				"name": "hasContextCheckpoint.run",
+				"type": "EvidenceRun",
+				"required": true
+			},
+			{
+				"name": "hasContextCheckpoint.notes",
+				"type": "Notes",
 				"required": true
 			},
 			{
@@ -5008,6 +5042,75 @@
 					{
 						"name": "spokeAutomaticPermit",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemModelEvidence",
+				"inputs": [
+					{
+						"name": "trackerItemModelEvidence.runs",
+						"type": "readonly EvidenceRun[]",
+						"required": true
+					},
+					{
+						"name": "trackerItemModelEvidence.notes",
+						"type": "Notes",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemModelEvidence",
+						"type": "TrackerModelEvidence"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "lostWithoutHandoff",
+				"inputs": [
+					{
+						"name": "lostWithoutHandoff.run",
+						"type": "EvidenceRun",
+						"required": true
+					},
+					{
+						"name": "lostWithoutHandoff.notes",
+						"type": "Notes",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "lostWithoutHandoff",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasContextCheckpoint",
+				"inputs": [
+					{
+						"name": "hasContextCheckpoint.run",
+						"type": "EvidenceRun",
+						"required": true
+					},
+					{
+						"name": "hasContextCheckpoint.notes",
+						"type": "Notes",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasContextCheckpoint",
+						"type": "boolean"
 					}
 				],
 				"errors": [],

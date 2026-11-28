@@ -13,7 +13,7 @@ import {
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { trackerStoredSchedulingHold } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { TrackerRecoveryState } from './trackerSessionRecovery.types';
-import { isContextCheckpoint } from './trackerWatchdogContext';
+import { hasContextCheckpoint, lostWithoutHandoff } from './trackerItemModelEvidence';
 
 export const maxRecoveryAttempts = 3;
 export const emptyRecoveryState: TrackerRecoveryState = {
@@ -58,18 +58,7 @@ function resetBudget(
 function settledRecoveryRun(run: TrackerListedRun, item: TrackerItem) {
 	if (run.started_at == null || run.ended_at == null) return false;
 	const start = Math.max(run.started_at, run.queued_at ?? 0);
-	return run.ended_at - start >= recoveryGrace || hasContextCheckpoint(run, item);
-}
-
-function hasContextCheckpoint(run: TrackerListedRun, item: TrackerItem): boolean {
-	const start = Math.max(run.started_at ?? 0, run.queued_at ?? 0);
-	return item.notes_log.some(
-		({ node, at, text }) =>
-			node === run.node &&
-			Date.parse(at) >= start &&
-			Date.parse(at) <= (run.ended_at ?? Infinity) &&
-			isContextCheckpoint(text)
-	);
+	return run.ended_at - start >= recoveryGrace || hasContextCheckpoint(run, item.notes_log);
 }
 
 export function recoveryRung(
@@ -78,20 +67,36 @@ export function recoveryRung(
 	node: string
 ): TrackerLaunchRung | undefined {
 	const recorded = run && recordedRung(run);
-	if (recorded && run && hasContextCheckpoint(run, item)) return recorded;
+	// A context handoff is not a failure, so it keeps the model it had.
+	if (recorded && hasContextCheckpoint(run, item.notes_log)) return recorded;
 	const fallback = handLaunchSelection(item, node);
 	if (fallback && handLaunchNode(item, run?.started_at ?? 0) === node) return fallback;
-	return recorded ?? compatibleFallback(run, fallback);
+	return recorded ? relaunchRung(recorded, run, item) : compatibleFallback(run, fallback);
 }
 
 function compatibleFallback(run?: TrackerListedRun, fallback?: TrackerLaunchRung) {
 	return !run || run.cli === 'none' || fallback?.cli === run.cli ? fallback : undefined;
 }
 
+// A session that vanished without a handoff counts as a failed attempt.
+function relaunchRung(rung: TrackerLaunchRung, run: TrackerListedRun, item: TrackerItem) {
+	return lostWithoutHandoff(run, item.notes_log) ? climbingRung(rung, run) : rung;
+}
+
+function climbingRung(rung: TrackerLaunchRung, run: TrackerListedRun): TrackerLaunchRung {
+	const { id: runId, node = '', kind } = run;
+	const { id, cli, model, effort = null, pinned } = rung;
+	const lost = { node, id: runId, rung: id, cli, model, effort, kind: kind ?? null };
+	const climbFrom = { ...lost, pinned: Boolean(pinned) };
+	return { ...rung, climbFrom };
+}
+
 function recordedRung(run: TrackerListedRun): TrackerLaunchRung | undefined {
 	if (run.cli !== 'codex' && run.cli !== 'claude') return undefined;
 	if (!/^[a-z0-9][a-z0-9._-]{1,79}$/i.test(run.model) || run.model === 'unknown') return undefined;
-	return { id: run.rung, cli: run.cli, model: run.model, effort: run.effort, pinned: true };
+	const { rung: id, cli, model, effort } = run;
+	// Keep the original pin, so a later failure of an unpinned attempt can still climb.
+	return { id, cli, model, effort, pinned: Boolean(run.pinned) };
 }
 export function recoveryHold(
 	item: TrackerItem,

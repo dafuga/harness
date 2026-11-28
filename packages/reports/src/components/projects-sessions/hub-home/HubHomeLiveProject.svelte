@@ -5,7 +5,7 @@
 	import { tick } from 'svelte';
 	import Modal from '../../Modal.svelte';
 	import { linkSegments } from '$reports/utils/strings/linkSegments';
-	import { pastDueLabel } from './hubHomeStatusText';
+	import { pastDueLabel, taskTypeText } from './hubHomeStatusText';
 	import type { HomePastDue } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
@@ -168,6 +168,8 @@
 				{workStateLabel(detail)} · {statusWords[detail.status]}
 				{#if stageLabel(detail.stage)}
 					· {stageLabel(detail.stage)}{/if}
+				{#if detail.taskType}
+					· {taskTypeText(detail.taskType)}{/if}
 			</hx-p>
 			<hx-p class="hh-live-detail-facts">{workFacts(detail).join(' · ')}</hx-p>
 			<hx-p class="hh-live-detail-facts">{workAge(detail, now)} · {workTimes(detail)}</hx-p>

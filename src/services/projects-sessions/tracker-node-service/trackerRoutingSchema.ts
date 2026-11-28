@@ -1,5 +1,6 @@
 // @harness-uid u_57drtxvxop
 import { z } from 'zod';
+import { trackerTaskTypes } from '../../../utils/agents-providers/classifyTrackerTask.types';
 
 const price = z.strictObject({
 	input: z.number().nonnegative(),
@@ -27,5 +28,11 @@ export const trackerRoutingSchema = z.strictObject({
 			upBelow: z.number().min(0).max(1).optional()
 		})
 		.optional(),
-	claudeOnlyUntil: z.iso.datetime({ offset: true }).optional()
+	claudeOnlyUntil: z.iso.datetime({ offset: true }).optional(),
+	taskRoutes: z
+		.partialRecord(z.enum(trackerTaskTypes), z.array(z.string().min(1).max(160)).min(1).max(6))
+		.optional(),
+	gemini: z
+		.strictObject({ enabled: z.boolean().optional(), model: z.string().min(1).max(120).optional() })
+		.optional()
 });

@@ -59,6 +59,11 @@ function currentWork(card: OverviewCard, sources: TrackerSources) {
 	return { item, machine: run?.node ?? item?.computer };
 }
 
+/** The model the item asks for and the task type that routes it. */
+function modelFacts(item: TrackerItemRecord | undefined) {
+	return { model: homeText(item?.model, 200), taskType: homeText(item?.taskType, 200) };
+}
+
 function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
 	const { item, machine } = currentWork(card, sources);
 	const question = item ? openQuestion(item) : null;
@@ -75,7 +80,7 @@ function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
 		runId: card.agent === 'cos' ? null : liveRunId(sources, item?.id),
 		task: homeText(item?.title, 500) ?? 'No current Tracker item',
 		machine: homeText(machine, 200),
-		model: homeText(item?.model, 200),
+		...modelFacts(item),
 		since: card.updatedAt,
 		question,
 		...homeAskFields(item, question),

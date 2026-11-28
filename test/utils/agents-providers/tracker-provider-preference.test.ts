@@ -1,8 +1,6 @@
 import { expect, test } from 'vitest';
-import {
-	pickTrackerModel,
-	retryTrackerModel
-} from '../../../src/utils/agents-providers/pickTrackerModel';
+import { pickTrackerModel } from '../../../src/utils/agents-providers/pickTrackerModel';
+import { retryTrackerModel } from '../../../src/utils/agents-providers/retryTrackerModel';
 import { redirectTrackerRung } from '../../../src/utils/agents-providers/redirectTrackerRung';
 
 const now = Date.parse('2026-11-28T12:00:00Z');
@@ -20,6 +18,7 @@ test('maps every work kind to its Claude rung while the preference is on', () =>
 		['[hard] Fix an intermittent crash', 'buildflexity', 'claude-sonnet-5-5', 'high'],
 		['Add the parser module', 'harness', 'claude-haiku-5-5', 'medium'],
 		['Deploy to preprod', 'buildflexity', 'claude-opus-5-5', 'high'],
+		['Deploy to preprod', 'harness', 'claude-sonnet-5-5', 'high'],
 		['Open the dashboard in Chrome', 'buildflexity', 'gpt-6.1-terra', 'medium'],
 		['Update the README for the payments API', 'buildflexity', 'claude-sonnet-5-5', 'medium']
 	]) {

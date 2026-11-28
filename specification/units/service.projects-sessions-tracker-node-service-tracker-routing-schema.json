@@ -25,7 +25,13 @@
 		"operations": [],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-classify-tracker-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/projects-sessions/tracker-node-service/trackerRoutingSchema.ts",

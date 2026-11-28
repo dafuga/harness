@@ -86,6 +86,7 @@ function homeFields(row: Record<string, unknown>): Partial<Tracker.TrackerItemRe
 		parent: optionalText(row.parent, 'item parent'),
 		computer: optionalText(row.computer, 'item computer'),
 		model: optionalText(row.model, 'item model'),
+		taskType: optionalText(row.task_type, 'item task_type'),
 		occurrence: optionalTime(row.occurrence, 'item occurrence'),
 		recurring: row.recurring === true || Boolean(row.every),
 		remindAt: optionalTime(row.remind_at, 'item remind_at'),

@@ -4,7 +4,7 @@
 	"uid": "u_gs5pnxnxt4",
 	"kind": "function",
 	"title": "pickTrackerModel",
-	"responsibility": "Select a Tracker model by activity, Claude only until the Codex reset, honor eligible pins and escalate along the route.",
+	"responsibility": "Select a Tracker model by task type, let an explicit --model win, honor the provider preference, climb after failed attempts and escalate hard work.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -12,32 +12,61 @@
 			"src/utils/agents-providers/pickTrackerModel.ts",
 			"src/utils/agents-providers/pickTrackerModel.types.ts",
 			"src/utils/agents-providers/preferredClaudeRoute.ts",
-			"src/utils/agents-providers/redirectTrackerRung.ts"
+			"src/utils/agents-providers/redirectTrackerRung.ts",
+			"src/utils/agents-providers/retryTrackerModel.ts",
+			"src/utils/agents-providers/trackerEscalation.ts",
+			"src/utils/agents-providers/trackerEscalation.types.ts",
+			"src/utils/agents-providers/trackerExplicitModel.ts",
+			"src/utils/agents-providers/trackerModelRoute.ts",
+			"src/utils/agents-providers/trackerTaskRoutes.ts"
 		],
 		"symbols": [
+			"trackerSelectionContext",
 			"pickTrackerModel",
-			"retryTrackerModel",
 			"TrackerModelHistory",
 			"TrackerModelSelectionOptions",
 			"TrackerRetryOptions",
 			"TrackerModelSelection",
 			"TrackerRetryRun",
+			"TrackerRouteContext",
 			"ClaudeRoute",
 			"PinContext",
 			"SelectionContext",
-			"PreferredSelectionContext",
 			"claudePreferenceNote",
 			"activePreferenceEnd",
 			"preferredClaudeRoute",
 			"switchedSelection",
-			"preferredSelection",
-			"nextClaudeRung",
-			"redirectTrackerRung"
+			"nextRouteRung",
+			"redirectTrackerRung",
+			"retryTrackerModel",
+			"climbedStep",
+			"escalationRungs",
+			"hardEscalation",
+			"TrackerModelFailure",
+			"TrackerModelEvidence",
+			"TrackerGeminiAdapter",
+			"hasExplicitModel",
+			"explicitModelSelection",
+			"trackerModelRoute",
+			"fixedTaskRoute",
+			"claudeTaskRoute",
+			"configuredTaskRoute",
+			"parseUnpinned"
 		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "trackerSelectionContext.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "trackerSelectionContext.options",
+				"type": "TrackerModelSelectionOptions",
+				"required": true
+			},
 			{
 				"name": "pickTrackerModel.item",
 				"type": "TrackerModelItem",
@@ -50,24 +79,6 @@
 				"required": false,
 				"default": {},
 				"description": "Optional ladder configuration and outcomes from similar prior work."
-			},
-			{
-				"name": "retryTrackerModel.item",
-				"type": "TrackerModelItem",
-				"required": true,
-				"description": "Tracker item to use when selecting a retry model."
-			},
-			{
-				"name": "retryTrackerModel.run",
-				"type": "TrackerRetryRun",
-				"required": true,
-				"description": "Previous attempt's model, effort, ladder position and pin status."
-			},
-			{
-				"name": "retryTrackerModel.options",
-				"type": "TrackerRetryOptions",
-				"required": false,
-				"default": {}
 			},
 			{
 				"name": "claudePreferenceNote.until",
@@ -100,6 +111,12 @@
 				"required": true
 			},
 			{
+				"name": "preferredClaudeRoute.context",
+				"type": "TrackerRouteContext",
+				"required": false,
+				"default": {}
+			},
+			{
 				"name": "switchedSelection.item",
 				"type": "TrackerModelItem",
 				"required": true
@@ -120,27 +137,19 @@
 				"required": true
 			},
 			{
-				"name": "preferredSelection.item",
-				"type": "TrackerModelItem",
-				"required": true
+				"name": "switchedSelection.cfg",
+				"type": "TrackerLadderConfig | undefined",
+				"required": true,
+				"description": "Routing settings with the operator task-type table."
 			},
 			{
-				"name": "preferredSelection.ladder",
+				"name": "nextRouteRung.steps",
 				"type": "TrackerModelRung[]",
-				"required": true
+				"required": true,
+				"description": "Route steps from the starting rung upwards."
 			},
 			{
-				"name": "preferredSelection.context",
-				"type": "PreferredSelectionContext",
-				"required": true
-			},
-			{
-				"name": "nextClaudeRung.route",
-				"type": "ClaudeRoute",
-				"required": true
-			},
-			{
-				"name": "nextClaudeRung.run",
+				"name": "nextRouteRung.run",
 				"type": "TrackerRetryRun",
 				"required": true
 			},
@@ -150,18 +159,199 @@
 				"required": true
 			},
 			{
-				"name": "redirectTrackerRung.cli",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "redirectTrackerRung.model",
-				"type": "string",
+				"name": "redirectTrackerRung.choice",
+				"type": "EarlierChoice",
 				"required": true
 			},
 			{
 				"name": "redirectTrackerRung.options",
 				"type": "TrackerModelSelectionOptions",
+				"required": true
+			},
+			{
+				"name": "retryTrackerModel.item",
+				"type": "TrackerModelItem",
+				"required": true,
+				"description": "Tracker item to use when selecting a retry model."
+			},
+			{
+				"name": "retryTrackerModel.run",
+				"type": "TrackerRetryRun",
+				"required": true,
+				"description": "Previous attempt's model, effort, ladder position and pin status."
+			},
+			{
+				"name": "retryTrackerModel.options",
+				"type": "TrackerRetryOptions",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "climbedStep.steps",
+				"type": "readonly TrackerModelRung[]",
+				"required": true
+			},
+			{
+				"name": "climbedStep.evidence",
+				"type": "TrackerModelEvidence",
+				"required": false
+			},
+			{
+				"name": "escalationRungs.ladder",
+				"type": "TrackerModelRung[]",
+				"required": true
+			},
+			{
+				"name": "escalationRungs.cfg",
+				"type": "TrackerLadderConfig",
+				"required": false
+			},
+			{
+				"name": "escalationRungs.gemini",
+				"type": "TrackerGeminiAdapter | undefined",
+				"required": false
+			},
+			{
+				"name": "hardEscalation.evidence",
+				"type": "TrackerModelEvidence | undefined",
+				"required": true
+			},
+			{
+				"name": "hardEscalation.ladder",
+				"type": "TrackerModelRung[]",
+				"required": true
+			},
+			{
+				"name": "hardEscalation.cfg",
+				"type": "TrackerLadderConfig",
+				"required": false
+			},
+			{
+				"name": "hardEscalation.claudeOnly",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "hasExplicitModel.model",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "Model saved on the item."
+			},
+			{
+				"name": "hasExplicitModel.explicit_model",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "Model last named with --model."
+			},
+			{
+				"name": "explicitModelSelection.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "explicitModelSelection.ladder",
+				"type": "readonly TrackerModelRung[]",
+				"required": true
+			},
+			{
+				"name": "explicitModelSelection.kind",
+				"type": "TrackerModelSelection['kind']",
+				"required": true
+			},
+			{
+				"name": "trackerModelRoute.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "trackerModelRoute.ladder",
+				"type": "TrackerModelRung[]",
+				"required": true
+			},
+			{
+				"name": "trackerModelRoute.preferred",
+				"type": "string | undefined",
+				"required": true,
+				"description": "End of the active Claude preference."
+			},
+			{
+				"name": "trackerModelRoute.claude",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether only Claude may be chosen."
+			},
+			{
+				"name": "trackerModelRoute.restrictions",
+				"type": "string[]",
+				"required": true,
+				"description": "Safety floor reasons that exclude the cheapest rungs."
+			},
+			{
+				"name": "trackerModelRoute.cfg",
+				"type": "TrackerLadderConfig | undefined",
+				"required": true,
+				"description": "Ladder, learning and task-type table settings."
+			},
+			{
+				"name": "fixedTaskRoute.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "fixedTaskRoute.ladder",
+				"type": "TrackerModelRung[]",
+				"required": true
+			},
+			{
+				"name": "fixedTaskRoute.type",
+				"type": "TrackerTaskType",
+				"required": true
+			},
+			{
+				"name": "claudeTaskRoute.type",
+				"type": "TrackerTaskType",
+				"required": true
+			},
+			{
+				"name": "claudeTaskRoute.ladder",
+				"type": "TrackerModelRung[]",
+				"required": true
+			},
+			{
+				"name": "claudeTaskRoute.restricted",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "configuredTaskRoute.ladder",
+				"type": "TrackerModelRung[]",
+				"required": true
+			},
+			{
+				"name": "configuredTaskRoute.type",
+				"type": "TrackerTaskType",
+				"required": true
+			},
+			{
+				"name": "configuredTaskRoute.cfg",
+				"type": "TrackerLadderConfig | undefined",
+				"required": true,
+				"description": "Routing settings with the operator task-type table."
+			},
+			{
+				"name": "configuredTaskRoute.claudeOnly",
+				"type": "boolean | undefined",
+				"required": true,
+				"description": "Drop Codex steps outside computer use."
+			},
+			{
+				"name": "parseUnpinned.spec",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "parseUnpinned.ladder",
+				"type": "TrackerModelRung[]",
 				"required": true
 			}
 		],
@@ -180,6 +370,29 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "trackerSelectionContext",
+				"inputs": [
+					{
+						"name": "trackerSelectionContext.item",
+						"type": "TrackerModelItem",
+						"required": true
+					},
+					{
+						"name": "trackerSelectionContext.options",
+						"type": "TrackerModelSelectionOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSelectionContext",
+						"type": "SelectionContext"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "pickTrackerModel",
 				"inputs": [
@@ -202,38 +415,6 @@
 						"name": "pickTrackerModel",
 						"type": "TrackerModelSelection",
 						"description": "Selected model and effort with the work type and reason for the choice."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "retryTrackerModel",
-				"inputs": [
-					{
-						"name": "retryTrackerModel.item",
-						"type": "TrackerModelItem",
-						"required": true,
-						"description": "Tracker item to use when selecting a retry model."
-					},
-					{
-						"name": "retryTrackerModel.run",
-						"type": "TrackerRetryRun",
-						"required": true,
-						"description": "Previous attempt's model, effort, ladder position and pin status."
-					},
-					{
-						"name": "retryTrackerModel.options",
-						"type": "TrackerRetryOptions",
-						"required": false,
-						"default": {}
-					}
-				],
-				"outputs": [
-					{
-						"name": "retryTrackerModel",
-						"type": "TrackerModelRung",
-						"description": "Pinned model, next eligible model, or higher Sol effort for another attempt."
 					}
 				],
 				"errors": [],
@@ -297,6 +478,12 @@
 						"name": "preferredClaudeRoute.restricted",
 						"type": "boolean",
 						"required": true
+					},
+					{
+						"name": "preferredClaudeRoute.context",
+						"type": "TrackerRouteContext",
+						"required": false,
+						"default": {}
 					}
 				],
 				"outputs": [
@@ -330,62 +517,41 @@
 						"name": "switchedSelection.until",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "switchedSelection.cfg",
+						"type": "TrackerLadderConfig | undefined",
+						"required": true,
+						"description": "Routing settings with the operator task-type table."
 					}
 				],
 				"outputs": [
 					{
 						"name": "switchedSelection",
-						"type": "TrackerModelSelection"
+						"type": "Omit<TrackerModelSelection, 'taskType'>"
 					}
 				],
 				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "preferredSelection",
+				"name": "nextRouteRung",
 				"inputs": [
 					{
-						"name": "preferredSelection.item",
-						"type": "TrackerModelItem",
-						"required": true
-					},
-					{
-						"name": "preferredSelection.ladder",
+						"name": "nextRouteRung.steps",
 						"type": "TrackerModelRung[]",
-						"required": true
+						"required": true,
+						"description": "Route steps from the starting rung upwards."
 					},
 					{
-						"name": "preferredSelection.context",
-						"type": "PreferredSelectionContext",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "preferredSelection",
-						"type": "TrackerModelSelection"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "nextClaudeRung",
-				"inputs": [
-					{
-						"name": "nextClaudeRung.route",
-						"type": "ClaudeRoute",
-						"required": true
-					},
-					{
-						"name": "nextClaudeRung.run",
+						"name": "nextRouteRung.run",
 						"type": "TrackerRetryRun",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "nextClaudeRung",
+						"name": "nextRouteRung",
 						"type": "unknown"
 					}
 				],
@@ -401,13 +567,8 @@
 						"required": true
 					},
 					{
-						"name": "redirectTrackerRung.cli",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "redirectTrackerRung.model",
-						"type": "string",
+						"name": "redirectTrackerRung.choice",
+						"type": "EarlierChoice",
 						"required": true
 					},
 					{
@@ -420,6 +581,336 @@
 					{
 						"name": "redirectTrackerRung",
 						"type": "TrackerModelSelection | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "retryTrackerModel",
+				"inputs": [
+					{
+						"name": "retryTrackerModel.item",
+						"type": "TrackerModelItem",
+						"required": true,
+						"description": "Tracker item to use when selecting a retry model."
+					},
+					{
+						"name": "retryTrackerModel.run",
+						"type": "TrackerRetryRun",
+						"required": true,
+						"description": "Previous attempt's model, effort, ladder position and pin status."
+					},
+					{
+						"name": "retryTrackerModel.options",
+						"type": "TrackerRetryOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "retryTrackerModel",
+						"type": "TrackerModelRung",
+						"description": "Pinned model, next eligible model, or higher Sol effort for another attempt."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "climbedStep",
+				"inputs": [
+					{
+						"name": "climbedStep.steps",
+						"type": "readonly TrackerModelRung[]",
+						"required": true
+					},
+					{
+						"name": "climbedStep.evidence",
+						"type": "TrackerModelEvidence",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "climbedStep",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "escalationRungs",
+				"inputs": [
+					{
+						"name": "escalationRungs.ladder",
+						"type": "TrackerModelRung[]",
+						"required": true
+					},
+					{
+						"name": "escalationRungs.cfg",
+						"type": "TrackerLadderConfig",
+						"required": false
+					},
+					{
+						"name": "escalationRungs.gemini",
+						"type": "TrackerGeminiAdapter | undefined",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "escalationRungs",
+						"type": "TrackerModelRung[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hardEscalation",
+				"inputs": [
+					{
+						"name": "hardEscalation.evidence",
+						"type": "TrackerModelEvidence | undefined",
+						"required": true
+					},
+					{
+						"name": "hardEscalation.ladder",
+						"type": "TrackerModelRung[]",
+						"required": true
+					},
+					{
+						"name": "hardEscalation.cfg",
+						"type": "TrackerLadderConfig",
+						"required": false
+					},
+					{
+						"name": "hardEscalation.claudeOnly",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hardEscalation",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasExplicitModel",
+				"inputs": [
+					{
+						"name": "hasExplicitModel.model",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "Model saved on the item."
+					},
+					{
+						"name": "hasExplicitModel.explicit_model",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "Model last named with --model."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasExplicitModel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explicitModelSelection",
+				"inputs": [
+					{
+						"name": "explicitModelSelection.item",
+						"type": "TrackerModelItem",
+						"required": true
+					},
+					{
+						"name": "explicitModelSelection.ladder",
+						"type": "readonly TrackerModelRung[]",
+						"required": true
+					},
+					{
+						"name": "explicitModelSelection.kind",
+						"type": "TrackerModelSelection['kind']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "explicitModelSelection",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerModelRoute",
+				"inputs": [
+					{
+						"name": "trackerModelRoute.item",
+						"type": "TrackerModelItem",
+						"required": true
+					},
+					{
+						"name": "trackerModelRoute.ladder",
+						"type": "TrackerModelRung[]",
+						"required": true
+					},
+					{
+						"name": "trackerModelRoute.preferred",
+						"type": "string | undefined",
+						"required": true,
+						"description": "End of the active Claude preference."
+					},
+					{
+						"name": "trackerModelRoute.claude",
+						"type": "boolean",
+						"required": true,
+						"description": "Whether only Claude may be chosen."
+					},
+					{
+						"name": "trackerModelRoute.restrictions",
+						"type": "string[]",
+						"required": true,
+						"description": "Safety floor reasons that exclude the cheapest rungs."
+					},
+					{
+						"name": "trackerModelRoute.cfg",
+						"type": "TrackerLadderConfig | undefined",
+						"required": true,
+						"description": "Ladder, learning and task-type table settings."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerModelRoute",
+						"type": "ClaudeRoute"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fixedTaskRoute",
+				"inputs": [
+					{
+						"name": "fixedTaskRoute.item",
+						"type": "TrackerModelItem",
+						"required": true
+					},
+					{
+						"name": "fixedTaskRoute.ladder",
+						"type": "TrackerModelRung[]",
+						"required": true
+					},
+					{
+						"name": "fixedTaskRoute.type",
+						"type": "TrackerTaskType",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fixedTaskRoute",
+						"type": "ClaudeRoute | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "claudeTaskRoute",
+				"inputs": [
+					{
+						"name": "claudeTaskRoute.type",
+						"type": "TrackerTaskType",
+						"required": true
+					},
+					{
+						"name": "claudeTaskRoute.ladder",
+						"type": "TrackerModelRung[]",
+						"required": true
+					},
+					{
+						"name": "claudeTaskRoute.restricted",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "claudeTaskRoute",
+						"type": "ClaudeRoute"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "configuredTaskRoute",
+				"inputs": [
+					{
+						"name": "configuredTaskRoute.ladder",
+						"type": "TrackerModelRung[]",
+						"required": true
+					},
+					{
+						"name": "configuredTaskRoute.type",
+						"type": "TrackerTaskType",
+						"required": true
+					},
+					{
+						"name": "configuredTaskRoute.cfg",
+						"type": "TrackerLadderConfig | undefined",
+						"required": true,
+						"description": "Routing settings with the operator task-type table."
+					},
+					{
+						"name": "configuredTaskRoute.claudeOnly",
+						"type": "boolean | undefined",
+						"required": true,
+						"description": "Drop Codex steps outside computer use."
+					}
+				],
+				"outputs": [
+					{
+						"name": "configuredTaskRoute",
+						"type": "ClaudeRoute | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseUnpinned",
+				"inputs": [
+					{
+						"name": "parseUnpinned.spec",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "parseUnpinned.ladder",
+						"type": "TrackerModelRung[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseUnpinned",
+						"type": "TrackerModelRung"
 					}
 				],
 				"errors": [],
