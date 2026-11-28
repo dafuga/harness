@@ -4,12 +4,16 @@ import type {
 	TrackerPlanningFields,
 	TrackerStage
 } from '../../../utils/projects-sessions/trackerPlanning.types';
+import type { TrackerReminderTime } from '../../../utils/projects-sessions/trackerUpcomingReminder.types';
 
 export interface PhoneItemSource extends TrackerPlanningFields {
 	id: string;
 	title: string;
 	status: string;
 	agent: string | null;
+	owner: string | null;
+	kind: string | null;
+	auto_launch: number | null;
 	remind_at: string | null;
 	every: string | null;
 	project: string | null;
@@ -53,7 +57,7 @@ export interface PhoneTrackerRow {
 	updatedAt: string | null;
 	dueAt: string | null;
 	attentionRevision: string;
-	reminder?: { at: string; repeats: string | null };
+	reminder?: TrackerReminderTime;
 	notes: { id: string; author: string; at: string; text: string }[];
 	flag: {
 		state: 'open' | 'resolved';

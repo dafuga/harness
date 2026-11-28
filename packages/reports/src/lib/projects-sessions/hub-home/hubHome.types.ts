@@ -87,12 +87,17 @@ export interface HomeOpenAsk {
 	since: string;
 }
 
-/** One personal reminder: a Tracker item that reminds Daniel, listed only under Reminders. */
+/** One upcoming reminder or dated to-do of Daniel's, listed under Upcoming reminders. */
 export interface HomeReminder {
 	itemId: string;
 	title: string;
-	/** The armed time. Done and snooze name it, so a stale tap changes nothing. */
+	/** The listed time. Done and snooze name it, so a stale tap changes nothing. */
 	at: string;
+	/** Older publishers send only personal reminders and omit these four. */
+	group?: 'work' | 'personal';
+	project?: string | null;
+	due?: string;
+	allDay?: true;
 	/** "Daily", "Weekly" and so on; null for a reminder that happens once. */
 	repeats: string | null;
 	updatedAt: string;

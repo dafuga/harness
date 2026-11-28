@@ -128,14 +128,18 @@ test('the verified owner publishes the display snapshot over the real wire', asy
 		expect(snapshot.status).toBe('ready');
 		for (const sentinel of LEAK_SENTINELS) expect(put?.body ?? '').not.toContain(sentinel);
 		const page = await capturePublishedOverview(app);
-		expect(
-			hub.records.some(
-				(record) =>
-					record.method === 'GET' &&
-					record.bearer === OWNER.token &&
-					record.path === '/api/tracker-overview'
+		await expect
+			.poll(
+				() =>
+					hub.records.some(
+						(record) =>
+							record.method === 'GET' &&
+							record.bearer === OWNER.token &&
+							record.path === '/api/tracker-overview'
+					),
+				{ timeout: 25_000 }
 			)
-		).toBe(true);
+			.toBe(true);
 		hub.denyOverviewReads();
 		await page.evaluate(() => window.dispatchEvent(new Event('focus')));
 		await expect(page.getByText('fixture-needs', { exact: true })).toHaveCount(0, {
@@ -163,10 +167,9 @@ test('a signed-in non-owner is never read for and never sent to', async () => {
 		await waitForWire(hub, () =>
 			hub.records.some((record) => record.bearer === OTHER.token && record.method === 'GET')
 		);
-		const readsAfterCheck = (await trackerRequests(app)).length;
 		await new Promise((done) => setTimeout(done, 2_000));
 		expect(hub.records.some((record) => record.method === 'PUT')).toBe(false);
-		expect((await trackerRequests(app)).length).toBe(readsAfterCheck);
+		await expectNoPublisherReads(app);
 		const page = await app.firstWindow();
 		await page.getByRole('link', { name: 'Project Overview', exact: true }).click();
 		await expect(page.getByRole('alert')).toContainText('The tracker could not be reached', {
@@ -180,10 +183,16 @@ test('a signed-in non-owner is never read for and never sent to', async () => {
 					record.path === '/api/tracker-overview'
 			)
 		).toBe(true);
-		expect((await trackerRequests(app)).length).toBe(readsAfterCheck);
+		await expectNoPublisherReads(app);
 	} finally {
 		await app.close();
 		await hub.close();
 		await rm(temp, { recursive: true, force: true });
 	}
 });
+
+async function expectNoPublisherReads(app: ElectronApplication) {
+	// Home also reads Tracker, but its runs request includes include_active=1.
+	const reads = await trackerRequests(app);
+	expect(reads.filter(({ url }) => url === TRACKER_URLS.runs)).toEqual([]);
+}

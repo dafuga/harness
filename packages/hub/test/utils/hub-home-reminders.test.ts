@@ -48,7 +48,7 @@ const ask: TrackerItemRecord = {
 };
 const hidden = { ...weekly, id: 'secret-1', sensitive: true };
 const finished = { ...weekly, id: 'done-1', status: 'done' as const };
-const plan = { ...weekly, id: 'plan-1', kind: 'plan', remindAt: null };
+const plan = { ...weekly, id: 'plan-1', kind: 'plan', remindAt: null, due: null };
 const sources = { items: [weekly, ask, hidden, finished, plan], runs: [], machines: [] };
 const home = () => buildHomeSnapshot(sources, noProviders, now);
 
@@ -60,6 +60,9 @@ test('personal items are listed only as reminders, soonest first', () => {
 			title: 'Book a sample room',
 			at: ask.remindAt,
 			repeats: null,
+			group: 'personal',
+			project: null,
+			due: at,
 			updatedAt: updated_at
 		},
 		{
@@ -67,6 +70,9 @@ test('personal items are listed only as reminders, soonest first', () => {
 			title: 'Water the sample plant',
 			at,
 			repeats: 'Weekly',
+			group: 'personal',
+			project: null,
+			due: at,
 			updatedAt: updated_at
 		}
 	]);
@@ -163,17 +169,26 @@ test('a linked computer takes a tap only for a reminder it shows at that time', 
 	expect(showsHomeChatTarget({ ...home(), reminders: undefined }, tap)).toBe(false);
 });
 
-test('next times name the day, mark a passed one due and offer three snoozes', () => {
-	const noon = new Date(2026, 10, 26, 12).getTime();
-	const local = (day: number, clock: number) => new Date(2026, 10, day, clock).toISOString();
-	expect(reminderNextTime(local(26, 18), noon)).toEqual({ due: false, label: 'Today 18:00' });
-	expect(reminderNextTime(local(27, 9), noon).label).toBe('Tomorrow 09:00');
-	expect(reminderNextTime(local(29, 10), noon).label).toBe('Sun 29 Nov 10:00');
-	expect(reminderNextTime(local(25, 9), noon)).toEqual({ due: true, label: 'Due now' });
-	expect(reminderNextTime(local(26, 12), noon)).toEqual({ due: true, label: 'Due now' });
-	expect(snoozeChoices(noon).map((choice) => choice.until)).toEqual([
-		local(26, 13),
-		local(27, 9),
-		new Date(2026, 11, 3, 12).toISOString()
+test('next times are Lisbon days, mark a passed one overdue and offer two snoozes', () => {
+	// In November Lisbon is at UTC; the labels must not depend on the viewer's own zone.
+	const time = (day: number, clock: number) =>
+		new Date(Date.UTC(2026, 10, day, clock)).toISOString();
+	const label = (value: string, due?: string, allDay?: true) =>
+		reminderNextTime({ at: value, due, allDay }, now);
+	expect(label(time(26, 18))).toEqual({ due: false, label: 'Today 18:00', deadline: null });
+	expect(label(time(27, 9)).label).toBe('Tomorrow 09:00');
+	expect(label(time(29, 10), time(29, 10)).label).toBe('Due Sun 29 Nov 10:00');
+	expect(label(time(27, 9), time(29, 10)).deadline).toBe('Due Sun 29 Nov 10:00');
+	expect(label(time(29, 23), time(29, 23), true).label).toBe('Due Sun 29 Nov');
+	expect(label(time(25, 9))).toMatchObject({ due: true, label: 'Overdue · Wed 25 Nov 09:00' });
+	expect(label(time(26, 12))).toMatchObject({ due: true, label: 'Overdue · Today 12:00' });
+	expect(label('2026-12-05T10:00:00.000Z', '2026-12-05T10:00:00.000Z').label).toBe(
+		'Due Sat 5 Dec 10:00'
+	);
+	// Summer time: 09:00 in Lisbon is 08:00 UTC.
+	expect(snoozeChoices(Date.parse('2026-06-10T23:30:00Z'))).toEqual([
+		{ label: 'Tomorrow 09:00', until: '2026-06-12T08:00:00.000Z' },
+		{ label: 'Next week', until: '2026-06-18T08:00:00.000Z' }
 	]);
+	expect(snoozeChoices(now).map((choice) => choice.until)).toEqual([time(27, 9), time(33, 9)]);
 });

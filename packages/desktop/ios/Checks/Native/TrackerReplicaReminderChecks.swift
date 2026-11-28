@@ -5,13 +5,17 @@ private func trackerReminderChecks(_ store: TrackerReplicaStore, scope: String) 
     var later = trackerItemFixture("reminder02", "Later sample")
     later["reminder"] = ["at": "2026-11-30T10:00:00.000Z"]
     var sooner = trackerItemFixture("reminder01", "Sooner sample")
-    sooner["reminder"] = ["at": "2026-11-29T10:00:00.000Z", "repeats": "Weekly"]
+    sooner["reminder"] = ["at": "2026-11-29T10:00:00.000Z", "repeats": "Weekly", "group": "work",
+                          "due": "2026-12-05T10:00:00.000Z", "allDay": true]
     sooner["attentionRevision"] = String(repeating: "b", count: 64)
     let page = trackerSnapshotFixture([later, sooner, trackerItemFixture("fixture001")], cursor: "seq-1")
     _ = try store.apply(TrackerReplicaPage.decode(page), expected: store.state(), now: Date())
     let status = trackerDataFixture(store.tool("tracker_status", input: [:], online: false, now: Date()))
     let listed = (status["reminders"] as? [[String: Any]])?.compactMap { $0["id"] as? String }
     check(listed == ["reminder01", "reminder02"], "tracker reminders: only reminders, soonest first")
+    let first = (status["reminders"] as? [[String: Any]])?.first?["reminder"] as? [String: Any]
+    check(first?["group"] as? String == "work" && first?["due"] as? String == "2026-12-05T10:00:00.000Z"
+          && first?["allDay"] as? Bool == true, "tracker reminders: the group and deadline survive the copy")
     let done = try store.prepareWrite(scope: scope, action: "done", input: ["id": "reminder01", "text": ""]).intent
     check(done.revision == String(repeating: "b", count: 64) && done.expectedStatus == "in_progress",
           "tracker reminders: done names the copy and status shown")

@@ -1,0 +1,119 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminder",
+	"uid": "u_dp6mlj66eq",
+	"kind": "component",
+	"title": "TrackerInboxReminder",
+	"responsibility": "Owns the TrackerInboxReminder Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminder.svelte"
+		],
+		"symbols": ["TrackerInboxReminder"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerInboxReminder.header",
+				"type": "InboxHeader",
+				"required": true
+			},
+			{
+				"name": "TrackerInboxReminder.busy",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "TrackerInboxReminder.open",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "TrackerInboxReminder.tap",
+				"type": "(header: InboxHeader, until?: string) => Promise<void>",
+				"required": true
+			},
+			{
+				"name": "TrackerInboxReminder.onselect",
+				"type": "(id: string) => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerInboxReminder",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-personal-reminder",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminder.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminder.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -19,7 +19,7 @@ async function designsAt(page: Page, expected: NativeExpected): Promise<void> {
 		'aria-current',
 		'page'
 	);
-	expect(await currentRow(page, 'Choose commit')).toContainText(expected.commit.slice(0, 7));
+	await expect(await currentRow(page, 'Choose commit')).toContainText(expected.commit.slice(0, 7));
 	await page.keyboard.press('Escape');
 	const name =
 		expected.state === 'history'

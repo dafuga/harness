@@ -597,11 +597,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.projects-sessions-tracker-personal-reminder",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
@@ -617,6 +612,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-upcoming-reminder",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
@@ -628,6 +628,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-phone-replica-service-phone-ask-attachments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-phone-replica-service-phone-replica-queries",
 			"via": "import",
 			"origin": "derived"
 		},

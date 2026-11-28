@@ -4,13 +4,15 @@ export function catalogStamp(hours: number) {
 	return new Date(NOW + hours * 3_600_000).toISOString();
 }
 
-/** One reminder already due and one that repeats. */
+/** One work reminder already overdue and one personal one that repeats. */
 export const catalogReminders = [
 	{
 		itemId: 'preview-snacks',
-		title: 'Buy snacks for the sample picnic',
+		title: 'Renew the sample sign-in',
 		at: catalogStamp(-2),
 		repeats: null,
+		group: 'work' as const,
+		project: 'sample-hub',
 		updatedAt: catalogStamp(-3)
 	},
 	{
@@ -18,6 +20,8 @@ export const catalogReminders = [
 		title: 'Water the sample plant',
 		at: catalogStamp(52),
 		repeats: 'Weekly',
+		group: 'personal' as const,
+		project: null,
 		updatedAt: catalogStamp(-3)
 	}
 ];
