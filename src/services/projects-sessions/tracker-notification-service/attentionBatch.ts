@@ -41,7 +41,8 @@ function waitingToLaunch(
 
 function stillRelevant(entry: AttentionRow, source: TrackerNotificationSource): boolean {
 	const item = source.item(entry.itemId);
-	if (!item || item.deleted || item.status === 'ignored') return false;
+	if (!item || item.deleted || item.chief_review || item.chief_answer || item.status === 'ignored')
+		return false;
 	if (entry.kind === 'done') return item.status === 'done';
 	if (Date.parse(item.remind_at ?? '') > Date.parse(entry.line.at)) return false;
 	if (entry.kind === 'blocked') return stillBlocked(entry, item);

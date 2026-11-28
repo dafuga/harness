@@ -25,7 +25,13 @@ export async function sendTrackerHealthFallback(
 		return;
 	}
 	const failing = due.map(({ name, detail }) => ({ name, detail }));
-	const body = { event: 'tracker_health', node: report.node, at: report.at, failing };
+	const body = {
+		event: 'tracker_health',
+		to: 'chief_of_staff',
+		node: report.node,
+		at: report.at,
+		failing
+	};
 	try {
 		const response = await target.post(destination.url, {
 			method: 'POST',

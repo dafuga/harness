@@ -121,6 +121,7 @@ function eligible(
 	context: { chief: TrackerDestination; paused: boolean; now: number }
 ): OutboxRecipient | undefined {
 	const live = row.itemId ? options.source.item(row.itemId) : undefined;
+	if (live?.chief_review || live?.chief_answer) return drop(row, 'private Chief of Staff review');
 	if (live?.status === 'ignored') return drop(row, 'item ignored');
 	const target = recipient(row, options, context.chief);
 	if (!target) return drop(row, 'no route');

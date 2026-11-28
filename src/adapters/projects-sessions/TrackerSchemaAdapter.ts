@@ -28,6 +28,7 @@ export const trackerItemFields = [
 	'needs_daniel',
 	'chief_review',
 	'chief_answer',
+	'chief_safety_notice',
 	'question',
 	'answer',
 	'answered_at',

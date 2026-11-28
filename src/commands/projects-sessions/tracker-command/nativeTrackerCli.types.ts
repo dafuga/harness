@@ -28,6 +28,7 @@ export interface NativeTrackerRequest {
 export type NativeTrackerAskValues = Record<string, string | string[] | boolean | undefined>;
 
 export interface NativeTrackerItem {
+	review_status?: string;
 	/** Set by reject: the auto-run charged with the rejected result. */
 	rejected_run?: { id: number; rung: string } | null;
 	id: string;

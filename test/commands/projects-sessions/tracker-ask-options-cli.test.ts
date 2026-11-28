@@ -46,3 +46,27 @@ test('reject sends its words as the reason and works without one', () => {
 	});
 	expect(nativeTrackerArgs(['reject', 'abc123']).request.body).toEqual({ reason: '' });
 });
+
+test('release carries reviewed choices and review reads one item or the queue', () => {
+	const release = nativeTrackerArgs([
+		'release',
+		'abc123',
+		'Which fixture should we use?',
+		'--option',
+		'First=Use the current fixture',
+		'--option',
+		'Second=Create a fixture',
+		'--recommend',
+		'1',
+		'--by',
+		'Chief of Staff'
+	]);
+	expect(release.values.by).toBe('Chief of Staff');
+	expect(release.request).toMatchObject({
+		method: 'POST',
+		path: '/items/abc123/release',
+		body: { options: [{ label: 'First', recommended: true }, { label: 'Second' }] }
+	});
+	expect(nativeTrackerArgs(['review']).request).toEqual({ method: 'GET', path: '/review' });
+	expect(nativeTrackerArgs(['review', 'abc123']).request.path).toBe('/review/abc123');
+});

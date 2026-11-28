@@ -41,6 +41,7 @@ import {
 import { TrackerMachineService } from './TrackerMachineService';
 import { composeTrackerFleet } from './tracker-native-runtime-service/composeTrackerFleet';
 import { configuredTrackerReminderHost } from './tracker-native-runtime-service/configuredTrackerReminderHost';
+import { migrateTrackerChiefReviews } from './tracker-native-runtime-service/trackerChiefReviewQueue';
 import { configuredTrackerDestinations } from './tracker-native-runtime-service/configuredTrackerDestinations';
 
 /** Composes the Tracker node's API, delivery and link workers over one SQLite journal. */
@@ -70,7 +71,12 @@ export class TrackerNativeRuntimeService {
 	constructor(database: SqliteDatabase, options: TrackerNativeRuntimeOptions) {
 		validateLinks(options);
 		const { node, now = Date.now, storage, hostEffects, role } = options;
-		const store = (this.store = new TrackerPersistenceService(database, node, { ...storage, now, chiefReview: true }));
+		const store = (this.store = new TrackerPersistenceService(database, node, {
+			...storage,
+			now,
+			chiefReview: true
+		}));
+		migrateTrackerChiefReviews(store);
 		this.role = role;
 		this.ladderConfig = options.ladderConfig;
 		this.now = now;

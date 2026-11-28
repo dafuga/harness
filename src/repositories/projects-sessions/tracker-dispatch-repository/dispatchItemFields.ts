@@ -46,7 +46,7 @@ export function dispatchItem(
 		scheduleOff: Boolean(hold),
 		...(hold && { scheduleHoldReason: describeTrackerScheduleHold(hold) }),
 		deleted: Boolean(row.deleted),
-		awaitingAnswer: Boolean(row.needs_daniel && !row.resolved),
+		awaitingAnswer: Boolean(row.chief_review || (row.needs_daniel && !row.resolved)),
 		parkedUntil: Date.parse(row.parked_until ?? ''),
 		question: row.question,
 		answeredCurrentBlock: answeredBlock(row, clocks, runs),

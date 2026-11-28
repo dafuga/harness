@@ -6,6 +6,7 @@ export interface PendingTrackerAnswer {
 	answeredAt: string;
 	generation: string;
 	choice: string | null;
+	privateReview: number;
 	keepBlocked: number | null;
 }
 

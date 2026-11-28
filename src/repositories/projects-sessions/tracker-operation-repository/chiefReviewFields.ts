@@ -7,7 +7,12 @@ import type { TrackerOperation } from '../TrackerOperationRepository.types';
 import type { ChiefReview } from './chiefReviewFields.types';
 
 const privateFields = [
-	'question', 'options', 'confirm', 'attachments', 'attachment_docs', 'next_step'
+	'question',
+	'options',
+	'confirm',
+	'attachments',
+	'attachment_docs',
+	'next_step'
 ];
 
 export function trackerReviewer(actor: string | null | undefined): 'chief' | 'daniel' | null {
@@ -21,21 +26,25 @@ export function trackerReviewer(actor: string | null | undefined): 'chief' | 'da
 export function chiefReviewFields(operation: TrackerOperation, migrate = false) {
 	const { fields, actor, hlc } = operation;
 	if (Object.hasOwn(fields, 'chief_review')) return fields;
-	const blocker = typeof fields.blocked_reason === 'string' && isTrackerBlockedOnDaniel(fields.blocked_reason);
+	const blocker =
+		typeof fields.blocked_reason === 'string' && isTrackerBlockedOnDaniel(fields.blocked_reason);
 	const question = typeof fields.question === 'string' ? fields.question : null;
 	const asks = Number(fields.needs_daniel) === 1 && Number(fields.resolved) !== 1;
 	if (!asks && !blocker) return fields;
 
-	const chiefOnly = isTrackerCosMessage(question) ||
-		/^\d+ Tracker alerts? (?:has|have) not reached your Chief of Staff session\b/i.test(question ?? '') ||
+	const chiefOnly =
+		isTrackerCosMessage(question) ||
+		/^\d+ Tracker alerts? (?:has|have) not reached your Chief of Staff session\b/i.test(
+			question ?? ''
+		) ||
 		fields.title === 'Tracker alerts are not reaching Chief of Staff';
 	const approved = !migrate && trackerReviewer(actor) !== null && !chiefOnly;
 	const at = trackerClockMilliseconds(hlc);
 	if (approved && cosSendWindowStart(at) !== null)
-		return { ...fields, chief_review: null };
+		return { ...fields, chief_review: null, ...(asks && { chief_answer: null }) };
 
 	const pending = { ...fields };
-	const details: Record<string, unknown> = {};
+	const details: Record<string, unknown> = asks ? { needs_daniel: 1, resolved: 0 } : {};
 	for (const key of privateFields) {
 		if (key in pending) details[key] = pending[key];
 		pending[key] = null;
@@ -49,7 +58,7 @@ export function chiefReviewFields(operation: TrackerOperation, migrate = false) 
 		at,
 		generation: hlc,
 		actor: actor ?? null,
-		mode: chiefOnly ? 'chief-only' : approved && asks ? 'approved' : 'review',
+		mode: chiefOnly ? 'chief-only' : approved ? 'approved' : 'review',
 		fields: details
 	};
 	return { ...pending, needs_daniel: 0, chief_review: JSON.stringify(review) };

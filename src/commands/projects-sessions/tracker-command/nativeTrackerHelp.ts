@@ -18,6 +18,9 @@ export function printNativeTrackerHelp(): number {
 			'backup now|list|verify <file>|restore <file> --to <new path> [--without-local-state], ' +
 			'web-push setup --origin https://<hub> [--rotate]|status\n' +
 			'Host commands: health [--alert], supervise, service print|install|uninstall\n' +
+			'Ask review: flag queues a draft with Chief of Staff. Waiting-on-Daniel blocks and alerts go there too.\n' +
+			'Chief of Staff: review [id] --by "Chief of Staff", answer <id> "<answer>" --by "Chief of Staff",\n' +
+			'  or release <id> "<question>" --option "<label>=<effect>" --option "<label>=<effect>" --recommend N --by "Chief of Staff".\n' +
 			nativeTrackerJobHelp
 	);
 	return 0;

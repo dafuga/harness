@@ -1,4 +1,5 @@
 // @harness-uid u_xba7ieg4je
+import { isPrivateTrackerReviewNote } from '../../../utils/projects-sessions/isTrackerBlockedOnDaniel';
 import { trackerScheduleHold } from '../../../utils/projects-sessions/trackerScheduleHold';
 import { trackerAttachments } from '../../../utils/projects-sessions/trackerAttachments';
 import { trackerItemPriority } from '../../../utils/projects-sessions/trackerItemPriority';
@@ -62,10 +63,10 @@ export function serializeTrackerItem(
 		needs_daniel: Boolean(row.needs_daniel),
 		question: row.question,
 		...askFields(row),
-		answer: row.answer,
-		answered_at: row.answered_at,
-		answered_by: row.answered_by,
-		resolved: Boolean(row.resolved),
+		answer: row.chief_answer ? null : row.answer,
+		answered_at: row.chief_answer ? null : row.answered_at,
+		answered_by: row.chief_answer ? null : row.answered_by,
+		resolved: !row.chief_answer && Boolean(row.resolved),
 		callback: publicCallback(row.callback),
 		created_at: row.created_at,
 		created_by: row.created_by,
@@ -106,11 +107,13 @@ export function trackerAskAge(row: TrackerItemRow, now: number) {
 }
 
 function notesLog(row: TrackerItemRow, notes: SqliteStatement) {
-	return (notes.all(row.id) as StoredTrackerNote[]).map(({ hlc, node, text }) => ({
-		at: new Date(hlcMilliseconds(hlc)).toISOString(),
-		node,
-		text
-	}));
+	return (notes.all(row.id) as StoredTrackerNote[])
+		.filter(({ text }) => !isPrivateTrackerReviewNote(text))
+		.map(({ hlc, node, text }) => ({
+			at: new Date(hlcMilliseconds(hlc)).toISOString(),
+			node,
+			text
+		}));
 }
 
 /** What the digest shows of an open ask: how long it has waited, its choices and confirm kind. */

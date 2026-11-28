@@ -90,6 +90,12 @@ function itemQuery(
 				}
 			};
 		}
+		case 'review':
+			if (words.length > 1) throw new TypeError('usage: tracker review [id]');
+			return {
+				method: 'GET',
+				path: words.length ? '/review/' + encodeURIComponent(words[0]) : '/review'
+			};
 		case 'list':
 			if (words.length) throw new TypeError('usage: tracker list [options]');
 			return { method: 'GET', path: '/items' + query(fields) };
@@ -158,6 +164,7 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 		case 'reject':
 			return { reason: text };
 		case 'flag':
+		case 'release':
 			return nativeTrackerFlagBody(text, values as NativeTrackerAskValues);
 		case 'block':
 			return nativeTrackerBlockBody(text, values as NativeTrackerAskValues);

@@ -115,13 +115,27 @@ async function sendNativeTracker(
 }
 
 function trackerActor(command: string, by: string | boolean | undefined, node: string): string {
-	const humanDecision = ['park', 'move-on', 'reject'].includes(command);
+	const humanDecision = ['park', 'move-on', 'reject', 'release'].includes(command);
+	const routesAsk = [
+		'add',
+		'plan',
+		'goal',
+		'update',
+		'flag',
+		'block',
+		'done',
+		'answer',
+		'resolve',
+		'unflag',
+		'unblock',
+		'review'
+	].includes(command);
 	const run = process.env.TRACKER_RUN_ID;
 	const runActor = run && /^[1-9][0-9]{0,15}$/.test(run) ? `tracker-run-${run}@${node}` : undefined;
-	if (humanDecision && runActor) return runActor;
+	if ((humanDecision || routesAsk) && runActor) return runActor;
 	const claimed = [by, process.env.TRACKER_AS].find(Boolean);
-	const fallback = command === 'add' ? runActor : undefined;
-	return String(claimed ?? fallback ?? `${userInfo().username}@${node}`);
+	const username = routesAsk && !process.stdin.isTTY ? 'tracker-local' : userInfo().username;
+	return String(claimed ?? `${username}@${node}`);
 }
 
 function renderLaunch(

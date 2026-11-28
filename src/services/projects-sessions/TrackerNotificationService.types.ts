@@ -18,6 +18,8 @@ export interface TrackerNotificationItem {
 	kind: string | null;
 	status: string | null;
 	needs_daniel: boolean | number;
+	chief_review?: string | null;
+	chief_answer?: string | null;
 	resolved: boolean | number;
 	deleted: boolean | number;
 	owner: string | null;

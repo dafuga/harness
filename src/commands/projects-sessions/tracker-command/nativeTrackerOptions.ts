@@ -8,6 +8,15 @@ const text = { type: 'string' } as const;
 const flag = { type: 'boolean' } as const;
 const words = { type: 'string', multiple: true } as const;
 const askOptions = { option: words, recommend: text, confirm: text } as const;
+const decisionOptions = {
+	question: text,
+	force: flag,
+	...askOptions,
+	spec: words,
+	doc: words,
+	design: words,
+	'not-spec-review': flag
+} as const;
 export const nativeTrackerCommonOptions = { json: flag, quiet: { ...flag, short: 'q' }, by: text };
 export function itemFields(input: Record<string, string | boolean | string[] | undefined>) {
 	const { tz, repo } = input;
@@ -77,18 +86,9 @@ export const nativeTrackerCommandOptions = new Map<
 	['note', {}],
 	['alert', {}],
 	['progress', {}],
-	[
-		'flag',
-		{
-			question: text,
-			force: flag,
-			...askOptions,
-			spec: words,
-			doc: words,
-			design: words,
-			'not-spec-review': flag
-		}
-	],
+	['flag', decisionOptions],
+	['release', decisionOptions],
+	['review', {}],
 	['chase', { note: text }],
 	['remind', { at: text, reminder: flag }],
 	['priority', {}],
@@ -161,6 +161,7 @@ export const nativeTrackerIdVerbs = new Set([
 	'alert',
 	'progress',
 	'flag',
+	'release',
 	'chase',
 	'block',
 	'unblock',

@@ -188,7 +188,7 @@ function unclaimedRequests(store: TrackerPersistenceService, now: number) {
 			auto IS NOT NULL OR (priority = 'urgent' AND adapter_due_owner IS NOT NULL AND due IS NOT NULL)
 		)
 		AND status IN ('open','in_progress') AND coalesce(kind, 'task') = 'task'
-		AND (needs_daniel = 0 OR resolved = 1)`
+		AND (needs_daniel = 0 OR resolved = 1) AND chief_review IS NULL`
 		)
 		.all(store.node) as (TrackerItemRow & {
 		auto: string;

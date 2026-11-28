@@ -45,7 +45,7 @@ export function trackerAnswerDelivery(
 function pendingAnswers(store: TrackerPersistenceService) {
 	return store.database
 		.prepare(
-			`SELECT i.id, i.answered_at AS answeredAt, json_extract(i.clocks, '$.answer') AS generation,
+			`SELECT i.id, i.chief_answer IS NOT NULL AS privateReview, i.answered_at AS answeredAt, json_extract(i.clocks, '$.answer') AS generation,
 				CASE WHEN i.answer_option IS NOT NULL AND coalesce(i.confirm,'') <> 'secret'
 					AND cast(coalesce(i.sensitive,0) AS INTEGER) = 0 THEN i.answer END AS choice,
 				(i.status = 'blocked' AND json_extract(i.clocks,'$.status') >= json_extract(i.clocks,'$.answer'))
@@ -144,11 +144,13 @@ async function submitAnswer(
 	return result === 'delivered';
 }
 
-function answerPrompt({ id, answeredAt, choice }: PendingTrackerAnswer) {
+function answerPrompt({ id, answeredAt, choice, privateReview }: PendingTrackerAnswer) {
 	const selected = choice && hubMessageLine(choice.slice(0, 160));
 	return (
 		`Tracker answer for item ${id} at ${answeredAt}.` +
 		(selected ? ` Selected option: ${selected}. ` : ' ') +
-		'Read the current answer on the Tracker item and continue as directed. Handle credentials through the approved private path.'
+		(privateReview
+			? `Read the Chief of Staff answer with tracker review ${id} and continue as directed. Handle credentials through the approved private path.`
+			: 'Read the current answer on the Tracker item and continue as directed. Handle credentials through the approved private path.')
 	);
 }

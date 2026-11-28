@@ -79,8 +79,6 @@ export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> & {
 		stage: TrackerStage;
 		planning: TrackerPlanning;
 		blocked_reason: string | null;
-		chief_review?: string | null;
-		chief_answer?: string | null;
 		ignored_reason?: string | null;
 		ignored_by?: string | null;
 		ignored_at?: string | null;

@@ -8,7 +8,7 @@ export async function withTrackerAttachments(
 	input: ReturnType<typeof nativeTrackerArgs>
 ): Promise<ReturnType<typeof nativeTrackerArgs>> {
 	const { spec, doc, design } = input.values as TrackerAttachmentWords;
-	if (input.command !== 'flag' || !(spec || doc || design)) return input;
+	if (!['flag', 'release'].includes(input.command) || !(spec || doc || design)) return input;
 	const attachments = await collectTrackerAttachments({ spec, doc, design });
 	const body = { ...(input.request.body as Record<string, unknown>), attachments };
 	return { ...input, request: { ...input.request, body } };

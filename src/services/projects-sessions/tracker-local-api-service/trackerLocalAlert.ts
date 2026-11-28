@@ -62,7 +62,7 @@ async function trackerAlertItem(
 			reason,
 			// An identical repeat is recorded once an hour, so a recurring outage is raised again.
 			identity: `${Math.floor(now / hour)}:${reason}`,
-			localOnly: !itemId
+			localOnly: store.chiefReview || !itemId
 		},
 		now
 	);

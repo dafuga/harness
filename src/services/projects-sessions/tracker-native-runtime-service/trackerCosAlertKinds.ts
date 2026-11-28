@@ -9,6 +9,7 @@ export const staleDispatchHeartbeatKind = 'stale-dispatch-heartbeat';
 export function isOutageAlert(kind: string): boolean {
 	return (
 		kind === urgentQueueAlertKind ||
+		kind === 'chief-review-emergency' ||
 		kind === staleDispatchHeartbeatKind ||
 		trackerCosInboxKinds.has(kind) ||
 		kind.startsWith('credential exposure')

@@ -9,7 +9,7 @@ export const itemSql = `
 		remind_at, every, CASE WHEN length(title) <= 16384 THEN title ELSE '' END AS title,
 		CASE WHEN length(coalesce(nullif(project, ''), agent)) <= 1024
 			THEN coalesce(nullif(project, ''), agent) END AS project,
-		updated_at, due, needs_daniel, resolved,
+		updated_at, due, needs_daniel, CASE WHEN chief_answer IS NULL THEN resolved ELSE 0 END AS resolved,
 		${[...trackerPlanningArtifactFields, ...trackerPlanningPromotionFields].join(', ')},
 		CASE WHEN length(question) <= 16384 THEN question END AS question,
 		CASE WHEN length(options) <= 4096 THEN options END AS options, confirm,

@@ -110,7 +110,15 @@ export function observeAttention(
 	};
 	const next = applyAttentionPatch(previous, fields);
 	state.attentionItems.set(item.id, next);
-	if (item.deleted || [item.status, next.status].includes('ignored')) return;
+	if (
+		item.chief_review ||
+		item.chief_answer ||
+		typeof fields.chief_review === 'string' ||
+		fields.chief_answer ||
+		item.deleted ||
+		[item.status, next.status].includes('ignored')
+	)
+		return;
 
 	const event = attentionTransition(previous, next);
 	if (!event) return;
