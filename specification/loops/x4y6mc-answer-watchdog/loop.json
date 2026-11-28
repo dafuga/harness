@@ -2,11 +2,9 @@
 	"name": "x4y6mc-answer-watchdog",
 	"goal": "Retire answers to ended runs without alerts and send each stale-live alert batch once while preserving delivery to live runs.",
 	"createdAt": "2026-11-28T12:45:10.962Z",
-	"updatedAt": "2026-11-28T12:58:37.433Z",
+	"updatedAt": "2026-11-28T13:00:24.853Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T13:00:24.853Z",
+			"evidence": "The unchanged two regression suites passed all 16 tests at 7cfa392a02, including live Claude and Codex, an ended abandoned session, a scheduler-resumed blocked pane, and five replayed alerts."
 		},
 		{
 			"id": "verify",
