@@ -8,6 +8,7 @@ import {
 import type { NativeTrackerMachines } from './formatNativeTrackerMachines.types';
 import { formatListedRun, formatNativeTrackerItem } from './formatNativeTrackerItem';
 import { formatNativeTrackerAlert } from './formatNativeTrackerAlert';
+import { formatNativeTrackerNotes } from './formatNativeTrackerNotes';
 import type {
 	NativeTrackerAdapter,
 	NativeTrackerAdapterChange,
@@ -62,7 +63,7 @@ function itemNotes(item: NativeTrackerItemDetail): string[] {
 	if (item.answer)
 		lines.push(`  answer: ${item.answer} (by ${item.answered_by} at ${item.answered_at})`);
 	if (item.notes) lines.push(`  notes: ${item.notes}`);
-	for (const n of item.notes_log ?? []) lines.push(`  note ${n.at} [${n.node}]: ${n.text}`);
+	lines.push(...formatNativeTrackerNotes(item));
 	return lines;
 }
 

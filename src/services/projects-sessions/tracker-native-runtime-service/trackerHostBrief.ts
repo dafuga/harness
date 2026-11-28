@@ -12,6 +12,7 @@ import { mockModePlanningRule } from '../../../utils/agents-providers/mockModePl
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
 import { trackerAskOptionsRule } from './trackerAskOptionsRule';
 import { trackerAutomationBrowserRule } from './trackerAutomationBrowserRule';
+import { trackerBriefNotes } from './trackerBriefNotes';
 import { trackerDoneProofRule } from './trackerDoneProofRule';
 import { trackerSecretSafetyRule } from './trackerSecretSafetyRule';
 import { trackerCpuBudgetRule } from '../../../utils/projects-sessions/trackerCpuBudget';
@@ -32,7 +33,12 @@ const launchRules = [
 	'',
 	'## Video evidence',
 	'If the task asks for a video, deliver a screen recording of the real app.',
-	'Extract and inspect frames that show the requested flow. In the acceptance evidence, list the timestamp of each extracted frame and describe what it shows.'
+	'Extract and inspect frames that show the requested flow. In the acceptance evidence, list the timestamp of each extracted frame and describe what it shows.',
+	'',
+	'## Keep context small',
+	'A new session already holds about 45,000 of its 150,000 tokens, and every tool result stays in context.',
+	'Start from this brief; `tracker show <id>` adds a bounded view. Do not print or read back a whole item history, `--json` dump or earlier session transcript; filter for the fields you need.',
+	'Find lines with `rg -n` before reading, read large files in ranges, filter or tail command output, and aim to keep each tool result under 8,000 characters.'
 ].join('\n');
 
 export function formatTrackerHostBrief(
@@ -46,7 +52,6 @@ export function formatTrackerHostBrief(
 ): string {
 	const id = item.id.slice(0, 6);
 	const risks = floorReasons(item);
-	const notes = item.notes_log.slice(-10).map(({ at, text }) => `- ${at} ${text.slice(0, 1200)}`);
 	return [
 		trackerSecretSafetyRule,
 		'',
@@ -75,8 +80,8 @@ export function formatTrackerHostBrief(
 		launch,
 		item.adapter_instructions && `## Source instructions\n\n${item.adapter_instructions}`,
 		item.notes && `## Task\n\n${item.notes.slice(0, 32000)}`,
-		notes.length > 0 && `## Recent notes\n\n${notes.join('\n')}`,
-		...trackerResumeLines(item, recovery),
+		...trackerBriefNotes(item, recovery),
+		recovery && trackerOpenQuestion(item),
 		trackerAnswerBrief(item),
 		`Start by running \`tracker start ${id}\`.`,
 		'Keep working through verification. Pause when the task is done, a true blocker prevents further work, or you file a context checkpoint.',
@@ -89,17 +94,9 @@ export function formatTrackerHostBrief(
 		.filter((line) => line !== null && line !== undefined && line !== false)
 		.join('\n');
 }
-function trackerResumeLines(item: TrackerItem, recovery: boolean) {
-	if (!recovery) return [];
-	const handoff = item.notes_log
-		.filter(({ text }) => /^stopped:.*?\bresume from\s*:/is.test(text))
-		.at(-1);
-	return [
-		handoff && `## Last handoff\n\n${handoff.text.slice(0, 4000)}`,
-		item.needs_daniel &&
-			!item.resolved &&
-			'An unanswered Tracker question remains open. Continue independent work and preserve any approval gates.'
-	];
+function trackerOpenQuestion(item: TrackerItem) {
+	if (!item.needs_daniel || item.resolved) return undefined;
+	return 'An unanswered Tracker question remains open. Continue independent work and preserve any approval gates.';
 }
 
 function trackerAnswerBrief(item: TrackerItem) {
@@ -154,7 +151,7 @@ export function trackerLaunchContext(
 					(entry) =>
 						`- run ${entry.id} on ${entry.node} (${entry.rung}): ${entry.outcome ?? 'finished'}${entry.failure_reason ? ' (' + sanitizeTrackerText(entry.failure_reason).slice(0, 240) + ')' : ''}`
 				),
-			`Check earlier attempts for branches, uncommitted changes and open PRs. Continue sound work. Read the full run history with \`tracker show ${item.id} --json\`.`
+			`Check earlier attempts for branches, uncommitted changes and open PRs. Continue sound work. List the full run history with \`tracker runs --item ${item.id}\`.`
 		);
 	}
 	if (parent) lines.push(parent);

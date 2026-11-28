@@ -17,10 +17,12 @@ import {
 	formatNativeTrackerInspection,
 	nativeJsonCommands
 } from './formatNativeTrackerInspection';
+import { renderTrackerNotesPage } from './formatNativeTrackerNotes';
 import type {
 	NativeTrackerAdapterReply,
 	NativeTrackerInspection,
 	NativeTrackerItem,
+	NativeTrackerItemDetail,
 	NativeTrackerRefusal,
 	NativeTrackerRequest,
 	NativeTrackerRunRead
@@ -107,6 +109,8 @@ async function sendNativeTracker(
 	if (request.path === '/backup/now') return renderTrackerBackup(data, Boolean(values.json));
 	if (command === 'check') return renderCheck(data, Boolean(values.json));
 	if (values.json) console.log(JSON.stringify(data, null, 2));
+	else if (typeof values['notes-page'] === 'string')
+		return renderTrackerNotesPage(data as NativeTrackerItemDetail, values['notes-page']);
 	else {
 		renderNativeTracker(command, data, { quiet: Boolean(values.quiet), first: words[0] });
 		if (!values.quiet) await printNativeTrackerAddHint(command, data as NativeTrackerItem, config);
