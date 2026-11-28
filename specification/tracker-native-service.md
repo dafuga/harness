@@ -606,6 +606,19 @@ done or snoozed it follows up like any reminder. To end the series, run
 scheduler ignores reminders. Every computer needs this release before it can
 create or finish a repeating reminder.
 
+### Upcoming reminders
+
+Hub Home, the Mac inbox and the iPhone inbox list open items due or reminding in
+the next 14 days, soonest first, in Europe/Lisbon time, with passed ones marked
+overdue. Personal holds the `personal`, `dad`, `family`, `doc`, `claire`,
+`boating`, `coach` and `life-coach` agents; its rows show only the title,
+without bracketed asides. Work, grouped by project, holds reminders (kind
+`reminder` or a title starting "Reminder") and items owned by Daniel that have
+no automatic launch. Recurring jobs and sensitive items are never listed. A row
+shows the coming reminder time, else the coming due time, so a snooze moves it.
+Done and Snooze (tomorrow 09:00 or in a week) write to the Tracker and name the
+time shown. The Hub shows this once the linked Mac runs this release.
+
 ### Scheduled reminders on other items
 
 Use `tracker remind <id> --at <ISO timestamp with a time zone>` for an

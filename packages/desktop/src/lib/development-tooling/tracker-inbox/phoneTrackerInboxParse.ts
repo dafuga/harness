@@ -36,7 +36,16 @@ function reminderOf(value: unknown): Pick<InboxHeader, 'reminder'> {
 	if (!isRecord(value)) return {};
 	const at = text(value.at);
 	if (at === null || Number.isNaN(Date.parse(at))) return {};
-	return { reminder: { at, repeats: nullableText(value.repeats) } };
+	const due = text(value.due);
+	return {
+		reminder: {
+			at,
+			repeats: nullableText(value.repeats),
+			group: value.group === 'work' ? 'work' : 'personal',
+			...(due !== null && !Number.isNaN(Date.parse(due)) && { due }),
+			...(value.allDay === true && { allDay: true as const })
+		}
+	};
 }
 
 /** Returns the parsed value, or null when any required field is missing. Never throws. */

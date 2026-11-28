@@ -28,7 +28,14 @@ export interface InboxHeader {
 	updatedAt: string | null;
 	dueAt: string | null;
 	/** Set on an active personal item: when it reminds next. */
-	reminder?: { at: string; repeats: string | null };
+	reminder?: {
+		at: string;
+		repeats: string | null;
+		/** Older computers send only personal reminders and omit these. */
+		group?: 'work' | 'personal';
+		due?: string;
+		allDay?: true;
+	};
 }
 
 /** One tappable answer to an open ask. `recommended` is the one the asking session suggests. */
@@ -149,7 +156,7 @@ export interface InboxReply<T> {
 
 export interface InboxOverview {
 	rows: InboxRow[];
-	/** Personal reminders, soonest first. */
+	/** Upcoming and overdue reminders, work and personal, soonest first. */
 	reminders: InboxHeader[];
 	unresolvedFlags: number;
 	/** True when the phone returned its full cap of Needs you items, so more may exist. */

@@ -2,6 +2,8 @@
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_wppzl5o65z -->
 <script lang="ts">
+	import { MediaQuery } from 'svelte/reactivity';
+	import { slide } from 'svelte/transition';
 	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
 	import type {
 		HomeChatInput,
@@ -25,13 +27,14 @@
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 	} = $props();
+	const reduceMotion = new MediaQuery('(prefers-reduced-motion: reduce)');
 	let busy = $state(false);
 	let snoozing = $state(false);
 	let status = $state('');
 	/** The armed time already acted on; the buttons return when the Tracker shows a new one. */
 	let acted = $state<string | null>(null);
 	const open = $derived(acted !== reminder.at);
-	const next = $derived(reminderNextTime(reminder.at, now));
+	const next = $derived(reminderNextTime(reminder, now));
 	const refused = 'Not changed: the reminder moved, or your Mac needs the latest Harness app.';
 
 	async function tap(until?: string) {
@@ -78,11 +81,16 @@
 	}
 </script>
 
-<hx-li class="hh-reminder" data-due={next.due}>
+<hx-li
+	class="hh-reminder"
+	data-due={next.due}
+	out:slide|global={{ duration: reduceMotion.current ? 0 : 320 }}
+>
 	<hx-div class="hh-reminder-text">
 		<hx-span class="hh-reminder-title"><LinkifiedText text={reminder.title} /></hx-span>
 		<hx-span class="hh-reminder-meta">
 			<hx-span class="hh-reminder-when">{next.label}</hx-span>
+			{#if next.deadline}<hx-span>{next.deadline}</hx-span>{/if}
 			{#if reminder.repeats}<hx-span>{reminder.repeats}</hx-span>{/if}
 		</hx-span>
 	</hx-div>

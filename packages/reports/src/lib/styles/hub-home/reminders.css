@@ -1,5 +1,5 @@
 /* @harness-uid u_louqa62vat */
-/* Reminders on Home: one Personal group, each row with its next time, Done and Snooze. */
+/* Upcoming reminders on Home: Work and Personal, each row with its time, Done and Snooze. */
 .hh-home .hh-reminders {
 	display: grid;
 	gap: var(--hx-space-12);
@@ -11,12 +11,31 @@
 }
 .hh-home .hh-reminders-title,
 .hh-home .hh-reminders-group,
+.hh-home .hh-reminders-project,
 .hh-home .hh-reminders-empty,
 .hh-home .hh-reminder-status {
 	margin: 0;
 }
 .hh-home .hh-reminders-title {
 	font-size: var(--hx-type-size-base);
+}
+/* Side by side where there is room, so both groups are seen without scrolling. */
+.hh-home .hh-reminders-groups {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+	align-items: start;
+	gap: var(--hx-space-24);
+}
+.hh-home .hh-reminders-column {
+	display: grid;
+	gap: var(--hx-space-8);
+	min-width: 0;
+}
+.hh-home .hh-reminders-project {
+	padding-top: var(--hx-space-8);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+	font-weight: var(--hx-style-weight-semibold);
 }
 .hh-home .hh-reminders-head {
 	display: flex;
@@ -80,8 +99,10 @@
 .hh-home .hh-reminder-status {
 	grid-column: 1 / -1;
 }
+/* With the column gap this matches the row padding, so the button does not crowd the last row. */
 .hh-home .hh-reminders-more {
 	justify-self: start;
+	margin-top: var(--hx-space-4);
 }
 @media (max-width: 560px) {
 	.hh-home .hh-reminder {

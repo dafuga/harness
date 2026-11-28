@@ -15,8 +15,8 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "reminderNextTime.at",
-				"type": "string",
+				"name": "reminderNextTime.reminder",
+				"type": "Pick<HomeReminder, 'at' | 'due' | 'allDay'>",
 				"required": true
 			},
 			{
@@ -33,7 +33,7 @@
 		"outputs": [
 			{
 				"name": "reminderNextTime",
-				"type": "{ due: boolean; label: string }"
+				"type": "{ due: boolean; label: string; deadline: string | null }"
 			},
 			{
 				"name": "snoozeChoices",
@@ -47,8 +47,8 @@
 				"name": "reminderNextTime",
 				"inputs": [
 					{
-						"name": "reminderNextTime.at",
-						"type": "string",
+						"name": "reminderNextTime.reminder",
+						"type": "Pick<HomeReminder, 'at' | 'due' | 'allDay'>",
 						"required": true
 					},
 					{
@@ -60,7 +60,7 @@
 				"outputs": [
 					{
 						"name": "reminderNextTime",
-						"type": "{ due: boolean; label: string }"
+						"type": "{ due: boolean; label: string; deadline: string | null }"
 					}
 				],
 				"errors": [],
@@ -87,7 +87,23 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/lib/projects-sessions/hub-home/reminderTimes.ts",

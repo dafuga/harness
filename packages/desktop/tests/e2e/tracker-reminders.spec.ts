@@ -36,6 +36,16 @@ function reminderTracker() {
 	add('plant00001', 'Reminder Sun 10:00: water the sample plant', -3, '0 10 * * 0');
 	const room = 'Book a sample room before the long sample weekend at https://example.com/rooms';
 	add('room000001', room, 30);
+	store.appendLocal({
+		itemId: 'work000001',
+		fields: {
+			title: 'Send the sample invoice',
+			status: 'open',
+			owner: 'Daniel',
+			agent: 'sample-hub',
+			due: new Date(Date.now() + 100 * hour).toISOString()
+		}
+	});
 	const fetcher = (async (input: string | URL, init?: RequestInit) =>
 		api.handle(new Request(String(input), init))) as typeof fetch;
 	return { items, fetcher, close: () => database.close() };
@@ -46,19 +56,23 @@ for (const [size, width] of [
 	['narrow', 390]
 ] as const) {
 	for (const scheme of ['dark', 'light'] as const) {
-		test(`Reminders lists Personal with done and snooze (${size}, ${scheme})`, async ({ page }) => {
+		test(`Reminders lists Work and Personal with done and snooze (${size}, ${scheme})`, async ({
+			page
+		}) => {
 			const tracker = reminderTracker();
 			const restore = await macSpecPage(page, tracker);
 			try {
 				await page.setViewportSize({ width, height: 844 });
 				await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
 				await page.goto('/tracker');
-				await page.getByRole('button', { name: /^Reminders 2$/ }).click();
+				await page.getByRole('button', { name: /^Reminders 3$/ }).click();
 				const view = page.getByRole('region', { name: 'Reminders', exact: true });
-				await expect(view.getByRole('heading', { name: 'Personal' })).toBeVisible();
-				const rows = view.getByRole('listitem');
+				await expect(view.getByRole('heading', { level: 2 })).toHaveText(['Work', 'Personal']);
+				const job = view.getByRole('list', { name: 'sample-hub' }).getByRole('listitem');
+				await expect(job).toContainText(/Send the sample invoice\s*Due /);
+				const rows = view.getByRole('list', { name: 'Personal' }).getByRole('listitem');
 				await expect(rows).toHaveCount(2);
-				await expect(rows.first()).toContainText(/Water the sample plant\s*Due now.*Weekly/s);
+				await expect(rows.first()).toContainText(/Water the sample plant\s*Overdue · .*Weekly/s);
 				const link = view.getByRole('link', { name: 'https://example.com/rooms' });
 				await expect(link).toHaveAttribute('href', 'https://example.com/rooms');
 				await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
@@ -69,7 +83,7 @@ for (const [size, width] of [
 					.getByRole('button', { name: /^Snooze:/ })
 					.click();
 				const snooze = rows.first().getByRole('group', { name: 'Snooze until' });
-				await expect(snooze.getByRole('button')).toHaveCount(3);
+				await expect(snooze.getByRole('button')).toHaveText(['Tomorrow 09:00', 'Next week']);
 				if (process.env.TAKE_SCREENSHOT === 'true')
 					await page.screenshot({
 						path: `${process.env.SCREENSHOT_DIR ?? 'test-results/reminders'}/mac-${size}-${scheme}.png`,
@@ -77,7 +91,7 @@ for (const [size, width] of [
 					});
 				const scroll = await page.evaluate(() => document.documentElement.scrollWidth);
 				expect(scroll).toBeLessThanOrEqual(width);
-				await snooze.getByRole('button', { name: '1 week' }).click();
+				await snooze.getByRole('button', { name: 'Next week' }).click();
 				await expect(page.getByText('Snooze saved to Tracker.')).toBeVisible();
 				await expect(rows.first()).toContainText('Book a sample room');
 				await rows

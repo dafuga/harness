@@ -24,6 +24,10 @@ export const LEAK_SENTINELS = [
 ] as const;
 
 const minutesAgo = (now: number, minutes: number) => new Date(now - minutes * 60_000).toISOString();
+const reviewOptions = [
+	{ label: 'Proceed', effect: 'Continues the fixture review.', recommended: true },
+	{ label: 'Hold', effect: 'Waits for another look.' }
+];
 
 /** Items for the projects that need attention or are active: one per state, with a sensitive record. */
 function attentionItems(now: number): unknown[] {
@@ -36,7 +40,8 @@ function attentionItems(now: number): unknown[] {
 			agent: 'fixture-needs',
 			needs_daniel: true,
 			resolved: false,
-			question: 'Synthetic question for the owner?'
+			question: 'Synthetic question for the owner?',
+			options: reviewOptions
 		},
 		{
 			id: 'fx-needs-2',
@@ -46,7 +51,8 @@ function attentionItems(now: number): unknown[] {
 			agent: 'fixture-needs',
 			sensitive: true,
 			needs_daniel: true,
-			question: 'Sensitive question must not show'
+			question: 'Sensitive question must not show',
+			options: reviewOptions
 		},
 		{
 			id: 'fx-blocked-1',

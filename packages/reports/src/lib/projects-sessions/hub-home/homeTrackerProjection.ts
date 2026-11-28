@@ -85,7 +85,7 @@ export function buildHomeSnapshot(
 		overview,
 		...(sources && {
 			projectDirectory: listTrackerProjects(items),
-			reminders: listHomeReminders(shown)
+			reminders: listHomeReminders(shown, now)
 		}),
 		agents,
 		openAsks: buildHomeOpenAsks(items),

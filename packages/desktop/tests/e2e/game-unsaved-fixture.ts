@@ -78,7 +78,9 @@ export async function keepNativeNavigation(page: Page) {
 		'Discard unsaved game changes?'
 	);
 	await expect(page).toHaveURL(address);
+	await viewSettings(page);
 	await expect(title).toHaveValue(saved);
+	await closeViewSettings(page);
 	await expect(page.getByText('Unsaved changes', { exact: true })).toBeVisible();
 }
 

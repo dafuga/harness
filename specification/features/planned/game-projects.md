@@ -18,6 +18,7 @@ Create Harness apps or games while retaining app pages. Game views separate UI a
 - Generated games serve a playable `/game` route on first visits and reloads. Explicit `game.json` imports must not shadow the route.
 - Both dimensions retain passing normal project checks after adding app/game scaffolds and saving an authored game document. The game-file formatter matches the repository's canonical JSON encoding.
 - Native desktop, tablet and phone scenarios create real Git projects, author views and mechanics, edit and fit checkpoint graphs, save/reopen image references, play and inspect read-only history. Paid image-provider calls are controlled at the HTTP boundary in automated acceptance.
+- After canceling navigation with unsaved edits, native acceptance reopens View settings to check the authored title, then closes the dialog before continuing the save flow. Verify all six dimension and viewport cases.
 - Game views, mechanics contracts, graph positions, conditions, actions and guidance persist in versioned game.json with optimistic concurrency and historical reads.
 - Graph editing supports selection, node creation/deletion, dependency connections, dragging, structured condition/action editing and execution traces.
 - Editor-only changes preserve the current run across Preview, Checkpoints and Mechanics; only explicit Reset or loading another document clears progress. Both dimension scenarios enforce this lifecycle contract in normal browser verification.

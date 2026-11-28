@@ -10,15 +10,12 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
-			"reports.component.shared-primitives-atoms-html-button",
-			"reports.component.shared-primitives-atoms-html-div",
+			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminder",
 			"reports.component.shared-primitives-atoms-html-h2",
-			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-ul",
-			"reports.component.shared-primitives-linkified-text"
+			"reports.component.shared-primitives-atoms-html-ul"
 		]
 	},
 	"owns": {
@@ -82,6 +79,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminder",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.development-tooling-tracker-inbox-types",
 			"via": "import",
 			"origin": "derived"
@@ -97,27 +99,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.projects-sessions-tracker-personal-reminder",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-button",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-h2",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -132,27 +119,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-span",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-linkified-text",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.strings-link-segments",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.module.projects-sessions-hub-home-reminder-times",
 			"via": "import",
 			"origin": "derived"
 		}

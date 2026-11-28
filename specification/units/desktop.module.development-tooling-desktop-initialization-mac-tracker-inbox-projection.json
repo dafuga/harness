@@ -159,11 +159,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.projects-sessions-tracker-personal-reminder",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
@@ -175,6 +170,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-unattended-hold",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-upcoming-reminder",
 			"via": "import",
 			"origin": "derived"
 		},

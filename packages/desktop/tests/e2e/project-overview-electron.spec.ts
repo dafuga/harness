@@ -84,7 +84,13 @@ function expectOwnerReads(hub: HubSpy) {
 	expect(requests.every(({ method, bearer }) => method === 'GET' && bearer === OWNER.token)).toBe(
 		true
 	);
-	expect(hub.records.every(({ method }) => method === 'GET')).toBe(true);
+	// The signed-in desktop registers itself independently of the read-only overview.
+	const mutations = hub.records
+		.filter(
+			({ method, path }) => method !== 'GET' && !(method === 'POST' && path === '/api/remote/hosts')
+		)
+		.map(({ method, path }) => ({ method, path }));
+	expect(mutations).toEqual([]);
 }
 
 async function overviewHub(ready: boolean) {

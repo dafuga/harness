@@ -97,6 +97,7 @@ async function started() {
 const event = () => ({ preventDefault: vi.fn() });
 const settled = () => new Promise((resolve) => setTimeout(resolve, 0));
 
+// Only this case pays for a cold transform of the complete Electron main module graph.
 test('only the first app instance reaches readiness and backend startup', async () => {
 	const bundle = mkdtempSync(join(tmpdir(), 'desktop-signed-layout-'));
 	const resources = Object.getOwnPropertyDescriptor(process, 'resourcesPath');
@@ -129,7 +130,7 @@ test('only the first app instance reaches readiness and backend startup', async 
 		state.ready.mock.invocationCallOrder[0]
 	);
 	expect(state.on.mock.calls.map(([event]) => event)).toContain('second-instance');
-});
+}, 15_000);
 
 test('a second app instance quits before readiness or any backend can start', async () => {
 	state.lock.mockReturnValue(false);

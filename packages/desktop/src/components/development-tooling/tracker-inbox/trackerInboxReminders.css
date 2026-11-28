@@ -1,5 +1,5 @@
 /* @harness-uid u_x6knq6fa2b */
-/* The Reminders view of the Mac and phone inbox: one Personal group with Done and Snooze. */
+/* The Reminders view of the Mac and phone inbox: Work and Personal, with Done and Snooze. */
 .reminders {
 	display: grid;
 	gap: var(--hx-space-8);
@@ -7,6 +7,15 @@
 .reminders-group {
 	margin: 0;
 	font-size: var(--hx-type-size-base);
+}
+.reminders-group:not(:first-child) {
+	margin-top: var(--hx-space-16);
+}
+.reminders-project {
+	margin: var(--hx-space-8) 0 0;
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+	font-weight: var(--hx-style-weight-semibold);
 }
 .reminders-list {
 	display: grid;

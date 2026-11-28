@@ -100,6 +100,10 @@ const reminder = z.object({
 	title,
 	at: time,
 	repeats: short.nullable(),
+	group: z.enum(['work', 'personal']).optional(),
+	project: short.nullable().optional(),
+	due: time.optional(),
+	allDay: z.literal(true).optional(),
 	updatedAt: time
 });
 
