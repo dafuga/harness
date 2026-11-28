@@ -15,8 +15,7 @@ self.addEventListener('activate', (event) => event.waitUntil(self.clients.claim(
 function read(data) {
 	try {
 		const value = data.json();
-		if (value.kind === 'device-approval' && Object.keys(value).length === 1)
-			return { approval: true };
+		if (value.kind === 'device-approval') return { approval: true };
 		const texts = [value.title, value.body, value.needs];
 		if (texts.every((text) => typeof text === 'string')) return value;
 	} catch {
