@@ -1,7 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
-<!-- @harness-uid u_dk8n3wvb5c -->
-<!-- @harness-uid u_4kou66r7hb -->
+<!-- @harness-uid u_4tqpqge2j4 -->
 <script lang="ts">
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import { dockWait } from './hubDockModel';

@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "hub.function.projects-sessions-hub-home-source",
-	"uid": "u_r2grlgtbej",
+	"uid": "u_pfflsnhfco",
 	"kind": "function",
 	"title": "hubHomeSource",
 	"responsibility": "Owns the hubHomeSource shared function.",
@@ -35,12 +35,7 @@
 				"type": "HubHomeSource"
 			}
 		],
-		"errors": [
-			{
-				"name": "HubHomeNotReadingError",
-				"type": "thrown"
-			}
-		],
+		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
 			{
@@ -93,11 +88,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.projects-sessions-hub-home-not-reading-error",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.function.projects-sessions-hub-home-reads",
 			"via": "import",
 			"origin": "derived"
@@ -114,11 +104,6 @@
 		},
 		{
 			"unit": "hub.page.tracker-overview",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.service.networking-security-linked-home",
 			"via": "import",
 			"origin": "derived"
 		}

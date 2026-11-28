@@ -1,40 +1,21 @@
-// @harness-uid u_r2grlgtbej
-// @harness-uid u_dk9h2cwm4x
+// @harness-uid u_pfflsnhfco
 import { getContext, setContext, untrack } from 'svelte';
 import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import type {
 	HomeChatInput,
 	HomeChatReceipt
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-import type { ReadHomeResult } from '$reports/components/projects-sessions/hub-home/hubHomeView.types';
-import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
-import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 import type { HostedBrowser } from '../../utils/development-tooling/browserContext';
 import { followHubUpdates, liveReadMs } from '../../lib/networking-security/hubLiveUpdates';
 import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 import { homeSnapshot } from './hubHomeClient';
 import { hubHomeReads } from './hubHomeReads';
-import { HubHomeNotReadingError } from './HubHomeNotReadingError';
 import type { HubHomeReads } from './hubHomeReads.types';
-import type { HubHomeSource } from './hubHomeSource.types';
+import type { HubHomeSource, Reading, Readings } from './hubHomeSource.types';
 
 export type { HubHomeSource } from './hubHomeSource.types';
 
 const sourceKey = Symbol('hub-home-source');
-
-interface Readings {
-	home: ReadHomeResult | null;
-	live: LinkedHome | null;
-	link: RealtimeState | null;
-	now: number;
-}
-
-/** What a signed-in session holds while it reads: its own readers and its last full read. */
-interface Reading {
-	reads: HubHomeReads | null;
-	readAllAt: number;
-	listeners: Set<() => void>;
-}
 
 function refreshAll(state: Readings, reading: Reading) {
 	if (!reading.reads) return;
@@ -74,9 +55,9 @@ function readFor(browser: HostedBrowser, state: Readings, reading: Reading) {
 
 function sourceActions(browser: HostedBrowser, state: Readings, reading: Reading) {
 	return {
-		async send(message: HomeChatInput) {
-			if (!reading.reads) throw new HubHomeNotReadingError();
-			return reading.reads.send(message);
+		/** Without a reading there is nothing to send through, so the message is not accepted. */
+		async send(message: HomeChatInput): Promise<HomeChatReceipt> {
+			return reading.reads?.send(message) ?? { id: message.id, status: 'refused' };
 		},
 		receipt: (id: string) => browser.api.get<HomeChatReceipt>('/api/hub-home/chat', { id }),
 		readDocument: (async (request) =>
@@ -85,8 +66,11 @@ function sourceActions(browser: HostedBrowser, state: Readings, reading: Reading
 		setControlled(controlled: string[]) {
 			if (state.home) state.home = { ...state.home, controlled };
 		},
+		reread: () => reading.reads?.read(),
 		onRefresh(listener: () => void) {
 			reading.listeners.add(listener);
+			// A page that arrives after the reading began has missed its first beat.
+			if (reading.reads) listener();
 			return () => void reading.listeners.delete(listener);
 		}
 	};

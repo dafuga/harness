@@ -12,7 +12,7 @@
 		SendHomeChat
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { dockPillText, dockSummary, hubDockModel } from './hubDockModel';
-	import type { HubDockSource } from './hubDockModel.types';
+	import type { HubDockSource, HubDockView as View } from './hubDockModel.types';
 	import { initials } from './hubHomePresentation';
 	import HubDockList from './HubDockList.svelte';
 	import HubDockPick from './HubDockPick.svelte';
@@ -22,6 +22,7 @@
 	import '$reports/lib/styles/project-overview-controls.css';
 	import '$reports/lib/styles/hub-home/index.css';
 	import '$reports/lib/styles/hub-home/dock.css';
+	import '$reports/lib/styles/hub-home/dock-list.css';
 	import '$reports/lib/styles/hub-home/dock-chat.css';
 
 	let {
@@ -39,7 +40,6 @@
 		followScheme?: boolean;
 	} = $props();
 
-	type View = { name: 'list' } | { name: 'pick' } | { name: 'chat'; agentId: string };
 	let isOpen = $state(false);
 	let view = $state<View>({ name: 'list' });
 	/** The agent as last seen, so an open chat stays when its agent leaves the list. */

@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "hub.function.projects-sessions-hub-home-source-types",
-	"uid": "u_n6syg6lccy",
+	"uid": "u_44fp37kio3",
 	"kind": "function",
 	"title": "hubHomeSource",
 	"responsibility": "Owns the hubHomeSource shared function.",
@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/hubHomeSource.types.ts"],
-		"symbols": ["HubHomeSource"]
+		"symbols": ["HubHomeSource", "Readings", "Reading"]
 	},
 	"contract": {
 		"origin": "derived",

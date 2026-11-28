@@ -1,4 +1,4 @@
-// @harness-uid u_dlxbdsbg7e
+// @harness-uid u_walhhjgm4k
 /** The public site and the one-step handoff pages carry no dock. */
 const without = ['/(public-site)', '/native', '/invite'];
 

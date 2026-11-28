@@ -1,4 +1,4 @@
-// @harness-uid u_n6syg6lccy
+// @harness-uid u_44fp37kio3
 import type {
 	HomeChatReceipt,
 	SendHomeChat
@@ -25,7 +25,24 @@ export interface HubHomeSource {
 	readDocument: HubHomeReads['readDocument'];
 	/** Reads the Home and the linked computers again. */
 	refresh: () => void;
+	/** Reads the Home again without asking pages to read their own data. */
+	reread: () => void;
 	setControlled: (controlled: string[]) => void;
-	/** Hears every full refresh, so a page can read its own data on the same beat. */
+	/** Hears every full refresh, including one already begun, so a page reads on the same beat. */
 	onRefresh: (listener: () => void) => () => void;
+}
+
+/** What the shared source has read, as the page sees it. */
+export interface Readings {
+	home: ReadHomeResult | null;
+	live: LinkedHome | null;
+	link: RealtimeState | null;
+	now: number;
+}
+
+/** What a signed-in session holds while it reads: its own readers and its last full read. */
+export interface Reading {
+	reads: HubHomeReads | null;
+	readAllAt: number;
+	listeners: Set<() => void>;
 }

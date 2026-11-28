@@ -119,6 +119,11 @@ for (const size of ['desktop', 'phone'] as const)
 			// Home follows the visitor's scheme, so the dock on it does too.
 			expect(await lightness(page)).toBeGreaterThan(scheme === 'light' ? 0.8 : 0);
 			if (scheme === 'dark') expect(await lightness(page)).toBeLessThan(0.3);
+			const band = () =>
+				page.evaluate(() =>
+					getComputedStyle(document.documentElement).getPropertyValue('--hh-dock-band').trim()
+				);
+			expect(await band()).not.toBe('');
 			await shot(page, `dock-closed-${size}-${scheme}`);
 			await launcher(page).click();
 			const dock = panel(page);

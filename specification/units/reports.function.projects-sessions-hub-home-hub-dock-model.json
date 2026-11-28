@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.function.projects-sessions-hub-home-hub-dock-model",
-	"uid": "u_dup47o3woo",
+	"uid": "u_cvrv7wxraw",
 	"kind": "function",
 	"title": "hubDockModel",
 	"responsibility": "Owns the hubDockModel shared function.",
@@ -21,7 +21,8 @@
 			"HubDockSource",
 			"HubDockRow",
 			"HubDockAsker",
-			"HubDockModel"
+			"HubDockModel",
+			"HubDockView"
 		]
 	},
 	"contract": {

@@ -1,4 +1,4 @@
-// @harness-uid u_dup47o3woo
+// @harness-uid u_cvrv7wxraw
 import type { HomeAgent, HomeOpenAsk } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 
 /** The listed Home snapshot the dock reads: user-controlled agents, other askers and open asks. */
@@ -27,3 +27,6 @@ export interface HubDockModel {
 	/** Everyone a message can reach, Chief of Staff first. */
 	reachable: HomeAgent[];
 }
+
+/** What the open dock shows. */
+export type HubDockView = { name: 'list' } | { name: 'pick' } | { name: 'chat'; agentId: string };

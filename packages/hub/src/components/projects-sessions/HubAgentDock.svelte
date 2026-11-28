@@ -1,7 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
-<!-- @harness-uid u_dk1w8fzq6k -->
-<!-- @harness-uid u_h745y6xina -->
+<!-- @harness-uid u_pxioyctqnc -->
 <script lang="ts">
 	import { page } from '$app/state';
 	import HubDock from '$reports/components/projects-sessions/hub-home/HubDock.svelte';

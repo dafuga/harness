@@ -1,7 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
-<!-- @harness-uid u_dk2p9xhf6e -->
-<!-- @harness-uid u_vjh5jcsguz -->
+<!-- @harness-uid u_sh6tf554dp -->
 <script lang="ts">
 	import type { HomeAgent } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { agentLabels, initials } from './hubHomePresentation';

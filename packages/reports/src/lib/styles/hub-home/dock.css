@@ -14,12 +14,16 @@
 	--home-accent: var(--hx-color-primary);
 	color-scheme: dark;
 }
-/* The bottom band: the page ends above the dock, so the pill never covers a card. */
+/* The bottom band: the page ends above the dock, so the pill never covers a card. A page that
+   lays out its own band reads --hh-dock-band, which is set only while the dock shows. */
+:root:has(.hd-root) {
+	--hh-dock-band: calc(var(--hx-space-40) * 2);
+}
 .hd-band {
-	height: calc(var(--hx-space-40) * 2);
+	height: var(--hh-dock-band);
 }
 body:has(.hd-root) .home-page.hh-home:not(.hd-root) {
-	padding-bottom: calc(var(--hx-space-40) * 2);
+	padding-bottom: var(--hh-dock-band);
 }
 body:has(.home-page.hh-home:not(.hd-root)) .hd-band {
 	display: none;
@@ -150,108 +154,6 @@ body:has(.home-page.hh-home:not(.hd-root)) .hd-band {
 	font: inherit;
 	font-size: var(--hx-type-size-2xl);
 	cursor: pointer;
-}
-.hh-home .hd-body {
-	display: grid;
-	flex: 1 1 auto;
-	align-content: start;
-	gap: var(--hx-space-16);
-	min-height: 0;
-	padding: var(--hx-space-16);
-	overflow-y: auto;
-}
-.hh-home .hd-group,
-.hh-home .hd-asks {
-	display: grid;
-	gap: var(--hx-space-8);
-}
-.hh-home .hd-kicker {
-	display: flex;
-	align-items: center;
-	gap: var(--hx-space-8);
-	color: var(--hx-color-text-muted);
-	font-size: var(--hx-type-size-2xs);
-	font-weight: var(--hx-style-weight-semibold);
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-}
-.hh-home .hd-group[data-tone='needs-you'] .hd-kicker {
-	color: var(--home-accent);
-}
-.hh-home .hd-diamond {
-	width: var(--hx-space-8);
-	height: var(--hx-space-8);
-	background: currentColor;
-	transform: rotate(45deg);
-}
-.hh-home .hd-row {
-	display: flex;
-	align-items: center;
-	gap: var(--hx-space-12);
-	width: 100%;
-	min-height: 56px;
-	padding: var(--hx-space-8) var(--hx-space-2);
-	border: 0;
-	background: transparent;
-	color: inherit;
-	font: inherit;
-	text-align: left;
-	cursor: pointer;
-}
-.hh-home .hd-rows li + li {
-	border-top: var(--hx-border-thin) solid var(--hx-color-border);
-}
-.hh-home .hd-row-asks {
-	padding: var(--hx-space-8) var(--hx-space-10);
-	border: var(--hx-border-thin) solid var(--hx-color-primary-line);
-	border-radius: var(--hx-radius-small);
-	background: var(--hx-color-primary-wash);
-}
-.hh-home .hd-text {
-	display: grid;
-	flex: 1;
-	min-width: 0;
-}
-.hh-home .hd-line {
-	display: flex;
-	align-items: baseline;
-	justify-content: space-between;
-	gap: var(--hx-space-8);
-	min-width: 0;
-}
-.hh-home .hd-name {
-	font-size: var(--hx-type-size-sm);
-	font-weight: var(--hx-style-weight-semibold);
-}
-.hh-home .hd-row-asks .hd-meta {
-	color: var(--hx-color-text-supporting);
-}
-.hh-home .hd-wait {
-	flex: none;
-	color: var(--hx-color-text-muted);
-	font-size: var(--hx-type-size-2xs);
-}
-.hh-home .hd-go {
-	flex: none;
-	color: var(--hx-color-text-muted);
-	font-size: var(--hx-type-size-lg);
-}
-.hh-home .hd-foot {
-	display: flex;
-	flex: none;
-	padding: var(--hx-space-12) var(--hx-space-16) var(--hx-space-16);
-	border-top: var(--hx-border-thin) solid var(--hx-color-border);
-}
-.hh-home .po-action.hd-new {
-	flex: 1;
-	min-height: 44px;
-	border-color: var(--hx-color-primary);
-	background-color: var(--hx-color-primary);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: var(--hx-color-primary-contrast);
-	font-weight: var(--hx-style-weight-semibold);
 }
 /* Hover lays the scheme's wash over a control, as on Home; touch screens skip it. */
 @media (hover: hover) {

@@ -104,9 +104,8 @@
 	}
 	onMount(() => {
 		const stop = source.onRefresh(listProjects);
-		listProjects();
-		// A return to Home reads again; the first read is already under way.
-		source.refresh();
+		// A return to Home reads again; on first load that read is already under way.
+		if (home) source.reread();
 		return () => {
 			flight++;
 			stop();

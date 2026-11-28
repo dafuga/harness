@@ -174,7 +174,7 @@ test('signing out unsubscribes this browser first', async ({ page }) => {
 	await expect(row(page).getByRole('status')).toContainText('Notifications on');
 	await page.getByRole('button', { name: 'Account' }).click();
 	await page.getByRole('button', { name: 'Sign out' }).click();
-	await expect(page.getByRole('heading', { level: 1, name: 'Harness' })).toBeVisible();
+	await expect(page.getByRole('main', { name: 'Sign in to Harness' })).toBeVisible();
 	expect(writes.at(-1)).toEqual({
 		method: 'DELETE',
 		path: '/api/push/subscription',
