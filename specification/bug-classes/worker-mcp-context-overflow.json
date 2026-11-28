@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"revision": "f7c0d80c3d418fcf6281be1c550bc7e47b2632af",
+	"bugClass": {
+		"id": "worker-mcp-context-overflow",
+		"title": "Headless worker sessions exceed context limits due to enabled MCP servers",
+		"cause": "Automated headless CLI launches constrain tools but leave MCP servers enabled. Account or user MCP connectors can be added during the session, consuming enough context to exceed admission limits for bounded workers.",
+		"criteria": "Applies when an automated headless CLI launch creates a bounded worker session and does not disable account/user MCP servers. Assess launch construction and configuration independently: restricted tool lists alone do not disable MCP; accept any launch path that permits MCP servers to join and add context, even if it uses different CLI flags or configuration files.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "--strict-mcp-config",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "--tools",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "tool_addition",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "mcpServers",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "allowedTools",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "spawn",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "execFile",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "exec",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "claude",
+				"weight": 3
+			},
+			{
+				"kind": "construct",
+				"value": "Claude",
+				"weight": 2
+			}
+		],
+		"contextTerms": ["mcp", "tools", "claude", "context", "worker", "headless", "strict"],
+		"pathHints": [
+			{
+				"contains": "src/cli/",
+				"weight": 5
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 4
+			},
+			{
+				"contains": "src/services/",
+				"weight": 3
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			}
+		]
+	}
+}

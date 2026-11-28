@@ -2,7 +2,7 @@
 	"name": "k3y69b-haiku-connectors",
 	"goal": "Haiku module workers no longer receive claude.ai connector tools mid-session, so fresh sessions stop hitting the context limit at startup",
 	"createdAt": "2026-11-28T17:04:26.283Z",
-	"updatedAt": "2026-11-28T17:04:26.283Z",
+	"updatedAt": "2026-11-28T17:25:31.035Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,27 +11,37 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T17:24:24.962Z",
+			"evidence": "Count-only live probes: without --strict-mcp-config the second request adds a role:system message with text+tool_addition blocks (about 56.6k o200k tokens, 93 mcp names); the tools array stays at 7. With the flag that message never appears. Expected: a module worker receives no connector tools."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T17:24:32.838Z",
+			"evidence": "The CLI relay tests sent short synthetic histories, no test pinned the module worker's MCP isolation, and a single-turn CLI probe ends before connectors load. module-worker-mcp.test.ts now pins the worker command."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T17:25:17.733Z",
+			"evidence": "8e0eae8495: module-worker-mcp.test.ts failed on the --strict-mcp-config assertion (loop record red)."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T17:25:28.095Z",
+			"evidence": "f7c0d80c3d: add --strict-mcp-config to the Claude module worker command. The admission gate is unchanged from main."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T17:25:31.035Z",
+			"evidence": "f7c0d80c3d: the unchanged test passes (loop record green)."
 		},
 		{
 			"id": "siblings",
