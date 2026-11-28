@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/hubHomeClient.ts"],
-		"symbols": ["readHome", "homeSnapshot"]
+		"symbols": ["readHome", "homeSnapshot", "homeOutgoing"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -25,6 +25,11 @@
 				"type": "ReadHomeResult | null",
 				"required": true,
 				"description": "Owner access result or null during loading."
+			},
+			{
+				"name": "homeOutgoing.api",
+				"type": "BrowserApi",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -77,6 +82,24 @@
 						"name": "homeSnapshot",
 						"type": "OwnerHomeSnapshot | null",
 						"description": "Owner snapshot when access was granted, or null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "homeOutgoing",
+				"inputs": [
+					{
+						"name": "homeOutgoing.api",
+						"type": "BrowserApi",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeOutgoing",
+						"type": "HomeOutgoingSource"
 					}
 				],
 				"errors": [],

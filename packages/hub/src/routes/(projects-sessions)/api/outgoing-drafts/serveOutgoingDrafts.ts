@@ -24,10 +24,7 @@ export async function serveOutgoingDrafts(request: Request, deps: OutgoingDraftD
 
 async function verifiedOwner(request: Request, deps: OutgoingDraftDeps) {
 	const session = await deps.sessions?.resolve(request);
-	return (
-		session?.actor.id === deps.ownerId &&
-		(session?.kind === 'browser' || session?.resource === 'projects')
-	);
+	return session?.actor.id === deps.ownerId && session?.resource === 'projects';
 }
 
 async function proxyDraft(

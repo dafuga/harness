@@ -66,7 +66,6 @@ export class TrackerNativeRuntimeService {
 	readonly machines: TrackerMachineService;
 	readonly now: () => number;
 	private readonly links: TrackerSpokeLoopService[];
-
 	constructor(database: SqliteDatabase, options: TrackerNativeRuntimeOptions) {
 		validateLinks(options);
 		const { node, now = Date.now, storage, hostEffects, role } = options;
@@ -99,7 +98,6 @@ export class TrackerNativeRuntimeService {
 		this.backups = composeTrackerBackups(this, options);
 		this.sync = composeTrackerResponder(this, runs, fleet.syncOptions, composed);
 	}
-
 	get admin() {
 		return trackerAutolaunchAdmin(this.store, this);
 	}

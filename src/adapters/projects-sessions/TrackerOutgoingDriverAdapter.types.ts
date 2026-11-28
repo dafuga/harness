@@ -1,3 +1,4 @@
+// @harness-uid u_6x5aw74rep
 import type { TrackerOutgoingChannel } from '../../repositories/projects-sessions/TrackerOutgoingDraftRepository.types';
 
 export interface TrackerOutgoingDriverAdapterConfig {

@@ -31,6 +31,7 @@
 		"source": [
 			"src/services/projects-sessions/TrackerNativeRuntimeService.ts",
 			"src/services/projects-sessions/TrackerNativeRuntimeService.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/composeOutgoingDrafts.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/composeTrackerResponder.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerDestinations.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerReminderHost.ts",
@@ -138,6 +139,7 @@
 			"TrackerLegacyDestinationBindings",
 			"TrackerNativeNotificationOptions",
 			"TrackerNativeRuntimeOptions",
+			"composeOutgoingDrafts",
 			"composeTrackerResponder",
 			"configuredTrackerDestinations",
 			"configuredTrackerReminderHost",
@@ -386,8 +388,18 @@
 				"required": true
 			},
 			{
+				"name": "composeOutgoingDrafts.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "composeOutgoingDrafts.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
 				"name": "composeTrackerResponder.runtime",
-				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'machines'>",
+				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'machines' | 'outgoingDrafts'>",
 				"required": true
 			},
 			{
@@ -2533,11 +2545,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "composeOutgoingDrafts",
+				"inputs": [
+					{
+						"name": "composeOutgoingDrafts.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "composeOutgoingDrafts.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "composeOutgoingDrafts",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "composeTrackerResponder",
 				"inputs": [
 					{
 						"name": "composeTrackerResponder.runtime",
-						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'machines'>",
+						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'machines' | 'outgoingDrafts'>",
 						"required": true
 					},
 					{
@@ -6244,6 +6279,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.networking-security-tracker-sync-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-adapter-poll",
 			"via": "import",
 			"origin": "derived"
@@ -6270,6 +6310,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api-service-tracker-local-response",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -6340,6 +6385,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-outgoing-draft",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -58,7 +58,7 @@ async function projectFixture(page: Page, projects: FixtureProject[], held?: Pro
 	});
 }
 
-export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
+export async function hubHomeFixture(page: Page, mode: HomeFixtureState, outgoingDrafts = false) {
 	const state = await hostedFixture(page, { actor: { ...ada, name: 'Daniel' } });
 	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
 		route.fulfill({ json: { computers: [] } })
@@ -95,7 +95,12 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 		const granted = state.signedIn && state.actor.id === ada.id;
 		const hasSnapshot = granted && (mode !== 'unavailable' || released);
 		await route.fulfill({
-			json: { granted, snapshot: hasSnapshot ? snapshot : null, controlled: [...controlled] }
+			json: {
+				granted,
+				snapshot: hasSnapshot ? snapshot : null,
+				controlled: [...controlled],
+				outgoingDrafts: granted && outgoingDrafts
+			}
 		});
 	});
 	await page.route(/\/api\/hub-home\/chat(?:\?|$)/, async (route) => {

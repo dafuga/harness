@@ -22,6 +22,7 @@ import {
 } from './tracker-outgoing-draft-service/outgoingDraftInput';
 
 const conversation = 'cos';
+const sendConfirmationWindowMs = 5 * 60_000;
 
 /** CoS drafts are published separately from the single owner-authorized delivery attempt. */
 export class TrackerOutgoingDraftService {
@@ -69,17 +70,25 @@ export class TrackerOutgoingDraftService {
 
 	/** A missing channel/account binding cannot accept an owner approval. */
 	reviewQueue() {
-		return this.list({ kind: 'owner', by: 'Daniel' }).map((draft) => ({
-			...draft,
-			canSend: draft.status === 'draft' && Boolean(this.options.provider?.(draft.message))
-		}));
+		const now = this.now();
+		return this.list({ kind: 'owner', by: 'Daniel' }).map((draft) => {
+			const expired =
+				draft.delivery === 'sending' && now - draft.updatedAt >= sendConfirmationWindowMs;
+			const delivery = expired ? ('unconfirmed' as const) : draft.delivery;
+			const canSend = draft.status === 'draft' && (delivery === 'idle' || delivery === 'failed');
+			return {
+				...draft,
+				delivery,
+				canSend: canSend && Boolean(this.options.provider?.(draft.message))
+			};
+		});
 	}
 
 	edit(input: unknown, editor: unknown, actor: TrackerOutgoingActor): TrackerOutgoingDraft {
 		const version = this.approval(input, actor);
 		const current = this.current(version);
 		const message = parseOutgoingEditor(editor, current.message);
-		return requireDraft(this.drafts.edit(version, message));
+		return this.record(() => this.drafts.edit(version, message), 'edited');
 	}
 
 	discard(input: unknown, actor: TrackerOutgoingActor): TrackerOutgoingDraft {
@@ -120,17 +129,18 @@ export class TrackerOutgoingDraftService {
 
 	private record(
 		apply: () => TrackerOutgoingDraft | undefined,
-		outcome: 'approved' | 'discarded' | TrackerOutgoingResult['kind']
+		outcome: 'edited' | 'approved' | 'discarded' | TrackerOutgoingResult['kind']
 	) {
 		return this.store.commitLocal(() => {
 			const result = requireDraft(apply());
+			const receipt = result.receipt ? `, receipt ${result.receipt.reference}` : '';
 			return {
 				result,
 				operation: {
 					itemId: result.itemId,
 					actor: result.updatedBy,
 					fields: {
-						'note+': `Outgoing draft ${result.id} ${outcome} (revision ${result.revision})`
+						'note+': `Outgoing draft ${result.id} ${outcome} (revision ${result.revision}${receipt})`
 					}
 				}
 			};

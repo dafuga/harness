@@ -26,7 +26,7 @@ const initial: HomeOutgoingDraft = {
 };
 
 async function outgoingFixture(page: Page) {
-	const { snapshot } = await hubHomeFixture(page, 'default');
+	const { snapshot } = await hubHomeFixture(page, 'default', true);
 	const chief = snapshot.agents.find((agent) => agent.id === 'cos');
 	if (chief) chief.messages = [];
 	const calls: HomeOutgoingAction[] = [];

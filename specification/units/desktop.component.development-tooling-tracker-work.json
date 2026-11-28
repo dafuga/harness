@@ -45,6 +45,11 @@
 				"type": "boolean",
 				"required": true,
 				"description": "Uses the Mac link target for external design artifacts and shows local connection status."
+			},
+			{
+				"name": "TrackerWork.signedIn",
+				"type": "boolean",
+				"required": true
 			}
 		],
 		"outputs": [

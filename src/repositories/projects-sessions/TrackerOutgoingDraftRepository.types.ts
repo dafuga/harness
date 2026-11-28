@@ -1,3 +1,4 @@
+// @harness-uid u_4snu2qhejr
 export type TrackerOutgoingChannel =
 	| 'gmail'
 	| 'slack'

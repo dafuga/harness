@@ -38,10 +38,6 @@
 	import '$reports/lib/styles/hub-home/index.css';
 	const { api, session, projects } = browserContext();
 	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
-	const cosChat = provideHomeCosChat(
-		() => reads.read(),
-		() => outgoing
-	);
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
 	let list = $state<ProjectSummary[] | null>(null);
@@ -49,7 +45,9 @@
 	const projectFlights = new SvelteMap<string, Promise<ProjectSnapshot>>();
 	let projectError = $state(false);
 	let home = $state<Home.ReadHomeResult | null>(null);
-	const outgoing = $derived(home?.granted && session.actor?.id ? homeOutgoing(api) : undefined);
+	const outgoing = $derived(
+		home?.outgoingDrafts && session.actor?.id ? homeOutgoing(api) : undefined
+	);
 	let live = $state<LinkedHome | null>(null);
 	let now = $state(Date.now());
 	let flight = 0;
@@ -105,6 +103,7 @@
 		linked: (result) => ((live = result), (now = Date.now()))
 	});
 	provideHubSpecDocuments(reads.readDocument);
+	const cosChat = provideHomeCosChat(reads.read, () => outgoing);
 	function refresh() {
 		const actor = session.actor?.id;
 		const request = ++flight;
@@ -187,6 +186,7 @@
 	}
 	const receipt = (id: string) => api.get<HomeChatReceipt>('/api/hub-home/chat', { id });
 </script>
+
 <hx-div class="home-scheme">
 	<hx-div class="home-page hh-home">
 		<HubHomeHeader {view} {link} {needsOnly} accountName={session.actor?.name}>

@@ -1,0 +1,237 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-gmail-send",
+	"uid": "u_nchu7tvx63",
+	"kind": "adapter",
+	"title": "TrackerGmailSendAdapter",
+	"responsibility": "Owns the TrackerGmailSendAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/TrackerGmailSendAdapter.ts",
+			"src/adapters/projects-sessions/TrackerGmailSendAdapter.types.ts",
+			"src/adapters/projects-sessions/tracker-gmail-send-adapter/gmailDraftMime.ts"
+		],
+		"symbols": [
+			"TrackerGmailSendAdapter",
+			"TrackerGmailSendAdapter.constructor",
+			"TrackerGmailSendAdapter.send",
+			"TrackerGmailSendAdapterConfig",
+			"TrackerGmailSendAdapterConfig",
+			"TrackerGmailReply",
+			"TrackerGmailMailHeader",
+			"GmailRequest",
+			"gmailNativeId",
+			"gmailReply",
+			"gmailDraftMime"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerGmailSendAdapter.constructor.config",
+				"type": "TrackerGmailSendAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "TrackerGmailSendAdapter.send.message",
+				"type": "TrackerOutgoingMessage",
+				"required": true
+			},
+			{
+				"name": "TrackerGmailSendAdapter.send.attempt",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "gmailNativeId.value",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "gmailReply.headers",
+				"type": "TrackerGmailMailHeader[]",
+				"required": true
+			},
+			{
+				"name": "gmailReply.subject",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "gmailDraftMime.message",
+				"type": "TrackerOutgoingMessage",
+				"required": true
+			},
+			{
+				"name": "gmailDraftMime.attempt",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "gmailDraftMime.reply",
+				"type": "TrackerGmailReply | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerGmailSendAdapter.send",
+				"type": "Promise<TrackerOutgoingResult>"
+			},
+			{
+				"name": "gmailNativeId",
+				"type": "unknown"
+			},
+			{
+				"name": "gmailReply",
+				"type": "TrackerGmailReply | undefined"
+			},
+			{
+				"name": "gmailDraftMime",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerGmailSendAdapter.send",
+				"inputs": [
+					{
+						"name": "TrackerGmailSendAdapter.send.message",
+						"type": "TrackerOutgoingMessage",
+						"required": true
+					},
+					{
+						"name": "TrackerGmailSendAdapter.send.attempt",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerGmailSendAdapter.send",
+						"type": "Promise<TrackerOutgoingResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "gmailNativeId",
+				"inputs": [
+					{
+						"name": "gmailNativeId.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "gmailNativeId",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "gmailReply",
+				"inputs": [
+					{
+						"name": "gmailReply.headers",
+						"type": "TrackerGmailMailHeader[]",
+						"required": true
+					},
+					{
+						"name": "gmailReply.subject",
+						"type": "string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "gmailReply",
+						"type": "TrackerGmailReply | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "gmailDraftMime",
+				"inputs": [
+					{
+						"name": "gmailDraftMime.message",
+						"type": "TrackerOutgoingMessage",
+						"required": true
+					},
+					{
+						"name": "gmailDraftMime.attempt",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "gmailDraftMime.reply",
+						"type": "TrackerGmailReply | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "gmailDraftMime",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerGmailSendAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerGmailSendAdapter.constructor.config",
+						"type": "TrackerGmailSendAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerGmailSendAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-outgoing-draft",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/TrackerGmailSendAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/TrackerGmailSendAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

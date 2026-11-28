@@ -6,7 +6,8 @@ import type {
 } from '../../repositories/projects-sessions/TrackerOutgoingDraftRepository.types';
 import type {
 	TrackerGmailReply,
-	TrackerGmailSendAdapterConfig
+	TrackerGmailSendAdapterConfig,
+	GmailRequest
 } from './TrackerGmailSendAdapter.types';
 import {
 	gmailDraftMime,
@@ -118,12 +119,6 @@ export class TrackerGmailSendAdapter {
 			}
 		};
 	}
-}
-
-interface GmailRequest {
-	root: string;
-	headers: Record<string, string>;
-	signal: AbortSignal;
 }
 
 export type { TrackerGmailSendAdapterConfig } from './TrackerGmailSendAdapter.types';

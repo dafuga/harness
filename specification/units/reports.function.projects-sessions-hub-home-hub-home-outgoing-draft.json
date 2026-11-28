@@ -15,20 +15,37 @@
 		"symbols": [
 			"outgoingChannels",
 			"outgoingHref",
+			"homeOutgoingPath",
+			"readOutgoingDraft",
+			"readOutgoingQueue",
 			"HomeOutgoingVersion",
 			"HomeOutgoingFields",
+			"HomeOutgoingAction",
+			"HomeOutgoingSource",
 			"HomeOutgoingDraft",
 			"HomeOutgoingActions",
 			"HomeOutgoingDetail"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "outgoingHref.value",
 				"type": "string",
 				"required": false
+			},
+			{
+				"name": "readOutgoingDraft.value",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "The browser receives untrusted JSON from an API. Verify the complete data needed to render an outgoing draft before passing it to a component."
+			},
+			{
+				"name": "readOutgoingQueue.value",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "The browser receives untrusted JSON from an API. Verify the complete data needed to render an outgoing draft before passing it to a component."
 			}
 		],
 		"outputs": [
@@ -39,10 +56,22 @@
 			{
 				"name": "outgoingHref",
 				"type": "unknown"
+			},
+			{
+				"name": "homeOutgoingPath",
+				"type": "unknown"
+			},
+			{
+				"name": "readOutgoingDraft",
+				"type": "HomeOutgoingDraft"
+			},
+			{
+				"name": "readOutgoingQueue",
+				"type": "HomeOutgoingDraft[]"
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "outgoingHref",
@@ -61,6 +90,44 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "readOutgoingDraft",
+				"inputs": [
+					{
+						"name": "readOutgoingDraft.value",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "The browser receives untrusted JSON from an API. Verify the complete data needed to render an outgoing draft before passing it to a component."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readOutgoingDraft",
+						"type": "HomeOutgoingDraft"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readOutgoingQueue",
+				"inputs": [
+					{
+						"name": "readOutgoingQueue.value",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "The browser receives untrusted JSON from an API. Verify the complete data needed to render an outgoing draft before passing it to a component."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readOutgoingQueue",
+						"type": "HomeOutgoingDraft[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []

@@ -20,6 +20,7 @@
 			"NativeAuthService.status",
 			"NativeAuthService.disconnect",
 			"NativeAuthService.overview",
+			"NativeAuthService.outgoingDrafts",
 			"AuthOptions",
 			"Pending",
 			"NativeSignInError"
@@ -39,6 +40,12 @@
 				"type": "boolean",
 				"required": false,
 				"default": false
+			},
+			{
+				"name": "NativeAuthService.outgoingDrafts.input",
+				"type": "Record<string, unknown>",
+				"required": true,
+				"unknownReason": "The object comes from the local window protocol. The one fixed Hub endpoint validates the fields and exact revision before acting."
 			}
 		],
 		"outputs": [
@@ -243,6 +250,30 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeAuthService.outgoingDrafts",
+				"inputs": [
+					{
+						"name": "NativeAuthService.outgoingDrafts.input",
+						"type": "Record<string, unknown>",
+						"required": true,
+						"unknownReason": "The object comes from the local window protocol. The one fixed Hub endpoint validates the fields and exact revision before acting."
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeAuthService.outgoingDrafts",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "NativeSignInError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			}
 		],

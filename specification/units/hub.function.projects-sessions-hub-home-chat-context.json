@@ -27,6 +27,11 @@
 				"type": "() => void",
 				"required": false,
 				"description": "Refreshes the open-ask list on demand when a question is opened."
+			},
+			{
+				"name": "provideHomeCosChat.outgoingSource",
+				"type": "() => HomeOutgoingSource | undefined",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -71,6 +76,11 @@
 						"type": "() => void",
 						"required": false,
 						"description": "Refreshes the open-ask list on demand when a question is opened."
+					},
+					{
+						"name": "provideHomeCosChat.outgoingSource",
+						"type": "() => HomeOutgoingSource | undefined",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -102,6 +112,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.function.projects-sessions-hub-home-chat-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-home-outgoing-draft",
 			"via": "import",
 			"origin": "derived"
 		},

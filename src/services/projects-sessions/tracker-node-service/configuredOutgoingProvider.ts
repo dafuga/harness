@@ -7,6 +7,7 @@ import {
 } from '../../../adapters/agents-providers/slack-adapter/slackWire';
 import { TrackerGithubCommentAdapter } from '../../../adapters/projects-sessions/TrackerGithubCommentAdapter';
 import { TrackerSmsSendAdapter } from '../../../adapters/projects-sessions/TrackerSmsSendAdapter';
+import { TrackerHostProcessError } from '../../../adapters/projects-sessions/tracker-host-process-adapter/TrackerHostProcessError';
 import { TrackerGmailSendAdapter } from '../../../adapters/projects-sessions/TrackerGmailSendAdapter';
 import { TrackerOutgoingDriverAdapter } from '../../../adapters/projects-sessions/TrackerOutgoingDriverAdapter';
 import { gmailNativeId } from '../../../adapters/projects-sessions/tracker-gmail-send-adapter/gmailDraftMime';
@@ -120,7 +121,7 @@ function readToken(path: string) {
 	const executable = controlledTrackerExecutable(path);
 	return async (signal: AbortSignal) => {
 		const result = await runTrackerHostCommand(executable, [], signal, { maxBuffer: 8192 });
-		if (result.code !== 0) throw new Error('Sending credential unavailable');
+		if (result.code !== 0) throw new TrackerHostProcessError('Sending credential unavailable');
 		return result.stdout.trim();
 	};
 }

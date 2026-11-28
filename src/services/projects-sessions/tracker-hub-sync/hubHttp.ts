@@ -6,7 +6,7 @@ const maxBodyBytes = 8 * 1024 * 1024;
 
 export async function readTrackerHubBody(
 	request: TrackerHubRequest,
-	maximum = maxBodyBytes
+	maximum: number = maxBodyBytes
 ): Promise<string> {
 	const { body, signal } = request;
 	if (!body) return '';

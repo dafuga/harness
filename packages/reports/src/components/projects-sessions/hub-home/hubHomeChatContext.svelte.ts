@@ -1,5 +1,6 @@
 // @harness-uid u_7j4igv6rwg
 import { SvelteMap } from 'svelte/reactivity';
+import { readOutgoingDraft, readOutgoingQueue } from './hubHomeOutgoingDraft';
 import type { HomeOpenAsk } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { getContext, setContext, tick } from 'svelte';
 import type {
@@ -78,8 +79,7 @@ function followOutgoing(source: () => HomeOutgoingSource | undefined, opened: ()
 			reading = true;
 			const requested = generation;
 			try {
-				const drafts = await gateway.read();
-				if (!Array.isArray(drafts)) throw new TypeError('Unexpected outgoing drafts.');
+				const drafts = readOutgoingQueue(await gateway.read());
 				if (current() && requested === generation) {
 					active = actions(drafts.slice().reverse(), write);
 					unavailable = false;
@@ -97,7 +97,7 @@ function followOutgoing(source: () => HomeOutgoingSource | undefined, opened: ()
 			if (!current() || !active) throw new Error('Draft review is unavailable.');
 			generation++;
 			try {
-				const result = await gateway.write(action);
+				const result = readOutgoingDraft(await gateway.write(action));
 				if (current() && active) active = actions(replaceDraft(active.drafts, result), write);
 			} finally {
 				generation++;

@@ -21,6 +21,7 @@
 			"src/services/projects-sessions/TrackerNodeService.types.ts",
 			"src/services/projects-sessions/tracker-node-service/TrackerNodeStartupError.ts",
 			"src/services/projects-sessions/tracker-node-service/TrackerNodeTransportError.ts",
+			"src/services/projects-sessions/tracker-node-service/configuredOutgoingProvider.ts",
 			"src/services/projects-sessions/tracker-node-service/confirmTrackerLaunch.ts",
 			"src/services/projects-sessions/tracker-node-service/holdLegacySupervisorSocket.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerBackupList.ts",
@@ -44,6 +45,7 @@
 			"TrackerNodeStartupError",
 			"TrackerNodeTransportError",
 			"TrackerNodeTransportError.constructor",
+			"configuredOutgoingProvider",
 			"trackerLaunchAwareItemResponse",
 			"stopTrackerRun",
 			"holdLegacySupervisorSocket",
@@ -92,6 +94,16 @@
 				"name": "TrackerNodeTransportError.constructor.status",
 				"type": "number",
 				"required": false
+			},
+			{
+				"name": "configuredOutgoingProvider.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "configuredOutgoingProvider.paths",
+				"type": "{ gmail?: string; providers?: string }",
+				"required": true
 			},
 			{
 				"name": "trackerLaunchAwareItemResponse.request",
@@ -320,6 +332,10 @@
 				"type": "Promise<TrackerNodeOwner>"
 			},
 			{
+				"name": "configuredOutgoingProvider",
+				"type": "TrackerNativeRuntimeOptions['outgoingProvider']"
+			},
+			{
 				"name": "trackerLaunchAwareItemResponse",
 				"type": "unknown"
 			},
@@ -422,6 +438,10 @@
 		],
 		"errors": [
 			{
+				"name": "TrackerHostProcessError",
+				"type": "thrown"
+			},
+			{
 				"name": "TrackerNodeStartupError",
 				"type": "thrown"
 			},
@@ -457,6 +477,29 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "configuredOutgoingProvider",
+				"inputs": [
+					{
+						"name": "configuredOutgoingProvider.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					},
+					{
+						"name": "configuredOutgoingProvider.paths",
+						"type": "{ gmail?: string; providers?: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "configuredOutgoingProvider",
+						"type": "TrackerNativeRuntimeOptions['outgoingProvider']"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
@@ -1049,6 +1092,16 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.agents-providers-slack",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-wire",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.open-sqlite",
 			"via": "import",
 			"origin": "derived"
@@ -1059,12 +1112,37 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.projects-sessions-tracker-github-comment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-gmail-send",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.projects-sessions-tracker-job-process",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "adapter.projects-sessions-tracker-machine-sampler",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-outgoing-driver",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-sms-send",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -1110,6 +1188,11 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-outgoing-draft",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -1165,6 +1248,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-outgoing-draft",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -86,7 +86,8 @@ async function browserSnapshot(url: URL, deps: HomeDeps, actor: string) {
 		granted: true,
 		snapshot: deps.bucket ? await readHomeSnapshot(deps.bucket, actor, deps.now) : null,
 		controlled: deps.bucket ? await readControlled(deps.bucket, actor) : [],
-		...(deps.accounts && { live: true })
+		...(deps.accounts && { live: true }),
+		...(deps.outgoingDrafts && { outgoingDrafts: true })
 	});
 }
 

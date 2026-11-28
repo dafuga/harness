@@ -1,4 +1,5 @@
 // @harness-uid u_apuvwehhpw
+import { z } from 'zod';
 import type { HarnessIconName } from '../../../utils/explorer-ui/harnessIcons.types';
 import type { HomeOutgoingDraft } from './hubHomeOutgoingDraft.types';
 
@@ -26,3 +27,30 @@ export function outgoingHref(value?: string) {
 }
 
 export const homeOutgoingPath = '/api/outgoing-drafts';
+
+const draft = z.object({
+	id: z.string().min(1),
+	revision: z.int().positive(),
+	status: z.enum(['draft', 'sent', 'discarded']),
+	delivery: z.enum(['idle', 'sending', 'failed', 'unconfirmed']),
+	canSend: z.boolean().optional(),
+	message: z.object({
+		channel: z.enum(['gmail', 'slack', 'imessage', 'sms', 'telegram', 'github-comment', 'post']),
+		account: z.string(),
+		to: z.array(z.string()),
+		cc: z.array(z.string()),
+		subject: z.string().optional(),
+		body: z.string(),
+		thread: z.object({ label: z.string(), url: z.string().optional() }).optional()
+	}),
+	receipt: z.object({ url: z.string().optional() }).nullish(),
+	reason: z.string().optional()
+});
+
+export function readOutgoingDraft(value: unknown): HomeOutgoingDraft {
+	return draft.parse(value);
+}
+
+export function readOutgoingQueue(value: unknown): HomeOutgoingDraft[] {
+	return z.array(draft).parse(value);
+}

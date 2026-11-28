@@ -22,6 +22,7 @@
 			"src/commands/projects-sessions/tracker-command/nativeTrackerAskOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerAutolaunchRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerDraftRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerHelp.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerInspectionRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
@@ -31,6 +32,7 @@
 			"src/commands/projects-sessions/tracker-command/nativeTrackerTimedItemRequest.ts",
 			"src/commands/projects-sessions/tracker-command/printNativeTrackerAddHint.ts",
 			"src/commands/projects-sessions/tracker-command/printNativeTrackerError.ts",
+			"src/commands/projects-sessions/tracker-command/readTrackerJsonFile.ts",
 			"src/commands/projects-sessions/tracker-command/runLocalTrackerBackup.ts",
 			"src/commands/projects-sessions/tracker-command/runNativeTracker.ts",
 			"src/commands/projects-sessions/tracker-command/runTrackerInstructions.ts",
@@ -81,6 +83,7 @@
 			"NativeTrackerRunReport",
 			"NativeTrackerPick",
 			"NativeTrackerRunRead",
+			"nativeTrackerDraftRequest",
 			"wantsNativeTrackerHelp",
 			"printNativeTrackerHelp",
 			"nativeTrackerInspectionRequest",
@@ -97,6 +100,7 @@
 			"nativeTrackerTimedItemRequest",
 			"printNativeTrackerAddHint",
 			"refuseNativeTrackerRequest",
+			"readTrackerJsonFile",
 			"isLocalBackupCommand",
 			"runLocalTrackerBackup",
 			"renderTrackerBackup",
@@ -294,6 +298,11 @@
 				"required": true
 			},
 			{
+				"name": "nativeTrackerDraftRequest.[action, file, ...rest]",
+				"type": "string[]",
+				"required": true
+			},
+			{
 				"name": "wantsNativeTrackerHelp.args",
 				"type": "string[]",
 				"required": true
@@ -416,6 +425,21 @@
 			{
 				"name": "refuseNativeTrackerRequest.keep",
 				"type": "(refused: string) => Promise<void>",
+				"required": true
+			},
+			{
+				"name": "readTrackerJsonFile.file",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readTrackerJsonFile.limit",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "readTrackerJsonFile.description",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -567,6 +591,10 @@
 				"type": "| NativeTrackerRequest | undefined"
 			},
 			{
+				"name": "nativeTrackerDraftRequest",
+				"type": "NativeTrackerRequest"
+			},
+			{
 				"name": "wantsNativeTrackerHelp",
 				"type": "boolean"
 			},
@@ -629,6 +657,10 @@
 			{
 				"name": "refuseNativeTrackerRequest",
 				"type": "Promise<number>"
+			},
+			{
+				"name": "readTrackerJsonFile",
+				"type": "unknown"
 			},
 			{
 				"name": "isLocalBackupCommand",
@@ -1149,6 +1181,29 @@
 				"errorStatus": "found"
 			},
 			{
+				"name": "nativeTrackerDraftRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerDraftRequest.[action, file, ...rest]",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerDraftRequest",
+						"type": "NativeTrackerRequest"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "wantsNativeTrackerHelp",
 				"inputs": [
 					{
@@ -1446,6 +1501,39 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerJsonFile",
+				"inputs": [
+					{
+						"name": "readTrackerJsonFile.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readTrackerJsonFile.limit",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "readTrackerJsonFile.description",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerJsonFile",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{
@@ -1747,6 +1835,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-outgoing-draft",
 			"via": "import",
 			"origin": "derived"
 		}

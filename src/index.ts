@@ -217,6 +217,3 @@ export { TrackerSupervisorService } from './services/projects-sessions/TrackerSu
 export * from './lib/agents-providers/projectAssistant';
 export { trackerStructuredAsk } from './utils/projects-sessions/trackerStructuredAsk';
 export { hubSessionMessages } from './utils/projects-sessions/hubSessionMessages';
-export { TrackerOutgoingDraftRepository } from './repositories/projects-sessions/TrackerOutgoingDraftRepository';
-export { TrackerOutgoingDraftService } from './services/projects-sessions/TrackerOutgoingDraftService';
-export { TrackerGmailSendAdapter } from './adapters/projects-sessions/TrackerGmailSendAdapter';
