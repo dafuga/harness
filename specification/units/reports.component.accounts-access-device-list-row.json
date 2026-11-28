@@ -4,8 +4,8 @@
 	"uid": "u_2aiclyytdr",
 	"kind": "component",
 	"title": "DeviceListRow",
-	"responsibility": "Owns the DeviceListRow Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Displays a linked device name, status and caller-provided controls as one list row.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
@@ -21,28 +21,32 @@
 		"symbols": ["DeviceListRow"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeviceListRow.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The display name of the linked device."
 			},
 			{
 				"name": "DeviceListRow.status",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The status label shown beneath the device name."
 			},
 			{
 				"name": "DeviceListRow.children",
 				"type": "Snippet",
-				"required": true
+				"required": true,
+				"description": "The controls or other content rendered in the row's actions area."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeviceListRow",
-				"type": "markup"
+				"type": "markup",
+				"description": "A list item containing the device label, status and actions."
 			}
 		],
 		"errors": [],
