@@ -2,7 +2,7 @@
 	"name": "4p0q7c-tracker-launch-context",
 	"goal": "A fresh tracker session loads bounded item history: tracker show and the launch brief stay small while every note stays readable in pages",
 	"createdAt": "2026-11-28T17:53:52.559Z",
-	"updatedAt": "2026-11-28T17:59:02.803Z",
+	"updatedAt": "2026-11-28T18:04:27.958Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T18:04:27.958Z",
+			"evidence": "siblings-924b22c8-714b-4cbb-b3d8-b79eae2257ca.json"
 		},
 		{
 			"id": "verify",
