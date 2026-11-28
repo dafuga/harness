@@ -4,7 +4,9 @@ import type { TrackerSupervisorService } from '../TrackerSupervisorService';
 import { trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
 import { readTrackerNodeInspection } from './readTrackerNodeInspection';
 
-const commands = new Set(['/autolaunch/pause', '/autolaunch/resume', '/autolaunch/clear-quota']);
+const commands = new Set(
+	['pause', 'resume', 'clear-quota', 'prefer'].map((name) => '/autolaunch/' + name)
+);
 
 /** Routes without a fixed case: launch switches, read-only inspections, then items. */
 export function trackerCommandOrItemResponse(
@@ -26,9 +28,10 @@ async function runTrackerAutolaunchCommand(
 	{ admin }: TrackerNativeRuntimeService
 ): Promise<Response> {
 	try {
-		if (path !== '/autolaunch/clear-quota')
+		if (path === '/autolaunch/pause' || path === '/autolaunch/resume')
 			return Response.json(admin.pauseDue(path === '/autolaunch/pause'));
 		const body = (await request.json().catch(() => null)) as { provider?: unknown } | null;
+		if (path === '/autolaunch/prefer') return Response.json(admin.prefer(body));
 		return Response.json(admin.clearQuota(body?.provider));
 	} catch (error) {
 		if (error instanceof Error && 'status' in error && typeof error.status === 'number')

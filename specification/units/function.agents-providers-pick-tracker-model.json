@@ -10,18 +10,28 @@
 	"owns": {
 		"source": [
 			"src/utils/agents-providers/pickTrackerModel.ts",
-			"src/utils/agents-providers/pickTrackerModel.types.ts"
+			"src/utils/agents-providers/pickTrackerModel.types.ts",
+			"src/utils/agents-providers/preferredClaudeRoute.ts",
+			"src/utils/agents-providers/redirectTrackerRung.ts"
 		],
 		"symbols": [
 			"pickTrackerModel",
 			"retryTrackerModel",
 			"TrackerModelHistory",
 			"TrackerModelSelectionOptions",
+			"TrackerRetryOptions",
 			"TrackerModelSelection",
 			"TrackerRetryRun",
 			"ClaudeRoute",
 			"PinContext",
-			"SelectionContext"
+			"SelectionContext",
+			"PreferredSelectionContext",
+			"claudePreferenceNote",
+			"activePreferenceEnd",
+			"preferredClaudeRoute",
+			"switchedSelection",
+			"preferredSelection",
+			"redirectTrackerRung"
 		]
 	},
 	"contract": {
@@ -53,16 +63,95 @@
 				"description": "Previous attempt's model, effort, ladder position and pin status."
 			},
 			{
-				"name": "retryTrackerModel.cfg",
-				"type": "TrackerLadderConfig",
+				"name": "retryTrackerModel.options",
+				"type": "TrackerRetryOptions",
 				"required": false,
-				"description": "Optional configuration for the current model ladder and eligibility rules."
+				"default": {}
 			},
 			{
-				"name": "retryTrackerModel.now",
+				"name": "claudePreferenceNote.until",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "activePreferenceEnd.until",
+				"type": "string | null | undefined",
+				"required": true
+			},
+			{
+				"name": "activePreferenceEnd.now",
 				"type": "number",
-				"required": false,
-				"description": "Epoch milliseconds that choose the routing table; defaults to the current time."
+				"required": false
+			},
+			{
+				"name": "preferredClaudeRoute.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "preferredClaudeRoute.ladder",
+				"type": "TrackerModelRung[]",
+				"required": true
+			},
+			{
+				"name": "preferredClaudeRoute.restricted",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "switchedSelection.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "switchedSelection.ladder",
+				"type": "TrackerModelRung[]",
+				"required": true
+			},
+			{
+				"name": "switchedSelection.kind",
+				"type": "TrackerModelSelection['kind']",
+				"required": true
+			},
+			{
+				"name": "switchedSelection.until",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "preferredSelection.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "preferredSelection.ladder",
+				"type": "TrackerModelRung[]",
+				"required": true
+			},
+			{
+				"name": "preferredSelection.context",
+				"type": "PreferredSelectionContext",
+				"required": true
+			},
+			{
+				"name": "redirectTrackerRung.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "redirectTrackerRung.cli",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "redirectTrackerRung.model",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "redirectTrackerRung.options",
+				"type": "TrackerModelSelectionOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -123,16 +212,10 @@
 						"description": "Previous attempt's model, effort, ladder position and pin status."
 					},
 					{
-						"name": "retryTrackerModel.cfg",
-						"type": "TrackerLadderConfig",
+						"name": "retryTrackerModel.options",
+						"type": "TrackerRetryOptions",
 						"required": false,
-						"description": "Optional configuration for the current model ladder and eligibility rules."
-					},
-					{
-						"name": "retryTrackerModel.now",
-						"type": "number",
-						"required": false,
-						"description": "Epoch milliseconds that choose the routing table; defaults to the current time."
+						"default": {}
 					}
 				],
 				"outputs": [
@@ -140,6 +223,169 @@
 						"name": "retryTrackerModel",
 						"type": "TrackerModelRung",
 						"description": "Pinned model, next eligible model, or higher Sol effort for another attempt."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "claudePreferenceNote",
+				"inputs": [
+					{
+						"name": "claudePreferenceNote.until",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "claudePreferenceNote",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "activePreferenceEnd",
+				"inputs": [
+					{
+						"name": "activePreferenceEnd.until",
+						"type": "string | null | undefined",
+						"required": true
+					},
+					{
+						"name": "activePreferenceEnd.now",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "activePreferenceEnd",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "preferredClaudeRoute",
+				"inputs": [
+					{
+						"name": "preferredClaudeRoute.item",
+						"type": "TrackerModelItem",
+						"required": true
+					},
+					{
+						"name": "preferredClaudeRoute.ladder",
+						"type": "TrackerModelRung[]",
+						"required": true
+					},
+					{
+						"name": "preferredClaudeRoute.restricted",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "preferredClaudeRoute",
+						"type": "ClaudeRoute"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "switchedSelection",
+				"inputs": [
+					{
+						"name": "switchedSelection.item",
+						"type": "TrackerModelItem",
+						"required": true
+					},
+					{
+						"name": "switchedSelection.ladder",
+						"type": "TrackerModelRung[]",
+						"required": true
+					},
+					{
+						"name": "switchedSelection.kind",
+						"type": "TrackerModelSelection['kind']",
+						"required": true
+					},
+					{
+						"name": "switchedSelection.until",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "switchedSelection",
+						"type": "TrackerModelSelection"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "preferredSelection",
+				"inputs": [
+					{
+						"name": "preferredSelection.item",
+						"type": "TrackerModelItem",
+						"required": true
+					},
+					{
+						"name": "preferredSelection.ladder",
+						"type": "TrackerModelRung[]",
+						"required": true
+					},
+					{
+						"name": "preferredSelection.context",
+						"type": "PreferredSelectionContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "preferredSelection",
+						"type": "TrackerModelSelection"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "redirectTrackerRung",
+				"inputs": [
+					{
+						"name": "redirectTrackerRung.item",
+						"type": "TrackerModelItem",
+						"required": true
+					},
+					{
+						"name": "redirectTrackerRung.cli",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "redirectTrackerRung.model",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "redirectTrackerRung.options",
+						"type": "TrackerModelSelectionOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "redirectTrackerRung",
+						"type": "TrackerModelSelection | null"
 					}
 				],
 				"errors": [],

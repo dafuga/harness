@@ -22,6 +22,7 @@ import {
 	startable
 } from './launchEligibility';
 import { dueGrantHold } from './dueGrantHold';
+import { currentPick, redirectedRun } from './providerRedirect';
 import { etaFor, failRun, finishRun, queueRun, recordRun, reviseRun } from './runReceipt';
 
 // Give an interrupted host start time to publish its session evidence.
@@ -39,7 +40,7 @@ export function claimLaunch(
 		return skip('held', 'launch token was already claimed');
 	const hold = claimHold(snapshot, { item, grant }, policy, now);
 	if (hold) return skip('held', hold);
-	const pick = item.launch.scheduledPick ?? policy.pickModel(item);
+	const pick = currentPick(item, item.launch.scheduledPick ?? policy.pickModel(item), policy);
 	const problem = policy.admit(item, item.launch, 'error' in pick ? null : pick.rung);
 	if (problem) return skip('held', problem);
 	const run = queueRun(snapshot, { token, item, pick }, policy, now);
@@ -66,7 +67,8 @@ export function prepareRetry(
 		});
 	const hold = claimHold(snapshot, { item, grant, run }, policy, now);
 	if (hold) return skip('held', hold);
-	const rung = {
+	const redirected = policy.redirectPick?.(item, run);
+	const rung = redirected?.rung ?? {
 		id: run.rung,
 		cli: run.cli,
 		model: run.model,
@@ -81,7 +83,8 @@ export function prepareRetry(
 			writes: { runs: [reviseRun(run, { failure_reason: problem })] }
 		};
 	}
-	return reserveStart(item, { run, rung }, policy, now);
+	const next = redirected ? redirectedRun(run, redirected) : run;
+	return reserveStart(item, { run: next, rung }, policy, now);
 }
 
 function awaitingRetry(

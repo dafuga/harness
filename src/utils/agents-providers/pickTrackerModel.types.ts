@@ -10,7 +10,11 @@ export interface TrackerModelSelectionOptions {
 	history?: TrackerModelHistory;
 	/** Epoch milliseconds that select the routing table; defaults to the current time. */
 	now?: number;
+	/** The operator's Claude preference: automatic and Codex choices go to Claude before this. */
+	claudePreferredUntil?: string;
 }
+
+export type TrackerRetryOptions = Omit<TrackerModelSelectionOptions, 'history'>;
 
 export interface TrackerModelSelection {
 	rung: TrackerModelRung;
@@ -36,4 +40,15 @@ export interface PinContext {
 	claude: boolean;
 }
 
-export type SelectionContext = PinContext & { kind: TrackerTaskKind; size: TrackerTaskSize };
+export type SelectionContext = PinContext & {
+	kind: TrackerTaskKind;
+	size: TrackerTaskSize;
+	preferred?: string;
+};
+
+export interface PreferredSelectionContext {
+	kind: TrackerTaskKind;
+	size: TrackerTaskSize;
+	restrictions: string[];
+	preferred: string;
+}

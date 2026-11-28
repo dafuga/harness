@@ -139,6 +139,21 @@ service. Restore never changes the live database: it writes a checked copy that 
 current run and delivery records and has a new database identity, so spokes send their journals again,
 then prints the steps to swap it in, including moving the old identity's backups into a subfolder. Add `--without-local-state` if the live database is unreadable.
 
+### Model provider preference
+
+`harness tracker autolaunch prefer claude --until <ISO>` sends every launch to
+Claude until that time: auto-launches, retries, watchdog handoffs, and choices
+saved before the switch. `pause codex --until <ISO>` does the same, and
+`prefer default` or `resume codex` ends it early. Simple work uses Sonnet low,
+default work Sonnet medium, hard work Sonnet high and Harness module jobs Haiku
+medium. Deploys keep their model and computer use stays on Terra. A Codex model
+named on an item is replaced; a Claude one is kept.
+
+Set it on the hub to reach every computer through sync. Set on another computer,
+it applies there until the hub sets a newer one. `autolaunch status` and Hub
+Home show the active preference. It ends by time only; Tracker does not read the
+Claude weekly usage percentage.
+
 Compare quiesced SQLite backup copies before changing a Tracker service.
 `--node` is the spoke's configured name. Add `--hub-relay-ops` when the spoke
 relays other nodes' operations to the hub and `--peer-relay-ops` when it uses a

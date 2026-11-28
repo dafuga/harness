@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import { z } from 'zod';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import {
@@ -6,6 +7,11 @@ import {
 	trackerProviderHold,
 	trackerProviders
 } from './trackerProviderHolds';
+import {
+	activeTrackerProviderPreference,
+	readTrackerProviderPreference,
+	writeTrackerProviderPreference
+} from './trackerProviderPreference';
 
 export const duePauseKey = 'due_scheduler_paused';
 
@@ -21,6 +27,14 @@ export function trackerAutolaunchAdmin(
 			store.writeMeta({ [duePauseKey]: paused ? '1' : '0' });
 			return { paused };
 		},
+		/** On the hub this reaches every computer; on another computer only that one. */
+		prefer(request: unknown) {
+			writeTrackerProviderPreference(store, preferenceFrom(request, now()));
+			return {
+				provider_preference: activeTrackerProviderPreference(store, now()),
+				applies_to: role === 'hub' ? 'every computer that syncs with this hub' : store.node
+			};
+		},
 		clearQuota(provider: unknown) {
 			const cli = trackerProviders.find((name) => name === provider);
 			if (!cli) throw trackerItemError('quota provider must be codex or claude', 400);
@@ -34,7 +48,23 @@ export function trackerAutolaunchAdmin(
 	};
 }
 
+function preferenceFrom(request: unknown, now: number) {
+	const { provider, until } = (request ?? {}) as { provider?: unknown; until?: unknown };
+	if (provider === null) return { provider, until: null, set_at: now };
+	const end = z.iso.datetime({ offset: true }).safeParse(until).data;
+	if (provider !== 'claude' || !end || Date.parse(end) <= now)
+		throw trackerItemError('prefer claude needs a future ISO --until time with an offset', 400);
+	return { provider: 'claude' as const, until: new Date(end).toISOString(), set_at: now };
+}
+
 /** What the hub tells each spoke with every journal pull. */
 export function trackerHubDuePolicy(store: TrackerPersistenceService, now: () => number) {
-	return () => ({ paused: store.getMeta(duePauseKey) === '1', at: now() });
+	return () => {
+		const preference = readTrackerProviderPreference(store);
+		return {
+			paused: store.getMeta(duePauseKey) === '1',
+			at: now(),
+			...(preference && { provider_preference: preference })
+		};
+	};
 }

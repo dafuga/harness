@@ -16,6 +16,7 @@
 	} from '../../../lib/projects-sessions/hub-home/homeLive.types';
 	import HubHomeComputerDetail from './HubHomeComputerDetail.svelte';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
+	import HubHomePreference from './HubHomePreference.svelte';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import type { HomeView } from './hubHomeView.types';
 	let {
@@ -179,6 +180,7 @@
 				{/each}
 			</hx-ul>
 		{/if}
+		<HubHomePreference preference={view.providerPreference} now={view.now} />
 		{#if view.quota?.length}<HubHomeQuotaPills subscriptions={view.quota} now={view.now} />{/if}
 		{#if view.owner}{@render notifications?.()}{/if}
 	</hx-div>

@@ -9,7 +9,8 @@ export const TRACKER_GET_URLS = {
 	homeRuns: `${TRACKER_ORIGIN}/runs?limit=500&include_active=1`,
 	runs: `${TRACKER_ORIGIN}/runs?limit=500`,
 	machines: `${TRACKER_ORIGIN}/machines`,
-	status: `${TRACKER_ORIGIN}/status`
+	status: `${TRACKER_ORIGIN}/status`,
+	providerPreference: `${TRACKER_ORIGIN}/autolaunch/preference`
 } as const;
 
 export const ITEM_STATUSES: ReadonlySet<string> = new Set([

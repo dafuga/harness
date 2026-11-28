@@ -10,6 +10,12 @@ import {
 	solEffort,
 	trackerTaskRoute
 } from './classifyTrackerTask';
+import {
+	activePreferenceEnd,
+	preferredClaudeRoute,
+	preferredSelection,
+	switchedSelection
+} from './preferredClaudeRoute';
 import type {
 	TrackerLadderConfig,
 	TrackerLearningConfig,
@@ -22,6 +28,7 @@ import type {
 	SelectionContext,
 	TrackerModelSelection,
 	TrackerModelSelectionOptions,
+	TrackerRetryOptions,
 	TrackerRetryRun
 } from './pickTrackerModel.types';
 import type { TrackerModelItem, TrackerTaskRoute } from './classifyTrackerTask.types';
@@ -71,12 +78,14 @@ export function pickTrackerModel(
 	options: TrackerModelSelectionOptions = {}
 ): TrackerModelSelection {
 	const ladder = ladderFrom(options.cfg);
+	const preferred = activePreferenceEnd(options.claudePreferredUntil, options.now);
 	const context = {
+		preferred,
 		kind: classifyTrackerTask(item),
 		size: sizeOf(item),
 		route: trackerTaskRoute(item),
 		restrictions: floorReasons(item),
-		claude: claudeOnly(options)
+		claude: Boolean(preferred) || claudeOnly(options)
 	};
 	return item.model
 		? pinnedSelection(item, ladder, context)
@@ -88,12 +97,15 @@ function pinnedSelection(
 	ladder: TrackerModelRung[],
 	context: SelectionContext
 ): TrackerModelSelection {
-	const { kind, size, route, claude } = context;
+	const { kind, size, route, claude, preferred } = context;
 	const rung = parseTrackerModelSpec(item.model ?? '', ladder);
+	if (preferred && rung.cli === 'codex' && route !== 'computer-use')
+		return switchedSelection(item, ladder, { kind, until: preferred });
 	const raised = raisedPinReason(item, rung, context);
 	if (!raised) return { rung, kind, reason: `named on the item (${item.model})` };
+	const routeFor = preferred ? preferredClaudeRoute : claudeRoute;
 	const replacement = claude
-		? claudeRoute(item, ladder, true).steps[0]
+		? routeFor(item, ladder, true).steps[0]
 		: eligibleLadder(route === 'live-deploy' ? route : 'default', ladder, true)[0];
 	const name = { opus: 'Opus', sonnet: 'Sonnet' }[replacement.id] ?? 'Sol';
 	const effort = replacement.id === 'sol' ? solEffort(kind, size) : replacement.effort;
@@ -110,7 +122,8 @@ function automaticSelection(
 	context: SelectionContext,
 	{ cfg, history }: TrackerModelSelectionOptions
 ): TrackerModelSelection {
-	const { kind, size, route, restrictions, claude } = context;
+	const { kind, size, route, restrictions, claude, preferred } = context;
+	if (preferred) return preferredSelection(item, ladder, { ...context, preferred });
 	const plan = claude
 		? claudeRoute(item, ladder, restrictions.length > 0)
 		: { steps: eligibleLadder(route, ladder, restrictions.length > 0), why: '' };
@@ -145,14 +158,15 @@ function raisedPinReason(
 export function retryTrackerModel(
 	item: TrackerModelItem,
 	run: TrackerRetryRun,
-	cfg?: TrackerLadderConfig,
-	now?: number
+	options: TrackerRetryOptions = {}
 ): TrackerModelRung {
+	const { cfg, now } = options;
 	if (run.pinned)
-		return pickTrackerModel({ ...item, model: `${run.model}:${run.effort ?? ''}` }, { cfg, now })
-			.rung;
+		return pickTrackerModel({ ...item, model: `${run.model}:${run.effort ?? ''}` }, options).rung;
 	const restricted = floorReasons(item).length > 0;
 	const ladder = ladderFrom(cfg);
+	if (activePreferenceEnd(options.claudePreferredUntil, now))
+		return nextClaudeRung(preferredClaudeRoute(item, ladder, restricted), run);
 	if (claudeOnly({ cfg, now })) return nextClaudeRung(claudeRoute(item, ladder, restricted), run);
 	const eligible = eligibleLadder(trackerTaskRoute(item), ladder, restricted);
 	const previous = run.rung === 'sol-xhigh' ? 'sol' : run.rung;

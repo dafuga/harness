@@ -14,6 +14,7 @@
 			"src/services/agents-providers/tracker-dispatcher-service/dueGrantHold.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/launchEligibility.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/launchIntent.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/providerRedirect.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/recoveryIntent.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runGiveUp.ts",
@@ -104,6 +105,8 @@
 			"chooseDueTarget",
 			"requestLaunch",
 			"previewDueLaunch",
+			"currentPick",
+			"redirectedRun",
 			"recoveryIntent",
 			"unattendedIntent",
 			"launchStartupGrace",
@@ -494,6 +497,31 @@
 			{
 				"name": "previewDueLaunch.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "currentPick.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "currentPick.pick",
+				"type": "TrackerLaunchPick | { error: string }",
+				"required": true
+			},
+			{
+				"name": "currentPick.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "redirectedRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "redirectedRun.pick",
+				"type": "TrackerLaunchPick",
 				"required": true
 			},
 			{
@@ -1737,6 +1765,57 @@
 				"outputs": [
 					{
 						"name": "previewDueLaunch",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "currentPick",
+				"inputs": [
+					{
+						"name": "currentPick.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "currentPick.pick",
+						"type": "TrackerLaunchPick | { error: string }",
+						"required": true
+					},
+					{
+						"name": "currentPick.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "currentPick",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "redirectedRun",
+				"inputs": [
+					{
+						"name": "redirectedRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "redirectedRun.pick",
+						"type": "TrackerLaunchPick",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "redirectedRun",
 						"type": "unknown"
 					}
 				],

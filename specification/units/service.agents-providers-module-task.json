@@ -366,7 +366,7 @@
 			},
 			{
 				"name": "taskSelection.task",
-				"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>",
+				"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'> & Partial<Pick<ModuleTaskInput, 'verificationFiles'>>",
 				"required": true,
 				"description": "Model, provider and intelligence fields used to resolve the runnable selection. Auto owns provider and intelligence; explicit models need a provider or a recognized claude- or gpt- prefix, and Claude cannot use ultra.",
 				"examples": [
@@ -1836,7 +1836,7 @@
 				"inputs": [
 					{
 						"name": "taskSelection.task",
-						"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>",
+						"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'> & Partial<Pick<ModuleTaskInput, 'verificationFiles'>>",
 						"required": true,
 						"description": "Model, provider and intelligence fields used to resolve the runnable selection. Auto owns provider and intelligence; explicit models need a provider or a recognized claude- or gpt- prefix, and Claude cannot use ultra.",
 						"examples": [
