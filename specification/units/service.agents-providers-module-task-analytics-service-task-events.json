@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/agents-providers/module-task-analytics-service/taskEvents.ts"],
-		"symbols": ["taskEvents"]
+		"source": [
+			"src/services/agents-providers/module-task-analytics-service/taskEvents.ts",
+			"src/services/agents-providers/module-task-analytics-service/taskProviderExecutions.ts"
+		],
+		"symbols": ["taskEvents", "executionsOf"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -217,6 +220,11 @@
 				"required": true,
 				"description": "The project identifier written unchanged to each event's project field and hashed into every event id, so the same tasks under a different project produce different ids. The function does not validate or normalize it.",
 				"examples": ["/workspace/project", "/workspace/billing-api"]
+			},
+			{
+				"name": "executionsOf.result",
+				"type": "NonNullable<ModuleTask['result']>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -748,11 +756,34 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "executionsOf",
+				"inputs": [
+					{
+						"name": "executionsOf.result",
+						"type": "NonNullable<ModuleTask['result']>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "executionsOf",
+						"type": "(Omit<TaskExecution, 'startedAt'> & { startedAt?: string })[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-provider-session",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.analytics-types",
 			"via": "import",

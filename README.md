@@ -1289,6 +1289,31 @@ disable Codex Apps so their model traffic stays on the supervised transport.
 `--context-tokens` lowers the orchestrator threshold for a controlled trial.
 Harness declines an initial provider prompt larger than 96 KiB.
 
+A native module task can declare a required host check in its task input JSON.
+For a trusted task queue, start the worker with `--allow-task-checks`. The
+executable and its arguments are passed directly in the worktree. The default
+timeout is three minutes and the maximum is ten.
+
+```json
+{
+	"check": {
+		"argv": ["bun", "test", "test/orders.test.ts"],
+		"timeoutMs": 180000
+	}
+}
+```
+
+After a nonzero exit, the worker sends a bounded diagnostic tail to the same
+provider session. It allows two repair turns and records each check outcome and
+duration in `task show`. A timeout, cancellation or command error stops the
+attempt. The offline Docker pilot does not run host checks. Only enable host
+checks in queues whose executable commands and task code you trust.
+
+A size-reduction candidate is evaluated in a scratch worktree after the original
+passes verification. If the candidate loses coverage, fails tests or fails the
+declared check, Harness records the reason and preserves the verified original.
+The original still has to pass its required checks to reach review.
+
 The managed provider runtime has an offline Linux Docker pilot. Set
 `"platform": "linux"` in a module task input or pass `--platform linux` to
 `harness task add` or `harness task orchestrate`. Set

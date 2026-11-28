@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"src/services/agents-providers/completion-hooks/CompletionCheckError.ts",
+			"src/services/agents-providers/completion-hooks/assessReduction.ts",
 			"src/services/agents-providers/completion-hooks/completionConfig.ts",
 			"src/services/agents-providers/completion-hooks/completionRun.ts",
 			"src/services/agents-providers/completion-hooks/completionRun.types.ts",
@@ -22,6 +23,8 @@
 		],
 		"symbols": [
 			"CompletionCheckError",
+			"CompletionCheckError.constructor",
+			"assessReduction",
 			"loadCompletionConfig",
 			"completionTurn",
 			"completionRecordPath",
@@ -40,11 +43,11 @@
 			"ModuleMeasurement",
 			"lcovCoverage",
 			"requireNondecreasingCoverage",
-			"moduleCompletionContext",
 			"completeModule",
 			"ModuleCompletionInput",
 			"ModuleCompletionContext",
 			"ModuleCandidate",
+			"ModuleReductionAssessment",
 			"moduleCompletionMeasurement",
 			"ModuleCompletionMeasurement",
 			"completeOrchestration"
@@ -53,6 +56,26 @@
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "CompletionCheckError.constructor.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "CompletionCheckError.constructor.summary",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "assessReduction.candidate",
+				"type": "ModuleCandidate",
+				"required": true
+			},
+			{
+				"name": "assessReduction.assessment",
+				"type": "ModuleReductionAssessment",
+				"required": true
+			},
 			{
 				"name": "loadCompletionConfig.git",
 				"type": "GitAdapter",
@@ -186,6 +209,10 @@
 		],
 		"outputs": [
 			{
+				"name": "assessReduction",
+				"type": "unknown"
+			},
+			{
 				"name": "loadCompletionConfig",
 				"type": "unknown"
 			},
@@ -218,10 +245,6 @@
 				"type": "unknown"
 			},
 			{
-				"name": "moduleCompletionContext",
-				"type": "unknown"
-			},
-			{
 				"name": "completeModule",
 				"type": "Promise<void>"
 			},
@@ -242,6 +265,34 @@
 		],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "assessReduction",
+				"inputs": [
+					{
+						"name": "assessReduction.candidate",
+						"type": "ModuleCandidate",
+						"required": true
+					},
+					{
+						"name": "assessReduction.assessment",
+						"type": "ModuleReductionAssessment",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assessReduction",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "CompletionCheckError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "loadCompletionConfig",
 				"inputs": [
@@ -538,7 +589,31 @@
 				"errorStatus": "unknown"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "CompletionCheckError.constructor",
+				"inputs": [
+					{
+						"name": "CompletionCheckError.constructor.message",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CompletionCheckError.constructor.summary",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "CompletionCheckError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -563,6 +638,11 @@
 		},
 		{
 			"unit": "config.agents-providers-completion-hooks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-redact-secrets",
 			"via": "import",
 			"origin": "derived"
 		},

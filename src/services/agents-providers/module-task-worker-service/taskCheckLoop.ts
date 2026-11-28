@@ -31,6 +31,7 @@ export async function taskCheckLoop(
 		await taskWrites(git, expected);
 		const { output, receipt } = await runTaskCheck(task.check, input.cwd, input.signal);
 		rounds.push(receipt);
+		await taskWrites(git, expected);
 		if (receipt.status === 'passed') return undefined;
 		if (receipt.status !== 'failed')
 			return `Declared task check ended with status ${receipt.status}.`;
