@@ -3,8 +3,8 @@ import {
 	featureDeliveryReceiptKey,
 	featureDeliverySchema,
 	featureDeliveryVideoKey
-} from '../../../../../../../src/utils/projects-sessions/featureDelivery';
-import type { FeatureDelivery } from '../../../../../../../src/utils/projects-sessions/featureDelivery.types';
+} from '../../../../../../../src/core/projects-sessions/featureDelivery';
+import type { FeatureDelivery } from '../../../../../../../src/core/projects-sessions/featureDelivery.types';
 
 export async function deliveryFeed(bucket: R2Bucket, project: string, cursor?: string) {
 	const { objects, ...page } = await bucket.list({

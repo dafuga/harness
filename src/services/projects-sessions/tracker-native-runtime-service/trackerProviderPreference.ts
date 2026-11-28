@@ -3,17 +3,16 @@ import { z } from 'zod';
 import { activePreferenceEnd } from '../../../utils/agents-providers/preferredClaudeRoute';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { TrackerWireValue } from '../TrackerHubSyncService.types';
+import type { TrackerProviderPreference } from './trackerProviderPreference.types';
 
 const metaKey = 'tracker_provider_preference';
 
 /** A cleared preference keeps its time, so clearing on the hub also reaches every computer. */
-const stored = z.object({
+const stored: z.ZodType<TrackerProviderPreference> = z.object({
 	provider: z.literal('claude').nullable(),
 	until: z.iso.datetime({ offset: true }).nullable(),
 	set_at: z.number()
 });
-
-export type TrackerProviderPreference = z.infer<typeof stored>;
 
 export function readTrackerProviderPreference(
 	store: Pick<TrackerPersistenceService, 'getMeta'>

@@ -3,7 +3,7 @@ import {
 	featureDeliveryDigest,
 	featureDeliveryId,
 	featureDeliveryProject
-} from '../../../../../../../src/utils/projects-sessions/featureDelivery';
+} from '../../../../../../../src/core/projects-sessions/featureDelivery';
 import type { DeliveryDeps } from './deliveryPolicy.types';
 import { deliveryFeed } from './deliveryFeed';
 import { deliveryMedia } from './deliveryMedia';

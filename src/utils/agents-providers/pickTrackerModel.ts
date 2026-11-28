@@ -35,7 +35,6 @@ import type {
 import type { TrackerModelItem, TrackerTaskRoute } from './classifyTrackerTask.types';
 
 const codexResetAt = Date.parse('2026-11-27T10:39:00Z');
-const windowNote = 'Claude only until the Codex reset, 27 Nov 10:39 Lisbon';
 
 function claudeOnly({ cfg, now }: { cfg?: TrackerLadderConfig; now?: number }) {
 	const until = Date.parse(cfg?.autolaunch?.claudeOnlyUntil ?? '');
@@ -139,7 +138,7 @@ function automaticSelection(
 	const rung = plan.steps[index];
 	const effort = rung.id === 'sol' ? solEffort(kind, size) : rung.effort;
 	const label = claude ? `${rung.id} ${effort}` : rung.id;
-	const window = claude ? [plan.why, windowNote] : [];
+	const window = claude ? [plan.why, 'Claude only until the Codex reset, 27 Nov 10:39 Lisbon'] : [];
 	return {
 		rung: { ...rung, effort },
 		kind,

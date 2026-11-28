@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "script.deliver-feature-deliver-feature",
+	"uid": "u_fakvbxkf72",
 	"kind": "script",
 	"title": "deliverFeature",
 	"responsibility": "Owns the deliverFeature build or maintenance script.",
@@ -35,7 +36,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
 		],
@@ -63,7 +64,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown"
 					}
 				],
@@ -73,6 +74,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.projects-sessions-feature-delivery",
 			"via": "import",

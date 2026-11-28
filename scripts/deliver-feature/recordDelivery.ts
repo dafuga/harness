@@ -1,7 +1,9 @@
+// @harness-uid u_msy2owooob
 import { lstat, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { featureDeliveryDuration } from '../../src/utils/projects-sessions/featureDelivery';
+import { featureDeliveryDuration } from '../../src/core/projects-sessions/featureDelivery';
 import { deliveryProcess } from './deliveryProcess';
+import { ExpectedCliError } from '../../src/core/errors';
 
 const maxVideoBytes = 64 * 1024 * 1024;
 
@@ -15,7 +17,7 @@ export async function recordDelivery(command: string[]) {
 	const run = await deliveryProcess(['headless-run', '--', ...command], env);
 	const directory = /^headless-run:.*Artifacts: (\/[^\r\n]+)$/m.exec(run.stderr)?.[1];
 	if (run.code !== 0 || !directory)
-		throw new Error(
+		throw new ExpectedCliError(
 			directory
 				? `Headless recording failed. Artifacts at ${directory}`
 				: 'Headless recording failed'
@@ -31,7 +33,7 @@ export async function probeDelivery(path: string) {
 async function assertVideoFile(path: string) {
 	const file = await lstat(path).catch(() => null);
 	if (!file?.isFile() || !file.size || file.size > maxVideoBytes)
-		throw new Error('Expected a nonempty feature video under 64 MiB');
+		throw new ExpectedCliError('Expected a nonempty feature video under 64 MiB');
 }
 
 async function duration(path: string) {
@@ -47,11 +49,12 @@ async function duration(path: string) {
 		'json',
 		path
 	]);
-	if (probe.code !== 0) throw new Error('The recorded feature video could not be opened');
+	if (probe.code !== 0)
+		throw new ExpectedCliError('The recorded feature video could not be opened');
 	const value = JSON.parse(probe.stdout);
 	if (!value.streams?.some(({ codec_type }: { codec_type?: string }) => codec_type === 'video'))
-		throw new Error('The recording has no video track');
+		throw new ExpectedCliError('The recording has no video track');
 	if (!value.format?.format_name?.split(',').includes('webm'))
-		throw new Error('The headless recording must be WebM');
+		throw new ExpectedCliError('The headless recording must be WebM');
 	return featureDeliveryDuration.parse(Number(value.format?.duration));
 }

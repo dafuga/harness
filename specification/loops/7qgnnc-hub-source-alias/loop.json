@@ -1,0 +1,65 @@
+{
+	"name": "7qgnnc-hub-source-alias",
+	"goal": "Resolve the Hub Home Tracker utilization schema import in the Harness source index",
+	"createdAt": "2026-11-28T13:13:34.347Z",
+	"updatedAt": "2026-11-28T13:19:01.715Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:13:36.275Z",
+			"evidence": "Combined release preflight identified the exact unresolved Reports reference in the Hub Home payload."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:13:37.373Z",
+			"evidence": "The existing shared-select-impact alias case already catches this import. The #485 focused verification did not exercise it. Reuse its assertions unchanged."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:15:21.361Z",
+			"evidence": "Formal red at test-only 74b60d3323: the exact source binding for the Hub Home Tracker utilization schema was missing."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:15:24.853Z",
+			"evidence": "Declare the Hub Home Tracker utilization import at its existing Reports source path."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:19:01.715Z",
+			"evidence": "After moving the guard helper under the lint line limit, the byte-identical case failed on d5b70a371c and passed on 7af3a77f70 in clean snapshots with the same runtime profile."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

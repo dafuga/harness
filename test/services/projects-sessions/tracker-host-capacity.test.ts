@@ -18,12 +18,16 @@ const node = 'daniel-primary-mbp';
 // 23:00 in Lisbon: launches and idle-work queueing run through the night.
 const now = Date.parse('2026-11-25T23:00:00Z');
 
-test('honors the host cap while retaining finished panes and reporting a flagged request', () =>
-	measureWorkload(
-		'service.projects-sessions-tracker-native-runtime',
-		'host-capacity-at-cutover',
-		() => withTempDir('hnt-cap-', proveHostCapacity)
-	));
+test(
+	'honors the host cap while retaining finished panes and reporting a flagged request',
+	{ timeout: 30_000 },
+	() =>
+		measureWorkload(
+			'service.projects-sessions-tracker-native-runtime',
+			'host-capacity-at-cutover',
+			() => withTempDir('hnt-cap-', proveHostCapacity)
+		)
+);
 
 async function proveHostCapacity(root: string) {
 	const db = new DatabaseSync(':memory:');

@@ -1,6 +1,10 @@
 import type { Page, WebSocketRoute } from '@playwright/test';
+import type { LinkedHome } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 import { expect, test } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
+import { captureNeedsYou } from './hub-home-capture';
+import { clickDuringRefresh } from './hub-home-answer-motion';
+import { rowOf } from './hub-home-click-through';
 import { startChain } from './hub-realtime-chain';
 import type { Chain } from './hub-realtime.spec.types';
 
@@ -97,10 +101,9 @@ async function answerElsewhere(chain: Chain, page: Page, phone: Page) {
 	const started = performance.now();
 	const status = await phone.evaluate(async (question) => {
 		const response = await fetch('/api/hub-home');
-		const { snapshot } = await response.json();
-		const agent = snapshot.agents.find(
-			(entry: { question?: string }) => entry.question === question
-		);
+		const { snapshot } = (await response.json()) as LinkedHome;
+		const agent = snapshot?.agents.find((entry) => entry.question === question);
+		if (!agent) throw new Error(`Home did not return the decision: ${question}`);
 		const message = {
 			id: crypto.randomUUID(),
 			agentId: agent.id,
@@ -154,6 +157,56 @@ test('a cut socket shows reconnecting and catches up on what it missed', async (
 		);
 		if (process.env.TAKE_SCREENSHOT)
 			await page.screenshot({ path: test.info().outputPath('hub-live-phone.png') });
+	} finally {
+		await chain.stop();
+	}
+});
+
+test('a seeded Tracker decision survives a live reorder during a slow write', async ({ page }) => {
+	const chain = await startChain();
+	try {
+		await joinHub(page, chain);
+		await page.setViewportSize({ width: 390, height: 844 });
+		chain.tracker.add('fixtureother', 'Other realtime item');
+		const original = 'Original question on the other item?';
+		await chain.tracker.ask('fixtureother', original);
+		await page.goto('/');
+		await expect(indicator(page)).toHaveText('Live');
+		await shows(page, original);
+		chain.tracker.add('fixturelive', 'Fixture realtime item');
+		const question = 'Hold for the next window?';
+		await chain.tracker.ask('fixturelive', question);
+		const choice = rowOf(page, question).getByRole('button', { name: 'Hold', exact: true });
+		await choice.scrollIntoViewIfNeeded();
+		await captureNeedsYou(page, 'tracker-answer-before-phone');
+		const cdp = await page.context().newCDPSession(page);
+		let deliver = () => {};
+		const throttled = new Promise<void>((resolve) => (deliver = resolve));
+		await page.route('**/api/hub-home/chat', async (route) => {
+			await throttled;
+			await route.fallback();
+		});
+		try {
+			await cdp.send('Network.emulateNetworkConditions', {
+				offline: false,
+				latency: 250,
+				downloadThroughput: 128_000,
+				uploadThroughput: 64_000
+			});
+			const milliseconds = await clickDuringRefresh(page, choice, async () => {
+				const revised = 'Updated question on the other item?';
+				await chain.tracker.ask('fixtureother', revised);
+				await shows(page, revised);
+				await expect(page.getByText(original, { exact: true })).toHaveCount(0);
+			});
+			console.log(`Hub answer feedback (seeded Tracker): ${milliseconds} ms`);
+			await captureNeedsYou(page, 'tracker-answer-sending-phone');
+		} finally {
+			deliver();
+			await cdp.detach();
+		}
+		await expect.poll(() => chain.tracker.answer('fixturelive')).toBe('Hold');
+		await expect(rowOf(page, question)).toHaveCount(0);
 	} finally {
 		await chain.stop();
 	}
