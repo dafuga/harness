@@ -14,10 +14,10 @@ export function trackerCosRound(
 	driver: TrackerWatchdogPort,
 	ports: TrackerCosRoundPorts
 ) {
-	const { now, local } = ports;
+	const { now, local, current = () => true } = ports;
 	let lastRun = -Infinity;
 	let peerAlerts: readonly TrackerWatchdogAlert[] = [];
-	const alerts = () => [...local(), ...peerAlerts];
+	const alerts = () => [...local(), ...peerAlerts].filter(current);
 	return {
 		alerts,
 		async run(signal: AbortSignal, urgent: boolean) {
@@ -34,9 +34,11 @@ export function trackerCosRound(
 					store,
 					pending.filter(({ id }) => confirmed.has(id))
 				);
+			// Run state can change while transcript acceptance is checked.
+			const stillDeliverable = deliverable.filter(current);
 			// Checked before sending, so a send that throws cannot hide the backlog.
-			watchCosDelivery(store, unsentCosAlerts(store, deliverable), now());
-			await sendWatchdogAlerts(store, driver, deliverable, signal);
+			watchCosDelivery(store, unsentCosAlerts(store, stillDeliverable), now());
+			await sendWatchdogAlerts(store, driver, stillDeliverable, signal);
 		}
 	};
 }

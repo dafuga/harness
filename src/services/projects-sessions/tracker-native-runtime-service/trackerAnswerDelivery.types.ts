@@ -6,12 +6,10 @@ export interface PendingTrackerAnswer {
 	answeredAt: string;
 	generation: string;
 	choice: string | null;
-	keepBlocked: number | null;
 }
 
 export interface TrackerAnswerAttempt {
 	answer: PendingTrackerAnswer;
 	run: TrackerListedRun;
 	at: number;
-	answeredAt: number;
 }

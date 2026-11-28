@@ -247,9 +247,11 @@ operator verifies the stopped database and chooses a rollback.
 
   A Hub or CLI answer to an assigned task is routed to its current Codex or
   Claude pane. Tracker waits for an idle composer, records the computer and run
-  once submission is confirmed, and alerts Chief of Staff if delivery stays
-  pending. An answer that releases a finished blocked run allows the watcher to
-  relaunch the task. The answer stays available on the item during recovery.
+  once submission is confirmed. Only a live run can produce a late-delivery
+  alert, and Chief of Staff receives at most one alert per answer generation.
+  When a run has ended, Tracker records that no live delivery was needed.
+  An answer that releases a finished blocked run allows the watcher to
+  relaunch the task. The answer stays available on the item and in the launch brief.
 
   Chief of Staff files ideas when Daniel raises them and sets the project.
   Use `add --next-step` or `update --next-step` to record a decision. Use

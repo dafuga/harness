@@ -64,8 +64,17 @@ export function cosReceiptReference(alert: TrackerWatchdogAlert): string {
 		.slice(0, 24);
 }
 
-/** Explicit CoS messages are versioned by their full text, independent of host and queue ID. */
-function messageReceiptKey({ item_id, kind, reason }: TrackerWatchdogAlert): string | undefined {
+/** Answer alerts use the answer generation. Explicit CoS messages use their full text. */
+function messageReceiptKey({
+	item_id,
+	kind,
+	identity,
+	reason
+}: TrackerWatchdogAlert): string | undefined {
+	if (kind === 'answer-delivery') {
+		const digest = createHash('sha256').update(identity).digest('hex');
+		return `watchdog_cos_answer:${item_id}:${digest}`;
+	}
 	if (
 		kind !== 'cos-message' &&
 		(kind !== 'alert' || !/\bcredential\/access dependency\b/i.test(reason))
