@@ -1,0 +1,59 @@
+{
+	"name": "4p0q7c-tracker-launch-context",
+	"goal": "A fresh tracker session loads bounded item history: tracker show and the launch brief stay small while every note stays readable in pages",
+	"createdAt": "2026-11-28T17:53:52.559Z",
+	"updatedAt": "2026-11-28T17:54:12.525Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T17:54:11.621Z",
+			"evidence": "Sonnet launches reach 150k in 3-13 min (6kmyg7, gqrac3 transcripts): start about 46k, about 105k growth. tracker show 6kmyg7 prints 102,765 chars (212 notes); one run read about 80k chars of dumped notes. The brief and done-proof rule send sessions to show --json. Expected: bounded show and brief, every note readable in pages."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T17:54:12.525Z",
+			"evidence": "tracker-cli-compat.test.ts exercised show only on an item with no history and tracker-host-brief.test.ts used notes_log: [], so no fixture or assertion bounded output size. Both suites gain long-history fixtures with size budgets and completeness assertions."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

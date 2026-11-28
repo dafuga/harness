@@ -61,7 +61,8 @@ test('every session brief requires per-requirement, per-computer proof before tr
 		expect(brief).toContain('tracker check "<topic>"');
 		expect(brief).toMatch(/ignored.{0,80}do not raise/i);
 		expect(brief).toMatch(/update.*tests.*run them/i);
-		expect(brief).toContain('reread every note with `tracker show <id> --json`');
+		expect(brief).toContain('reread every note, one bounded page at a time');
+		expect(brief).toContain('`tracker show <id> --notes-page 1`');
 		expect(brief).toContain('including appended ones) to evidence for each named computer');
 		expect(brief).toContain('wait out any grace period');
 		expect(brief).toContain('unproven, unseen or not rolled out, do not run `tracker done`');
@@ -105,4 +106,39 @@ test('a truncated Docker brief keeps the done proof rule within its 15,900 byte 
 		expect(brief).not.toContain('�');
 		expect(Buffer.byteLength(brief)).toBeLessThanOrEqual(15_900);
 	}
+});
+
+test('a brief for a long-running item stays small and never sends a session to the full JSON', () => {
+	const note = (text: string, index: number) => ({
+		at: new Date(Date.UTC(2026, 10, 28, 0, index)).toISOString(),
+		node: 'fixture',
+		text
+	});
+	const handoff =
+		'stopped: watchdog context handoff; resume from: handoff-marker ' + 'h'.repeat(900);
+	const texts = [
+		...Array.from({ length: 30 }, (_, index) => `milestone-${index + 100} ` + 'x'.repeat(2000)),
+		'newest-requirement: also verify the second computer',
+		handoff,
+		'watchdog context: routine-marker',
+		'Closed finished run session routine-marker'
+	];
+	const brief = formatTrackerHostBrief({ ...item, notes_log: texts.map(note) }, 'Finish.', {
+		recovery: true
+	});
+	const recent = brief.split('## Recent notes')[1].split('## Last handoff')[0];
+	expect(recent.length).toBeLessThan(6_500);
+	expect(recent).toContain('newest-requirement');
+	expect(recent).toContain('milestone-129');
+	expect(recent).toContain('x…');
+	expect(recent).toContain('tracker show abcdef --notes-page 1');
+	expect(brief).not.toContain('routine-marker');
+	expect(brief.split('handoff-marker')).toHaveLength(2);
+	expect(brief).toContain('## Keep context small');
+	expect(brief).not.toMatch(/tracker show \S+ --json/);
+	const fresh = formatTrackerHostBrief({ ...item, notes_log: texts.map(note) }, 'Finish.');
+	expect(fresh.split('handoff-marker')).toHaveLength(2);
+	const short = formatTrackerHostBrief({ ...item, notes_log: [note('only note', 0)] }, 'Finish.');
+	expect(short).toContain('only note');
+	expect(short).not.toContain('earlier notes');
 });
