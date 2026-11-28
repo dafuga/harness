@@ -2,7 +2,7 @@
 	"name": "tracker-native-alert-host-work",
 	"goal": "Managed Tracker sessions resolve the active installed CLI for alert and host-work after an upgrade.",
 	"createdAt": "2026-11-28T14:01:06.164Z",
-	"updatedAt": "2026-11-28T14:04:02.768Z",
+	"updatedAt": "2026-11-28T14:06:20.559Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T14:06:20.559Z",
+			"evidence": "Unchanged managed-worker roundtrip passed on 3c91c22d33 against red 608d4b6b38. The real shim selected the fixture active CLI for both alert and host-work after symlink replacement."
 		},
 		{
 			"id": "verify",
