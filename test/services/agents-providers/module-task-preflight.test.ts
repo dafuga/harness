@@ -34,16 +34,16 @@ async function queued(extra: Record<string, unknown> = {}) {
 test('an exhausted provider quota blocks dispatch until its reset without charging an attempt', async () => {
 	const { f, worker, calls, task } = await queued();
 	try {
-		await recordCooldown(f.root, 'claude', 4e9);
-		expect((await readCooldowns(f.root)).claude?.until).toBe(new Date(4e12).toISOString());
+		await recordCooldown(f.root, 'codex', 4e9);
+		expect((await readCooldowns(f.root)).codex?.until).toBe(new Date(4e12).toISOString());
 		const blocked = await worker.once('owner');
 		expect(blocked).toMatchObject({ status: 'blocked' });
-		expect(blocked.status === 'blocked' && blocked.problems[0]).toContain('claude quota');
+		expect(blocked.status === 'blocked' && blocked.problems[0]).toContain('codex quota');
 		expect(calls).toEqual([]);
 		expect(await task()).toMatchObject({ status: 'queued', claimHistory: [], attempts: [] });
-		await writeFile(await cooldownFile(f.root), JSON.stringify({ claude: expired() }));
+		await writeFile(await cooldownFile(f.root), JSON.stringify({ codex: expired() }));
 		expect((await worker.once('owner')).status).toBe('review');
-		expect(calls).toEqual(['claude-haiku-5-5']);
+		expect(calls).toEqual(['gpt-6-luna']);
 	} finally {
 		await f.dispose();
 	}

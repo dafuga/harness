@@ -11,6 +11,8 @@ export interface ModuleCompletionInput {
 	task: ModuleTask;
 	result: NonNullable<ModuleTask['result']>;
 	context: ModuleCompletionContext;
+	/** Make installed packages available in a candidate worktree. */
+	prepare?: (worktree: string) => Promise<void>;
 }
 
 export interface ModuleCompletionContext {

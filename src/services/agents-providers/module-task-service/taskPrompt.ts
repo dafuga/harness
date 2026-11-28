@@ -42,15 +42,19 @@ export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
 		stableJson(task.wantedContract)
 	].join('\n');
 }
+/** Auto picks Luna for headless tasks and Haiku for browser-tested ones, since Chromium cannot start in the Codex sandbox. */
 export function taskSelection(
-	task: Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>
+	task: Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'> &
+		Partial<Pick<ModuleTaskInput, 'verificationFiles'>>
 ): TaskSelection {
 	if (task.model === 'auto') {
 		if (task.provider || task.intelligence)
 			throw new ExpectedCliError(
 				'Set an explicit model before provider or intelligence; auto owns both choices.'
 			);
-		return { provider: 'claude', model: 'claude-haiku-5-5', intelligence: 'medium' };
+		return browserTested(task.verificationFiles)
+			? { provider: 'claude', model: 'claude-haiku-5-5', intelligence: 'medium' }
+			: { provider: 'codex', model: 'gpt-6-luna', intelligence: 'medium' };
 	}
 	const provider = task.provider ?? modelProvider(task.model);
 	if (!provider) throw new ExpectedCliError('Set provider for this exact model id.');
@@ -62,4 +66,7 @@ function modelProvider(model: string): TaskSelection['provider'] | undefined {
 	if (model.startsWith('claude-')) return 'claude';
 	if (model.startsWith('gpt-')) return 'codex';
 	return undefined;
+}
+function browserTested(files: readonly string[] = []): boolean {
+	return files.some((file) => /\.spec\.[cm]?[jt]sx?$|(^|\/)e2e\//.test(file));
 }

@@ -18,10 +18,14 @@ test('Claude and Codex launch exact models and intelligence without shell interp
 	).toEqual(expect.arrayContaining(['--model', 'claude-haiku-5-5', '--effort', 'high']));
 	expect(runner.command({ provider: 'codex', model: 'gpt-6-luna', intelligence: 'max' })).toEqual(
 		expect.arrayContaining([
+			'--ignore-user-config',
 			'-m',
 			'gpt-6-luna',
 			'model_reasoning_effort="max"',
-			'model_provider="openai"'
+			'model_provider="openai"',
+			'project_doc_max_bytes=0',
+			'sandbox_workspace_write.network_access=true',
+			'sandbox_workspace_write.writable_roots=[]'
 		])
 	);
 	await assertFrameArguments(runner);
