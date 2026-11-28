@@ -43,6 +43,11 @@ test('every session brief points browser work at the automation Chrome, not the 
 	expect(brief).toContain('http://127.0.0.1:9333');
 	expect(brief).toContain('Do not turn on or ask for remote debugging');
 	expect(brief).toContain('~/.local/bin/automation-signin request github');
+	expect(brief).toContain('scripts/tracker-screenshot-browser.md');
+	expect(brief).toContain('Skip the regular computer-use app opener and page inspection');
+	expect(brief).toContain(
+		'Use the Credential Vault script-only route for any step that can reveal a secret.'
+	);
 	expect(brief.indexOf('## Asking Daniel')).toBeLessThan(brief.indexOf('## Automation Chrome'));
 });
 

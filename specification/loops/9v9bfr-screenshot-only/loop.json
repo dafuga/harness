@@ -1,0 +1,20 @@
+{
+	"name": "9v9bfr-screenshot-only",
+	"goal": "Prove screenshot and tab-scoped click and type without accessibility or page metadata, then verify the installed route on the primary Mac.",
+	"createdAt": "2026-11-28T14:52:41.375Z",
+	"updatedAt": "2026-11-28T14:58:39.901Z",
+	"steps": [
+		{
+			"id": "siblings",
+			"title": "Check adjacent browser entry points and preserve the existing secret-safe rules",
+			"status": "complete",
+			"completedAt": "2026-11-28T14:58:39.901Z",
+			"evidence": "Reviewed the automation-canary and Vault browser routes. Tracker host-brief tests retain shared-profile, main-profile, and secret-safe boundaries. The new helper has a separate fixed command surface and sanitized errors."
+		},
+		{
+			"id": "verify",
+			"title": "Verify the installed route and observe the Persona form on the primary Mac",
+			"status": "pending"
+		}
+	]
+}
