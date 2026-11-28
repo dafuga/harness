@@ -13,7 +13,7 @@ import type {
 } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { trackerHostCapacityHold } from './trackerHostAdmission';
-import { trackerProviderHold } from './trackerProviderHolds';
+import { trackerHandoffHold } from './trackerHandoffHold';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { recoveryPollInterval, sessionHealthInterval } from './trackerSessionHealth';
 import type { TrackerWatchdogLaunch } from './trackerSessionHealth.types';
@@ -59,7 +59,7 @@ function waitForRecoveryProvider(
 ) {
 	if (!latest || latest.auto_token === state.token) return null;
 	if (!state.token && item.status !== 'in_progress') return null;
-	const held = trackerProviderHold(store, latest.cli, now);
+	const held = trackerHandoffHold(store, { item, run: latest, now });
 	if (!held) return null;
 	if (state.token) saveRecovery(store, key, { ...state, requestedAt: now });
 	return `Tracker relaunch is waiting: ${held}.`;

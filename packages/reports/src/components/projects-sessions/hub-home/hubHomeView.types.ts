@@ -1,4 +1,5 @@
 // @harness-uid u_u3mne4fgyr
+import type { HomeProviderPreference } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { ProjectSummary } from 'collaboration';
 import type { LinkedHome } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
@@ -58,6 +59,7 @@ export interface HomeView {
 	computers: LinkedHome | null;
 	trackerConnected: boolean;
 	quotaConnected: boolean;
+	providerPreference?: HomeProviderPreference;
 	now: number;
 }
 

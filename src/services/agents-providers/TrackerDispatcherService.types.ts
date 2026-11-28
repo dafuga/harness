@@ -106,6 +106,11 @@ export interface TrackerDispatchPolicy {
 	providerHold?(cli: string): string | null;
 	pickModel(item: TrackerDispatchItem): TrackerLaunchPick | { error: string };
 	retryModel(item: TrackerDispatchItem, run: TrackerRunReceipt): TrackerLaunchRung | null;
+	/** The replacement for an earlier choice the operator's provider preference now rules out. */
+	redirectPick?(
+		item: TrackerDispatchItem,
+		rung: Pick<TrackerLaunchRung, 'cli' | 'model'>
+	): TrackerLaunchPick | null;
 	maxRetries?: number;
 	maxRunMinutes?: number;
 	stallMinutes?: number;

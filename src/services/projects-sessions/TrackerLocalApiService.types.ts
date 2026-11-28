@@ -27,6 +27,8 @@ export interface TrackerLocalApiOptions {
 	machines?: TrackerMachineService;
 	schedulePreview?(item: TrackerItem): string | null;
 	/** Why a requested launch has no run yet. */
+	/** The end of the operator's Claude preference while it is on, for `tracker pick`. */
+	claudePreferredUntil?(): string | undefined;
 	launchWait?(item: TrackerItem): { computer: string; reason: string };
 	recurring?: {
 		role: 'hub' | 'spoke';

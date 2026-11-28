@@ -8,6 +8,7 @@ import {
 	trackerCodexPause,
 	trackerQuotaHold
 } from '../tracker-native-runtime-service/trackerProviderHolds';
+import { activeTrackerProviderPreference } from '../tracker-native-runtime-service/trackerProviderPreference';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
 import { readTrackerBackupList } from './readTrackerBackupList';
@@ -20,6 +21,10 @@ export function readTrackerNodeInspection(
 	switch (path) {
 		case '/autolaunch':
 			return Response.json(autolaunchStatus(runtime, supervisor));
+		case '/autolaunch/preference':
+			return Response.json({
+				provider_preference: activeTrackerProviderPreference(runtime.store, runtime.now())
+			});
 		case '/autolaunch/dry-run':
 			return Response.json(readTrackerDuePreview(runtime));
 		case '/adapters':
@@ -58,6 +63,7 @@ function autolaunchStatus(
 			claude: trackerQuotaHold(store, 'claude')
 		},
 		...trackerCodexPause(store, runtime.now()),
+		provider_preference: activeTrackerProviderPreference(store, runtime.now()),
 		scheduler: readTrackerDuePreview(runtime),
 		active: active.map((run) => ({
 			run: run.id,

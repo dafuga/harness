@@ -1,8 +1,8 @@
 // @harness-uid u_4wqhxvxxau
 import { classifyTrackerTask, projectOf } from './classifyTrackerTask';
 import type { TrackerModelItem } from './classifyTrackerTask.types';
-import type { TrackerLadderConfig } from './parseTrackerModelSpec.types';
 import { pickTrackerModel } from './pickTrackerModel';
+import type { TrackerLadderConfig } from './parseTrackerModelSpec.types';
 import { trackerModelHistory } from './trackerRunReport';
 import type { TrackerRunRow } from './trackerRunReport.types';
 
@@ -10,7 +10,11 @@ import type { TrackerRunRow } from './trackerRunReport.types';
 export function pickTrackerModelFromRuns(
 	item: TrackerModelItem,
 	finished: () => readonly TrackerRunRow[],
-	{ cfg, now }: { cfg?: TrackerLadderConfig; now?: number } = {}
+	{
+		cfg,
+		now,
+		claudePreferredUntil
+	}: { cfg?: TrackerLadderConfig; now?: number; claudePreferredUntil?: string } = {}
 ) {
 	const history = item.model
 		? undefined
@@ -19,5 +23,5 @@ export function pickTrackerModelFromRuns(
 				{ kind: classifyTrackerTask(item), project: projectOf(item) },
 				cfg?.autolaunch?.learning?.minSamples
 			);
-	return pickTrackerModel(item, { cfg, history, now });
+	return pickTrackerModel(item, { cfg, history, now, claudePreferredUntil });
 }

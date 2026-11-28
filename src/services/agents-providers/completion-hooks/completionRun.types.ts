@@ -1,5 +1,6 @@
 // @harness-uid u_xghv2ih7cg
 import type {
+	ModuleTask,
 	TaskRunInput,
 	TaskRunResult,
 	TaskSelection
@@ -30,6 +31,7 @@ export interface CompletionReceipt {
 	summary?: string;
 	reason?: string;
 	disposition?: 'applied' | 'discarded' | 'unchanged';
+	candidateCheck?: NonNullable<NonNullable<ModuleTask['result']>['checkRounds']>[number];
 	before?: ModuleMeasurement;
 	after?: ModuleMeasurement;
 }

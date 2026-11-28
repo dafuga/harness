@@ -6,6 +6,7 @@ import type { TrackerItem } from '../../../repositories/projects-sessions/Tracke
 import { canonicalNode } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import { trackerRunnerSample } from './nativeTrackerLinks';
+import { trackerClaudePreferredUntil } from './trackerProviderPreference';
 import { trackerDueItemPreview } from './readTrackerDuePreview';
 
 const machineSample = z.object({ node: z.string().min(1), at: z.string(), runner: z.unknown() });
@@ -14,6 +15,7 @@ const machineSample = z.object({ node: z.string().min(1), at: z.string(), runner
 export function trackerItemViews(runtime: TrackerNativeRuntimeService) {
 	return {
 		schedulePreview: (item: TrackerItem) => trackerDueItemPreview(runtime, item),
+		claudePreferredUntil: () => trackerClaudePreferredUntil(runtime.store, runtime.now()),
 		launchWait: runtime.scheduler && ((item: TrackerItem) => trackerLaunchWait(runtime, item))
 	};
 }

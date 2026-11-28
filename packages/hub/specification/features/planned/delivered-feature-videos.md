@@ -1,3 +1,11 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
+
 # Delivered feature videos
 
 A project’s Tracker overview shows its feature deliveries newest first. Each entry has a title, delivery date, dev/staging/live stage and an inline player. The list appears on the project’s existing overview and does not add a Reports tab.

@@ -62,6 +62,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinishedSessions.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerGithubCli.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHandLaunchSelection.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHandoffHold.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapter.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapterSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdmission.ts",
@@ -98,6 +99,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLegacyExitReceipt.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerObservedRuns.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerProviderHolds.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerProviderPreference.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerQueueAdmission.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerRecoveryHistory.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSecretSafetyRule.ts",
@@ -207,6 +209,7 @@
 			"trackerGithubCli",
 			"handLaunchSelection",
 			"handLaunchNode",
+			"trackerHandoffHold",
 			"trackerHostAdapter",
 			"configuredHostAdapter",
 			"adapterIssue",
@@ -324,6 +327,12 @@
 			"trackerQuotaNotice",
 			"watchTrackerQuota",
 			"observeTrackerQuota",
+			"TrackerProviderPreference",
+			"readTrackerProviderPreference",
+			"writeTrackerProviderPreference",
+			"trackerClaudePreferredUntil",
+			"activeTrackerProviderPreference",
+			"observeTrackerProviderPreference",
 			"automaticQueueHold",
 			"automaticHostHold",
 			"queuedRung",
@@ -857,6 +866,26 @@
 				"type": "number",
 				"required": false,
 				"default": 0
+			},
+			{
+				"name": "trackerHandoffHold.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerHandoffHold.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "trackerHandoffHold.run",
+				"type": "{ cli: string; model: string }",
+				"required": true
+			},
+			{
+				"name": "trackerHandoffHold.now",
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "trackerHostAdapter.config",
@@ -1841,6 +1870,51 @@
 			{
 				"name": "observeTrackerQuota.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "readTrackerProviderPreference.store",
+				"type": "Pick<TrackerPersistenceService, 'getMeta'>",
+				"required": true
+			},
+			{
+				"name": "writeTrackerProviderPreference.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "writeTrackerProviderPreference.preference",
+				"type": "TrackerProviderPreference",
+				"required": true
+			},
+			{
+				"name": "trackerClaudePreferredUntil.store",
+				"type": "Pick<TrackerPersistenceService, 'getMeta'>",
+				"required": true
+			},
+			{
+				"name": "trackerClaudePreferredUntil.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "activeTrackerProviderPreference.store",
+				"type": "Pick<TrackerPersistenceService, 'getMeta'>",
+				"required": true
+			},
+			{
+				"name": "activeTrackerProviderPreference.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "observeTrackerProviderPreference.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "observeTrackerProviderPreference.policy",
+				"type": "TrackerWireValue",
 				"required": true
 			},
 			{
@@ -3630,6 +3704,39 @@
 					{
 						"name": "handLaunchNode",
 						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHandoffHold",
+				"inputs": [
+					{
+						"name": "trackerHandoffHold.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerHandoffHold.item",
+						"type": "TrackerModelItem",
+						"required": true
+					},
+					{
+						"name": "trackerHandoffHold.run",
+						"type": "{ cli: string; model: string }",
+						"required": true
+					},
+					{
+						"name": "trackerHandoffHold.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHandoffHold",
+						"type": "string | null"
 					}
 				],
 				"errors": [],
@@ -5562,6 +5669,116 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "readTrackerProviderPreference",
+				"inputs": [
+					{
+						"name": "readTrackerProviderPreference.store",
+						"type": "Pick<TrackerPersistenceService, 'getMeta'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerProviderPreference",
+						"type": "TrackerProviderPreference | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeTrackerProviderPreference",
+				"inputs": [
+					{
+						"name": "writeTrackerProviderPreference.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "writeTrackerProviderPreference.preference",
+						"type": "TrackerProviderPreference",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeTrackerProviderPreference",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerClaudePreferredUntil",
+				"inputs": [
+					{
+						"name": "trackerClaudePreferredUntil.store",
+						"type": "Pick<TrackerPersistenceService, 'getMeta'>",
+						"required": true
+					},
+					{
+						"name": "trackerClaudePreferredUntil.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerClaudePreferredUntil",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "activeTrackerProviderPreference",
+				"inputs": [
+					{
+						"name": "activeTrackerProviderPreference.store",
+						"type": "Pick<TrackerPersistenceService, 'getMeta'>",
+						"required": true
+					},
+					{
+						"name": "activeTrackerProviderPreference.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "activeTrackerProviderPreference",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "observeTrackerProviderPreference",
+				"inputs": [
+					{
+						"name": "observeTrackerProviderPreference.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "observeTrackerProviderPreference.policy",
+						"type": "TrackerWireValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "observeTrackerProviderPreference",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "automaticQueueHold",
 				"inputs": [
 					{
@@ -6607,6 +6824,11 @@
 		},
 		{
 			"unit": "function.agents-providers-parse-tracker-model-spec",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-pick-tracker-model",
 			"via": "import",
 			"origin": "derived"
 		},

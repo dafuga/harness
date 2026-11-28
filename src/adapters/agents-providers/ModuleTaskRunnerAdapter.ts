@@ -63,9 +63,7 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 	): TaskRunResult {
 		const result = [...events].reverse().find((e) => e.type === 'turn.completed');
 		if (code !== 0 || !result || events.some((e) => ['turn.failed', 'error'].includes(e.type)))
-			throw new ModuleTaskRunError(
-				'Codex task failed; inspect CLI authentication, permissions or model access.'
-			);
+			throw codexFailure(events);
 		if (result.model && result.model !== input.model)
 			throw new ModuleTaskRunError('Codex ran a different model.');
 		const messages = events
@@ -100,7 +98,7 @@ function completionCommand(
 	const setting = provider === 'claude' ? 'Read,Glob,Grep' : 'read-only';
 	return command.map((part, index) => (flags.includes(command[index - 1]) ? setting : part));
 }
-function claudeTaskCommand(selection: TaskSelection): string[] {
+function claudeTaskCommand(selection: CodexTaskSelection): string[] {
 	return [
 		'claude',
 		'-p',
@@ -120,8 +118,44 @@ function claudeTaskCommand(selection: TaskSelection): string[] {
 		'Read,Edit,Write,Glob,Grep,Bash',
 		// --tools leaves MCP alone: account connectors would join mid-session and fill the context.
 		'--strict-mcp-config',
-		'--no-session-persistence'
+		...claudeSessionFlags(selection)
 	];
+}
+function claudeSessionFlags({ session }: CodexTaskSelection): string[] {
+	if (!session) return ['--no-session-persistence'];
+	return session.resume ? ['--resume', session.resume] : [];
+}
+function codexFailure(events: TaskPublicEvent[]): ModuleTaskRunError {
+	const quota = events.find(isCodexQuotaError);
+	const reset = typeof quota?.error === 'object' ? quota.error?.resets_at : undefined;
+	return Object.assign(
+		new ModuleTaskRunError(
+			quota
+				? 'Codex quota exhausted.'
+				: 'Codex task failed; inspect CLI authentication, permissions or model access.'
+		),
+		{
+			quotaRejected: quota !== undefined,
+			quotaResetsAt: Number.isFinite(reset) ? reset : undefined
+		}
+	);
+}
+const codexQuotaCodes = new Set([
+	'usage_limit_reached',
+	'rate_limit_exceeded',
+	'insufficient_quota'
+]);
+const codexQuotaNotice =
+	/^(?:you['’]ve hit your usage limit\b|workspace (?:owner|member) credits (?:are )?depleted\b|(?:you['’]re )?out of credits\b|spend limit (?:was )?reached\b)/i;
+
+function isCodexQuotaError({ type, error, message }: TaskPublicEvent): boolean {
+	if (!['error', 'turn.failed'].includes(type)) return false;
+	if (error && typeof error === 'object') {
+		if (codexQuotaCodes.has(error.code ?? '') || codexQuotaCodes.has(error.type ?? '')) return true;
+		message = error.message;
+	}
+	const notice = typeof error === 'string' ? error : message;
+	return typeof notice === 'string' && codexQuotaNotice.test(notice.trim());
 }
 function quotaReset(events: TaskPublicEvent[]): number | undefined {
 	return events.find((event) => typeof event.rate_limit_info?.resetsAt === 'number')

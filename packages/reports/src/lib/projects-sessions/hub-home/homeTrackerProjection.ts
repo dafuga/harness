@@ -83,6 +83,7 @@ export function buildHomeSnapshot(
 	const agents: HomeAgent[] = sources ? buildHomeAgents(overview, { ...sources, items }) : [];
 	return {
 		overview,
+		...(sources?.providerPreference && { providerPreference: sources.providerPreference }),
 		...(sources && {
 			projectDirectory: listTrackerProjects(items),
 			reminders: listHomeReminders(shown, now)

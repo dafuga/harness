@@ -178,8 +178,16 @@ export interface HomeTrackerProject {
 	needsYou: number;
 }
 
+/** Daniel's model provider preference while it is on: launches use Claude until this time. */
+export interface HomeProviderPreference {
+	provider: 'claude';
+	until: string;
+}
+
 export interface OwnerHomeSnapshot {
 	overview: OverviewSnapshot;
+	/** Absent when no preference is on, and from older Mac apps. */
+	providerPreference?: HomeProviderPreference;
 	projectDirectory?: HomeTrackerProject[];
 	agents: HomeAgent[];
 	/** Every open structured ask, oldest first. Older Mac apps omit it. */

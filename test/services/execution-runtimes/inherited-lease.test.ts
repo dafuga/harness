@@ -1,12 +1,11 @@
-import { mkdtempSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { rmSync } from 'node:fs';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { resourceRequestSchema } from '../../../src/core/execution-runtimes/resourceTypes';
 import { inheritedLeaseContext } from '../../../src/services/execution-runtimes/resource-queue-service/inheritedLease';
 import { ResourceQueueRepository } from '../../../src/services/execution-runtimes/resource-queue-service/ResourceQueueRepository';
 import { ResourceQueueError } from '../../../src/services/execution-runtimes/ResourceQueueError';
 import { job, resourceQueueFixture } from '../../support/resourceFixture';
+import { createTempDirectory } from '../../support/temporary';
 import type * as IdentityModule from '../../../src/services/agents-providers/agent-activity-service/ProcessIdentityAdapter';
 
 /** A provider sandbox refuses `ps`, so the probe answers nothing; outside one it answers either way. */
@@ -26,8 +25,8 @@ vi.mock(
 
 const cleanup: Array<() => void> = [];
 let queue: ResourceQueueRepository;
-beforeEach(() => {
-	const home = mkdtempSync(join(tmpdir(), 'inherited-lease-'));
+beforeEach(async () => {
+	const home = await createTempDirectory('inherited-lease-');
 	queue = new ResourceQueueRepository(home);
 	cleanup.push(() => {
 		queue.close();

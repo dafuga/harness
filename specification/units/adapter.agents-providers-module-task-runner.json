@@ -22,6 +22,8 @@
 			"src/adapters/agents-providers/module-task-runner-adapter/ModuleTaskRunError.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/ProviderRequestGate.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/TaskOutputOverflowError.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/codexTaskCommand.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/codexTaskCommand.types.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/managedTaskSessions.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/managedTaskSessions.types.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/providerDestination.ts",
@@ -52,6 +54,9 @@
 			"ProviderRequestGate.origin",
 			"ProviderRequestGate.close",
 			"TaskOutputOverflowError",
+			"codexTaskCommand",
+			"codexWritableRoots",
+			"CodexTaskSelection",
 			"managedTaskSessions",
 			"LaunchGeneration",
 			"CompleteGeneration",
@@ -101,7 +106,7 @@
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.command.selection",
-				"type": "TaskSelection & Pick<TaskRunInput, 'images'>",
+				"type": "CodexTaskSelection",
 				"required": true,
 				"description": "Provider, exact model and intelligence level used to build that provider's CLI argument vector.",
 				"examples": [
@@ -131,6 +136,21 @@
 			{
 				"name": "ProviderRequestGate.constructor.forward",
 				"type": "typeof globalThis.fetch",
+				"required": false
+			},
+			{
+				"name": "codexTaskCommand.selection",
+				"type": "CodexTaskSelection",
+				"required": true
+			},
+			{
+				"name": "codexWritableRoots.selection",
+				"type": "Pick<CodexTaskSelection, 'cwd' | 'platform'>",
+				"required": true
+			},
+			{
+				"name": "codexWritableRoots.env",
+				"type": "Record<string, string | undefined>",
 				"required": false
 			},
 			{
@@ -573,7 +593,7 @@
 				"inputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.command.selection",
-						"type": "TaskSelection & Pick<TaskRunInput, 'images'>",
+						"type": "CodexTaskSelection",
 						"required": true,
 						"description": "Provider, exact model and intelligence level used to build that provider's CLI argument vector.",
 						"examples": [
@@ -678,6 +698,47 @@
 					{
 						"name": "ProviderRequestGate.close",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "codexTaskCommand",
+				"inputs": [
+					{
+						"name": "codexTaskCommand.selection",
+						"type": "CodexTaskSelection",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "codexTaskCommand",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "codexWritableRoots",
+				"inputs": [
+					{
+						"name": "codexWritableRoots.selection",
+						"type": "Pick<CodexTaskSelection, 'cwd' | 'platform'>",
+						"required": true
+					},
+					{
+						"name": "codexWritableRoots.env",
+						"type": "Record<string, string | undefined>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "codexWritableRoots",
+						"type": "string[]"
 					}
 				],
 				"errors": [],
@@ -1302,6 +1363,11 @@
 		},
 		{
 			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-config",
 			"via": "import",
 			"origin": "derived"
 		},

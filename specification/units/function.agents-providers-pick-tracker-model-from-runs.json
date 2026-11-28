@@ -37,6 +37,11 @@
 				"type": "number",
 				"required": false,
 				"description": "Optional epoch milliseconds used for model eligibility. The selector defaults to the current time."
+			},
+			{
+				"name": "pickTrackerModelFromRuns.claudePreferredUntil",
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -75,6 +80,11 @@
 						"type": "number",
 						"required": false,
 						"description": "Optional epoch milliseconds used for model eligibility. The selector defaults to the current time."
+					},
+					{
+						"name": "pickTrackerModelFromRuns.claudePreferredUntil",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [
