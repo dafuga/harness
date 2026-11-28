@@ -12,10 +12,8 @@ import { managedTaskSessions } from './module-task-runner-adapter/managedTaskSes
 import { completeOrchestration } from '../../services/agents-providers/completion-hooks/orchestratorCompletion';
 import { completionTurn } from '../../services/agents-providers/completion-hooks/completionRun';
 import type { CompletionTurnInput } from '../../services/agents-providers/completion-hooks/completionRun.types';
-import {
-	codexTaskCommand,
-	type CodexTaskSelection
-} from './module-task-runner-adapter/codexTaskCommand';
+import { codexTaskCommand } from './module-task-runner-adapter/codexTaskCommand';
+import type { CodexTaskSelection } from './module-task-runner-adapter/codexTaskCommand.types';
 /** Run the installed CLIs with saved login, exact model/effort and public output only. */
 export class ModuleTaskRunnerAdapter implements TaskRunner {
 	constructor(private readonly execute: TaskProcessExecutor = taskProcess) {}

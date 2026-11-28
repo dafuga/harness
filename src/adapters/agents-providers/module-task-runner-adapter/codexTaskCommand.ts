@@ -1,15 +1,9 @@
 // @harness-uid u_rw64iex44n
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { isAbsolute, join, resolve } from 'node:path';
-import type {
-	TaskRunInput,
-	TaskSelection
-} from '../../../repositories/agents-providers/ModuleTaskRepository.types';
+import type { CodexTaskSelection } from './codexTaskCommand.types';
 import { resourceHome } from '../../../utils/execution-runtimes/resourceConfig';
 import { hardContextTokens, providerCompactionTokens } from './sessionPolicy';
-
-export type CodexTaskSelection = TaskSelection &
-	Partial<Pick<TaskRunInput, 'images' | 'cwd' | 'platform'>>;
 
 /**
  * Codex gets the same brief and the same working commands as Claude: no user configuration or
