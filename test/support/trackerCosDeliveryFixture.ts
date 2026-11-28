@@ -1,6 +1,7 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
+import { expect } from 'vitest';
 import { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerPersistenceService } from '../../src/services/projects-sessions/TrackerPersistenceService';
 import { watchCosDelivery } from '../../src/services/projects-sessions/tracker-native-runtime-service/trackerCosDelivery';
@@ -10,6 +11,23 @@ export const minute = 60_000;
 export const hour = 60 * minute;
 /** Noon in Lisbon, inside the 08:00 to 22:00 send window. */
 export const noon = Date.UTC(2026, 10, 26, 12);
+
+export async function verifyBusyCosRetry(
+	root: string,
+	items: TrackerItemReadRepository,
+	run: () => Promise<void>,
+	advance: () => number
+) {
+	writeFileSync(join(root, 'mode'), 'busy');
+	await run();
+	expect(existsSync(join(root, 'commands'))).toBe(false);
+	expect.soft(alarmAsks(items, advance()), 'A busy CoS pane must not ask Daniel').toEqual([]);
+	writeFileSync(join(root, 'mode'), 'window-80x24');
+	await run();
+	expect
+		.soft(alarmAsks(items, advance()), 'A successful retry must keep delivery in CoS')
+		.toEqual([]);
+}
 
 export function alert(kind: string, at: number): TrackerWatchdogAlert {
 	return {
