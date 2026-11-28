@@ -199,7 +199,7 @@ export async function expectComputerWorkload(page: Page, device: string, titles:
 	await page.evaluate(() => window.scrollTo(0, 0));
 	await captureNeedsYou(page, `host-work-${device}`);
 	await expect(computers.getByRole('button')).toHaveText(
-		expectedComputerOrder.map((name) => new RegExp(`^${name} ·`))
+		expectedComputerOrder.map((name) => new RegExp(`^\\s*${name} ·`))
 	);
 	await expect(computer).toContainText('2 agents');
 	const trigger = computer.getByRole('button');
