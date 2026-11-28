@@ -12,6 +12,8 @@
 	} from '../../../../../desktop/src/models/development-tooling/Environment.types';
 	import { exampleDocument } from '../../../../../game/src/index';
 	import ChoiceRow from '../../../../../desktop/src/components/shared-primitives/ChoiceRow.svelte';
+	import HtmlButton from '../../../../src/components/shared-primitives/atoms/HtmlButton.svelte';
+	import HtmlUl from '../../../../src/components/shared-primitives/atoms/HtmlUl.svelte';
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';
 	import { previewTracker } from './remote.svelte';
@@ -180,6 +182,12 @@
 					</div>
 				{:else if isHubHomePreview(id)}
 					<HubHomeCatalogPreview {id} {Component} />
+				{:else if id === 'reports.component.accounts-access-device-list-row'}
+					<HtmlUl aria-label="Linked computers">
+						<Component {...fixture.props}>
+							<HtmlButton type="button" aria-label="Connect to Harbor Mac">Connect</HtmlButton>
+						</Component>
+					</HtmlUl>
 				{:else if id === 'desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices'}
 					<!-- Choice styles are scoped to the inbox, which holds them on rows and in the detail. -->
 					<div class="inbox detail"><Component {...fixture.props} /></div>

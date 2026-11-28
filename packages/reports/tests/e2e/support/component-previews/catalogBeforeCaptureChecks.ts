@@ -86,6 +86,12 @@ async function assertAccountAndLayoutPreviews(component: Locator, id: string) {
 		await expect(component.getByText('Child content', { exact: true })).toBeVisible();
 	if (id === 'hub.page.accounts-access-devices')
 		await expect(component.getByText('This browser', { exact: true })).toBeVisible();
+	if (id === 'reports.component.accounts-access-device-list-row') {
+		const row = component.getByRole('listitem');
+		await expect(row.getByText('Harbor Mac', { exact: true })).toBeVisible();
+		await expect(row.getByText('Online', { exact: true })).toBeVisible();
+		await expect(row.getByRole('button', { name: 'Connect to Harbor Mac' })).toBeVisible();
+	}
 	if (id === 'hub.page.public-site-about')
 		await expect(component.getByRole('heading', { level: 1 })).toBeVisible();
 }
