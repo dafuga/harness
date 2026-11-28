@@ -72,12 +72,10 @@ test('approval windows, denial, cancellation and the wrong caller', () => {
 	const late = approval(run.input, run.created, run, { expiresAt: run.clock.now + 61_000 });
 	expect(() => run.broker.decide(sign(run, run.input, late))).toThrow('delivery window');
 	expect(() => run.broker.status(run.ticket, 777)).toThrow('Request not found.');
-	expect(() =>
-		run.broker.status(
-			{ ...run.ticket, receipt: run.ticket.receipt.replace(/^./u, 'A') },
-			sessionUid
-		)
-	).toThrow('Request not found.');
+	const receipt = run.ticket.receipt.replace(/^./u, (first) => (first === 'A' ? 'B' : 'A'));
+	expect(() => run.broker.status({ ...run.ticket, receipt }, sessionUid)).toThrow(
+		'Request not found.'
+	);
 	const deny = {
 		decision: 'deny',
 		requestId: run.created.requestId,
