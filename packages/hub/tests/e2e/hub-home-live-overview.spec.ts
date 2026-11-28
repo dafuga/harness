@@ -78,7 +78,7 @@ for (const [device, width, height] of [
 		if (process.env.TAKE_SCREENSHOT === 'true')
 			await recordRendererMetrics(page, device, navigation?.request().timing().responseEnd);
 		await expect(page.getByRole('list', { name: 'Computers' })).toContainText(
-			/CPU 42% \/ 80% · RAM 61% \/ 75% target/
+			/CPU 42% \/ 80% ·\s+RAM 61% \/ 75% target/
 		);
 		await checkProjectDisclosure(page, answer.liveOverview!.projects, device);
 		await expandProjects(page);
