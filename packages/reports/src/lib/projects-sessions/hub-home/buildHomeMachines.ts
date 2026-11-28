@@ -4,6 +4,7 @@ import type {
 	TrackerRunRecord,
 	TrackerSources
 } from '../project-overview/projectOverviewTracker.types';
+import { compareOverviewMachines } from '../project-overview/projectOverviewItems';
 import type { HomeComputer, HomeComputerSession } from './homeLive.types';
 import { homeText } from './homeTrackerText';
 
@@ -25,9 +26,9 @@ export function buildHomeMachines(
 	const all = [...runs.values()].flat();
 	const byNode = Map.groupBy(all.filter(isActiveHomeRun), (run) => run.node);
 	const byKey = new Map(all.map((run) => [runKey(run), run]));
-	return sources.machines.map((machine) =>
-		homeComputer(machine, byNode.get(machine.node) ?? [], byKey, titles)
-	);
+	return sources.machines
+		.map((machine) => homeComputer(machine, byNode.get(machine.node) ?? [], byKey, titles))
+		.sort(compareOverviewMachines);
 }
 
 function runKey({ node, id }: Pick<TrackerRunRecord, 'node' | 'id'>) {

@@ -23,6 +23,11 @@ test('the desktop landing reaches the overview, which shows the synthetic states
 	await expect(page).toHaveURL(/\/projects$/);
 	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();
 	await expect(page.getByText('fixture-done', { exact: true }).first()).toBeVisible();
+	await expect(page.getByRole('list', { name: 'Computers' }).getByRole('listitem')).toHaveText([
+		'fixture-computer busy',
+		'fixture-runner ok',
+		'fixture-offline offline'
+	]);
 });
 
 test('an open item shows its read-only detail within the page', async ({ page }) => {

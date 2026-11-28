@@ -1,5 +1,6 @@
 // @harness-uid u_6d3toxchme
-import type { OverviewCallout, OverviewItem } from './projectOverview.types';
+import { trackerMachineRole } from '../../../../../../src/utils/projects-sessions/trackerMachineStatus';
+import type { OverviewCallout, OverviewItem, OverviewMachine } from './projectOverview.types';
 import type { IncludedTrackerItem } from './projectOverviewTracker.types';
 import { sanitizeText } from './projectOverviewPrivacy';
 
@@ -62,4 +63,14 @@ export function compareItems(a: OverviewItem, b: OverviewItem): number {
 export function compareText(a: string, b: string): number {
 	if (a === b) return 0;
 	return a < b ? -1 : 1;
+}
+
+/** @pure Online primary first, then other online computers, then offline computers by name. */
+export function compareOverviewMachines(a: OverviewMachine, b: OverviewMachine): number {
+	return computerRank(a) - computerRank(b) || compareText(a.name, b.name);
+}
+
+function computerRank({ name, status }: OverviewMachine): number {
+	if (status === 'offline') return 2;
+	return trackerMachineRole(name) === 'primary' ? 0 : 1;
 }

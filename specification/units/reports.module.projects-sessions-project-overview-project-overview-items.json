@@ -19,7 +19,8 @@
 			"toOverviewItem",
 			"toCallout",
 			"compareItems",
-			"compareText"
+			"compareText",
+			"compareOverviewMachines"
 		]
 	},
 	"contract": {
@@ -114,6 +115,16 @@
 				"type": "string",
 				"required": true,
 				"description": "The second item or value to compare."
+			},
+			{
+				"name": "compareOverviewMachines.a",
+				"type": "OverviewMachine",
+				"required": true
+			},
+			{
+				"name": "compareOverviewMachines.b",
+				"type": "OverviewMachine",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -334,11 +345,39 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "compareOverviewMachines",
+				"inputs": [
+					{
+						"name": "compareOverviewMachines.a",
+						"type": "OverviewMachine",
+						"required": true
+					},
+					{
+						"name": "compareOverviewMachines.b",
+						"type": "OverviewMachine",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "compareOverviewMachines",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-machine-status",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-project-overview-project-overview-privacy",
 			"via": "import",

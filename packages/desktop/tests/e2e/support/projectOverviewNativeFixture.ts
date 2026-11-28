@@ -90,7 +90,11 @@ export const overviewSnapshot: OverviewSnapshot = {
 			updatedAt: at
 		}
 	],
-	machines: [{ name: 'fixture-computer', status: 'busy' }],
+	machines: [
+		{ name: 'fixture-offline', status: 'offline' },
+		{ name: 'fixture-runner', status: 'ok' },
+		{ name: 'fixture-computer', status: 'busy' }
+	],
 	liveSessions: 1
 };
 

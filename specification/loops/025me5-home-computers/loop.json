@@ -2,7 +2,7 @@
 	"name": "025me5-home-computers",
 	"goal": "Home hides historical project totals and reports active sessions and heartbeat capacity per computer through the shared Hub and Mac renderers.",
 	"createdAt": "2026-11-28T10:07:52.171Z",
-	"updatedAt": "2026-11-28T10:15:07.456Z",
+	"updatedAt": "2026-11-28T10:25:26.533Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,7 +34,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T10:25:26.533Z",
+			"evidence": "Shared Home pill and read-only dialog use Tracker machine status, reasons and existing capacity readings. Live origin and lease destination runs are deduplicated. Historic project counts remain in the data."
 		},
 		{
 			"id": "green",
