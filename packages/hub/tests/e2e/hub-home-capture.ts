@@ -96,20 +96,17 @@ export async function captureHomeTop(page: Page, path: string) {
 	}
 }
 
-export async function expectLaunchPause(page: Page, overview: Locator, path: string) {
-	const hold = overview.locator('.hh-live-row', { hasText: 'Waiting on CI maintenance' });
-	if (process.env.TAKE_SCREENSHOT === 'true') {
-		await page.evaluate(async () => {
-			await document.fonts.ready;
-			await Promise.all([...document.images].map((img) => img.decode()));
-		});
-		await page.screenshot({
-			path,
-			animations: 'disabled',
-			fullPage: true
-		});
-	}
-	await expect(hold).toContainText('Launch paused');
-	await expect(hold).toContainText('Automatic launch paused by operator until');
+export async function expectLaunchPause(page: Page, overview: Locator, device: string) {
+	const trigger = overview.getByRole('list', { name: 'Waiting jobs' }).getByRole('button', {
+		name: 'Waiting on CI maintenance',
+		exact: true
+	});
+	await captureNeedsYou(page, `launch-hold-${device}`, overview);
+	await expect(trigger).toContainText('Launch paused');
+	await trigger.click();
+	const detail = page.getByRole('dialog', { name: 'Job details' });
+	await captureNeedsYou(page, `launch-hold-detail-${device}`, detail);
+	await expect(detail).toContainText(/Automatic launch paused by operator until .+, Lisbon time/);
+	await detail.getByRole('button', { name: 'Close' }).click();
 	await expect(page.getByRole('heading', { level: 1 })).toContainText('for 14 agents');
 }

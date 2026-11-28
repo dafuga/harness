@@ -205,8 +205,13 @@ operator verifies the stopped database and chooses a rollback.
   Explicit manual intake keeps its source's launch policy.
   For active context above
   150,000 tokens, Tracker requests a short handoff once an owned pane is
-  idle. It closes that pane for a fresh launch only after it verifies the
-  handoff note and original attempt. Busy, attached, and unowned panes
+  idle. Workers can also file their own checkpoint using a Tracker note
+  that starts with `stopped: watchdog context handoff; resume from:`, then
+  leave the item in progress and pause at the idle prompt. After verifying
+  the note and original attempt, Tracker closes the pane and recovers
+  the same item with the recorded model and effort in a fresh session.
+  An overdue checkpoint alerts Chief of Staff while the item remains active.
+  Busy, attached, and unowned panes
   require Chief of Staff attention. Transcript roots allow local context
   measurement without including transcript contents in alerts.
 

@@ -5,10 +5,15 @@ import { TrackerTmuxAdapter } from '../../../src/adapters/projects-sessions/Trac
 import { measureWorkload } from '../../support/measureWorkload';
 import { withTempDir } from '../../support/temporary';
 
-test('rechecks the idle pane and sends literal keys only to its unchanged socket identity', () =>
-	measureWorkload('adapter.projects-sessions-tracker-tmux', 'pane-identity', () =>
-		withTempDir('hnt-tmux-', proveTmuxPaneIdentity)
-	));
+// Every fake tmux command starts a Bun process, so the three-socket scan outlasts the 5 s default.
+test(
+	'rechecks the idle pane and sends literal keys only to its unchanged socket identity',
+	() =>
+		measureWorkload('adapter.projects-sessions-tracker-tmux', 'pane-identity', () =>
+			withTempDir('hnt-tmux-', proveTmuxPaneIdentity)
+		),
+	20_000
+);
 
 async function proveTmuxPaneIdentity(root: string) {
 	const executable = join(root, 'tmux-fixture');
@@ -16,13 +21,22 @@ async function proveTmuxPaneIdentity(root: string) {
 	const layout = join(root, 'layout');
 	writeFileSync(executable, `#!${process.execPath}\n${tmuxFixture}`, { mode: 0o700 });
 	writeFileSync(layout, 'auto-abc123-r7|1800000000|71|%9|200|1800000000|2|2|0|0|0|0|1|1|codex');
+	writeFileSync(
+		layout + '-tracker-claude-aqua',
+		'auto-def123-r8|1800000000|73|%9|250|1800000000|2|2|0|0|0|0|1|1|claude'
+	);
 	const tmux = new TrackerTmuxAdapter({ executable, node: 'harbor-mbp-2' });
 	const signal = new AbortController().signal;
 	const panes = await tmux.scan(signal);
-	expect(panes).toHaveLength(1);
-	const [pane] = panes;
+	expect(panes).toHaveLength(2);
+	const [pane, aqua] = panes;
 	expect(pane).toMatchObject({
 		key: 'claude:71:1800000000:200:%9',
+		runnerSocket: true,
+		ready: true
+	});
+	expect(aqua).toMatchObject({
+		key: 'tracker-claude-aqua:73:1800000000:250:%9',
 		runnerSocket: true,
 		ready: true
 	});
@@ -50,7 +64,8 @@ if (args[1] === 'default') {
 	process.stderr.write('no server running on fixture');
 	process.exit(1);
 }
-const raw = readFileSync(join(dir, 'layout'), 'utf8');
+const layout = args[1] === 'claude' ? 'layout' : 'layout-' + args[1];
+const raw = readFileSync(join(dir, layout), 'utf8');
 const submitted = join(dir, 'submitted');
 const keys = join(dir, 'keys.json');
 const count = existsSync(submitted) ? Number(readFileSync(submitted, 'utf8')) : 0;

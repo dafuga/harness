@@ -14,6 +14,7 @@ import {
 	readTrackerMemory,
 	readTrackerMetricsCommand
 } from './tracker-machine-sampler-adapter/readTrackerMemory';
+import { trackerTmuxSockets } from './tracker-tmux-adapter/trackerTmuxPane';
 
 const gib = 1024 ** 3;
 
@@ -62,10 +63,10 @@ export class TrackerMachineSamplerAdapter {
 
 	private async panes(): Promise<Map<number, string>> {
 		const panes = new Map<number, string>();
-		const sockets = this.node === 'harbor-mbp-2' ? [[], ['-L', 'claude']] : [[]];
-		for (const socket of sockets) {
+		for (const socket of trackerTmuxSockets(this.node)) {
 			const listed = await readTrackerMetricsCommand(this.tmux, [
-				...socket,
+				'-L',
+				socket,
 				'list-panes',
 				'-a',
 				'-F',

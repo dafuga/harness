@@ -14,6 +14,7 @@ import { trackerAutomationBrowserRule } from './trackerAutomationBrowserRule';
 import { trackerDoneProofRule } from './trackerDoneProofRule';
 import { trackerSecretSafetyRule } from './trackerSecretSafetyRule';
 import { trackerCpuBudgetRule } from '../../../utils/projects-sessions/trackerCpuBudget';
+import { trackerContextCheckpointPrefix } from './trackerWatchdogContext';
 
 const launchRules = [
 	'Never merge into a Greymass repository. For Greymass work, stop at the pull request.',
@@ -74,8 +75,8 @@ export function formatTrackerHostBrief(
 		...trackerResumeLines(item, recovery),
 		trackerAnswerBrief(item),
 		`Start by running \`tracker start ${id}\`.`,
-		'Keep working through verification. Pause only when the task is done or a true blocker prevents further work.',
-		'At 150,000 active context tokens, leave a short Tracker handoff with the exact worktree, branch, completed work, pending checks and next step.',
+		'Keep working through verification. Pause when the task is done, a true blocker prevents further work, or you file a context checkpoint.',
+		`At 150,000 active context tokens, run tracker note ${id} with a note starting "${trackerContextCheckpointPrefix}". Include the exact worktree, branch, completed work, pending checks and next step. Leave the item in progress and pause at the idle prompt. Tracker will continue the same item with the same model in a fresh session.`,
 		'',
 		completion,
 		'',

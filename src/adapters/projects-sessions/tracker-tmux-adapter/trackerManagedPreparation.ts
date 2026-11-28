@@ -6,6 +6,7 @@ import type { TrackerHostStartRequest } from '../../../services/projects-session
 import { managedSessionName, trackerManagedToken } from './trackerManagedLaunchReceipt';
 import type { TrackerManagedReceipt } from './trackerManagedHostLauncher.types';
 import { managedBrief, workerScript } from './trackerManagedWorkerProcess';
+import { trackerClaudeAquaSocket } from './trackerTmuxPane';
 import { prepareTrackerWorkingDirectory } from './trackerManagedWorkingDirectory';
 import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';
 import { trackerGuestAuthFile, trackerWorkerClient } from './trackerWorkerClient';
@@ -29,6 +30,7 @@ export async function prepareManagedLaunch(
 ) {
 	const worktree = await prepareTrackerWorkingDirectory(directory, input, signal);
 	if (typeof worktree !== 'string') return worktree;
+	const claude = input.backend === 'native' && input.selection.provider === 'claude';
 	const receipt: TrackerManagedReceipt = {
 		node: input.node,
 		key: input.key,
@@ -37,8 +39,8 @@ export async function prepareManagedLaunch(
 		token: trackerManagedToken(input.node, input.key),
 		tmux: managedSessionName(input.itemId, input.runId),
 		issuedAt: Date.now(),
-		...(input.backend === 'native' &&
-			input.selection.provider === 'claude' && { checkClaudeStartup: true })
+		...(claude && { checkClaudeStartup: true }),
+		...(claude && input.node === 'harbor-mbp-2' && { socket: trackerClaudeAquaSocket })
 	};
 	const detached = worktree === join(directory, 'worktree');
 	if (!detached)

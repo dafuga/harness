@@ -13,6 +13,7 @@ import {
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { trackerStoredSchedulingHold } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { TrackerRecoveryState } from './trackerSessionRecovery.types';
+import { isContextCheckpoint } from './trackerWatchdogContext';
 
 export const maxRecoveryAttempts = 3;
 export const emptyRecoveryState: TrackerRecoveryState = {
@@ -57,14 +58,17 @@ function resetBudget(
 function settledRecoveryRun(run: TrackerListedRun, item: TrackerItem) {
 	if (run.started_at == null || run.ended_at == null) return false;
 	const start = Math.max(run.started_at, run.queued_at ?? 0);
-	return (
-		run.ended_at - start >= recoveryGrace ||
-		item.notes_log.some(
-			({ node, at, text }) =>
-				node === run.node &&
-				Date.parse(at) >= start &&
-				/^stopped: watchdog context handoff; resume from:/i.test(text)
-		)
+	return run.ended_at - start >= recoveryGrace || hasContextCheckpoint(run, item);
+}
+
+function hasContextCheckpoint(run: TrackerListedRun, item: TrackerItem): boolean {
+	const start = Math.max(run.started_at ?? 0, run.queued_at ?? 0);
+	return item.notes_log.some(
+		({ node, at, text }) =>
+			node === run.node &&
+			Date.parse(at) >= start &&
+			Date.parse(at) <= (run.ended_at ?? Infinity) &&
+			isContextCheckpoint(text)
 	);
 }
 
@@ -73,9 +77,10 @@ export function recoveryRung(
 	item: TrackerItem,
 	node: string
 ): TrackerLaunchRung | undefined {
+	const recorded = run && recordedRung(run);
+	if (recorded && run && hasContextCheckpoint(run, item)) return recorded;
 	const fallback = handLaunchSelection(item, node);
 	if (fallback && handLaunchNode(item, run?.started_at ?? 0) === node) return fallback;
-	const recorded = run && recordedRung(run);
 	return recorded ?? compatibleFallback(run, fallback);
 }
 

@@ -3,6 +3,7 @@ import type {
 	OverviewItem,
 	OverviewSnapshot
 } from '../../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
+import type { OwnerHomeSnapshot } from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import type { OverviewBridge } from './projectOverviewNativeFixture.types';
 
 const at = '2026-11-20T20:41:00.000Z';
@@ -98,12 +99,59 @@ export const overviewSnapshot: OverviewSnapshot = {
 	liveSessions: 1
 };
 
+export const overviewHomeSnapshot: OwnerHomeSnapshot = {
+	overview: overviewSnapshot,
+	agents: [],
+	plans: [],
+	scheduled: [],
+	providers: { routines: null, quota: null },
+	liveOverview: {
+		machines: overviewSnapshot.machines,
+		readAt: at,
+		hiddenRuns: 0,
+		omittedRows: 0,
+		projects: [
+			{
+				agent: 'fixture-active',
+				running: 1,
+				counts: { open: 0, in_progress: 1, blocked: 0, done: 0 },
+				updatedAt: at,
+				rows: [
+					{
+						key: 'fixture-live-work',
+						itemId: 'fx-3',
+						title: 'Synthetic live item',
+						state: 'running',
+						status: 'in_progress',
+						stage: 'build',
+						outcome: null,
+						now: 'Synthetic milestone',
+						owner: 'Fixture owner',
+						computer: 'fixture-computer',
+						model: 'fixture-model',
+						startedAt: at,
+						updatedAt: at
+					}
+				]
+			}
+		]
+	}
+};
+
 /** Installs the window bridge of the desktop app, answering the overview as `mode` says. */
-export async function fakeOverviewBridge(page: Page, mode: OverviewBridge) {
-	await page.addInitScript(installBridge, { mode, snapshot: overviewSnapshot });
+export async function fakeOverviewBridge(
+	page: Page,
+	mode: OverviewBridge,
+	home?: OwnerHomeSnapshot
+) {
+	await page.addInitScript(installBridge, { mode, snapshot: overviewSnapshot, home });
 }
 
-function installBridge(input: { mode: OverviewBridge; snapshot: unknown }) {
+function installBridge(input: {
+	mode: OverviewBridge;
+	snapshot: unknown;
+	home?: OwnerHomeSnapshot;
+}) {
 	if (input.mode === 'web') return;
 	const overview =
 		input.mode === 'absent'
@@ -114,8 +162,18 @@ function installBridge(input: { mode: OverviewBridge; snapshot: unknown }) {
 						return input.snapshot;
 					}
 				};
+	const home = input.home
+		? {
+				homeSnapshot: async () => input.home,
+				hostedStatus: async () => ({
+					configured: true,
+					state: 'signed-in',
+					actor: { id: 'fixture-owner', name: 'Fixture owner' }
+				})
+			}
+		: {};
 	Object.assign(window, {
-		harness: { listProjects: async () => [], ...overview },
+		harness: { listProjects: async () => [], ...overview, ...home },
 		harnessRemote: {
 			status: async () => ({ supported: false, enabled: false, state: 'disabled' }),
 			onStatus: () => () => {}
@@ -129,6 +187,7 @@ export async function captureOverview(page: Page, name: string) {
 	await page.evaluate(() => document.fonts.ready);
 	const revision = process.env.HARNESS_VERIFY_REVISION ?? 'local';
 	await page.screenshot({
-		path: `/tmp/harness-env-evidence/project-overview-${name}-${revision}.png`
+		path: `/tmp/harness-env-evidence/project-overview-${name}-${revision}.png`,
+		animations: 'disabled'
 	});
 }

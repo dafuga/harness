@@ -54,7 +54,7 @@ exit "$result"
 
 function launchEnvironment(
 	{ tmux, trackerBin, trackerExecutable }: TrackerManagedTarget,
-	{ node, itemId, runId, tmux: pane }: TrackerManagedReceipt,
+	{ node, socket, itemId, runId, tmux: pane }: TrackerManagedReceipt,
 	{ command, clientPath, guestAuthFile, cpuBudget }: TrackerManagedExec
 ) {
 	return [
@@ -67,7 +67,7 @@ function launchEnvironment(
 		`TRACKER_ITEM_ID=${itemId}`,
 		`TRACKER_RUN_ID=${runId}`,
 		`HARNESS_TRACKER_TMUX=${tmux}`,
-		`HARNESS_TRACKER_SOCKET=${trackerSocket(node)}`,
+		`HARNESS_TRACKER_SOCKET=${trackerSocket(node, socket)}`,
 		`HARNESS_TRACKER_PANE=${pane}`,
 		...(command.image ? [`HARNESS_TASK_DOCKER_IMAGE=${command.image}`] : []),
 		...(command.image && guestAuthFile ? [`HARNESS_TRACKER_GUEST_AUTH_FILE=${guestAuthFile}`] : []),
@@ -82,7 +82,7 @@ export async function launchTmux(
 	signal: AbortSignal
 ): Promise<string | undefined> {
 	const { tmux, worktree, windowName } = target;
-	const { node, token } = receipt;
+	const { node, socket, token } = receipt;
 	const { script, command, cpuBudget } = execution;
 	const environment = launchEnvironment(target, receipt, execution);
 	// Outside the home project, lower priority lets Harbor win contention.
@@ -93,7 +93,7 @@ export async function launchTmux(
 			'-f',
 			'/dev/null',
 			'-L',
-			trackerSocket(node),
+			trackerSocket(node, socket),
 			'new-session',
 			'-d',
 			'-s',
@@ -120,8 +120,8 @@ export async function launchTmux(
 		: trackerStartupCause(`tmux could not start the session: ${created.stderr}`);
 }
 
-export function trackerSocket(node: string): string {
-	return node === 'harbor-mbp-2' ? 'claude' : 'default';
+export function trackerSocket(node: string, socket?: TrackerManagedReceipt['socket']): string {
+	return socket ?? (node === 'harbor-mbp-2' ? 'claude' : 'default');
 }
 
 export function managedBrief(input: TrackerHostStartRequest, checkout?: string): string {
@@ -155,17 +155,18 @@ export async function confirmManagedStartupAbsent(
 	const record = checkTrackerManagedReceipt(path, node, key);
 	if (record && (record.itemId !== itemId || record.runId !== runId || record.tmux !== name))
 		return false;
-	const presence = await probeManagedTmuxSession({ tmux, node }, name, record?.token, signal);
+	const socket = trackerSocket(node, record?.socket);
+	const presence = await probeManagedTmuxSession({ tmux, socket }, name, record?.token, signal);
 	return presence === 'absent' && !hasManagedStartupEvidence(path);
 }
 
 export async function probeManagedTmuxSession(
-	{ tmux, node }: { tmux: string; node: string },
+	{ tmux, socket }: { tmux: string; socket: string },
 	name: string,
 	token: string | undefined,
 	signal: AbortSignal
 ): Promise<TrackerManagedPresence> {
-	const result = await managedTmuxEnvironment(tmux, node, name, signal);
+	const result = await managedTmuxEnvironment(tmux, socket, name, signal);
 	if (token && result.code === 0 && result.stdout.trim() === `HARNESS_TRACKER_ATTEMPT=${token}`)
 		return 'live';
 	return result.code === 1 && missingTmuxSession(result.stderr, name) ? 'absent' : 'unknown';

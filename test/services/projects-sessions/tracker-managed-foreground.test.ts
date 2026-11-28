@@ -55,6 +55,7 @@ test(
 						await withTempRepo((repo) => proveNativeUsage(repo, true));
 						await withTempRepo((repo) => proveNativeUsage(repo, false, join(repo.root, 'ops')));
 						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'signed-out'));
+						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'locked-keychain'));
 						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'onboarding'));
 						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'untrusted'));
 						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'crash'));

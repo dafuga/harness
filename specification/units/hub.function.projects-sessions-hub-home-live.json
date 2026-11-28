@@ -17,6 +17,7 @@
 			"workStateLabel",
 			"workNow",
 			"span",
+			"updatedWorkAge",
 			"workAge",
 			"workTimes",
 			"workFacts",
@@ -55,6 +56,18 @@
 			},
 			{
 				"name": "span.now",
+				"type": "number",
+				"required": true,
+				"description": "The current time in milliseconds."
+			},
+			{
+				"name": "updatedWorkAge.updatedAt",
+				"type": "string",
+				"required": true,
+				"description": "The most recent Tracker update as an ISO time."
+			},
+			{
+				"name": "updatedWorkAge.now",
 				"type": "number",
 				"required": true,
 				"description": "The current time in milliseconds."
@@ -138,6 +151,11 @@
 				"name": "span",
 				"type": "unknown",
 				"description": "The elapsed time in its largest whole unit."
+			},
+			{
+				"name": "updatedWorkAge",
+				"type": "string",
+				"description": "Time since the last Tracker update, formatted for a job card."
 			},
 			{
 				"name": "workAge",
@@ -249,6 +267,32 @@
 						"name": "span",
 						"type": "unknown",
 						"description": "The elapsed time in its largest whole unit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "updatedWorkAge",
+				"inputs": [
+					{
+						"name": "updatedWorkAge.updatedAt",
+						"type": "string",
+						"required": true,
+						"description": "The most recent Tracker update as an ISO time."
+					},
+					{
+						"name": "updatedWorkAge.now",
+						"type": "number",
+						"required": true,
+						"description": "The current time in milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "updatedWorkAge",
+						"type": "string",
+						"description": "Time since the last Tracker update, formatted for a job card."
 					}
 				],
 				"errors": [],

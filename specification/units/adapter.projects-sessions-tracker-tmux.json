@@ -82,6 +82,8 @@
 			"stopManagedRun",
 			"managedTmuxEnvironment",
 			"missingTmuxSession",
+			"trackerClaudeAquaSocket",
+			"trackerTmuxSockets",
 			"trackerPaneFormat",
 			"trackerSessionName",
 			"trackerTmuxPane",
@@ -409,6 +411,12 @@
 				"required": true
 			},
 			{
+				"name": "trackerSocket.socket",
+				"type": "TrackerManagedReceipt['socket']",
+				"required": false,
+				"description": "Socket recorded for the attempt. Older receipts use the node's legacy socket."
+			},
+			{
 				"name": "managedBrief.input",
 				"type": "TrackerHostStartRequest",
 				"required": true
@@ -444,9 +452,10 @@
 				"required": true
 			},
 			{
-				"name": "probeManagedTmuxSession.node",
+				"name": "probeManagedTmuxSession.socket",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Socket recorded for the managed attempt, or its node's legacy socket."
 			},
 			{
 				"name": "probeManagedTmuxSession.name",
@@ -519,9 +528,10 @@
 				"required": true
 			},
 			{
-				"name": "managedTmuxEnvironment.node",
+				"name": "managedTmuxEnvironment.socket",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Socket whose session environment contains the managed attempt identity."
 			},
 			{
 				"name": "managedTmuxEnvironment.name",
@@ -544,6 +554,11 @@
 				"required": true
 			},
 			{
+				"name": "trackerTmuxSockets.node",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "trackerTmuxPane.raw",
 				"type": "string",
 				"required": true,
@@ -551,7 +566,7 @@
 			},
 			{
 				"name": "trackerTmuxPane.scope",
-				"type": "{ socket: string; runnerSocket: boolean; names: RegExp }",
+				"type": "{ socket: string; primarySocket: boolean; names: RegExp }",
 				"required": true,
 				"description": "Socket identity, runner designation and accepted session names."
 			},
@@ -1358,6 +1373,12 @@
 						"name": "trackerSocket.node",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "trackerSocket.socket",
+						"type": "TrackerManagedReceipt['socket']",
+						"required": false,
+						"description": "Socket recorded for the attempt. Older receipts use the node's legacy socket."
 					}
 				],
 				"outputs": [
@@ -1434,9 +1455,10 @@
 						"required": true
 					},
 					{
-						"name": "probeManagedTmuxSession.node",
+						"name": "probeManagedTmuxSession.socket",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Socket recorded for the managed attempt, or its node's legacy socket."
 					},
 					{
 						"name": "probeManagedTmuxSession.name",
@@ -1574,9 +1596,10 @@
 						"required": true
 					},
 					{
-						"name": "managedTmuxEnvironment.node",
+						"name": "managedTmuxEnvironment.socket",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Socket whose session environment contains the managed attempt identity."
 					},
 					{
 						"name": "managedTmuxEnvironment.name",
@@ -1622,6 +1645,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerTmuxSockets",
+				"inputs": [
+					{
+						"name": "trackerTmuxSockets.node",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTmuxSockets",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "trackerTmuxPane",
 				"inputs": [
 					{
@@ -1632,7 +1673,7 @@
 					},
 					{
 						"name": "trackerTmuxPane.scope",
-						"type": "{ socket: string; runnerSocket: boolean; names: RegExp }",
+						"type": "{ socket: string; primarySocket: boolean; names: RegExp }",
 						"required": true,
 						"description": "Socket identity, runner designation and accepted session names."
 					}

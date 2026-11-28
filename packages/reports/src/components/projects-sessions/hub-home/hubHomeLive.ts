@@ -65,10 +65,15 @@ export function span(from: string, now: number) {
 	return minutes < 1440 ? `${Math.floor(minutes / 60)}h` : `${Math.floor(minutes / 1440)}d`;
 }
 
+/** @pure Relative time since Tracker updated this item. */
+export function updatedWorkAge(updatedAt: string, now: number) {
+	return `updated ${span(updatedAt, now)} ago`;
+}
+
 /** @pure How long this run has been going or waiting, and how long since Tracker changed it. */
 export function workAge(row: HomeWorkRow, now: number) {
 	const { state, startedAt, updatedAt } = row;
-	const updated = `updated ${span(updatedAt, now)} ago`;
+	const updated = updatedWorkAge(updatedAt, now);
 	if (!startedAt || state === 'finished') return updated;
 	if (state === 'running') return `running ${span(startedAt, now)} · ${updated}`;
 	const since = state === 'queued' ? 'queued' : 'started';

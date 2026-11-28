@@ -161,8 +161,13 @@ async function inspectManagedSession(
 	const path = join(directory, trackerManagedToken(node, key));
 	const record = checkTrackerManagedReceipt(path, node, key);
 	if (!record) return undefined;
-	const socket = trackerSocket(node);
-	const presence = await probeManagedTmuxSession({ tmux, node }, record.tmux, record.token, signal);
+	const socket = trackerSocket(node, record.socket);
+	const presence = await probeManagedTmuxSession(
+		{ tmux, socket },
+		record.tmux,
+		record.token,
+		signal
+	);
 	const session = trackerManagedEvidence(path, record, presence);
 	return session && record.checkClaudeStartup
 		? confirmManagedClaudeStartup(

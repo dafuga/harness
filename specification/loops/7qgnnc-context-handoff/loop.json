@@ -1,0 +1,65 @@
+{
+	"name": "7qgnnc-context-handoff",
+	"goal": "When a managed session reaches the context limit, preserve its checkpoint and continue the same Tracker item and model in a fresh session exactly once.",
+	"createdAt": "2026-11-28T11:03:23.056Z",
+	"updatedAt": "2026-11-28T11:13:22.731Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:04:20.360Z",
+			"evidence": "Runs #1204 and #1219 entered blocked status after saving mandatory context checkpoints. A worker must be able to checkpoint the current owned attempt, leave the item active, and let recovery request a fresh session with the same model."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:04:23.424Z",
+			"evidence": "Extend the existing watchdog-context-handoff workload beyond solicited pane closure to exercise a worker checkpoint filed before the next watchdog sample and the real recovery dispatch path."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:07:47.741Z",
+			"evidence": "Committed c4a09cd709. Formal checkpoint 68a9fc0d records the unsampled context checkpoint failing because no close was attempted."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:07:49.844Z",
+			"evidence": "Recognize a same-host checkpoint from the current owned attempt independently of token sampling, prompt workers to stay in progress, alert on overdue notes while retaining the live run, and prefer the recorded recovery model for that checkpoint."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:13:22.731Z",
+			"evidence": "Formal unchanged case red 7ac113b3 at c4a09cd709 and green 48da96e3 at fc54848517 under the same profile. MB2 native tmux fixture red on abbae47c79 plus the test patch (original pane still alive) and green on 3e76f36f0f (original pane gone, one matching fresh run and brief)."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Check other context handoff, worker settlement and requeue paths for the same blocked continuation",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
