@@ -8,6 +8,7 @@ import { runCommand } from './support/cli';
 import { measureProcess } from './support/cli-measurement/measureProcess';
 import { seedConsumerLock } from './support/packagedConsumerLock';
 import { expectPackagedSqlite } from './support/packagedSqliteConsumer';
+import { expectPackedCliKernel } from './support/packedCliKernel';
 import { packedApiConsumer, packedApiConsumerConfig } from './support/packedApiConsumer';
 
 /**
@@ -137,6 +138,7 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 	await withPackedConsumer(async (project) => {
 		const types = await expectTypes(project);
 		await expectPackagedSqlite(project);
+		await expectPackedCliKernel(project);
 		const manifest = await readFile('specification/units/function.commit-identity.json', 'utf8');
 		const native = kernelArtifacts().native ?? '';
 		const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
