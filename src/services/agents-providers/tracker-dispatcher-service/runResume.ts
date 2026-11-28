@@ -79,7 +79,12 @@ function answeredRun(
 		run.outcome === 'blocked' &&
 		answeredBlock(item) &&
 		item &&
-		!automaticRequestHold({ ...item, status: 'in_progress' }, policy, now) &&
+		!automaticRequestHold(
+			{ ...item, status: 'in_progress' },
+			policy,
+			now,
+			run.started_at !== null
+		) &&
 		matchesRequest(item, run, policy) &&
 		!hasOpenSession(snapshot, policy, now, run) &&
 		!runs.some((later) => later.node === run.node && later.id > run.id && later.started_at !== null)

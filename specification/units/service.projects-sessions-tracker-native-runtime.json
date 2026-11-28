@@ -314,6 +314,7 @@
 			"watchTrackerQuota",
 			"observeTrackerQuota",
 			"automaticQueueHold",
+			"automaticHostHold",
 			"queuedRung",
 			"transferHeldTrackerLaunch",
 			"maxRecoveryAttempts",
@@ -1810,6 +1811,37 @@
 			{
 				"name": "automaticQueueHold.queued",
 				"type": "TrackerLaunchRung",
+				"required": false
+			},
+			{
+				"name": "automaticQueueHold.runs",
+				"type": "readonly TrackerRunReceipt[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "automaticHostHold.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "automaticHostHold.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "automaticHostHold.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "automaticHostHold.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
+				"name": "automaticHostHold.automaticEnabled",
+				"type": "() => boolean",
 				"required": false
 			},
 			{
@@ -5358,11 +5390,55 @@
 						"name": "automaticQueueHold.queued",
 						"type": "TrackerLaunchRung",
 						"required": false
+					},
+					{
+						"name": "automaticQueueHold.runs",
+						"type": "readonly TrackerRunReceipt[]",
+						"required": false,
+						"default": []
 					}
 				],
 				"outputs": [
 					{
 						"name": "automaticQueueHold",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "automaticHostHold",
+				"inputs": [
+					{
+						"name": "automaticHostHold.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "automaticHostHold.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "automaticHostHold.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "automaticHostHold.now",
+						"type": "() => number",
+						"required": true
+					},
+					{
+						"name": "automaticHostHold.automaticEnabled",
+						"type": "() => boolean",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "automaticHostHold",
 						"type": "unknown"
 					}
 				],

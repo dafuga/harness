@@ -2,7 +2,7 @@
 	"name": "7qgnnc-checkpoint-due",
 	"goal": "Keep verified started watchdog work eligible for continuation while holding first unattended starts until due",
 	"createdAt": "2026-11-28T14:25:56.031Z",
-	"updatedAt": "2026-11-28T14:27:08.775Z",
+	"updatedAt": "2026-11-28T14:33:31.680Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T14:33:30.353Z",
+			"evidence": "Formal red 3a451fdab389 on the existing dispatcher cases: the recovery request returned item is not due and the answered live attempt was ignored. The unchanged MB2 native tmux case also exhausted its recovery budget before the future deadline."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T14:33:31.680Z",
+			"evidence": "Require an observed start from a local run receipt at recovery request, queue, claim and host startup. A matching started run can resume in its existing live session. Keep fresh or unstarted work behind the due gate and retain all other holds."
 		},
 		{
 			"id": "green",

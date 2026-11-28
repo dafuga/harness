@@ -9,6 +9,7 @@ import type {
 import {
 	automaticRequestHold,
 	canonicalNode,
+	continuesStartedRun,
 	knownNode,
 	startable,
 	hasOpenSession,
@@ -27,7 +28,8 @@ export function recoveryIntent(
 ): TrackerDispatchDecision {
 	if (!recoveringItem(item))
 		return skip('ignored', 'item or automatic launch policy changed during recovery');
-	const hold = automaticRequestHold(item, policy, now);
+	const continuing = continuesStartedRun(request.source, snapshot.runs, policy);
+	const hold = automaticRequestHold(item, policy, now, continuing);
 	if (hold) return skip('held', hold);
 	if (item.launch?.token === request.token)
 		return { result: { status: 'existing', intent: item.launch } };
