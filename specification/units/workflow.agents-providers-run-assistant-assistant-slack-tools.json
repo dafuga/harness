@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.agents-providers-run-assistant-assistant-slack-tools",
+	"uid": "u_df3xdhg4az",
+	"kind": "workflow",
+	"title": "assistantSlackTools",
+	"responsibility": "Owns the assistantSlackTools command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/agents-providers/run-assistant/assistantSlackTools.ts"],
+		"symbols": ["assistantSlackTools"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "assistantSlackTools.config",
+				"type": "AssistantRunnerConfig",
+				"required": true
+			},
+			{
+				"name": "assistantSlackTools.slack",
+				"type": "AssistantSlackMediaAdapter",
+				"required": true
+			},
+			{
+				"name": "assistantSlackTools.canvas",
+				"type": "() => Promise<RunbookCanvasState | undefined>",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "assistantSlackTools",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "assistantSlackTools",
+				"inputs": [
+					{
+						"name": "assistantSlackTools.config",
+						"type": "AssistantRunnerConfig",
+						"required": true
+					},
+					{
+						"name": "assistantSlackTools.slack",
+						"type": "AssistantSlackMediaAdapter",
+						"required": true
+					},
+					{
+						"name": "assistantSlackTools.canvas",
+						"type": "() => Promise<RunbookCanvasState | undefined>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "assistantSlackTools",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-assistant-slack-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-runbook-canvas-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-tool-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-assistant-read-assistant-config",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/agents-providers/run-assistant/assistantSlackTools.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/agents-providers/run-assistant/assistantSlackTools.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

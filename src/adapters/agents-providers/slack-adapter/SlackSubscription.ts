@@ -3,7 +3,8 @@ import { setTimeout as pause } from 'node:timers/promises';
 import type {
 	PlatformAuditDetail,
 	PlatformEvent,
-	PlatformEventHandler
+	PlatformEventHandler,
+	PlatformMessage
 } from '../../../core/agents-providers/platformAdapter.types';
 import type { SlackAdapterConfig } from '../SlackAdapter.types';
 import { SlackRequestError } from './SlackRequestError';
@@ -18,6 +19,7 @@ export class SlackSubscription {
 	private listening = false;
 	private backoff = 1000;
 	private readonly accepted = new Map<string, boolean>();
+	private readonly directThreads = new Set<string>();
 
 	constructor(
 		private readonly api: SlackWebApi,
@@ -25,6 +27,10 @@ export class SlackSubscription {
 		private readonly channels: ReadonlySet<string>,
 		private readonly audit: (detail: PlatformAuditDetail) => Promise<void>
 	) {}
+
+	allowsDirectReply(message: PlatformMessage): boolean {
+		return !!message.threadId && this.directThreads.has(message.channelId + '/' + message.threadId);
+	}
 
 	async run(handler: PlatformEventHandler, signal: AbortSignal): Promise<void> {
 		if (signal.aborted) return;
@@ -95,6 +101,7 @@ export class SlackSubscription {
 		if (!this.accepted.has(event.id)) {
 			await this.audit({ kind: 'receive-attempt', ...metadata });
 			if (signal.aborted) return;
+			this.allowDirectReply(event);
 			try {
 				await handler(event, signal);
 			} catch {
@@ -110,6 +117,15 @@ export class SlackSubscription {
 			await this.audit({ kind: 'receive-accepted', ...metadata });
 			this.accepted.set(event.id, true);
 		}
+	}
+	private allowDirectReply(event: PlatformEvent): void {
+		if (!this.config.directMessages || !event.channelId.startsWith('D')) return;
+		const key = event.channelId + '/' + (event.threadId ?? event.messageId);
+		if (this.directThreads.size >= maxAcceptedEvents) {
+			const oldest = this.directThreads.values().next().value;
+			if (oldest !== undefined) this.directThreads.delete(oldest);
+		}
+		this.directThreads.add(key);
 	}
 }
 
@@ -152,8 +168,7 @@ function slackEvent(
 	const { event } = data;
 	const { appId, workspaceId, botUserId } = config.installation;
 	if (data.team_id !== workspaceId || data.api_app_id !== appId) return undefined;
-	if (event.type !== (config.receive === 'mentions' ? 'app_mention' : 'message')) return undefined;
-	if (event.user === botUserId || !channels.has(event.channel)) return undefined;
+	if (event.user === botUserId || !inboundConversation(event, config, channels)) return undefined;
 	if ([event.team, event.user_team, event.source_team].some((team) => team && team !== workspaceId))
 		return undefined;
 	return {
@@ -164,4 +179,15 @@ function slackEvent(
 		messageId: event.ts,
 		...(event.thread_ts ? { threadId: event.thread_ts } : {})
 	};
+}
+
+function inboundConversation(
+	event: { type: string; channel: string; channel_type?: string },
+	config: SlackAdapterConfig,
+	channels: ReadonlySet<string>
+): boolean {
+	if (config.directMessages && event.channel.startsWith('D'))
+		return event.type === 'message' && event.channel_type === 'im';
+	const acceptedType = config.receive === 'mentions' ? 'app_mention' : 'message';
+	return event.type === acceptedType && channels.has(event.channel);
 }

@@ -1,7 +1,6 @@
-import { mkdtemp } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, test } from 'vitest';
+import { withTempDir } from '../../support/temporary';
 import type { World } from './qa-thread.test.types';
 import type { GitHubAppAdapter } from '../../../src/adapters/agents-providers/GitHubAppAdapter';
 import type { QaThreadPorts } from '../../../src/core/agents-providers/qaThread.types';
@@ -27,7 +26,7 @@ function github(world: World): GitHubAppAdapter {
 		if (path === '/search/issues')
 			return {
 				items: [
-					{ number: 9, title: 'Fix logo', body: 'Fixes #5' },
+					{ number: 9, title: 'Fix logo', body: 'Refs #5' },
 					{ number: 8, title: 'Other', body: 'mentions #5' }
 				]
 			};
@@ -92,51 +91,51 @@ describe('QaThreadService', () => {
 		};
 	}
 
-	test('posts one thread per label event and dedupes redelivery and relabelling', async () => {
-		const dir = await mkdtemp(join(tmpdir(), 'qa-ledger-'));
-		const ledger = new QaLedgerRepository(join(dir, 'ledger.jsonl'));
-		const posts: string[] = [];
-		const service = new QaThreadService(eligibility(good), ledger, ports(posts), {
-			stagingUrl: 'https://s.test',
-			stagingBranch: 'staging'
-		});
-		expect(await service.handleLabel({ eventId: 'e1', issue: 5 })).toMatchObject({
-			status: 'posted'
-		});
-		expect(await service.handleLabel({ eventId: 'e1', issue: 5 })).toEqual({
-			status: 'skipped',
-			reason: 'duplicate'
-		});
-		expect(await service.handleLabel({ eventId: 'e2', issue: 5 })).toEqual({
-			status: 'skipped',
-			reason: 'duplicate'
-		});
-		expect(posts).toHaveLength(1);
-	});
+	test('posts one thread per label event and dedupes redelivery and relabelling', () =>
+		withTempDir('qa-ledger-', async (dir) => {
+			const ledger = new QaLedgerRepository(join(dir, 'ledger.jsonl'));
+			const posts: string[] = [];
+			const service = new QaThreadService(eligibility(good), ledger, ports(posts), {
+				stagingUrl: 'https://s.test',
+				stagingBranch: 'staging'
+			});
+			expect(await service.handleLabel({ eventId: 'e1', issue: 5 })).toMatchObject({
+				status: 'posted'
+			});
+			expect(await service.handleLabel({ eventId: 'e1', issue: 5 })).toEqual({
+				status: 'skipped',
+				reason: 'duplicate'
+			});
+			expect(await service.handleLabel({ eventId: 'e2', issue: 5 })).toEqual({
+				status: 'skipped',
+				reason: 'duplicate'
+			});
+			expect(posts).toHaveLength(1);
+		}));
 
-	test('a failed post after reservation is unknown and is never retried automatically', async () => {
-		const dir = await mkdtemp(join(tmpdir(), 'qa-ledger-'));
-		const ledger = new QaLedgerRepository(join(dir, 'ledger.jsonl'));
-		const failing = {
-			...ports([]),
-			post: async () => {
-				throw new Error('boom');
-			}
-		};
-		const service = new QaThreadService(eligibility(good), ledger, failing, {
-			stagingUrl: 'https://s.test',
-			stagingBranch: 'staging'
-		});
-		expect(await service.handleLabel({ eventId: 'e1', issue: 5 })).toEqual({
-			status: 'unknown',
-			reason: 'post-failed-after-reservation'
-		});
-		expect(await service.handleLabel({ eventId: 'e1', issue: 5 })).toEqual({
-			status: 'skipped',
-			reason: 'duplicate'
-		});
-		expect(await ledger.unresolved()).toEqual([5]);
-	});
+	test('a failed post after reservation is unknown and is never retried automatically', () =>
+		withTempDir('qa-ledger-', async (dir) => {
+			const ledger = new QaLedgerRepository(join(dir, 'ledger.jsonl'));
+			const failing = {
+				...ports([]),
+				post: async () => {
+					throw new Error('boom');
+				}
+			};
+			const service = new QaThreadService(eligibility(good), ledger, failing, {
+				stagingUrl: 'https://s.test',
+				stagingBranch: 'staging'
+			});
+			expect(await service.handleLabel({ eventId: 'e1', issue: 5 })).toEqual({
+				status: 'unknown',
+				reason: 'post-failed-after-reservation'
+			});
+			expect(await service.handleLabel({ eventId: 'e1', issue: 5 })).toEqual({
+				status: 'skipped',
+				reason: 'duplicate'
+			});
+			expect(await ledger.unresolved()).toEqual([5]);
+		}));
 });
 
 describe('QA thread text', () => {

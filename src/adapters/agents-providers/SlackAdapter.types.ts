@@ -28,6 +28,8 @@ export interface SlackAdapterConfig {
 	installation: SlackInstallation;
 	channels: readonly string[];
 	receive: 'messages' | 'mentions' | 'none';
+	/** Allow replies to authenticated one-to-one DM events, without a static DM list. */
+	directMessages?: boolean;
 	vault: SlackVaultAccess;
 	audit(event: PlatformAuditEvent): Promise<void>;
 }

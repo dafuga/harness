@@ -33,7 +33,10 @@
 			"TrackerNoteAdapter",
 			"QaSyncConfig",
 			"QaSyncReport",
-			"QaSyncPorts"
+			"QaSyncPorts",
+			"AssistantCommand",
+			"SlackAssistantService",
+			"AssistantSlackMediaAdapter"
 		]
 	},
 	"contract": {
@@ -46,6 +49,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-assistant-slack-media",
+			"via": "reexport",
+			"origin": "derived"
+		},
 		{
 			"unit": "adapter.agents-providers-claude-messages",
 			"via": "reexport",
@@ -78,6 +86,11 @@
 		},
 		{
 			"unit": "adapter.agents-providers-tracker-note",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.agents-providers-assistant",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -143,6 +156,11 @@
 		},
 		{
 			"unit": "service.agents-providers-runbook-canvas",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-slack-assistant",
 			"via": "reexport",
 			"origin": "derived"
 		},

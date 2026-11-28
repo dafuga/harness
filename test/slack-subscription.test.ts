@@ -8,6 +8,7 @@ import {
 	channel,
 	installation,
 	mockSlack,
+	post,
 	postedAt,
 	slackFixture,
 	socket,
@@ -170,4 +171,36 @@ test('refuses an untrusted socket address and supports abort during reconnect', 
 
 	await expect(adapter.subscribe(vi.fn(), controller.signal)).resolves.toBeUndefined();
 	expect(openSlackSocket).not.toHaveBeenCalled();
+});
+
+test('replies only within authenticated one-to-one direct-message threads', async () => {
+	const controller = new AbortController();
+	const { config } = slackFixture();
+	mockSlack(auth(), socket(), post('DDIRECT'));
+	const dm = { channel: 'DDIRECT', channel_type: 'im' };
+	const adapter = new SlackAdapter({ ...config, receive: 'mentions', directMessages: true });
+	const connection = fakeSocket(
+		[
+			eventFrame('missing-im-type', { channel: 'DDIRECT' }),
+			eventFrame('outside-workspace', { ...dm, user_team: 'TOTHER' }),
+			eventFrame('bot-message', { ...dm, bot_id: 'BOTHER' }),
+			eventFrame('direct', dm)
+		],
+		(id) => {
+			if (id === 'direct') controller.abort();
+		}
+	);
+	const reply = { channelId: 'DDIRECT', threadId: thread, text: 'Scoped answer' };
+	await expect(adapter.send(reply)).resolves.toMatchObject({ status: 'refused', code: 'denied' });
+	const handler = vi.fn(async (event: PlatformEvent) => {
+		expect(event).toMatchObject({ channelId: reply.channelId, threadId: reply.threadId });
+		await expect(adapter.send({ ...reply, threadId: postedAt })).resolves.toMatchObject({
+			status: 'refused',
+			code: 'denied'
+		});
+		await expect(adapter.send(reply)).resolves.toMatchObject({ status: 'sent' });
+	});
+	await adapter.subscribe(handler, controller.signal);
+	expect(handler).toHaveBeenCalledOnce();
+	expect(connection.ack).toHaveBeenCalledTimes(4);
 });

@@ -9,13 +9,13 @@ export class QaLedgerRepository {
 		if (!isAbsolute(path)) throw new TypeError('The QA ledger requires an absolute path.');
 	}
 
-	/** 'new' only the first time an event id or an already-threaded issue is seen. */
+	async hasReservation(eventId: string, issue: number): Promise<boolean> {
+		return (await this.read()).some((line) => line.eventId === eventId || line.issue === issue);
+	}
+
+	/** 'new' only the first time an event id or an issue is seen. */
 	async reserve(eventId: string, issue: number): Promise<'new' | 'duplicate'> {
-		const lines = await this.read();
-		const seen = lines.some(
-			(l) => l.eventId === eventId || (l.kind === 'posted' && l.issue === issue)
-		);
-		if (seen) return 'duplicate';
+		if (await this.hasReservation(eventId, issue)) return 'duplicate';
 		await this.append({ kind: 'reserved', eventId, issue, at: new Date().toISOString() });
 		return 'new';
 	}
@@ -44,7 +44,10 @@ export class QaLedgerRepository {
 	}
 
 	private async read(): Promise<Line[]> {
-		const raw = await readFile(this.path, 'utf8').catch(() => '');
+		const raw = await readFile(this.path, 'utf8').catch((error: { code?: string }) => {
+			if (error.code === 'ENOENT') return '';
+			throw error;
+		});
 		return raw
 			.split('\n')
 			.filter(Boolean)

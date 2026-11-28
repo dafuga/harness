@@ -6,7 +6,8 @@ import type {
 import type {
 	AssistantAnswer,
 	AssistantQuestion,
-	AssistantSource
+	AssistantSource,
+	AssistantToolDefinition
 } from '../../core/agents-providers/projectAssistant.types';
 import { redactSecrets } from '../../utils/agents-providers/redactSecrets';
 import { runAssistantTools } from './project-assistant-service/runAssistantTools';
@@ -26,13 +27,12 @@ export class ProjectAssistantService {
 
 	async answer(question: AssistantQuestion): Promise<AssistantAnswer> {
 		const { config, model } = this.options;
-		const writer = config.writers.includes(question.senderId);
-		const tools = this.options.tools.filter((tool) => writer || !tool.write);
-		const specs = tools.map((tool) => ({
-			name: tool.name,
-			description: tool.description,
-			input_schema: tool.input
-		}));
+		const writer = question.allowWrite !== false && config.writers.includes(question.senderId);
+		const tools = [
+			...this.options.tools.filter((tool) => writer || !tool.write),
+			...(this.options.requestTools?.(question) ?? []).filter((tool) => !tool.write)
+		];
+		const specs = tools.map(toolSpec);
 		const messages: ClaudeMessage[] = [
 			...(question.history ?? [])
 				.slice(-8)
@@ -71,13 +71,20 @@ export class ProjectAssistantService {
 		const text =
 			redactSecrets(body).slice(0, maxText) || 'I could not find an answer with the tools I have.';
 		const unique = [...new Map(sources.map((s) => [s.url, s])).values()].slice(0, maxSources);
-		const links = unique.map((s) => `<${s.url}|${s.label.replace(/[<>|]/g, '')}>`).join(' · ');
+		const links = unique
+			.filter((s) => /^https:\/\/[^<>|\s]+$/.test(s.url))
+			.map((s) => `<${s.url}|${s.label.replace(/[<>|]/g, '')}>`)
+			.join(' · ');
 		return {
 			text: links ? `${text}\n\n*Sources* ${links}` : text,
 			sources: unique,
 			toolCalls: called
 		};
 	}
+}
+
+function toolSpec(tool: AssistantToolDefinition) {
+	return { name: tool.name, description: tool.description, input_schema: tool.input };
 }
 
 export type { ProjectAssistantServiceConfig } from './ProjectAssistantService.types';

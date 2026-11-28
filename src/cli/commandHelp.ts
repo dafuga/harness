@@ -197,6 +197,7 @@ export const commandHelp = [
 		'Author, list and render design canvases of HTML artboards in designs/.',
 		'design [options]'
 	),
+	plainHelp('assistant', 'Run a Slack project assistant.', 'assistant [command]'),
 	plainHelp('qa-sync', 'Sync Slack QA threads to issues.', 'qa-sync [options]'),
 	plainHelp(
 		'container-browser',

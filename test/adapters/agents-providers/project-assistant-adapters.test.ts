@@ -57,7 +57,8 @@ describe('GitHubAppAdapter', () => {
 			issues: 'read',
 			contents: 'read',
 			pull_requests: 'read',
-			actions: 'read'
+			actions: 'read',
+			checks: 'read'
 		});
 		expect(search.auth).toBe('Bearer ghs_' + 'a'.repeat(30));
 	});
@@ -130,6 +131,7 @@ describe('tool set and redaction', () => {
 			'github_get_pull',
 			'github_read_file',
 			'github_list_runs',
+			'github_run_jobs',
 			'tracker_list',
 			'tracker_show',
 			'health_check',

@@ -8,7 +8,8 @@ export const githubPermissions: Readonly<Record<GitHubTokenScope, Record<string,
 		issues: 'read',
 		contents: 'read',
 		pull_requests: 'read',
-		actions: 'read'
+		actions: 'read',
+		checks: 'read'
 	},
 	issues: { metadata: 'read', issues: 'write' }
 };

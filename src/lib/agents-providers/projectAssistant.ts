@@ -22,3 +22,7 @@ export { GitHubIssueLabelAdapter } from '../../adapters/agents-providers/GitHubI
 export { TrackerNoteAdapter } from '../../adapters/agents-providers/TrackerNoteAdapter';
 export type { QaSyncConfig, QaSyncReport } from '../../core/agents-providers/qaSync.types';
 export type { QaSyncPorts } from '../../services/agents-providers/qa-sync-service/qaRun.types';
+
+export { AssistantCommand } from '../../commands/agents-providers/AssistantCommand';
+export { SlackAssistantService } from '../../services/agents-providers/SlackAssistantService';
+export { AssistantSlackMediaAdapter } from '../../adapters/agents-providers/AssistantSlackMediaAdapter';

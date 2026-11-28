@@ -53,6 +53,7 @@ export const callback = z.object({
 		type: z.enum(['message', 'app_mention']),
 		user: userId,
 		channel: channelId,
+		channel_type: z.string().optional(),
 		text: z.string().max(40000),
 		ts: slackTimestamp,
 		thread_ts: slackTimestamp.optional(),

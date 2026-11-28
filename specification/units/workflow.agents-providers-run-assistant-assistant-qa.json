@@ -1,0 +1,174 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.agents-providers-run-assistant-assistant-qa",
+	"uid": "u_ihonyzbmoj",
+	"kind": "workflow",
+	"title": "assistantQa",
+	"responsibility": "Owns the assistantQa command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/agents-providers/run-assistant/assistantQa.ts",
+			"src/workflows/agents-providers/run-assistant/assistantQa.types.ts"
+		],
+		"symbols": ["assistantQa", "AssistantQaSettings", "AssistantQaRuntime"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "assistantQa.settings",
+				"type": "AssistantQaSettings",
+				"required": true
+			},
+			{
+				"name": "assistantQa.runtime",
+				"type": "AssistantQaRuntime",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "assistantQa",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "ProjectAssistantError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "assistantQa",
+				"inputs": [
+					{
+						"name": "assistantQa.settings",
+						"type": "AssistantQaSettings",
+						"required": true
+					},
+					{
+						"name": "assistantQa.runtime",
+						"type": "AssistantQaRuntime",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assistantQa",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-assistant-slack-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-claude-messages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-git-hub-app",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-tracker-note",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-thread-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-redact-secrets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-qa-ledger",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-eligibility",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-sync-service-route-qa-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-thread",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-thread-service-qa-thread-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-assistant-assistant-qa-recorder",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-assistant-qa-deployed-revision",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-assistant-qa-label-events",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-assistant-read-assistant-config",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/agents-providers/run-assistant/assistantQa.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/agents-providers/run-assistant/assistantQa.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

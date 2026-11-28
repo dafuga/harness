@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.agents-providers-run-assistant-qa-deployed-revision",
+	"uid": "u_wdsnuzioed",
+	"kind": "workflow",
+	"title": "qaDeployedRevision",
+	"responsibility": "Owns the qaDeployedRevision command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/agents-providers/run-assistant/qaDeployedRevision.ts"],
+		"symbols": ["qaDeployedRevision"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "qaDeployedRevision.github",
+				"type": "GitHubAppAdapter",
+				"required": true
+			},
+			{
+				"name": "qaDeployedRevision.branch",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "qaDeployedRevision.config",
+				"type": "AssistantQaConfig",
+				"required": true
+			},
+			{
+				"name": "qaDeployedRevision.healthUrl",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "qaDeployedRevision",
+				"type": "Promise<string | undefined>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "qaDeployedRevision",
+				"inputs": [
+					{
+						"name": "qaDeployedRevision.github",
+						"type": "GitHubAppAdapter",
+						"required": true
+					},
+					{
+						"name": "qaDeployedRevision.branch",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "qaDeployedRevision.config",
+						"type": "AssistantQaConfig",
+						"required": true
+					},
+					{
+						"name": "qaDeployedRevision.healthUrl",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "qaDeployedRevision",
+						"type": "Promise<string | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-git-hub-app",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-assistant-read-assistant-config",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/agents-providers/run-assistant/qaDeployedRevision.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/agents-providers/run-assistant/qaDeployedRevision.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

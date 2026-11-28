@@ -1,0 +1,47 @@
+{
+	"assistant": {
+		"project": "buildflexity",
+		"displayName": "BuildFlexity",
+		"github": {
+			"owner": "dafuga",
+			"repo": "buildflexity",
+			"appId": "5919170",
+			"installationId": "185725175",
+			"stagingBranch": "staging",
+			"mainBranch": "production"
+		},
+		"tracker": { "agent": "buildflexity", "owner": "BuildFlexity Slack assistant" },
+		"health": {
+			"staging": "https://staging.construction-management-site.pages.dev/api/health",
+			"production": "https://buildflexity.com/api/health"
+		},
+		"writers": ["U0CHQLXDT4K"],
+		"answerChannels": ["C0CJ0N8V6QL", "C02KU74TW68"],
+		"answerDirectMessages": true
+	},
+	"slack": {
+		"workspaceId": "T0CHRK2DS0M",
+		"appId": "A0CLDF232Q5",
+		"botId": "B0CLNFH1084",
+		"botUserId": "U0CLLLYV6RF"
+	},
+	"model": "claude-sonnet-5-5",
+	"workspaceUrl": "https://buildflexity.slack.com",
+	"canvas": {
+		"title": "QA runbooks",
+		"branch": "dev",
+		"directory": "docs/qa/runbooks",
+		"allowedOrigins": ["https://staging.construction-management-site.pages.dev"],
+		"channels": ["C0CJ0N8V6QL"]
+	},
+	"qa": {
+		"channel": "C0CJ0N8V6QL",
+		"label": "needs testing on staging",
+		"stagingUrl": "https://staging.construction-management-site.pages.dev",
+		"checkName": "Cloudflare Pages",
+		"checkApp": "cloudflare-workers-and-pages",
+		"healthTarget": "cloudflare",
+		"existingThreadIssues": [1250, 1562, 1955, 1976, 1978, 1979, 1986],
+		"trackerInbox": "gkzktn"
+	}
+}

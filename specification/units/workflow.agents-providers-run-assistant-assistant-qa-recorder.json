@@ -1,0 +1,124 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.agents-providers-run-assistant-assistant-qa-recorder",
+	"uid": "u_ra7tnn4vxj",
+	"kind": "workflow",
+	"title": "assistantQaRecorder",
+	"responsibility": "Owns the assistantQaRecorder command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/agents-providers/run-assistant/assistantQaRecorder.ts",
+			"src/workflows/agents-providers/run-assistant/assistantQaRecorder.types.ts"
+		],
+		"symbols": [
+			"assistantQaRecorder",
+			"AssistantQaRecipeInput",
+			"AssistantQaRecipe",
+			"PlanAssistantQaRecording"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "assistantQaRecorder.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "assistantQaRecorder.input",
+				"type": "AssistantQaRecipeInput",
+				"required": true
+			},
+			{
+				"name": "assistantQaRecorder.plan",
+				"type": "PlanAssistantQaRecording",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "assistantQaRecorder",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ProjectAssistantError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "assistantQaRecorder",
+				"inputs": [
+					{
+						"name": "assistantQaRecorder.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "assistantQaRecorder.input",
+						"type": "AssistantQaRecipeInput",
+						"required": true
+					},
+					{
+						"name": "assistantQaRecorder.plan",
+						"type": "PlanAssistantQaRecording",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assistantQaRecorder",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-thread-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-load-chromium",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-native-video-recorder",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/agents-providers/run-assistant/assistantQaRecorder.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/agents-providers/run-assistant/assistantQaRecorder.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

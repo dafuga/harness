@@ -9,7 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/adapters/agents-providers/slack-adapter/SlackSubscription.ts"],
-		"symbols": ["SlackSubscription", "SlackSubscription.constructor", "SlackSubscription.run"]
+		"symbols": [
+			"SlackSubscription",
+			"SlackSubscription.constructor",
+			"SlackSubscription.allowsDirectReply",
+			"SlackSubscription.run"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -35,6 +40,11 @@
 				"required": true
 			},
 			{
+				"name": "SlackSubscription.allowsDirectReply.message",
+				"type": "PlatformMessage",
+				"required": true
+			},
+			{
 				"name": "SlackSubscription.run.handler",
 				"type": "PlatformEventHandler",
 				"required": true
@@ -46,6 +56,10 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "SlackSubscription.allowsDirectReply",
+				"type": "boolean"
+			},
 			{
 				"name": "SlackSubscription.run",
 				"type": "Promise<void>"
@@ -59,6 +73,24 @@
 		],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "SlackSubscription.allowsDirectReply",
+				"inputs": [
+					{
+						"name": "SlackSubscription.allowsDirectReply.message",
+						"type": "PlatformMessage",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackSubscription.allowsDirectReply",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "SlackSubscription.run",
 				"inputs": [

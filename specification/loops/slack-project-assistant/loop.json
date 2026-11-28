@@ -1,0 +1,45 @@
+{
+	"name": "slack-project-assistant",
+	"goal": "Prove one scoped Slack assistant receives channel mentions and direct messages and composes the configured QA and canvas ports without touching live services.",
+	"createdAt": "2026-11-27T14:29:03.586Z",
+	"updatedAt": "2026-11-27T14:43:14.056Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T14:29:18.187Z",
+			"evidence": "Prove authenticated Slack mention and DM thread routing with stubbed transports, read-only default and a separately approved live cutover. Red: Slack subscription DM handler called zero times."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-27T14:41:45.415Z",
+			"evidence": "Config and Slack assistant runner, channel and DM replies, scoped file and canvas operations, GitHub QA label polling and staging revision check, and a native video recipe port."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-27T14:43:14.056Z",
+			"evidence": "Slack DM regression: 0 deliveries on e3e3e58b35 before repair, 1 valid same-thread delivery after repair. Focused primary-Mac tests: 42 passed across 11 files, including Slack media, canvas recovery and QA deployment/event fixtures. CLI process E2E is separate on MB2."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

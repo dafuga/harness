@@ -15,7 +15,7 @@ async function runOne(
 ): Promise<ClaudeBlock> {
 	round.called.push(tool.name);
 	try {
-		const result = await tool.run(use.input);
+		const result = await tool.run(tool.write ? redactInput(use.input) : use.input);
 		round.sources.push(...result.sources);
 		const content = redactSecrets(result.text).slice(0, 6000);
 		return { type: 'tool_result', tool_use_id: use.id, content };
@@ -36,7 +36,7 @@ export async function runAssistantTools(
 		if (use.type !== 'tool_use') continue;
 		const tool = round.tools.find((candidate) => candidate.name === use.name);
 		if (!tool) results.push(failure(use.id, 'Unknown or unavailable tool.'));
-		else if (tool.write && (!round.firstRound || wrote))
+		else if (tool.write && (!round.firstRound || wrote || uses.length !== 1))
 			results.push(
 				failure(use.id, 'A write must be the only step and come straight from the request.')
 			);
@@ -46,4 +46,13 @@ export async function runAssistantTools(
 		}
 	}
 	return results;
+}
+
+function redactInput(input: ToolInput): ToolInput {
+	return Object.fromEntries(
+		Object.entries(input).map(([key, value]) => [
+			key,
+			typeof value === 'string' ? redactSecrets(value) : value
+		])
+	);
 }

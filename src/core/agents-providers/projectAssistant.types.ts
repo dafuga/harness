@@ -44,6 +44,7 @@ export interface AssistantToolDefinition {
 }
 
 export interface AssistantQuestion {
+	allowWrite?: boolean;
 	text: string;
 	senderId: string;
 	channelId: string;

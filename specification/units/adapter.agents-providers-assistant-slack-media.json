@@ -1,0 +1,316 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-assistant-slack-media",
+	"uid": "u_sceg2tkujc",
+	"kind": "adapter",
+	"title": "AssistantSlackMediaAdapter",
+	"responsibility": "Owns the AssistantSlackMediaAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/AssistantSlackMediaAdapter.ts",
+			"src/adapters/agents-providers/AssistantSlackMediaAdapter.types.ts"
+		],
+		"symbols": [
+			"AssistantSlackMediaAdapter",
+			"AssistantSlackMediaAdapter.constructor",
+			"AssistantSlackMediaAdapter.upload",
+			"AssistantSlackMediaAdapter.create",
+			"AssistantSlackMediaAdapter.replace",
+			"AssistantSlackMediaAdapter.share",
+			"AssistantSlackMediaAdapter.history",
+			"AssistantSlackMediaAdapterConfig",
+			"AssistantSlackHistoryRow"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AssistantSlackMediaAdapter.constructor.binding",
+				"type": "AssistantSlackMediaAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.upload.channel",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.upload.thread",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.upload.video",
+				"type": "Uint8Array<ArrayBuffer>",
+				"required": true
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.upload.steps",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.create.title",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.create.markdown",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.replace.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.replace.markdown",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.share.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.share.channels",
+				"type": "readonly string[]",
+				"required": true
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.history.channel",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "AssistantSlackMediaAdapter.upload",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.create",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.replace",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.share",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.history",
+				"type": "Promise<readonly AssistantSlackHistoryRow[]>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SlackRequestError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AssistantSlackMediaAdapter.upload",
+				"inputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.upload.channel",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AssistantSlackMediaAdapter.upload.thread",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AssistantSlackMediaAdapter.upload.video",
+						"type": "Uint8Array<ArrayBuffer>",
+						"required": true
+					},
+					{
+						"name": "AssistantSlackMediaAdapter.upload.steps",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.upload",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SlackRequestError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.create",
+				"inputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.create.title",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AssistantSlackMediaAdapter.create.markdown",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.create",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SlackRequestError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.replace",
+				"inputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.replace.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AssistantSlackMediaAdapter.replace.markdown",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.replace",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.share",
+				"inputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.share.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AssistantSlackMediaAdapter.share.channels",
+						"type": "readonly string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.share",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AssistantSlackMediaAdapter.history",
+				"inputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.history.channel",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.history",
+						"type": "Promise<readonly AssistantSlackHistoryRow[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SlackRequestError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "AssistantSlackMediaAdapter.constructor",
+				"inputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.constructor.binding",
+						"type": "AssistantSlackMediaAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AssistantSlackMediaAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-slack",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-request-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-web-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-wire",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/AssistantSlackMediaAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/AssistantSlackMediaAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

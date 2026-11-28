@@ -28,12 +28,15 @@ export function trackerReadTools(tracker: TrackerCliAdapter): AssistantToolDefin
 		),
 		define(
 			'tracker_show',
-			'Read one tracker item of this project by its id.',
+			'Read one tracker item of this project and its recent run states by item id.',
 			{ fields: { id: 'string' }, required: ['id'] },
 			async (input) => {
 				const item = await tracker.show(String(input.id ?? ''));
 				const head = `${line(item)}\nowner=${item.owner} due=${item.due}`;
-				return { text: `${head}\n${item.notes.join('\n')}`, sources: [] };
+				return {
+					text: [head, ...item.notes, ...item.runs.map((run) => 'Run: ' + run)].join('\n'),
+					sources: []
+				};
 			}
 		)
 	];
