@@ -14,10 +14,12 @@ export function codexTaskCommand(selection: CodexTaskSelection): string[] {
 	return [
 		'codex',
 		'exec',
+		...(selection.session?.resume ? ['resume'] : []),
 		'--json',
 		'--ignore-user-config',
-		'--sandbox',
-		'workspace-write',
+		...(selection.session?.resume
+			? ['-c', 'sandbox_mode="workspace-write"']
+			: ['--sandbox', 'workspace-write']),
 		'-m',
 		selection.model,
 		'-c',
@@ -39,6 +41,7 @@ export function codexTaskCommand(selection: CodexTaskSelection): string[] {
 		'-c',
 		`sandbox_workspace_write.writable_roots=${JSON.stringify(codexWritableRoots(selection))}`,
 		...(selection.images ?? []).flatMap((path) => ['-i', path]),
+		...(selection.session?.resume ? [selection.session.resume] : []),
 		'-'
 	];
 }

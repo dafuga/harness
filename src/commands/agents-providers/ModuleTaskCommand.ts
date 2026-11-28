@@ -110,6 +110,7 @@ export class ModuleTaskCommand {
 			.option('--modules <ids>')
 			.option('--once')
 			.option('--watch')
+			.option('--allow-task-checks', 'Run task-declared commands on the host for a trusted queue.')
 			.option('--json')
 			.description(
 				'Preflight, then pick up matching assignments in isolated worktrees; exit 75 when blocked.'
@@ -135,7 +136,12 @@ async function worker(flags: WorkerFlags): Promise<void> {
 	process.once('SIGINT', stop);
 	process.once('SIGTERM', stop);
 	try {
-		const service = new ModuleTaskWorkerService(undefined, undefined, tracker);
+		const service = new ModuleTaskWorkerService(
+			undefined,
+			undefined,
+			tracker,
+			flags.allowTaskChecks
+		);
 		do {
 			const result = await service.once(
 				flags.worker,

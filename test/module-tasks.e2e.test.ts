@@ -79,21 +79,33 @@ test.each([
 		try {
 			await f.feature();
 			const platform = process.platform === 'darwin' ? 'macos' : undefined;
+			const check =
+				provider === 'codex'
+					? {
+							argv: [
+								'bun',
+								'--eval',
+								"process.exit((await Bun.file('src/orders.ts').text()).includes('orders = 2') ? 0 : 1)"
+							]
+						}
+					: undefined;
 			await f.cli([
 				'add',
 				'--input',
-				await f.input({ model, intelligence, assignee: 'owner', platform })
+				await f.input({ model, intelligence, assignee: 'owner', platform, check })
 			]);
 			await f.cli(['worker', '--worker', 'someone-else', '--once']);
 			expect(
 				JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task.status
 			).toBe('queued');
 			if (provider === 'claude') await writeFile(join(f.root, 'mode'), 'context-worker');
-			await f.cli(['worker', '--worker', 'owner', '--once', '--json']);
+			await f.cli(['worker', '--worker', 'owner', '--once', '--allow-task-checks', '--json']);
 			const shown = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 			expect(shown.status).toBe('review');
 			expect(shown.platform).toBe(platform);
 			expect(shown.result).toMatchObject({ provider, model, intelligence });
+			if (check)
+				expect(shown.result.checkRounds).toMatchObject([{ status: 'passed', exitCode: 0 }]);
 			const calls = (await readFile(join(f.root, 'calls.ndjson'), 'utf8'))
 				.trim()
 				.split('\n')
@@ -120,28 +132,28 @@ test.each([
 	30000
 );
 
-test.each(['quota', 'auth'])(
-	'auto falls back to Luna 6 max only for confirmed Claude quota (%s)',
+test.each(['quota', 'codex-quota', 'auth'])(
+	'auto switches providers only for confirmed quota (%s)',
 	async (mode) => {
 		const f = await moduleTaskFixture();
 		try {
 			await f.feature();
 			const browserTested = { verificationFiles: ['tests/e2e/orders.spec.ts'] };
-			await f.cli(['add', '--input', await f.input(browserTested)]);
+			await f.cli(['add', '--input', await f.input(mode === 'codex-quota' ? {} : browserTested)]);
 			await writeFile(join(f.root, 'mode'), mode);
-			await f.cli(['worker', '--worker', 'owner', '--once', '--json'], mode === 'quota');
+			await f.cli(['worker', '--worker', 'owner', '--once', '--json'], mode !== 'auth');
 			const task = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 			const calls = (await readFile(join(f.root, 'calls.ndjson'), 'utf8'))
 				.trim()
 				.split('\n')
 				.map((x) => JSON.parse(x));
-			expect(calls[0].args).toContain('claude-haiku-5-5');
-			if (mode === 'quota') {
-				expect(calls.map((x) => x.provider)).toEqual(['claude', 'codex']);
+			if (mode !== 'auth') {
+				const routed = mode === 'quota' ? ['claude', 'codex'] : ['codex', 'claude'];
+				expect(calls.map((x) => x.provider)).toEqual(routed);
 				expect(task.result).toMatchObject({
-					provider: 'codex',
-					model: 'gpt-6-luna',
-					intelligence: 'max'
+					provider: routed[1],
+					fallback: true,
+					executions: [{ failureCause: 'quota' }, { status: 'succeeded' }]
 				});
 				expect(task.status).toBe('review');
 			} else {

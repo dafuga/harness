@@ -8,5 +8,6 @@ export interface WorkerFlags {
 	modules?: string;
 	once?: boolean;
 	watch?: boolean;
+	allowTaskChecks?: boolean;
 	json?: boolean;
 }

@@ -185,7 +185,7 @@
 			},
 			{
 				"name": "snapshotTaskWork.result",
-				"type": "NonNullable<ModuleTask['result']> & { [moduleCompletionContext]?: ModuleCompletionContext; }",
+				"type": "NonNullable<ModuleTask['result']>",
 				"required": true,
 				"description": "Existing task result whose worktree is inspected; its sourceCommit overrides the task source when present, and changedFiles and checkpointCommit are overwritten.",
 				"examples": [
@@ -206,6 +206,11 @@
 						"executions": []
 					}
 				]
+			},
+			{
+				"name": "snapshotTaskWork.context",
+				"type": "ModuleCompletionContext",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -504,7 +509,7 @@
 					},
 					{
 						"name": "snapshotTaskWork.result",
-						"type": "NonNullable<ModuleTask['result']> & { [moduleCompletionContext]?: ModuleCompletionContext; }",
+						"type": "NonNullable<ModuleTask['result']>",
 						"required": true,
 						"description": "Existing task result whose worktree is inspected; its sourceCommit overrides the task source when present, and changedFiles and checkpointCommit are overwritten.",
 						"examples": [
@@ -525,6 +530,11 @@
 								"executions": []
 							}
 						]
+					},
+					{
+						"name": "snapshotTaskWork.context",
+						"type": "ModuleCompletionContext",
+						"required": false
 					}
 				],
 				"outputs": [

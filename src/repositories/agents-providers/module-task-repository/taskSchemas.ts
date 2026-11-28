@@ -14,6 +14,22 @@ export const wantedContractSchema = z.strictObject({
 	errors: z.array(contractItemSchema)
 });
 export const taskPlatformSchema = z.enum(['linux', 'macos']);
+const checkArg = z
+	.string()
+	.max(4000)
+	.refine((arg) => !arg.includes('\0'));
+const taskCheckSchema = z.strictObject({
+	argv: z
+		.tuple([checkArg.refine((program) => program.trim().length > 0)])
+		.rest(checkArg)
+		.refine((argv) => argv.length <= 32, 'Use at most 32 command arguments.'),
+	timeoutMs: z.number().int().min(1).max(600_000).optional()
+});
+const checkRoundSchema = z.strictObject({
+	status: z.enum(['passed', 'failed', 'timeout', 'cancelled', 'command-error']),
+	exitCode: z.number().int().nullable(),
+	durationMs: z.number().int().nonnegative()
+});
 export const taskInputSchema = z.strictObject({
 	id,
 	title: text,
@@ -30,6 +46,7 @@ export const taskInputSchema = z.strictObject({
 		.max(64)
 		.optional(),
 	instructions: text,
+	check: taskCheckSchema.optional(),
 	wantedContract: wantedContractSchema,
 	requiredTools: z
 		.array(z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$/))
@@ -53,7 +70,8 @@ const result = z.strictObject({
 	changedFiles: z.array(path),
 	changedLines: z.number().int().nonnegative().optional(),
 	error: z.string().optional(),
-	failureCause: z.enum(['scope', 'workspace-error']).optional(),
+	failureCause: z.enum(['scope', 'workspace-error', 'check']).optional(),
+	checkRounds: z.array(checkRoundSchema).max(4).optional(),
 	fallback: z.boolean(),
 	finishedAt: z.iso.datetime(),
 	attempt: z.uuid().optional(),

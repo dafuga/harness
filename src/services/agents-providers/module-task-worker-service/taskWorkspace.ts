@@ -10,7 +10,7 @@ import { existsSync } from 'node:fs';
 import { mkdir, readdir, symlink } from 'node:fs/promises';
 import { pendingTaskResult, taskWrites } from './taskClaim';
 import { FrameFlagService } from '../../verification-evidence/FrameFlagService';
-import { completeModule, moduleCompletionContext } from '../completion-hooks/moduleCompletion';
+import { completeModule } from '../completion-hooks/moduleCompletion';
 import type { ModuleCompletionContext } from '../completion-hooks/moduleCompletion.types';
 export async function taskWorkspace(root: string, task: ModuleTask, selection: TaskSelection) {
 	const common = await new GitAdapter(root).run(['rev-parse', '--git-common-dir']);
@@ -59,12 +59,9 @@ export async function taskFrameInputs(
 export async function snapshotTaskWork(
 	root: string,
 	task: ModuleTask,
-	result: NonNullable<ModuleTask['result']> & {
-		[moduleCompletionContext]?: ModuleCompletionContext;
-	}
+	result: NonNullable<ModuleTask['result']>,
+	context?: ModuleCompletionContext
 ) {
-	const context = result[moduleCompletionContext];
-	delete result[moduleCompletionContext];
 	try {
 		if (context)
 			await completeModule({

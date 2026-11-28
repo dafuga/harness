@@ -1,0 +1,133 @@
+{
+	"schemaVersion": 1,
+	"revision": "0fc88ccf7218dc445747eb5375792699983077db",
+	"bugClass": {
+		"id": "provider-turn-skips-local-verification",
+		"title": "Provider turns bypass declared local verification",
+		"cause": "A managed module-task flow declares a local verification operation, but after a provider result it transitions to review or completion without executing that operation or requiring evidence that it ran. This leaves the decision dependent on provider output rather than the declared local check.",
+		"criteria": "Classify when both conditions hold: (1) the module-task flow has a declared local verification operation, such as a command or check; and (2) a provider-result-to-review or completion path neither executes that operation nor requires proof of its execution. Either a missing execution step or a missing evidence gate is sufficient. Exclude code that only transports provider events, orchestration with no declared local command, Docker fixtures, and paths with an actual execution or evidence gate.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "dispatchTaskAttempt",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "snapshotTaskWork",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "taskCheckLoop",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "moduleVerification",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "evaluateCompletion",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "requireTaskAcceptanceEvidence",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "verificationCommand",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "localCheckCommand",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "acceptanceEvidence",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "providerResult",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "evaluateCompletion",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "requireTaskAcceptanceEvidence",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "dispatchTaskAttempt",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "snapshotTaskWork",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "taskCheckLoop",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "moduleVerification",
+				"weight": 3
+			}
+		],
+		"contextTerms": [
+			"moduleverification",
+			"evaluatecompletion",
+			"acceptanceevidence",
+			"providerresult",
+			"verificationcommand"
+		],
+		"pathHints": [
+			{
+				"contains": "src/workflows/",
+				"weight": 4
+			},
+			{
+				"contains": "src/services/",
+				"weight": 3
+			},
+			{
+				"contains": "src/core/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -1
+			}
+		]
+	}
+}

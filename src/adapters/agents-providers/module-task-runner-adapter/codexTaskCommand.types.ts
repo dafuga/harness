@@ -5,4 +5,4 @@ import type {
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 
 export type CodexTaskSelection = TaskSelection &
-	Partial<Pick<TaskRunInput, 'images' | 'cwd' | 'platform'>>;
+	Partial<Pick<TaskRunInput, 'images' | 'cwd' | 'platform' | 'session'>>;

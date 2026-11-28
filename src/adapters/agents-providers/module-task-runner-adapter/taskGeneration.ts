@@ -3,6 +3,7 @@ import type { TaskRunInput } from '../../../repositories/agents-providers/Module
 import { estimateApiCost } from '../../../services/agents-providers/module-task-analytics-service/modelRunPricing';
 import { trackerSecretSafetyRule } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerSecretSafetyRule';
 import { ModuleTaskRunError } from '../ModuleTaskRunnerAdapter.types';
+import type { SessionObservation } from '../ProviderSessionAdapter.types';
 import type { TaskProcessResult, TaskPublicEvent } from '../ModuleTaskRunnerAdapter.types';
 import type {
 	CompleteGeneration,
@@ -63,18 +64,14 @@ function completedGeneration(
 		complete,
 		malformed: lines.length !== events.length
 	});
-	const { sessionId, peakContextTokens } = process.observation ?? {
-		sessionId: null,
-		peakContextTokens: null
-	};
+	const observation = generationObservation(input, process, events);
 	const reportedModel =
 		events.find((e) => e.type === 'system' && e.subtype === 'init')?.model ?? null;
 	if (outcome.error) Object.assign(outcome.error, { reportedModel });
 	return {
 		metric: {
 			status: outcome.status,
-			sessionId,
-			peakContextTokens,
+			...observation,
 			preRequestEstimateTokens: process.preRequestEstimateTokens,
 			usage,
 			apiCost: estimateApiCost(
@@ -87,6 +84,25 @@ function completedGeneration(
 		result: outcome.result,
 		error: outcome.error
 	};
+}
+
+function generationObservation(
+	input: TaskRunInput,
+	process: TaskProcessResult,
+	events: TaskPublicEvent[]
+): Pick<SessionObservation, 'sessionId' | 'peakContextTokens'> {
+	return {
+		sessionId: process.observation?.sessionId ?? generationSessionId(input, events),
+		peakContextTokens: process.observation?.peakContextTokens ?? null
+	};
+}
+
+function generationSessionId(input: TaskRunInput, events: TaskPublicEvent[]): string | null {
+	if (!input.session) return null;
+	return input.provider === 'codex'
+		? (events.find((event) => event.type === 'thread.started')?.thread_id ?? null)
+		: (events.find((event) => event.type === 'system' && event.subtype === 'init')?.session_id ??
+				null);
 }
 
 function generationUsage(

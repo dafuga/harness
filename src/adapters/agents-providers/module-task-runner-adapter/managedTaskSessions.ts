@@ -6,7 +6,11 @@ import type {
 	TaskRunInput,
 	TaskSessionMetric
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
-import type { CompleteGeneration, LaunchGeneration } from './managedTaskSessions.types';
+import type {
+	CompleteGeneration,
+	GenerationResult,
+	LaunchGeneration
+} from './managedTaskSessions.types';
 import { sumSessionUsage } from '../provider-session-adapter/sumSessionUsage';
 import { ModuleTaskRunError } from '../ModuleTaskRunnerAdapter.types';
 import { runGeneration } from './taskGeneration';
@@ -40,17 +44,32 @@ async function rotateTaskSessions(
 		if (input.signal.aborted) throw sessionFailure('Task CLI interrupted.', sessions);
 		const saved = await readTaskCheckpoint(path);
 		const prompt = checkpointPrompt(input.prompt, checkpoint, saved, current > 0);
-		const execution = await runGeneration({ ...input, prompt }, launch, complete);
+		const session = generationSession(input.session, current);
+		const execution = await runGeneration({ ...input, prompt, session }, launch, complete);
 		sessions.push(execution.metric);
 		await recordSession(input, checkpoint, sessions);
 		if (execution.error) throw Object.assign(execution.error, sessionFacts(sessions));
-		if (execution.result) return { ...execution.result, ...sessionFacts(sessions) };
+		if (execution.result) return completedTask(execution, session?.resume, sessions);
 		const next = await readTaskCheckpoint(path);
 		if (resumedWithoutProgress && next === saved)
 			throw sessionFailure('Task did not update its checkpoint across rotations.', sessions);
 		resumedWithoutProgress = next === saved;
 	}
 	throw sessionFailure('Task reached the 25-session restart limit.', sessions);
+}
+
+function generationSession(session: TaskRunInput['session'], generation: number) {
+	return generation > 0 && session ? {} : session;
+}
+
+function completedTask(
+	execution: GenerationResult,
+	resume: string | undefined,
+	sessions: TaskSessionMetric[]
+) {
+	if (resume && execution.metric.sessionId !== resume)
+		throw sessionFailure('Provider did not resume the requested task session.', sessions);
+	return { ...execution.result!, ...sessionFacts(sessions) };
 }
 
 async function recordSession(
