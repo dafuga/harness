@@ -10,6 +10,8 @@ export interface DeviceSessionOptions extends Omit<ClientProjectsOptions, 'emit'
 	home?: () => Promise<unknown>;
 	/** One answer or note from that Home view, offered to the same devices. */
 	homeChat?: (input: Record<string, unknown>) => Promise<unknown>;
+	/** One document belonging to an open ask on this computer. */
+	homeDocument?: (input: Record<string, unknown>) => Promise<unknown>;
 	trackerPull?: (input: Record<string, unknown>) => Promise<unknown>;
 	trackerPush?: (input: Record<string, unknown>, signal: AbortSignal) => Promise<unknown>;
 	epoch?: string;

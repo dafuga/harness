@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "script.needs-you-canary-hub-row-scripts",
+	"uid": "u_k2msamt5dy",
+	"kind": "script",
+	"title": "hubRowScripts",
+	"responsibility": "Owns the hubRowScripts build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/needs-you-canary/hubRowScripts.ts"],
+		"symbols": ["rowLabelsScript", "pressOptionScript", "signedInScript"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "rowLabelsScript.marker",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "pressOptionScript.marker",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "pressOptionScript.label",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "rowLabelsScript",
+				"type": "string"
+			},
+			{
+				"name": "pressOptionScript",
+				"type": "string"
+			},
+			{
+				"name": "signedInScript",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "rowLabelsScript",
+				"inputs": [
+					{
+						"name": "rowLabelsScript.marker",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "rowLabelsScript",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pressOptionScript",
+				"inputs": [
+					{
+						"name": "pressOptionScript.marker",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "pressOptionScript.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pressOptionScript",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/needs-you-canary/hubRowScripts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/needs-you-canary/hubRowScripts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

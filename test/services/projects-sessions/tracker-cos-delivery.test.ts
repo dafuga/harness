@@ -10,6 +10,7 @@ import {
 	hour,
 	minute,
 	noon,
+	recordedDependencyQueue,
 	round
 } from '../../support/trackerCosDeliveryFixture';
 
@@ -118,3 +119,52 @@ test('the hub tick raises the ask even when the pane scan is broken', () =>
 		});
 		expect(alarmAsks(items, noon)).toHaveLength(1);
 	}, 'daniel-primary-mbp'));
+
+test('recorded dependency updates reach CoS once per item and text change', () =>
+	cosDeliveryFixture(async ({ store, items }) => {
+		const queue = recordedDependencyQueue();
+		const deliveries: string[][] = [];
+		const signal = new AbortController().signal;
+		const driver = {
+			scan: async () => null,
+			nudge: async () => false,
+			send: async (batch: Readonly<typeof queue>) => {
+				deliveries.push(batch.map(({ item_id }) => item_id));
+				return true;
+			}
+		};
+		const replay = queue.map((entry) => ({
+			...entry,
+			id: entry.id + ':requeued',
+			at: entry.at + minute
+		}));
+		const [changed] = replay;
+		const reason = changed.reason + ' New blocker text.';
+		store.appendLocal({
+			itemId: changed.item_id,
+			fields: { title: 'Recorded blocker', status: 'blocked', blocked_reason: reason }
+		});
+		await sendWatchdogAlerts(store, driver, queue, signal);
+		await sendWatchdogAlerts(store, driver, [...queue, ...replay], signal);
+		await sendWatchdogAlerts(store, driver, replay, signal);
+		expect(deliveries).toEqual([queue.map(({ item_id }) => item_id)]);
+		await sendWatchdogAlerts(
+			store,
+			driver,
+			[
+				{
+					...changed,
+					id: changed.id + ':changed',
+					at: changed.at + minute,
+					reason,
+					identity: reason
+				}
+			],
+			signal
+		);
+		await sendWatchdogAlerts(store, driver, queue, signal);
+		expect(deliveries).toEqual([queue.map(({ item_id }) => item_id), [changed.item_id]]);
+		expect(items.digest(noon).blocked).toContainEqual(
+			expect.objectContaining({ id: changed.item_id, blocked_reason: reason })
+		);
+	}));

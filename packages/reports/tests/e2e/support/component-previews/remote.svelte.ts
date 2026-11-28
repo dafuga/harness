@@ -88,6 +88,15 @@ const trackerItem = {
 	updatedAt: stamp,
 	dueAt: null
 };
+const trackerReminders = [
+	{
+		...trackerItem,
+		id: 'preview-reminder',
+		title: 'Water the sample plant',
+		status: 'open',
+		reminder: { at: stamp, repeats: 'Weekly' }
+	}
+];
 const trackerDetail: InboxDetail = {
 	header: trackerItem,
 	flag: { state: 'open', at: stamp, question: 'Is this ready for review?' },
@@ -152,6 +161,14 @@ function trackerInboxCases(): PreviewCases {
 		},
 		[`${unit}-detail`]: { source, id: trackerItem.id, onchanged: trackerNoop },
 		[`${unit}-record`]: { detail: trackerDetail },
+		[`${unit}-reminders`]: {
+			source,
+			mode: 'phone',
+			reminders: trackerReminders,
+			onchanged: trackerNoop,
+			onnotice: trackerNoop,
+			onselect: trackerNoop
+		},
 		[`${unit}-rows`]: {
 			source,
 			mode: 'phone',

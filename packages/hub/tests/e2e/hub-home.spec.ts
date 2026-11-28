@@ -2,6 +2,7 @@ import { expect, test, type Locator, type Page } from '../../../../test/support/
 import { fit, hubHomeFixture, unavailableHome } from './hub-home-fixture';
 import type { CapturePosition, HomeFixture } from './hub-home-fixture.types';
 import { capture, fullDialog } from './hub-home-capture';
+import { planClickThrough, scheduledClickThrough } from './hub-home-click-through';
 import manifest from '../../../../specification/scenarios/hub-home.json' with { type: 'json' };
 const screens = [
 	{ id: 'agents', title: 'Agents' },
@@ -49,6 +50,10 @@ for (const viewport of manifest.viewports) {
 				const fullMatrix =
 					mode === 'default' || (scheme === 'dark' && ['phone', 'laptop'].includes(viewport.id));
 				if (fullMatrix) await dialogs(page, path, fixture);
+				if (mode === 'default') {
+					await planClickThrough(page, path, fixture);
+					await scheduledClickThrough(page, path, fixture);
+				}
 				if (mode === 'loading') {
 					fixture.release();
 					await expect(page.getByRole('heading', { level: 1 })).toHaveText(

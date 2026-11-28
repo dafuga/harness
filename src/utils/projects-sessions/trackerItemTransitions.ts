@@ -24,7 +24,7 @@ import {
 	trackerParkNextStep,
 	trackerResolveItem
 } from './trackerItemInput';
-import { finishTrackerOccurrence } from './finishTrackerOccurrence';
+import { finishTrackerOccurrence, finishTrackerReminder } from './finishTrackerOccurrence';
 const start = { status: 'in_progress' };
 
 export const trackerItemTransitions: Record<
@@ -48,7 +48,8 @@ export const trackerItemTransitions: Record<
 			throw trackerItemError('only active items can be reminded', 409);
 		const remind_at = normalizeTrackerReminder(body.at, context.now);
 		if (!body.reminder) return { fields: { remind_at } };
-		if (item.every) throw trackerItemError('a reminder uses a scheduled time');
+		if (item.every && item.kind !== 'reminder')
+			throw trackerItemError('this item repeats a job; remove --every before converting it');
 		return { fields: { remind_at, kind: 'reminder', ...trackerReminderLaunchFields } };
 	},
 	answer: trackerAskTransitions.answer,
@@ -121,6 +122,7 @@ function finishItem(
 ): TrackerItemChange {
 	if (item.every && body.next_step !== undefined)
 		throw trackerItemError('recurring items cannot have a next step');
+	if (item.kind === 'reminder' && item.every) return finishTrackerReminder(item, body, context);
 	if (item.every) return finishTrackerOccurrence(item, body, context);
 	if (body.failed) throw trackerItemError('--failed is only for recurring items');
 	guardOpenDecision(item, body);

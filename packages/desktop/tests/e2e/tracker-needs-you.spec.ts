@@ -1,5 +1,11 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
-import { macSpecPage, phoneSpecPage, specTracker } from './support/viewSpecInboxFixture';
+import {
+	capturePlanWork,
+	verifyPlanWork,
+	verifyScheduledChat
+} from './support/trackerWorkEvidence';
+import { trackerWorkFixture } from './support/trackerWorkFixture';
+import { macSpecPage, phoneSpecPage, specItem, specTracker } from './support/viewSpecInboxFixture';
 
 /**
  * The "N need you" count sits with its items in the blocked section of the Mac and iPhone inbox,
@@ -30,7 +36,30 @@ for (const name of ['mac', 'iphone'] as const)
 		const restore = name === 'mac' ? await macSpecPage(page, tracker) : undefined;
 		try {
 			if (name === 'iphone') await phoneSpecPage(page, tracker, []);
+			const messages = await trackerWorkFixture(page, name);
 			await blockedSection(page, name);
+			await page.goto('/');
+			const first = page.getByRole('main').locator('section').first();
+			await expect(first).toHaveAccessibleName('Blocked - needs you');
+			if (name === 'iphone') {
+				await expect(first.getByText('1 needs you', { exact: true })).toBeVisible();
+				await expect(first).toContainText('Approve the service spec');
+				await capturePlanWork(page, name, 'home');
+				const cleared = await tracker.fetcher(`http://127.0.0.1:7701/items/${specItem}/unflag`, {
+					method: 'POST',
+					body: '{}'
+				});
+				expect(cleared.ok).toBe(true);
+				await page.reload();
+				await expect(first).toHaveAccessibleName('Blocked - needs you');
+			}
+			await expect(first.getByText('0', { exact: true })).toBeVisible();
+			await expect(first).toContainText('Nothing needs you right now');
+			await capturePlanWork(page, name, 'home-empty');
+			if (name === 'iphone')
+				await page.getByRole('link', { name: 'Plans and schedule', exact: true }).click();
+			await verifyPlanWork(page, name);
+			await verifyScheduledChat(page, name, messages);
 		} finally {
 			restore?.();
 			tracker.close();

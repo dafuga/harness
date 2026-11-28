@@ -13,9 +13,10 @@ import type {
 } from '../../../../../src/utils/projects-sessions/trackerAttachment.types';
 
 export type InboxBucket = 'needs-you' | 'blocked' | 'active' | 'quiet' | 'done';
-export type InboxFilter = 'all' | InboxBucket;
+export type InboxFilter = 'all' | InboxBucket | 'reminders';
 
-export type WriteAction = 'note' | 'flag' | 'answer';
+/** `done` and `remind` (snooze) are the two taps on a reminder. */
+export type WriteAction = 'note' | 'flag' | 'answer' | 'done' | 'remind';
 
 /** One item's header as the phone replica holds it. */
 export interface InboxHeader {
@@ -26,6 +27,8 @@ export interface InboxHeader {
 	stage?: TrackerStage;
 	updatedAt: string | null;
 	dueAt: string | null;
+	/** Set on an active personal item: when it reminds next. */
+	reminder?: { at: string; repeats: string | null };
 }
 
 /** One tappable answer to an open ask. `recommended` is the one the asking session suggests. */
@@ -123,6 +126,8 @@ export interface ConfirmedWrite {
 	revision: string | null;
 	/** The 1-based number of the tapped option; `text` is then that option's label. */
 	option?: number;
+	/** A reminder tap names the armed time it was shown; a snooze's `text` is the new time. */
+	armed?: string;
 }
 
 export interface InboxWriteReceipt {
@@ -144,9 +149,18 @@ export interface InboxReply<T> {
 
 export interface InboxOverview {
 	rows: InboxRow[];
+	/** Personal reminders, soonest first. */
+	reminders: InboxHeader[];
 	unresolvedFlags: number;
 	/** True when the phone returned its full cap of Needs you items, so more may exist. */
 	needsYouCapped: boolean;
+}
+
+export interface TrackerInboxProps {
+	source: TrackerInboxSource;
+	mode?: 'phone' | 'mac';
+	home?: boolean;
+	project?: string;
 }
 
 /** The reads and confirmed writes supplied by the Mac bridge or the phone replica. */

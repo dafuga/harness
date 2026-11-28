@@ -11,11 +11,32 @@
 		"source": [
 			"packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInboxMessages.ts"
 		],
-		"symbols": ["loadFailureMessage", "writeSentMessage", "writeFailureMessage"]
+		"symbols": [
+			"syncMessage",
+			"loadFailureMessage",
+			"overviewFailureMessage",
+			"writeSentMessage",
+			"writeFailureMessage"
+		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "syncMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": true
+			},
+			{
+				"name": "syncMessage.loaded",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "syncMessage.sync",
+				"type": "Pick<InboxReply<never>, 'freshness' | 'lastSyncedAt'>",
+				"required": false
+			},
 			{
 				"name": "loadFailureMessage.code",
 				"type": "string | undefined",
@@ -23,6 +44,16 @@
 			},
 			{
 				"name": "loadFailureMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": true
+			},
+			{
+				"name": "overviewFailureMessage.code",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "overviewFailureMessage.mode",
 				"type": "'phone' | 'mac'",
 				"required": true
 			},
@@ -51,7 +82,15 @@
 		],
 		"outputs": [
 			{
+				"name": "syncMessage",
+				"type": "string"
+			},
+			{
 				"name": "loadFailureMessage",
+				"type": "string"
+			},
+			{
+				"name": "overviewFailureMessage",
 				"type": "string"
 			},
 			{
@@ -64,8 +103,36 @@
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "syncMessage",
+				"inputs": [
+					{
+						"name": "syncMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": true
+					},
+					{
+						"name": "syncMessage.loaded",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "syncMessage.sync",
+						"type": "Pick<InboxReply<never>, 'freshness' | 'lastSyncedAt'>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "syncMessage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "loadFailureMessage",
 				"inputs": [
@@ -83,6 +150,29 @@
 				"outputs": [
 					{
 						"name": "loadFailureMessage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "overviewFailureMessage",
+				"inputs": [
+					{
+						"name": "overviewFailureMessage.code",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "overviewFailureMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "overviewFailureMessage",
 						"type": "string"
 					}
 				],

@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "script.needs-you-canary-patient-tracker",
+	"uid": "u_3matsrl4l7",
+	"kind": "script",
+	"title": "patientTracker",
+	"responsibility": "Owns the patientTracker build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/needs-you-canary/patientTracker.ts"],
+		"symbols": ["patientTracker"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "patientTracker.tracker",
+				"type": "CanaryTracker",
+				"required": true
+			},
+			{
+				"name": "patientTracker.clock",
+				"type": "CanaryClock",
+				"required": true
+			},
+			{
+				"name": "patientTracker.log",
+				"type": "(line: string) => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "patientTracker",
+				"type": "CanaryTracker"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "patientTracker",
+				"inputs": [
+					{
+						"name": "patientTracker.tracker",
+						"type": "CanaryTracker",
+						"required": true
+					},
+					{
+						"name": "patientTracker.clock",
+						"type": "CanaryClock",
+						"required": true
+					},
+					{
+						"name": "patientTracker.log",
+						"type": "(line: string) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "patientTracker",
+						"type": "CanaryTracker"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "script.needs-you-canary-canary-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/needs-you-canary/patientTracker.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/needs-you-canary/patientTracker.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

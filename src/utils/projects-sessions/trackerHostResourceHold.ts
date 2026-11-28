@@ -4,6 +4,7 @@ import type {
 	TrackerHostResources,
 	TrackerHostVolume
 } from './trackerHostResources.types';
+import { trackerMacLaunchLoad, trackerOverloadedLoadPerCore } from './trackerMachineStatus';
 import { trackerBudgetCores } from './trackerCpuBudget';
 
 export const trackerResourceHoldPrefix = 'Tracker host resource hold: ';
@@ -13,7 +14,7 @@ const sharedNode = 'grok-box';
 const fleetDiskFloorGB = 30;
 const overloaded = {
 	label: 'this computer is overloaded',
-	loadPerCore: 1.5,
+	loadPerCore: trackerOverloadedLoadPerCore,
 	ramPercent: 10,
 	inodes: 50_000,
 	inodePercent: 1
@@ -45,7 +46,7 @@ function pressureHold(
 	const [load, sustained] = resources.load();
 	if (budgeted && load >= trackerBudgetCores)
 		return `load ${load.toFixed(2)} (need under ${trackerBudgetCores} for non-Harbor)`;
-	if (macNodes.has(node)) return macPressureHold(resources, load);
+	if (macNodes.has(node)) return macPressureHold(resources, load, sustained);
 	const limits = node === sharedNode ? busyShared : overloaded;
 	const ceiling = limits.loadPerCore * resources.cores();
 	if (sustained > ceiling)
@@ -56,11 +57,16 @@ function pressureHold(
 		: null;
 }
 
-function macPressureHold(resources: TrackerHostResources, load: number) {
+function macPressureHold(resources: TrackerHostResources, load: number, sustained: number) {
 	const { freePercent } = resources.memory();
 	if (freePercent === null || freePercent < 25)
 		return `free memory ${freePercent === null ? 'unknown' : `${freePercent}%`} (need at least 25%)`;
-	return load >= 15 ? `load ${load.toFixed(2)} (need under 15)` : null;
+	if (load >= trackerMacLaunchLoad)
+		return `load ${load.toFixed(2)} (need under ${trackerMacLaunchLoad})`;
+	const ceiling = trackerOverloadedLoadPerCore * resources.cores();
+	return sustained > ceiling
+		? `5-min load ${sustained.toFixed(2)} (need at most ${ceiling})`
+		: null;
 }
 
 function memoryHold(resources: TrackerHostResources, { limits }: TrackerHostResourceRequest) {

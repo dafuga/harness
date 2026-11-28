@@ -1,8 +1,10 @@
 // @harness-uid u_bl6xl2h4a3
 import { TrackerHostProcessAdapter } from '../../../adapters/projects-sessions/TrackerHostProcessAdapter';
 import { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
+import { readClaudeCosReceipts } from '../../../adapters/projects-sessions/tracker-tmux-adapter/readClaudeCosReceipt';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import { watchdogEffectReceipt, watchdogScan } from './trackerHostWatchdogSchema';
+import { staleDispatchHeartbeatKind } from './trackerCosAlertKinds';
 import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { readTrackerWatchdogPeer } from './trackerWatchdogPeer';
 import { cosSendWindowStart } from './trackerCosWindow';
@@ -10,6 +12,7 @@ import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 import { WatchdogPaneService } from '../WatchdogPaneService';
+import { cosReceiptReference } from './trackerHostCos';
 
 const panes = new WatchdogPaneService();
 
@@ -52,18 +55,20 @@ const minute = 60_000;
 const cosInterval = 30 * minute;
 const backlogInterval = 5 * minute;
 
-/** The pane input refuses long messages, so the slot lines take only the room that is left. */
-const cosMessageLimit = 5000;
+/** The 80x24 CoS pane showed about 500 bytes before scrolling. Leave room for wrapping. */
+const cosMessageLimit = 450;
+const cosBatchLimit = 4;
+const cosAlertLineLimit = 112;
+const rowSeparator = ' | ';
 
-function cosMessage(summary: readonly string[], alerts: readonly TrackerWatchdogAlert[]) {
-	const message =
-		'Tracker watchdog alerts for Chief of Staff. Review these items. ' + summary.join(' | ');
+function cosMessage(alerts: readonly TrackerWatchdogAlert[]) {
 	const slots = new Map(
 		alerts.flatMap(({ host, slots }) => (slots ? [[host, plain(slots)] as const] : []))
 	);
-	if (!slots.size) return message;
+	if (!slots.size) return cosSummary(alerts);
 	const lines = [...slots].map(([host, line]) => `${host}: ${line}`);
-	return `${message} || Slots by computer: ${lines.join(' || ')}`.slice(0, cosMessageLimit);
+	const withSlots = cosSummary(alerts, ` || Slots by computer: ${lines.join(' || ')}`);
+	return Buffer.byteLength(withSlots) <= cosMessageLimit ? withSlots : cosSummary(alerts);
 }
 
 function plain(text: string) {
@@ -73,29 +78,79 @@ function plain(text: string) {
 function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatchdogPort {
 	let nextCosTick = 0;
 	return {
+		batchLimit: cosBatchLimit,
 		...(chiefOfStaff && { peers: readTrackerWatchdogPeer }),
 		close: (input, signal) => tmux.closeIdle(input, signal),
 		scan: (signal) => tmux.scan(signal),
 		inventory: (signal) => tmux.inventory(signal),
 		nudge: (input, signal) => tmux.nudge(input, signal),
 		deliver: (input, signal) => deliverToSession(tmux, input, signal),
+		async receipts(alerts, signal) {
+			const found = await tmux.scan(signal, /^cos$/);
+			return readClaudeCosReceipts(
+				found.length === 1 ? found[0].cwd : undefined,
+				alerts.map((alert) => ({
+					id: alert.id,
+					line: cosAlertLine(alert),
+					reference: cosReceiptReference(alert),
+					since: alert.at
+				}))
+			);
+		},
 		async send(alerts, signal, queue) {
 			const now = Date.now();
 			if (cosSendWindowStart(now) === null) return false;
-			if (now < nextCosTick && !alerts.some(({ kind }) => kind === urgentQueueAlertKind))
+			if (
+				now < nextCosTick &&
+				!alerts.some(
+					({ kind }) => kind === urgentQueueAlertKind || kind === staleDispatchHeartbeatKind
+				)
+			)
 				return false;
 			const panes = await tmux.scan(signal, /^cos$/);
 			if (panes.length !== 1) return false;
-			const summary = alerts.map(
-				({ item_id, host, reason }) =>
-					`[${item_id.slice(0, 6)}] ${host}: ${plain(reason).slice(0, 500)}`
-			);
-			const message = cosMessage(summary, alerts);
+			const message = cosMessage(alerts);
 			const sent = await tmux.nudge({ pane: panes[0], cli: 'claude', message }, signal);
 			if (sent) nextCosTick = now + (queue?.backlog ? backlogInterval : cosInterval);
 			return sent;
 		}
 	};
+}
+
+function cosSummary(alerts: readonly TrackerWatchdogAlert[], trailer = '') {
+	const references = alerts.map(cosReceiptReference).join(',');
+	const prefix =
+		'Tracker watchdog alerts for Chief of Staff. Review these items. ' +
+		`Watchdog receipts: ${references} || `;
+	const available =
+		cosMessageLimit -
+		Buffer.byteLength(prefix) -
+		Buffer.byteLength(trailer) -
+		(alerts.length - 1) * rowSeparator.length;
+	const lineBudget = Math.min(cosAlertLineLimit, Math.floor(available / alerts.length));
+	return (
+		prefix + alerts.map((alert) => cosPromptLine(alert, lineBudget)).join(rowSeparator) + trailer
+	);
+}
+
+function cosPromptLine(alert: TrackerWatchdogAlert, budget: number) {
+	const full = cosAlertLine(alert);
+	if (Buffer.byteLength(full) <= budget) return full;
+	const id = cosAlertPrefix(alert);
+	const sentence = /^.*?[.!?](?=\s|$)/u.exec(plain(alert.reason).trim())?.[0];
+	if (sentence && Buffer.byteLength(id + sentence) <= budget) return id + sentence;
+	return id + 'See the full alert in Tracker.';
+}
+
+/** Rendered rows from before references and the composer budget are used to recover old receipts. */
+function cosAlertLine(alert: TrackerWatchdogAlert) {
+	return `${cosAlertPrefix(alert, true)}${plain(alert.reason).slice(0, 500)}`;
+}
+
+function cosAlertPrefix({ item_id, kind, host }: TrackerWatchdogAlert, includeHost = false) {
+	const scheduler = kind === staleDispatchHeartbeatKind;
+	const label = scheduler ? 'scheduler' : item_id.slice(0, 6);
+	return `[${label}] ${scheduler || includeHost ? `${host}: ` : ''}`;
 }
 
 /** Only one pane of exactly that name, and only while its prompt is empty and waiting. */

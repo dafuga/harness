@@ -9,7 +9,8 @@ import { HostedProjectReadUnavailableError } from './HostedProjectReadUnavailabl
 import type { ProjectSessionService } from '../../projects-sessions/project-session-service/ProjectSessionService';
 import type {
 	RemoteProjectPort,
-	HumanCommentDraft
+	HumanCommentDraft,
+	CacheStatus
 } from '../../../models/projects-sessions/ProjectContext.types';
 /** A shared project dispatches only the reads its hosted port offers. */
 const unread = 'Recorded evidence of a shared project is not read on this computer yet.';
@@ -17,16 +18,13 @@ export class HostedProjectService {
 	private selected: string | null = null;
 	constructor(
 		private session: ProjectSessionService,
-		private remote: RemoteProjectPort
+		private remote: RemoteProjectPort,
+		private onCacheStatus?: (event: CacheStatus) => void
 	) {}
 	wrap(local: Bridge): Bridge {
 		return new Proxy(local, {
 			get: (target, key: keyof Bridge) => {
-				if (key === 'listProjects')
-					return async () => [
-						...(await local.listProjects!()),
-						...((await this.remote.available?.()) === false ? [] : await this.remote.listProjects())
-					];
+				if (key === 'listProjects') return () => this.listProjects(local);
 				if (key === 'selectProject')
 					return (input: { projectId: string }) => this.select(local, input.projectId);
 				if (key === 'gameCreate') return target[key];
@@ -41,6 +39,25 @@ export class HostedProjectService {
 				return (input: Record<string, unknown> = {}) => this.dispatch(key, input);
 			}
 		});
+	}
+	private async listProjects(local: Bridge) {
+		const hosted = async () =>
+			(await this.remote.available?.()) === false ? [] : this.remote.listProjects();
+		const [device, hub] = await Promise.allSettled([
+			Promise.resolve().then(() => local.listProjects!()),
+			hosted()
+		]);
+		// The remote reader reports fresh, cached and denied results under its own authority.
+		if (hub.status === 'rejected')
+			this.onCacheStatus?.({ projectId: '$projects', status: 'unavailable' });
+		this.onCacheStatus?.({
+			projectId: '$local-projects',
+			status: device.status === 'fulfilled' ? 'fresh' : 'unavailable'
+		});
+		return [
+			...(device.status === 'fulfilled' ? device.value : []),
+			...(hub.status === 'fulfilled' ? hub.value : [])
+		];
 	}
 	private async select(local: Bridge, projectId: string) {
 		// The local project already open is read again; any switch waits for active work.

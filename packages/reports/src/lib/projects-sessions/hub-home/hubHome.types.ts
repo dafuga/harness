@@ -1,9 +1,13 @@
 // @harness-uid u_kda7xezayo
-import type { OverviewSnapshot } from '../project-overview/projectOverview.types';
+import type { OverviewSnapshot, ProjectState } from '../project-overview/projectOverview.types';
+import type * as Planning from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
 import type { HomeLiveOverview } from './homeLive.types';
 
 import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 import type { HubMessageStatus } from '../../../../../../src/utils/projects-sessions/hubSessionMessages.types';
+import type { HomeChatInput, HomeChatReceipt } from './homeChat.types';
+
+export type * from './homeChat.types';
 
 export type HomeAgentState = 'needs-you' | 'working' | 'idle' | 'offline';
 export type HomePlanState = 'draft' | 'in-review' | 'approved' | 'in-progress' | 'done';
@@ -83,11 +87,25 @@ export interface HomeOpenAsk {
 	since: string;
 }
 
+/** One personal reminder: a Tracker item that reminds Daniel, listed only under Reminders. */
+export interface HomeReminder {
+	itemId: string;
+	title: string;
+	/** The armed time. Done and snooze name it, so a stale tap changes nothing. */
+	at: string;
+	/** "Daily", "Weekly" and so on; null for a reminder that happens once. */
+	repeats: string | null;
+	updatedAt: string;
+}
+
 export interface HomePlan {
 	id: string;
 	title: string;
 	project: string | null;
 	state: HomePlanState;
+	/** Older Home publishers omit stage and artifacts. */
+	stage?: Planning.TrackerStage;
+	planning?: Planning.TrackerPlanning;
 	updatedAt: string;
 	total: number;
 	done: number;
@@ -108,7 +126,7 @@ export interface HomeRun {
 }
 
 export interface HomeWhenDue {
-	state: 'running' | 'queued' | 'blocked';
+	state: 'running' | 'queued' | 'blocked' | 'due';
 	reason: string | null;
 	/** Launch order class: 0 urgent, 1 normal, 2 low. */
 	urgency: number;
@@ -148,11 +166,21 @@ export interface HomeProviderReadings {
 	quota: HomeSubscription[] | null;
 }
 
+/** A visible Tracker project, including projects whose last task finished long ago. */
+export interface HomeTrackerProject {
+	name: string;
+	state: ProjectState;
+	needsYou: number;
+}
+
 export interface OwnerHomeSnapshot {
 	overview: OverviewSnapshot;
+	projectDirectory?: HomeTrackerProject[];
 	agents: HomeAgent[];
 	/** Every open structured ask, oldest first. Older Mac apps omit it. */
 	openAsks?: HomeOpenAsk[];
+	/** Personal reminders, soonest first. Older Mac apps omit them. */
+	reminders?: HomeReminder[];
 	plans: HomePlan[];
 	scheduled: HomeRun[];
 	overdue?: HomeRun[];
@@ -164,26 +192,19 @@ export interface OwnerHomeSnapshot {
 	liveOverview?: HomeLiveOverview;
 }
 
-export interface HomeChatInput {
-	id: string;
-	agentId: string;
-	itemId: string;
-	/** `message` is typed into Chief of Staff's or one live run's prompt; a note is only stored. */
-	kind: 'note' | 'answer' | 'message';
-	question: string | null;
-	text: string;
-	/** The exact live run a session message is for; Chief of Staff's need none. */
-	runId?: string;
-	/** A tapped option's 1-based number. The text then carries that option's label. */
-	option?: number;
-	confirmed?: boolean;
+/** The active local Mac or approved connection used by the installed apps. */
+export interface TrackerHomeSource {
+	read(): Promise<OwnerHomeSnapshot>;
+	send(message: HomeChatInput): Promise<HomeChatReceipt>;
 }
 
-export type HomeChatStatus = 'queued' | 'sent' | 'refused' | 'unconfirmed';
+export type OpenHomeSection = (section: HomeSection, itemId?: string) => void;
+export type SendHomeChat = TrackerHomeSource['send'];
 
-export interface HomeChatReceipt {
-	id: string;
-	status: HomeChatStatus;
-	/** The Tracker id of a stored Hub message. */
-	messageId?: string;
+export interface HomePlannableView {
+	plans: HomePlan[] | null;
+	schedule: HomeRun[] | null;
+	agents: HomeAgent[] | null;
+	needsMac: boolean;
+	now: number;
 }

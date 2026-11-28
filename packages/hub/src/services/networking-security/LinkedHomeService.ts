@@ -1,5 +1,7 @@
 // @harness-uid u_ppvcb4vola
 import type { RemoteAccountComputer } from '../../../../remote/src/models/networking-security/RemoteControl.types';
+import type { TrackerAttachmentDocument } from '../../../../../src/utils/projects-sessions/trackerAttachment.types';
+import { trackerAttachmentDocumentSchema } from '../../../../../src/utils/projects-sessions/trackerAttachmentDocumentBytes';
 import type {
 	HomeChatInput,
 	HomeChatReceipt,
@@ -8,7 +10,7 @@ import type {
 import { RemoteFailure } from '../../../../remote/src/index';
 import { homeChatReceipt, showsHomeChatTarget } from './linkedHomeChat';
 import { completeHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
-import { mergeHomeSnapshots } from '../../components/projects-sessions/hubHomeMerge';
+import { mergeHomeSnapshots } from '$reports/components/projects-sessions/hub-home/hubHomeMerge';
 import { parseLinkedHome } from '../../routes/api/hub-home/homeLivePayload';
 import type { BrowserApi } from '../../utils/browserApi';
 import { browserDeviceKeys } from '../../utils/networking-security/browserDeviceKeys';
@@ -80,6 +82,22 @@ export class LinkedHomeService {
 				this.drop(hostId, link);
 				return { id: message.id, status: 'unconfirmed' };
 			}
+		}
+		return null;
+	}
+
+	/** Read from a linked computer that showed this document on an open ask. */
+	async readDocument(id: string): Promise<TrackerAttachmentDocument | null> {
+		for (const [hostId, snapshot] of this.shown) {
+			const link = this.open.get(hostId);
+			const ask = snapshot.openAsks?.find((entry) =>
+				entry.attachments?.some((attachment) => attachment.id === id && attachment.bytes > 0)
+			);
+			if (!link || !ask) continue;
+			const value = await within(link.readDocument(ask.itemId, id), readMs).catch(() => null);
+			if (this.closed) return null;
+			const document = trackerAttachmentDocumentSchema.safeParse(value);
+			if (document.success) return document.data;
 		}
 		return null;
 	}

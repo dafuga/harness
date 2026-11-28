@@ -12,6 +12,7 @@ export interface DeviceOperationsOptions {
 	grant: () => RemoteGrant;
 	home?: () => Promise<unknown>;
 	homeChat?: (input: Fields) => Promise<unknown>;
+	homeDocument?: (input: Fields) => Promise<unknown>;
 	trackerPull?: (input: Fields) => Promise<unknown>;
 	trackerPush?: (input: Fields) => Promise<unknown>;
 }

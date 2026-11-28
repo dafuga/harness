@@ -15,8 +15,11 @@ const count = z.number().int().min(0).max(1_000_000);
 const row = z.object({
 	key: text(300),
 	itemId: z.string().min(1).max(200),
+	runId: z.number().int().positive().optional(),
 	title: text(500),
-	state: z.enum(['running', 'offline', 'queued', 'no-run', 'finished']),
+	state: z
+		.enum(['running', 'offline', 'queued', 'blocked', 'no-run', 'finished'])
+		.transform((state) => (state === 'no-run' ? ('blocked' as const) : state)),
 	outcome: short.nullable(),
 	status: z.enum(['open', 'in_progress', 'blocked', 'done']),
 	stage: z.enum(['idea', 'detail', 'design', 'build']).nullable(),
@@ -34,6 +37,8 @@ const row = z.object({
 const project = z.object({
 	agent: short,
 	running: count,
+	totalRows: count.optional(),
+	blockedRows: count.optional(),
 	counts: z.object({ open: count, in_progress: count, blocked: count, done: count }),
 	rows: z.array(row).max(100),
 	updatedAt: time
@@ -43,7 +48,13 @@ const liveOverview = z.object({
 	readAt: time,
 	projects: z.array(project).max(200),
 	machines: z
-		.array(z.object({ name: short, status: z.enum(['ok', 'busy', 'overloaded', 'offline']) }))
+		.array(
+			z.object({
+				name: short,
+				status: z.enum(['ok', 'busy', 'overloaded', 'offline']),
+				remoteRuns: count.optional()
+			})
+		)
 		.max(200),
 	hiddenRuns: count,
 	omittedRows: count

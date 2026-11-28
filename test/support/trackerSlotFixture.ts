@@ -17,6 +17,32 @@ export const composer = (status = footer) =>
 export const codexComposer = (background = '') =>
 	[background, '› ', '', '  gpt-6.2-sol high · ~/work'].join('\n');
 
+export async function verifyManualLaunchWithBlockedPane(hub: TrackerSlotFixture) {
+	const item = 'retrylive1';
+	hub.queue(item);
+	await hub.advance(5_000);
+	const pane = hub.panes().find((name) => name.startsWith('auto-retryl-'))!;
+	expect(pane).toBeDefined();
+	await hub.request(`/items/${item}/block`, { reason: 'Synthetic dependency' });
+	hub.screen(pane, 'Working (esc to interrupt)');
+	await hub.advance(5_000);
+	const oldToken = hub.item(item).auto;
+	await hub.request(`/items/${item}/unblock`);
+	await hub.request(`/items/${item}/launch`);
+	expect(hub.item(item).auto).not.toBe(oldToken);
+	await hub.advance(5_000);
+	expect(hub.panes()).toContain(pane);
+	expect(hub.runs(item)).toEqual([{ state: 'finished', outcome: 'blocked' }]);
+	hub.screen(pane, composer());
+	await hub.advance(35_000);
+	await hub.advance(5_000);
+	expect(hub.panes()).not.toContain(pane);
+	expect(hub.runs(item)).toEqual([
+		{ state: 'finished', outcome: 'blocked' },
+		{ state: 'running', outcome: null }
+	]);
+}
+
 /** A one-slot hub with a scripted tmux server. Time and pane activity are explicit. */
 export function trackerSlotFixture(root: string, start: number): TrackerSlotFixture {
 	const state = join(root, 'panes.json');

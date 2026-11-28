@@ -19,7 +19,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeNotStarted.svelte"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeNotStarted.svelte"
+		],
 		"symbols": ["HubHomeNotStarted", "HubHomeNotStarted.trailing"]
 	},
 	"contract": {
@@ -115,11 +117,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeNotStarted.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeNotStarted.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeNotStarted.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeNotStarted.svelte"
 			}
 		]
 	},

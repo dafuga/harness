@@ -3,7 +3,6 @@ import {
 	mkdirSync,
 	readFileSync,
 	readdirSync,
-	realpathSync,
 	unlinkSync,
 	writeFileSync
 } from 'node:fs';
@@ -19,14 +18,17 @@ import { onIdleHost } from '../../support/trackerHostResourceFixture';
 import {
 	managedFixtureBindings,
 	managedForegroundConfig,
-	managedTrackerItemRequest
+	managedTrackerItemRequest,
+	seedManagedBriefItems
 } from '../../support/trackerManagedProcessFixture';
 import {
 	verifyCancelledClaim,
 	verifyExpiredClaim,
-	verifyLegacyQueuedClaim
+	verifyLegacyQueuedClaim,
+	verifyManagedBrief
 } from '../../support/trackerManagedLaunchAssertions';
 
+import { verifyInPlaceBrief } from '../../support/trackerInPlaceFixture';
 import { expectedTokenUsage } from '../../support/trackerCodexUsageExpectation';
 import {
 	verifyClaudeLinkage,
@@ -67,6 +69,7 @@ test(
 
 async function proveManagedForeground({ root, git }: TemporaryRepo) {
 	git('commit', '--allow-empty', '-m', 'Fixture source');
+	git('remote', 'add', 'origin', 'git@github.com:Greymass/synthetic.git');
 	const { config, profiles } = managedFixtureBindings(root);
 	const database = new DatabaseSync(':memory:');
 	const signal = new AbortController().signal;
@@ -84,10 +87,7 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 			),
 			now: () => Date.now()
 		});
-		runtime.store.appendLocal({
-			itemId,
-			fields: { title: 'Synthetic Docker work', status: 'open', kind: 'task', project: 'Harness' }
-		});
+		seedManagedBriefItems(runtime, itemId);
 		expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).status).toBe(200);
 		await runtime.scheduler!.tick(signal);
 		expect(database.prepare('SELECT state,tmux FROM runs').all()).toEqual([
@@ -107,6 +107,7 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 			brief: expect.stringContaining('tracker done abc123'),
 			guestAuthFile: expect.stringMatching(/\/effects\/[a-f0-9]{64}\/guest-auth\.json$/)
 		});
+		verifyManagedBrief(launched, root);
 		expect(launched.guestAuthFile.startsWith(launched.cwd + '/')).toBe(false);
 		expect(existsSync(launched.guestAuthFile)).toBe(false);
 		await verifyLostSession(runtime, database, config.stateDirectory);
@@ -149,12 +150,7 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 		}
 		expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
 		await runtime.scheduler!.tick(signal);
-		if (ops) {
-			const invocation = JSON.parse(
-				readFileSync(join(config.native.profile, 'invoked.ndjson'), 'utf8')
-			);
-			expect(invocation.cwd).toBe(realpathSync(ops));
-		}
+		if (ops) verifyInPlaceBrief(config, ops);
 		expect(database.prepare('SELECT state FROM runs').get()).toEqual({ state: 'running' });
 		expect((await managedTrackerItemRequest(runtime, itemId, 'done')).ok).toBe(true);
 		await runtime.scheduler!.tick(signal);
@@ -190,6 +186,9 @@ async function verifyLostSession(
 	});
 	expect(active).toBeDefined();
 	const attempt = join(attempts, active!);
+	const brief = readFileSync(join(attempt, 'brief.md'), 'utf8');
+	expect(brief).toMatch(/## Earlier attempts[\s\S]+run 1[^\n]*done/);
+	expect(brief).toMatch(/earlier attempt.*branches.*uncommitted changes.*open PRs/i);
 	unlinkSync(join(attempt, 'exit'));
 	const probe = join(attempts, '..', 'tmux-presence');
 	const token = readFileSync(join(attempt, 'started'), 'utf8').trim();

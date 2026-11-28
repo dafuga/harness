@@ -9,7 +9,9 @@ import type {
 	InboxWriteReceipt
 } from '../../../models/development-tooling/TrackerInbox.types';
 import { withLocalDocuments } from './macTrackerInboxDocuments';
+import { macReminderWrite } from './macReminderWrite';
 import { confirmedWrite, matchesQuery } from '../tracker-inbox/trackerInbox';
+import { reminderHeaders } from '../tracker-inbox/trackerReminders';
 import type { TrackerInboxItemReply, TrackerInboxReadInput } from './MacTrackerInboxService.types';
 import { projectDetail, projectRow, safeId, visible } from './macTrackerInboxProjection';
 import {
@@ -44,6 +46,7 @@ export class MacTrackerInboxService {
 	}
 
 	async write(input: Partial<ConfirmedWrite>): Promise<InboxReply<InboxWriteReceipt>> {
+		if (input.action === 'done' || input.action === 'remind') return macReminderWrite(input);
 		const write = parseWrite(input);
 		if (!write) return current({ code: 'invalidInput' });
 		const { id, ...fields } = write;
@@ -69,7 +72,8 @@ export class MacTrackerInboxService {
 		try {
 			const rows = await readRows();
 			const unresolvedFlags = rows.filter(({ bucket }) => bucket === 'needs-you').length;
-			return current({ value: { rows, unresolvedFlags, needsYouCapped: false } });
+			const reminders = reminderHeaders(rows.map((row) => row.header));
+			return current({ value: { rows, reminders, unresolvedFlags, needsYouCapped: false } });
 		} catch {
 			return unavailable();
 		}

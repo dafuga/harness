@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.accounts-access-device-list-row",
+	"uid": "u_2aiclyytdr",
+	"kind": "component",
+	"title": "DeviceListRow",
+	"responsibility": "Displays a linked device name, status and caller-provided controls as one list row.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-small",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/accounts-access/DeviceListRow.svelte"],
+		"symbols": ["DeviceListRow"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DeviceListRow.name",
+				"type": "string",
+				"required": true,
+				"description": "The display name of the linked device."
+			},
+			{
+				"name": "DeviceListRow.status",
+				"type": "string",
+				"required": true,
+				"description": "The status label shown beneath the device name."
+			},
+			{
+				"name": "DeviceListRow.children",
+				"type": "Snippet",
+				"required": true,
+				"description": "The controls or other content rendered in the row's actions area."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeviceListRow",
+				"type": "markup",
+				"description": "A list item containing the device label, status and actions."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/accounts-access/DeviceListRow.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/accounts-access/DeviceListRow.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -15,6 +15,19 @@ CREATE TABLE IF NOT EXISTS runs(
 );
 CREATE INDEX IF NOT EXISTS runs_item ON runs(item_id, id);
 CREATE INDEX IF NOT EXISTS runs_state ON runs(state);
+CREATE TABLE IF NOT EXISTS run_host_work(
+  run_id INTEGER NOT NULL, lease TEXT NOT NULL, host TEXT NOT NULL, kind TEXT NOT NULL,
+  expires_at INTEGER NOT NULL, PRIMARY KEY(run_id, lease)
+);
+CREATE TRIGGER IF NOT EXISTS run_host_work_finished AFTER UPDATE OF state, ended_at ON runs
+WHEN NEW.state NOT IN ('running', 'verifying') OR NEW.ended_at IS NOT NULL
+BEGIN
+  DELETE FROM run_host_work WHERE run_id = NEW.id;
+END;
+CREATE TRIGGER IF NOT EXISTS run_host_work_deleted AFTER DELETE ON runs
+BEGIN
+  DELETE FROM run_host_work WHERE run_id = OLD.id;
+END;
 -- Finished runs from other computers (Mac runners report theirs to the hub; the
 -- hub sends its history back), so history and reports cover all computers.
 CREATE TABLE IF NOT EXISTS remote_runs(

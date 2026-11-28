@@ -4,6 +4,7 @@ import type { ProjectSessionService } from '../../projects-sessions/project-sess
 import type { ProviderDiscoveryService } from '../../agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import type { DesktopRunService } from '../../agents-providers/desktop-run-service/DesktopRunService';
 import { desktopBridge } from '../../../lib/development-tooling/desktop-bridge/desktopBridge';
+import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
 export class DesktopBridgeService {
 	constructor(
 		private session: ProjectSessionService,
@@ -11,7 +12,7 @@ export class DesktopBridgeService {
 		private runs: DesktopRunService,
 		private choose: () => Promise<string | null>
 	) {}
-	bridge() {
+	bridge(onCacheStatus?: (event: CacheStatus) => void) {
 		const local = desktopBridge({
 			session: this.session,
 			providers: this.providers,
@@ -19,7 +20,7 @@ export class DesktopBridgeService {
 			choose: this.choose
 		});
 		return this.session.remote
-			? new HostedProjectService(this.session, this.session.remote).wrap(local)
+			? new HostedProjectService(this.session, this.session.remote, onCacheStatus).wrap(local)
 			: local;
 	}
 }

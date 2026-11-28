@@ -1,5 +1,6 @@
 // @harness-uid u_6vq2h9nzd1
 import { afterEach, expect, test, vi } from 'vitest';
+import { liveReadMs } from '../../src/lib/networking-security/hubLiveUpdates';
 import {
 	overviewPath,
 	readOverview,
@@ -125,6 +126,7 @@ test('a visible page refreshes at most every 20 seconds and stops when told', ()
 	const stop = watchWhileVisible(refresh);
 	vi.advanceTimersByTime(20_000);
 	expect(refresh).toHaveBeenCalledTimes(1);
+	expect(liveReadMs, 'Hub Home allows a full read on the first visible turn').toBe(20_000);
 	listeners.get('focus')?.();
 	expect(refresh).toHaveBeenCalledTimes(1);
 	vi.advanceTimersByTime(20_000);

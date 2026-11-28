@@ -6922,6 +6922,43 @@
 			"definition": "ae33aafa7296de2b03252581b006603800be4ef0d6eb07d3f7a53d59d0da24e0",
 			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
 			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "hub.function.hub-runtime",
+			"name": "hubRuntime",
+			"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
+			"to": "packages/hub/src/routes/api/[...path]/hubRuntime.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/+server.ts",
+			"definition": "0221e29418ba511059ec27966139419a15b970acd2326e591d37843f82b51036",
+			"reason": "Expose the configured verified owner identity for the read-only projects fallback."
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererPolicy",
+			"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+			"reason": "Allows HTTPS images for plan details when requested by the Tracker route while keeping the existing script, frame and connection sources.",
+			"definition": "83e8d0154a24e7ba1b69c1445c2da86a0930ddefc217f1827854ccf38df7aef4"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererAssets",
+			"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+			"reason": "Enables HTTPS image previews on the Plans and schedule document by its local route and view.",
+			"definition": "ad1a4063a13a239f1b02f10836accd8ff855c93fbc4b1b1cd900bdff6edf924d"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererAssets",
+			"commit": "b442b79f09e089f667e205bb0455648e834b4172",
+			"reason": "Extracts filesystem fallback resolution while preserving the renderer route, asset containment and content policy.",
+			"definition": "1fab226c14bba012f3eeddd476c8d1263900879fc7e48463c2bb8327a4a17cb9"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererAssets",
+			"commit": "03259124cf3b2fd6212b6a458098c59a5ce089a2",
+			"reason": "Allows HTTPS plan mockups on signed-in Mac Home and the Plans and schedule view.",
+			"definition": "fb762d46bd29138d129f553d50d3c1388506ddbeb78efbc8570da070444870a1"
 		}
 	],
 	"retiredOwners": [

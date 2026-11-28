@@ -7,7 +7,7 @@ import type { RenderMockups } from '../../../utils/planning-collaboration/mockup
 import type { ProjectionCacheService } from './projection-cache-service/ProjectionCacheService';
 import type { RemoteProjectPort } from '../../../models/projects-sessions/ProjectContext.types';
 import type { NativeAuthService } from './NativeAuthService';
-import type { LocalControl } from './LocalOperationsService';
+import type { LocalControl, LocalOperationsOptions } from './LocalOperationsService.types';
 
 export interface LocalClientOptions {
 	/** What every client of this computer shares; the session of a window is its own. */
@@ -20,6 +20,8 @@ export interface LocalClientOptions {
 		cache?: ProjectionCacheService;
 		remote?: RemoteProjectPort;
 		auth?: NativeAuthService;
+		home?: LocalOperationsOptions['home'];
+		homeChat?: LocalOperationsOptions['homeChat'];
 	};
 	accountRequired?: boolean;
 	choose: () => Promise<string | null>;

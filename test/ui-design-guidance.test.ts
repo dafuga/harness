@@ -7,6 +7,9 @@ import {
 const rules = [
 	'List cards never contain forms',
 	'one-line option chips',
+	'two to four columns on desktop and tablet',
+	'one column at phone widths',
+	'Other… tile opens a dialog',
 	'Render explicit HTTP and HTTPS URLs',
 	'rel="noopener noreferrer"',
 	'bottom-right overlay on desktop',

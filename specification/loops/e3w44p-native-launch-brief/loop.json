@@ -1,0 +1,67 @@
+{
+	"name": "e3w44p-native-launch-brief",
+	"goal": "Generated briefs retain safety rules, run and checkout identity, parent context and earlier attempts.",
+	"createdAt": "2026-11-27T19:11:37.698Z",
+	"updatedAt": "2026-11-27T19:23:41.077Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:12:17.544Z",
+			"evidence": "Legacy dispatcher includes run, repository, worktree, parent, previous outcomes and risk rules. Native run 1054 omitted them."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:12:32.289Z",
+			"evidence": "Existing brief tests check completion and secret rules only. Extend the existing managed foreground and brief cases to check emitted checkout, parent, prior attempt, and repository policy through a launch."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:21:56.173Z",
+			"evidence": "a80bb268b0: the regular and truncated briefs lack the Greymass rule; the managed fixture lacks Run 1, attempt 1. Three failures across six assertions cases. Committed red proof uses a fixed environment and one worker."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:22:30.175Z",
+			"evidence": "cbd04fff9a restores merge, release, risk, testing and ignored-topic rules. The runner reads the actual reservation, approved route, parent and finished runs. Managed preparation describes the directory it created and labels Greymass remotes without printing remote URLs."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:23:41.077Z",
+			"evidence": "cbd04fff9a: the unchanged six cases passed in the same clean snapshot environment as red a80bb268b0. The recorded launch uses SQLite, a temporary git repo and worktree, file-backed brief, and fixture tmux/provider binaries."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

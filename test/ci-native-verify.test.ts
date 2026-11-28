@@ -10,6 +10,7 @@ function job(name: string): string {
 	return start < 0 ? '' : workflow.slice(start, next < 0 ? undefined : start + 1 + next);
 }
 const check = job('check-part');
+const focused = job('focused');
 const gate = job('check');
 const verify = job('verify');
 const xcode = '/Applications/Xcode_26.3.app/Contents/Developer';
@@ -44,11 +45,15 @@ test('CI runs every part, and one Full check job fails unless all of them pass',
 		Object.keys(checkParts ?? {})
 	);
 	expect(check).toContain('fail-fast: false\n');
+	expect(check).toContain("github.event_name == 'workflow_dispatch' && inputs.release");
+	expect(focused).toContain("github.event_name != 'workflow_dispatch' || !inputs.release");
+	expect(focused).toContain('bun run check --commit "$COMMIT" --ci-base "$BASE" --json');
+	expect(focused).toContain('name: shared-check-result');
 	expect(gate).toContain('name: Full check\n');
 	expect(gate).toContain('needs: check-part\n');
 	// A failed or timed out part must reach the gate. A run replaced by its twin must not turn it red.
 	expect(gate, 'a cancelled run must not report a failed full check').toContain(
-		'if: ${{ !cancelled() }}\n'
+		"if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.release }}\n"
 	);
 	expect(gate).toContain("run: test '${{ needs.check-part.result }}' = success");
 });
@@ -153,7 +158,7 @@ test('existing evidence is read with a credential that is removed before the cod
 	expect(workflow.match(/GH_TOKEN/g)).toHaveLength(2);
 });
 
-test('nothing is relaxed, mapped to a deployment or added as another workflow', () => {
+test('focused checks share the existing read-only verification workflow', () => {
 	expect(readdirSync('.github/workflows').sort()).toEqual([
 		'harness-evidence.yml',
 		'harness-verify.yml'
@@ -162,5 +167,5 @@ test('nothing is relaxed, mapped to a deployment or added as another workflow', 
 	expect(workflow).not.toMatch(/\|\| true|environment:|deploy|secrets\.|SKIP|allow[-_]failure/i);
 	expect(workflow).not.toMatch(/budget (establish|approve)|HARNESS_PROFILE_LABEL/);
 	expect(workflow).toMatch(/^permissions:\n {2}contents: read\n/m);
-	expect(workflow.match(/^ {2}[\w-]+:\n {4}name:/gm)).toHaveLength(3);
+	expect(workflow.match(/^ {2}[\w-]+:\n {4}name:/gm)).toHaveLength(4);
 });

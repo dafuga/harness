@@ -1,0 +1,110 @@
+/* @harness-uid u_wzcvw54mgk */
+/* Loading placeholders and empty sections. Skeleton rows match a real row's height so the page
+   does not shift when data arrives; an empty section keeps its card and offers one next step. */
+.hh-home .hh-skel-list {
+	display: flex;
+	flex-direction: column;
+}
+.hh-home .hh-skel-row {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-8);
+	padding: var(--hx-space-14) 0;
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-home .hh-skel {
+	display: block;
+	height: var(--hx-space-12);
+	border-radius: var(--hx-radius-xsmall);
+	background: linear-gradient(
+		90deg,
+		var(--hx-color-surface-raised),
+		var(--hx-color-border),
+		var(--hx-color-surface-raised)
+	);
+	background-size: 200% 100%;
+	animation: hh-shimmer var(--hx-motion-pulse) var(--hx-motion-linear) infinite;
+}
+.hh-home .hh-skel-title {
+	width: 72%;
+}
+.hh-home .hh-skel-meta {
+	width: 44%;
+	height: var(--hx-space-10);
+}
+.hh-home .hh-skel-row:nth-child(2n) .hh-skel-title {
+	width: 58%;
+}
+@keyframes hh-shimmer {
+	to {
+		background-position: -200% 0;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.hh-home .hh-skel {
+		animation: none;
+	}
+}
+.hh-home .hh-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--hx-space-12);
+	border-style: dashed;
+	line-height: var(--hx-style-leading-snug);
+}
+
+/* Preserve focus and layout while giving pointer and keyboard activation an immediate response. */
+.hh-home :is(button:enabled, a[href], summary):active {
+	filter: var(--hx-effect-pressed);
+}
+.hh-home :is(button[disabled], [aria-busy='true']) {
+	cursor: progress;
+}
+.hh-home .hh-choice[data-chosen] {
+	border-color: var(--hx-color-primary);
+	background: var(--hx-color-primary-soft);
+	opacity: var(--hx-opacity-full);
+}
+.hh-home .hh-answer-feedback {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+@media (prefers-reduced-motion: no-preference) {
+	.hh-home :is(button:enabled, a[href], summary):active {
+		translate: 0 1px;
+	}
+	.hh-home .viewer-dialog[open] {
+		animation: hh-open var(--hx-motion-fast) var(--hx-motion-ease-out);
+	}
+	.hh-home details::details-content {
+		interpolate-size: allow-keywords;
+		overflow: clip;
+		block-size: 0;
+		opacity: 0;
+		transition:
+			block-size var(--hx-motion-reveal) var(--hx-motion-ease),
+			opacity var(--hx-motion-fast) var(--hx-motion-ease),
+			content-visibility var(--hx-motion-reveal) allow-discrete;
+	}
+	.hh-home details[open]::details-content {
+		block-size: auto;
+		opacity: var(--hx-opacity-full);
+	}
+	.hh-home .hh-needs-item {
+		transition: filter var(--hx-motion-collapse) var(--hx-motion-ease);
+	}
+	.hh-home .hh-needs-item[inert] {
+		filter: var(--hx-effect-fade-out);
+	}
+}
+@keyframes hh-open {
+	from {
+		opacity: 0;
+		translate: 0 4px;
+	}
+	to {
+		opacity: var(--hx-opacity-full);
+		translate: 0 0;
+	}
+}

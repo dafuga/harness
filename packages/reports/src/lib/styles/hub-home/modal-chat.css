@@ -1,0 +1,206 @@
+/* @harness-uid u_gsvocf3i74 */
+/* Agents modal: the list + chat split's chat pane and the Projects detail panel frame. */
+.hh-home .hh-chat,
+.hh-home .hh-project-detail {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-14);
+	min-width: 0;
+	padding: var(--hx-space-18);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius);
+	background: var(--hx-color-background);
+}
+.hh-home .hh-chat-head {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-12);
+	padding-bottom: var(--hx-space-14);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-home .hh-chat-head > div {
+	flex: 1;
+	min-width: 0;
+}
+.hh-home .hh-thread {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-12);
+}
+.hh-home .hh-msg {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-4);
+	max-width: 82%;
+}
+.hh-home .hh-msg p {
+	padding: var(--hx-space-10) var(--hx-space-14);
+	overflow-wrap: anywhere;
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-large);
+	background: var(--hx-color-surface-raised);
+	font-size: var(--hx-type-size-sm);
+	line-height: var(--hx-style-leading-snug);
+}
+.hh-home .hh-msg[data-from='you'] {
+	align-self: flex-end;
+	align-items: flex-end;
+}
+.hh-home .hh-msg[data-from='you'] p {
+	border-color: var(--hx-color-primary-line);
+	background: var(--hx-color-primary-soft);
+}
+.hh-home .hh-msg-at {
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-2xs);
+}
+.hh-home .hh-quick,
+.hh-home .hh-quick-replies {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-8);
+}
+.hh-home .hh-quick-replies:empty {
+	display: none;
+}
+/* The composer, in the root Agents card and the chat pane. The input draws no ring of its own:
+   the whole field takes the focus ring, and any focus inside it turns the border to the accent. */
+.hh-home .hh-composer {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-8);
+	padding: var(--hx-space-6);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-background);
+}
+.hh-home .hh-composer:focus-within {
+	border-color: var(--home-accent);
+}
+.hh-home .hh-composer:has(.hh-composer-input:focus-visible) {
+	outline: var(--hx-border-thick) solid var(--home-accent);
+	outline-offset: var(--hx-space-2);
+}
+.hh-home .hh-composer-input:focus-visible {
+	outline: none;
+}
+/* The recipient. A long agent name is cut with an ellipsis so the input always keeps its room. */
+.hh-home .hh-composer-to {
+	display: flex;
+	min-width: 0;
+	max-width: 50%;
+}
+.hh-home .hh-to-chip select {
+	max-width: 100%;
+	overflow: hidden;
+	padding-inline-start: var(--hx-space-10);
+	border: 0;
+	border-radius: var(--hx-radius-compact);
+	background-color: var(--hx-color-surface-raised);
+	color: var(--hx-color-text);
+	font-size: var(--hx-type-size-compact);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.hh-home .hh-to-chip option {
+	background-color: var(--hx-color-surface);
+	color: var(--hx-color-text);
+}
+.hh-home .hh-composer-input {
+	flex: 1;
+	min-width: 0;
+	min-height: var(--hx-space-36);
+	border: 0;
+	background: transparent;
+	font-size: var(--hx-type-size-sm);
+}
+.hh-home .hh-composer-input::placeholder {
+	color: var(--hx-color-text-muted);
+}
+.hh-home .hh-send {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: var(--hx-space-40);
+	height: var(--hx-space-40);
+	border: 0;
+	border-radius: var(--hx-radius-compact);
+	background: var(--hx-color-primary);
+	color: var(--hx-color-primary-contrast);
+	cursor: pointer;
+}
+@media (max-width: 560px) {
+	.hh-home .hh-to-chip {
+		display: none;
+	}
+}
+
+.hh-home .hh-quick > input {
+	flex: 1;
+	min-width: 0;
+	padding: var(--hx-space-8);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-compact);
+	background: var(--hx-color-surface);
+}
+/* Option buttons for an open ask: the recommended choice first, then the rest. */
+.hh-home .hh-choices {
+	display: grid;
+	/* Fit at most four equal tiles and let the chat fit fewer. */
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, max(9rem, 22%)), 1fr));
+	gap: var(--hx-space-8);
+}
+@media (max-width: 560px) {
+	.hh-home .hh-choices {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+.hh-home .hh-choice {
+	display: grid;
+	align-content: start;
+	gap: var(--hx-space-4);
+	min-width: 0;
+	min-height: 44px;
+	overflow-wrap: anywhere;
+	text-align: left;
+	font: inherit;
+	padding: var(--hx-space-8) var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	background: transparent;
+	color: inherit;
+}
+.hh-home .hh-choice[data-recommended='true'] {
+	border-color: var(--hx-color-primary);
+}
+.hh-home .hh-choice:disabled {
+	opacity: var(--hx-opacity-disabled);
+}
+.hh-home .hh-choice-badge,
+.hh-home .hh-choice-effect {
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+}
+.hh-home .hh-choice-badge {
+	justify-self: start;
+	padding-inline: var(--hx-space-4);
+	border-radius: var(--hx-radius-compact);
+	background: var(--hx-color-primary-soft);
+}
+.hh-home .hh-choice-confirm {
+	grid-column: 1 / -1;
+	display: grid;
+	gap: var(--hx-space-8);
+}
+/* An open ask: the question and its choices; a written answer opens its own modal. */
+.hh-home .hh-ask {
+	display: grid;
+	gap: var(--hx-space-8);
+	padding: var(--hx-space-10);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-compact);
+}
+.hh-home .hh-ask-question {
+	margin: 0;
+	overflow-wrap: anywhere;
+}

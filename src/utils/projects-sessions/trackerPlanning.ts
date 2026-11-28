@@ -5,6 +5,13 @@ import { trackerItemError } from './trackerItemError';
 import type { TrackerPlanning, TrackerPlanningFields, TrackerStage } from './trackerPlanning.types';
 
 export const trackerStages = ['idea', 'detail', 'design', 'build'] as const;
+export const trackerStageLabels: Record<TrackerStage, string> = {
+	idea: 'Idea',
+	detail: 'Detailed idea',
+	design: 'Full design',
+	build: 'Implementation'
+};
+
 export const trackerPromotionStages = ['detail', 'design', 'build'] as const;
 export const trackerPlanningArtifactFields = [
 	'planning_artifact_idea',

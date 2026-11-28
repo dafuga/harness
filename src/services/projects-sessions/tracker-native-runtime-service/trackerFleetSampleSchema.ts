@@ -1,5 +1,6 @@
 // @harness-uid u_btbtphcoba
 import { z } from 'zod';
+import { trackerHostWork } from '../../../utils/projects-sessions/trackerHostWork';
 import { trackerResourceSample } from '../../../repositories/projects-sessions/tracker-machine-repository/trackerResourceSample';
 
 export const trackerRunnerSample = z.object({
@@ -26,6 +27,7 @@ export const trackerMachineSample = z.object({
 	node: z.string().min(1).max(128),
 	at: z.iso.datetime(),
 	runner: trackerRunnerSample,
+	host_work: trackerHostWork.report.optional().catch(undefined),
 	// A malformed resource reading must not drop the launcher report beside it.
 	resources: trackerResourceSample.optional().catch(undefined)
 });

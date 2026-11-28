@@ -4,7 +4,7 @@
 	"uid": "u_suxmf5vsuw",
 	"kind": "component",
 	"title": "HubHomeCosChat",
-	"responsibility": "Shows Daniel's latest messages to Chief of Staff on Home with their receipts and replies, and sends a new one.",
+	"responsibility": "Shows the Chief of Staff conversation and the selected item or open question in a single chat overlay.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -26,7 +26,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte"],
 		"symbols": ["HubHomeCosChat"]
 	},
 	"contract": {
@@ -57,21 +57,28 @@
 				"type": "(id: string) => Promise<HomeChatReceipt>",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Looks up the delivery state of an answer. Required when displaying answer controls."
+				"description": "Reads an existing Tracker answer receipt when the web widget shows an open question."
 			},
 			{
 				"name": "HubHomeCosChat.asks",
 				"type": "HomeOpenAsk[]",
 				"required": false,
 				"default": [],
-				"description": "The current Tracker questions, used to show choices for an attached ask by item ID."
+				"description": "Provides the current open questions. A resolved question loses its answer options."
+			},
+			{
+				"name": "HubHomeCosChat.showCard",
+				"type": "boolean",
+				"required": false,
+				"default": true,
+				"description": "Shows the summary card on Hub Home. The installed work screen uses the overlay alone."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeCosChat",
 				"type": "markup",
-				"description": "A Chief of Staff status card and the shared chat overlay with optional item context and current answer choices."
+				"description": "A \"Message Chief of Staff\" region with the latest four entries and one field."
 			}
 		],
 		"errors": [],
@@ -97,11 +104,6 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-presentation",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.projects-sessions-hub-home-view-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -168,11 +170,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte"
 			}
 		]
 	},

@@ -49,6 +49,54 @@ A phone can open owned or joined hosted projects without a paired Mac. A paired 
 
 Google sign-in in the Mac app registers it under its verified Hub account with `POST /api/remote/hosts`. The website’s Devices page and signed-in iPhone list that account’s linked Macs with `GET /api/remote/hosts?linked=1`. They can open a read-only encrypted connection to an online Mac without a QR code or approval prompt. The browser opens a same-origin WebSocket authenticated by its Hub session. The Hub derives the owner from the verified session on every management call and forwards requests to the relay through its private `REMOTE_HOSTS` binding. With that binding or `HARNESS_RELAY_ORIGIN` absent, remote access returns `503 remote-disabled`. An owner can unlink the Mac or revoke a connected device in settings. For a release, qualify the Hub and relay together before shipping Mac or iPhone builds that depend on them.
 
+## Post-release gate
+
+Record the deployed revision and installed versions in the same release Tracker item. Keep
+the item open until both applicable checks below pass on that release.
+
+1. For changes to Home counts or their data sources, [verify Hub Home live counts](#verify-hub-home-live-counts).
+2. After every Hub, Mac or iPhone release, run the Needs you answer canary from the repository
+   root on the computer with automation Chrome. Set `RELEASE_ITEM_ID` to the release's Tracker
+   ID. Record the Hub web, Mac app and iPhone results and cleanup on that item.
+
+   ```sh
+   bun scripts/needs-you-canary.ts --release "$RELEASE_ITEM_ID" --tap mac,iphone
+   ```
+
+   Follow the [Needs-you release canary](../../specification/features/planned/needs-you-release-canary.md).
+
+### Verify Hub Home live counts
+
+Run this check after the deployed release has settled. It applies to changes in Home counts or
+their data sources, including Hub, the Mac publisher, relay and Tracker. Open the release URL
+in the existing signed-in browser session for the intended account. Verify the deployed revision
+and identify its online linked Macs on `/devices`. Include a synced Mac when its runs are part of that account's Home
+feed. Use the exact Tracker node names and a Tracker host whose loopback service has current run
+and item data for every Mac in scope.
+
+From the repository root, pass the observed node names in place of the example names:
+
+```sh
+bun packages/hub/scripts/verify-home-release.ts primary-mac second-mac
+```
+
+When prompted, reload signed-in `/`, wait for the Agents card to settle, then enter its summary
+line (for example, `1 working (6 sessions) · 0 idle or offline`). The number in parentheses counts
+sessions, including sub-agent sessions. The first number counts the agents grouping those sessions.
+
+The command reads Tracker before and after the browser observation. It counts live runs on the
+specified Macs once per node and run ID, using the same item visibility rules as Home. It exits
+successfully only for a stable, nonempty run sample with matching session totals and at least one
+working agent. If the live run set changes, repeat the check. A missing session summary, an
+unavailable or empty Tracker sample, a zero working count or a count mismatch leaves the release
+check open.
+
+Record the deployed URL, revision, deployment ID, command result (including the sample timestamps
+and per-Mac counts) and the observed Agents summary in the release's Tracker note. Preserve any
+inspected image evidence privately. Use the real
+signed-in Home and live Tracker for this gate. Health probes, fixture runs and screenshots of
+injected data can support verification of other release requirements.
+
 ## Validation
 
 `bun run check:collaboration`, `bun run check:hub` and `bun run check:desktop` are included in the root check. Security tests use generated keys and synthetic provider/HTTP fixtures, without live credentials or invitations. Browser/native screenshots are external evidence and are not committed. Live provider registration and authorized hosted publication are separate acceptance layers.

@@ -11,6 +11,7 @@ This is a Harness SvelteKit app. Treat Harness as the operating contract for eve
 - Add or update a feature spec before implementation.
 - Keep files small, focused, and aligned with `harness.audit.json` limits.
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit .`.
+- Follow the [post-release gate](README.md#post-release-gate) before recording release success.
 
 ## Clean Code Review
 

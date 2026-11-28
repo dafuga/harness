@@ -143,7 +143,7 @@ test('a revoked computer pairing leaves the signed-in Hub overview available', a
 	await page.getByRole('link', { name: 'Back to Harness' }).click();
 	const inbox = page.getByRole('link', { name: 'Needs you', exact: true });
 	if (process.env.TAKE_SCREENSHOT === 'true') {
-		await expect(page.getByRole('heading', { name: 'Harness', exact: true })).toBeVisible();
+		await expect(page.getByRole('img', { name: 'Harness', exact: true })).toBeVisible();
 		await page.evaluate(() => document.fonts.ready);
 		await page.screenshot({
 			path: `/tmp/harness-ios-inbox-home-${process.env.SCREENSHOT_LABEL}.png`

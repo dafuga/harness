@@ -11,6 +11,7 @@
 		"level": "page",
 		"uses": [
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+			"desktop.component.development-tooling-tracker-work",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-p"
 		]
@@ -36,6 +37,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.development-tooling-tracker-work",
 			"via": "import",
 			"origin": "derived"
 		},

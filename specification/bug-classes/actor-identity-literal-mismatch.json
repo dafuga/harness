@@ -1,0 +1,117 @@
+{
+	"schemaVersion": 1,
+	"revision": "c76faf207baa512ead52ab15ca2a0ab607891153",
+	"bugClass": {
+		"id": "actor-identity-literal-mismatch",
+		"title": "Canary verdict rejects valid answers from client-specific actors",
+		"cause": "A verdict or acceptance check compares an actor field against one hard-coded identity even though different client write paths record different actor strings or omit the field and rely on a default. Test fakes that omit actor metadata can conceal the mismatch.",
+		"criteria": "Classify another site when a verdict or acceptance check requires an exact actor identity and at least one valid client path writes a different identity or leaves it unset for a default. Separate client paths are sufficient independently. Include cases where test doubles omit or normalize actor metadata and therefore fail to represent production writes.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "answered_by",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "actor_id",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "actorName",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "=== 'daniel'",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "== \"daniel\"",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "answered_by:",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "answered_by =",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "defaultActor",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "toHaveProperty",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "mockResolvedValue",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "vi.fn",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "jest.fn",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "onMount",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "{#each",
+				"weight": 1
+			}
+		],
+		"contextTerms": ["answered_by", "actor_id", "actorname", "defaultactor", "onmount"],
+		"pathHints": [
+			{
+				"contains": "src/cli/",
+				"weight": 4
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 4
+			},
+			{
+				"contains": "src/services/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 3
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			}
+		]
+	}
+}

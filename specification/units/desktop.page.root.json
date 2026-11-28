@@ -10,19 +10,23 @@
 	"composition": {
 		"level": "page",
 		"uses": [
+			"desktop.component.development-tooling-tracker-inbox-tracker-inbox",
 			"desktop.component.project-gate",
+			"desktop.component.projects-sessions-desktop-home",
 			"desktop.component.remote-connection",
 			"desktop.component.workspace-shell",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/routes/+page.svelte"],
-		"symbols": ["+page", "+page.phoneAccess"]
+		"symbols": ["+page", "+page.blockers", "+page.phoneAccess"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,7 +35,7 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The route's rendered markup: a document title of 'Harness', with ' · ' and workspace.snapshot.project.name appended once workspace.snapshot is set, and it renders WorkspaceShell when a snapshot is set or ProjectGate otherwise. A phone with a bridge shows RemoteConnection inline. A signed-in unpaired or offline phone separates the account label and Sign out from the computer controls. On the desktop, RemoteConnection opens in the Phone access dialog when a remote host is available. An hx-p with role alert shows workspace.error when it is set and no snapshot is set."
+				"description": "Renders the shared workspace for an open project, Hub Home or Needs you for a signed-in Mac, and ProjectGate for other environments. Phone connection and account actions remain available in the gate. Project operation errors are announced."
 			}
 		],
 		"errors": [],
@@ -39,6 +43,18 @@
 		"operations": [],
 		"initialization": [],
 		"snippets": [
+			{
+				"name": "+page.blockers",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "+page.blockers",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
 			{
 				"name": "+page.phoneAccess",
 				"inputs": [],
@@ -55,7 +71,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.project-gate",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.projects-sessions-desktop-home",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -76,6 +102,11 @@
 		},
 		{
 			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-phone-tracker-inbox-source",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -125,7 +156,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
 			"via": "import",
 			"origin": "derived"
 		},

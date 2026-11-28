@@ -12,20 +12,17 @@
 		"uses": [
 			"hub.component.projects-sessions-hub-home-live-project",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
-			"reports.component.shared-primitives-atoms-html-details",
+			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
-			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-summary",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-section"
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeLive.svelte"],
-		"symbols": ["HubHomeLive"]
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte"],
+		"symbols": ["HubHomeLive", "HubHomeLive.list"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,7 +31,8 @@
 			{
 				"name": "HubHomeLive.reading",
 				"type": "LinkedHome | null",
-				"required": true,
+				"required": false,
+				"default": null,
 				"description": "What the linked computers last answered; null while the first answer is awaited."
 			},
 			{
@@ -42,6 +40,20 @@
 				"type": "number",
 				"required": true,
 				"description": "The current time in milliseconds, used for run ages."
+			},
+			{
+				"name": "HubHomeLive.local",
+				"type": "HomeLiveOverview",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "An optional live Tracker overview read directly by the native host."
+			},
+			{
+				"name": "HubHomeLive.pastDue",
+				"type": "HomePastDue[]",
+				"required": false,
+				"default": [],
+				"description": "Past schedule entries supply the current queue and blocked labels for matching work items."
 			}
 		],
 		"outputs": [
@@ -54,7 +66,27 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeLive.list",
+				"inputs": [
+					{
+						"name": "HubHomeLive.list.items",
+						"type": "HomeLiveOverview['projects']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeLive.list",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -73,17 +105,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.service.networking-security-linked-home",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-details",
+			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -98,7 +125,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -113,28 +140,23 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-summary",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte"
 			}
 		]
 	},

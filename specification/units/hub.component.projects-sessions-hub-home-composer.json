@@ -11,20 +11,19 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.harness-harness-icon",
+			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-form",
 			"reports.component.shared-primitives-atoms-html-input",
-			"reports.component.shared-primitives-atoms-html-label",
 			"reports.component.shared-primitives-atoms-html-option",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-select",
 			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
 	"owns": {
 		"source": [
-			"packages/hub/src/components/projects-sessions/HubHomeComposer.svelte",
-			"packages/hub/src/components/projects-sessions/hubHomeMessages.ts"
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeMessages.ts"
 		],
 		"symbols": [
 			"HubHomeComposer",
@@ -32,11 +31,13 @@
 			"composerFeedback",
 			"isPending",
 			"receiptText",
-			"homeChatItemSuffix"
+			"homeChatItemSuffix",
+			"scheduledChatItem"
 		]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.select"],
 		"inputs": [
 			{
 				"name": "HubHomeComposer.agents",
@@ -219,6 +220,24 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "scheduledChatItem",
+				"inputs": [
+					{
+						"name": "scheduledChatItem.run",
+						"type": "HomeRun",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scheduledChatItem",
+						"type": "HomeChatItemContext"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -235,12 +254,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"unit": "reports.component.harness-harness-icon",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-harness-icon",
+			"unit": "reports.component.select",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -260,22 +279,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-label",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-option",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-select",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -292,11 +301,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeComposer.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeComposer.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte"
 			}
 		]
 	},

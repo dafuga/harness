@@ -1,4 +1,5 @@
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { getPriority } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
@@ -42,6 +43,17 @@ test('Runs a managed command and resolves its exit status', async () => {
 		const failed = await resourceCommand([failing], context);
 		expect(passed).toBe(0);
 		expect(failed).toBe(2);
+		if (process.platform === 'darwin') {
+			const observation = join(directory, 'priority');
+			const testScript = writeScript(
+				directory,
+				'test.sh',
+				`/bin/sh -c '/bin/ps -o nice= -p "$$" > "$1"' child "$1"`
+			);
+			context.env = { ...context.env, ...{ HARNESS_RESOURCE_PRIORITY: 'agent-test' } };
+			expect(await resourceCommand([testScript, observation], context)).toBe(0);
+			expect(Number(readFileSync(observation, 'utf8'))).toBe(Math.max(10, getPriority()));
+		}
 		recordExampleCases(stateMeta('runs-a-managed-command-and-resolves-its-exit-status'), [
 			{
 				name: 'fake command exits 0 with a 30000 ms timeout',

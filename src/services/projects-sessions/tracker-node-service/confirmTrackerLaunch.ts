@@ -48,10 +48,10 @@ async function confirmTrackerLaunch(
 		if (item.deleted || item.auto !== request.auto)
 			return Response.json({ error: 'launch request was withdrawn or replaced' }, { status: 409 });
 		const hold = itemHold(item) ?? launchHold(runtime, item, node);
-		if (hold) return pendingResponse(hold, node, 409);
+		if (hold) return pendingResponse(hold, node, item.id, 409);
 		await delay(250, undefined, { signal });
 	}
-	return pendingResponse('no run confirmation within 20 seconds', node, 504);
+	return pendingResponse('no run confirmation within 20 seconds', node, request.id, 504);
 }
 
 function launchNode(runtime: TrackerNativeRuntimeService, item: TrackerItem) {
@@ -64,8 +64,13 @@ function launchRunResponse(
 	run: ReturnType<TrackerRunReadRepository['list']>[number]
 ) {
 	if (run.state !== 'finished' || run.outcome === 'done') return Response.json({ ...item, run });
-	const reason = run.failure_reason ?? run.outcome ?? 'run finished before confirmation';
-	return Response.json({ error: `run #${run.id} on ${run.node}: ${reason}`, run }, { status: 409 });
+	const hold = run.outcome === 'blocked' && item.auto === run.auto_token ? itemHold(item) : null;
+	const failure = run.failure_reason ?? run.outcome ?? 'run finished before confirmation';
+	const reason = hold ? `${hold} on ${run.node}` : `run #${run.id} on ${run.node}: ${failure}`;
+	return Response.json(
+		{ error: `${reason}. Review with tracker show ${item.id}.`, run },
+		{ status: 409 }
+	);
 }
 
 function itemHold(item: TrackerItem) {
@@ -99,9 +104,12 @@ function remoteRunner(runtime: TrackerNativeRuntimeService, node: string) {
 	return undefined;
 }
 
-function pendingResponse(reason: string, node: string, status: number) {
+function pendingResponse(reason: string, node: string, id: string, status: number) {
 	return Response.json(
-		{ error: `${reason} on ${node}. Launch request remains pending.`, computer: node },
+		{
+			error: `${reason} on ${node}. Launch request remains pending. Check tracker show ${id}, or cancel with tracker unlaunch ${id}.`,
+			computer: node
+		},
 		{ status }
 	);
 }

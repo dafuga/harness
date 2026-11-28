@@ -44,7 +44,7 @@ export interface DesktopProject {
 }
 export interface CacheStatus {
 	projectId: string;
-	status: 'fresh' | 'offline' | 'denied';
+	status: 'fresh' | 'offline' | 'denied' | 'unavailable';
 	cachedAt?: string;
 }
 export interface CacheProvenance {

@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-tracker-host-work",
+	"uid": "u_opnwwyftd7",
+	"kind": "function",
+	"title": "trackerHostWork",
+	"responsibility": "Defines remote-work lease timing and the schemas that Tracker uses to validate claims and report work on the executing computer.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/trackerHostWork.ts",
+			"src/utils/projects-sessions/trackerHostWork.types.ts"
+		],
+		"symbols": ["trackerHostWork", "TrackerHostWork"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "trackerHostWork",
+				"type": "{ leaseMs: number; renewMs: number; claim: Zod schema; report: Zod schema }",
+				"description": "Sets a 150-second lease renewed every 30 seconds. A claim identifies the run, lease, host and SSH or Colima workload. A report lists up to 1,500 run and host pairs with their expiration times."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/trackerHostWork.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/trackerHostWork.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

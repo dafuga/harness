@@ -25,6 +25,26 @@ export const agent = {
 	question: 'Choose the synthetic scope',
 	messages: []
 };
+export const plan = {
+	id: 'fixture-plan',
+	title: 'Plan the fixture',
+	project: null,
+	state: 'draft',
+	updatedAt: '2026-11-21T07:59:00.000Z',
+	stage: 'design',
+	total: 0,
+	done: 0,
+	steps: [],
+	planning: {
+		promotions: [],
+		artifacts: {
+			design: {
+				summary: 'Fixture design',
+				links: [{ kind: 'image', label: 'Mockup', url: 'https://design.example.test/plan.png' }]
+			}
+		}
+	}
+};
 export const payload = {
 	overview: snapshot(),
 	agents: [agent],

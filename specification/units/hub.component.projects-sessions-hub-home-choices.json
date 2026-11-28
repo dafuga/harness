@@ -20,7 +20,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeChoices.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeChoices.svelte"],
 		"symbols": [
 			"HubHomeChoices",
 			"HubHomeChoices.badge",
@@ -45,6 +45,13 @@
 				"required": false,
 				"default": false,
 				"description": "Disables the choices while an answer is being sent. Defaults to false."
+			},
+			{
+				"name": "HubHomeChoices.selected",
+				"type": "number",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "One-based option number to mark as chosen while the answer is being confirmed."
 			},
 			{
 				"name": "HubHomeChoices.onpick",
@@ -221,11 +228,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeChoices.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeChoices.svelte"
 			}
 		]
 	},

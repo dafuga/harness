@@ -13,6 +13,7 @@
 			"trackerStageLabels",
 			"inboxFilters",
 			"bucketLabels",
+			"filterLabel",
 			"itemBucket",
 			"countBuckets",
 			"filterRows",
@@ -30,6 +31,11 @@
 		"origin": "derived",
 		"inputs": [
 			{
+				"name": "filterLabel.filter",
+				"type": "InboxFilter",
+				"required": true
+			},
+			{
 				"name": "itemBucket.status",
 				"type": "string",
 				"required": true
@@ -43,6 +49,12 @@
 				"name": "countBuckets.rows",
 				"type": "readonly InboxRow[]",
 				"required": true
+			},
+			{
+				"name": "countBuckets.reminders",
+				"type": "number",
+				"required": false,
+				"default": 0
 			},
 			{
 				"name": "filterRows.rows",
@@ -149,6 +161,10 @@
 				"type": "Record<InboxBucket, string>"
 			},
 			{
+				"name": "filterLabel",
+				"type": "string"
+			},
+			{
 				"name": "itemBucket",
 				"type": "InboxBucket"
 			},
@@ -197,6 +213,24 @@
 		"errorStatus": "unknown",
 		"operations": [
 			{
+				"name": "filterLabel",
+				"inputs": [
+					{
+						"name": "filterLabel.filter",
+						"type": "InboxFilter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "filterLabel",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "itemBucket",
 				"inputs": [
 					{
@@ -226,6 +260,12 @@
 						"name": "countBuckets.rows",
 						"type": "readonly InboxRow[]",
 						"required": true
+					},
+					{
+						"name": "countBuckets.reminders",
+						"type": "number",
+						"required": false,
+						"default": 0
 					}
 				],
 				"outputs": [

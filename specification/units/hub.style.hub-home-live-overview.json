@@ -8,7 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/lib/styles/hub-home/live-overview.css"],
+		"source": ["packages/reports/src/lib/styles/hub-home/live-overview.css"],
 		"symbols": []
 	},
 	"contract": {
@@ -23,11 +23,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/lib/styles/hub-home/live-overview.css",
+		"entry": "packages/reports/src/lib/styles/hub-home/live-overview.css",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/lib/styles/hub-home/live-overview.css"
+				"entry": "packages/reports/src/lib/styles/hub-home/live-overview.css"
 			}
 		]
 	},

@@ -15,8 +15,8 @@
 
 <hx-div class="workspace hub-page">
 	<hx-header class="topbar">
-		<hx-a class="brand" href={resolve('/')} data-sveltekit-reload
-			><hx-span class="brand-mark"><BrandMark /></hx-span> Harness</hx-a
+		<hx-a class="brand" href={resolve('/')} aria-label="Harness" data-sveltekit-reload
+			><hx-span class="brand-mark"><BrandMark /></hx-span></hx-a
 		><hx-span class="hub-title">{section}</hx-span>
 		<hx-div class="account account-inline"><AccountMenu /></hx-div>
 		{#if session.actor}

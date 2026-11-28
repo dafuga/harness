@@ -76,7 +76,7 @@
 				"outputs": [
 					{
 						"name": "readTrackerSources",
-						"type": "Promise<TrackerSources>",
+						"type": "Promise<Tracker.TrackerSources>",
 						"description": "Validated item, run, and machine records from the local tracker."
 					}
 				],
@@ -125,6 +125,11 @@
 		},
 		{
 			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-tracker-json-read",
 			"via": "import",
 			"origin": "derived"
 		},

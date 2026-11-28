@@ -1,0 +1,67 @@
+{
+	"name": "krpaz8-signed-in-projects",
+	"goal": "A signed-in Mac home lists Tracker and Hub projects, retains healthy sources, opens projects directly, and keeps Needs you accessible.",
+	"createdAt": "2026-11-27T18:13:38.879Z",
+	"updatedAt": "2026-11-27T19:22:53.772Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T18:13:57.318Z",
+			"evidence": "Installed primary Mac revision 086d959532, already signed in: empty Recent projects, generic hosted error and cramped Needs you. Expected Tracker and Hub projects with open destinations and source-specific failure."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T18:16:06.489Z",
+			"evidence": "Hosted service examples omit independent source refusals. Hub authenticated routing omitted GET collection with no configured collaboration. Desktop account entry browser fixture lists Gamma only via bridge and omits Tracker and Needs you."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T18:59:16.135Z",
+			"evidence": "The unchanged narrowed unit tests reject the 503 owner response, discarded local list and unguarded local Home request on red commit 38bd6dc67c. The unchanged browser regression on harbor-mbp-2 found no Tracker project."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:02:07.858Z",
+			"evidence": "Owner-only Hub fallback, independent source reads, the signed-in Mac Home and Needs you use of Hub components, and the admitted native Home transport are implemented. The red source lacked the Home port."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:02:12.513Z",
+			"evidence": "Same unit tests, command and captured environment passed at the repair commit. The isolated app browser test on harbor-mbp-2 passed project opening, Needs you navigation, partial-source failure and sign-out."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:22:53.772Z",
+			"evidence": "siblings-4cff33ba-bfde-48c4-bd5a-02933d16819c.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

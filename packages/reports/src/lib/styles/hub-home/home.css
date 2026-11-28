@@ -1,0 +1,199 @@
+/* @harness-uid u_z2dg74zzmb */
+/* Root page frame: the Hub top bar, the headline, and the five-section grid at each width.
+   Everything sits under .hh-home, so the signed-out marketing page and other routes keep theirs. */
+.hh-home .hh-topbar {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-16);
+	min-height: 72px;
+	padding: 0 var(--hx-gutter);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-home .hh-brand {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-10);
+	min-height: 44px;
+	font-size: var(--hx-type-size-lg);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.hh-home .hh-brand-mark {
+	color: var(--hx-color-primary);
+}
+.hh-home .hh-crumb {
+	padding: var(--hx-space-8) var(--hx-space-18);
+	border-inline: var(--hx-border-thin) solid var(--hx-color-border);
+	color: var(--hx-color-text-supporting);
+	font-size: var(--hx-type-size-sm);
+}
+.hh-home .hh-account {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-10);
+	min-width: 0;
+	margin-left: auto;
+	font-size: var(--hx-type-size-sm);
+}
+/* The account menu button: avatar and name in one 44px target. The negative margin keeps both
+   where the mockup draws them; the padding is room for the hover wash and the focus ring. */
+.hh-home .hh-account > button,
+.hh-home button.hh-account {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--hx-space-10);
+	min-width: 0;
+	min-height: 44px;
+	margin-right: calc(var(--hx-space-8) * -1);
+	padding: 0 var(--hx-space-8);
+	border: 0;
+	border-radius: var(--hx-radius-control);
+	background: transparent;
+	font: inherit;
+	cursor: pointer;
+}
+.hh-home .hh-account-name {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.hh-home .hh-page.po-page {
+	max-width: 1520px;
+}
+.hh-home .hh-head .po-title {
+	font-size: var(--hx-type-size-3xl);
+	line-height: var(--hx-space-40);
+}
+.hh-home .hh-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--hx-space-20);
+	align-items: stretch;
+}
+.hh-home .hh-agents {
+	grid-column: span 2;
+}
+/* Laptop: Agents and Quota on top, three lists, then Work in progress across the full width
+   with its rows in two columns. */
+.hh-home .hh-wip {
+	grid-column: 1 / -1;
+}
+.hh-home .hh-wip .po-items {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	column-gap: var(--hx-space-28);
+}
+.hh-home .hh-wip .po-item[data-wide] {
+	display: block;
+}
+/* Wide: four columns. Agents, Quota, Plans; then Scheduled, Projects and a two-wide Work. */
+@media (min-width: 1650px) {
+	.hh-home .hh-page.po-page {
+		max-width: 1800px;
+	}
+	.hh-home .hh-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+	.hh-home .hh-wip {
+		grid-column: span 2;
+	}
+}
+.hh-home .po-item[data-wide] {
+	display: none;
+}
+.hh-home .hh-head .po-machine {
+	white-space: nowrap;
+}
+/* Tablet: two columns, Agents across the top, Work in progress across the bottom in one column. */
+@media (max-width: 1000px) {
+	.hh-home .hh-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.hh-home .hh-wip .po-items {
+		display: flex;
+	}
+	.hh-home .hh-wip .po-item[data-wide] {
+		display: none;
+	}
+}
+/* Phone: one column in the brief's order; each preview shows two rows (the rest is See all).
+   The two-row cut is the overview's [data-extra] rule, repeated here so the home owns it. */
+@media (max-width: 560px) {
+	.hh-home .hh-topbar {
+		min-height: 60px;
+	}
+	.hh-home .hh-crumb,
+	.hh-home .hh-account-name {
+		display: none;
+	}
+	.hh-home .po-item[data-extra] {
+		display: none;
+	}
+	.hh-home .hh-grid {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--hx-space-14);
+	}
+	.hh-home .hh-agents,
+	.hh-home .hh-projects,
+	.hh-home .hh-wip {
+		grid-column: auto;
+	}
+	.hh-home .hh-head .po-title {
+		font-size: var(--hx-type-size-2xl);
+		line-height: var(--hx-space-32);
+	}
+	.hh-home .hh-section.po-card {
+		padding: var(--hx-space-16);
+		gap: var(--hx-space-12);
+	}
+}
+
+.hh-home .hh-heading {
+	padding-bottom: 0;
+}
+
+.hh-home .hh-heading + .hh-page {
+	padding-top: 0;
+}
+
+.hh-home .hh-account {
+	position: relative;
+}
+
+.hh-home .hh-account-menu {
+	position: absolute;
+	z-index: var(--hx-layer-overlay);
+	top: 100%;
+	right: 0;
+	display: grid;
+	gap: var(--hx-space-12);
+	min-width: 180px;
+	padding: var(--hx-space-14);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-control);
+	background: var(--hx-color-surface);
+	box-shadow: var(--home-shadow);
+}
+
+.hh-home .hh-live {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-6);
+	margin: 0 auto;
+	padding-block: var(--hx-space-4) 0;
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+}
+
+.hh-home .hh-live::before {
+	content: '';
+	width: var(--hx-space-8);
+	height: var(--hx-space-8);
+	border-radius: var(--hx-radius-round);
+	background: var(--hx-color-warning);
+}
+
+.hh-home .hh-live[data-state='live']::before {
+	background: var(--hx-color-success);
+}

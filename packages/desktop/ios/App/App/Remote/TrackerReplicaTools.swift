@@ -86,8 +86,12 @@ extension TrackerReplicaStore {
                 AND \(Self.structuredAsk))
             ORDER BY items.updated DESC, items.id LIMIT 25
             """, [slot])
+        let reminders = try db.rows("""
+            SELECT value FROM items WHERE slot = ? AND json_extract(value, '$.reminder.at') IS NOT NULL
+            ORDER BY json_extract(value, '$.reminder.at'), id LIMIT 100
+            """, [slot])
         return ["counts": counts, "unresolvedFlags": flags ?? 0, "recent": try headers(recent),
-                "needsYou": try asks(needing)]
+                "needsYou": try asks(needing), "reminders": try headers(reminders)]
     }
 
     /// A Needs you entry is the item header plus the question to show on its compact row.

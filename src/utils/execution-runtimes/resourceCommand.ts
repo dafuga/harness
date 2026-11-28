@@ -1,4 +1,5 @@
 // @harness-uid u_6hqybwhp3m
+import { getPriority } from 'node:os';
 import { join } from 'node:path';
 import type { ResourceContext } from '../../core/execution-runtimes/resourceTypes';
 import { runIsolated } from '../reports-media/run-isolated/runIsolated';
@@ -14,9 +15,10 @@ export async function resourceCommand(
 	validateTimeout(timeoutMs);
 	if (!args.length)
 		throw new InvalidResourceCommandInputError('A managed command is required after --');
+	const [command, ...argv] = launchArguments(args, context.env.HARNESS_RESOURCE_PRIORITY);
 	const result = await runIsolated({
-		command: args[0],
-		args: args.slice(1),
+		command,
+		args: argv,
 		cwd: process.cwd(),
 		signal,
 		stdio: 'inherit',
@@ -33,6 +35,13 @@ export async function resourceCommand(
 		);
 	if (result.status === 'passed') return 0;
 	return result.exitCode === 0 ? 1 : (result.exitCode ?? 1);
+}
+
+function launchArguments(args: string[], priority?: string): string[] {
+	if (process.platform !== 'darwin' || priority !== 'agent-test') return args;
+	// nice takes an increment. Nested check scripts already inherit their parent's niceness.
+	const increment = Math.max(0, 10 - getPriority());
+	return ['/usr/bin/nice', '-n', String(increment), '/usr/sbin/taskpolicy', '-b', ...args];
 }
 
 function validateTimeout(timeout: number): void {

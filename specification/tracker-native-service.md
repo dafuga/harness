@@ -210,8 +210,20 @@ operator verifies the stopped database and chooses a rollback.
   decisions without taking action. Set `watchdog.chiefOfStaff` on the
   primary Mac to deliver alerts to its idle CoS tmux pane and include MB2
   alerts over the existing host-key-verified SSH link. Delivery observes
-  Lisbon quiet hours and the thirty-minute watchdog cadence. The separate
-  tick can still read `tracker list --flagged --json` for decisions.
+  Lisbon quiet hours and the thirty-minute cadence for routine alerts. The hub
+  checks each enabled launcher's last completed tick about once a minute.
+  A heartbeat more than three minutes old prompts a Chief of Staff alert
+  outside the routine cadence during delivery hours. Tracker sends one alert
+  per missed heartbeat and clears it from the active list when polling resumes.
+  The separate tick can still read `tracker list --flagged --json` for decisions.
+
+  CoS dependency messages are delivered once per item and message text.
+  When tmux misses an acceptance, Tracker checks Claude's recorded prompt
+  or queue receipt before retrying. Changes to the dependency text can
+  trigger a new alert. Open blockers continue to appear in the daily digest.
+  CoS batches carry up to four alerts within a 450-byte composer budget. A long alert uses its item ID
+  and a short sentence, with full details available in Tracker. The batch
+  includes the slot summary when it fits.
 
   Tracker sends the first ask, follows up two and six hours after the first
   delivery, then repeats at 08:00 Lisbon each morning. These reach Chief of
@@ -248,6 +260,12 @@ operator verifies the stopped database and chooses a rollback.
   GitHub sources. It uses the existing source owner, cursor, and
   `adapter-runner.lock` beside the journal. The GitHub CLI binding uses an
   explicit, private account directory and the existing `tracked` label.
+- **Dispatch watchdog.** A dispatch tick has two minutes to finish.
+  On timeout the scheduler cancels that tick and resumes polling. The
+  next tick reconciles reservations for which a host start may have
+  happened before the reply was lost. Host commands have a separate
+  deadline and settle on child close, with an exit-event fallback when
+  close does not arrive. A partial response is discarded.
 - **Fleet telemetry.** Each node samples itself; see
   [Computers and placement](#computers-and-placement).
 - **Box jobs.** A recurring item on the hub can run a shell command at each
@@ -421,8 +439,8 @@ or recovery attempt. An external driver owns its own host and is not sampled.
 - On the primary Mac, MB2 and the box, the home filesystem needs 30 GB free.
   Disk percentage does not hold a launch.
 - The Macs need at least 25% free memory (unknown holds) and a one-minute load
-  under 15. Other hosts hold when the five-minute load exceeds 1.5 per core or
-  free memory is under 10%.
+  under 15. They also hold when the five-minute load exceeds 1.5 per core. Other
+  hosts use that sustained-load threshold and hold while free memory is under 10%.
 - The shared box also waits while busy: load over 1.0 per core, free memory
   under 15%, or under 100,000 or 3% free inodes.
 
@@ -529,6 +547,21 @@ requested. The hub delivers to Chief of Staff at the scheduled time,
 including overnight, and follows up after two
 hours, six hours, and at 08:00 daily until the item is done or snoozed.
 
+### Repeating reminders
+
+`tracker add --reminder --every "0 10 * * 0" "Title"` creates a reminder that
+repeats (`--tz` defaults to Europe/Lisbon; `--at` may set the first time).
+`tracker update <id> --every "<cron>" --kind reminder` makes an existing item
+repeat. The item has one armed time, `remind_at`. `tracker done <id>` records
+this one as done and arms the first scheduled time after both now and the armed
+time, so done before the time skips it. `--occurrence <armed time>` refuses a
+second done once the reminder has moved. `tracker remind <id> --at <time>`
+snoozes this one only; the schedule stays. Nothing else re-arms it: until it is
+done or snoozed it follows up like any reminder. To end the series, run
+`tracker update <id> --every none`, then `tracker done <id>`. The recurring job
+scheduler ignores reminders. Every computer needs this release before it can
+create or finish a repeating reminder.
+
 ### Scheduled reminders on other items
 
 Use `tracker remind <id> --at <ISO timestamp with a time zone>` for an
@@ -574,6 +607,10 @@ The native CLI confirms a manual launch against the run for that exact request.
 It reports the run number, state and computer, or exits non-zero with the
 admission reason. If the target has not reported an outcome within 20 seconds,
 the CLI reports the timeout. A hold or timeout leaves the request pending.
+After an answer, reopen, or unblock releases an item with only finished attempts,
+an explicit launch starts a fresh request and keeps the blocked run in history.
+The CLI points to `tracker show ITEM` for the current outcome and to
+`tracker unlaunch ITEM` if the new request is still pending and should be cancelled.
 `tracker launch on` and `tracker launch off` still set the due-scheduling preference.
 
 The primary watchdog alerts CoS when a request has no matching run after
@@ -687,8 +724,30 @@ Sampling is read-only, so it also runs while host effects are held.
 - The hub assigns a queued launch that names no computer to such a peer, with
   a note, and keeps it otherwise.
 - The hub grants a due start to a peer that reports resources only while its
-  sample is at most 135 seconds old and it is not overloaded. A peer that has
-  never reported resources runs an earlier release and keeps its grant.
+  sample is at most 135 seconds old and it is not overloaded. A Mac peer is also
+  held while its latest one-minute load is at least 15. A peer that has never
+  reported resources runs an earlier release and keeps its grant.
+
+### Work sent to another computer
+
+From a managed Tracker run, wrap a foreground remote check or build:
+
+```sh
+tracker host-work ssh mb2 -- ssh harbor-mbp-2 ./run-checks.sh
+tracker host-work colima mb2 -- ssh harbor-mbp-2 ./run-colima-proof.sh
+```
+
+Pass the Tracker computer as the destination. The command can use its usual
+SSH alias. Keep startup, verification, and task-owned teardown inside the
+foreground command for a Colima proof. Raw SSH commands and detached work
+outside its lifetime have no lease.
+
+The local Tracker records the origin run and renews the lease while the
+command runs. The signed fleet exchange carries the destination and expiry.
+The Hub computer chip counts an origin run once per destination even if it
+has multiple leases there. The count clears when the command releases its
+lease or when the run finishes, and expires after 150 seconds without a renewal.
+Launcher admission uses the destination's sampled operating-system load.
 
 ## Health, logs and host supervision
 

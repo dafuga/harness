@@ -14,7 +14,7 @@ import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLo
 import { runSessionName } from './trackerFinishedSessions';
 import { readTrackerSlotState } from './trackerSlotInvariants';
 import { trackerProviderHold } from './trackerProviderHolds';
-import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
+import { blockMissingItem, recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from './trackerHostWatchdogState';
 import { trackerSessionHealth } from './trackerSessionHealth';
 import { flagRecoveryError, recoverTrackerSession } from './trackerSessionRecovery';
@@ -105,16 +105,34 @@ async function publishIssue(
 ) {
 	const candidate = items.find(({ id, deleted }) => id === issue.item_id && !deleted);
 	const item = candidate && new TrackerItemReadRepository(store.database).getStored(candidate.id);
-	const stuck = launch && item?.launch_source === 'recovery' && issue.kind === 'launch-stuck';
-	if (stuck && !recoveryProviderHold(store, item.id, now)) {
-		flagRecoveryError(store, item, now, issue.reason);
-		return;
-	}
+	if (resolveRecoveryHold(store, { item, candidate, launch }, issue, now)) return;
 	const recovery =
 		issue.recover && item && launch
 			? await recoverTrackerSession(store, { item, launch, now })
 			: null;
+	if (recovery?.startsWith('Tracker requested relaunch')) return;
 	publishHealthNote(store, issue, { item, recovery, now });
+}
+
+function resolveRecoveryHold(
+	store: TrackerPersistenceService,
+	{
+		item,
+		candidate,
+		launch
+	}: { item?: TrackerItem; candidate?: TrackerItem; launch?: TrackerWatchdogLaunch },
+	issue: TrackerSessionHealthIssue,
+	now: number
+) {
+	if (!item) return false;
+	if (issue.blockReason) {
+		blockMissingItem(store, { item, candidate, reason: issue.blockReason });
+		return true;
+	}
+	if (!launch || item.launch_source !== 'recovery' || issue.kind !== 'launch-stuck') return false;
+	if (recoveryProviderHold(store, item.id, now)) return false;
+	flagRecoveryError(store, item, now, issue.reason);
+	return true;
 }
 
 /** A relaunch waiting for its provider is held, not stuck. */

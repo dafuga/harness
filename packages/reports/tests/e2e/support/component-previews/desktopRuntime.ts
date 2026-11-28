@@ -2,6 +2,7 @@ import { gameLevelCases } from './gameLevelData';
 import { createRun, exampleDocument, stepGame } from '../../../../../game/src/index';
 import type { DesktopCase } from './desktopData.svelte';
 import { noop, type PreviewCases } from './shared';
+import { catalogDesktopHome } from './hubHomeCatalogData';
 const game = exampleDocument();
 const view = game.views[0];
 // One step that collects the key, so the trace, graph and preview each have a fired checkpoint.
@@ -72,6 +73,11 @@ export const gameCases: PreviewCases = {
 	'desktop.component.game-workspace': {}
 };
 export const desktopRuntime: Record<string, DesktopCase> = {
+	'desktop.component.projects-sessions-desktop-home': ({ bridge, workspace }) => {
+		bridge.homeSnapshot = async () => catalogDesktopHome;
+		workspace.projectListReady = true;
+		return { workspace, accountName: 'Ada Morgan', signOut: noop };
+	},
 	'desktop.component.runtime-artifact': (d) => ({
 		cell: d.cell,
 		label: 'Recorded filter call',

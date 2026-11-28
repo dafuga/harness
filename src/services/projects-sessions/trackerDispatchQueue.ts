@@ -38,6 +38,7 @@ export class TrackerDispatchQueue {
 	) {}
 
 	async retry(run: TrackerRunReceipt, signal: AbortSignal) {
+		signal.throwIfAborted();
 		const { item_id: id, auto_token: token } = run;
 		const current = this.repository.readSnapshot(id).item;
 		// Retire cancelled reservations even if the launch window is closed.
@@ -61,6 +62,7 @@ export class TrackerDispatchQueue {
 		if (auto) return this.claimIntent(id, { token: auto, source, target: launch_target }, signal);
 		if (!this.options.scheduleDue || this.refusedSlots.has('due')) return false;
 		const request = await this.dispatcher.request(id, { source: 'due', token: randomUUID() });
+		signal.throwIfAborted();
 		return request.status === 'requested' && this.claimIntent(id, request.intent, signal);
 	}
 
@@ -76,6 +78,7 @@ export class TrackerDispatchQueue {
 			!(await this.automaticPermission(id, intent, signal))
 		)
 			return false;
+		signal.throwIfAborted();
 		return this.release(
 			{ id, token: intent.token },
 			await this.dispatcher.claim(id, intent.token, permission),
@@ -116,11 +119,13 @@ export class TrackerDispatchQueue {
 		result: TrackerDispatchResult,
 		signal: AbortSignal
 	) {
+		signal.throwIfAborted();
 		if (result.status === 'held' && !this.waits.has(id))
 			this.waits.set(id, { token, reason: result.reason });
 		if (result.status !== 'start') return false;
 		const { run } = result;
 		const event = await startReservedRun(this.options.runner, result, signal);
+		signal.throwIfAborted();
 		if (!event || (event.type === 'startup-failed' && event.pending))
 			return awaitStartEvidence({ waits: this.waits, dispatcher: this.dispatcher }, run, event);
 		const observed = await this.dispatcher.record(run.item_id, run, event);

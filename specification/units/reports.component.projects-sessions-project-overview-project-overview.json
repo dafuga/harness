@@ -55,6 +55,13 @@
 		],
 		"inputs": [
 			{
+				"name": "ProjectOverview.project",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional Tracker project name. The view shows only its card and uses its name as the heading."
+			},
+			{
 				"name": "ProjectOverview.snapshot",
 				"type": "OverviewSnapshot | null",
 				"required": true,

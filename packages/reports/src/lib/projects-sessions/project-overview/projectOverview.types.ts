@@ -14,6 +14,8 @@ export type OverviewItem = {
 	due: string | null;
 	live: boolean;
 	stale: boolean;
+	/** Current queue or blocked state when Home has a matching Tracker schedule reading. */
+	workLabel?: string;
 };
 
 /** A question or blocked reason with the item it belongs to. */
@@ -32,12 +34,15 @@ export type OverviewCard = {
 	updatedAt: string;
 };
 
+/** A computer chip. Older Trackers omit the remote work count. */
+export type OverviewMachine = { name: string; status: MachineStatus; remoteRuns?: number };
+
 /** Confirmed overview data, or unavailable when the local tracker cannot be read. */
 export type OverviewSnapshot =
 	| {
 			status: 'ready';
 			projects: OverviewCard[];
-			machines: { name: string; status: MachineStatus }[];
+			machines: OverviewMachine[];
 			liveSessions: number;
 	  }
 	| { status: 'unavailable' };

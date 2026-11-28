@@ -1,3 +1,4 @@
+import { verifyBlockedLaunchCli } from './trackerObservedRunFixture';
 import { mkdirSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { DatabaseSync } from 'node:sqlite';
@@ -173,6 +174,7 @@ export async function verifyLaunchCliOptions(spoke: TrackerNodeFixture, id: stri
 		effort: 'high',
 		pinned: true
 	});
+	await verifyBlockedLaunchCli(spoke, short, launched.auto);
 	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
 		1
 	);
@@ -197,4 +199,18 @@ async function verifyLaunchCliTimeout(spoke: TrackerNodeFixture, short: string, 
 		stderr: expect.stringContaining('no run confirmation within 20 seconds on grok-box')
 	});
 	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({ id, auto: null });
+}
+
+export function verifyManagedBrief(launched: { brief: string; cwd: string }, root: string) {
+	expect(launched.brief).toContain('Run 1, attempt 1');
+	expect(launched.brief).toContain('Project: Harness');
+	expect(launched.brief).toContain('2099-03-04');
+	expect(launched.brief).toContain(root);
+	expect(launched.brief).toContain('private git worktree');
+	expect(launched.brief).toContain(launched.cwd);
+	expect(launched.brief).toContain('Greymass remote');
+	expect(launched.brief).toMatch(
+		/## Parent[\s\S]+Parent assignment[\s\S]+Inspect the pending sibling/
+	);
+	expect(launched.brief).not.toContain('## Earlier attempts');
 }

@@ -11,6 +11,8 @@
 		"source": [
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.ts",
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.types.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/readClaudeCosReceipt.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/readClaudeCosReceipt.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/submitClaudeTrackerDraft.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/submitClaudeTrackerDraft.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.ts",
@@ -39,6 +41,8 @@
 			"TrackerTmuxPane",
 			"TrackerTmuxNudge",
 			"TrackerTmuxClose",
+			"readClaudeCosReceipts",
+			"CosReceipt",
 			"submitClaudeTrackerDraft",
 			"ClaudeComposer",
 			"trackerManagedCodexUsage",
@@ -154,6 +158,25 @@
 				"name": "TrackerTmuxAdapter.closeIdle.signal",
 				"type": "AbortSignal",
 				"required": true
+			},
+			{
+				"name": "readClaudeCosReceipts.cwd",
+				"type": "string | undefined",
+				"required": true,
+				"description": "The working directory of the selected Chief of Staff pane."
+			},
+			{
+				"name": "readClaudeCosReceipts.receipts",
+				"type": "readonly CosReceipt[]",
+				"required": true,
+				"description": "Outstanding alert IDs, references and legacy text to match."
+			},
+			{
+				"name": "readClaudeCosReceipts.projects",
+				"type": "string",
+				"required": false,
+				"default": "~/.claude/projects",
+				"description": "The local Claude transcript directory."
 			},
 			{
 				"name": "submitClaudeTrackerDraft.message",
@@ -389,6 +412,11 @@
 				"name": "managedBrief.input",
 				"type": "TrackerHostStartRequest",
 				"required": true
+			},
+			{
+				"name": "managedBrief.checkout",
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "confirmManagedStartupAbsent.directory",
@@ -821,6 +849,45 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "readClaudeCosReceipts",
+				"inputs": [
+					{
+						"name": "readClaudeCosReceipts.cwd",
+						"type": "string | undefined",
+						"required": true,
+						"description": "The working directory of the selected Chief of Staff pane."
+					},
+					{
+						"name": "readClaudeCosReceipts.receipts",
+						"type": "readonly CosReceipt[]",
+						"required": true,
+						"description": "Outstanding alert IDs, references and legacy text to match."
+					},
+					{
+						"name": "readClaudeCosReceipts.projects",
+						"type": "string",
+						"required": false,
+						"default": "~/.claude/projects",
+						"description": "The local Claude transcript directory."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readClaudeCosReceipts",
+						"type": "Promise<Set<string>>",
+						"description": "Only IDs whose delivery was recorded by Claude."
+					}
+				],
+				"errors": [
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "An I/O failure while closing a transcript can reject the read."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "submitClaudeTrackerDraft",
@@ -1309,6 +1376,11 @@
 						"name": "managedBrief.input",
 						"type": "TrackerHostStartRequest",
 						"required": true
+					},
+					{
+						"name": "managedBrief.checkout",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [

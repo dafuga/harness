@@ -19,7 +19,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeCard.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte"],
 		"symbols": ["HubHomeCard"]
 	},
 	"contract": {
@@ -126,11 +126,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeCard.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeCard.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte"
 			}
 		]
 	},

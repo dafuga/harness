@@ -1,0 +1,102 @@
+/* @harness-uid u_4y5lvwa6gn */
+/* Element defaults the Hub inherits from packages/reports/src/lib/styles/base.css (that file also
+   runs Tailwind). Repeated only inside the signed-in home and at zero specificity, so they never
+   outrank the app's own rules, the signed-out marketing page or a shared dialog nested here. */
+:where(.hh-home, .hh-home *) {
+	box-sizing: border-box;
+}
+:where(.hh-home a) {
+	color: inherit;
+	text-decoration: none;
+}
+:where(.hh-home) :where(button, input, select, textarea) {
+	font: inherit;
+	color: inherit;
+}
+/* A link styled as a button is an inline <a>, so its min-height and padding never lay out the
+   label; as a flex box it centres the label in the same box as the <button> actions beside it. */
+.hh-home a.po-action {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+}
+:where(.hh-home code) {
+	font-family: var(--hx-font-family-code);
+	font-size: var(--hx-type-size-inline);
+}
+:where(.hh-home) :where(h1, h2, h3, h4, p, ol, ul) {
+	margin: 0;
+}
+:where(.hh-home) :where(ol, ul) {
+	padding: 0;
+	list-style: none;
+}
+.hh-home .hh-sr {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+/* The page keeps the .home-scheme > .home-page.hh-home boundary. The light mixes read the catalog
+   values here; the page's children reassign the tokens, so no token ever refers to itself. */
+.home-scheme > .home-page.hh-home {
+	--hh-light-info: color-mix(in srgb, var(--hx-color-info) 58%, var(--home-ink));
+	--hh-light-info-soft: color-mix(in srgb, var(--hx-color-info) 16%, transparent);
+	min-height: 100vh;
+	background: var(--hx-color-background);
+	color: var(--hx-color-text);
+	font-family: var(--hx-font-family-body);
+	font-synthesis: var(--hx-style-synthesis-none);
+	color-scheme: dark;
+}
+/* Document scrollbars follow the scheme too, but only while the home is on screen. */
+:root:has(.home-scheme > .home-page.hh-home) {
+	color-scheme: dark;
+}
+/* Light scheme additions. home-scheme.css leaves info at its dark value, which is too faint on
+   paper; the Active pill, live dots and Working avatars need a darker info mixed the same way. */
+@media (prefers-color-scheme: light) {
+	:root:has(.home-scheme > .home-page.hh-home),
+	.home-scheme > .home-page.hh-home {
+		color-scheme: light;
+	}
+	.home-scheme > .home-page.hh-home {
+		--hx-color-primary-contrast: var(--home-ink);
+		--hx-color-scrim-strong: var(--home-light-scrim);
+	}
+	.home-scheme > .home-page.hh-home > * {
+		--hx-color-info: var(--hh-light-info);
+		--hx-color-info-soft: var(--hh-light-info-soft);
+	}
+}
+/* Keyboard focus keeps a visible ring in both schemes: --home-accent is gold on dark and the
+   darkened gold on paper. Chips and tabs draw it inside, since their rows scroll on phones. */
+.hh-home :focus-visible {
+	outline: var(--hx-border-thick) solid var(--home-accent);
+	outline-offset: var(--hx-space-2);
+}
+.hh-home .po-chip:focus-visible,
+.hh-home .hh-tab:focus-visible {
+	outline-offset: calc(var(--hx-border-thick) * -1);
+}
+/* Hover lays the scheme's hover wash over a control's own fill, so gold and pressed stay legible.
+   Touch screens skip it, so a tapped control does not stay lit. */
+@media (hover: hover) {
+	.hh-home :is(.po-action, .po-chip, .hh-icon-button, .hh-send):hover:not(:disabled),
+	.hh-home :is(.hh-account > button, button.hh-account):hover:not(:disabled) {
+		background-image: linear-gradient(var(--hx-color-hover), var(--hx-color-hover));
+	}
+	.hh-home .hh-tab:hover {
+		color: var(--hx-color-text);
+	}
+	.hh-home .po-item-open:hover .po-item-title {
+		text-decoration: underline;
+		text-underline-offset: var(--hx-space-3);
+	}
+	.hh-home .hh-to-chip select:hover:not(:disabled) {
+		background-color: var(--hx-color-border);
+	}
+}

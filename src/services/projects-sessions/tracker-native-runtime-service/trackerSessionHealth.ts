@@ -1,10 +1,8 @@
 // @harness-uid u_bl6xl2h4a3
-import { trackerStoredSchedulingHold } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
 import {
 	canonicalNode,
-	finalReportHold,
 	trackerFleetNodes
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type {
@@ -12,6 +10,7 @@ import type {
 	TrackerSessionHealthSnapshot
 } from './trackerSessionHealth.types';
 
+import { hasRecoveryBrief, recoveryHold } from './trackerRecoveryHistory';
 import { handLaunchNode } from './trackerHandLaunchSelection';
 import { recoveryGrace } from '../watchdog-recovery-service/watchdogRecoverySessions';
 
@@ -55,13 +54,22 @@ function itemHealth(
 	const pending = pendingLaunch(snapshot, item, history);
 	const target = owner(item, history, Boolean(pending));
 	if (!canInspectItem(snapshot, target, history) || live) return undefined;
-	if (pending?.run || item.status === 'open')
+	if (pending?.run || ordinaryOpenItem(item))
 		return pending && overdueLaunch(snapshot, item, pending);
 	if (pending && waitingForPriorRequest(item, snapshot.now - pending.at)) return undefined;
 	const issue = missingIssue(snapshot, item, history);
 	return target === snapshot.host
 		? issue
-		: { ...issue, recover: false, reason: `${issue.reason} No Tracker computer is assigned.` };
+		: {
+				...issue,
+				recover: false,
+				blockReason: 'No Tracker computer is assigned.',
+				reason: `${issue.reason} No Tracker computer is assigned.`
+			};
+}
+
+function ordinaryOpenItem(item: TrackerItem) {
+	return item.status === 'open' && item.launch_source !== 'recovery';
 }
 
 function overdueLaunch(
@@ -69,7 +77,8 @@ function overdueLaunch(
 	item: TrackerItem,
 	pending: { at: number; run?: TrackerListedRun }
 ) {
-	const recovering = item.launch_source === 'recovery' && item.status === 'in_progress';
+	const recovering = item.launch_source === 'recovery';
+	if (recovering && pending.run?.state === 'queued' && !pending.run.started_at) return undefined;
 	const threshold = recovering ? 3 * sessionHealthInterval : sessionHealthInterval;
 	if (snapshot.now - pending.at >= threshold)
 		return stalledIssue(snapshot.host, item, pending, recovering);
@@ -125,7 +134,6 @@ function owner(item: TrackerItem, history: readonly TrackerListedRun[], pending:
 	const node = choices.find((value) => value && value !== 'auto');
 	return node ? canonicalNode(node, {}) : '';
 }
-
 function stalledIssue(
 	host: string,
 	item: TrackerItem,
@@ -153,29 +161,36 @@ function missingIssue(
 		({ node, state }) => node === host && ['running', 'verifying'].includes(state)
 	);
 	const latest = history.at(-1);
-	const aged = eligibleRecoveryAge(item, latest, now - scheduleAt(item.id));
+	const changedAt = scheduleAt(item.id);
 	const hasBrief = hasRecoveryBrief(item, latest);
-	const hold = recoveryHold(item, latest, { changedAt: scheduleAt(item.id), now });
-	const recover = aged && hasBrief && !localActive && !hold;
+	const hold = recoveryHold(item, latest, { changedAt, now });
+	const aged = eligibleRecoveryAge(item, latest, now - changedAt);
 	return {
 		item_id: item.id,
 		host,
 		kind: 'missing',
 		session: latest?.tmux ?? null,
 		reason: missingReason({ localActive, hasBrief, hold }),
-		identity: `${latest?.id ?? 'no-run'}:${scheduleAt(item.id)}`,
-		recover
+		identity: `${latest?.id ?? 'no-run'}:${changedAt}`,
+		...missingDisposition({ localActive, aged, hasBrief, hold })
 	};
 }
 
-function recoveryHold(
-	item: TrackerItem,
-	latest: TrackerListedRun | undefined,
-	{ changedAt, now }: { changedAt: number; now: number }
-) {
-	const stored = trackerStoredSchedulingHold(item, now);
-	if (stored || !latest) return stored;
-	return finalReportHold(latest, Math.max(changedAt, Date.parse(item.answered_at ?? '') || 0));
+function missingDisposition({
+	localActive,
+	aged,
+	hasBrief,
+	hold
+}: {
+	localActive: boolean;
+	aged: boolean;
+	hasBrief: boolean;
+	hold: string | null;
+}) {
+	if (localActive || !aged) return { recover: false };
+	if (hold) return { recover: false, blockReason: hold };
+	if (!hasBrief) return { recover: false, blockReason: 'No launch brief is available' };
+	return { recover: true };
 }
 
 function eligibleRecoveryAge(item: TrackerItem, latest: TrackerListedRun | undefined, age: number) {
@@ -183,14 +198,6 @@ function eligibleRecoveryAge(item: TrackerItem, latest: TrackerListedRun | undef
 		latest?.state === 'finished' ||
 		item.launch_source === 'recovery' ||
 		age >= sessionHealthInterval
-	);
-}
-
-function hasRecoveryBrief(item: TrackerItem, latest?: TrackerListedRun) {
-	if (!item.title) return false;
-	return (
-		[item.notes, item.adapter_instructions, latest, item.auto].some(Boolean) ||
-		item.notes_log.some(({ text }) => /^stopped:|\b(?:hand|manually)[ -]launched\b/i.test(text))
 	);
 }
 

@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import type { HomeChatInput } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import { serveHubHome } from '../../src/routes/api/hub-home/homePolicy';
 import { OTHER, OWNER, overviewFixture } from '../support/trackerOverviewFixture';
-import { agent, homeRequest, id, message, payload, sheets } from '../support/hubHomeFixture';
+import { agent, homeRequest, id, message, payload, plan, sheets } from '../support/hubHomeFixture';
 
 test('the browser owner queues one scoped message, only native claims it, and a receipt is private', async () => {
 	const { db, close } = await sheets();
@@ -15,8 +15,13 @@ test('the browser owner queues one scoped message, only native claims it, and a 
 		const scoped = await fixture.native(OWNER, 'project:synthetic');
 		expect((await serve(homeRequest('PUT', { cookie }, '', payload))).status).toBe(404);
 		expect((await serve(homeRequest('PUT', { bearer: scoped }, '', payload))).status).toBe(404);
-		const first = await serve(homeRequest('PUT', { bearer }, '', payload));
+		const published = { ...payload, plans: [plan] };
+		const first = await serve(homeRequest('PUT', { bearer }, '', published));
 		expect(await first.json()).toEqual({ messages: [] });
+		expect(await (await serve(homeRequest('GET', { cookie }))).json()).toMatchObject({
+			granted: true,
+			snapshot: { plans: [plan] }
+		});
 		const denied = await serve(homeRequest('GET', { cookie: other }));
 		expect(await denied.json()).toEqual({ granted: false, snapshot: null });
 		expect(denied.headers.get('cache-control')).toBe('private, no-store');
@@ -70,7 +75,23 @@ test('a tapped option must name a real option of the open ask, and a confirm ask
 			{ label: 'Wait', effect: 'Holds until tomorrow.' }
 		];
 		const asked = { ...agent, options, confirm: 'deploy' };
-		const sent = await serve(homeRequest('PUT', { bearer }, '', { ...payload, agents: [asked] }));
+		const published = {
+			...payload,
+			agents: [{ ...asked, itemId: 'a-different-item' }],
+			openAsks: [
+				{
+					itemId: asked.itemId,
+					agentId: asked.id,
+					agentName: asked.name,
+					title: asked.task,
+					question: asked.question,
+					options,
+					confirm: asked.confirm,
+					since: asked.since
+				}
+			]
+		};
+		const sent = await serve(homeRequest('PUT', { bearer }, '', published));
 		expect(sent.status).toBe(200);
 		const tap = { ...message, text: 'Ship it', option: 1 };
 		const refuse = async (body: unknown) => {
@@ -80,11 +101,10 @@ test('a tapped option must name a real option of the open ask, and a confirm ask
 		await refuse(tap);
 		await refuse({ ...tap, confirmed: true, text: 'Something else' });
 		await refuse({ ...tap, confirmed: true, option: 3, text: 'Ship it' });
+		await refuse({ ...tap, confirmed: true, question: 'The previous flag' });
 		const confirmed = { ...tap, confirmed: true };
 		expect((await serve(homeRequest('POST', { cookie }, '/chat', confirmed))).status).toBe(202);
-		const claimed = await serve(
-			homeRequest('PUT', { bearer }, '', { ...payload, agents: [asked] })
-		);
+		const claimed = await serve(homeRequest('PUT', { bearer }, '', published));
 		expect(((await claimed.json()) as { messages: HomeChatInput[] }).messages).toEqual([confirmed]);
 		const invalid = { ...message, kind: 'note', question: null, option: 1 };
 		expect((await serve(homeRequest('POST', { cookie }, '/chat', invalid))).status).toBe(400);

@@ -2,6 +2,7 @@
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import type { z } from 'zod';
 import type { TrackerLadderConfig } from '../../../utils/agents-providers/parseTrackerModelSpec.types';
+import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { TrackerDispatchRunner } from '../TrackerDispatchSchedulerService.types';
 import type {
 	TrackerRunReceipt,
@@ -31,6 +32,13 @@ export interface TrackerHostRouteItem {
 export type TrackerHostTarget = TrackerHostRepository | { workdir: string; platform: 'macos' };
 
 export type TrackerHostRoute = (item: TrackerHostRouteItem) => TrackerHostTarget | undefined;
+
+export interface TrackerHostLaunchContext {
+	driver: TrackerHostLaunchPort;
+	node: string;
+	routeFor: TrackerHostRoute;
+	store: TrackerPersistenceService;
+}
 
 export type TrackerHostStartReply = z.infer<typeof hostStart>;
 

@@ -1,6 +1,7 @@
 import * as childProcess from 'node:child_process';
 import { chmodSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { PassThrough } from 'node:stream';
 import { expect, test, vi } from 'vitest';
 import { TrackerHostProcessAdapter } from '../../../src/adapters/projects-sessions/TrackerHostProcessAdapter';
 import { measureWorkload } from '../../support/measureWorkload';
@@ -32,6 +33,7 @@ async function proveProcessIsolation(root: string) {
 		aborted.abort(new Error('fixture cancellation'));
 		expect(() => driver.request('inspect', {}, aborted.signal)).toThrow('fixture cancellation');
 		await proveMissingCompletion(driver);
+		await proveExitedWithoutCallback(driver);
 		chmodSync(path, 0o722);
 		expect(() => new TrackerHostProcessAdapter(path)).toThrow('owner-controlled executable');
 	} finally {
@@ -43,6 +45,7 @@ async function proveMissingCompletion(driver: TrackerHostProcessAdapter) {
 	const child = new childProcess.ChildProcess();
 	const kill = vi.spyOn(child, 'kill').mockReturnValue(true);
 	const exec = vi.mocked(childProcess.execFile).mockReturnValue(child);
+	const spawn = vi.mocked(childProcess.spawn).mockReturnValue(child);
 	vi.useFakeTimers();
 	try {
 		const controller = new AbortController();
@@ -59,6 +62,35 @@ async function proveMissingCompletion(driver: TrackerHostProcessAdapter) {
 		expect(vi.getTimerCount()).toBe(0);
 	} finally {
 		exec.mockReset();
+		spawn.mockReset();
+		vi.useRealTimers();
+	}
+}
+
+async function proveExitedWithoutCallback(driver: TrackerHostProcessAdapter) {
+	const child = new childProcess.ChildProcess();
+	const stdout = new PassThrough();
+	Object.assign(child, { stdout });
+	const kill = vi.spyOn(child, 'kill').mockReturnValue(true);
+	const exec = vi.mocked(childProcess.execFile).mockReturnValue(child);
+	const spawn = vi.mocked(childProcess.spawn).mockReturnValue(child);
+	vi.useFakeTimers();
+	try {
+		const inspected = driver
+			.request('inspect', {}, new AbortController().signal)
+			.catch((error) => error);
+		stdout.end('{"exited":true}');
+		child.emit('exit', 0, null);
+		await vi.advanceTimersByTimeAsync(1_000);
+		expect(await Promise.race([inspected, Promise.resolve('host command still pending')])).toEqual({
+			exited: true
+		});
+		expect(kill).not.toHaveBeenCalled();
+		expect(vi.getTimerCount()).toBe(0);
+	} finally {
+		await vi.advanceTimersByTimeAsync(30_000);
+		exec.mockReset();
+		spawn.mockReset();
 		vi.useRealTimers();
 	}
 }

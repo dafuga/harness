@@ -8,14 +8,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomeView.types.ts"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubHomeView.types.ts"],
 		"symbols": [
+			"LinkedHome",
 			"HomeView",
-			"OpenHomeSection",
 			"ChangeSession",
-			"SendHomeChat",
 			"ReadHomeProject",
-			"ReadHomeResult"
+			"HomeCardsProps",
+			"ReadHomeResult",
+			"OpenHomeSection",
+			"SendHomeChat"
 		]
 	},
 	"contract": {
@@ -34,12 +36,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.projects-sessions-hub-home-presentation",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.service.networking-security-linked-home",
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -56,11 +63,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubHomeView.types.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeView.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubHomeView.types.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeView.types.ts"
 			}
 		]
 	},

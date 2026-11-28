@@ -24,25 +24,18 @@ import {
 	recoveryRung
 } from './trackerRecoveryHistory';
 
-const requestTimeout = sessionHealthInterval;
-
 export async function recoverTrackerSession(
 	store: TrackerPersistenceService,
 	input: { item: TrackerItem; launch: TrackerWatchdogLaunch; now: number }
 ): Promise<string | null> {
 	const { item, launch, now } = input;
-	const history = new TrackerRunReadRepository(store.database, store.node).list({
-		itemId: item.id
-	});
+	const runs = new TrackerRunReadRepository(store.database, store.node);
+	const history = runs.list({ itemId: item.id });
 	const latest = history.filter(({ node }) => node === store.node).at(-1);
 	const key = `tracker_session_recovery:${item.id}`;
 	const state = recoveryBudget(store, { key, latest, item });
-	const held = latest && trackerProviderHold(store, latest.cli, now);
-	if (held) {
-		// A hold is not a failed relaunch. The request timeout restarts when it lifts.
-		if (state.token) saveRecovery(store, key, { ...state, requestedAt: now });
-		return `Tracker relaunch is waiting: ${held}.`;
-	}
+	const held = waitForRecoveryProvider(store, latest, state, { item, key, now });
+	if (held) return held;
 	if (state.token) return checkRecovery(store, { item, key, state, latest }, now);
 	if (now < state.retryAt) return null;
 	const rung = recoveryRung(latest, item, store.node);
@@ -54,6 +47,20 @@ export async function recoverTrackerSession(
 			'The prior session has no verified model.'
 		);
 	return submitRecovery(store, { item, key, state, launch }, { now, rung });
+}
+
+function waitForRecoveryProvider(
+	store: TrackerPersistenceService,
+	latest: TrackerListedRun | undefined,
+	state: TrackerRecoveryState,
+	{ item, key, now }: { item: TrackerItem; key: string; now: number }
+) {
+	if (!latest || latest.auto_token === state.token) return null;
+	if (!state.token && item.status !== 'in_progress') return null;
+	const held = trackerProviderHold(store, latest.cli, now);
+	if (!held) return null;
+	if (state.token) saveRecovery(store, key, { ...state, requestedAt: now });
+	return `Tracker relaunch is waiting: ${held}.`;
 }
 
 async function submitRecovery(
@@ -93,7 +100,7 @@ function rejectRecoverySubmission(
 			: `Tracker is waiting for host resources. ${reason}.`;
 	}
 	if (
-		/^(?:no approved Tracker repository or platform|no supported Tracker provider|Tracker model cannot be selected|launcher disabled)/.test(
+		/^(?:no approved Tracker repository or platform|no supported Tracker provider|Tracker model cannot be selected|(?:automatic )?launcher disabled)/.test(
 			reason
 		)
 	)
@@ -123,7 +130,7 @@ function checkRecovery(
 		const evidence = `run #${latest.id} ${latest.outcome ?? 'ended'}${latest.failure_reason ? ` (${latest.failure_reason})` : ''}`;
 		return recordFailure(store, { item, key, state }, now, evidence);
 	}
-	if (now - state.requestedAt < requestTimeout) return null;
+	if (now - state.requestedAt < sessionHealthInterval) return null;
 	if (item.auto === state.token) {
 		const run = new TrackerRunReadRepository(store.database, store.node)
 			.list({ itemId: item.id })
@@ -183,7 +190,8 @@ function flagRecovery(
 	const current = new TrackerItemReadRepository(store.database).getStored(item.id);
 	if (
 		current.deleted ||
-		current.status !== 'in_progress' ||
+		(current.status !== 'in_progress' &&
+			!(current.status === 'open' && current.launch_source === 'recovery')) ||
 		current.auto !== item.auto ||
 		(current.needs_daniel && !current.resolved && trackerFlagBlocksRecovery(current.question))
 	)

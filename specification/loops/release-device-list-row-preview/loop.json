@@ -1,0 +1,63 @@
+{
+	"name": "release-device-list-row-preview",
+	"goal": "The catalog registry and the existing desktop, tablet and phone matrix render the shared linked device row.",
+	"createdAt": "2026-11-28T00:33:09.445Z",
+	"updatedAt": "2026-11-28T00:37:44.643Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T00:33:32.937Z",
+			"evidence": "Exact d0c4c86a7e Reports shell browser stopped before rendering because the active DeviceListRow is absent from the catalog scenario."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T00:33:33.733Z",
+			"evidence": "The existing catalog registry already rejects missing visual units. Its unchanged assertion protects sibling entries. Add the row to the same three-viewport capture matrix and assert its label, status and action."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T00:34:15.312Z",
+			"evidence": "Recorded red at f50a852b8c using the existing active visual catalog assertion. Browser evidence at d0c4c86a7e shows the actual DeviceListRow diff and that beforeAll stopped the matrix."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T00:37:44.643Z",
+			"evidence": "Committed fixture and scenario registration at c64b3dbe18. Existing registry assertions and rendering of the production device row cover the declared screenshots."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -51,6 +51,7 @@ export interface TrackerMachineRow {
 	reasons: string[];
 	age_s: number | null;
 	sample: TrackerResourceSample | null;
+	remote_runs?: number;
 }
 
 export type TrackerMachineRole = 'shared' | 'runner' | 'primary' | 'other';

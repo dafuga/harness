@@ -206,4 +206,5 @@ test('the Chief of Staff message lists the held slots for each computer', () =>
 		);
 		expect(hub.tmuxInput()).toContain('Slots by computer: daniel-primary-mbp: 1/1 launcher slots');
 		expect(hub.tmuxInput()).toContain('harbor-mbp-2: 0/8 held');
+		expect(hub.tmuxInput()).toMatch(/Watchdog receipts: [\da-f]{24},[\da-f]{24}/);
 	}));

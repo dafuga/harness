@@ -1,6 +1,8 @@
+import type { TrackerPersistenceService } from '../../../../../src/services/projects-sessions/TrackerPersistenceService';
+import { canvasUrl, imageUrl, planTitle, scheduledId, scheduledTitle } from './trackerWorkFixture';
 import { createServer } from 'node:http';
-import { _electron, expect } from '../../../../../test/support/browserTest';
-import type { ElectronApplication, Page } from '../../../../../test/support/browserTest';
+import { expect } from '../../../../../test/support/browserTest';
+import type { Page } from '../../../../../test/support/browserTest';
 import { TrackerLocalApiService } from '../../../../../src/services/projects-sessions/TrackerLocalApiService';
 
 export function post(api: TrackerLocalApiService, path: string, body: object) {
@@ -27,16 +29,25 @@ export function serve(api: TrackerLocalApiService) {
 	});
 }
 
-export async function redirectTracker(app: ElectronApplication, port: number) {
-	await app.evaluate((_electron, port) => {
+/** Use only loopback fixture data and leave the machine's provider accounts untouched. */
+export function isolateMacTrackerFixture(port: number) {
+	return `{
+		const child = require('node:child_process');
+		const { execFile, spawn } = child;
+		child.execFile = (file, args, ...rest) => file === '/usr/bin/security'
+			? execFile('/usr/bin/false', [], ...rest)
+			: execFile(file, args, ...rest);
+		child.spawn = (command, ...args) => spawn(command === 'codex' ? '/usr/bin/false' : command, ...args);
+		delete process.env.HARNESS_HUB_HOME_PROVIDER_FILE;
 		const original = globalThis.fetch;
-		globalThis.fetch = ((input, init) => {
-			if (!String(input).startsWith('http://127.0.0.1:7701/')) return original(input, init);
-			const url = new URL(String(input));
-			url.port = String(port);
-			return original(url, init);
-		}) as typeof fetch;
-	}, port);
+		globalThis.fetch = (input, init) => {
+			const url = new URL(input instanceof Request ? input.url : String(input));
+			if (url.hostname !== '127.0.0.1') return Promise.reject(new Error('Fixture fetch must use loopback.'));
+			if (url.port !== '7701') return original(input, init);
+			url.port = ${JSON.stringify(String(port))};
+			return original(input instanceof Request ? new Request(url, input) : url, init);
+		};
+	}`;
 }
 
 export async function stage(page: Page, action: string, text: string) {
@@ -55,3 +66,34 @@ export async function writeOther(page: Page, text: string) {
 
 export const confirm = (page: Page) =>
 	page.getByRole('button', { name: 'Confirm and send' }).click();
+
+export async function seedMacPlan(store: TrackerPersistenceService, api: TrackerLocalApiService) {
+	const itemId = 'fixtureplan';
+	store.appendLocal({
+		itemId,
+		fields: { kind: 'plan', title: planTitle, agent: 'Fixture', status: 'open' }
+	});
+	store.appendLocal({
+		itemId: scheduledId,
+		fields: {
+			kind: 'task',
+			title: scheduledTitle,
+			status: 'open',
+			due: new Date(Date.now() + 86_400_000).toISOString()
+		}
+	});
+	expect(
+		(
+			await post(api, `/items/${itemId}/artifact`, {
+				stage: 'design',
+				artifact: {
+					summary: 'Approved fixture design',
+					links: [
+						{ kind: 'image', label: 'Fixture mockup', url: imageUrl },
+						{ kind: 'link', label: 'Fixture design canvas', url: canvasUrl }
+					]
+				}
+			})
+		).status
+	).toBe(200);
+}

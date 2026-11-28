@@ -48,6 +48,11 @@
 				"description": "The hosted project port that supplies shared project data and actions; listProjects, snapshot, capabilities and addComment are called on it directly, and available, agent, evidence and artifact are checked before use. The read methods entity, source, image, messages and history are looked up on it by name when read, and a missing one makes that read throw 'Desktop operation unavailable.'"
 			},
 			{
+				"name": "HostedProjectService.constructor.onCacheStatus",
+				"type": "(event: CacheStatus) => void",
+				"required": false
+			},
+			{
 				"name": "HostedProjectService.wrap.local",
 				"type": "Bridge",
 				"required": true,
@@ -131,6 +136,11 @@
 						"type": "RemoteProjectPort",
 						"required": true,
 						"description": "The hosted project port that supplies shared project data and actions; listProjects, snapshot, capabilities and addComment are called on it directly, and available, agent, evidence and artifact are checked before use. The read methods entity, source, image, messages and history are looked up on it by name when read, and a missing one makes that read throw 'Desktop operation unavailable.'"
+					},
+					{
+						"name": "HostedProjectService.constructor.onCacheStatus",
+						"type": "(event: CacheStatus) => void",
+						"required": false
 					}
 				],
 				"outputs": [

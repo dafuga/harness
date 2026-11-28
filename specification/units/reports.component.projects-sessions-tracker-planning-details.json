@@ -1,0 +1,153 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-tracker-planning-details",
+	"uid": "u_mvlweghhmy",
+	"kind": "component",
+	"title": "TrackerPlanningDetails",
+	"responsibility": "Display the current Tracker stage, promotion history, page states, artifact links and inline design images.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-h4",
+			"reports.component.shared-primitives-atoms-html-img",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/projects-sessions/TrackerPlanningDetails.svelte"],
+		"symbols": ["TrackerPlanningDetails", "TrackerPlanningDetails.designLinks"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerPlanningDetails.stage",
+				"type": "TrackerStage",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The current stage when the Tracker source reports it."
+			},
+			{
+				"name": "TrackerPlanningDetails.planning",
+				"type": "TrackerPlanning",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The recorded stage artifacts and promotions."
+			},
+			{
+				"name": "TrackerPlanningDetails.linkTarget",
+				"type": "'_blank' | 'tracker-artifact'",
+				"required": false,
+				"default": "_blank",
+				"description": "The browser tab or Mac artifact handler for opening a design link."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerPlanningDetails",
+				"type": "markup",
+				"description": "Renders the stage history and recorded artifacts, including image previews."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "TrackerPlanningDetails.designLinks",
+				"inputs": [
+					{
+						"name": "TrackerPlanningDetails.designLinks.links",
+						"type": "TrackerArtifact['links']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerPlanningDetails.designLinks",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h4",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-img",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/TrackerPlanningDetails.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/TrackerPlanningDetails.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

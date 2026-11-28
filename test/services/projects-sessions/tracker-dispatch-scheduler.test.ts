@@ -1,6 +1,3 @@
-import { spawn } from 'node:child_process';
-import { once } from 'node:events';
-import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { test, vi } from 'vitest';
@@ -18,6 +15,7 @@ import {
 } from '../../support/trackerDispatcherFixture';
 import { withTempDir } from '../../support/temporary';
 import { provePriorityAndPacing } from '../../support/trackerDispatchQueueFixture';
+import { managedRunner } from '../../support/trackerObservedRunFixture';
 import { measureWorkload } from '../../support/measureWorkload';
 
 const now = () => 1780000000000;
@@ -32,14 +30,6 @@ function openDispatcher(path: string) {
 	return { database, store, repo, dispatcher };
 }
 
-const childProgram = `
-const { writeFileSync } = require('node:fs');
-const [path, key, startedAt] = process.argv.slice(1);
-writeFileSync(path, JSON.stringify({ pid: process.pid, key, startedAt: Number(startedAt) }), { mode: 0o600 });
-process.stdout.write('ready');
-setInterval(() => {}, 60000);
-`;
-
 test('adopts an uncertain start after restart without releasing the attempt twice', () =>
 	measureWorkload('service.projects-sessions-tracker-dispatch-scheduler', 'managed-adoption', () =>
 		withTempDir('tracker-managed-child-', async (root) => {
@@ -50,8 +40,56 @@ test('adopts an uncertain start after restart without releasing the attempt twic
 			);
 			await proveManagedAdoption(root);
 			await provePriorityAndPacing();
+			await proveTickRecovery();
 		})
 	));
+
+async function proveTickRecovery() {
+	const { store, database, repo, dispatcher } = openDispatcher(':memory:');
+	let unblock!: () => void;
+	const refresh = vi
+		.fn<NonNullable<TrackerDispatchRunner['refresh']>>()
+		.mockImplementationOnce(
+			() =>
+				new Promise<void>((resolve) => {
+					unblock = resolve;
+				})
+		)
+		.mockResolvedValue(undefined);
+	const start = vi.fn<TrackerDispatchRunner['start']>(async ({ key }) => ({
+		type: 'session',
+		session: { key, id: 'recovered', startedAt: now(), state: 'live' }
+	}));
+	const scheduler = new TrackerDispatchSchedulerService(repo, dispatcher, {
+		policy,
+		runner: { refresh, start, observe: async () => undefined }
+	});
+	vi.useFakeTimers();
+	try {
+		queueFixtureItem(store);
+		const hung = scheduler.tick(signal).catch((error: unknown) => error);
+		await scheduler.tick(signal);
+		expect(refresh).toHaveBeenCalledTimes(1);
+		await vi.advanceTimersByTimeAsync(120_000);
+		expect(await Promise.race([hung, Promise.resolve('tick still pending')])).toMatchObject({
+			message: 'dispatch tick timed out'
+		});
+		expect(refresh.mock.calls[0][0].aborted).toBe(true);
+		expect(scheduler.runnerStatus().last_error).toBe('dispatch tick timed out');
+		await scheduler.tick(signal);
+		unblock();
+		await vi.advanceTimersByTimeAsync(0);
+		expect(start).toHaveBeenCalledTimes(1);
+		expect(repo.managedRuns()).toMatchObject([{ state: 'running', session_id: 'recovered' }]);
+		expect(scheduler.runnerStatus().last_error).toBeNull();
+		expect(vi.getTimerCount()).toBe(0);
+	} finally {
+		unblock?.();
+		await vi.advanceTimersByTimeAsync(0);
+		vi.useRealTimers();
+		database.close();
+	}
+}
 
 async function proveIndependentDispatch() {
 	const { store, database, repo, dispatcher } = openDispatcher(':memory:');
@@ -111,7 +149,7 @@ async function proveIndependentDispatch() {
 async function proveManagedAdoption(root: string) {
 	const dbPath = join(root, 'tracker.db');
 	let state = openDispatcher(dbPath);
-	const fixture = managedRunner(root, () => state);
+	const fixture = managedRunner(root, () => state, now());
 
 	const { runner } = fixture;
 	try {
@@ -168,45 +206,4 @@ function queueFixtureItem(store: TrackerPersistenceService, itemId = sampleId) {
 			'note+': 'auto-launch requested on mac'
 		}
 	});
-}
-
-function managedRunner(root: string, current: () => ReturnType<typeof openDispatcher>) {
-	const receiptPath = join(root, 'receipt.json');
-	const fixture: {
-		child?: ReturnType<typeof spawn>;
-		exited?: Promise<unknown>;
-		startedKey: string;
-	} = { startedKey: '' };
-	const start = vi.fn<TrackerDispatchRunner['start']>(async (reservation) => {
-		expect(current().repo.managedRuns()).toMatchObject([{ state: 'queued', dispatch_at: now() }]);
-		fixture.startedKey = reservation.key;
-		const child = spawn(
-			process.execPath,
-			['-e', childProgram, receiptPath, fixture.startedKey, String(now())],
-			{
-				stdio: ['ignore', 'pipe', 'ignore'],
-				env: {}
-			}
-		);
-		fixture.child = child;
-		const exited = once(child, 'close');
-		fixture.exited = exited;
-		await Promise.race([
-			once(child.stdout, 'data'),
-			exited.then(() => {
-				throw new Error('fixture child exited before receipt');
-			})
-		]);
-		throw new Error('lost start reply');
-	});
-	const observe = vi.fn<TrackerDispatchRunner['observe']>(async (_run, key) => {
-		const receipt = JSON.parse(await readFile(receiptPath, 'utf8'));
-		if (receipt.key !== key || receipt.pid !== fixture.child?.pid) return undefined;
-		process.kill(receipt.pid, 0);
-		return {
-			type: 'session',
-			session: { key, id: `fixture-${receipt.pid}`, startedAt: receipt.startedAt, state: 'live' }
-		};
-	});
-	return Object.assign(fixture, { runner: { start, observe } });
 }

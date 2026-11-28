@@ -4,11 +4,12 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { HostedProjectService } from '../../src/services/development-tooling/desktop-bridge-service/HostedProjectService';
 import type { Bridge } from '../../src/services/development-tooling/desktop-bridge-service/HostedProjectService.types';
 
-function createHostedBridge() {
+function createHostedBridge(unavailable?: 'local' | 'hub') {
 	const calls: unknown[] = [];
 	const session = { projectId: 'local-project', busy: false, pending: 0 };
 	const remote = {
 		async listProjects() {
+			if (unavailable === 'hub') throw Error('Hub is unavailable');
 			return [{ id: 'shared-project', name: 'Shared example', kind: 'shared' as const }];
 		},
 		async snapshot(input: unknown) {
@@ -28,6 +29,7 @@ function createHostedBridge() {
 	};
 	const local = {
 		async listProjects() {
+			if (unavailable === 'local') throw Error('Local registry is unavailable');
 			return [{ id: 'local-project', name: 'Local example', kind: 'local' as const }];
 		},
 		async selectProject(input: { projectId: string }) {
@@ -70,6 +72,10 @@ test('Dispatches shared project selection and capabilities', async () => {
 	const listed = await bridge.listProjects!();
 	const snapshot = await bridge.selectProject!({ projectId: 'shared-project' });
 	const capabilities = await bridge.capabilities!({ projectId: 'shared-project' });
+	const onlyLocal = await createHostedBridge('hub').bridge.listProjects!();
+	const onlyShared = await createHostedBridge('local').bridge.listProjects!();
+	expect(onlyLocal).toEqual(listed.filter(({ kind }) => kind === 'local'));
+	expect(onlyShared).toEqual(listed.filter(({ kind }) => kind === 'shared'));
 	const output = { listed, snapshot, capabilities, calls };
 	expect(output).toEqual({
 		listed: [

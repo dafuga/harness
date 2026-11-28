@@ -108,11 +108,15 @@ test('applies configured RAM and disk minimums', () =>
 		})
 	));
 
-test('keeps MB2 work outside Harbor to one budgeted session under load four', () =>
-	measureWorkload(unit, 'mb2-cpu-budget', () => withTempDir('hnt-mb2-', proveMb2Budget)));
+test('enforces the MB2 non-Harbor session budget and load limit', () =>
+	measureWorkload(unit, 'mb2-cpu-budget', async () => {
+		await withTempDir('hnt-mb2-', proveMb2Budget);
+		await withTempDir('hnt-mb2-cap-', (root) => proveMb2Budget(root, 3));
+	}));
 
-async function proveMb2Budget(root: string) {
-	const fixture = trackerResourceHost(root, mb2);
+async function proveMb2Budget(root: string, nonHarborSessionLimit?: number) {
+	const fixture = trackerResourceHost(root, mb2, { nonHarborSessionLimit });
+	const cap = nonHarborSessionLimit ?? 1;
 	try {
 		fixture.host.load = [4, 1];
 		fixture.queue('other00001', 'Harness');
@@ -125,14 +129,24 @@ async function proveMb2Budget(root: string) {
 		expect(fixture.started()).toMatchObject({ cpuBudget: 4 });
 		expect(fixture.started().brief).toContain('**CPU budget:**');
 		expect(fixture.started().brief).toContain('--maxWorkers=4');
-		fixture.queue('other00002', 'Harness');
+		const admitted = Array.from({ length: cap }, (_, index) => `other0000${index + 1}`);
+		for (const id of admitted.slice(1)) {
+			fixture.queue(id, 'Harness');
+			await fixture.tick();
+			expect(fixture.running(), fixture.waiting() ?? undefined).toContain(id);
+		}
+		fixture.queue('other00009', 'Harness');
 		await fixture.tick();
-		expect(fixture.running()).toEqual(['other00001']);
-		expect(fixture.waiting()).toMatch(/1\/1 non-Harbor sessions running/);
-		fixture.host.load = [6, 1];
+		expect(fixture.running()).toEqual(admitted);
+		expect(fixture.waiting()).toContain(`${cap}/${cap} non-Harbor sessions running`);
+		fixture.host.load = [6, 23];
 		fixture.queue('harbor0001', 'Harbor');
 		await fixture.tick();
-		expect(fixture.running()).toEqual(['other00001', 'harbor0001']);
+		expect(fixture.running()).toEqual(admitted);
+		expect(fixture.waiting()).toMatch(/5-min load 23\.00/);
+		fixture.host.load = [6, 1];
+		await fixture.tick();
+		expect(fixture.running()).toEqual([...admitted, 'harbor0001']);
 		expect(fixture.started()).not.toHaveProperty('cpuBudget');
 		expect(fixture.started().brief).not.toContain('CPU budget');
 	} finally {

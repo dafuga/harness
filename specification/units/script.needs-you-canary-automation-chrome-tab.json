@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "script.needs-you-canary-automation-chrome-tab",
+	"uid": "u_haukajqwwx",
+	"kind": "script",
+	"title": "automationChromeTab",
+	"responsibility": "Owns the automationChromeTab build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/needs-you-canary/automationChromeTab.ts"],
+		"symbols": ["automationChromeTab"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "automationChromeTab.browser",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "automationChromeTab.hub",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "automationChromeTab",
+				"type": "Promise<CanaryWeb>"
+			}
+		],
+		"errors": [
+			{
+				"name": "CanaryBrowserError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "automationChromeTab",
+				"inputs": [
+					{
+						"name": "automationChromeTab.browser",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "automationChromeTab.hub",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "automationChromeTab",
+						"type": "Promise<CanaryWeb>"
+					}
+				],
+				"errors": [
+					{
+						"name": "CanaryBrowserError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "script.needs-you-canary-canary-browser-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-canary-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-cdp-connection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-hub-row-scripts",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/needs-you-canary/automationChromeTab.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/needs-you-canary/automationChromeTab.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
