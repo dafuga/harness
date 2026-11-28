@@ -1,4 +1,6 @@
 // @harness-uid u_gvqtr5mdwv
+import { spawn } from 'node:child_process';
+import { accessSync, constants } from 'node:fs';
 import type { TrackerNativeNotificationOptions } from '../TrackerNativeRuntimeService.types';
 import type {
 	TrackerDeliveryRequest,
@@ -21,6 +23,9 @@ export function trackerNodeNotifications(
 	if (role === 'spoke' && notifications.webhook) {
 		throw new TypeError('Tracker webhook requires a hub');
 	}
+	if (!notifications.webhook && (notifications.routes || notifications.unrouted)) {
+		throw new TypeError('Tracker bot routes require a webhook');
+	}
 	const targets = new Map(
 		Object.entries(notifications.targets).map(([id, spec]) => [id, nodeTarget(spec, node)] as const)
 	);
@@ -38,7 +43,10 @@ export function trackerNodeNotifications(
 	const { chiefOfStaff, itemCallbacks = [] } = notifications;
 	if (chiefOfStaff) http(chiefOfStaff);
 	return {
-		legacyDestinations: { urls: new Map(itemCallbacks.map((id) => [http(id).raw, id])) },
+		legacyDestinations: {
+			urls: new Map(itemCallbacks.map((id) => [http(id).raw, id])),
+			commands: commandBindings(notifications)
+		},
 		chiefOfStaff: chiefOfStaff ? destination(chiefOfStaff) : undefined,
 		webhook: digestWebhook(notifications, destination),
 		destinations: {
@@ -53,17 +61,81 @@ export function trackerNodeNotifications(
 	};
 }
 
+/** Each legacy command name must map to a configured script target; item text never names a command outside this map. */
+function commandBindings({
+	targets,
+	commandCallbacks = {}
+}: NonNullable<TrackerNodeConfig['notifications']>) {
+	return new Map(
+		Object.entries(commandCallbacks).map(([name, id]) => {
+			const spec = Object.hasOwn(targets, id) ? targets[id] : undefined;
+			if (!spec) throw new TypeError('Unknown Tracker notification binding');
+			if (!('script' in spec))
+				throw new TypeError('Tracker command callback requires a script target');
+			return [name, id] as const;
+		})
+	);
+}
+
 function digestWebhook(
-	{ webhook, suggestions = defaultSuggestions }: NonNullable<TrackerNodeConfig['notifications']>,
+	{
+		webhook,
+		routes,
+		unrouted,
+		suggestions = defaultSuggestions
+	}: NonNullable<TrackerNodeConfig['notifications']>,
 	destination: (id: string) => TrackerDestination
 ) {
-	return webhook ? { destination: destination(webhook), suggestions } : undefined;
+	if (!webhook) return undefined;
+	return {
+		destination: destination(webhook),
+		suggestions,
+		...(routes && {
+			routes: Object.fromEntries(
+				Object.entries(routes).map(([name, route]) => [
+					name,
+					{ destination: destination(route.target), aliases: route.aliases }
+				])
+			)
+		}),
+		...(unrouted && { unrouted })
+	};
 }
 
 function nodeTarget(spec: TrackerNodeTarget, node: string) {
+	if ('script' in spec) {
+		accessSync(spec.script, constants.X_OK);
+		return { kind: 'command' as const, send: scriptDelivery(spec.script) };
+	}
 	if ('session' in spec)
 		return { kind: 'command' as const, send: trackerDigestSession(spec, node) };
 	return { kind: 'http' as const, ...deliveryTarget(spec.url, spec.bearerFile) };
+}
+
+/** Run a fixed script with no arguments. Any exit other than zero leaves the receipt uncertain, so the delivery retries. */
+function scriptDelivery(path: string) {
+	return (request: TrackerDeliveryRequest) =>
+		new Promise<TrackerDeliveryResult>((resolve, reject) => {
+			const uncertain = () =>
+				new TrackerNodeTransportError('Tracker notification receipt is uncertain');
+			const child = spawn(path, [], {
+				shell: false,
+				stdio: ['pipe', 'ignore', 'ignore'],
+				timeout: 20_000,
+				env: {
+					PATH: process.env.PATH ?? '',
+					HOME: process.env.HOME ?? '',
+					...request.environment,
+					TRACKER_DELIVERY_ID: request.id
+				}
+			});
+			child.stdin.on('error', () => undefined);
+			child.once('error', () => reject(uncertain()));
+			child.once('close', (code) =>
+				code === 0 ? resolve({ status: 'sent' }) : reject(uncertain())
+			);
+			child.stdin.end(request.body);
+		});
 }
 
 async function postDelivery(

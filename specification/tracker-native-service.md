@@ -116,12 +116,21 @@ operator verifies the stopped database and chooses a rollback.
   IDs to `{ "url": "...", "bearerFile": "/optional/private/bearer-token" }`.
   Name IDs in `itemCallbacks` to bind the exact legacy item or agent HTTP
   URL, in `chiefOfStaff` for direct attention reminders, and in the hub's
-  `webhook` for batched attention and recurring wakes. The foreground
+  `webhook` for batched attention and recurring wakes. `webhook.routes` maps
+  bot names to `{ "target": "ID", "aliases": [...] }`, and
+  `webhook.unrouted` sets `cos` or `drop` per event (`needs_daniel`, `due`,
+  `blocked`, `done`, `resolved`, `changed`, `recurring_due`, `autolaunch`)
+  for events no route claims. Both require `webhook`. The foreground
   supervisor runs the durable notification tick and transmits a stable
   `Idempotency-Key`. The receiver must honor that key across retries.
   The target owner must reconcile migrated callback mappings and pending
-  delivery receipts before enabling sending. Shell command targets and
-  legacy custom webhook headers require separate integration.
+  delivery receipts before enabling sending. A `{ "script": "/absolute/path" }`
+  target runs that fixed file with no arguments, the delivery JSON on stdin
+  and `TRACKER_DELIVERY_ID` set; a non-zero exit, a spawn error or a 20-second
+  timeout retries. `notifications.commandCallbacks` maps a legacy
+  `--callback-cmd` name to a script target. Item text chooses only the name:
+  it never supplies arguments or shell text. Unnamed commands are not run.
+  Legacy custom webhook headers require separate integration.
 - **30-minute digest.** The hub's `webhook` target gets updates and new
   needs-Daniel asks as one batch, at most once every 30 minutes. Quiet
   hours apply only to what is meant for Daniel. Chief of Staff and agents
