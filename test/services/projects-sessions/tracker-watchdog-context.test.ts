@@ -12,6 +12,11 @@ import {
 	watchdogItem
 } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState';
 import { sampleTrackerContexts } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogContext';
+import { TrackerDispatchRepository } from '../../../src/repositories/projects-sessions/TrackerDispatchRepository';
+import { TrackerDispatcherService } from '../../../src/services/agents-providers/TrackerDispatcherService';
+import { trackerRecoveryLaunch } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthRuntime';
+import { recoverTrackerSession } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerSessionRecovery';
+import { fixturePolicy } from '../../support/trackerDispatcherFixture';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import type {
 	WatchdogPane,
@@ -19,7 +24,6 @@ import type {
 } from '../../../src/services/projects-sessions/WatchdogPaneService.types';
 import { measureWorkload } from '../../support/measureWorkload';
 import { withTempDir } from '../../support/temporary';
-
 const itemId = 'abc123def4';
 const host = 'harbor-mbp-2';
 const createdAt = 1_800_000_000_000;
@@ -105,10 +109,13 @@ test('requests a handoff once and closes only the idle owned attempt after its n
 	measureWorkload(
 		'service.projects-sessions-tracker-native-runtime',
 		'watchdog-context-handoff',
-		proveHandoff
+		async () => {
+			await proveHandoff(true);
+			await proveHandoff(false);
+		}
 	));
 
-async function proveHandoff() {
+async function proveHandoff(sampled: boolean) {
 	let now = createdAt + 11 * minute;
 	const db = new DatabaseSync(':memory:');
 	try {
@@ -121,8 +128,10 @@ async function proveHandoff() {
 			now,
 			canRelaunch: true,
 			items: [watchdogItem(repo.getStored(itemId))],
-			runs: [{ id: 9, itemId, tmux: pane.name, state: 'running', cli: 'codex' }],
-			panes: [{ ...pane, activity, contextTokens: 150_001 }]
+			runs: [
+				{ id: 9, itemId, tmux: pane.name, state: 'running', cli: 'codex', startedAt: createdAt }
+			],
+			panes: [{ ...pane, activity, contextTokens: sampled ? 150_001 : undefined }]
 		});
 		const nudge = vi.fn(async () => true);
 		const close = vi.fn(
@@ -136,13 +145,12 @@ async function proveHandoff() {
 		);
 		const driver = { ...trackerWatchdogPort({ transcriptRoots: [] }, host), nudge, close };
 		await trackerContextHandoffs(store, driver, scan(now), signal);
-		expect(nudge).not.toHaveBeenCalled();
 		await trackerContextHandoffs(store, driver, scan(createdAt), signal);
 		await trackerContextHandoffs(store, driver, scan(createdAt), signal);
 		expect(nudge).not.toHaveBeenCalled();
 		store.appendLocal({ itemId, fields: { schedule_off: 0, needs_daniel: 0 } });
 		await trackerContextHandoffs(store, driver, scan(createdAt), signal);
-		expect(nudge).toHaveBeenCalledOnce();
+		expect(nudge).toHaveBeenCalledTimes(Number(sampled));
 		expect(close).not.toHaveBeenCalled();
 		store.appendLocal({
 			itemId,
@@ -157,9 +165,31 @@ async function proveHandoff() {
 		await trackerContextHandoffs(store, driver, scan(now - 11 * minute), signal);
 		expect(close).toHaveBeenCalledOnce();
 		expect(readWatchdogAlerts(store)[`${itemId}:context`].reason).toContain('closed the idle pane');
+		await proveContinuation(store, repo, now);
 	} finally {
 		db.close();
 	}
+}
+
+async function proveContinuation(
+	store: TrackerPersistenceService,
+	items: TrackerItemReadRepository,
+	now: number
+) {
+	const { database } = store;
+	database.prepare("UPDATE runs SET state = 'finished', ended_at = ? WHERE id = 9").run(now);
+	const dispatch = new TrackerDispatcherService(
+		new TrackerDispatchRepository(store),
+		fixturePolicy(() => now, { node: host })
+	);
+	const request = { item: items.getStored(itemId), launch: trackerRecoveryLaunch(dispatch)!, now };
+	expect(request.item.status).toBe('in_progress');
+	await recoverTrackerSession(store, request);
+	await recoverTrackerSession(store, { ...request, item: items.getStored(itemId) });
+	expect(database.prepare('SELECT item_id,model,effort FROM runs WHERE id > 9').all()).toEqual([
+		{ item_id: itemId, model: 'gpt-6.2-sol', effort: 'high' }
+	]);
+	expect(items.getStored(itemId).launch_source).toBe('recovery');
 }
 
 function seedHandoffItem(store: TrackerPersistenceService) {
@@ -167,6 +197,8 @@ function seedHandoffItem(store: TrackerPersistenceService) {
 		itemId,
 		fields: {
 			status: 'in_progress',
+			computer: host,
+			model: 'gpt-6.1-terra:medium',
 			title: 'Handoff item',
 			kind: 'task',
 			schedule_off: true,
@@ -180,8 +212,8 @@ function seedHandoffRun(db: DatabaseSync) {
 	const attempt = 'a'.repeat(64);
 	db.exec(trackerRunSchema);
 	db.prepare(
-		`INSERT INTO runs(id,item_id,rung,cli,model,state,queued_at,started_at,tmux,session_id)
-			VALUES(9,?,'manual','codex','gpt-6.2-sol','running',?,?,?,?)`
+		`INSERT INTO runs(id,item_id,rung,cli,model,effort,state,queued_at,started_at,tmux,session_id)
+			VALUES(9,?,'manual','codex','gpt-6.2-sol','high','running',?,?,?,?)`
 	).run(itemId, createdAt, createdAt, pane.name, attempt);
 	return attempt;
 }

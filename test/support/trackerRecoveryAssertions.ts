@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { DatabaseSync } from 'node:sqlite';
 import type { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
@@ -142,6 +142,65 @@ export function verifyResumeBrief(directory: string, run: number) {
 	expect(brief).toContain('Progress note 11');
 	expect(brief).toContain('resume from: checkpoint commit');
 }
+
+export async function verifyContextContinuation(
+	runtime: TrackerNativeRuntimeService,
+	{ stateDirectory, native }: { stateDirectory: string; native: { codex: string } },
+	{
+		dispatch,
+		tmux,
+		watchdog
+	}: {
+		dispatch: () => Promise<void>;
+		tmux: (...args: string[]) => string;
+		watchdog: (delay: number) => Promise<void>;
+	}
+) {
+	const id = 'ctxrun1234';
+	writeFileSync(native.codex, idleCodexFixture, { mode: 0o700 });
+	seedTask(runtime, Date.now(), id);
+	expect((await managedTrackerItemRequest(runtime, id, 'launch')).ok).toBe(true);
+	const history = () =>
+		runtime.store.database
+			.prepare('SELECT id,state,tmux,model,effort FROM runs WHERE item_id = ? ORDER BY id')
+			.all(id) as { id: number; state: string; tmux: string; model: string; effort: string }[];
+	const runState = async (index: number) => {
+		await dispatch();
+		return history()[index]?.state;
+	};
+	await expect.poll(() => runState(0)).toBe('running');
+	const original = history()[0];
+	expect((await managedTrackerItemRequest(runtime, id, 'start')).ok).toBe(true);
+	await expect
+		.poll(() => tmux('capture-pane', '-p', '-t', original.tmux + ':0.0'))
+		.toContain('40% context left');
+	const checkpoint =
+		'stopped: watchdog context handoff; resume from: original worktree at fixture checkpoint';
+	const note = await runtime.items.handle(
+		new Request('http://tracker-fixture.invalid/items/' + id + '/note', {
+			method: 'POST',
+			body: JSON.stringify({ text: checkpoint })
+		})
+	);
+	expect(note.ok).toBe(true);
+	expect(await note.json()).toMatchObject({ status: 'in_progress' });
+	await watchdog(11 * minute);
+	expect(() => tmux('has-session', '-t', '=' + original.tmux)).toThrow();
+	await watchdog(minute);
+	await expect.poll(() => runState(1)).toBe('running');
+	await watchdog(minute);
+	expect(history()).toMatchObject([
+		{ id: original.id, state: 'finished' },
+		{ state: 'running', model: original.model, effort: original.effort }
+	]);
+	expect(history()[1].tmux).not.toBe(original.tmux);
+	expect(readBrief(stateDirectory, Number(history()[1].id))).toContain(
+		'## Last handoff\n\n' + checkpoint
+	);
+}
+
+const idleCodexFixture =
+	"#!/bin/sh\nprintf '\\033[2J\\033[HFixture\\r\\n\\r\\n› \\r\\n\\r\\n40%% context left\\033[3;3H'\nexec /bin/sleep 120\n";
 
 function readBrief(state: string, run: number) {
 	for (const attempt of readdirSync(state)) {
