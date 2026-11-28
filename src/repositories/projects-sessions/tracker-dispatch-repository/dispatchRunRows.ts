@@ -82,10 +82,9 @@ export function dispatchRunRows(
 }
 
 export function managedDispatchRuns(database: SqliteDatabase, node: string): TrackerRunReceipt[] {
-	return localRows(
-		database,
-		"WHERE (r.state IN ('queued','running','verifying') OR r.outcome = 'blocked') AND m.v IS NOT NULL"
-	)
+	const managed =
+		"WHERE (r.state IN ('queued','running','verifying') OR r.outcome = 'blocked') AND m.v IS NOT NULL";
+	return localRows(database, managed)
 		.map((row) => receipt(row, node))
 		.filter((row) => row.revision >= 0);
 }
@@ -142,9 +141,8 @@ function localRows(database: SqliteDatabase, where: string, ...bindings: SqliteV
 }
 
 function receipt(row: TrackerStoredDispatchRun, node: string): TrackerRunReceipt {
-	const fields = { ...row };
-	delete fields.reservation;
-	const metadata = readReservation(row);
+	const { reservation, ...fields } = row;
+	const metadata = readReservation(reservation, row);
 	return {
 		...fields,
 		node,
@@ -158,9 +156,9 @@ function receipt(row: TrackerStoredDispatchRun, node: string): TrackerRunReceipt
 	};
 }
 
-function readReservation(row: TrackerStoredDispatchRun): TrackerRunReservation | undefined {
-	if (!row.reservation) return undefined;
-	const reservation = JSON.parse(row.reservation) as TrackerRunReservation;
+function readReservation(encoded: string | null | undefined, row: TrackerStoredDispatchRun) {
+	if (!encoded) return undefined;
+	const reservation = JSON.parse(encoded) as TrackerRunReservation;
 	return reservation.signature === signature(row) ? reservation : undefined;
 }
 
