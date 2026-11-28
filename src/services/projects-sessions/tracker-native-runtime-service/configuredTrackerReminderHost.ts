@@ -87,21 +87,23 @@ function tmuxReminder(tmux: TrackerTmuxAdapter) {
 }
 
 function driverReminder(driver: ReturnType<typeof trackerWatchdogPort>, node: string) {
-	return (request: TrackerDeliveryRequest, signal: AbortSignal) => {
+	return async (request: TrackerDeliveryRequest, signal: AbortSignal) => {
 		const { id, at, kind, message } = reminderDetails(request);
-		return driver.send(
-			[
-				{
-					id: request.id,
-					item_id: id,
-					kind,
-					host: node,
-					reason: message,
-					identity: request.id,
-					at: Date.parse(at)
-				}
-			],
-			signal
+		return (
+			(await driver.send(
+				[
+					{
+						id: request.id,
+						item_id: id,
+						kind,
+						host: node,
+						reason: message,
+						identity: request.id,
+						at: Date.parse(at)
+					}
+				],
+				signal
+			)) === true
 		);
 	};
 }

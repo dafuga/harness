@@ -59,12 +59,18 @@ function mergeAgents(all: HomeAgent[]): HomeAgent[] {
 }
 
 /** An ask the Tracker synced to several computers is one decision; its newest copy shows. */
-function mergeOpenAsks(snapshots: OwnerHomeSnapshot[]) {
+function mergeOpenAsks(
+	snapshots: OwnerHomeSnapshot[],
+	closedAsks: NonNullable<OwnerHomeSnapshot['closedCosDeliveryAsks']>
+) {
+	const closedAt = new Map(closedAsks.map((ask) => [ask.itemId, Date.parse(ask.closedAt)]));
 	return newest(
 		snapshots.flatMap((entry) => entry.openAsks ?? agentOpenAsks(entry.agents)),
 		(ask) => ask.itemId,
 		(a, b) => Date.parse(a.since) > Date.parse(b.since)
-	).sort((a, b) => Date.parse(a.since) - Date.parse(b.since) || a.itemId.localeCompare(b.itemId));
+	)
+		.filter((ask) => Date.parse(ask.since) > (closedAt.get(ask.itemId) ?? -Infinity))
+		.sort((a, b) => Date.parse(a.since) - Date.parse(b.since) || a.itemId.localeCompare(b.itemId));
 }
 
 /** A synced reminder shows once, as its newest copy. Undefined when no computer lists any. */
@@ -150,6 +156,11 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 		.reduce((a, b) => (betterOverview(b, a) ? b : a));
 	const providers = snapshots.map((entry) => entry.providers);
 	const liveOverview = mergeLiveOverview(snapshots);
+	const closedCosDeliveryAsks = newest(
+		snapshots.flatMap((entry) => entry.closedCosDeliveryAsks ?? []),
+		(ask) => ask.itemId,
+		(a, b) => Date.parse(a.closedAt) > Date.parse(b.closedAt)
+	);
 	const directory =
 		snapshots.find((entry) => entry.liveOverview === liveOverview && entry.projectDirectory)
 			?.projectDirectory ?? snapshots.find((entry) => entry.projectDirectory)?.projectDirectory;
@@ -157,7 +168,8 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 		overview,
 		...(directory && { projectDirectory: directory }),
 		agents: mergeAgents(snapshots.flatMap((entry) => entry.agents)),
-		openAsks: mergeOpenAsks(snapshots),
+		openAsks: mergeOpenAsks(snapshots, closedCosDeliveryAsks),
+		...(closedCosDeliveryAsks.length && { closedCosDeliveryAsks }),
 		reminders: mergeReminders(snapshots),
 		plans: newest(
 			snapshots.flatMap((entry) => entry.plans),

@@ -19,7 +19,10 @@ import { listHomeSchedule } from './homeSchedule';
 import { buildHomeOpenAsks } from './homeOpenAsks';
 import { homeProviderReadingIsStale } from './homeProviderPayload';
 import { cosChatTitle } from './homeTrackerThread';
-import { trackerStructuredAsk } from '../../../../../../src/utils/projects-sessions/trackerStructuredAsk';
+import {
+	isClosedTrackerCosDeliveryAsk,
+	trackerStructuredAsk
+} from '../../../../../../src/utils/projects-sessions/trackerStructuredAsk';
 
 export const noProviders: HomeProviderReadings = { routines: null, quota: null };
 
@@ -85,7 +88,8 @@ export function buildHomeSnapshot(
 		overview,
 		...(sources && {
 			projectDirectory: listTrackerProjects(items),
-			reminders: listHomeReminders(shown)
+			reminders: listHomeReminders(shown),
+			closedCosDeliveryAsks: listClosedCosDeliveryAsks(items)
 		}),
 		agents,
 		openAsks: buildHomeOpenAsks(items),
@@ -97,6 +101,14 @@ export function buildHomeSnapshot(
 		),
 		providers
 	};
+}
+
+function listClosedCosDeliveryAsks(items: TrackerItemRecord[]) {
+	return items
+		.filter(isClosedTrackerCosDeliveryAsk)
+		.sort(compareRecent)
+		.slice(0, 100)
+		.map((item) => ({ itemId: item.id, closedAt: new Date(item.updated_at).toISOString() }));
 }
 
 function listTrackerProjects(items: TrackerItemRecord[]): HomeTrackerProject[] {

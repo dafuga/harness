@@ -1,5 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
 import { isOutageAlert } from './trackerCosAlertKinds';
+import { trackerCosDeliveryAskTitle } from '../../../utils/projects-sessions/trackerStructuredAsk';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 
 const listed = 12;
@@ -7,9 +8,9 @@ const listed = 12;
 // The wording must stay clear of `isTrackerCosMessage`, or the ask is hidden from Daniel.
 const options = JSON.stringify([
 	{
-		label: 'Run Chief of Staff in tmux "cos"',
+		label: 'Check Chief of Staff',
 		effect:
-			'Start or move Chief of Staff into a tmux session named cos on the primary Mac, or ask any session to. This closes by itself once the waiting alerts are delivered.',
+			'Check the cos session on the primary Mac. Restore it if it is missing or stalled. The reminder closes once the waiting alerts are delivered.',
 		recommended: true
 	},
 	{
@@ -41,7 +42,7 @@ export function cosDeliveryAsk({
 	const count = `${pending.length} Tracker ${pending.length === 1 ? 'alert has' : 'alerts have'}`;
 	return {
 		...(created && {
-			title: 'Tracker alerts are not reaching Chief of Staff',
+			title: trackerCosDeliveryAskTitle,
 			kind: 'reminder',
 			priority: 'urgent',
 			created_at: new Date(now).toISOString(),
@@ -54,6 +55,8 @@ export function cosDeliveryAsk({
 		resolved: 0,
 		answer: null,
 		answer_option: null,
+		answered_at: null,
+		answered_by: null,
 		question: `${count} not reached your Chief of Staff session (oldest waiting ${minutes} minutes; ${outages.length} outage or security). The Tracker can only send them to a tmux session named "cos" on the primary Mac. What should happen?`,
 		options,
 		'note+': waitingList(outages.length ? outages : pending)

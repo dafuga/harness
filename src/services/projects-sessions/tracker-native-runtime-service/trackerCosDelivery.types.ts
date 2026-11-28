@@ -8,6 +8,11 @@ export interface TrackerCosDeliveryAlarm {
 	askedAt: number;
 }
 
+export interface TrackerCosBusyPane {
+	pane: string;
+	since: number;
+}
+
 export interface TrackerCosRoundPorts {
 	now(): number;
 	local(): readonly TrackerWatchdogAlert[];
