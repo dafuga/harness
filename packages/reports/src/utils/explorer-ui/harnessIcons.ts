@@ -80,6 +80,9 @@ export const harnessIcons = {
 		'M6 7a2 2 0 1 0 0-4a2 2 0 0 0 0 4zM6 21a2 2 0 1 0 0-4a2 2 0 0 0 0 4z' +
 		'M18 10a2 2 0 1 0 0-4a2 2 0 0 0 0 4zM6 7v10M18 10c0 4.5-12 2.5-12 7',
 	commit: 'M12 15.5a3.5 3.5 0 1 0 0-7a3.5 3.5 0 0 0 0 7zM12 2.5v6M12 15.5v6',
+	// Outgoing channels.
+	mail: 'M3 5h18v14H3zM3 6l9 7 9-7',
+	message: 'M4 4h16v12H9l-5 4V4zM8 9h8M8 12h5',
 	// Controls.
 	'arrow-right': 'M4 12h16M14 6l6 6-6 6',
 	'arrow-left': 'M20 12H4M10 6l-6 6 6 6',

@@ -30,7 +30,7 @@ export default defineConfig(async (): Promise<UserConfig> => {
 			...(data ? { __COMPONENT_PREVIEW_DATA__: data } : {})
 		},
 		plugins: [page === 'catalog' && contextStyles, fixtureMedia(data), svelte()],
-		resolve: ['components', 'catalog'].includes(page)
+		resolve: ['components', 'catalog', 'outgoing'].includes(page)
 			? {
 					alias: {
 						'$app/navigation': fileURLToPath(

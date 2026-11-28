@@ -4,7 +4,7 @@
 	"uid": "u_suxmf5vsuw",
 	"kind": "component",
 	"title": "HubHomeCosChat",
-	"responsibility": "Shows the Chief of Staff conversation and the selected item or open question in a single chat overlay.",
+	"responsibility": "Shows the Chief of Staff conversation, selected item, open question and outgoing draft cards in a single chat overlay.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -14,6 +14,8 @@
 			"hub.component.projects-sessions-hub-home-composer",
 			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.modal",
+			"reports.component.projects-sessions-hub-home-hub-home-outgoing-draft-card",
+			"reports.component.projects-sessions-hub-home-hub-home-outgoing-draft-editor",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
@@ -67,6 +69,12 @@
 				"description": "Provides the current open questions. A resolved question loses its answer options."
 			},
 			{
+				"name": "HubHomeCosChat.outgoing",
+				"type": "HomeOutgoingActions",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
 				"name": "HubHomeCosChat.showCard",
 				"type": "boolean",
 				"required": false,
@@ -78,7 +86,7 @@
 			{
 				"name": "HubHomeCosChat",
 				"type": "markup",
-				"description": "A \"Message Chief of Staff\" region with the latest four entries and one field."
+				"description": "A Chief of Staff dialog with recent messages, available outgoing draft cards and one chat composer."
 			}
 		],
 		"errors": [],
@@ -114,6 +122,16 @@
 		},
 		{
 			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-home-outgoing-draft-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-home-outgoing-draft-editor",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -159,6 +177,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-home-outgoing-draft",
 			"via": "import",
 			"origin": "derived"
 		},
