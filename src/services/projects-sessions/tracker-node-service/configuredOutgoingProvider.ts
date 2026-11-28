@@ -23,7 +23,16 @@ import { readPrivateJson } from './trackerNodeConfig';
 
 const name = z.string().trim().min(1).max(256);
 const tokenDriver = z.string().min(1);
-const gmailBinding = z.strictObject({ account: z.email(), tokenDriver });
+const gmailBinding = z.strictObject({
+	account: z.email(),
+	tokenDriver,
+	selfTestThread: z.string().refine(gmailNativeId).optional()
+});
+const gmailTestToken = z.strictObject({
+	accessToken: z.string().regex(/^[A-Za-z0-9._~-]{1,4096}$/),
+	account: z.email(),
+	threadId: z.string().refine(gmailNativeId)
+});
 const slackBinding = z.strictObject({
 	account: name,
 	host: z.string().regex(/^[a-z0-9-]+\.slack\.com$/),
@@ -126,15 +135,19 @@ function readToken(path: string) {
 	};
 }
 
-function configuredGmail({ account, tokenDriver }: z.infer<typeof gmailBinding>) {
-	const adapter = new TrackerGmailSendAdapter({ account, readAccessToken: readToken(tokenDriver) });
-	const send = adapter.send.bind(adapter);
-	return (message: TrackerOutgoingMessage) =>
-		message.channel === 'gmail' &&
-		message.account === account &&
-		(!message.thread || gmailNativeId(message.thread.id))
-			? send
-			: undefined;
+function configuredGmail({ tokenDriver, ...binding }: z.infer<typeof gmailBinding>) {
+	const read = readToken(tokenDriver);
+	const readAccessToken = !binding.selfTestThread
+		? read
+		: async (signal: AbortSignal) => {
+				const packet = gmailTestToken.parse(JSON.parse(await read(signal)));
+				if (packet.account !== binding.account || packet.threadId !== binding.selfTestThread)
+					throw new TrackerHostProcessError(
+						'Gmail test grant does not match the sender and thread'
+					);
+				return packet.accessToken;
+			};
+	return matchedSender(new TrackerGmailSendAdapter({ ...binding, readAccessToken }));
 }
 
 function configuredSlack(binding: z.infer<typeof slackBinding>) {

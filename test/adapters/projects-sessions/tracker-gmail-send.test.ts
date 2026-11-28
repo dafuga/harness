@@ -96,14 +96,15 @@ test('refuses a mismatched account or subject before sending and treats a lost d
 
 test('a live test binding refuses any other recipient, copy, thread or subject before reading Gmail', async () => {
 	const { adapter, fetcher } = fixture('thread-1');
-	const allowed = { ...message, to: [account], cc: [] };
+	const allowed = { ...message, to: [account], cc: [], subject: '[Harness test] Fixture' };
 	for (const changes of [
 		{ to: ['other@example.test'] },
 		{ to: [account, account] },
 		{ cc: [account] },
 		{ thread: { id: 'other-thread', label: 'Other thread' } },
 		{ thread: undefined },
-		{ subject: 'Unlabelled' }
+		{ subject: 'Unlabelled' },
+		{ subject: 'Re: [Harness test] Fixture' }
 	]) {
 		await expect(adapter.send({ ...allowed, ...changes }, attempt)).resolves.toEqual({
 			kind: 'failed'
