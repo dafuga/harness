@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "script.deliver-feature",
+	"uid": "u_sbwb4oz6di",
 	"kind": "script",
 	"title": "deliver-feature",
 	"responsibility": "Owns the deliver-feature build or maintenance script.",
@@ -16,7 +17,7 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
 		],
@@ -25,6 +26,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.projects-sessions-feature-delivery",
 			"via": "import",

@@ -16,7 +16,6 @@ import {
 import { loadUnits } from '../src/workflows/development-tooling/load-units/loadUnits';
 const select = 'packages/reports/src/components/Select.svelte';
 const canonicalSelect = 'packages/reports/src/components/shared-primitives/Select.svelte';
-const shared = '$shared';
 const selectTest = 'packages/reports/test/components/select.test.ts';
 const indexer = new sourceIndex.SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
@@ -195,7 +194,7 @@ test('a change of Select reaches every unit, test and scenario that a change of 
 }, 60_000);
 test('declaring the Select imports moves those references alone: packages and uncertainties stay', async () => {
 	const kept = loaded.config.references.filter(
-		(entry) => entry.specifier !== `${shared}/Select.svelte`
+		(entry) => entry.specifier !== '$shared/Select.svelte'
 	);
 	const bare = await indexer.index(new WorkingTreeAdapter(loaded.root), {
 		...loaded.config,
@@ -209,10 +208,10 @@ test('declaring the Select imports moves those references alone: packages and un
 				: [[file.path, was?.external, now.path]];
 		})
 	);
-	expect(moved.filter(([, was, to]) => was !== shared || to !== select)).toEqual([]);
+	expect(moved.filter(([, was, to]) => was !== '$shared' || to !== select)).toEqual([]);
 	expect(moved.map(([from]) => from).sort()).toEqual(
 		consumers()
-			.filter((item) => item.specifier.startsWith(`${shared}/`))
+			.filter((item) => item.specifier.startsWith('$shared/'))
 			.map((item) => item.from)
 			.sort()
 	);

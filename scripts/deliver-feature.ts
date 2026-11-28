@@ -1,3 +1,4 @@
+// @harness-uid u_sbwb4oz6di
 import { parseArgs } from 'node:util';
 import { z } from 'zod';
 import { reportsEnvironment } from '../src/cli/program/run-report/reportsEnvironment';
@@ -5,17 +6,18 @@ import { R2EvidenceStoreAdapter } from '../packages/reports/src/adapters/R2Evide
 import {
 	featureDeliveryId,
 	featureDeliveryStage
-} from '../src/utils/projects-sessions/featureDelivery';
+} from '../src/core/projects-sessions/featureDelivery';
 import { deliverFeature } from './deliver-feature/deliverFeature';
 import { recordDelivery } from './deliver-feature/recordDelivery';
 import { trackerDeliveryClient } from './deliver-feature/trackerDeliveryClient';
+import { ExpectedCliError } from '../src/core/errors';
 
 function deliveryOrigin() {
 	const value = process.env.HARNESS_HUB_ORIGIN;
-	if (!value) throw new Error('HARNESS_HUB_ORIGIN must name the published Hub origin');
+	if (!value) throw new ExpectedCliError('HARNESS_HUB_ORIGIN must name the published Hub origin');
 	const url = new URL(value);
 	if (url.protocol !== 'https:' || url.origin !== value.replace(/\/$/, ''))
-		throw new Error('HARNESS_HUB_ORIGIN must be an HTTPS origin');
+		throw new ExpectedCliError('HARNESS_HUB_ORIGIN must be an HTTPS origin');
 	return url.origin;
 }
 
@@ -23,7 +25,7 @@ async function main() {
 	const args = process.argv.slice(2);
 	const divider = args.indexOf('--');
 	if (divider < 0 || divider === args.length - 1)
-		throw new Error(
+		throw new ExpectedCliError(
 			'Usage: deliver-feature <item> <dev|staging|live> [--note text] [--attach|--backfill-at date] -- <capture command>'
 		);
 	const { positionals, values } = parseArgs({
@@ -38,9 +40,9 @@ async function main() {
 	const [id, stage] = positionals;
 	const date = values['backfill-at'];
 	if (positionals.length !== 2 || (values.attach && date))
-		throw new Error('Specify one item, one stage and at most one attachment mode');
+		throw new ExpectedCliError('Specify one item, one stage and at most one attachment mode');
 	if (!values.attach && !date && !values.note?.trim())
-		throw new Error('Supply the delivery completion evidence with --note');
+		throw new ExpectedCliError('Supply the delivery completion evidence with --note');
 	const storage = evidenceStore();
 	const result = await deliverFeature(
 		{
@@ -58,11 +60,13 @@ async function main() {
 			capture: () => recordDelivery(args.slice(divider + 1)),
 			storeVideo: (delivery, bytes) =>
 				storage.putFeatureVideo(delivery, bytes).catch(() => {
-					throw new Error('Could not upload the feature video to Reports R2');
+					throw new ExpectedCliError('Could not upload the feature video to Reports R2');
 				}),
 			publish: (delivery) =>
 				storage.putFeatureReceipt(delivery).catch(() => {
-					throw new Error('Tracker delivery was recorded but could not be published to the Hub');
+					throw new ExpectedCliError(
+						'Tracker delivery was recorded but could not be published to the Hub'
+					);
 				}),
 			now: () => new Date()
 		}
@@ -80,7 +84,7 @@ function evidenceStore() {
 	} catch {
 		// The contents of credential configuration and SDK errors must stay out of the CLI.
 	}
-	throw new Error('The private Reports R2 evidence store is unavailable');
+	throw new ExpectedCliError('The private Reports R2 evidence store is unavailable');
 }
 
 if (import.meta.main) {

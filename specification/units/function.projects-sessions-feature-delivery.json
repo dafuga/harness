@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.projects-sessions-feature-delivery",
+	"uid": "u_26kwgq7ii2",
 	"kind": "function",
 	"title": "featureDelivery",
 	"responsibility": "Validates delivery receipts and derives project listing, storage and playback addresses.",
@@ -8,8 +9,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/projects-sessions/featureDelivery.ts",
-			"src/utils/projects-sessions/featureDelivery.types.ts"
+			"src/core/projects-sessions/featureDelivery.ts",
+			"src/core/projects-sessions/featureDelivery.types.ts"
 		],
 		"symbols": [
 			"featureDeliveryStages",
@@ -226,11 +227,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/projects-sessions/featureDelivery.ts",
+		"entry": "src/core/projects-sessions/featureDelivery.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/projects-sessions/featureDelivery.ts"
+				"entry": "src/core/projects-sessions/featureDelivery.ts"
 			}
 		]
 	},

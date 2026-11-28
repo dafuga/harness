@@ -2,7 +2,7 @@ import { join } from 'node:path';
 import { mkdir } from 'node:fs/promises';
 import { expect, test } from '../../../../test/support/browserTest';
 import { deliverFeature } from '../../../../scripts/deliver-feature/deliverFeature';
-import { featureDeliverySource } from '../../../../src/utils/projects-sessions/featureDelivery';
+import { featureDeliverySource } from '../../../../src/core/projects-sessions/featureDelivery';
 import { deliveryBucket } from '../../test/support/deliveryBucket';
 import {
 	deliveryId,

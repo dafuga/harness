@@ -1,10 +1,10 @@
 // @harness-uid u_ffstupjra6
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import type { FeatureDelivery } from '../../../../../src/utils/projects-sessions/featureDelivery.types';
+import type { FeatureDelivery } from '../../../../../src/core/projects-sessions/featureDelivery.types';
 import {
 	featureDeliveryReceiptKey,
 	featureDeliveryVideoKey
-} from '../../../../../src/utils/projects-sessions/featureDelivery';
+} from '../../../../../src/core/projects-sessions/featureDelivery';
 import { safeId } from '../../utils/reports-media/reportFiles';
 import { r2EvidenceConfig } from '../../utils/verification-evidence/r2EvidenceConfig';
 import type { R2ScreenshotStoreAdapterConfig } from './R2ScreenshotStoreAdapter';

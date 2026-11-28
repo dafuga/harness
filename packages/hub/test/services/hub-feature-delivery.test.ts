@@ -2,11 +2,11 @@ import { expect, test } from 'vitest';
 import {
 	featureDeliveryApi,
 	featureDeliverySource
-} from '../../../../src/utils/projects-sessions/featureDelivery';
+} from '../../../../src/core/projects-sessions/featureDelivery';
 import type {
 	FeatureDelivery,
 	FeatureDeliveryPage
-} from '../../../../src/utils/projects-sessions/featureDelivery.types';
+} from '../../../../src/core/projects-sessions/featureDelivery.types';
 import { serveFeatureDeliveries } from '../../src/routes/api/tracker-overview/deliveries/deliveryPolicy';
 import { SESSION_COOKIE } from '../../src/utils/accounts-access/authCookies';
 import { ORIGIN } from '../support/authFixture';

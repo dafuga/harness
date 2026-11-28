@@ -9,11 +9,11 @@
 		featureDeliveryApi,
 		featureDeliveryPageSchema,
 		featureDeliverySource
-	} from '../../../../../src/utils/projects-sessions/featureDelivery';
+	} from '../../../../../src/core/projects-sessions/featureDelivery';
 	import type {
 		FeatureDelivery,
 		FeatureDeliveryStage
-	} from '../../../../../src/utils/projects-sessions/featureDelivery.types';
+	} from '../../../../../src/core/projects-sessions/featureDelivery.types';
 	let { project }: { project: string } = $props();
 	let entries = $state<FeatureDelivery[]>([]);
 	let cursor = $state<string | null>(null);

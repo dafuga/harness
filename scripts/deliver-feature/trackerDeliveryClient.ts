@@ -1,9 +1,11 @@
+// @harness-uid u_m5yc6knrj4
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { TrackerItem } from '../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerArtifact } from '../../src/utils/projects-sessions/trackerPlanning.types';
 import { deliveryProcess } from './deliveryProcess';
+import { ExpectedCliError } from '../../src/core/errors';
 
 export const trackerDeliveryClient = {
 	async readItem(id: string): Promise<TrackerItem> {
@@ -26,6 +28,6 @@ export const trackerDeliveryClient = {
 
 async function tracker(args: string[]) {
 	const run = await deliveryProcess(['tracker', ...args]);
-	if (run.code !== 0) throw new Error(`Tracker ${args[0]} failed`);
+	if (run.code !== 0) throw new ExpectedCliError(`Tracker ${args[0]} failed`);
 	return run.stdout;
 }

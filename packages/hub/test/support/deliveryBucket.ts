@@ -1,8 +1,8 @@
-import type { FeatureDelivery } from '../../../../src/utils/projects-sessions/featureDelivery.types';
+import type { FeatureDelivery } from '../../../../src/core/projects-sessions/featureDelivery.types';
 import {
 	featureDeliveryReceiptKey,
 	featureDeliveryVideoKey
-} from '../../../../src/utils/projects-sessions/featureDelivery';
+} from '../../../../src/core/projects-sessions/featureDelivery';
 
 export function deliveryBucket() {
 	const objects = new Map<string, { bytes: Uint8Array; type: string }>();

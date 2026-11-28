@@ -3536,6 +3536,54 @@
 			"reason": "Hub Home reads the shared Tracker utilization schema through the Reports build alias."
 		},
 		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminder.svelte",
+			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
+			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
+			"reason": "Upcoming reminders read this Reports module through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminder.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/reminderTimes",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/reminderTimes.ts",
+			"reason": "Upcoming reminders read this Reports module through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminder.svelte",
+			"specifier": "$reports/utils/strings/linkSegments",
+			"to": "packages/reports/src/utils/strings/linkSegments.ts",
+			"reason": "Upcoming reminders read this Reports module through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminders.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/reminderGroups",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/reminderGroups.ts",
+			"reason": "Upcoming reminders read this Reports module through the build alias."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminderGroup.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Upcoming reminders read this Reports module through the build alias."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminderGroup.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/reminderGroups",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/reminderGroups.ts",
+			"reason": "Upcoming reminders read this Reports module through the build alias."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminderGroup.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/reminderGroups.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/reminderGroups.types.ts",
+			"reason": "Upcoming reminders read this Reports module through the build alias."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminders.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/reminderGroups",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/reminderGroups.ts",
+			"reason": "Upcoming reminders read this Reports module through the build alias."
+		},
+		{
 			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminder.svelte",
 			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
 			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
