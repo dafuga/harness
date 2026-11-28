@@ -1,6 +1,6 @@
 // @harness-uid u_k4rxbz6pq3
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
-import { trackerUtilizationSchema } from '$reports/lib/projects-sessions/project-overview/trackerReadTargets';
+import { trackerUtilizationSchema } from '../../../../../reports/src/lib/projects-sessions/project-overview/trackerReadTargets';
 import { hubFail } from '../../../utils/development-tooling/hubJson';
 export { MAX_BODY_BYTES, readOverviewText } from './trackerOverviewBody';
 import type {

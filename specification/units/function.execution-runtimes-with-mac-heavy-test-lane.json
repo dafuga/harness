@@ -4,69 +4,84 @@
 	"uid": "u_czp53bdy3p",
 	"kind": "function",
 	"title": "withMacHeavyTestLane",
-	"responsibility": "Owns the withMacHeavyTestLane shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Recognizes heavy test commands and runs them under a shared macOS account limit after checking host load.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/utils/execution-runtimes/withMacHeavyTestLane.ts",
 			"src/utils/execution-runtimes/withMacHeavyTestLane.types.ts"
 		],
-		"symbols": ["isHeavyTestCommand", "withMacHeavyTestLane", "LaneEnvironment", "LaneHost"]
+		"symbols": [
+			"isHeavyTestCommand",
+			"withMacHeavyTestLane",
+			"LaneEnvironment",
+			"LaneHost"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "isHeavyTestCommand.args",
 				"type": "readonly string[]",
-				"required": true
+				"required": true,
+				"description": "Argument vector of the program or shell command that would start the workload."
 			},
 			{
 				"name": "withMacHeavyTestLane.enabled",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether the caller requires admission to the macOS heavy-test lane."
 			},
 			{
 				"name": "withMacHeavyTestLane.signal",
 				"type": "AbortSignal",
-				"required": true
+				"required": true,
+				"description": "Requests cancellation while waiting for an available lane or acceptable host load."
 			},
 			{
 				"name": "withMacHeavyTestLane.waitTimeoutMs",
 				"type": "number",
-				"required": false
+				"required": false,
+				"description": "Optional maximum time in milliseconds to wait for a lane and for the host load to settle."
 			},
 			{
 				"name": "withMacHeavyTestLane.env",
 				"type": "LaneEnvironment",
-				"required": false
+				"required": false,
+				"description": "Environment forwarded to the workload. Defaults to the current process environment."
 			},
 			{
 				"name": "withMacHeavyTestLane.run",
 				"type": "(env: LaneEnvironment, beforeStart: () => Promise<void>) => Promise<T>",
-				"required": true
+				"required": true,
+				"description": "Executes the workload with its environment and an admission callback to call before starting."
 			},
 			{
 				"name": "withMacHeavyTestLane.host",
 				"type": "LaneHost",
-				"required": false
+				"required": false,
+				"description": "Optional account home, CPU count and load reader. The current host is used by default."
 			}
 		],
 		"outputs": [
 			{
 				"name": "isHeavyTestCommand",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the arguments identify a supported suite or the full-check runner."
 			},
 			{
 				"name": "withMacHeavyTestLane",
-				"type": "Promise<T>"
+				"type": "Promise<T>",
+				"description": "Result of the workload after admission. The account lock is released when the workload exits."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The host could not open or acquire a heavy-test lane lock."
 			}
 		],
 		"errorStatus": "unknown",
@@ -77,13 +92,15 @@
 					{
 						"name": "isHeavyTestCommand.args",
 						"type": "readonly string[]",
-						"required": true
+						"required": true,
+						"description": "Argument vector of the program or shell command that would start the workload."
 					}
 				],
 				"outputs": [
 					{
 						"name": "isHeavyTestCommand",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether the arguments identify a supported suite or the full-check runner."
 					}
 				],
 				"errors": [],
@@ -95,38 +112,45 @@
 					{
 						"name": "withMacHeavyTestLane.enabled",
 						"type": "boolean",
-						"required": true
+						"required": true,
+						"description": "Whether the caller requires admission to the macOS heavy-test lane."
 					},
 					{
 						"name": "withMacHeavyTestLane.signal",
 						"type": "AbortSignal",
-						"required": true
+						"required": true,
+						"description": "Requests cancellation while waiting for an available lane or acceptable host load."
 					},
 					{
 						"name": "withMacHeavyTestLane.waitTimeoutMs",
 						"type": "number",
-						"required": false
+						"required": false,
+						"description": "Optional maximum time in milliseconds to wait for a lane and for the host load to settle."
 					},
 					{
 						"name": "withMacHeavyTestLane.env",
 						"type": "LaneEnvironment",
-						"required": false
+						"required": false,
+						"description": "Environment forwarded to the workload. Defaults to the current process environment."
 					},
 					{
 						"name": "withMacHeavyTestLane.run",
 						"type": "(env: LaneEnvironment, beforeStart: () => Promise<void>) => Promise<T>",
-						"required": true
+						"required": true,
+						"description": "Executes the workload with its environment and an admission callback to call before starting."
 					},
 					{
 						"name": "withMacHeavyTestLane.host",
 						"type": "LaneHost",
-						"required": false
+						"required": false,
+						"description": "Optional account home, CPU count and load reader. The current host is used by default."
 					}
 				],
 				"outputs": [
 					{
 						"name": "withMacHeavyTestLane",
-						"type": "Promise<T>"
+						"type": "Promise<T>",
+						"description": "Result of the workload after admission. The account lock is released when the workload exits."
 					}
 				],
 				"errors": [],

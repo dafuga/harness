@@ -9,8 +9,8 @@
 	import BrandMark from '$reports/components/BrandMark.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import { count, homeHeadline, summaryLine } from './hubHomePresentation';
-	import { compareOverviewMachines } from '$reports/lib/projects-sessions/project-overview/projectOverviewItems';
-	import type { HomeComputer } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
+	import { compareOverviewMachines } from '../../../lib/projects-sessions/project-overview/projectOverviewItems';
+	import type { HomeComputer } from '../../../lib/projects-sessions/hub-home/homeLive.types';
 	import HubHomeComputerDetail from './HubHomeComputerDetail.svelte';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';

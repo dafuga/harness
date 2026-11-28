@@ -8,7 +8,9 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/projects-sessions/trackerMachineStatus.ts"],
+		"source": [
+			"src/utils/projects-sessions/trackerMachineStatus.ts"
+		],
 		"symbols": [
 			"trackerSampleOfflineMs",
 			"trackerBusyLoadPerCore",
@@ -31,7 +33,8 @@
 			{
 				"name": "trackerActualUtilization.sample",
 				"type": "TrackerResourceSample",
-				"required": true
+				"required": true,
+				"description": "Latest host reading with CPU utilization and memory availability or pressure."
 			},
 			{
 				"name": "trackerMachineRole.node",
@@ -42,27 +45,32 @@
 			{
 				"name": "trackerMacRole.role",
 				"type": "TrackerMachineRole",
-				"required": true
+				"required": true,
+				"description": "Fleet role assigned to the computer."
 			},
 			{
 				"name": "trackerMacSessionRamSlots.availableMB",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Estimated available memory in MB used to size the launch capacity."
 			},
 			{
 				"name": "trackerMacSessionRamSlots.freePercent",
 				"type": "number | null",
-				"required": true
+				"required": true,
+				"description": "Percentage of usable memory free, or null when no memory reading is available."
 			},
 			{
 				"name": "trackerMacReportedRamSlots.ram",
 				"type": "TrackerResourceSample['ram']",
-				"required": true
+				"required": true,
+				"description": "Reported total memory and available or pressure-based free percentages."
 			},
 			{
 				"name": "trackerSessionOverload.row",
 				"type": "TrackerMachineRow",
-				"required": true
+				"required": true,
+				"description": "Fleet record containing the computer role, current status and reasons."
 			},
 			{
 				"name": "trackerMachineStatus.latest",
@@ -114,7 +122,8 @@
 					{
 						"name": "trackerActualUtilization.sample",
 						"type": "TrackerResourceSample",
-						"required": true
+						"required": true,
+						"description": "Latest host reading with CPU utilization and memory availability or pressure."
 					}
 				],
 				"outputs": [
@@ -152,7 +161,8 @@
 					{
 						"name": "trackerMacRole.role",
 						"type": "TrackerMachineRole",
-						"required": true
+						"required": true,
+						"description": "Fleet role assigned to the computer."
 					}
 				],
 				"outputs": [
@@ -170,12 +180,14 @@
 					{
 						"name": "trackerMacSessionRamSlots.availableMB",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Estimated available memory in MB used to size the launch capacity."
 					},
 					{
 						"name": "trackerMacSessionRamSlots.freePercent",
 						"type": "number | null",
-						"required": true
+						"required": true,
+						"description": "Percentage of usable memory free, or null when no memory reading is available."
 					}
 				],
 				"outputs": [
@@ -193,7 +205,8 @@
 					{
 						"name": "trackerMacReportedRamSlots.ram",
 						"type": "TrackerResourceSample['ram']",
-						"required": true
+						"required": true,
+						"description": "Reported total memory and available or pressure-based free percentages."
 					}
 				],
 				"outputs": [
@@ -211,7 +224,8 @@
 					{
 						"name": "trackerSessionOverload.row",
 						"type": "TrackerMachineRow",
-						"required": true
+						"required": true,
+						"description": "Fleet record containing the computer role, current status and reasons."
 					}
 				],
 				"outputs": [
