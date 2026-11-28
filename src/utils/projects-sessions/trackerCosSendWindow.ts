@@ -1,5 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
-import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
+import { trackerTimeZone } from './normalizeTrackerDue';
 
 const opensAt = 8;
 const closesAt = 22;

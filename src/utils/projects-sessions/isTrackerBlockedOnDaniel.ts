@@ -14,3 +14,12 @@ export function isTrackerBlockedOnDaniel(reason: string | null | undefined): boo
 	const open = (reason ?? '').replace(LATER_STEP, '').replace(SETTLED, '');
 	return WAITS_ON_DANIEL.some((pattern) => pattern.test(open));
 }
+
+/** @pure Private notes written by the legacy blocker or Chief of Staff routes. */
+export function isPrivateTrackerReviewNote(note: string | null | undefined): boolean {
+	return (
+		!!note &&
+		((/^blocked: /i.test(note) && isTrackerBlockedOnDaniel(note.slice(9))) ||
+			/^for Chief of Staff: /i.test(note))
+	);
+}

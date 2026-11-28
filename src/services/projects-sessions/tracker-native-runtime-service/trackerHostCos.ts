@@ -65,13 +65,21 @@ export function cosReceiptReference(alert: TrackerWatchdogAlert): string {
 }
 
 /** Explicit CoS messages are versioned by their full text, independent of host and queue ID. */
-function messageReceiptKey({ item_id, kind, reason }: TrackerWatchdogAlert): string | undefined {
+function messageReceiptKey({
+	item_id,
+	kind,
+	reason,
+	identity
+}: TrackerWatchdogAlert): string | undefined {
 	if (
+		!kind.startsWith('chief-') &&
 		kind !== 'cos-message' &&
 		(kind !== 'alert' || !/\bcredential\/access dependency\b/i.test(reason))
 	)
 		return undefined;
-	const digest = createHash('sha256').update(reason).digest('hex');
+	const digest = createHash('sha256')
+		.update(kind.startsWith('chief-') ? identity : reason)
+		.digest('hex');
 	return `watchdog_cos_message:${item_id}:${digest}`;
 }
 

@@ -95,7 +95,7 @@ function hasActiveLinkedItem(store: TrackerPersistenceService, runId: number): b
 			.prepare(
 				`SELECT 1 FROM meta link JOIN items owner ON owner.id = link.v
 			WHERE link.k GLOB ? AND owner.deleted = 0 AND owner.status = 'in_progress'
-			AND (owner.needs_daniel = 0 OR owner.resolved = 1)`
+			AND (owner.needs_daniel = 0 OR owner.resolved = 1) AND owner.chief_review IS NULL`
 			)
 			.get(`${trackerSessionItemPrefix}${runId}:*`)
 	);
@@ -120,7 +120,7 @@ function readFinishedPaneRun(
 		AND NOT (
 			coalesce(r.outcome,'') = 'blocked' AND coalesce(i.status,'') = 'blocked'
 			AND coalesce(i.auto = r.auto_token, 0)
-			AND i.resolved = 1 AND i.needs_daniel = 0
+			AND i.resolved = 1 AND i.needs_daniel = 0 AND i.chief_review IS NULL
 			AND coalesce(json_extract(i.clocks,'$.answer'),'') > coalesce(json_extract(i.clocks,'$.question'),'')
 			AND coalesce(json_extract(i.clocks,'$.answer'),'') > coalesce(json_extract(i.clocks,'$.status'),'')
 		)

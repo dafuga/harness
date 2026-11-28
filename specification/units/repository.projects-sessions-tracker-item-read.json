@@ -16,7 +16,8 @@
 			"src/repositories/projects-sessions/tracker-item-read-repository/buildTrackerDigest.types.ts",
 			"src/repositories/projects-sessions/tracker-item-read-repository/formatTrackerDigest.ts",
 			"src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.ts",
-			"src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.types.ts"
+			"src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.types.ts",
+			"src/repositories/projects-sessions/tracker-item-read-repository/trackerAnswerFields.ts"
 		],
 		"symbols": [
 			"trackerManualIntakeProjection",
@@ -53,7 +54,9 @@
 			"trackerAskFields",
 			"openLaunchHold",
 			"StoredTrackerNote",
-			"StoredTrackerCallback"
+			"StoredTrackerCallback",
+			"trackerAnswerFields",
+			"trackerReviewStatus"
 		]
 	},
 	"contract": {
@@ -226,6 +229,16 @@
 			{
 				"name": "openLaunchHold.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerAnswerFields.row",
+				"type": "TrackerItemRow",
+				"required": true
+			},
+			{
+				"name": "trackerReviewStatus.mode",
+				"type": "string",
 				"required": true
 			}
 		],
@@ -697,6 +710,42 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerAnswerFields",
+				"inputs": [
+					{
+						"name": "trackerAnswerFields.row",
+						"type": "TrackerItemRow",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAnswerFields",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerReviewStatus",
+				"inputs": [
+					{
+						"name": "trackerReviewStatus.mode",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerReviewStatus",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": [
@@ -753,6 +802,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.projects-sessions-tracker-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-is-tracker-blocked-on-daniel",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -828,6 +882,11 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-item-read-repository-summarize-tracker-projects",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-operation",
 			"via": "import",
 			"origin": "derived"
 		},

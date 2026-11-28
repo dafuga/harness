@@ -1,83 +1,80 @@
 // @harness-uid u_bl6xl2h4a3
-import { randomBytes } from 'node:crypto';
-import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { isOutageAlert } from './trackerCosAlertKinds';
-import { cosDeliveryAsk, cosDeliveryDelivered } from './trackerCosDeliveryAsk';
-import { cosSendWindowStart } from './trackerCosWindow';
+import { cosSendWindowStart } from '../../../utils/projects-sessions/trackerCosSendWindow';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
-import type { TrackerCosDeliveryAlarm } from './trackerCosDelivery.types';
+import type { TrackerCosSafetyNotice } from './trackerCosDelivery.types';
 
 const minute = 60_000;
-const routineGrace = 60 * minute;
-const outageGrace = 15 * minute;
-const askAgainAfter = 4 * 60 * minute;
-const metaKey = 'watchdog_cos_alarm';
-const alphabet = '0123456789abcdefghjkmnpqrstvwxyz';
+const noticeId = 'chief-review-safety';
+const episodeKey = 'chief_review_safety_episode';
+const reviewKinds = new Set(['chief-review', 'alert', 'flag-refused', 'cos-message']);
 
-/**
- * The tmux-independent path: when alerts stay unsent, ask Daniel through the Tracker itself, which
- * the Tracker, Hub, Mac and iOS apps read without any Chief of Staff session.
- */
+const emergencies = [
+	/\bprod(?:uction)?\b[^.;]{0,40}\b(?:is |went )?(?:down|outage)\b|\boutage in prod(?:uction)?\b/i,
+	/\bsecurity (?:incident|breach|hole|vulnerability|compromise)\b|\bactive compromise\b/i,
+	/\bcredential exposure\b|\b(?:secret|credential|token|api key|private key|password)s?\b[^.;]{0,60}\b(?:detected in session|exposed|leaked|compromised)\b/i,
+	/\b(?:exposed|leaked|compromised)\b[^.;]{0,40}\b(?:secret|credential|token|api key|private key|password)s?\b/i
+];
+
+/** @pure Prod-down and security asks wait 10 minutes for Chief of Staff instead of 30. */
+export function chiefReviewEmergency(kind: string, reason: string): boolean {
+	return (
+		kind === 'chief-review-emergency' ||
+		kind.startsWith('credential exposure') ||
+		emergencies.some((pattern) => pattern.test(reason))
+	);
+}
+
+/** A receipt ends waiting. Emit at most one content-free notice per uninterrupted backlog. */
 export function watchCosDelivery(
 	store: TrackerPersistenceService,
 	pending: readonly TrackerWatchdogAlert[],
 	now: number
 ): void {
-	const windowStart = cosSendWindowStart(now);
-	if (windowStart === null) return;
-	const alarm = readAlarm(store);
-	// Overdue by real age keeps an ask open; only waiting time in today's window raises one.
-	if (!pending.some((alert) => overdue(alert, now - alert.at))) {
-		if (alarm?.open) closeAlarm(store, alarm);
+	const waiting = pending.filter(
+		({ kind, reason }) => reviewKinds.has(kind) || chiefReviewEmergency(kind, reason)
+	);
+	const open = store.getMeta(episodeKey) === '1';
+	if (!waiting.length) {
+		if (open) store.writeMeta({ [episodeKey]: '0' });
 		return;
 	}
-	const stuck = pending.some((alert) => overdue(alert, now - Math.max(alert.at, windowStart)));
-	if (stuck && askDue(store, alarm, now)) raiseAlarm(store, { alarm, pending, now });
+	if (open) return;
+	const emergency = waiting.some(
+		({ kind, reason, at }) => chiefReviewEmergency(kind, reason) && now - at >= 10 * minute
+	);
+	const routine =
+		cosSendWindowStart(now) !== null && waiting.some(({ at }) => now - at >= 30 * minute);
+	if (emergency || routine)
+		writeNotice(store, { generation: String(now), count: waiting.length, emergency });
 }
 
-function overdue({ kind }: TrackerWatchdogAlert, waited: number) {
-	return waited > (isOutageAlert(kind) ? outageGrace : routineGrace);
-}
-
-function readAlarm(store: TrackerPersistenceService): TrackerCosDeliveryAlarm | undefined {
-	const stored = store.getMeta(metaKey);
-	return stored ? (JSON.parse(stored) as TrackerCosDeliveryAlarm) : undefined;
-}
-
-function askDue(
-	store: TrackerPersistenceService,
-	alarm: TrackerCosDeliveryAlarm | undefined,
-	now: number
-) {
-	if (!alarm?.open) return true;
-	const item = new TrackerItemReadRepository(store.database).getStored(alarm.itemId);
-	const asking = item.needs_daniel && !item.resolved && item.status !== 'done';
-	return !asking && now - alarm.askedAt >= askAgainAfter;
-}
-
-function raiseAlarm(
-	store: TrackerPersistenceService,
-	{
-		alarm,
-		pending,
-		now
-	}: { alarm?: TrackerCosDeliveryAlarm; pending: readonly TrackerWatchdogAlert[]; now: number }
-) {
-	const itemId = alarm?.itemId ?? newItemId();
-	const next = { itemId, open: true, askedAt: now };
+function writeNotice(store: TrackerPersistenceService, notice: TrackerCosSafetyNotice) {
 	store.appendLocal(
-		{ itemId, fields: cosDeliveryAsk({ pending, now, node: store.node, created: !alarm }) },
-		() => store.writeMeta({ [metaKey]: JSON.stringify(next) })
+		{ itemId: noticeId, fields: { chief_safety_notice: JSON.stringify(notice) } },
+		() => store.writeMeta({ [episodeKey]: '1' })
 	);
 }
 
-function closeAlarm(store: TrackerPersistenceService, alarm: TrackerCosDeliveryAlarm) {
-	store.appendLocal({ itemId: alarm.itemId, fields: cosDeliveryDelivered }, () =>
-		store.writeMeta({ [metaKey]: JSON.stringify({ ...alarm, open: false }) })
-	);
+export function readCosSafetyNotice(
+	store: TrackerPersistenceService
+): TrackerCosSafetyNotice | undefined {
+	const row = store.database
+		.prepare('SELECT chief_safety_notice FROM items WHERE id = ?')
+		.get(noticeId) as { chief_safety_notice: string | null } | undefined;
+	return row?.chief_safety_notice
+		? (JSON.parse(row.chief_safety_notice) as TrackerCosSafetyNotice)
+		: undefined;
 }
 
-function newItemId() {
-	return Array.from(randomBytes(10), (byte) => alphabet[byte & 31]).join('');
+export function completeCosSafetyNotice(
+	store: TrackerPersistenceService,
+	generation: string
+): void {
+	store.commitLocal(() => ({
+		result: undefined,
+		...(readCosSafetyNotice(store)?.generation === generation && {
+			operation: { itemId: noticeId, fields: { chief_safety_notice: null } }
+		})
+	}));
 }

@@ -14,7 +14,10 @@ let now: number;
 beforeEach(() => {
 	now = Date.UTC(2026, 10, 21, 12);
 	database = new DatabaseSync(':memory:');
-	store = new TrackerPersistenceService(database, 'fixture-mac', { now: () => now });
+	store = new TrackerPersistenceService(database, 'fixture-mac', {
+		now: () => now,
+		chiefReview: 'local'
+	});
 	const recurring = new TrackerRecurringRepository(store);
 	api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
 		now: () => now,
@@ -103,7 +106,8 @@ test('blocks, unblocks and reopens an item with durable notes', async () => {
 	const { id } = await (
 		await request('/items', 'POST', { title: 'Synthetic bridge review' })
 	).json();
-	const mark = (verb: string, body?: object) => request(`/items/${id}/${verb}`, 'POST', body);
+	const mark = (verb: string, body?: object) =>
+		request(`/items/${id}/${verb}`, 'POST', body, 'Chief of Staff');
 	expect((await mark('unblock')).status).toBe(409);
 	expect(await (await mark('block', { reason: 'Waiting for fixture' })).json()).toMatchObject({
 		status: 'blocked',
@@ -125,19 +129,21 @@ test('blocks, unblocks and reopens an item with durable notes', async () => {
 	await verifyProjectFollowUp();
 });
 
+const proposal = {
+	title: 'Elan proposal ready for review',
+	project: 'elan',
+	next_step: 'Choose the pilot scope'
+};
+
 async function verifyProjectFollowUp() {
-	const project = await request('/items', 'POST', {
-		title: 'Elan proposal ready for review',
-		project: 'elan',
-		next_step: 'Choose the pilot scope'
-	});
+	const project = await request('/items', 'POST', proposal, 'Daniel');
 	expect(project.status).toBe(201);
 	const idea = await project.json();
 	expect(idea).toMatchObject({ next_step: 'Choose the pilot scope', needs_daniel: true });
 	const followUp = (verb: string, body?: object, actor?: string) =>
 		request(`/items/${idea.id}/${verb}`, 'POST', body, actor);
 	expect(
-		await (await followUp('done', { next_step: 'Approve the pilot scope' })).json()
+		await (await followUp('done', { next_step: 'Approve the pilot scope' }, 'Daniel')).json()
 	).toMatchObject({ status: 'done', needs_daniel: true, next_step: 'Approve the pilot scope' });
 	expect(await (await request('/check?text=Elan+proposal+ready+for+review')).json()).toMatchObject({
 		open: [{ id: idea.id, status: 'done', needs_daniel: true }]

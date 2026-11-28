@@ -1,4 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
+import { readPendingTrackerQuestion } from '../../../repositories/projects-sessions/tracker-operation-repository/readPendingTrackerQuestion';
+import { isTrackerAwaitingAnswer } from '../../../utils/projects-sessions/isTrackerAwaitingAnswer';
 import { randomUUID } from 'node:crypto';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
@@ -193,7 +195,10 @@ function flagRecovery(
 		(current.status !== 'in_progress' &&
 			!(current.status === 'open' && current.launch_source === 'recovery')) ||
 		current.auto !== item.auto ||
-		(current.needs_daniel && !current.resolved && trackerFlagBlocksRecovery(current.question))
+		(isTrackerAwaitingAnswer(current) &&
+			trackerFlagBlocksRecovery(
+				current.question ?? readPendingTrackerQuestion(store.database, current.id)
+			))
 	)
 		return null;
 	const reason = `Tracker recovery: ${detail}`;

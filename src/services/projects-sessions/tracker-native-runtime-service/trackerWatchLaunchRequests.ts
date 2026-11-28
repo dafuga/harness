@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import { isTrackerAwaitingAnswer } from '../../../utils/projects-sessions/isTrackerAwaitingAnswer';
 import { trackerManualIntakeProjection } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import { randomUUID } from 'node:crypto';
 import { dispatchLaunchSource } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
@@ -90,7 +91,7 @@ function untouchedTask(item: TrackerItem, cutoff: number): boolean {
 		!item.recurring &&
 		!item.schedule_off &&
 		(item.status === 'open' || item.status === 'in_progress') &&
-		(!item.needs_daniel || item.resolved) &&
+		!isTrackerAwaitingAnswer(item) &&
 		Date.parse(item.updated_at ?? '') <= cutoff
 	);
 }
@@ -188,7 +189,7 @@ function unclaimedRequests(store: TrackerPersistenceService, now: number) {
 			auto IS NOT NULL OR (priority = 'urgent' AND adapter_due_owner IS NOT NULL AND due IS NOT NULL)
 		)
 		AND status IN ('open','in_progress') AND coalesce(kind, 'task') = 'task'
-		AND (needs_daniel = 0 OR resolved = 1)`
+		AND (needs_daniel = 0 OR resolved = 1) AND chief_review IS NULL`
 		)
 		.all(store.node) as (TrackerItemRow & {
 		auto: string;

@@ -1,11 +1,11 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 
-/** The one Tracker ask that reports stuck delivery, reused across episodes. */
-export interface TrackerCosDeliveryAlarm {
-	itemId: string;
-	open: boolean;
-	askedAt: number;
+/** A private transport record for the one plain notice about a stalled review queue. */
+export interface TrackerCosSafetyNotice {
+	generation: string;
+	count: number;
+	emergency: boolean;
 }
 
 export interface TrackerCosRoundPorts {

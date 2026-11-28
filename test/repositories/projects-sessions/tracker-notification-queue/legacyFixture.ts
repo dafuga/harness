@@ -179,6 +179,8 @@ export function legacySnapshot(database: DatabaseSync) {
 	return tables.map((table) => {
 		const columns =
 			table === 'reminders' ? 'key,item_id,kind,status,next_at,pings,last_ping,created_at' : '*';
-		return database.prepare(`SELECT ${columns} FROM ${table} ORDER BY rowid`).all();
+		const scope =
+			table === 'meta' ? " WHERE k NOT IN ('chief_review_migrated', 'chief_review_since')" : '';
+		return database.prepare(`SELECT ${columns} FROM ${table}${scope} ORDER BY rowid`).all();
 	});
 }

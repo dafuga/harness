@@ -1,0 +1,67 @@
+{
+	"name": "hcv91f-cos-review",
+	"goal": "Hold every Tracker ask for Chief of Staff review, then deliver a released ask exactly once",
+	"createdAt": "2026-11-28T16:27:09.428Z",
+	"updatedAt": "2026-11-28T17:56:40.657Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T16:28:14.477Z",
+			"evidence": "Tracker brief hcv91f requires all asks to stay private until reviewed, with explicit release, session answer delivery, migration and safety escalation."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T16:28:15.232Z",
+			"evidence": "tracker-local-api.test.ts exercised flag and block transitions but assumed immediate publication and did not compare the scoped decision feed or digest around review."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T17:56:19.784Z",
+			"evidence": "loop record red f3a3b630e76f on 3c3eecb7f2: tracker-local-api.test.ts failed because flags and Daniel blockers published immediately."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T17:56:20.939Z",
+			"evidence": "ae6ba3654c holds asks in a journal review gate; later commits add migration, delivery, safety notice and released-ask protection (second red ee03289d8c, 6 of 7 failing; fix 525fa106c3)."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T17:56:23.313Z",
+			"evidence": "loop record green b813ad3aa65c on ae6ba3654c with the unchanged test and command."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-28T17:56:40.657Z",
+			"evidence": "siblings-0fd9e965-18b0-4b16-9bef-88d47943a53e.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

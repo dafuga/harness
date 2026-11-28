@@ -1,3 +1,4 @@
+import { verifyReviewedFlag } from './trackerNodeReview';
 import { qualifyPlanningStages } from './trackerPlanningAssertions';
 import { verifyLaunchCliOptions } from './trackerManagedLaunchAssertions';
 import { createServer } from 'node:http';
@@ -123,9 +124,7 @@ async function verifyTrackerNotificationFlow(
 	expect(await fixtureTrackerJson(spoke, ['list', '--flagged'])).toEqual([]);
 	const alerts = await fixtureTrackerJson(spoke, ['needs-attention']);
 	expect(alerts).toContainEqual(expect.objectContaining({ item_id: id, kind: 'flag-refused' }));
-	expect(
-		await fixtureTrackerJson(spoke, ['flag', id, 'Is the fixture ready?', ...choices])
-	).toMatchObject({ needs_daniel: true });
+	await verifyReviewedFlag(hub, spoke, id, choices);
 	await expect
 		.poll(async () => (await trackerProcess(hub, ['digest']).exited).stdout)
 		.toContain('Is the fixture ready?');

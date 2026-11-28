@@ -1,5 +1,10 @@
 import { expect, test } from 'vitest';
 import { withTempDir } from '../../support/temporary';
+import {
+	completeCosSafetyNotice,
+	readCosSafetyNotice
+} from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerCosDelivery';
+import { cosSafetyMessage } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerCosDeliveryAsk';
 import { sendWatchdogAlerts } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostCos';
 import { trackerHostWatchdog } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdog';
 import {
@@ -14,65 +19,54 @@ import {
 	round
 } from '../../support/trackerCosDeliveryFixture';
 
-test('alerts undelivered for over an hour raise one tracker ask that needs no tmux pane', () =>
+test('an undelivered routine ask raises one content-free notice after 30 minutes', () =>
 	cosDeliveryFixture(({ store, items }) => {
-		const waiting = [alert('idle', noon - 50 * minute)];
+		const waiting = [alert('chief-review', noon - 29 * minute), alert('alert', noon)];
 		round(store, waiting, noon);
-		expect(alarmAsks(items, noon)).toEqual([]);
-		round(store, waiting, noon + 11 * minute);
-		round(store, waiting, noon + 12 * minute);
-		const asks = alarmAsks(items, noon + 12 * minute);
-		expect(asks).toHaveLength(1);
-		expect(asks[0].question).toMatch(/^1 Tracker alert has not reached/);
-		expect(items.getStored(asks[0].id)).toMatchObject({ priority: 'urgent', kind: 'reminder' });
+		expect(readCosSafetyNotice(store)).toBeUndefined();
+		round(store, waiting, noon + minute);
+		const notice = readCosSafetyNotice(store)!;
+		expect(notice).toMatchObject({ count: 2, emergency: false });
+		expect(cosSafetyMessage(notice)).toEqual({
+			title: "Chief of Staff isn't responding",
+			body: '2 asks are waiting',
+			needs: 'all'
+		});
+		expect(alarmAsks(items, noon + minute)).toEqual([]);
+		completeCosSafetyNotice(store, notice.generation);
+		round(store, waiting, noon + 6 * hour);
+		expect(readCosSafetyNotice(store)).toBeUndefined();
+		round(store, [], noon + 6 * hour + minute);
+		round(store, [alert('chief-review', noon + 5 * hour)], noon + 6 * hour + 2 * minute);
+		expect(readCosSafetyNotice(store)?.generation).not.toEqual(notice.generation);
 	}));
 
-for (const kind of [
-	'credential exposure: GitHub token',
-	'cos-message',
-	'urgent-launch-queue-stuck'
-])
-	test(`an undelivered ${kind} alert is raised after 15 minutes`, () =>
+for (const kind of ['credential exposure: fixture', 'chief-review-emergency'])
+	test(`an undelivered ${kind} notice is due after 10 minutes even at night`, () =>
 		cosDeliveryFixture(({ store, items }) => {
-			round(store, [alert(kind, noon - 14 * minute)], noon);
-			expect(alarmAsks(items, noon)).toEqual([]);
-			round(store, [alert(kind, noon - 16 * minute)], noon);
-			expect(alarmAsks(items, noon)).toHaveLength(1);
+			const night = noon + 11 * hour;
+			const waiting = [alert(kind, night - 9 * minute)];
+			round(store, waiting, night);
+			expect(readCosSafetyNotice(store)).toBeUndefined();
+			round(store, waiting, night + minute);
+			expect(readCosSafetyNotice(store)).toMatchObject({ count: 1, emergency: true });
+			expect(alarmAsks(items, night + minute)).toEqual([]);
 		}));
 
-test('time inside the night hold does not count towards the alarm', () =>
-	cosDeliveryFixture(({ store, items }) => {
-		const overnight = [alert('idle', noon - 15 * hour)];
+test('routine asks wait until 08:00 Lisbon and Tracker plumbing stays with Chief of Staff', () =>
+	cosDeliveryFixture(({ store }) => {
 		const eight = noon - 4 * hour;
-		round(store, overnight, eight - 5 * hour);
-		round(store, overnight, eight + 59 * minute);
-		expect(alarmAsks(items, eight + 59 * minute)).toEqual([]);
-		round(store, overnight, eight + 61 * minute);
-		expect(alarmAsks(items, eight + 61 * minute)).toHaveLength(1);
-	}));
-
-test('the ask closes once delivered, and the same item is reused next time', () =>
-	cosDeliveryFixture(({ store, items }) => {
-		const waiting = [alert('idle', noon - 2 * hour)];
-		round(store, waiting, noon);
-		const [first] = alarmAsks(items, noon);
-		round(store, [], noon + minute);
-		expect(alarmAsks(items, noon + minute)).toEqual([]);
-		expect(items.getStored(first.id)).toMatchObject({ status: 'done', needs_daniel: false });
-		round(store, waiting, noon + 2 * minute);
-		expect(alarmAsks(items, noon + 2 * minute).map(({ id }) => id)).toEqual([first.id]);
-	}));
-
-test('an answered ask is raised again only if delivery is still stuck four hours later', () =>
-	cosDeliveryFixture(({ store, items }) => {
-		const waiting = [alert('idle', noon - 2 * hour)];
-		round(store, waiting, noon);
-		const [{ id }] = alarmAsks(items, noon);
-		store.appendLocal({ itemId: id, fields: { resolved: 1, answer: 'Leave it for now' } });
-		round(store, waiting, noon + 3 * hour);
-		expect(alarmAsks(items, noon + 3 * hour)).toEqual([]);
-		round(store, waiting, noon + 4 * hour + minute);
-		expect(alarmAsks(items, noon + 4 * hour + minute)).toHaveLength(1);
+		const plumbing = [
+			alert('idle', eight - 15 * hour),
+			alert('chief-only-review', eight - 15 * hour)
+		];
+		round(store, plumbing, eight);
+		expect(readCosSafetyNotice(store)).toBeUndefined();
+		const waiting = [...plumbing, alert('chief-review', eight - 15 * hour)];
+		round(store, waiting, eight - minute);
+		expect(readCosSafetyNotice(store)).toBeUndefined();
+		round(store, waiting, eight);
+		expect(readCosSafetyNotice(store)).toMatchObject({ count: 1, emergency: false });
 	}));
 
 test('a failed send keeps the batch, tells the sender about a backlog and sends security first', () =>
@@ -104,10 +98,10 @@ test('a failed send keeps the batch, tells the sender about a backlog and sends 
 		expect(calls[2].kinds).toHaveLength(2);
 	}));
 
-test('the hub tick raises the ask even when the pane scan is broken', () =>
+test('the hub tick records the notice even when the pane scan is broken', () =>
 	cosDeliveryFixture(async ({ store, items }) => {
 		store.writeMeta({
-			watchdog_alerts: JSON.stringify({ 'worker0001:orphan': alert('orphan', noon - 2 * hour) })
+			watchdog_alerts: JSON.stringify({ 'worker0001:alert': alert('alert', noon - 2 * hour) })
 		});
 		await withTempDir('hnt-cos-tick-', async (root) => {
 			const watchdog = trackerHostWatchdog(
@@ -117,7 +111,8 @@ test('the hub tick raises the ask even when the pane scan is broken', () =>
 			);
 			await expect(watchdog.tick(new AbortController().signal)).rejects.toThrow();
 		});
-		expect(alarmAsks(items, noon)).toHaveLength(1);
+		expect(alarmAsks(items, noon)).toEqual([]);
+		expect(readCosSafetyNotice(store)).toMatchObject({ count: 1 });
 	}, 'daniel-primary-mbp'));
 
 test('recorded dependency updates reach CoS once per item and text change', () =>

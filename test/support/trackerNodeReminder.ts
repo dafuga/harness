@@ -62,7 +62,9 @@ export async function verifyProjectFollowUp(hub: TrackerNodeFixture, spoke: Trac
 		'--project',
 		'elan',
 		'--next-step',
-		'Choose pilot scope'
+		'Choose pilot scope',
+		'--by',
+		'Daniel'
 	]);
 	expect(await fixtureTrackerJson(spoke, ['done', id])).toMatchObject({
 		id,

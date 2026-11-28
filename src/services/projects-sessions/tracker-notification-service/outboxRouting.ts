@@ -115,13 +115,22 @@ function heldByReminder(
 	return row.kind === 'due' && holdRegularReminder(item, now, options.reminderIntervalMinutes);
 }
 
+function withheldReason(
+	live: ReturnType<TrackerNotificationOptions['source']['item']>,
+	kind: string
+): string | undefined {
+	if (live?.status === 'ignored') return 'item ignored';
+	return live?.chief_review && kind !== 'done' ? 'private Chief of Staff review' : undefined;
+}
+
 function eligible(
 	row: OutboxRow,
 	options: TrackerNotificationOptions,
 	context: { chief: TrackerDestination; paused: boolean; now: number }
 ): OutboxRecipient | undefined {
 	const live = row.itemId ? options.source.item(row.itemId) : undefined;
-	if (live?.status === 'ignored') return drop(row, 'item ignored');
+	const withheld = withheldReason(live, row.kind);
+	if (withheld) return drop(row, withheld);
 	const target = recipient(row, options, context.chief);
 	if (!target) return drop(row, 'no route');
 	if (target.route === null) {

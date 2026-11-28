@@ -1,4 +1,5 @@
 // @harness-uid u_st4dufvqxm
+import { isPrivateTrackerReviewNote } from '../../../utils/projects-sessions/isTrackerBlockedOnDaniel';
 import { phoneAskAttachments } from './phoneAskAttachments';
 import { trackerStructuredAsk } from '../../../utils/projects-sessions/trackerStructuredAsk';
 import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
@@ -83,12 +84,14 @@ function projectItem(
 		updatedAt: phoneDate(item.updated_at),
 		dueAt: phoneDate(item.due),
 		attentionRevision: attentionRevision(item),
-		notes: notes.map(({ hlc, author, text }) => ({
-			id: createHash('sha256').update(hlc).digest('hex'),
-			author: excerpt(author, 80),
-			at: clockTime(hlc) ?? '1970-01-01T00:00:00.000Z',
-			text: excerpt(text, 512)
-		})),
+		notes: notes
+			.filter(({ text }) => !isPrivateTrackerReviewNote(text))
+			.map(({ hlc, author, text }) => ({
+				id: createHash('sha256').update(hlc).digest('hex'),
+				author: excerpt(author, 80),
+				at: clockTime(hlc) ?? '1970-01-01T00:00:00.000Z',
+				text: excerpt(text, 512)
+			})),
 		flag:
 			item.needs_daniel || item.resolved
 				? {

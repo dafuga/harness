@@ -143,6 +143,7 @@ test('native remind holds delivery and keeps the ask visible in the digest', asy
 	const { runtime, run } = await compatibilityFixture();
 	runtime.store.appendLocal({
 		itemId: fixtureItem,
+		actor: 'Chief of Staff',
 		fields: { status: 'blocked', needs_daniel: 1, question: 'Approve the fixture?' }
 	});
 	const at = await verifyTrackerReminderScheduling(run);
@@ -166,6 +167,7 @@ test('native ignore and unignore restore item state and record the legacy actor 
 	const { runtime, route, run } = await compatibilityFixture();
 	runtime.store.appendLocal({
 		itemId: fixtureItem,
+		actor: 'Chief of Staff',
 		fields: { status: 'in_progress', needs_daniel: 1 }
 	});
 	const invalid = await run('ignore', 'taskfi');

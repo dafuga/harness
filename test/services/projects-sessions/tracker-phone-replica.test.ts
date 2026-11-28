@@ -22,7 +22,7 @@ function checkSnapshot(first: unknown) {
 				updatedAt,
 				dueAt: null,
 				notes: [{ id: expect.any(String), author: 'fixture', at: updatedAt, text: '[redacted]' }],
-				flag: { state: 'open', at: updatedAt, question: 'Review this' },
+				flag: null,
 				runs: [
 					{
 						id: '7',
@@ -60,13 +60,16 @@ test('bootstraps a redacted snapshot and sends a replayable delta for a run with
 		expect(response.status).toBe(200);
 		const first = await response.json();
 		checkSnapshot(first);
-		expect(JSON.stringify(first)).not.toMatch(/Private item|synthetic-example|host-only/);
+		expect(JSON.stringify(first)).not.toMatch(
+			/Private item|synthetic-example|host-only|Review this/
+		);
+		const release = await checkReleaseDelta(fixture, first.cursor);
 		fixture.db.exec("UPDATE runs SET state = 'finished', outcome = 'done', ended_at = 3");
-		const request = '&cursor=' + first.cursor;
+		const request = '&cursor=' + release.cursor;
 		const delta = await (await fixture.pull(request)).json();
 		expect(delta).toMatchObject({
 			kind: 'delta',
-			requestCursor: first.cursor,
+			requestCursor: release.cursor,
 			cursor: expect.any(String),
 			hasMore: false,
 			operations: [
@@ -85,6 +88,20 @@ test('bootstraps a redacted snapshot and sends a replayable delta for a run with
 		fixture.db.close();
 	}
 });
+
+/** The question and its choices reach the phone only once Chief of Staff releases them. */
+async function checkReleaseDelta(fixture: ReturnType<typeof hub>, cursor: string) {
+	const ask = {
+		question: 'Review this',
+		options: [{ label: 'Use existing', recommended: true }, { label: 'Start fresh' }]
+	};
+	expect((await fixture.release('fixture001', ask)).status).toBe(200);
+	const release = await (await fixture.pull('&cursor=' + cursor)).json();
+	expect(release.operations).toMatchObject([
+		{ id: 'fixture001', row: { flag: { state: 'open', at: updatedAt, ...ask } } }
+	]);
+	return release as { cursor: string };
+}
 
 async function checkPlanningDelta(fixture: ReturnType<typeof hub>, cursor: string) {
 	fixture.item('fixture001', {
@@ -185,7 +202,11 @@ test('commits scoped phone notes and answers with durable receipts and flag comp
 				text: 'An answer',
 				revision: flagged.operations[0].row.attentionRevision
 			};
-			fixture.item('fixture001', { needs_daniel: 1, resolved: 0, question: 'New question' });
+			fixture.item(
+				'fixture001',
+				{ needs_daniel: 1, resolved: 0, question: 'New question' },
+				'Chief of Staff'
+			);
 			expect(await (await fixture.write(answer)).json()).toMatchObject({
 				status: 'conflict',
 				reason: 'attention'

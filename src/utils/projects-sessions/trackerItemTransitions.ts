@@ -17,6 +17,7 @@ import { trackerReminderLaunchFields } from './trackerItemLaunchFields';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 import { trackerAskTransitions } from './trackerAskTransitions';
+import { trackerOpenDecision } from './trackerOpenDecision';
 import {
 	guardTrackerDuplicate,
 	trackerMoveOn,
@@ -132,9 +133,9 @@ function finishItem(
 
 /** A finished item must not bury a question Daniel has not answered; pings and an explicit next step for Daniel do not count. */
 function guardOpenDecision(item: TrackerItemSnapshot, body: TrackerItemInput): void {
-	const open = Boolean(item.needs_daniel) && !item.resolved;
+	const ask = trackerOpenDecision(item);
 	const handsOff = body.next_step !== undefined || Boolean(item.next_step);
-	if (!open || handsOff || body.force || isTrackerPing(item.question)) return;
+	if (!ask || handsOff || body.force || isTrackerPing(ask.question)) return;
 	throw trackerItemError(
 		'item has an unanswered flag for Daniel: answer, resolve or unflag it first (or pass --force to finish it and keep the flag in the digest)',
 		409

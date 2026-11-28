@@ -26,7 +26,7 @@ export function launchEventFixture({ scheduleDue = false }: LaunchEventFixtureOp
 	onTestFinished(() => database.close());
 	const runtime = launchRuntime(database, state, scheduleDue);
 	const write = (itemId: string, fields: Record<string, unknown>) =>
-		runtime.store.appendLocal({ itemId, fields });
+		runtime.store.appendLocal({ itemId, fields, actor: 'Chief of Staff' });
 	return {
 		state,
 		sent: state.sent,

@@ -31,8 +31,7 @@ export function nativeTrackerArgs(args: string[]) {
 		allowNegative: true,
 		options: { ...nativeTrackerCommonOptions, ...options }
 	});
-	const request =
-		command === 'reply' ? replyRequest(words) : nativeTrackerRequest(command, words, values);
+	const request = wordRequest(command, words) ?? nativeTrackerRequest(command, words, values);
 	return { command, values, words, request };
 }
 
@@ -56,6 +55,12 @@ function nativeTrackerRequest(
 	};
 }
 
+/** Commands that take only words. */
+function wordRequest(command: string, words: string[]): NativeTrackerRequest | undefined {
+	if (command === 'reply') return replyRequest(words);
+	return command === 'review' ? reviewRequest(words) : undefined;
+}
+
 /** Answers one Hub message; the id carries its thread, so nothing else is needed. */
 function replyRequest([id, ...text]: string[]): NativeTrackerRequest {
 	if (!id || !text.length) throw new TypeError('usage: tracker reply <message id> <text...>');
@@ -64,6 +69,13 @@ function replyRequest([id, ...text]: string[]): NativeTrackerRequest {
 		path: '/messages/' + encodeURIComponent(id) + '/reply',
 		body: { text: text.join(' ') }
 	};
+}
+
+/** The review queue, or one item's review and any answer to it. */
+function reviewRequest(words: string[]): NativeTrackerRequest {
+	if (words.length > 1) throw new TypeError('usage: tracker review [id]');
+	const path = words.length ? '/review/' + encodeURIComponent(words[0]) : '/review';
+	return { method: 'GET', path };
 }
 
 function itemQuery(
@@ -158,6 +170,7 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 		case 'reject':
 			return { reason: text };
 		case 'flag':
+		case 'release':
 			return nativeTrackerFlagBody(text, values as NativeTrackerAskValues);
 		case 'block':
 			return nativeTrackerBlockBody(text, values as NativeTrackerAskValues);

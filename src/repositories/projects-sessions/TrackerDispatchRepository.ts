@@ -107,7 +107,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		return this.store.database
 			.prepare(
 				`SELECT id, auto, priority, ${dispatchLaunchSource} AS launch_source, nullif(coalesce(launch_target, computer), 'auto') AS launch_target
-			FROM items i WHERE deleted = 0 AND title IS NOT NULL AND (needs_daniel = 0 OR resolved = 1)
+			FROM items i WHERE deleted = 0 AND title IS NOT NULL AND (needs_daniel = 0 OR resolved = 1) AND chief_review IS NULL
 			AND status IN ('open','in_progress') AND every IS NULL AND coalesce(kind, 'task') = 'task'
 			AND (i.auto IS NULL OR (
 				NOT EXISTS (SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)
@@ -187,7 +187,7 @@ function trackerStuckRequests(
 ) {
 	const pending = database
 		.prepare(
-			`SELECT i.id, i.title, i.clocks, (i.needs_daniel = 1 AND i.resolved = 0) AS flagged,
+			`SELECT i.id, i.title, i.clocks, ((i.needs_daniel = 1 AND i.resolved = 0) OR i.chief_review IS NOT NULL) AS flagged,
 		nullif(coalesce(i.launch_target, i.computer), 'auto') AS computer
 		FROM items i WHERE i.deleted = 0 AND i.title IS NOT NULL AND i.status IN ('open','in_progress')
 		AND i.auto IS NOT NULL AND NOT EXISTS (

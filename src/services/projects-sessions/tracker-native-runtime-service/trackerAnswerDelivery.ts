@@ -45,15 +45,16 @@ export function trackerAnswerDelivery(
 function pendingAnswers(store: TrackerPersistenceService) {
 	return store.database
 		.prepare(
-			`SELECT i.id, i.answered_at AS answeredAt, json_extract(i.clocks, '$.answer') AS generation,
-				CASE WHEN i.answer_option IS NOT NULL AND coalesce(i.confirm,'') <> 'secret'
+			`SELECT i.id, i.chief_answer IS NOT NULL AS privateReview, i.answered_at AS answeredAt, json_extract(i.clocks, '$.answer') AS generation,
+				CASE WHEN i.chief_answer IS NULL AND i.answer_option IS NOT NULL AND coalesce(i.confirm,'') <> 'secret'
 					AND cast(coalesce(i.sensitive,0) AS INTEGER) = 0 THEN i.answer END AS choice,
 				(i.status = 'blocked' AND json_extract(i.clocks,'$.status') >= json_extract(i.clocks,'$.answer'))
 					AS keepBlocked
 			FROM items i
 			WHERE i.deleted = 0 AND coalesce(i.kind,'task') = 'task'
-				AND i.status IN ('open','in_progress','blocked')
-				AND i.resolved = 1 AND i.needs_daniel = 0 AND i.answered_at IS NOT NULL
+				AND (i.status IN ('open','in_progress','blocked') OR (i.status = 'done' AND i.chief_answer IS NOT NULL))
+				AND ((i.resolved = 1 AND i.needs_daniel = 0) OR i.chief_answer IS NOT NULL)
+				AND i.answered_at IS NOT NULL
 				AND json_extract(i.clocks,'$.answer') = json_extract(i.clocks,'$.answered_at')
 				AND json_extract(i.clocks,'$.answer') > coalesce(json_extract(i.clocks,'$.question'),'')
 				AND NOT EXISTS (SELECT 1 FROM item_notes n WHERE n.item_id = i.id
@@ -144,11 +145,13 @@ async function submitAnswer(
 	return result === 'delivered';
 }
 
-function answerPrompt({ id, answeredAt, choice }: PendingTrackerAnswer) {
+function answerPrompt({ id, answeredAt, choice, privateReview }: PendingTrackerAnswer) {
 	const selected = choice && hubMessageLine(choice.slice(0, 160));
 	return (
 		`Tracker answer for item ${id} at ${answeredAt}.` +
 		(selected ? ` Selected option: ${selected}. ` : ' ') +
-		'Read the current answer on the Tracker item and continue as directed. Handle credentials through the approved private path.'
+		(privateReview
+			? `Read the Chief of Staff answer with tracker review ${id} and continue as directed. Handle credentials through the approved private path.`
+			: 'Read the current answer on the Tracker item and continue as directed. Handle credentials through the approved private path.')
 	);
 }

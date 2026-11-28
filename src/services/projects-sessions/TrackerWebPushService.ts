@@ -1,5 +1,8 @@
 // @harness-uid u_z4ttafmvjp
 import { isDeepStrictEqual } from 'node:util';
+import { quietHourBoundary } from '../../helpers/attention-timing/quietHourBoundary';
+import { danielQuietHours } from './tracker-notification-service/notificationRules';
+import { TrackerSafetyPushService } from './TrackerSafetyPushService';
 import { deliverNeedsYou } from './tracker-web-push-service/deliverNeedsYou';
 import {
 	failedPush,
@@ -25,14 +28,20 @@ import type { TrackerWebPushOptions } from './TrackerWebPushService.types';
 export class TrackerWebPushService {
 	/** Kept here too: a state file that cannot be written must never make a send repeat early. */
 	private remembered?: PushState;
+	private readonly safetyNotice: TrackerSafetyPushService;
 
-	constructor(private readonly options: TrackerWebPushOptions) {}
+	constructor(private readonly options: TrackerWebPushOptions) {
+		this.safetyNotice = new TrackerSafetyPushService(options);
+	}
 
 	/** Does nothing until `tracker web-push setup` has run; the Hub is asked only when due. */
 	async tick(): Promise<void> {
 		const paths = webPushPaths(this.options.database);
 		const config = readWebPushConfig(paths.config);
 		if (!config) return;
+		await this.safetyNotice.send(config);
+		const now = this.options.now();
+		if (quietHourBoundary(now, danielQuietHours) > now) return;
 		const asks = this.options.asks();
 		const keys = asks.map(pushAskKey);
 		const stored = this.remembered ?? readPushState(paths.state);

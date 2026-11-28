@@ -36,7 +36,18 @@ export function hub(role: 'hub' | 'spoke' = 'hub') {
 				})
 			),
 		restart: () => (instance = runtime()),
-		item: (itemId: string, fields: Parameters<typeof instance.store.appendLocal>[0]['fields']) =>
-			instance.store.appendLocal({ itemId, fields, actor: 'fixture' })
+		item: (
+			itemId: string,
+			fields: Parameters<typeof instance.store.appendLocal>[0]['fields'],
+			actor = 'fixture'
+		) => instance.store.appendLocal({ itemId, fields, actor }),
+		release: (itemId: string, body: object) =>
+			instance.items.handle(
+				new Request(`http://localhost/items/${itemId}/release`, {
+					method: 'POST',
+					headers: { 'x-tracker-as': 'Chief of Staff' },
+					body: JSON.stringify(body)
+				})
+			)
 	};
 }

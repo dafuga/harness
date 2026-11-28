@@ -13,7 +13,7 @@ export async function deliverNeedsYou(
 	attempt: PushDeliveryAttempt
 ): Promise<PushState> {
 	const { view, asks, keys, state } = attempt;
-	const message = needsYouPushMessage(asks);
+	const message = attempt.message ?? needsYouPushMessage(asks);
 	const results = await Promise.all(
 		view.subscriptions.map(async (target) => ({
 			endpoint: target.endpoint,

@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import { isTrackerAwaitingAnswer } from '../../../utils/projects-sessions/isTrackerAwaitingAnswer';
 import { createHash } from 'node:crypto';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import { planTrackerItemMutation } from '../../../utils/projects-sessions/planTrackerItemMutation';
@@ -67,7 +68,7 @@ function flagExposedSource(
 	source: ReturnType<typeof storedItem>,
 	question: string
 ) {
-	if (source && !(source.needs_daniel && !source.resolved))
+	if (source && !isTrackerAwaitingAnswer(source))
 		store.appendLocal({ itemId: source.id, fields: { needs_daniel: 1, resolved: 0, question } });
 }
 

@@ -15,7 +15,7 @@ export function assignTrackerLaunches(view: TrackerFleetView): void {
 			`SELECT id FROM items i WHERE deleted = 0 AND auto IS NOT NULL
 			AND coalesce(computer, 'auto') = 'auto' AND coalesce(launch_target, 'auto') = 'auto'
 			AND status IN ('open','in_progress') AND coalesce(kind, 'task') = 'task'
-			AND (needs_daniel = 0 OR resolved = 1)
+			AND (needs_daniel = 0 OR resolved = 1) AND chief_review IS NULL
 			AND NOT EXISTS (SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)`
 		)
 		.all() as { id: string }[];

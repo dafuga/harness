@@ -110,10 +110,11 @@ function protectedState(start: number) {
 
 function slotReads(runtime: TrackerNativeRuntimeService, database: DatabaseSync) {
 	return {
-		async request(path: string, body: object = {}) {
+		async request(path: string, body: object = {}, actor?: string) {
 			const response = await runtime.items.handle(
 				new Request('http://tracker-fixture.invalid' + path, {
 					method: 'POST',
+					headers: actor ? { 'x-tracker-as': actor } : undefined,
 					body: JSON.stringify(body)
 				})
 			);

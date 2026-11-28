@@ -11,7 +11,16 @@
 		"source": [
 			"src/repositories/projects-sessions/TrackerOperationRepository.ts",
 			"src/repositories/projects-sessions/TrackerOperationRepository.types.ts",
-			"src/repositories/projects-sessions/tracker-operation-repository/localTrackerOperation.ts"
+			"src/repositories/projects-sessions/tracker-operation-repository/chiefReviewFields.ts",
+			"src/repositories/projects-sessions/tracker-operation-repository/chiefReviewFields.types.ts",
+			"src/repositories/projects-sessions/tracker-operation-repository/closedChiefReviewFields.ts",
+			"src/repositories/projects-sessions/tracker-operation-repository/hasPublishedAsk.ts",
+			"src/repositories/projects-sessions/tracker-operation-repository/heldChiefReviewFields.ts",
+			"src/repositories/projects-sessions/tracker-operation-repository/localTrackerOperation.ts",
+			"src/repositories/projects-sessions/tracker-operation-repository/readPendingTrackerQuestion.ts",
+			"src/repositories/projects-sessions/tracker-operation-repository/reviewTrackerOperation.ts",
+			"src/repositories/projects-sessions/tracker-operation-repository/reviewTrackerOperation.types.ts",
+			"src/utils/projects-sessions/trackerReviewer.ts"
 		],
 		"symbols": [
 			"TrackerOperationRepository",
@@ -34,8 +43,28 @@
 			"TrackerOperationFilter",
 			"TrackerLocalOperation",
 			"TrackerLocalCommit",
+			"chiefReviewFields",
+			"readChiefReview",
+			"ChiefReview",
+			"PublishedAskColumns",
+			"CurrentChiefReview",
+			"ChiefReviewContext",
+			"ChiefReviewAsk",
+			"ChiefReviewHold",
+			"ChiefReviewRow",
+			"closedReviewFields",
+			"hasPublishedAsk",
+			"privateAskFields",
+			"heldReviewFields",
 			"localTrackerOperation",
-			"operationActor"
+			"operationActor",
+			"readPendingTrackerQuestion",
+			"chiefReviewSinceKey",
+			"reviewLocalOperation",
+			"reviewReplicatedOperation",
+			"TrackerReviewGate",
+			"trackerReviewer",
+			"isTrackerPlumbingAsk"
 		]
 	},
 	"contract": {
@@ -50,6 +79,12 @@
 				"name": "TrackerOperationRepository.constructor.now",
 				"type": "() => number",
 				"required": false
+			},
+			{
+				"name": "TrackerOperationRepository.constructor.review",
+				"type": "TrackerReviewGate",
+				"required": false,
+				"default": "off"
 			},
 			{
 				"name": "TrackerOperationRepository.applyOps.operations",
@@ -109,6 +144,52 @@
 				"required": false
 			},
 			{
+				"name": "chiefReviewFields.operation",
+				"type": "TrackerOperation",
+				"required": true
+			},
+			{
+				"name": "chiefReviewFields.context",
+				"type": "ChiefReviewContext",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "readChiefReview.value",
+				"type": "string | null | undefined",
+				"required": true
+			},
+			{
+				"name": "closedReviewFields.fields",
+				"type": "TrackerOperation['fields']",
+				"required": true
+			},
+			{
+				"name": "closedReviewFields.current",
+				"type": "CurrentChiefReview | undefined",
+				"required": true
+			},
+			{
+				"name": "hasPublishedAsk.item",
+				"type": "PublishedAskColumns | undefined",
+				"required": true
+			},
+			{
+				"name": "heldReviewFields.operation",
+				"type": "TrackerOperation",
+				"required": true
+			},
+			{
+				"name": "heldReviewFields.ask",
+				"type": "ChiefReviewAsk",
+				"required": true
+			},
+			{
+				"name": "heldReviewFields.hold",
+				"type": "ChiefReviewHold",
+				"required": true
+			},
+			{
 				"name": "localTrackerOperation.database",
 				"type": "SqliteDatabase",
 				"required": true
@@ -126,6 +207,66 @@
 			{
 				"name": "operationActor.actor",
 				"type": "string | null | undefined",
+				"required": true
+			},
+			{
+				"name": "readPendingTrackerQuestion.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "readPendingTrackerQuestion.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "reviewLocalOperation.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "reviewLocalOperation.gate",
+				"type": "TrackerReviewGate",
+				"required": true
+			},
+			{
+				"name": "reviewLocalOperation.operation",
+				"type": "TrackerOperation",
+				"required": true
+			},
+			{
+				"name": "reviewReplicatedOperation.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "reviewReplicatedOperation.gate",
+				"type": "TrackerReviewGate",
+				"required": true
+			},
+			{
+				"name": "reviewReplicatedOperation.operation",
+				"type": "TrackerOperation",
+				"required": true
+			},
+			{
+				"name": "trackerReviewer.actor",
+				"type": "string | null | undefined",
+				"required": true
+			},
+			{
+				"name": "isTrackerPlumbingAsk.actor",
+				"type": "string | null | undefined",
+				"required": true
+			},
+			{
+				"name": "isTrackerPlumbingAsk.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "isTrackerPlumbingAsk.title",
+				"type": "string",
 				"required": true
 			}
 		],
@@ -155,12 +296,60 @@
 				"type": "number"
 			},
 			{
+				"name": "chiefReviewFields",
+				"type": "TrackerOperation['fields']"
+			},
+			{
+				"name": "readChiefReview",
+				"type": "ChiefReview | null"
+			},
+			{
+				"name": "closedReviewFields",
+				"type": "TrackerOperation['fields']"
+			},
+			{
+				"name": "hasPublishedAsk",
+				"type": "boolean"
+			},
+			{
+				"name": "privateAskFields",
+				"type": "unknown"
+			},
+			{
+				"name": "heldReviewFields",
+				"type": "TrackerOperation['fields']"
+			},
+			{
 				"name": "localTrackerOperation",
 				"type": "TrackerOperation"
 			},
 			{
 				"name": "operationActor",
 				"type": "string | null"
+			},
+			{
+				"name": "readPendingTrackerQuestion",
+				"type": "string | null"
+			},
+			{
+				"name": "chiefReviewSinceKey",
+				"type": "unknown"
+			},
+			{
+				"name": "reviewLocalOperation",
+				"type": "TrackerOperation"
+			},
+			{
+				"name": "reviewReplicatedOperation",
+				"type": "TrackerOperation"
+			},
+			{
+				"name": "trackerReviewer",
+				"type": "'chief' | 'daniel' | null"
+			},
+			{
+				"name": "isTrackerPlumbingAsk",
+				"type": "boolean"
 			}
 		],
 		"errors": [
@@ -306,6 +495,117 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "chiefReviewFields",
+				"inputs": [
+					{
+						"name": "chiefReviewFields.operation",
+						"type": "TrackerOperation",
+						"required": true
+					},
+					{
+						"name": "chiefReviewFields.context",
+						"type": "ChiefReviewContext",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "chiefReviewFields",
+						"type": "TrackerOperation['fields']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readChiefReview",
+				"inputs": [
+					{
+						"name": "readChiefReview.value",
+						"type": "string | null | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readChiefReview",
+						"type": "ChiefReview | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "closedReviewFields",
+				"inputs": [
+					{
+						"name": "closedReviewFields.fields",
+						"type": "TrackerOperation['fields']",
+						"required": true
+					},
+					{
+						"name": "closedReviewFields.current",
+						"type": "CurrentChiefReview | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "closedReviewFields",
+						"type": "TrackerOperation['fields']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasPublishedAsk",
+				"inputs": [
+					{
+						"name": "hasPublishedAsk.item",
+						"type": "PublishedAskColumns | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasPublishedAsk",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "heldReviewFields",
+				"inputs": [
+					{
+						"name": "heldReviewFields.operation",
+						"type": "TrackerOperation",
+						"required": true
+					},
+					{
+						"name": "heldReviewFields.ask",
+						"type": "ChiefReviewAsk",
+						"required": true
+					},
+					{
+						"name": "heldReviewFields.hold",
+						"type": "ChiefReviewHold",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "heldReviewFields",
+						"type": "TrackerOperation['fields']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "localTrackerOperation",
 				"inputs": [
 					{
@@ -355,6 +655,131 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "readPendingTrackerQuestion",
+				"inputs": [
+					{
+						"name": "readPendingTrackerQuestion.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "readPendingTrackerQuestion.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readPendingTrackerQuestion",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reviewLocalOperation",
+				"inputs": [
+					{
+						"name": "reviewLocalOperation.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "reviewLocalOperation.gate",
+						"type": "TrackerReviewGate",
+						"required": true
+					},
+					{
+						"name": "reviewLocalOperation.operation",
+						"type": "TrackerOperation",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewLocalOperation",
+						"type": "TrackerOperation"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reviewReplicatedOperation",
+				"inputs": [
+					{
+						"name": "reviewReplicatedOperation.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "reviewReplicatedOperation.gate",
+						"type": "TrackerReviewGate",
+						"required": true
+					},
+					{
+						"name": "reviewReplicatedOperation.operation",
+						"type": "TrackerOperation",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewReplicatedOperation",
+						"type": "TrackerOperation"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerReviewer",
+				"inputs": [
+					{
+						"name": "trackerReviewer.actor",
+						"type": "string | null | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerReviewer",
+						"type": "'chief' | 'daniel' | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isTrackerPlumbingAsk",
+				"inputs": [
+					{
+						"name": "isTrackerPlumbingAsk.actor",
+						"type": "string | null | undefined",
+						"required": true
+					},
+					{
+						"name": "isTrackerPlumbingAsk.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "isTrackerPlumbingAsk.title",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerPlumbingAsk",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -370,6 +795,12 @@
 						"name": "TrackerOperationRepository.constructor.now",
 						"type": "() => number",
 						"required": false
+					},
+					{
+						"name": "TrackerOperationRepository.constructor.review",
+						"type": "TrackerReviewGate",
+						"required": false,
+						"default": "off"
 					}
 				],
 				"outputs": [
@@ -390,12 +821,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-is-tracker-blocked-on-daniel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-is-tracker-ping",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-next-tracker-clock",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
 			"via": "import",
 			"origin": "derived"
 		}

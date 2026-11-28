@@ -26,7 +26,7 @@ import {
 } from '../../support/trackerCosDeliveryFixture';
 import { withTempDir } from '../../support/temporary';
 
-const now = Date.UTC(2026, 10, 25, 23);
+const now = Date.UTC(2026, 10, 25, 15);
 
 test(
 	'oversized CoS alerts fit the 80x24 composer and leave room for the next alert',
@@ -126,7 +126,10 @@ const options = [
 /** One real Daniel decision is open, beside a working item a session may ping about. */
 function tracker() {
 	const database = new DatabaseSync(':memory:');
-	const store = new TrackerPersistenceService(database, 'fixture-hub', { now: () => now });
+	const store = new TrackerPersistenceService(database, 'fixture-hub', {
+		chiefReview: 'local',
+		now: () => now
+	});
 	const items = new TrackerItemReadRepository(database);
 	const api = new TrackerLocalApiService(store, items, {
 		now: () => now,
@@ -139,6 +142,7 @@ function tracker() {
 		store.appendLocal({ itemId, fields: { title, status: 'in_progress', kind: 'task' } });
 	store.appendLocal({
 		itemId: 'decision1',
+		actor: 'Chief of Staff',
 		fields: {
 			needs_daniel: 1,
 			resolved: 0,
@@ -207,9 +211,12 @@ for (const question of [
 			expect(needsYou()).toEqual(['decision1']);
 			const item = items.getStored('worker001');
 			expect(item.needs_daniel).toBe(false);
-			expect(item.notes_log.at(-1)?.text).toContain('Chief of Staff');
+			expect(item.notes_log).toEqual([]);
+			await post('/items/decision1/flag', { question, options });
+			expect(items.getStored('decision1').question).toBe('Approve the synthetic spec?');
 			expect(Object.values(readWatchdogAlerts(store))).toMatchObject([
-				{ item_id: 'worker001', kind: 'cos-message', reason: question }
+				{ item_id: 'worker001', kind: 'cos-message', reason: question },
+				{ item_id: 'decision1', kind: 'cos-message', reason: question }
 			]);
 		} finally {
 			database.close();

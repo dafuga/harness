@@ -12,7 +12,7 @@ import { trackerFlagKind } from '../../../utils/projects-sessions/trackerStructu
 export function formatNativeTrackerItem(item: NativeTrackerItem): string {
 	const flags = [
 		itemStatus(item),
-		flagLabel(item),
+		item.review_status ?? flagLabel(item),
 		item.resolved && 'resolved',
 		item.chased_count && `CHASED ×${item.chased_count}`
 	].filter(Boolean);

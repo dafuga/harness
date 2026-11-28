@@ -7,7 +7,7 @@ import { watchdogEffectReceipt, watchdogScan } from './trackerHostWatchdogSchema
 import { staleDispatchHeartbeatKind } from './trackerCosAlertKinds';
 import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { readTrackerWatchdogPeer } from './trackerWatchdogPeer';
-import { cosSendWindowStart } from './trackerCosWindow';
+import { cosSendWindowStart } from '../../../utils/projects-sessions/trackerCosSendWindow';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';

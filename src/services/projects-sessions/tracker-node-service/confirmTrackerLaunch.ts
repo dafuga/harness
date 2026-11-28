@@ -1,4 +1,5 @@
 // @harness-uid u_gvqtr5mdwv
+import { isTrackerAwaitingAnswer } from '../../../utils/projects-sessions/isTrackerAwaitingAnswer';
 import { setTimeout as delay } from 'node:timers/promises';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
@@ -76,7 +77,7 @@ function launchRunResponse(
 function itemHold(item: TrackerItem) {
 	if (item.kind !== 'task') return `item is a ${item.kind}; only tasks can launch`;
 	if (item.every) return 'recurring item';
-	if (item.needs_daniel && !item.resolved) return 'waiting on Daniel (flagged)';
+	if (isTrackerAwaitingAnswer(item)) return 'waiting on Daniel (flagged)';
 	if (item.status !== 'open' && item.status !== 'in_progress') return `item is ${item.status}`;
 	return null;
 }

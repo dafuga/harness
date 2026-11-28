@@ -63,7 +63,7 @@ test('rotation keeps 14 daily and 8 weekly copies and never touches other hourly
 	expect(listed.status).toMatchObject({ enabled: true, counts: { daily: 14, weekly: 8, bad: 0 } });
 });
 
-test('a failed backup asks Daniel once and the next good backup closes the ask', async () => {
+test('a failed backup alerts Chief of Staff once and the next good backup closes the ask', async () => {
 	const hub = await trackerBackupFixture('2026-11-27T04:00:00Z');
 	rmSync(hub.directory, { recursive: true, force: true });
 	writeFileSync(hub.directory, 'not a directory');
@@ -71,13 +71,15 @@ test('a failed backup asks Daniel once and the next good backup closes the ask',
 	await hub.api('POST', '/backup/now');
 	const [alert, ...others] = hub.alerts();
 	expect(others).toEqual([]);
-	expect(alert).toMatchObject({ needs_daniel: 1, status: 'open' });
-	expect(alert.question).toContain('backup failed');
-	expect(JSON.parse(alert.options)).toHaveLength(2);
+	expect(alert).toMatchObject({ needs_daniel: 0, status: 'open', question: null });
+	expect(hub.review(alert.chief_review)).toMatchObject({
+		mode: 'chief-only',
+		fields: { question: expect.stringContaining('backup failed') }
+	});
 	rmSync(hub.directory);
 	mkdirSync(hub.directory, { mode: 0o700 });
 	expect(await hub.api('POST', '/backup/now')).toMatchObject({ ok: true });
-	expect(hub.alerts()).toMatchObject([{ status: 'done' }]);
+	expect(hub.alerts()).toMatchObject([{ status: 'done', chief_review: null }]);
 });
 
 test('no good backup for 36 hours raises the stale alert', async () => {
@@ -88,7 +90,7 @@ test('no good backup for 36 hours raises the stale alert', async () => {
 	hub.at('2026-11-28T17:00:00Z');
 	await hub.tick();
 	expect(await hub.api('GET', '/status')).toMatchObject({ backup: { stale: true } });
-	expect(hub.alerts()[0].question).toContain('stale');
+	expect(hub.review(hub.alerts()[0].chief_review)?.fields.question).toContain('stale');
 });
 
 test('restore prepares a verified database that keeps local run state and gets a new identity', async () => {
@@ -158,7 +160,9 @@ test('another database never replaces or rotates the backups already in a folder
 	const other = await trackerBackupFixture('2026-11-29T17:00:00Z', hub);
 	await other.tick();
 	expect(contents()).toEqual(before);
-	expect(other.alerts()[0].question).toContain('another database');
+	expect(other.review(other.alerts()[0].chief_review)?.fields.question).toContain(
+		'another database'
+	);
 	other.at('2026-11-30T17:00:00Z');
 	expect(await other.api('POST', '/backup/now')).toMatchObject({
 		ok: false,
@@ -189,7 +193,7 @@ test('a same-day file from another database or an unreadable one is never replac
 	expect(hub.files()).toEqual([name, 'tracker-2026-11-27.db.gz']);
 });
 
-test('status checks the newest backup on disk and asks Daniel when it changed', async () => {
+test('status checks the newest backup on disk and alerts Chief of Staff when it changed', async () => {
 	const hub = await trackerBackupFixture('2026-11-27T04:00:00Z');
 	await hub.tick();
 	const path = join(hub.directory, 'tracker-2026-11-27.db.gz');
@@ -205,9 +209,8 @@ test('status checks the newest backup on disk and asks Daniel when it changed', 
 	]);
 	await hub.tick();
 	await hub.tick();
-	expect(hub.alerts()).toMatchObject([
-		{ needs_daniel: 1, question: expect.stringContaining('8 bytes') }
-	]);
+	expect(hub.alerts()).toMatchObject([{ needs_daniel: 0, question: null }]);
+	expect(hub.review(hub.alerts()[0].chief_review)?.fields.question).toContain('8 bytes');
 	rmSync(path);
 	expect(await status()).toMatchObject({
 		stale: true,

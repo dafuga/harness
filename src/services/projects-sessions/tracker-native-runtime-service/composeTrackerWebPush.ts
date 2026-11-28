@@ -1,4 +1,5 @@
 // @harness-uid u_54duc53h47
+import { completeCosSafetyNotice, readCosSafetyNotice } from './trackerCosDelivery';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import { openPushAsks } from '../tracker-web-push-service/openPushAsks';
 import { TrackerWebPushService } from '../TrackerWebPushService';
@@ -16,6 +17,10 @@ export function composeTrackerWebPush(
 	return new TrackerWebPushService({
 		...webPush,
 		now,
+		safety: {
+			read: () => readCosSafetyNotice(store),
+			complete: (generation) => completeCosSafetyNotice(store, generation)
+		},
 		asks: () => openPushAsks(items.list({ flagged: true, limit: 1000 }, now()))
 	});
 }

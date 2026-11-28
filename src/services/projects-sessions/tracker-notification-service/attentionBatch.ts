@@ -43,6 +43,7 @@ function stillRelevant(entry: AttentionRow, source: TrackerNotificationSource): 
 	const item = source.item(entry.itemId);
 	if (!item || item.deleted || item.status === 'ignored') return false;
 	if (entry.kind === 'done') return item.status === 'done';
+	if (item.chief_review) return false;
 	if (Date.parse(item.remind_at ?? '') > Date.parse(entry.line.at)) return false;
 	if (entry.kind === 'blocked') return stillBlocked(entry, item);
 	if (entry.kind === 'needs_daniel') return flagged(item);

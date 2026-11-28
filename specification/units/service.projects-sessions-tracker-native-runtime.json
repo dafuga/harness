@@ -34,6 +34,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/composeTrackerResponder.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerDestinations.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerReminderHost.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/migrateTrackerChiefReviews.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDuePolicy.ts",
@@ -41,11 +42,13 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerTelemetry.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerTelemetry.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/openTrackerReviewStore.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAdapterFailover.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAnswerDelivery.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAnswerDelivery.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAutolaunchAdmin.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerChiefReviewQueue.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosAlertKinds.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosDelivery.ts",
@@ -53,7 +56,6 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosDeliveryAsk.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosInbox.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosRound.ts",
-			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosWindow.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerDueDelegation.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinalReports.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinalReports.types.ts",
@@ -122,7 +124,11 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogContext.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPeer.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPort.ts",
-			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPort.types.ts"
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPort.types.ts",
+			"src/services/projects-sessions/tracker-notification-service/isHiddenByReview.ts",
+			"src/utils/projects-sessions/isTrackerAwaitingAnswer.ts",
+			"src/utils/projects-sessions/isTrackerAwaitingAnswer.types.ts",
+			"src/utils/projects-sessions/trackerCosSendWindow.ts"
 		],
 		"symbols": [
 			"TrackerNativeRuntimeService",
@@ -143,6 +149,7 @@
 			"composeTrackerResponder",
 			"configuredTrackerDestinations",
 			"configuredTrackerReminderHost",
+			"migrateTrackerChiefReviews",
 			"composeTrackerDispatch",
 			"PeerStarts",
 			"TrackerFleetRuntime",
@@ -167,6 +174,7 @@
 			"trackerSpokeStatus",
 			"composeTrackerTelemetry",
 			"TrackerTelemetryParts",
+			"openTrackerReviewStore",
 			"readTrackerDuePreview",
 			"trackerDueItemPreview",
 			"adapterFailover",
@@ -176,18 +184,21 @@
 			"duePauseKey",
 			"trackerAutolaunchAdmin",
 			"trackerHubDuePolicy",
+			"trackerChiefReviewAlerts",
+			"publishApprovedReviews",
 			"trackerContextHandoffs",
 			"staleDispatchHeartbeatKind",
 			"isOutageAlert",
+			"chiefReviewEmergency",
 			"watchCosDelivery",
-			"TrackerCosDeliveryAlarm",
+			"readCosSafetyNotice",
+			"completeCosSafetyNotice",
+			"TrackerCosSafetyNotice",
 			"TrackerCosRoundPorts",
-			"cosDeliveryDelivered",
-			"cosDeliveryAsk",
+			"cosSafetyMessage",
 			"trackerCosInboxKinds",
 			"trackerCosInboxRetention",
 			"trackerCosRound",
-			"cosSendWindowStart",
 			"grantsDelegation",
 			"finishReportedRuns",
 			"TrackerReportSession",
@@ -379,7 +390,11 @@
 			"TrackerHandoffAttempt",
 			"readTrackerWatchdogPeer",
 			"trackerWatchdogPort",
-			"TrackerWatchdogPort"
+			"TrackerWatchdogPort",
+			"isHiddenByReview",
+			"isTrackerAwaitingAnswer",
+			"TrackerAwaitingItem",
+			"cosSendWindowStart"
 		]
 	},
 	"contract": {
@@ -430,6 +445,11 @@
 				"type": "TrackerNativeRuntimeOptions",
 				"required": true,
 				"description": "Tracker node identity, established host effects and any existing notification transport."
+			},
+			{
+				"name": "migrateTrackerChiefReviews.store",
+				"type": "TrackerPersistenceService",
+				"required": true
 			},
 			{
 				"name": "composeTrackerDispatch.store",
@@ -552,6 +572,21 @@
 				"required": true
 			},
 			{
+				"name": "openTrackerReviewStore.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "openTrackerReviewStore.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "openTrackerReviewStore.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
 				"name": "readTrackerDuePreview.runtime",
 				"type": "TrackerNativeRuntimeService",
 				"required": true
@@ -622,6 +657,21 @@
 				"required": true
 			},
 			{
+				"name": "trackerChiefReviewAlerts.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "publishApprovedReviews.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "publishApprovedReviews.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "trackerContextHandoffs.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -647,6 +697,16 @@
 				"required": true
 			},
 			{
+				"name": "chiefReviewEmergency.kind",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "chiefReviewEmergency.reason",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "watchCosDelivery.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -662,23 +722,23 @@
 				"required": true
 			},
 			{
-				"name": "cosDeliveryAsk.pending",
-				"type": "readonly TrackerWatchdogAlert[]",
+				"name": "readCosSafetyNotice.store",
+				"type": "TrackerPersistenceService",
 				"required": true
 			},
 			{
-				"name": "cosDeliveryAsk.now",
-				"type": "number",
+				"name": "completeCosSafetyNotice.store",
+				"type": "TrackerPersistenceService",
 				"required": true
 			},
 			{
-				"name": "cosDeliveryAsk.node",
+				"name": "completeCosSafetyNotice.generation",
 				"type": "string",
 				"required": true
 			},
 			{
-				"name": "cosDeliveryAsk.created",
-				"type": "boolean",
+				"name": "cosSafetyMessage.notice",
+				"type": "TrackerCosSafetyNotice",
 				"required": true
 			},
 			{
@@ -694,11 +754,6 @@
 			{
 				"name": "trackerCosRound.ports",
 				"type": "TrackerCosRoundPorts",
-				"required": true
-			},
-			{
-				"name": "cosSendWindowStart.now",
-				"type": "number",
 				"required": true
 			},
 			{
@@ -2349,6 +2404,31 @@
 				"name": "trackerWatchdogPort.node",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "isHiddenByReview.item",
+				"type": "Pick<TrackerNotificationItem, 'chief_review'>",
+				"required": true
+			},
+			{
+				"name": "isHiddenByReview.fields",
+				"type": "TrackerOperation['fields']",
+				"required": true
+			},
+			{
+				"name": "isHiddenByReview.finished",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "isTrackerAwaitingAnswer.item",
+				"type": "TrackerAwaitingItem",
+				"required": true
+			},
+			{
+				"name": "cosSendWindowStart.now",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -2755,6 +2835,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "migrateTrackerChiefReviews",
+				"inputs": [
+					{
+						"name": "migrateTrackerChiefReviews.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "migrateTrackerChiefReviews",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "composeTrackerDispatch",
 				"inputs": [
 					{
@@ -3004,6 +3102,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "openTrackerReviewStore",
+				"inputs": [
+					{
+						"name": "openTrackerReviewStore.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "openTrackerReviewStore.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "openTrackerReviewStore.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openTrackerReviewStore",
+						"type": "TrackerPersistenceService"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "readTrackerDuePreview",
 				"inputs": [
 					{
@@ -3152,6 +3278,47 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "trackerChiefReviewAlerts",
+				"inputs": [
+					{
+						"name": "trackerChiefReviewAlerts.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerChiefReviewAlerts",
+						"type": "TrackerWatchdogAlert[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "publishApprovedReviews",
+				"inputs": [
+					{
+						"name": "publishApprovedReviews.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "publishApprovedReviews.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "publishApprovedReviews",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerContextHandoffs",
 				"inputs": [
 					{
@@ -3203,6 +3370,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "chiefReviewEmergency",
+				"inputs": [
+					{
+						"name": "chiefReviewEmergency.kind",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "chiefReviewEmergency.reason",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "chiefReviewEmergency",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "watchCosDelivery",
 				"inputs": [
 					{
@@ -3231,37 +3421,63 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "cosDeliveryAsk",
+				"name": "readCosSafetyNotice",
 				"inputs": [
 					{
-						"name": "cosDeliveryAsk.pending",
-						"type": "readonly TrackerWatchdogAlert[]",
-						"required": true
-					},
-					{
-						"name": "cosDeliveryAsk.now",
-						"type": "number",
-						"required": true
-					},
-					{
-						"name": "cosDeliveryAsk.node",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "cosDeliveryAsk.created",
-						"type": "boolean",
+						"name": "readCosSafetyNotice.store",
+						"type": "TrackerPersistenceService",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "cosDeliveryAsk",
-						"type": "unknown"
+						"name": "readCosSafetyNotice",
+						"type": "TrackerCosSafetyNotice | undefined"
 					}
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "completeCosSafetyNotice",
+				"inputs": [
+					{
+						"name": "completeCosSafetyNotice.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "completeCosSafetyNotice.generation",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "completeCosSafetyNotice",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cosSafetyMessage",
+				"inputs": [
+					{
+						"name": "cosSafetyMessage.notice",
+						"type": "TrackerCosSafetyNotice",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cosSafetyMessage",
+						"type": "NeedsYouPushMessage"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "trackerCosRound",
@@ -3290,24 +3506,6 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
-			},
-			{
-				"name": "cosSendWindowStart",
-				"inputs": [
-					{
-						"name": "cosSendWindowStart.now",
-						"type": "number",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "cosSendWindowStart",
-						"type": "number | null"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
 			},
 			{
 				"name": "grantsDelegation",
@@ -6496,6 +6694,70 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "isHiddenByReview",
+				"inputs": [
+					{
+						"name": "isHiddenByReview.item",
+						"type": "Pick<TrackerNotificationItem, 'chief_review'>",
+						"required": true
+					},
+					{
+						"name": "isHiddenByReview.fields",
+						"type": "TrackerOperation['fields']",
+						"required": true
+					},
+					{
+						"name": "isHiddenByReview.finished",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isHiddenByReview",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isTrackerAwaitingAnswer",
+				"inputs": [
+					{
+						"name": "isTrackerAwaitingAnswer.item",
+						"type": "TrackerAwaitingItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerAwaitingAnswer",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cosSendWindowStart",
+				"inputs": [
+					{
+						"name": "cosSendWindowStart.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cosSendWindowStart",
+						"type": "number | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -6581,6 +6843,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-is-tracker-blocked-on-daniel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-next-tracker-clock",
 			"via": "import",
 			"origin": "derived"
@@ -6641,6 +6908,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-web-push-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
@@ -6667,6 +6939,11 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-notification-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-operation",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -13,7 +13,8 @@
 			"src/utils/projects-sessions/planTrackerItemMutation.types.ts",
 			"src/utils/projects-sessions/trackerItemInput.ts",
 			"src/utils/projects-sessions/trackerItemLaunchFields.ts",
-			"src/utils/projects-sessions/trackerItemTransitions.ts"
+			"src/utils/projects-sessions/trackerItemTransitions.ts",
+			"src/utils/projects-sessions/trackerOpenDecision.ts"
 		],
 		"symbols": [
 			"TrackerItemMutation",
@@ -37,7 +38,8 @@
 			"guardTrackerDuplicate",
 			"trackerReminderLaunchFields",
 			"trackerItemLaunchFields",
-			"trackerItemTransitions"
+			"trackerItemTransitions",
+			"trackerOpenDecision"
 		]
 	},
 	"contract": {
@@ -150,6 +152,12 @@
 				"type": "TrackerItemSnapshot",
 				"required": false,
 				"description": "Existing item used for updates. Missing when this request creates an item."
+			},
+			{
+				"name": "trackerOpenDecision.item",
+				"type": "TrackerItemSnapshot",
+				"required": true,
+				"description": "The stored item row, including any ask still held for review."
 			}
 		],
 		"outputs": [
@@ -406,6 +414,25 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerOpenDecision",
+				"inputs": [
+					{
+						"name": "trackerOpenDecision.item",
+						"type": "TrackerItemSnapshot",
+						"required": true,
+						"description": "The stored item row, including any ask still held for review."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerOpenDecision",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			}
 		],
