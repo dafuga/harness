@@ -2,7 +2,7 @@
 	"name": "d0cgxn-due-launch-gate",
 	"goal": "Keep scheduled work out of unattended launch until the due time, then launch it through normal dispatch",
 	"createdAt": "2026-11-28T13:01:22.371Z",
-	"updatedAt": "2026-11-28T13:08:11.388Z",
+	"updatedAt": "2026-11-28T13:42:58.266Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -53,7 +53,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T13:42:58.266Z",
+			"evidence": "The unchanged clean red/green replay passed on 09c71be8cc. Integrated candidate c432b4b243 passed 51 Tracker unit and integration cases, one signed hub-spoke CLI case, scoped TypeScript, ESLint and formatting. Shared check requested; the planner could not resolve existing ESLint and desktop script imports and ran no focused assertions."
 		}
 	],
 	"evaluators": [
