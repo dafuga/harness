@@ -2,7 +2,6 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_pectymette -->
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import {
 		readApprovalPush,
 		readHubPush,
@@ -13,6 +12,7 @@
 		turnOnHubPush
 	} from '../../lib/networking-security/hubPush';
 	import type {
+		ApprovalPushRequest,
 		HubApprovalPushReading,
 		HubPushReading,
 		PushQuietHours
@@ -23,11 +23,13 @@
 	import '$reports/lib/styles/hub-home/notifications.css';
 
 	const { api, session } = browserContext();
+	const { owner }: { owner: boolean } = $props();
 	let push = $state<HubPushReading | null>(null);
 	let approval = $state<HubApprovalPushReading | null>(null);
 	let busy = $state(false);
 	let failed = $state('');
 	let editing = $state(false);
+	let readTurn = 0;
 	const device = $derived(push?.device ?? approval?.device);
 	const approvalCall = $derived(
 		session.status?.deviceApproval && session.actor
@@ -52,16 +54,23 @@
 
 	async function readApproval() {
 		const call = approvalCall;
-		if (call) approval = await readApprovalPush(call).catch(() => null);
+		if (call) approval = await readApprovalPush(call, push?.device === 'on').catch(() => null);
 	}
 
-	async function readNotifications() {
-		push = await readHubPush(api).catch(() => null);
-		await readApproval();
+	async function readNotifications(owner: boolean, call: ApprovalPushRequest | null) {
+		const turn = ++readTurn;
+		const legacy = owner ? await readHubPush(api).catch(() => null) : null;
+		const approved = call
+			? await readApprovalPush(call, legacy?.device === 'on').catch(() => null)
+			: null;
+		if (turn === readTurn) {
+			push = legacy;
+			approval = approved;
+		}
 	}
 
-	onMount(() => {
-		void readNotifications();
+	$effect(() => {
+		void readNotifications(owner, approvalCall);
 	});
 
 	function turnOn() {

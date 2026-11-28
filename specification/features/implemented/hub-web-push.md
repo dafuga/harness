@@ -47,6 +47,20 @@ Tracker hub node (the primary Mac), which already holds every item.
 - Push addresses are accepted only on the known push services (Google, Apple, Mozilla,
   Microsoft), by the Hub when stored and by the sender before use.
 
+## Device sign-in alerts
+
+- An approved browser can enable generic device sign-in alerts from the same notification row.
+  The Hub binds the subscription to the Google session and its proven installation key.
+- The Hub sends one alert when the account mailbox creates a new request. It checks the
+  active device chain and session before selecting recipients. Opening retries, expired sessions
+  and revoked installations receive no new alert.
+- The encrypted payload says only that a device sign-in needs review. The click opens Hub Home,
+  where the approved session can read the inbox and review the request.
+- The approval service worker has its own scope and VAPID key. Configure the Hub's
+  `HARNESS_APPROVAL_PUSH_PUBLIC_KEY` and secret `HARNESS_APPROVAL_PUSH_PRIVATE_KEY` and
+  apply migration `0012-approval-push.sql` before enabling delivery. The Tracker sender keeps
+  its own key. Removing the approval binding disables this delivery.
+
 ## Setup and release
 
 1. On the Tracker hub: `tracker web-push setup --origin https://<hub>`. It writes

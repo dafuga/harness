@@ -10,8 +10,8 @@ const handle: RequestHandler = ({ request, platform }) => {
 	const config = hubEnvConfig({ ...env, ...platform?.env });
 	const now = Date.now();
 	const {
-		HARNESS_PUSH_PUBLIC_KEY: publicKey,
-		HARNESS_PUSH_PRIVATE_KEY: privateKey,
+		HARNESS_APPROVAL_PUSH_PUBLIC_KEY: publicKey,
+		HARNESS_APPROVAL_PUSH_PRIVATE_KEY: privateKey,
 		HARNESS_PUBLIC_ORIGIN: hubOrigin
 	} = config;
 	const ctx = platform?.ctx;
@@ -22,7 +22,7 @@ const handle: RequestHandler = ({ request, platform }) => {
 		accounts: config.ACCOUNT_SYNC ?? null,
 		now,
 		approvalPush:
-			publicKey && privateKey && hubOrigin
+			publicKey && privateKey && hubOrigin && publicKey !== config.HARNESS_PUSH_PUBLIC_KEY
 				? {
 						publicKey,
 						deliver: (target) =>

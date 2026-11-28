@@ -2,6 +2,7 @@
 import type { BrowserApi } from '../../utils/browserApi';
 import {
 	addressHash,
+	approvalPushScope,
 	confirmOn,
 	currentSubscription,
 	pushSupport,
@@ -41,11 +42,11 @@ async function onDevice(api: BrowserApi, settings: HubPushSettings): Promise<Hub
 		: reading(device, settings);
 }
 
-async function notificationDevice(): Promise<HubPushReading['device']> {
+async function notificationDevice(scope?: string): Promise<HubPushReading['device']> {
 	const support = pushSupport();
 	if (support !== 'supported') return support;
 	if (Notification.permission === 'denied') return 'blocked';
-	return Notification.permission === 'granted' && (await currentSubscription()) ? 'on' : 'off';
+	return Notification.permission === 'granted' && (await currentSubscription(scope)) ? 'on' : 'off';
 }
 
 /** Null when the Hub offers no notifications: not the owner, or no key configured. */
@@ -84,6 +85,8 @@ export async function turnOffHubPush(api: BrowserApi): Promise<HubPushReading | 
  */
 export async function forgetHubPush(api: BrowserApi): Promise<void> {
 	if (pushSupport() !== 'supported') return;
+	const approval = await currentSubscription(approvalPushScope);
+	await approval?.unsubscribe();
 	const held = await currentSubscription();
 	if (!held) return;
 	await api.send('DELETE', subscriptionPath, { endpoint: held.endpoint }).catch(() => {});
@@ -96,13 +99,15 @@ export function saveQuietHours(api: BrowserApi, quiet: PushQuietHours): Promise<
 
 /** Reuse the browser's current subscription, bound separately to this approved installation. */
 export async function readApprovalPush(
-	call: ApprovalPushRequest
+	call: ApprovalPushRequest,
+	alsoEnabled: boolean
 ): Promise<HubApprovalPushReading | null> {
 	const response = await call('GET');
 	if (!response.ok) return null;
 	const { publicKey } = await response.json();
 	if (typeof publicKey !== 'string') return null;
-	const device = await notificationDevice();
+	const state = await notificationDevice(approvalPushScope);
+	const device = state === 'off' && alsoEnabled ? 'on' : state;
 	if (device === 'on') await saveApprovalPush(call, publicKey);
 	return { device, publicKey };
 }
@@ -116,7 +121,7 @@ export async function turnOnApprovalPush(call: ApprovalPushRequest, publicKey: s
 }
 
 async function saveApprovalPush(call: ApprovalPushRequest, publicKey: string) {
-	const subscription = await subscribe(publicKey);
+	const subscription = await subscribe(publicKey, approvalPushScope);
 	const response = await call('POST', subscription.toJSON());
 	if (!response.ok) throw new Error('The Hub could not save approval notifications.');
 }
@@ -124,6 +129,6 @@ async function saveApprovalPush(call: ApprovalPushRequest, publicKey: string) {
 export async function turnOffApprovalPush(call: ApprovalPushRequest, publicKey: string) {
 	const response = await call('DELETE');
 	if (!response.ok) throw new Error('The Hub could not turn off approval notifications.');
-	await (await currentSubscription())?.unsubscribe();
+	await (await currentSubscription(approvalPushScope))?.unsubscribe();
 	return { device: 'off', publicKey } as const;
 }

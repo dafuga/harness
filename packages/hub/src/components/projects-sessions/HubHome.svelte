@@ -190,7 +190,11 @@
 	<hx-div class="home-page hh-home">
 		<HubHomeHeader {view} {link} {needsOnly} accountName={session.actor?.name}>
 			{#snippet accountMenu()}<AccountMenu />{/snippet}
-			{#snippet notifications()}<HubHomeNotifications />{/snippet}
+			{#snippet notifications()}
+				{#if view.owner || session.status?.deviceApproval}
+					<HubHomeNotifications owner={view.owner} />
+				{/if}
+			{/snippet}
 		</HubHomeHeader>
 		{@render approvals?.()}
 		{#if link === 'live'}

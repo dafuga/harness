@@ -19,7 +19,8 @@ const names = [
 	'HARNESS_RELAY_ORIGIN',
 	'HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID',
 	'HARNESS_PUSH_PUBLIC_KEY',
-	'HARNESS_PUSH_PRIVATE_KEY'
+	'HARNESS_APPROVAL_PUSH_PUBLIC_KEY',
+	'HARNESS_APPROVAL_PUSH_PRIVATE_KEY'
 ] as const;
 /** Only product-dedicated settings are accepted; unrelated host credentials never enter runtime. */
 export function hubEnvConfig(input: Record<string, unknown>): HubEnv {

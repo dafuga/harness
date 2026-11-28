@@ -131,7 +131,7 @@
 			</hx-ul>
 		{/if}
 		{#if view.quota?.length}<HubHomeQuotaPills subscriptions={view.quota} now={view.now} />{/if}
-		{#if view.owner}{@render notifications?.()}{/if}
+		{@render notifications?.()}
 	</hx-div>
 </hx-header>
 

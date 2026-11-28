@@ -23,8 +23,10 @@ export interface HubEnv {
 	 * Not a secret. Unset hides browser notifications and refuses the sender.
 	 */
 	HARNESS_PUSH_PUBLIC_KEY?: string;
-	/** The Hub's sealed Web Push signing binding. Unset disables closed-browser approval notices. */
-	HARNESS_PUSH_PRIVATE_KEY?: string;
+	/** The public half of the separate device approval push key. */
+	HARNESS_APPROVAL_PUSH_PUBLIC_KEY?: string;
+	/** Hub-only VAPID signing binding for generic approval notices. */
+	HARNESS_APPROVAL_PUSH_PRIVATE_KEY?: string;
 	DB?: D1Database;
 	CACHE?: R2Bucket;
 	/** The relay's host objects, reachable through this binding only. */

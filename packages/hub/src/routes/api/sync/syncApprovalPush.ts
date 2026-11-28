@@ -74,9 +74,10 @@ async function deliver(call: SyncCall, push: ApprovalPush) {
 			`SELECT p.device, p.session_hash, p.endpoint, p.p256dh, p.auth
 			FROM approval_web_push p JOIN auth_sessions s ON s.id_hash = p.session_hash
 			WHERE p.account = ? AND p.device != ? AND s.actor_id = p.account
-				AND s.sealed_device_id = p.device AND s.revoked_at IS NULL AND s.expires_at > ?`
+				AND s.sealed_device_id = p.device AND s.revoked_at IS NULL AND s.expires_at > ?
+				AND ? = (SELECT hash FROM sealed_chain WHERE account = p.account ORDER BY seq DESC LIMIT 1)`
 		)
-		.bind(call.account, call.device, now)
+		.bind(call.account, call.device, now, chain.head)
 		.all<ApprovalPushRow>();
 	const active = results.filter(({ device }) => {
 		const entry = chain.devices[device];
