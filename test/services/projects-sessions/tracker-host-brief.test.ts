@@ -96,6 +96,9 @@ test('a truncated Docker brief keeps the done proof rule within its 15,900 byte 
 			brief: formatTrackerHostBrief(long, completion)
 		} as Parameters<typeof managedBrief>[0]);
 		expect(brief).toContain(trackerDoneProofRule);
+		expect(brief).toContain('use the `mock-mode` skill');
+		expect(brief).toContain('make “Mock mode first” a task before feature work');
+		expect(brief).toContain('an automated test proving zero paid calls in mock mode');
 		expect(brief).toContain('Run only the tests relevant to your change');
 		expect(brief).toContain('Never merge into a Greymass repository');
 		expect(brief).toContain('Read the full task with `tracker show abcdef1234567890`.');

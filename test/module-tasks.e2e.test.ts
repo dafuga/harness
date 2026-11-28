@@ -52,6 +52,10 @@ test('tasks share a stable goal-first prompt and keep their wanted contracts aft
 		expect(second.startsWith(prefix)).toBe(true);
 		expect(first).toContain('Maintain the complete order lifecycle.');
 		expect(first).toContain('Reject empty orders.');
+		for (const prompt of [first, second]) {
+			expect(prompt).toContain('use the `mock-mode` skill');
+			expect(prompt).toContain('an automated test proving zero paid calls in mock mode');
+		}
 		await new GitAdapter(clone).run(['clone', '-q', f.root, '.']);
 		await runHarness(['task', 'sync', 'origin'], clone);
 		const shown = JSON.parse(

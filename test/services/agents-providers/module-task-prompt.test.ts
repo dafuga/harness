@@ -16,7 +16,8 @@ test('worker prompt gives a compact Harness-only repository brief', async () => 
 		});
 		const input = JSON.parse(await readFile(await fixture.input(), 'utf8')) as ModuleTaskInput;
 		await service.add(input);
-		const brief = (await service.prompt(input.id)).split('\n')[2] ?? '';
+		const prompt = await service.prompt(input.id);
+		const brief = prompt.split('\n')[2] ?? '';
 
 		expect(brief.length).toBeLessThanOrEqual(1500);
 		expect(brief).toContain('Edit only the allowed task files in this prompt');
@@ -30,6 +31,8 @@ test('worker prompt gives a compact Harness-only repository brief', async () => 
 			'Your only channel is Harness: put questions, blockers and contract doubts in your final message; do not contact anyone or any other service.'
 		);
 		expect(brief).not.toContain('Follow AGENTS.md');
+		expect(prompt).toContain('use the `mock-mode` skill');
+		expect(prompt).toContain('an automated test proving zero paid calls in mock mode');
 	} finally {
 		await fixture.dispose();
 	}

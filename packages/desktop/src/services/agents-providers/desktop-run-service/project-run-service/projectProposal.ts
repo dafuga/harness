@@ -10,6 +10,7 @@ import type {
 	ProposedContract
 } from '../../../../models/development-tooling/DesktopBridge.types';
 import { referencePrompt } from '../../../../utils/agents-providers/referencePrompt';
+import { mockModePlanningRule } from '../../../../../../../src/utils/agents-providers/mockModePlanningRule';
 import { InvalidProposalError } from './projectProposal.types';
 
 const most = { answer: 20_000, title: 160, goal: 600, proposal: 6000 } as const;
@@ -125,6 +126,8 @@ export function proposalPrompt(
 		'The title is a name, never a path or a file name. The notes hold no source code, no file',
 		'paths, no instruction to write files and no claim that anything was built, run or verified.',
 		'Code is written only after a person approves the plan.',
+		mockModePlanningRule,
+		'Record the estimate and any required mock-mode task in the proposal field.',
 		referencePrompt(known),
 		'The notes may name existing units so; the title names the new unit in plain words.',
 		`The request was made in the ${request.category} catalog. That is a hint: choose the kind`,

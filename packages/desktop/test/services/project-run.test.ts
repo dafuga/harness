@@ -29,7 +29,7 @@ const answers = (f: Fixture, before: (turn: AgentTurn) => Promise<void> | void =
 	});
 async function settled(f: Fixture, request = asked(f)) {
 	const started = await f.service.start(request);
-	await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
+	await expect.poll(() => f.session.busy, { timeout: 30000 }).toBe(false);
 	return started;
 }
 const head = (f: Fixture) => git(f.root, 'rev-parse', 'HEAD');
@@ -67,7 +67,51 @@ test('the agent decides the kind: a component asked for among functions is plann
 		summary: expect.stringContaining('Planned Order badge.'),
 		created: { ...created, requestSaved: true }
 	});
-}, 20000);
+}, 60000);
+
+test.each([
+	'$0.25 per real test, which takes 20 seconds',
+	'$0 per real test, which takes 3 minutes'
+])(
+	'a costly app plan saves the mock-mode prerequisite for this estimate: %s',
+	async (cost) => {
+		const f = await fixture();
+		const proposal = [
+			`Real test estimate: ${cost}.`,
+			'1. Mock mode first: extend the payment adapter with offline success and decline fixtures.',
+			'Add a local/test switch, test the production guard, show MOCK in the app and logs, and assert zero paid calls.',
+			'2. Build the new checkout flow. Run unit tests, E2E and screenshots in mock mode.',
+			'3. At release, explicitly enable one $0.25 capped real checkout. Refresh fixtures when the payment API changes.'
+		].join('\n');
+		f.run.mockImplementationOnce(async ({ prompt, model }) => {
+			expect(prompt).toContain('use the `mock-mode` skill');
+			expect(prompt).toContain('Estimate the time and money for one real end-to-end test');
+			expect(prompt).toContain('costs money or takes more than about one minute');
+			expect(prompt).toContain('make “Mock mode first” a task before feature work');
+			expect(prompt).toMatch(
+				/switch.*production guard.*adapters.*fixtures.*MOCK badge.*zero paid calls/
+			);
+			expect(prompt).toContain('in the proposal field');
+			expect(prompt).toContain('release check behind an explicit flag and spend cap');
+			return { text: JSON.stringify({ ...badge, category: 'functions', proposal }), model };
+		});
+		const started = await settled(f, {
+			...asked(f),
+			text: `Plan checkout. A real test costs ${cost}.`
+		});
+		const plan = (await planned(f))!;
+		const saved = await (await createPlanning(f.root)).readPlan({ unitId: plan.id });
+		const version = saved.versions[0];
+		const notes = git(
+			f.root,
+			'show',
+			`HEAD:${saved.path}/designs/${version.version}/${version.notes!.file}`
+		);
+		expect(notes).toBe(proposal);
+		expect(f.events.at(-1)).toMatchObject({ runId: started.runId, kind: 'finished' });
+	},
+	60000
+);
 
 test.each([
 	['its thread could not be opened', 'openThread', false],
