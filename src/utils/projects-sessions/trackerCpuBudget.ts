@@ -1,7 +1,7 @@
 // @harness-uid u_gyjtguqwrp
 const budgetNode = 'harbor-mbp-2';
 export const trackerHomeProject = 'harbor';
-/** On MB2 all work outside Harbor shares this many cores, in one session at a time. */
+/** On MB2 all work outside Harbor shares this many cores. */
 export const trackerBudgetCores = 4;
 export const trackerBudgetSessions = 1;
 

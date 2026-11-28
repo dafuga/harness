@@ -133,6 +133,7 @@ async function proveMb2Budget(root: string, nonHarborSessionLimit?: number) {
 		for (const id of admitted.slice(1)) {
 			fixture.queue(id, 'Harness');
 			await fixture.tick();
+			expect(fixture.running(), fixture.waiting() ?? undefined).toContain(id);
 		}
 		fixture.queue('other00009', 'Harness');
 		await fixture.tick();
