@@ -11,11 +11,17 @@
 		"source": [
 			"packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts"
 		],
-		"symbols": ["provideHomeCosChat", "homeCosChat"]
+		"symbols": ["askKey", "provideHomeCosChat", "homeCosChat"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "askKey.ask",
+				"type": "HomeOpenAsk",
+				"required": true,
+				"description": "Open question whose item ID and question text identify its answer receipt."
+			},
 			{
 				"name": "provideHomeCosChat.refreshAsk",
 				"type": "() => void",
@@ -38,6 +44,25 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "askKey",
+				"inputs": [
+					{
+						"name": "askKey.ask",
+						"type": "HomeOpenAsk",
+						"required": true,
+						"description": "Open question whose item ID and question text identify its answer receipt."
+					}
+				],
+				"outputs": [
+					{
+						"name": "askKey",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "provideHomeCosChat",
 				"inputs": [
@@ -77,6 +102,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.function.projects-sessions-hub-home-chat-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

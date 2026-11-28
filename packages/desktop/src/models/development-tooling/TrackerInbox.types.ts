@@ -156,6 +156,13 @@ export interface InboxOverview {
 	needsYouCapped: boolean;
 }
 
+export interface TrackerInboxProps {
+	source: TrackerInboxSource;
+	mode?: 'phone' | 'mac';
+	home?: boolean;
+	project?: string;
+}
+
 /** The reads and confirmed writes supplied by the Mac bridge or the phone replica. */
 export interface TrackerInboxSource {
 	overview(): Promise<InboxReply<InboxOverview>>;

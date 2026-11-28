@@ -15,6 +15,7 @@
 	import HubHomeChoices from './HubHomeChoices.svelte';
 	import ViewSpecButtons from '$reports/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte';
 	import { hubSpecDocuments } from './hubSpecDocument';
+	import { askKey, homeCosChat } from './hubHomeChatContext.svelte';
 
 	let {
 		ask,
@@ -38,11 +39,14 @@
 		refused: 'Answer not sent. Check the latest question and try again.',
 		unconfirmed: 'Tracker did not confirm the answer. Check Tracker before retrying.'
 	};
-	const version = $derived(JSON.stringify([ask.itemId, ask.question, ask.since]));
+	const chat = homeCosChat();
+	const version = $derived(askKey(ask));
+	const shared = $derived(chat?.answers.get(version));
 	let submission = $state<{ version: string; phase: keyof typeof feedback } | null>(null);
 	const phase = $derived(submission?.version === version ? submission.phase : null);
-	const busy = $derived(phase === 'sending' || phase === 'queued');
-	const open = $derived(phase !== 'sent');
+	const busy = $derived(phase === 'sending' || phase === 'queued' || Boolean(shared));
+	const open = $derived(!shared?.dismissed && (phase !== 'sent' || Boolean(present && shared)));
+	const feedbackText = $derived(shared?.status ?? (phase ? feedback[phase] : null));
 
 	async function answerWith(text: string, tap?: { number: number; confirmed: boolean }) {
 		if (!text.trim() || busy) return;
@@ -55,28 +59,52 @@
 			text: text.trim(),
 			...(tap && { option: tap.number, ...(tap.confirmed && { confirmed: true as const }) })
 		};
+		const question = ask;
 		const reviewed = version;
-		submission = { version: reviewed, phase: 'sending' };
+		report(question, message, 'sending');
 		try {
 			const result = await send(message);
 			if (version !== reviewed) return;
 			submitted?.(message, result);
-			await settle(reviewed, result);
+			await settle(question, message, result);
 		} catch {
-			if (version === reviewed) submission = { version: reviewed, phase: 'unconfirmed' };
+			if (version === reviewed) report(question, message, 'unconfirmed');
 		}
 	}
 
-	async function settle(reviewed: string, result: HomeChatReceipt) {
-		submission = { version: reviewed, phase: result.status };
+	function report(
+		question: HomeOpenAsk,
+		message: HomeChatInput,
+		next: keyof typeof feedback,
+		dismissed = false
+	) {
+		const key = askKey(question);
+		submission = { version: key, phase: next };
+		if (next === 'refused' || next === 'unconfirmed') chat?.answers.delete(key);
+		else
+			chat?.answers.set(key, {
+				ask: question,
+				status: `${feedback[next]} · ${message.text}`,
+				selection: message.option,
+				dismissed
+			});
+	}
+
+	async function settle(question: HomeOpenAsk, message: HomeChatInput, result: HomeChatReceipt) {
+		const reviewed = askKey(question);
+		report(question, message, result.status);
 		for (let attempt = 0; attempt < 15 && result.status === 'queued'; attempt++) {
 			await new Promise((done) => setTimeout(done, 2000));
 			if (version !== reviewed) return;
 			result = await receipt(result.id).catch(() => result);
 			if (version !== reviewed) return;
-			submission = { version: reviewed, phase: result.status };
+			report(question, message, result.status);
 		}
-		if (result.status === 'queued') submission = { version: reviewed, phase: 'unconfirmed' };
+		if (result.status === 'queued') report(question, message, 'unconfirmed');
+		if (result.status === 'sent') {
+			await new Promise((done) => setTimeout(done, 900));
+			if (version === reviewed) report(question, message, 'sent', true);
+		}
 	}
 </script>
 
@@ -85,6 +113,7 @@
 		<HubHomeChoices
 			agent={ask}
 			{busy}
+			selected={shared?.selection}
 			{present}
 			onpick={(number, confirmed) => {
 				const option = ask.options[number - 1];
@@ -118,4 +147,6 @@
 		</hx-section>
 	{/if}
 {/if}
-{#if phase}<hx-p class="po-sessions" role="status">{ask.agentName}: {feedback[phase]}</hx-p>{/if}
+{#if feedbackText}
+	<hx-p class="po-sessions hh-answer-feedback" role="status">{ask.agentName}: {feedbackText}</hx-p>
+{/if}

@@ -58,19 +58,22 @@
 				"name": "DesignsHeader.onbranch",
 				"type": "(branch: string) => void",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Selects the branch whose canvases should be displayed."
 			},
 			{
 				"name": "DesignsHeader.canvasHref",
 				"type": "(name: string, branch: string) => string",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Builds the web link to a named canvas on the displayed branch."
 			},
 			{
 				"name": "DesignsHeader.oncanvas",
 				"type": "(name: string) => void",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Selects a named canvas in the current view."
 			}
 		],
 		"outputs": [

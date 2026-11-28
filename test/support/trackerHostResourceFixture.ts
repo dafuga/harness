@@ -44,6 +44,7 @@ export function trackerResourceHost(root: string, node: string, limits: object =
 					project,
 					auto: `${id}-token`,
 					launch_source: 'manual',
+					'note+': `auto-launch requested on ${node}`,
 					computer: node,
 					launch_target: node
 				}

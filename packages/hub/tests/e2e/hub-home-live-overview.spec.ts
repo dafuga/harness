@@ -1,20 +1,22 @@
 import { expect, test } from '../../../../test/support/browserTest';
+import { captureNeedsYou } from './hub-home-capture';
 import { recordedTracker } from '../../test/support/recordedTracker';
 import {
+	checkProjectDisclosure,
 	expandProjects,
+	expectComputerWorkload,
 	expectEvenHeaderSpacing,
 	expectLiveDisposition,
+	expectLiveRowFacts,
 	expectNoSidewaysScroll,
+	expectRecordedProjects,
 	liveRows,
 	macAnswer,
 	overview,
 	productionHome,
 	seedLiveDisposition
 } from './hub-home-live-fixture';
-import { captureNeedsYou } from './hub-home-capture';
-
 test.setTimeout(90000);
-
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
 	['phone', 390, 844]
@@ -30,6 +32,16 @@ for (const [device, width, height] of [
 		seedLiveDisposition(tracker);
 		const answer = await macAnswer(tracker);
 		answer.liveOverview!.machines.push({ name: 'grok-box', status: 'offline' });
+		const sample = answer.liveOverview!.projects[0];
+		answer.liveOverview!.projects.push({
+			...sample,
+			agent: 'completed-only',
+			running: 0,
+			blockedRows: 0,
+			totalRows: 1,
+			counts: { open: 0, in_progress: 0, blocked: 0, done: 1 },
+			rows: []
+		});
 		const requests = await productionHome(page, answer);
 		await page.clock.setFixedTime(Date.parse(tracker.recordedAt));
 		await page.goto('/');
@@ -37,13 +49,18 @@ for (const [device, width, height] of [
 		const live = tracker.runs.filter((run) => run.state === 'running' && run.ended_at === null);
 		const groups = overview(page).locator('details.hh-live-project');
 		await expect(groups.first()).toBeVisible();
+		await expect(groups.first().locator(':scope > summary')).toContainText(
+			/Running \d+ · Blocked \d+ · Not running \d+/
+		);
 		await expect(overview(page).locator('details.hh-live-project[open]')).toHaveCount(0);
 		await expect(liveRows(page).first()).toBeHidden();
 		const alert = page.getByRole('status', { name: 'System alerts' });
 		await expect(alert).toContainText('Offline: grok-box');
 		await expect(overview(page)).not.toContainText('Offline: grok-box');
 		const main = page.getByRole('main');
-		await expect(main.locator(':scope > section').last()).toHaveAccessibleName('Live overview');
+		const sections = main.locator(':scope > section');
+		await expect(sections.first()).toHaveAccessibleName('Blocked - needs you');
+		await expect(sections.last()).toHaveAccessibleName('Live overview');
 		expect((await alert.boundingBox())!.y).toBeLessThan(
 			(await page.getByRole('heading', { level: 1 }).boundingBox())!.y
 		);
@@ -51,40 +68,17 @@ for (const [device, width, height] of [
 			await page.evaluate(() => document.fonts.ready.then(() => {}));
 			await page.screenshot({ path: test.info().outputPath(`home-top-${device}.png`) });
 		}
-		const computer = page
-			.getByRole('list', { name: 'Computers' })
-			.getByRole('listitem')
-			.filter({ hasText: 'harbor-mbp-2' });
-		await expect(computer).toBeVisible();
-		await page.evaluate(() => window.scrollTo(0, 0));
-		await captureNeedsYou(page, `host-work-${device}`);
-		await expect(computer).toContainText('2 remote runs');
+		await expectComputerWorkload(page, device);
+		await checkProjectDisclosure(page, answer.liveOverview!.projects, device);
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
-		await expectLiveDisposition(page, test.info().outputPath(`live-disposition-${device}.png`));
-		const projects = new Set(tracker.items.map((item) => item.agent));
 		await expect(overview(page).getByRole('status')).toHaveText(
-			`${live.length} runs live on 2 computers · ${projects.size} projects`
+			`${live.length} runs live on 2 computers · ${answer.liveOverview!.projects.length} projects`
 		);
-		for (const run of live) {
-			const item = tracker.items.find((entry) => entry.id === run.item_id)!;
-			const row = liveRows(page).filter({
-				has: page.getByText(item.title, { exact: true })
-			});
-			await expect(row).toBeVisible();
-			for (const fact of [
-				'Running',
-				item.owner ?? 'No owner',
-				run.node,
-				run.effort ? `${run.model}:${run.effort}` : run.model,
-				/running (under )?\d+[mhd] · updated .+ ago/
-			])
-				await expect(row).toContainText(fact);
-		}
-		for (const agent of projects)
-			await expect(
-				overview(page).locator('.hh-live-name', { hasText: agent! }).first()
-			).toBeAttached();
+		await expectLiveRowFacts(page, tracker);
+		await expectRecordedProjects(page, tracker);
+		await expandProjects(page);
+		await expectLiveDisposition(page, test.info().outputPath(`live-disposition-${device}.png`));
 		await expect(overview(page)).toContainText('over an encrypted connection · read');
 		await expectNoSidewaysScroll(page, width);
 		if (device === 'phone') await expectEvenHeaderSpacing(page);
@@ -148,7 +142,9 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	const projects = () => requests.filter((entry) => entry.path === '/api/projects').length;
 	const storedBefore = stored();
 	const projectsBefore = projects();
-	const finished = live[0];
+	const lastSession = answer.liveOverview!.projects.find((project) => project.running === 1)!;
+	const itemId = lastSession.rows.find((row) => row.state === 'running')!.itemId;
+	const finished = live.find((run) => run.item_id === itemId)!;
 	const item = tracker.items.find((entry) => entry.id === finished.item_id)!;
 	finished.ended_at = Date.parse(tracker.recordedAt);
 	finished.state = 'finished';
@@ -162,10 +158,19 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	const group = overview(page)
 		.locator('details.hh-live-project')
 		.filter({ has: page.locator('summary.hh-live-head', { hasText: item.agent! }) });
+	await expect(group).toHaveCount(0);
+	await overview(page)
+		.getByRole('button', { name: /^See all projects/ })
+		.click();
+	await expect(group.locator(':scope > summary')).toContainText('Running 0');
 	if (!(await group.evaluate((node) => (node as HTMLDetailsElement).open)))
 		await group.locator(':scope > summary').click();
-	const more = group.getByRole('button', { name: /^Show all/ });
-	if (await more.count()) await more.click();
+	const more = group.getByRole('button', { name: /^See all/ });
+	await more.click();
+	await expect(more.or(group.getByRole('button', { name: /^Show fewer/ }))).toHaveAttribute(
+		'aria-expanded',
+		'true'
+	);
 	const row = overview(page)
 		.locator('.hh-live-row')
 		.filter({ has: page.getByText(item.title, { exact: true }) });

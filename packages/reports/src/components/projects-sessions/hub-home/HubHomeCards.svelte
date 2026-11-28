@@ -23,6 +23,8 @@
 		warningFor,
 		warningLabel
 	} from './hubHomePresentation';
+	import HubHomePlannable from './HubHomePlannable.svelte';
+	import HubHomeProjectCard from './HubHomeProjectCard.svelte';
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
 	import type { HomeCardsProps } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
@@ -52,7 +54,6 @@
 		view.agents?.filter((agent) => !isWorking(agent) && agent.state !== 'needs-you').length ?? 0
 	);
 </script>
-
 {#snippet empty(text: string, action?: string, act?: () => void)}
 	<EmptyState as="div" className="po-empty hh-empty"
 		><hx-p>{text}</hx-p>
@@ -60,7 +61,17 @@
 			>{/if}
 	</EmptyState>
 {/snippet}
-<HubHomeNeedsYou asks={view.openAsks} now={view.now} {send} {receipt} />
+<HubHomeNeedsYou
+	asks={view.openAsks}
+	now={view.now}
+	reading={view.trackerConnected || view.openAsks.length
+		? 'ready'
+		: view.agents === null
+			? 'loading'
+			: 'unavailable'}
+	{send}
+	{receipt}
+/>
 {#if view.reminders && !needsOnly}
 	<HubHomeReminders reminders={view.reminders} now={view.now} {send} {receipt} />
 {/if}
@@ -71,11 +82,7 @@
 		{send}
 		{receipt}
 	/>{/if}
-{#if needsOnly}
-	{#if view.agents === null}<HubHomeSkeleton rows={3} />
-	{:else if !view.trackerConnected}{@render empty('Tracker decisions could not be read.')}
-	{:else if !view.openAsks.length}{@render empty('Nothing needs you right now.')}{/if}
-{:else}
+{#if !needsOnly}
 	<hx-div class="hh-grid">
 		<HubHomeCard
 			section="agents"
@@ -205,6 +212,8 @@
 				)}
 			{/if}
 		</HubHomeCard>
+		<HubHomePlannable {view} {open} />
+		<HubHomeProjectCard {view} open={() => open('projects')} />
 		<HubHomeWorkCards {view} {open} />
 	</hx-div>
 {/if}

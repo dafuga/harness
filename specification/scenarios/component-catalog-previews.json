@@ -165,6 +165,7 @@
 		"hub.page.public-site-about",
 		"hub.page.root",
 		"hub.page.tracker-overview",
+		"reports.component.accounts-access-device-list-row",
 		"reports.component.activity-list",
 		"reports.component.audio-comparison",
 		"reports.component.audio-comparison-viewer",
@@ -2493,6 +2494,12 @@
 			"title": "/tracker-overview",
 			"coverage": "required",
 			"units": ["hub.page.tracker-overview"]
+		},
+		{
+			"id": "reports-component-accounts-access-device-list-row",
+			"title": "DeviceListRow",
+			"coverage": "required",
+			"units": ["reports.component.accounts-access-device-list-row"]
 		},
 		{
 			"id": "reports-component-activity-list",
@@ -9177,6 +9184,7 @@
 				"hub-page-public-site-about",
 				"hub-page-root",
 				"hub-page-tracker-overview",
+				"reports-component-accounts-access-device-list-row",
 				"reports-component-activity-list",
 				"reports-component-activity-list-empty",
 				"reports-component-activity-list-short",

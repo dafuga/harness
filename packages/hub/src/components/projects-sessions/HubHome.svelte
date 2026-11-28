@@ -4,7 +4,8 @@
 <!-- @harness-view overview -->
 <script lang="ts">
 	import { page } from '$app/state';
-	import { homeBoard } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
+	import { workOverview } from '$reports/components/projects-sessions/hub-home/hubHomeStatusText';
+	import { homeBoard } from '$reports/components/projects-sessions/hub-home/hubHomeMerge';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
@@ -17,24 +18,24 @@
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot } from './hubHomeClient';
 	import { hubHomeReads } from './hubHomeReads';
-	import { provideHubSpecDocuments } from '../../../../reports/src/components/projects-sessions/hub-home/hubSpecDocument';
-	import { provideHomeCosChat } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
+	import { provideHubSpecDocuments } from '$reports/components/projects-sessions/hub-home/hubSpecDocument';
+	import { provideHomeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 	import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 	import * as presentation from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import type * as Home from '$reports/components/projects-sessions/hub-home/hubHomeView.types';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import { followHubUpdates, liveReadMs } from '../../lib/networking-security/hubLiveUpdates';
-	import HubHomeHeader from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeHeader.svelte';
+	import HubHomeHeader from '$reports/components/projects-sessions/hub-home/HubHomeHeader.svelte';
 	import AccountMenu from '../accounts-access/AccountMenu.svelte';
 	import HubHomeNotifications from './HubHomeNotifications.svelte';
-	import HubHomeCards from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeCards.svelte';
-	import HubHomeLive from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte';
-	import HubHomeDialogs from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte';
+	import HubHomeCards from '$reports/components/projects-sessions/hub-home/HubHomeCards.svelte';
+	import HubHomeLive from '$reports/components/projects-sessions/hub-home/HubHomeLive.svelte';
+	import HubHomeDialogs from '$reports/components/projects-sessions/hub-home/HubHomeDialogs.svelte';
 	import { followNeedsLink } from './followNeedsLink.svelte';
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
-	import '../../../../reports/src/lib/styles/home-scheme.css';
-	import '../../../../reports/src/lib/styles/hub-home/index.css';
+	import '$reports/lib/styles/home-scheme.css';
+	import '$reports/lib/styles/hub-home/index.css';
 	let { approvals }: { approvals?: Snippet } = $props();
 	const { api, session, projects } = browserContext();
 	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
@@ -63,8 +64,10 @@
 			!presentation.staleReading(snapshot.providers.routinesReadAt, now)
 	);
 	const board = $derived(snapshot ? homeBoard(snapshot, routinesConnected, now) : null);
+	const pastDue = $derived(board?.pastDue ?? []);
+	const unavailable = { status: 'unavailable' } as const;
 	const overview = $derived(
-		snapshot?.overview ?? (settled ? { status: 'unavailable' as const } : null)
+		workOverview(snapshot?.overview ?? (settled ? unavailable : null), pastDue)
 	);
 	const linkedComputers = $derived(live?.linked ?? 0);
 	const projectsFailed = $derived(projectError && !list?.length);
@@ -76,7 +79,7 @@
 		controlled,
 		plans: snapshot?.plans ?? (settled ? [] : null),
 		schedule: board?.upcoming ?? (settled ? [] : null),
-		pastDue: board?.pastDue ?? [],
+		pastDue,
 		quota: snapshot?.providers.quota ?? (settled ? [] : null),
 		projects: list,
 		projectsFailed,
@@ -175,11 +178,8 @@
 		return request;
 	}
 	async function changeSession(id: string, add: boolean) {
-		const result = await api.send<{ controlled: string[] }>(
-			add ? 'POST' : 'DELETE',
-			'/api/hub-home/agents',
-			{ id }
-		);
+		const method = add ? 'POST' : 'DELETE';
+		const result = await api.send<{ controlled: string[] }>(method, '/api/hub-home/agents', { id });
 		if (home) home = { ...home, controlled: result.controlled };
 		refresh();
 	}
@@ -204,7 +204,7 @@
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
 			<HubHomeCards {view} {open} send={reads.send} {receipt} {needsOnly} />
-			{#if !needsOnly}<HubHomeLive reading={view.computers} now={view.now} />{/if}
+			{#if !needsOnly}<HubHomeLive reading={live} {now} {pastDue} />{/if}
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs

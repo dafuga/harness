@@ -62,14 +62,13 @@ const cosAlertLineLimit = 112;
 const rowSeparator = ' | ';
 
 function cosMessage(alerts: readonly TrackerWatchdogAlert[]) {
-	const message = cosSummary(alerts);
 	const slots = new Map(
 		alerts.flatMap(({ host, slots }) => (slots ? [[host, plain(slots)] as const] : []))
 	);
-	if (!slots.size) return message;
+	if (!slots.size) return cosSummary(alerts);
 	const lines = [...slots].map(([host, line]) => `${host}: ${line}`);
-	const withSlots = `${message} || Slots by computer: ${lines.join(' || ')}`;
-	return Buffer.byteLength(withSlots) <= cosMessageLimit ? withSlots : message;
+	const withSlots = cosSummary(alerts, ` || Slots by computer: ${lines.join(' || ')}`);
+	return Buffer.byteLength(withSlots) <= cosMessageLimit ? withSlots : cosSummary(alerts);
 }
 
 function plain(text: string) {
@@ -118,15 +117,20 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 	};
 }
 
-function cosSummary(alerts: readonly TrackerWatchdogAlert[]) {
+function cosSummary(alerts: readonly TrackerWatchdogAlert[], trailer = '') {
 	const references = alerts.map(cosReceiptReference).join(',');
 	const prefix =
 		'Tracker watchdog alerts for Chief of Staff. Review these items. ' +
 		`Watchdog receipts: ${references} || `;
 	const available =
-		cosMessageLimit - Buffer.byteLength(prefix) - (alerts.length - 1) * rowSeparator.length;
+		cosMessageLimit -
+		Buffer.byteLength(prefix) -
+		Buffer.byteLength(trailer) -
+		(alerts.length - 1) * rowSeparator.length;
 	const lineBudget = Math.min(cosAlertLineLimit, Math.floor(available / alerts.length));
-	return prefix + alerts.map((alert) => cosPromptLine(alert, lineBudget)).join(rowSeparator);
+	return (
+		prefix + alerts.map((alert) => cosPromptLine(alert, lineBudget)).join(rowSeparator) + trailer
+	);
 }
 
 function cosPromptLine(alert: TrackerWatchdogAlert, budget: number) {

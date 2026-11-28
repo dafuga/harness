@@ -14,6 +14,8 @@ export type OverviewItem = {
 	due: string | null;
 	live: boolean;
 	stale: boolean;
+	/** Current queue or blocked state when Home has a matching Tracker schedule reading. */
+	workLabel?: string;
 };
 
 /** A question or blocked reason with the item it belongs to. */

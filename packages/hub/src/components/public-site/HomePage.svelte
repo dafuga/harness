@@ -5,7 +5,7 @@
 	import BrandMark from '$shared/BrandMark.svelte';
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
-	import '../../../../reports/src/lib/styles/home-scheme.css';
+	import '$reports/lib/styles/home-scheme.css';
 	import '../../lib/styles/home.css';
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
 	import { browserContext } from '../../utils/development-tooling/browserContext';

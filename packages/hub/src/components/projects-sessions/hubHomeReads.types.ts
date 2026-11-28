@@ -5,7 +5,7 @@ import type {
 	HomeChatInput,
 	HomeChatReceipt
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-import type { ReadHomeResult } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeView.types';
+import type { ReadHomeResult } from '$reports/components/projects-sessions/hub-home/hubHomeView.types';
 
 /** Whose Home is read, and where each answer goes. */
 export interface HubHomeReadOptions {

@@ -3632,6 +3632,18 @@
 			"reason": "Resolve the Reports source used by Home through the workspace build alias."
 		},
 		{
+			"from": "packages/desktop/src/utils/projects-sessions/desktopHomeView.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeStatusText",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeStatusText.ts",
+			"reason": "Mac Home uses the same current work labels as Hub Home."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomeView.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLive.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"reason": "Home reads the shared snapshot from the linked computers."
+		},
+		{
 			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeDirectory.svelte",
 			"specifier": "$reports/helpers/strings/shortCommit",
 			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
@@ -3672,6 +3684,270 @@
 			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeView.types",
 			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeView.types.ts",
 			"reason": "Resolve the shared Home projection through the Reports workspace alias."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the shared Reports work and answer presentation through its build alias."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLiveProject.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the shared Reports work and answer presentation through its build alias."
+		},
+		{
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeLive.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte"
+		},
+		{
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeWork.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeWork.svelte",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte"
+		},
+		{
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeWorkCards.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeWorkCards.svelte",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte"
+		},
+		{
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte"
+		},
+		{
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeStatusText",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeStatusText.ts",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte"
+		},
+		{
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeStatusText",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeStatusText.ts",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte"
+		},
+		{
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLive.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/hub/src/services/networking-security/LinkedHomeService.types.ts"
+		},
+		{
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLive.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeWork.svelte"
+		},
+		{
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLive.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeWorkCards.svelte"
+		},
+		{
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeWorkCards.svelte"
+		},
+		{
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts"
+		},
+		{
+			"specifier": "$reports/components/projects-sessions/project-overview/projectOverviewPresentation",
+			"to": "packages/reports/src/components/projects-sessions/project-overview/projectOverviewPresentation.ts",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts"
+		},
+		{
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "Resolves shared Home presentation through the Reports build alias.",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomeStatusText.ts"
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte",
+			"specifier": "../../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "The Hub chat composer uses the shared recipient selection control."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeCards.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCards.svelte",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeDialogs.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeHeader.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeHeader.svelte",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeLive.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeMerge",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeMerge.ts",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubSpecDocument",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/lib/styles/home-scheme.css",
+			"to": "packages/reports/src/lib/styles/home-scheme.css",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/lib/styles/hub-home/index.css",
+			"to": "packages/reports/src/lib/styles/hub-home/index.css",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeCards.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCards.svelte",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeDialogs.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeHeader.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeHeader.svelte",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeLive.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeView.types",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeView.types.ts",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubSpecDocument",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte",
+			"specifier": "$reports/lib/styles/home-scheme.css",
+			"to": "packages/reports/src/lib/styles/home-scheme.css",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte",
+			"specifier": "$reports/lib/styles/hub-home/index.css",
+			"to": "packages/reports/src/lib/styles/hub-home/index.css",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/projects-sessions/desktopHomeView.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeMerge",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeMerge.ts",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/projects-sessions/desktopHomeView.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/projects-sessions/desktopHomeView.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeView.types",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeView.types.ts",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/followNeedsLink.svelte.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.types",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.types.ts",
+			"reason": "The linked question opens with the shared Chief of Staff chat context."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/followNeedsLink.svelte.types.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.types",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.types.ts",
+			"reason": "The linked question callback uses the shared Chief of Staff chat context."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeClient.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeView.types",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeView.types.ts",
+			"reason": "The Hub Home client returns the shared Home read result."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeNotificationText.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeTime",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeTime.ts",
+			"reason": "Home notifications format dates with the shared Home time helpers."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeReads.types.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeView.types",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeView.types.ts",
+			"reason": "Hub Home read dependencies return the shared Home read result."
+		},
+		{
+			"from": "packages/hub/src/components/public-site/HomePage.svelte",
+			"specifier": "$reports/lib/styles/home-scheme.css",
+			"to": "packages/reports/src/lib/styles/home-scheme.css",
+			"reason": "The public Home page uses the shared Home color scheme."
+		},
+		{
+			"from": "packages/hub/src/services/networking-security/LinkedHomeService.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeMerge",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeMerge.ts",
+			"reason": "The linked Home service uses the shared snapshot merge."
 		}
 	]
 }

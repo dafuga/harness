@@ -15,6 +15,11 @@
 	import HubHomeCosChat from '$reports/components/projects-sessions/hub-home/HubHomeCosChat.svelte';
 	import HubHomePlannable from '$reports/components/projects-sessions/hub-home/HubHomePlannable.svelte';
 	import HubHomePlanDetail from '$reports/components/projects-sessions/hub-home/HubHomePlanDetail.svelte';
+	import HubHomeWorkCards from '$reports/components/projects-sessions/hub-home/HubHomeWorkCards.svelte';
+	import HubHomeWork from '$reports/components/projects-sessions/hub-home/HubHomeWork.svelte';
+	import HubHomeLive from '$reports/components/projects-sessions/hub-home/HubHomeLive.svelte';
+	import { soonestWork } from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
+	import { workOverview } from '$reports/components/projects-sessions/hub-home/hubHomeStatusText';
 	import HubHomePlans from '$reports/components/projects-sessions/hub-home/HubHomePlans.svelte';
 	import HubHomeSchedule from '$reports/components/projects-sessions/hub-home/HubHomeSchedule.svelte';
 	import { provideHomeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
@@ -30,14 +35,25 @@
 	let snapshot = $state.raw<OwnerHomeSnapshot | null>(null);
 	let unavailable = $state(false);
 	let now = $state(Date.now());
-	let list = $state<'plans' | 'scheduled' | null>(null);
+	let list = $state<'plans' | 'scheduled' | 'wip' | null>(null);
 	let listOpener: HTMLElement | null = null;
 	let selection = $state<{ id: string; opener: HTMLElement | null } | null>(null);
 	let loading = false;
 	const activePlan = $derived(snapshot?.plans.find((plan) => plan.id === selection?.id));
+	const board = $derived(snapshot ? splitHomeSchedule(snapshot, now) : null);
+	const overview = $derived(
+		workOverview(
+			snapshot?.overview ?? (unavailable ? { status: 'unavailable' } : null),
+			board?.pastDue ?? []
+		)
+	);
 	const view = $derived({
+		overview,
+		work: soonestWork(overview),
+		trackerConnected: overview?.status === 'ready',
+		pastDue: board?.pastDue ?? [],
 		plans: snapshot?.plans ?? (unavailable ? [] : null),
-		schedule: snapshot ? splitHomeSchedule(snapshot, now).upcoming : unavailable ? [] : null,
+		schedule: board?.upcoming ?? (unavailable ? [] : null),
 		agents: null,
 		needsMac: unavailable,
 		now
@@ -76,7 +92,7 @@
 	function open(section: HomeSection, id?: string) {
 		const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 		if (section === 'plans' && id) selection = { id, opener: trigger };
-		else if (section === 'plans' || section === 'scheduled') {
+		else if (section === 'plans' || section === 'scheduled' || section === 'wip') {
 			list = section;
 			listOpener = trigger;
 		}
@@ -115,13 +131,19 @@
 			{/if}
 			<hx-div class="hh-grid">
 				<HubHomePlannable {view} {open} />
+				<HubHomeWorkCards {view} {open} />
 			</hx-div>
+			{#if snapshot?.liveOverview}<HubHomeLive
+					local={snapshot.liveOverview}
+					{now}
+					pastDue={view.pastDue}
+				/>{/if}
 		</hx-div>
 
 		{#if list}
 			<Modal
 				isOpen
-				title={list === 'plans' ? 'Plans' : 'Scheduled'}
+				title={{ plans: 'Plans', scheduled: 'Scheduled', wip: 'Work in progress' }[list]}
 				variant="section"
 				onClose={closeList}
 			>
@@ -132,6 +154,8 @@
 						discuss={() => {}}
 						openPlan={(id, opener) => (selection = { id, opener })}
 					/>
+				{:else if list === 'wip'}
+					<HubHomeWork {overview} work={view.work} pastDue={view.pastDue} {now} />
 				{:else}
 					<HubHomeSchedule runs={view.schedule} {now} />
 				{/if}

@@ -41,6 +41,11 @@ test('resource script preserves argv boundaries, defaults and explicit admission
 			HARNESS_RESOURCE_MEMORY_MIB: ''
 		})
 	).toEqual(resourceArguments(['coding', '--', ...command], {}));
+	const fullCheck = ['bun', 'scripts/run-checks.ts', '--part', 'static-unit'];
+	const managed = resourceArguments(['agent-test', '--', ...fullCheck], {});
+	const separator = managed.indexOf('--');
+	expect(managed.slice(separator + 1)).toEqual(fullCheck);
+	expect(managed.slice(0, separator)).toContain('Full repository check');
 	for (const args of [[], ['coding'], ['coding', '--'], ['unknown', '--', 'true']])
 		expect(() => resourceArguments(args, {})).toThrow('Usage:');
 });

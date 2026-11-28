@@ -56,7 +56,7 @@
 		const rows: ProjectOverviewDetailRow[] = [
 			{ term: 'Project', value: projectOf(cards, item) ?? 'Not listed' },
 			{ term: 'Status', value: statusLabel(item.status) },
-			{ term: 'ETA', value: etaFor(item.due, now).text },
+			{ term: 'ETA', value: etaFor(item, now).text },
 			{ term: 'Live', value: item.live ? 'Yes' : 'No' },
 			{ term: 'Stale', value: item.stale ? 'Yes' : 'No' },
 			{ term: 'Updated', value: formatWhen(item.updatedAt) },

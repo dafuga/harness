@@ -77,8 +77,7 @@ function restingRow(work: ItemWork): HomeWorkRow[] {
 	const pending =
 		item.launchRequested &&
 		!runs.some((run) => run.auto_token && run.auto_token === item.launchToken);
-	if (pending && (item.status === 'open' || item.status === 'in_progress'))
-		return [workRow(work, 'queued')];
+	if (pending && ['open', 'in_progress'].includes(item.status)) return [workRow(work, 'queued')];
 	if (item.status === 'in_progress') {
 		const last = endedToday(work);
 		const reason = homeText(item.blocked_reason ?? last?.failure_reason, 240);
@@ -115,6 +114,8 @@ function workProject(agent: string, works: ItemWork[]) {
 	const project: HomeWorkProject = {
 		agent: homeText(agent, 200) ?? 'No project',
 		running: rows.filter((row) => row.state === 'running').length,
+		blockedRows: rows.filter((row) => row.state !== 'running' && row.status === 'blocked').length,
+		totalRows: rows.length,
 		counts,
 		rows: rows.slice(0, homeLiveLimits.rows),
 		updatedAt: works

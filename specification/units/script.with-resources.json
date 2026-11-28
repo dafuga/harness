@@ -47,7 +47,7 @@
 			{
 				"name": "resourceArguments",
 				"type": "string[]",
-				"description": "The argument vector for the `resources run` CLI: `resources`, `run`, `--priority`, the priority, `--cpus`, the CPU count, `--memory-mib`, the memory MiB, `--`, then the command arguments unchanged. The priority is `HARNESS_RESOURCE_PRIORITY` when non-empty and the positional priority otherwise, the CPU count is `HARNESS_RESOURCE_CPUS` when non-empty and `1` otherwise, and the memory MiB is `HARNESS_RESOURCE_MEMORY_MIB` when non-empty and `2048` otherwise; no shell string is constructed.",
+				"description": "The argument vector for the `resources run` CLI: `resources`, `run`, `--priority`, the priority, `--cpus`, the CPU count, `--memory-mib`, the memory MiB, `--`, then the command arguments unchanged. The priority is `HARNESS_RESOURCE_PRIORITY` when non-empty and the positional priority otherwise, the CPU count is `HARNESS_RESOURCE_CPUS` when non-empty and `1` otherwise, and the memory MiB is `HARNESS_RESOURCE_MEMORY_MIB` when non-empty and `2048` otherwise. The canonical full-check command also adds the Full repository check label and selects agent-test priority on macOS. No shell string is constructed.",
 				"examples": [
 					[
 						"resources",
@@ -137,7 +137,7 @@
 					{
 						"name": "resourceArguments",
 						"type": "string[]",
-						"description": "The argument vector for the `resources run` CLI: `resources`, `run`, `--priority`, the priority, `--cpus`, the CPU count, `--memory-mib`, the memory MiB, `--`, then the command arguments unchanged. The priority is `HARNESS_RESOURCE_PRIORITY` when non-empty and the positional priority otherwise, the CPU count is `HARNESS_RESOURCE_CPUS` when non-empty and `1` otherwise, and the memory MiB is `HARNESS_RESOURCE_MEMORY_MIB` when non-empty and `2048` otherwise; no shell string is constructed.",
+						"description": "The argument vector for the `resources run` CLI: `resources`, `run`, `--priority`, the priority, `--cpus`, the CPU count, `--memory-mib`, the memory MiB, `--`, then the command arguments unchanged. The priority is `HARNESS_RESOURCE_PRIORITY` when non-empty and the positional priority otherwise, the CPU count is `HARNESS_RESOURCE_CPUS` when non-empty and `1` otherwise, and the memory MiB is `HARNESS_RESOURCE_MEMORY_MIB` when non-empty and `2048` otherwise. The canonical full-check command also adds the Full repository check label and selects agent-test priority on macOS. No shell string is constructed.",
 						"examples": [
 							[
 								"resources",

@@ -10,6 +10,12 @@
 	"configControls": [
 		{
 			"source": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostEffectsSchema.ts",
+			"name": "nonHarborSessionLimit",
+			"audience": "operator",
+			"purpose": "Set how many non-Harbor sessions may run concurrently on a host with a CPU budget. Defaults to one."
+		},
+		{
+			"source": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostEffectsSchema.ts",
 			"name": "idleWorkMinutes",
 			"audience": "operator",
 			"purpose": "Set how long an unassigned Tracker task can remain idle during Lisbon daytime before the hub requests pickup. Defaults to 120 minutes."

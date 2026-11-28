@@ -4,8 +4,8 @@
 	"uid": "u_opnwwyftd7",
 	"kind": "function",
 	"title": "trackerHostWork",
-	"responsibility": "Owns the trackerHostWork shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Defines remote-work lease timing and the schemas that Tracker uses to validate claims and report work on the executing computer.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -15,12 +15,13 @@
 		"symbols": ["trackerHostWork", "TrackerHostWork"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "trackerHostWork",
-				"type": "unknown"
+				"type": "{ leaseMs: number; renewMs: number; claim: Zod schema; report: Zod schema }",
+				"description": "Sets a 150-second lease renewed every 30 seconds. A claim identifies the run, lease, host and SSH or Colima workload. A report lists up to 1,500 run and host pairs with their expiration times."
 			}
 		],
 		"errors": [],

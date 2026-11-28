@@ -104,9 +104,12 @@ function phoneReply(tracker: Tracker, name: string) {
 	const data = {
 		tracker_status: {
 			counts: {},
-			unresolvedFlags: 1,
+			unresolvedFlags: Number(Boolean(item.needs_daniel && !item.resolved)),
 			recent: [],
-			needsYou: [{ ...header, question: item.question, askedAt: item.asked_at }]
+			needsYou:
+				item.needs_daniel && !item.resolved
+					? [{ ...header, question: item.question, askedAt: item.asked_at }]
+					: []
 		},
 		tracker_show: {
 			item: header,

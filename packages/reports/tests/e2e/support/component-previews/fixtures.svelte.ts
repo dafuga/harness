@@ -68,6 +68,7 @@ export function previewFixture(id: string, variant = '') {
 		...remote.cases,
 		...hub.cases,
 		...desktopChooserCases,
+		'reports.component.accounts-access-device-list-row': { name: 'Harbor Mac', status: 'Online' },
 		'desktop.component.remote-connection': { workspace: desktop.workspace }
 	};
 	// A route module is opened at its own address; it renders what the history holds there.
