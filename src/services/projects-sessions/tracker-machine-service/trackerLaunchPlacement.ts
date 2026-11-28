@@ -42,13 +42,15 @@ export function trackerLaunchPlacement(
 ): TrackerPlacedLaunch | undefined {
 	if (item.repo) return undefined;
 	const project = (item.project ?? item.agent)?.toLowerCase();
-	const cli = pickedCli(item, view.now());
-	if (!project || !cli) return undefined;
+	if (!project) return undefined;
 	const sessionSlots = launcherNodes(
 		view,
 		{ project, onlyNode: trackerDesktopLaunchHost(item) },
 		reserved
 	);
+	if (!sessionSlots.size) return undefined;
+	const cli = pickedCli(item, view.now());
+	if (!cli) return undefined;
 	const work = workShape(item, cli);
 	const placement = view.machines.place({
 		kind: work.kind,
@@ -91,7 +93,7 @@ function launcherNodes(
 				if (!capacity?.projects[project] || !enabled || last_error || !fresh(last_tick_at))
 					return [];
 				const slots = capacity.freeSlots - (reserved?.get(node)?.sessions ?? 0);
-				return [[node, Math.max(0, slots)] as const];
+				return slots > 0 ? [[node, slots] as const] : [];
 			})
 	);
 }
