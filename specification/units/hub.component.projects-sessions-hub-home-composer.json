@@ -88,6 +88,12 @@
 				"description": "Optional Tracker item attached to a message for Chief of Staff."
 			},
 			{
+				"name": "HubHomeComposer.sendText",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
 				"name": "HubHomeComposer.send",
 				"type": "SendHomeChat",
 				"required": true,
