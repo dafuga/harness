@@ -122,6 +122,8 @@ async function openDeploymentDialog(page: Page, content: Locator, id: string) {
 		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
 	}
 }
+const hubHeadline = /^\d+ sessions? running(?: for \d+ agents?)?, 1 needs you$/;
+
 /** Wait for the real route store, rather than its earlier gate or loading frame. */
 async function readyRoute(page: Page, id: string) {
 	if (overviewPreviews.has(id))
@@ -146,8 +148,7 @@ async function readyRoute(page: Page, id: string) {
 		await expect(
 			page.getByRole('cell', { name: 'ada@example.invalid', exact: true })
 		).toBeVisible();
-	const hubHeadline = /^\d+ sessions? running(?: for \d+ agents?)?, 1 needs you$/;
-	if (id === 'hub.page.root' || id === 'hub.component.projects-sessions-hub-home')
+	if (['hub.page.root', 'hub.component.projects-sessions-hub-home'].includes(id))
 		await expect(page.getByRole('heading', { name: hubHeadline })).toBeVisible();
 	else if (isHubHomePreview(id))
 		await expect(page.locator('[data-catalog-home-part]')).toBeAttached();
