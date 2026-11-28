@@ -23,11 +23,21 @@ export function recordedTrackerFetch(tracker: RecordedTracker): typeof fetch {
 	}) as typeof fetch;
 }
 
+export const expectedComputerOrder = [
+	'daniel-primary-mbp',
+	'alpha-runner',
+	'harbor-mbp-2',
+	'studio-mac',
+	'travel-mac',
+	'grok-box'
+];
+
 /** Two live origin runs delegate work to the same computer. */
 export function seedComputerWork(tracker: RecordedTracker) {
 	const running = tracker.runs.filter((run) => run.state === 'running').slice(0, 2);
 	tracker.machines.push(
 		{ node: 'studio-mac', status: 'busy' },
+		{ node: 'grok-box', status: 'offline' },
 		{ node: 'travel-mac', status: 'ok' },
 		{
 			node: 'harbor-mbp-2',
@@ -40,7 +50,8 @@ export function seedComputerWork(tracker: RecordedTracker) {
 			ram: { available_mb: 12288, total_mb: 65536 },
 			disks: [{ mount: '/', free_gb: 45.5 }]
 		},
-		{ node: 'grok-box', status: 'offline' }
+		{ node: 'alpha-runner', status: 'ok' },
+		{ node: 'daniel-primary-mbp', status: 'ok' }
 	);
 	return running.map((run) => tracker.items.find((item) => item.id === run.item_id)!.title);
 }

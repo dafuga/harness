@@ -7,7 +7,11 @@ import {
 	noProviders
 } from '../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
 import { readTrackerSources } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
-import { recordedTrackerFetch, type RecordedTracker } from '../../test/support/recordedTracker';
+import {
+	expectedComputerOrder,
+	recordedTrackerFetch,
+	type RecordedTracker
+} from '../../test/support/recordedTracker';
 import { hubHomeFixture } from './hub-home-fixture';
 import { captureNeedsYou } from './hub-home-capture';
 import { linkedComputersFixture } from './linked-computers-fixture';
@@ -189,13 +193,14 @@ export async function expectRecordedProjects(page: Page, tracker: RecordedTracke
 }
 
 export async function expectComputerWorkload(page: Page, device: string, titles: string[]) {
-	const computer = page
-		.getByRole('list', { name: 'Computers' })
-		.getByRole('listitem')
-		.filter({ hasText: 'harbor-mbp-2' });
+	const computers = page.getByRole('list', { name: 'Computers' });
+	const computer = computers.getByRole('listitem').filter({ hasText: 'harbor-mbp-2' });
 	await expect(computer).toBeVisible();
 	await page.evaluate(() => window.scrollTo(0, 0));
 	await captureNeedsYou(page, `host-work-${device}`);
+	await expect(computers.getByRole('button')).toHaveText(
+		expectedComputerOrder.map((name) => new RegExp(`^${name} ·`))
+	);
 	await expect(computer).toContainText('2 agents');
 	const trigger = computer.getByRole('button');
 	await trigger.click();

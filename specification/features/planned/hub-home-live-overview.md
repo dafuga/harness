@@ -25,16 +25,18 @@ When several linked computers answer, the overview holding the newest Tracker ch
 
 ## Computers on Home
 
-Hub web and the shared Harness Mac and iPhone Home show active Tracker agent sessions on each
-computer. Runs are identified by their origin computer and run number. Tracked work delegated to
+Hub web and Harness Mac Home use the shared computer header to show active Tracker agent
+sessions on each computer. Runs are identified by their origin computer and run number. Tracked work delegated to
 a second computer also counts there, once per run even if it holds multiple leases. Finished and
 queued runs do not count. Private runs can contribute to the count without exposing their titles.
 
 Selecting a computer opens a read-only detail with available and total RAM, one-minute load and
 core count, estimated spare cores, startup disk space, and the sessions using that computer.
-An offline computer has no current resource reading. Earlier Trackers may report delegated work
+The header and detail use the status and reasons from the same Tracker reading. An offline
+computer has no current resource reading. Earlier Trackers may report delegated work
 as a count only. Historic completed-item totals are omitted from project rows and retained in
-the source counts.
+the source counts. The separate iPhone landing page does not mount the computer header. Its
+shared project summaries follow the same count rule.
 
 ## Freshness and empty states
 

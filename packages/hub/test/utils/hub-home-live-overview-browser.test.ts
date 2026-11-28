@@ -18,6 +18,7 @@ import {
 import {
 	recordedTracker,
 	recordedTrackerFetch,
+	expectedComputerOrder,
 	seedComputerWork,
 	type RecordedTracker
 } from '../support/recordedTracker';
@@ -76,6 +77,11 @@ describe('how the browser receives it', () => {
 
 		expect(snapshot?.liveOverview?.projects).toHaveLength(answer.liveOverview.projects.length);
 		expect(JSON.stringify(snapshot)).not.toContain(secret);
+		expect(snapshot!.liveOverview!.machines.map(({ name }) => name)).toEqual(expectedComputerOrder);
+		const overview = snapshot!.overview;
+		expect(overview.status === 'ready' && overview.machines.map(({ name }) => name)).toEqual(
+			expectedComputerOrder
+		);
 		const machine = snapshot!.liveOverview!.machines.find(({ name }) => name === 'harbor-mbp-2');
 		expect(machine).toMatchObject({
 			agentCount: 2,
