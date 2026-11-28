@@ -13,7 +13,11 @@ import {
 	verifyClaudeRefusals,
 	verifyUnusableWorktree
 } from '../../support/trackerClaudeStartupFixture';
-import { verifyNativeInvocations } from '../../support/trackerNativeInvocationAssertions';
+import {
+	managedTrackerTools,
+	verifyNativeInvocations,
+	verifyTrackerCliUpgrade
+} from '../../support/trackerNativeInvocationAssertions';
 import { withTempRepo } from '../../support/temporary';
 import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
@@ -37,7 +41,8 @@ test(
 async function proveManagedWorker({ root, git }: TemporaryRepo) {
 	git('commit', '--allow-empty', '-m', 'Fixture source');
 	const paths = managedFixtureBindings(root);
-	const managed = loadManagedFixture(root, paths.config);
+	const trackerBinDirectory = managedTrackerTools(root);
+	const managed = loadManagedFixture(root, { ...paths.config, trackerBinDirectory });
 	const { trackerManagedHostLauncher } =
 		await import('../../../src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher');
 	const scoped = {
@@ -81,7 +86,7 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 		{ key: native.key, state: 'exited', exitCode: 0 }
 	]);
 	await restarted.start(docker, signal);
-	verifyWorkerInvocations(paths.profiles);
+	verifyWorkerInvocations(paths.profiles, trackerBinDirectory);
 	expect(
 		await trackerManagedHostLauncher(managed, { client, platform: 'linux' }).start(native, signal)
 	).toEqual({
@@ -145,7 +150,10 @@ function launchInput(
 	};
 }
 
-function verifyWorkerInvocations(profiles: ReturnType<typeof managedFixtureBindings>['profiles']) {
+function verifyWorkerInvocations(
+	profiles: ReturnType<typeof managedFixtureBindings>['profiles'],
+	trackerBinDirectory: string
+) {
 	const read = (profile: string) =>
 		readFileSync(join(profile, 'invoked.ndjson'), 'utf8')
 			.trim()
@@ -181,6 +189,7 @@ function verifyWorkerInvocations(profiles: ReturnType<typeof managedFixtureBindi
 	expect(Buffer.byteLength(docker[0].brief)).toBeLessThan(16_000);
 	expect(docker[0].cwd).toMatch(/\/effects\/[a-f0-9]{64}\/worktree$/);
 	verifyNativeInvocations(native[0], claude[0], { dockerWorktree: docker[0].cwd, client });
+	verifyTrackerCliUpgrade(trackerBinDirectory, profiles.native);
 }
 
 function verifySecretSafety(profiles: { native: string; docker: string }, briefs: string[]) {
