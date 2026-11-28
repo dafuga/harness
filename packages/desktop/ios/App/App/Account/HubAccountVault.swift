@@ -12,7 +12,7 @@ protocol HubAccountVault {
 /// The Keychain item of the Hub session: a service of its own, apart from any pairing, never
 /// synchronised to another device or to iCloud, and readable on this device after its first
 /// unlock only.
-struct HubAccountKeychain: HubAccountVault {
+private struct HubAccountKeychainItem: HubAccountVault {
     private let service = "com.dafuga.harness.hub"
     private let account = "session"
 
@@ -47,5 +47,46 @@ struct HubAccountKeychain: HubAccountVault {
 
     func wipe() {
         SecItemDelete(query as CFDictionary)
+    }
+}
+
+/// The session vault used by every foreground and background account reader.
+struct HubAccountKeychain: HubAccountVault {
+    private let item: HubAccountVault
+    private let directory: URL
+
+    init(item: HubAccountVault? = nil, directory: URL? = nil) {
+        self.item = item ?? HubAccountKeychainItem()
+        self.directory = directory ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("HarnessAccount", isDirectory: true)
+    }
+
+    private var marker: URL { directory.appendingPathComponent("session-binding") }
+
+    func load() -> HubAccountCredential? {
+        guard let credential = item.load(), let binding = credential.installationBinding,
+            let stored = try? Data(contentsOf: marker), stored == Data(binding.uuidString.utf8)
+        else { return nil }
+        return credential
+    }
+
+    func save(_ credential: HubAccountCredential) throws {
+        // A Keychain item can survive uninstall. Keep its matching marker in the app container,
+        // excluded from backups. Only a newly issued session can create the binding.
+        var folder = directory
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        var properties = URLResourceValues()
+        properties.isExcludedFromBackup = true
+        try folder.setResourceValues(properties)
+        let binding = UUID()
+        var bound = credential
+        bound.installationBinding = binding
+        try Data(binding.uuidString.utf8).write(to: marker, options: .atomic)
+        try item.save(bound)
+    }
+
+    func wipe() {
+        try? FileManager.default.removeItem(at: marker)
+        item.wipe()
     }
 }

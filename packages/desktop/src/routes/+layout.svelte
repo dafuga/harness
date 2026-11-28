@@ -6,6 +6,7 @@
 	import { resolve } from '$app/paths';
 	import { onMount, setContext, type Snippet } from 'svelte';
 	import AccountSignIn from '../components/accounts-access/AccountSignIn.svelte';
+	import DeviceApprovalInbox from '../components/accounts-access/DeviceApprovalInbox.svelte';
 	import type { NativeHostedStatus } from '../models/projects-sessions/ProjectContext.types';
 	import { nativeAccountContext } from '../models/development-tooling/Environment.types';
 	import type {
@@ -23,6 +24,7 @@
 	let status = $state.raw<NativeHostedStatus>();
 	let busy = $state(false);
 	let error = $state('');
+	let approvalEnded = $state(false);
 	let signingIn = false;
 	let active = true;
 	let turn = 0;
@@ -31,8 +33,13 @@
 
 	function schedule() {
 		clearTimeout(timer);
-		if (!active || !required) return;
-		const delay = status?.state === 'pending' ? (status.handoff?.interval ?? 2) * 1000 : 30_000;
+		if (!active || !required || approvalEnded) return;
+		const delay =
+			status?.state === 'pending'
+				? (status.handoff?.interval ?? 2) * 1000
+				: status?.state === 'waiting-for-approval' || status?.state === 'checking-device'
+					? 2000
+					: 30_000;
 		timer = setTimeout(() => void refresh(), delay);
 	}
 
@@ -46,7 +53,7 @@
 				? 'Sign-in ended. Try again.'
 				: '';
 		status = answer;
-		if (answer.state !== 'pending') signingIn = false;
+		if (answer.state === 'signed-in' || answer.state === 'signed-out') signingIn = false;
 	}
 
 	async function update(call: () => Promise<NativeHostedStatus>, action = false) {
@@ -56,9 +63,10 @@
 		try {
 			const answer = await call();
 			if (!active || asked !== turn) return;
+			if (answer.approvalFailure) return showSignInFailure({ code: answer.approvalFailure });
 			await accept(answer, asked);
-		} catch {
-			if (active && asked === turn) error = 'Could not confirm sign-in. Try again.';
+		} catch (cause) {
+			if (active && asked === turn) showSignInFailure(cause);
 		} finally {
 			if (active && asked === turn) {
 				busy = false;
@@ -67,7 +75,20 @@
 		}
 	}
 
+	function showSignInFailure(cause: unknown) {
+		const code = (cause as { code?: string } | null)?.code;
+		approvalEnded = code === 'approval-denied' || code === 'approval-expired';
+		if (approvalEnded) {
+			status = { configured: status?.configured ?? true, state: 'signed-out' };
+			signingIn = false;
+		}
+		if (code === 'approval-denied') error = 'Device approval was denied.';
+		else if (code === 'approval-expired') error = 'Device approval expired.';
+		else error = 'Could not confirm sign-in. Try again.';
+	}
+
 	function refresh() {
+		if (approvalEnded) return;
 		const check = environment?.bridge?.hostedStatus;
 		if (check) return update(check);
 		if (required) status = { configured: false, state: 'signed-out' };
@@ -85,6 +106,7 @@
 		const leave = environment?.bridge?.disconnectHosted;
 		if (!leave) return;
 		signingIn = false;
+		approvalEnded = false;
 		status = { configured: status?.configured ?? true, state: 'signed-out' };
 		error = '';
 		return update(leave, true);
@@ -131,10 +153,21 @@
 
 {#if environment && (!required || signedIn)}
 	{#key status?.actor?.id}
+		{#if signedIn && environment.deviceApproval}
+			<DeviceApprovalInbox request={environment.deviceApproval} />
+		{/if}
 		{@render children()}
 	{/key}
 {:else if environment}
-	<AccountSignIn {status} {error} {busy} {connect} cancel={signOut} retry={refresh} />
+	<AccountSignIn
+		{status}
+		{error}
+		{busy}
+		{approvalEnded}
+		{connect}
+		cancel={signOut}
+		retry={refresh}
+	/>
 {:else}
 	<hx-main aria-busy="true" aria-label="Loading Harness"></hx-main>
 {/if}

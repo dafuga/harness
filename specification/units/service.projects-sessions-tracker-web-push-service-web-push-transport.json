@@ -61,7 +61,7 @@
 			},
 			{
 				"name": "sendWebPush.delivery",
-				"type": "{ target: PushSubscriptionTarget; message: NeedsYouPushMessage }",
+				"type": "{ target: PushSubscriptionTarget; message: WebPushMessage }",
 				"required": true,
 				"description": "One subscription and the message."
 			}
@@ -167,7 +167,7 @@
 					},
 					{
 						"name": "sendWebPush.delivery",
-						"type": "{ target: PushSubscriptionTarget; message: NeedsYouPushMessage }",
+						"type": "{ target: PushSubscriptionTarget; message: WebPushMessage }",
 						"required": true,
 						"description": "One subscription and the message."
 					}

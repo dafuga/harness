@@ -10,6 +10,13 @@ const hubEntry = fileURLToPath(new URL('./syncWorker.ts', import.meta.url));
 const relayEntry = fileURLToPath(new URL('../../../relay/src/index.ts', import.meta.url));
 const migration = (name: string) =>
 	readFileSync(new URL(`../../db/migrations/${name}.sql`, import.meta.url), 'utf8');
+const baseMigrations = [
+	'0001-auth-ephemeral-state',
+	'0008-sealed-sync',
+	'0010-sealed-recoveries',
+	'0011-sealed-device-sessions',
+	'0012-approval-push'
+];
 
 async function bundle(entry: string, external: string[]): Promise<string> {
 	const result = await build({
@@ -92,15 +99,16 @@ export async function startSync(options: SyncStart = {}): Promise<SyncFixture> {
 		bundle(relayEntry, ['cloudflare:workers'])
 	]);
 	const miniflare = new Miniflare({
-		cf: false,
+		cf: options.country ? { country: options.country } : false,
 		host: '127.0.0.1',
 		unsafeInspectDurableObjects: true,
 		workers: [hubWorker(hub), relayWorker(relay)]
 	});
 	const origin = (await miniflare.ready).origin;
 	const db = (await miniflare.getD1Database('DB', 'hub-sync')) as unknown as D1Database;
-	for (const name of ['0008-sealed-sync', ...(options.migrations ?? [])])
+	for (const name of new Set([...baseMigrations, ...(options.migrations ?? [])]))
 		for (const sql of statements(name)) await db.prepare(sql).run();
+	await db.prepare('CREATE TABLE fixture_approval_deliveries (kind TEXT NOT NULL)').run();
 	const sent: (string | Uint8Array)[] = [];
 	const bucket = (await miniflare.getR2Bucket('CACHE', 'hub-sync')) as unknown as R2Bucket;
 	return {

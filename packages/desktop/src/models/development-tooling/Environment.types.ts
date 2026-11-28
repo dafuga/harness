@@ -42,6 +42,7 @@ export interface Environment extends RemotePorts {
 	local: boolean;
 	/** Capacitor only: this phone has a Hub account of its own, read without any computer. */
 	account?: boolean;
+	deviceApproval?: AccountNativePlugin['deviceApproval'];
 	/** Capacitor only: local Tracker reads and an independent app refresh control. */
 	tracker?: PhoneTrackerTools;
 	trackerHome?: TrackerHomeSource;
@@ -123,6 +124,30 @@ export interface AccountNativeReply {
 /** A status as the plugin states it; the page keeps only the public fields of NativeHostedStatus. */
 export type AccountNativeStatus = Omit<NativeHostedStatus, 'state'> & { state: string };
 
+/** The approved-device inbox shares only display hints and the local comparison code. */
+export type DeviceApprovalRequest = {
+	id: string;
+	createdAt: number;
+	platform?: 'iphone' | 'mac' | 'web';
+	country?: string;
+};
+
+export type DeviceApprovalAction =
+	| { action: 'list' }
+	| { action: 'review' | 'deny'; id: string }
+	| { action: 'approve'; id: string; code: string };
+
+export type DeviceApprovalResult =
+	| { requests: DeviceApprovalRequest[] }
+	| { state: 'waiting' | 'approved' | 'denied' }
+	| { state: 'compare'; code: string };
+
+/** The inbox supplies its originating click to browser handlers that check user presence. */
+export type DeviceApprovalHandler = (
+	call: DeviceApprovalAction,
+	event?: MouseEvent
+) => Promise<DeviceApprovalResult>;
+
 /**
  * The `HarnessAccount` plugin as the page sees it. The Swift side owns the Hub origin, the
  * verifier, the nonce and the session, and signs every call; none of them crosses this interface.
@@ -132,6 +157,7 @@ export interface AccountNativePlugin {
 	connect(input?: { google?: boolean }): Promise<AccountNativeStatus>;
 	disconnect(): Promise<AccountNativeStatus>;
 	request(call: AccountNativeCall): Promise<AccountNativeReply>;
+	deviceApproval?(call: DeviceApprovalAction): Promise<DeviceApprovalResult>;
 }
 export {
 	type RemoteBinary,

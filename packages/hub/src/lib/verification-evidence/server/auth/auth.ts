@@ -28,14 +28,24 @@ const tokenCache = new Map<string, CachedInstallationToken>();
 export function createHubAuth(
 	env: AuthEnv,
 	store: AuthStore | null,
-	delivery: EmailProofDelivery | null = createResendDelivery(env)
+	delivery: EmailProofDelivery | null = createResendDelivery(env),
+	requiresDeviceApproval?: (account: string) => Promise<boolean>
 ): HubAuth {
 	const config = authConfig(env);
 	if (!config || !store) return authDisabled();
 	const now = () => Date.now();
 	const google = new GoogleIdentityService({ clientId: config.clientId, keys: googleKeys, now });
 	const fetcher: typeof fetch = (input, init) => fetch(input, init);
-	return composeHubAuth({ config, store, google, fetch: fetcher, now, tokenCache, delivery });
+	return composeHubAuth({
+		config,
+		store,
+		google,
+		fetch: fetcher,
+		now,
+		tokenCache,
+		delivery,
+		requiresDeviceApproval
+	});
 }
 
 export { createD1AuthStore } from '../../../../routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter';

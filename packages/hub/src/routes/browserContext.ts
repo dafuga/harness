@@ -11,7 +11,8 @@ import { browserProjects } from './browserProjects';
 export function provideBrowser(): HostedBrowser {
 	/** A refused session is read again, so a page that lost it asks for sign-in and shows nothing. */
 	const api = browserApi(fetch, (failure) => {
-		if (failure.status === 401 && context.session.actor) void context.session.refresh();
+		if (failure.code === 'device-approval-required') context.session.deviceRefused();
+		if (failure.status === 401 && context.session.identity) void context.session.refresh();
 	});
 	const context: HostedBrowser = {
 		api,

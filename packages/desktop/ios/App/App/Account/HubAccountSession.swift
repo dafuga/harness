@@ -13,18 +13,29 @@ final class HubAccountSession {
     let origin: URL?
     let vault: HubAccountVault
     let transport: HubAccountTransport
-    /// Opens an address in the system browser; the plugin hands in the one of iOS.
     var open: (URL) -> Void = { _ in }
     var authenticate: (URL, String) -> Void = { _, _ in }
     var cancelAuthentication: () -> Void = {}
     var accountEnded: () -> Void = {}
+    var approvalAlert: (() -> Void)?
+    var approvalPush = HubApprovalPushRegistration()
+    var notifiedApprovals: [String: Date] = [:]
     var deviceName = "Harness iPhone"
+    var enrollmentPlatform = HubEnrollmentPlatform.iphone
     var now: () -> Date = { Date() }
     var credential: HubAccountCredential?
     var handoff: HubAccountHandoff?
     /// Counts every change of account: an answer to a call made before one is never used.
     var generation = 0
     private var loaded = false
+    var deviceStage = HubDeviceStage.checking
+    var deviceCheck = 0
+    var enrollment = HubAccountEnrollment()
+    var enrolledDevice: EnrolledDevice?
+    var approvalReviews: [String: HubLoginReview] = [:]
+    var loginPins: SealedSecretStore = SealedKeychain()
+    var loginKeys: SealedSecretStore = SealedKeychain(insertOnly: true)
+    var makeLoginDevice: () throws -> SealedDevice = { try SealedDevice.create(enclave: true) }
 
     init(origin: URL?, vault: HubAccountVault = HubAccountKeychain(), transport: HubAccountTransport = HubAccountHttp()) {
         self.origin = origin
@@ -60,29 +71,26 @@ final class HubAccountSession {
         queue.async {
             guard let origin = self.origin else { return done(.failure(.notConfigured)) }
             guard HubAccountPolicy.allowed(call) else { return done(.failure(.refused)) }
-            guard let credential = self.live() else { return done(.failure(.signedOut)) }
-            self.send(call, origin, credential.token) { result in
-                if case .success(let reply) = result, reply.status == 401 { self.erase() }
-                done(result)
-            }
+            self.authorizedCall(call, origin, done)
         }
     }
 
-    /// The public status. It never holds the session, the verifier or the nonce.
     var snapshot: [String: Any] {
         var status: [String: Any] = ["configured": origin != nil, "state": "signed-out"]
         if let handoff = handoff {
             status["state"] = "pending"
             status["handoff"] = handoff.object
         } else if let credential = credential {
-            status["state"] = "signed-in"
-            status["actor"] = ["id": credential.subject, "name": credential.name, "email": credential.email]
+            status["state"] = deviceStage == .approved ? "signed-in" : deviceStage.rawValue
+            if deviceStage == .waiting { status["verificationCode"] = enrollment.verificationCode }
+            if deviceStage == .approved {
+                status["actor"] = ["id": credential.subject, "name": credential.name, "email": credential.email]
+            }
         }
         return status
     }
 
-    /// The kept session while its expiry is ahead and it belongs to this build's Hub. Any other
-    /// is erased, and never sent anywhere.
+    /// Expired credentials and credentials for another Hub are erased.
     func live() -> HubAccountCredential? {
         if !loaded {
             loaded = true
@@ -97,30 +105,24 @@ final class HubAccountSession {
     /// The session leaves the Keychain and memory, a sign-in under way ends, and every answer
     /// still awaited is refused when it arrives.
     func erase() {
+        if let credential, let store = try? HubLoginDeviceStore(credential, base: loginKeys) {
+            enrollment.forget(store)
+            store.remove(SealedDeviceStore.name)
+        }
+        // The public chain pin remains to anchor reapproval on this installation.
+        enrolledDevice = nil
+        approvalReviews.removeAll()
+        notifiedApprovals.removeAll()
+        approvalPush = HubApprovalPushRegistration(request: approvalPush.request)
+        enrollment = HubAccountEnrollment()
+        deviceCheck += 1
+        deviceStage = .checking
         vault.wipe()
         credential = nil
         handoff = nil
         cancelAuthentication()
         generation += 1
         accountEnded()
-    }
-
-    /// Asks the Hub to end a session this phone no longer keeps. Its answer changes nothing here.
-    func revoke(_ token: String, _ origin: URL) {
-        let call = HubAccountCall(method: "POST", path: "/api/auth/logout", body: Data("{}".utf8))
-        guard let request = HubAccountPolicy.request(origin, call, token: token) else { return }
-        transport.send(request) { _ in }
-    }
-
-    /// Sends one call and answers on the queue, only while the account it was made under holds.
-    func send(_ call: HubAccountCall, _ origin: URL, _ token: String?, _ done: @escaping Answer) {
-        guard let request = HubAccountPolicy.request(origin, call, token: token) else {
-            return done(.failure(.refused))
-        }
-        let asked = generation
-        transport.send(request) { result in
-            self.queue.async { done(asked == self.generation ? result : .failure(.superseded)) }
-        }
     }
 }
 
@@ -137,7 +139,10 @@ extension HubAccountSession {
             case .failure(let failure):
                 if failure == .offline || failure == .superseded { done(.success(self.snapshot)) }
                 else { done(.failure(failure)) }
-            case .success(let reply): done(self.confirmed(reply, kept, origin))
+            case .success(let reply):
+                let answer = self.confirmed(reply, kept, origin)
+                guard case .success = answer, self.credential != nil else { return done(answer) }
+                self.checkDevice(kept, origin, done)
             }
         }
     }

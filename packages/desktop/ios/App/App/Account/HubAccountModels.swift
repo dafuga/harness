@@ -21,6 +21,10 @@ struct HubAccountFailure: Error, Equatable {
         code: "superseded", message: "The account on this phone changed. Reload and try again.")
     static let expired = HubAccountFailure(
         code: "handoff-expired", message: "This sign-in expired or was refused. Connect again.")
+    static let approvalDenied = HubAccountFailure(
+        code: "approval-denied", message: "Device approval was denied. Cancel and sign in again.")
+    static let approvalExpired = HubAccountFailure(
+        code: "approval-expired", message: "Device approval expired. Cancel and sign in again.")
     static let mismatch = HubAccountFailure(
         code: "account-mismatch", message: "The Hub did not confirm this Google account. Sign in again.")
     static let unkept = HubAccountFailure(
@@ -59,6 +63,8 @@ struct HubAccountCredential: Codable, Equatable {
     var email: String
     var token: String
     var expiresAt: Date
+    /// Matches a non-secret marker in this installation's app container.
+    var installationBinding: UUID?
 }
 
 /// One call of the page: a method and a path of the project API, its fields and its body. It
@@ -66,6 +72,7 @@ struct HubAccountCredential: Codable, Equatable {
 struct HubAccountCall {
     let method: String
     let path: String
+    var device: String?
     let query: [String: String]
     let body: Data?
 

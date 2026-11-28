@@ -30,6 +30,23 @@ Prove automatic registration and access for two Macs, isolation with a second Go
 
 Harness Studio uses one APNs topic for Tracker and deploy decision alerts and Vault request alerts. The app accepts one known custom object alongside the Apple notification dictionary. Decision objects contain only the category, opaque reference, and source fingerprint.
 
+Device sign-in alerts use the Harness app topic. The admitted native installation
+registers its APNs token with its proven Hub session. The Hub addresses only active
+installations on the account chain. The APNs alert has generic text and a fixed
+category, with no requester name, place, mailbox ID or account identifier. Opening
+the app reads the approval inbox through the existing signed-in session.
+
+The Hub uses a separately provisioned Apple signing key and a fixed sandbox or
+production APNs endpoint for its environment. Local Workerd proof substitutes the
+provider boundary. Signed entitlements and suspended-device delivery are verified
+on the physical iPhone after release approval.
+
+In the signed app build, include `App/HarnessApprovalPush.entitlements` and
+set `HARNESS_APPROVAL_PUSH_ENABLED=YES`. Match
+`HARNESS_APPROVAL_PUSH_ENTITLEMENT_ENVIRONMENT` to the provisioning profile
+and the Hub's APNs environment. The legacy in-app approval inbox is also
+available in builds without remote notifications.
+
 The app fetches the authoritative inbox after opening an alert. A reference must match exactly one record from its source, and its category must match that record. Ambiguous, revoked, stale, and missing records cannot open review. Repeat delivery does not open another review. Decisions always require separate in-app confirmation.
 
 Agent host-file changes, tracked as metadata only:

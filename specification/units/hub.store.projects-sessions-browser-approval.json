@@ -1,0 +1,242 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.store.projects-sessions-browser-approval",
+	"uid": "u_2z6ismqvvf",
+	"kind": "store",
+	"title": "browserApproval",
+	"responsibility": "Owns the browserApproval store unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/lib/stores/projects-sessions/browserApproval.svelte.ts"],
+		"symbols": [
+			"BrowserApprovalState",
+			"BrowserApprovalState.check",
+			"BrowserApprovalState.review",
+			"BrowserApprovalState.reset",
+			"BrowserApprovalState.push",
+			"BrowserApprovalState.forget",
+			"createBrowserApprovalStore"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "BrowserApprovalState.check.account",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "BrowserApprovalState.review.account",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "BrowserApprovalState.review.call",
+				"type": "DeviceApprovalAction",
+				"required": true
+			},
+			{
+				"name": "BrowserApprovalState.review.event",
+				"type": "MouseEvent",
+				"required": false
+			},
+			{
+				"name": "BrowserApprovalState.push.account",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "BrowserApprovalState.forget.account",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "BrowserApprovalState.check",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "BrowserApprovalState.review",
+				"type": "Promise<DeviceApprovalResult>"
+			},
+			{
+				"name": "BrowserApprovalState.reset",
+				"type": "void"
+			},
+			{
+				"name": "BrowserApprovalState.push",
+				"type": "unknown"
+			},
+			{
+				"name": "BrowserApprovalState.forget",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "createBrowserApprovalStore",
+				"type": "BrowserApprovalState"
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "BrowserApprovalState.check",
+				"inputs": [
+					{
+						"name": "BrowserApprovalState.check.account",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserApprovalState.check",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserApprovalState.review",
+				"inputs": [
+					{
+						"name": "BrowserApprovalState.review.account",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "BrowserApprovalState.review.call",
+						"type": "DeviceApprovalAction",
+						"required": true
+					},
+					{
+						"name": "BrowserApprovalState.review.event",
+						"type": "MouseEvent",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserApprovalState.review",
+						"type": "Promise<DeviceApprovalResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserApprovalState.reset",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "BrowserApprovalState.reset",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserApprovalState.push",
+				"inputs": [
+					{
+						"name": "BrowserApprovalState.push.account",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserApprovalState.push",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserApprovalState.forget",
+				"inputs": [
+					{
+						"name": "BrowserApprovalState.forget.account",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserApprovalState.forget",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "createBrowserApprovalStore",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "createBrowserApprovalStore",
+						"type": "BrowserApprovalState"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.module.networking-security-hub-push-browser",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.networking-security-browser-device-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-request",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/stores/projects-sessions/browserApproval.svelte.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/stores/projects-sessions/browserApproval.svelte.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

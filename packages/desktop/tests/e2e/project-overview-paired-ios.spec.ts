@@ -1,7 +1,8 @@
+import { captureIosAccountState } from './support/captureIosAccountState';
 import { expect as baseExpect, test } from '../../../../test/support/browserTest';
 import type { Page } from '@playwright/test';
 import {
-	completeGoogle,
+	setLoginStage,
 	pairedAccountCalls,
 	pairedPhoneFixture,
 	setPairedState
@@ -90,24 +91,37 @@ test('iOS opens at Google sign-in before it reads Tracker or projects', async ({
 	const google = page.getByRole('button', { name: 'Sign in with Google' });
 	await expect(google).toBeVisible();
 	expect(await pairedAccountCalls(page)).toEqual([]);
-	if (process.env.TAKE_SCREENSHOT === 'true') {
-		await page.evaluate(async () => {
-			await document.fonts.ready;
-			await Promise.all(
-				[...document.querySelectorAll('main img')].map((image) =>
-					(image as HTMLImageElement).decode()
-				)
-			);
-		});
-		await page.screenshot({ path: `/tmp/harness-ios-account-${process.env.SCREENSHOT_LABEL}.png` });
-	}
+	await captureIosAccountState(page, 'sign-in');
 	await google.click();
 	await expect(page.getByRole('status')).toHaveText('Waiting for Google…');
 	await page.getByRole('button', { name: 'Cancel' }).click();
 	await expect(google).toBeVisible();
 	expect(await pairedAccountCalls(page)).toEqual([]);
 	await google.click();
-	await completeGoogle(page);
+	await setLoginStage(page, 'waiting-for-approval');
+	await expect(page.getByText('Waiting for Google…')).toHaveCount(0);
+
+	await expect(page.getByText('Waiting for approval', { exact: true })).toBeVisible();
+	await expect(page.getByText('018427', { exact: true })).toBeVisible();
+	await captureIosAccountState(page, 'waiting');
+	await setLoginStage(page, 'approval-denied');
+	const alert = page.getByRole('alert');
+	await expect(alert).toBeVisible();
+	await captureIosAccountState(page, 'denied');
+	await expect(alert).toHaveText('Device approval was denied.');
+	await expect(page.getByText('018427', { exact: true })).toHaveCount(0);
+	const back = page.getByRole('button', { name: 'Back to sign in' });
+	expect((await back.boundingBox())?.height).toBeGreaterThanOrEqual(44);
+	await back.click();
+	await expect(google).toBeVisible();
+	expect(await pairedAccountCalls(page)).toEqual([]);
+	await google.click();
+	await setLoginStage(page, 'approval-expired');
+	await expect(alert).toHaveText('Device approval expired.');
+	await captureIosAccountState(page, 'expired');
+	await page.getByRole('button', { name: 'Back to sign in' }).click();
+	await google.click();
+	await setLoginStage(page, 'signed-in');
 	await expect(page).toHaveURL(/\/$/);
 	await overviewLink(page).click();
 	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();

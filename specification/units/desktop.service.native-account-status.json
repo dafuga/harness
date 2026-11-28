@@ -18,6 +18,7 @@
 			"NativeAccountStatusService",
 			"NativeAccountStatusService.constructor",
 			"NativeAccountStatusService.read",
+			"admitMacDevice",
 			"StatusOptions"
 		]
 	},
@@ -47,6 +48,16 @@
 						"token": "example-dev-token"
 					}
 				]
+			},
+			{
+				"name": "admitMacDevice.status",
+				"type": "NativeHostedStatus",
+				"required": true
+			},
+			{
+				"name": "admitMacDevice.options",
+				"type": "Pick<AuthOptions, 'deviceApproval' | 'store'>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -132,6 +143,29 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "admitMacDevice",
+				"inputs": [
+					{
+						"name": "admitMacDevice.status",
+						"type": "NativeHostedStatus",
+						"required": true
+					},
+					{
+						"name": "admitMacDevice.options",
+						"type": "Pick<AuthOptions, 'deviceApproval' | 'store'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "admitMacDevice",
+						"type": "Promise<NativeHostedStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -170,6 +204,16 @@
 		},
 		{
 			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-mac-device-approval-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.native-auth",
 			"via": "import",
 			"origin": "derived"
 		},

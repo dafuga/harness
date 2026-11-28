@@ -3,6 +3,7 @@ import type { SyncCall } from './syncPolicy.types';
 import { fromBase64Url } from './syncBase64';
 import { isDeviceId, readSyncJson, syncJson, syncProblem } from './syncHttp';
 import { isScopeId } from './syncScope';
+import { deviceWriteConflict } from './syncRecovery';
 
 const bodyBytes = 64 * 1024;
 const batchLimit = 32;
@@ -18,7 +19,7 @@ function isEpoch(value: unknown): boolean {
 	return Number.isSafeInteger(value) && (value as number) >= 0 && (value as number) <= 0xffffffff;
 }
 
-function asGrant(value: unknown, account: string): Grant | null {
+export function asGrant(value: unknown, account: string): Grant | null {
 	if (!value || typeof value !== 'object') return null;
 	const grant = value as Record<string, unknown>;
 	const named = grant.account === account && isScopeId(grant.scope) && isDeviceId(grant.device);
@@ -33,11 +34,12 @@ export async function putGrants(call: SyncCall): Promise<Response> {
 	const body = await readSyncJson(call.request, bodyBytes);
 	const list = Array.isArray(body) ? body : [body];
 	const grants = list.map((item) => asGrant(item, call.account));
-	if (list.length > batchLimit || grants.some((grant) => grant === null))
+	if (!list.length || list.length > batchLimit || grants.some((grant) => grant === null))
 		return syncProblem(400, 'invalid-input');
 	const insert = call.deps.db.prepare(
 		`INSERT OR IGNORE INTO sealed_grants (account, scope, epoch, device, grant_body, created_at)
-		 VALUES (?, ?, ?, ?, ?, ?)`
+		 SELECT ?1, ?2, ?3, ?4, ?5, ?6
+		 WHERE NOT EXISTS (SELECT 1 FROM sealed_recoveries WHERE account = ?1)`
 	);
 	const results = await call.deps.db.batch(
 		(grants as Grant[]).map((grant) =>
@@ -51,7 +53,8 @@ export async function putGrants(call: SyncCall): Promise<Response> {
 			)
 		)
 	);
-	return syncJson({ stored: results.reduce((sum, result) => sum + result.meta.changes, 0) }, 201);
+	const stored = results.reduce((sum, result) => sum + result.meta.changes, 0);
+	return stored === 0 ? deviceWriteConflict(call) : syncJson({ stored }, 201);
 }
 
 /** Every grant written for a device, newest epoch last. */

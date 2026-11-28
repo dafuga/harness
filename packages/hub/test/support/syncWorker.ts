@@ -1,5 +1,6 @@
 import type { TestEnv } from './syncWorker.types';
 import type { SessionRecord } from '../../src/models/accounts-access/HubAuthStore.types';
+import { guardHubDeviceSession } from '../../src/routes/api/sync/guardHubDeviceSession';
 import { serveSync } from '../../src/routes/api/sync/syncPolicy';
 
 /**
@@ -11,6 +12,8 @@ import { serveSync } from '../../src/routes/api/sync/syncPolicy';
 const actors: Record<string, string> = {
 	'session-a': 'google:fixture-a',
 	'session-a-browser': 'google:fixture-a',
+	'session-a-browser-returning': 'google:fixture-a',
+	'session-a-secondary': 'google:fixture-a',
 	'session-b': 'google:fixture-b'
 };
 
@@ -41,16 +44,36 @@ export default {
 		const token = framed.headers.get('x-test-session') ?? '';
 		const id = Object.hasOwn(actors, token) ? actors[token] : null;
 		const record = id
-			? ({ actor: { id }, kind: 'native', resource: 'projects' } as SessionRecord)
+			? ({
+					idHash: 'test-' + token,
+					actor: { id },
+					kind: 'native',
+					resource: 'projects'
+				} as SessionRecord)
 			: null;
+		if (new URL(request.url).pathname === '/api/projects')
+			return (await guardHubDeviceSession(framed, env.DB, record, Date.now())) ?? Response.json([]);
 		const response = await serveSync(framed, {
 			sessions: { resolve: async () => record },
 			db: env.DB,
 			bucket: env.CACHE,
 			accounts: env.ACCOUNT_SYNC,
+			approvalPush: {
+				web: {
+					publicKey:
+						'BP4z9KsN6nGRTbVYI_c7VJSPQTBtkgcy27mlmlMoZIIgDll6e3vCYLocInmYWAmS6TlzAC8wEqKK6PBru3jl7A8',
+					deliver: () => fixtureDelivery(env.DB, 'device-approval')
+				},
+				apns: { deliver: () => fixtureDelivery(env.DB, 'apple-device-approval') }
+			},
 			now: Date.now()
 		});
 		await drain(framed);
 		return response;
 	}
 };
+
+async function fixtureDelivery(db: D1Database, kind: string) {
+	await db.prepare('INSERT INTO fixture_approval_deliveries (kind) VALUES (?)').bind(kind).run();
+	return 'delivered' as const;
+}

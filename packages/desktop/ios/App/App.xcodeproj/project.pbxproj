@@ -54,6 +54,17 @@
 		150A06A937141DE718B77115 /* RemoteSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5827BD6FA246D531D8E8BD7 /* RemoteSession.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F2F /* HubAccountModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E2F /* HubAccountModels.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F30 /* HubAccountVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E30 /* HubAccountVault.swift */; };
+		AB57B801D93C49A084751F30 /* HubAccountDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB57B801D93C49A084751E30 /* HubAccountDevice.swift */; };
+		D89F08E1D48C4BB09F02AF30 /* EnrollRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89F08E1D48C4BB09F02AE30 /* EnrollRequest.swift */; };
+		1048C574482245259403CF30 /* EnrollMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1048C574482245259403CE30 /* EnrollMailbox.swift */; };
+		19E25B6355F643AAB964EF30 /* HubAccountEnrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E25B6355F643AAB964EE30 /* HubAccountEnrollment.swift */; };
+		CB472C284C1943ADB88ADF30 /* HubLoginComparison.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB472C284C1943ADB88ADE30 /* HubLoginComparison.swift */; };
+		E38C84E60C2D453DB17B2F30 /* HubLoginLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38C84E60C2D453DB17B2E30 /* HubLoginLedger.swift */; };
+		E38C84E60C2D453DB17B2F34 /* HubAccountApprovals.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38C84E60C2D453DB17B2E34 /* HubAccountApprovals.swift */; };
+		E38C84E60C2D453DB17B2F35 /* HubLoginReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38C84E60C2D453DB17B2E35 /* HubLoginReview.swift */; };
+		E38C84E60C2D453DB17B2F36 /* HubApprovalTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38C84E60C2D453DB17B2E36 /* HubApprovalTransport.swift */; };
+		E38C84E60C2D453DB17B2F37 /* HubApprovalPublication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38C84E60C2D453DB17B2E37 /* HubApprovalPublication.swift */; };
+		7E5CC906CC234EB7807B9F30 /* HubLoginAdmission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5CC906CC234EB7807B9E30 /* HubLoginAdmission.swift */; };
 		F7116F5832344A9F9FE7B901 /* VaultApprovalCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */; };
 		F7116F5832344A9F9FE7B903 /* VaultApprovalRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */; };
 		F7116F5832344A9F9FE7B905 /* VaultLegacyAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */; };
@@ -200,6 +211,17 @@
 		D5827BD6FA246D531D8E8BD7 /* RemoteSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteSession.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E2F /* HubAccountModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountModels.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E30 /* HubAccountVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountVault.swift; sourceTree = "<group>"; };
+		AB57B801D93C49A084751E30 /* HubAccountDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountDevice.swift; sourceTree = "<group>"; };
+		D89F08E1D48C4BB09F02AE30 /* EnrollRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollRequest.swift; sourceTree = "<group>"; };
+		1048C574482245259403CE30 /* EnrollMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollMailbox.swift; sourceTree = "<group>"; };
+		19E25B6355F643AAB964EE30 /* HubAccountEnrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountEnrollment.swift; sourceTree = "<group>"; };
+		CB472C284C1943ADB88ADE30 /* HubLoginComparison.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubLoginComparison.swift; sourceTree = "<group>"; };
+		E38C84E60C2D453DB17B2E30 /* HubLoginLedger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubLoginLedger.swift; sourceTree = "<group>"; };
+		E38C84E60C2D453DB17B2E34 /* HubAccountApprovals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountApprovals.swift; sourceTree = "<group>"; };
+		E38C84E60C2D453DB17B2E35 /* HubLoginReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubLoginReview.swift; sourceTree = "<group>"; };
+		E38C84E60C2D453DB17B2E36 /* HubApprovalTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubApprovalTransport.swift; sourceTree = "<group>"; };
+		E38C84E60C2D453DB17B2E37 /* HubApprovalPublication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubApprovalPublication.swift; sourceTree = "<group>"; };
+		7E5CC906CC234EB7807B9E30 /* HubLoginAdmission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubLoginAdmission.swift; sourceTree = "<group>"; };
 		F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultApprovalCrypto.swift; sourceTree = "<group>"; };
 		F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultApprovalRequest.swift; sourceTree = "<group>"; };
 		F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultLegacyAdd.swift; sourceTree = "<group>"; };
@@ -390,6 +412,17 @@
 				D5827BD6FA246D531D8E8BD7 /* RemoteSession.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E2F /* HubAccountModels.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E30 /* HubAccountVault.swift */,
+				AB57B801D93C49A084751E30 /* HubAccountDevice.swift */,
+				D89F08E1D48C4BB09F02AE30 /* EnrollRequest.swift */,
+				1048C574482245259403CE30 /* EnrollMailbox.swift */,
+				19E25B6355F643AAB964EE30 /* HubAccountEnrollment.swift */,
+				CB472C284C1943ADB88ADE30 /* HubLoginComparison.swift */,
+				E38C84E60C2D453DB17B2E30 /* HubLoginLedger.swift */,
+				E38C84E60C2D453DB17B2E34 /* HubAccountApprovals.swift */,
+				E38C84E60C2D453DB17B2E35 /* HubLoginReview.swift */,
+				E38C84E60C2D453DB17B2E36 /* HubApprovalTransport.swift */,
+				E38C84E60C2D453DB17B2E37 /* HubApprovalPublication.swift */,
+				7E5CC906CC234EB7807B9E30 /* HubLoginAdmission.swift */,
 				F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */,
 				F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */,
 				F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */,
@@ -647,6 +680,17 @@
 				150A06A937141DE718B77115 /* RemoteSession.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F2F /* HubAccountModels.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F30 /* HubAccountVault.swift in Sources */,
+				AB57B801D93C49A084751F30 /* HubAccountDevice.swift in Sources */,
+				D89F08E1D48C4BB09F02AF30 /* EnrollRequest.swift in Sources */,
+				1048C574482245259403CF30 /* EnrollMailbox.swift in Sources */,
+				19E25B6355F643AAB964EF30 /* HubAccountEnrollment.swift in Sources */,
+				CB472C284C1943ADB88ADF30 /* HubLoginComparison.swift in Sources */,
+				E38C84E60C2D453DB17B2F30 /* HubLoginLedger.swift in Sources */,
+				E38C84E60C2D453DB17B2F34 /* HubAccountApprovals.swift in Sources */,
+				E38C84E60C2D453DB17B2F35 /* HubLoginReview.swift in Sources */,
+				E38C84E60C2D453DB17B2F36 /* HubApprovalTransport.swift in Sources */,
+				E38C84E60C2D453DB17B2F37 /* HubApprovalPublication.swift in Sources */,
+				7E5CC906CC234EB7807B9F30 /* HubLoginAdmission.swift in Sources */,
 				F7116F5832344A9F9FE7B901 /* VaultApprovalCrypto.swift in Sources */,
 				F7116F5832344A9F9FE7B903 /* VaultApprovalRequest.swift in Sources */,
 				F7116F5832344A9F9FE7B905 /* VaultLegacyAdd.swift in Sources */,

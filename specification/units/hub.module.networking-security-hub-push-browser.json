@@ -9,11 +9,25 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/lib/networking-security/hubPushBrowser.ts"],
-		"symbols": ["pushSupport", "currentSubscription", "subscribe", "addressHash", "confirmOn"]
+		"symbols": [
+			"approvalPushScope",
+			"pushSupport",
+			"currentSubscription",
+			"subscribe",
+			"addressHash",
+			"confirmOn",
+			"showApprovalNotice"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "currentSubscription.scope",
+				"type": "string",
+				"required": false,
+				"default": "/"
+			},
 			{
 				"name": "subscribe.publicKey",
 				"type": "string",
@@ -21,10 +35,21 @@
 				"description": "The Hub's application server public key, base64url."
 			},
 			{
+				"name": "subscribe.scope",
+				"type": "string",
+				"required": false,
+				"default": "/"
+			},
+			{
 				"name": "addressHash.address",
 				"type": "string",
 				"required": true,
 				"description": "A push address to name by its hash."
+			},
+			{
+				"name": "showApprovalNotice.signal",
+				"type": "AbortSignal",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -72,7 +97,14 @@
 			},
 			{
 				"name": "currentSubscription",
-				"inputs": [],
+				"inputs": [
+					{
+						"name": "currentSubscription.scope",
+						"type": "string",
+						"required": false,
+						"default": "/"
+					}
+				],
 				"outputs": [
 					{
 						"name": "currentSubscription",
@@ -91,6 +123,12 @@
 						"type": "string",
 						"required": true,
 						"description": "The Hub's application server public key, base64url."
+					},
+					{
+						"name": "subscribe.scope",
+						"type": "string",
+						"required": false,
+						"default": "/"
 					}
 				],
 				"outputs": [
@@ -131,6 +169,24 @@
 						"name": "confirmOn",
 						"type": "Promise<void>",
 						"description": "Shows the notifications-are-on confirmation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "showApprovalNotice",
+				"inputs": [
+					{
+						"name": "showApprovalNotice.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "showApprovalNotice",
+						"type": "Promise<boolean>"
 					}
 				],
 				"errors": [],

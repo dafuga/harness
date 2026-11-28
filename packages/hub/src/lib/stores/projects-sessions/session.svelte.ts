@@ -1,5 +1,6 @@
 // @harness-uid u_yz656jlmvp
 import type { BrowserAuth } from '../../../utils/accounts-access/browserAuth';
+import { createBrowserApprovalStore } from './browserApproval.svelte';
 import type { AuthStatus } from '../../../models/accounts-access/HubAuth.types';
 
 /** Who the server says is signed in. Null while that is not known; the page never assumes. */
@@ -7,17 +8,39 @@ class SessionState {
 	status = $state<AuthStatus | null>(null);
 	error = $state('');
 	busy = $state(false);
+	readonly deviceApproval = createBrowserApprovalStore();
 	/** Counts the questions asked; an answer to an earlier one is older than what is shown. */
 	private asked = 0;
 	/** The newest question, so that a caller who was overtaken can wait for its answer. */
 	private newest = { turn: 0, answered: Promise.resolve() };
 	constructor(private auth: BrowserAuth) {}
-	get actor() {
+	get identity() {
 		return this.status?.actor ?? null;
+	}
+	get actor() {
+		if (this.status?.deviceApproval && this.deviceApproval.result?.state !== 'approved')
+			return null;
+		return this.identity;
+	}
+	private setStatus(status: AuthStatus | null) {
+		if (
+			this.identity?.id !== status?.actor?.id ||
+			this.status?.deviceApproval !== status?.deviceApproval
+		)
+			this.deviceApproval.reset();
+		this.status = status;
+	}
+	checkDevice() {
+		const account = this.status?.deviceApproval && this.identity?.id;
+		if (account) return this.deviceApproval.check(account);
+	}
+	deviceRefused() {
+		this.deviceApproval.reset();
+		void (this.status?.deviceApproval ? this.checkDevice() : this.refresh());
 	}
 	/** An address Google does not vouch for, waiting for its code; nobody is signed in meanwhile. */
 	get emailProof() {
-		return this.actor ? null : (this.status?.emailProof ?? null);
+		return this.identity ? null : (this.status?.emailProof ?? null);
 	}
 	refresh() {
 		return this.ask((turn) => this.readAfresh(turn));
@@ -25,10 +48,10 @@ class SessionState {
 	private async readAfresh(turn: number) {
 		try {
 			const status = await this.auth.status();
-			if (turn === this.asked) this.status = status;
+			if (turn === this.asked) this.setStatus(status);
 		} catch (cause) {
 			if (turn !== this.asked) return;
-			this.status = null;
+			this.setStatus(null);
 			this.error = String(cause);
 		}
 	}
@@ -53,7 +76,7 @@ class SessionState {
 		try {
 			const status = await this.auth.status();
 			if (turn !== this.asked || JSON.stringify(status) === JSON.stringify(this.status)) return;
-			this.status = status;
+			this.setStatus(status);
 		} catch {
 			/* Reported by the read that needs the session; this one is asked again. */
 		}
@@ -65,7 +88,11 @@ class SessionState {
 		await this.change(() => this.auth.google(credential, csrf));
 	}
 	async signOut() {
-		await this.change(() => this.auth.logout());
+		await this.change(async () => {
+			const account = this.status?.deviceApproval && this.identity?.id;
+			if (account) await this.deviceApproval.forget(account);
+			await this.auth.logout();
+		});
 	}
 	async sendEmailCode() {
 		await this.change(() => this.auth.emailStart());
@@ -73,7 +100,7 @@ class SessionState {
 	/** True only when the server then names a signed-in person. */
 	async verifyEmail(code: string) {
 		await this.change(() => this.auth.emailVerify(code));
-		return this.actor !== null;
+		return this.identity !== null;
 	}
 	/** After a change the status is read again: only the server's answer signs anyone in or out. */
 	private async change(action: () => Promise<unknown>) {

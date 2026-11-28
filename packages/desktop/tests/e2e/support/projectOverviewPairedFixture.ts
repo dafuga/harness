@@ -1,6 +1,11 @@
 import { pairedTrackerData } from './projectOverviewPairedTrackerFixture';
 import type { Page } from '@playwright/test';
-import { pairedAccount, pairedOverviewReply, pairedReply } from './projectOverviewAccountFixture';
+import {
+	pairedAccount,
+	pairedApproval,
+	pairedOverviewReply,
+	pairedReply
+} from './projectOverviewAccountFixture';
 import { overviewSnapshot } from './projectOverviewNativeFixture';
 import type {
 	PairedAccountCall,
@@ -132,8 +137,8 @@ function installPairedShell(input: PairedInstall) {
 			) => pairedListen(shell, method, value, callback)
 		},
 		__pairedPhone: {
-			completeGoogle: () => {
-				shell.account = 'signed-in';
+			setAccount: (state: string) => {
+				shell.account = state;
 			},
 			/** What the native plugin announces: revocation, loss of the pairing, or a return. */
 			setState: (state: string) => {
@@ -155,6 +160,7 @@ const pairedHelpers: Array<(...args: never[]) => unknown> = [
 	pairedTrackerData,
 	pairedRemote,
 	pairedAccount,
+	pairedApproval,
 	pairedListen,
 	pairedMethods,
 	pairedHeaders
@@ -186,6 +192,11 @@ export async function pairedAccountCalls(page: Page): Promise<PairedAccountCall[
 	return page.evaluate(() => (window as unknown as PairedPhoneHost).__pairedAccountCalls);
 }
 
-export async function completeGoogle(page: Page) {
-	await page.evaluate(() => (window as unknown as PairedPhoneHost).__pairedPhone.completeGoogle());
+export async function setLoginStage(
+	page: Page,
+	state: 'waiting-for-approval' | 'approval-denied' | 'approval-expired' | 'signed-in'
+) {
+	await page.evaluate((next) => {
+		(window as unknown as PairedPhoneHost).__pairedPhone.setAccount(next);
+	}, state);
 }

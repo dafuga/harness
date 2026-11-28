@@ -1,0 +1,142 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-mac-device-approval-pipe",
+	"uid": "u_b6xmtv5qid",
+	"kind": "module",
+	"title": "MacDeviceApprovalPipe",
+	"responsibility": "Exchanges one JSON request and response at a time with the signed macOS helper over private process streams.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/MacDeviceApprovalPipe.ts"
+		],
+		"symbols": [
+			"MacDeviceApprovalPipe",
+			"MacDeviceApprovalPipe.constructor",
+			"MacDeviceApprovalPipe.request",
+			"MacDeviceApprovalPipe.close"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "MacDeviceApprovalPipe.constructor.binary",
+				"type": "string",
+				"required": true,
+				"description": "Absolute path to the bundled native helper."
+			},
+			{
+				"name": "MacDeviceApprovalPipe.request.input",
+				"type": "object",
+				"required": true,
+				"description": "A main-process command for the helper. The start command may hold an OAuth session that travels only through the pipe."
+			}
+		],
+		"outputs": [
+			{
+				"name": "MacDeviceApprovalPipe.request",
+				"type": "Promise<unknown>",
+				"description": "One decoded newline-delimited JSON reply. Connection, timeout and malformed response failures close the pipe."
+			},
+			{
+				"name": "MacDeviceApprovalPipe.close",
+				"type": "void",
+				"description": "Ends the helper process and closes the private input stream."
+			}
+		],
+		"errors": [
+			{
+				"name": "MacDeviceApprovalError",
+				"type": "thrown",
+				"description": "A public, bounded failure code reports a refusal or an unavailable helper without including request contents."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "MacDeviceApprovalPipe.request",
+				"inputs": [
+					{
+						"name": "MacDeviceApprovalPipe.request.input",
+						"type": "object",
+						"required": true,
+						"description": "A main-process command for the helper. The start command may hold an OAuth session that travels only through the pipe."
+					}
+				],
+				"outputs": [
+					{
+						"name": "MacDeviceApprovalPipe.request",
+						"type": "Promise<unknown>",
+						"description": "One decoded newline-delimited JSON reply. Connection, timeout and malformed response failures close the pipe."
+					}
+				],
+				"errors": [
+					{
+						"name": "MacDeviceApprovalError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "MacDeviceApprovalPipe.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "MacDeviceApprovalPipe.close",
+						"type": "void",
+						"description": "Ends the helper process and closes the private input stream."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "MacDeviceApprovalPipe.constructor",
+				"inputs": [
+					{
+						"name": "MacDeviceApprovalPipe.constructor.binary",
+						"type": "string",
+						"required": true,
+						"description": "Absolute path to the bundled native helper."
+					}
+				],
+				"outputs": [
+					{
+						"name": "MacDeviceApprovalPipe.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-mac-device-approval-error",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/MacDeviceApprovalPipe.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/MacDeviceApprovalPipe.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

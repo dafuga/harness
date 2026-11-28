@@ -14,7 +14,11 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { assembleMacApp, verifyMacAppLayout } from '../scripts/package-mac-app';
+import {
+	assembleMacApp,
+	deviceApprovalBinary,
+	verifyMacAppLayout
+} from '../scripts/package-mac-app';
 
 const mac = process.platform === 'darwin';
 let root = '';
@@ -122,3 +126,19 @@ test.runIf(mac)('release verification refuses either defect when it returns', ()
 	renameSync(join(app, 'Contents/MacOS/Electron'), executable);
 	expect(() => verifyMacAppLayout(app)).not.toThrow();
 });
+
+test.runIf(mac)(
+	'the packaged approval helper refuses a command before the private login handshake',
+	() => {
+		const helper = join(app, deviceApprovalBinary);
+		expect(execFileSync(helper, ['--version'], { encoding: 'utf8', timeout: 5000 }).trim()).toBe(
+			'1'
+		);
+		const reply = execFileSync(helper, [], {
+			input: JSON.stringify({ action: 'list' }) + '\n',
+			encoding: 'utf8',
+			timeout: 5000
+		});
+		expect(JSON.parse(reply)).toEqual({ error: 'request-refused' });
+	}
+);

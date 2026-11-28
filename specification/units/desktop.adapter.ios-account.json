@@ -4,17 +4,28 @@
 	"uid": "u_t44fq24p5d",
 	"kind": "adapter",
 	"title": "Google account on iOS",
-	"responsibility": "Connects a phone directly to its Google account projects while keeping credentials outside the renderer.",
+	"responsibility": "Connects a phone directly to its Google account projects and reviews device approvals while keeping credentials outside the renderer.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/ios/App/App/Account/EnrollMailbox.swift",
+			"packages/desktop/ios/App/App/Account/EnrollRequest.swift",
 			"packages/desktop/ios/App/App/Account/HarnessAccountPlugin.swift",
+			"packages/desktop/ios/App/App/Account/HubAccountApprovals.swift",
+			"packages/desktop/ios/App/App/Account/HubAccountDevice.swift",
+			"packages/desktop/ios/App/App/Account/HubAccountEnrollment.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountHandoff.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountHttp.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountModels.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountSession.swift",
-			"packages/desktop/ios/App/App/Account/HubAccountVault.swift"
+			"packages/desktop/ios/App/App/Account/HubAccountVault.swift",
+			"packages/desktop/ios/App/App/Account/HubApprovalPublication.swift",
+			"packages/desktop/ios/App/App/Account/HubApprovalTransport.swift",
+			"packages/desktop/ios/App/App/Account/HubLoginAdmission.swift",
+			"packages/desktop/ios/App/App/Account/HubLoginComparison.swift",
+			"packages/desktop/ios/App/App/Account/HubLoginLedger.swift",
+			"packages/desktop/ios/App/App/Account/HubLoginReview.swift"
 		],
 		"symbols": []
 	},
@@ -25,7 +36,7 @@
 			{
 				"name": "account status",
 				"type": "NativeHostedStatus",
-				"description": "The public status says whether this build is configured and whether the account is signed-out, pending approval, or signed-in. It includes only an actor's id, name and email or a pending handoff code, verification URL, expiry and 1–30 second poll interval; approval waits are limited to 15 minutes.",
+				"description": "A kept iPhone session requires a matching non-backed-up installation marker. A relaunch preserves it. Sign-out, reinstall and a legacy unbound credential require a fresh login. The public status says whether this build is configured and whether the account is signed-out, pending approval, or signed-in. For iPhone the post-Google stages checking-device, first-device and waiting-for-approval withhold the actor and protected native calls. Signed-in requires Hub approval, a signed ledger consistent with the locally pinned head, and successful unwrapping of every current scope grant for this installation. Joining devices also verify the enrollment from their pinned approver. The public status includes only an actor's id, name and email or a pending handoff code, verification URL, expiry and 1–30 second poll interval; approval waits are limited to 15 minutes.",
 				"examples": [
 					{
 						"configured": true,

@@ -1,0 +1,558 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.service.networking-security-sealed-enrollment-review-service-review-transport",
+	"uid": "u_fbbrnjjwm4",
+	"kind": "service",
+	"title": "reviewTransport",
+	"responsibility": "Owns the reviewTransport service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/remote/src/services/networking-security/sealed-enrollment-review-service/reviewTransport.ts"
+		],
+		"symbols": [
+			"ReviewTransport",
+			"ReviewTransport.constructor",
+			"ReviewTransport.mailbox",
+			"ReviewTransport.deny",
+			"ReviewTransport.publish",
+			"ReviewTransport.append",
+			"ReviewTransport.chain",
+			"ReviewTransport.grants",
+			"sendEnrollment",
+			"enrollmentResponse",
+			"readEnrollment",
+			"assertMailbox",
+			"enrollmentEntries",
+			"enrollmentGrants",
+			"stepMatches"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ReviewTransport.constructor.options",
+				"type": "EnrollmentReviewOptions",
+				"required": true
+			},
+			{
+				"name": "ReviewTransport.constructor.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ReviewTransport.publish.entry",
+				"type": "SealedChainEntry",
+				"required": true
+			},
+			{
+				"name": "ReviewTransport.publish.grants",
+				"type": "SealedGrant[]",
+				"required": true
+			},
+			{
+				"name": "ReviewTransport.append.n",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "ReviewTransport.append.fields",
+				"type": "Record<string, string>",
+				"required": true
+			},
+			{
+				"name": "sendEnrollment.options",
+				"type": "EnrollmentTransportOptions",
+				"required": true
+			},
+			{
+				"name": "sendEnrollment.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "sendEnrollment.body",
+				"type": "EnrollmentWrite",
+				"required": false
+			},
+			{
+				"name": "enrollmentResponse.response",
+				"type": "Response",
+				"required": true
+			},
+			{
+				"name": "enrollmentResponse.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "readEnrollment.options",
+				"type": "EnrollmentTransportOptions",
+				"required": true
+			},
+			{
+				"name": "readEnrollment.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readEnrollment.body",
+				"type": "EnrollmentWrite",
+				"required": false
+			},
+			{
+				"name": "assertMailbox.view",
+				"type": "EnrollmentMailbox",
+				"required": true
+			},
+			{
+				"name": "assertMailbox.expected",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "enrollmentEntries.options",
+				"type": "EnrollmentTransportOptions",
+				"required": true
+			},
+			{
+				"name": "enrollmentGrants.options",
+				"type": "EnrollmentTransportOptions",
+				"required": true
+			},
+			{
+				"name": "stepMatches.step",
+				"type": "MailboxStep",
+				"required": true
+			},
+			{
+				"name": "stepMatches.fields",
+				"type": "Record<string, string>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ReviewTransport.mailbox",
+				"type": "Promise<MailboxStep[]>"
+			},
+			{
+				"name": "ReviewTransport.deny",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "ReviewTransport.publish",
+				"type": "unknown"
+			},
+			{
+				"name": "ReviewTransport.append",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "ReviewTransport.chain",
+				"type": "unknown"
+			},
+			{
+				"name": "ReviewTransport.grants",
+				"type": "Promise<SealedGrant[]>"
+			},
+			{
+				"name": "sendEnrollment",
+				"type": "Promise<Response>"
+			},
+			{
+				"name": "enrollmentResponse",
+				"type": "Promise<T>"
+			},
+			{
+				"name": "readEnrollment",
+				"type": "Promise<T>"
+			},
+			{
+				"name": "assertMailbox",
+				"type": "void"
+			},
+			{
+				"name": "enrollmentEntries",
+				"type": "Promise<SealedChainEntry[]>"
+			},
+			{
+				"name": "enrollmentGrants",
+				"type": "Promise<SealedGrant[]>"
+			},
+			{
+				"name": "stepMatches",
+				"type": "boolean"
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReviewTransport.mailbox",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ReviewTransport.mailbox",
+						"type": "Promise<MailboxStep[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReviewTransport.deny",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ReviewTransport.deny",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReviewTransport.publish",
+				"inputs": [
+					{
+						"name": "ReviewTransport.publish.entry",
+						"type": "SealedChainEntry",
+						"required": true
+					},
+					{
+						"name": "ReviewTransport.publish.grants",
+						"type": "SealedGrant[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReviewTransport.publish",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReviewTransport.append",
+				"inputs": [
+					{
+						"name": "ReviewTransport.append.n",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "ReviewTransport.append.fields",
+						"type": "Record<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReviewTransport.append",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReviewTransport.chain",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ReviewTransport.chain",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReviewTransport.grants",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ReviewTransport.grants",
+						"type": "Promise<SealedGrant[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sendEnrollment",
+				"inputs": [
+					{
+						"name": "sendEnrollment.options",
+						"type": "EnrollmentTransportOptions",
+						"required": true
+					},
+					{
+						"name": "sendEnrollment.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "sendEnrollment.body",
+						"type": "EnrollmentWrite",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "sendEnrollment",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "enrollmentResponse",
+				"inputs": [
+					{
+						"name": "enrollmentResponse.response",
+						"type": "Response",
+						"required": true
+					},
+					{
+						"name": "enrollmentResponse.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "enrollmentResponse",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readEnrollment",
+				"inputs": [
+					{
+						"name": "readEnrollment.options",
+						"type": "EnrollmentTransportOptions",
+						"required": true
+					},
+					{
+						"name": "readEnrollment.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readEnrollment.body",
+						"type": "EnrollmentWrite",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readEnrollment",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertMailbox",
+				"inputs": [
+					{
+						"name": "assertMailbox.view",
+						"type": "EnrollmentMailbox",
+						"required": true
+					},
+					{
+						"name": "assertMailbox.expected",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertMailbox",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "enrollmentEntries",
+				"inputs": [
+					{
+						"name": "enrollmentEntries.options",
+						"type": "EnrollmentTransportOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "enrollmentEntries",
+						"type": "Promise<SealedChainEntry[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "enrollmentGrants",
+				"inputs": [
+					{
+						"name": "enrollmentGrants.options",
+						"type": "EnrollmentTransportOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "enrollmentGrants",
+						"type": "Promise<SealedGrant[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "stepMatches",
+				"inputs": [
+					{
+						"name": "stepMatches.step",
+						"type": "MailboxStep",
+						"required": true
+					},
+					{
+						"name": "stepMatches.fields",
+						"type": "Record<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "stepMatches",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ReviewTransport.constructor",
+				"inputs": [
+					{
+						"name": "ReviewTransport.constructor.options",
+						"type": "EnrollmentReviewOptions",
+						"required": true
+					},
+					{
+						"name": "ReviewTransport.constructor.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReviewTransport.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-chain",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-review",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/services/networking-security/sealed-enrollment-review-service/reviewTransport.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/services/networking-security/sealed-enrollment-review-service/reviewTransport.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

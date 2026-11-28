@@ -8,6 +8,7 @@ import type { AuthConfig } from './authConfig';
 export interface HubAuthParts {
 	config: AuthConfig;
 	store: AuthStore;
+	requiresDeviceApproval?: (account: string) => Promise<boolean>;
 	/** Built by the caller, so the key set it trusts is chosen in exactly one place. */
 	google: GoogleIdentityService;
 	fetch: typeof fetch;

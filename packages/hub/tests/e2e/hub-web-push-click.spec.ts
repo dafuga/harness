@@ -81,5 +81,24 @@ test('the service worker shows one replacing notification and a click opens the 
 		page.getByRole('dialog', { name: 'Chief of Staff', exact: true }).getByText('Ship harbor?')
 	).toBeVisible();
 	await expect.poll(() => shown(page)).toEqual([]);
+	const approval = [
+		{
+			title: 'Harness',
+			body: 'A device sign-in is ready for review.',
+			tag: 'harness-device-approval',
+			data: null
+		}
+	];
+	await push(JSON.stringify({ kind: 'device-approval' }));
+	await expect.poll(() => shown(page)).toEqual(approval);
+	await push(
+		JSON.stringify({
+			kind: 'device-approval',
+			title: 'Fixture title',
+			body: 'Fixture detail',
+			needs: 'fixture-id'
+		})
+	);
+	await expect.poll(() => shown(page)).toEqual(approval);
 	expect(fixture.writes).toHaveLength(1);
 });

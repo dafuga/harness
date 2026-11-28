@@ -6,6 +6,7 @@ import {
 } from '../../../adapters/networking-security/NativeSessionAdapter';
 import { HostedHttpAdapter } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import { RemoteHttpProjectAdapter } from './remote-http-project-adapter/RemoteHttpProjectAdapter';
+import { MacDeviceApprovalService } from './MacDeviceApprovalService';
 import { NativeAuthService } from './NativeAuthService';
 import type { TrackerOverviewAuthority } from './tracker-overview-publisher/TrackerOverviewPublisher.types';
 
@@ -25,17 +26,39 @@ function overviewAuthority(
 	};
 }
 
+function endConnection(options: NativeConnectionOptions, store: NativeSessionAdapter): () => void {
+	return () => {
+		store.invalidate();
+		options.onDisconnect?.();
+		options.onCacheStatus?.({ projectId: '$projects', status: 'denied' });
+	};
+}
+
 export class NativeConnectionService {
 	create(options: NativeConnectionOptions, encryption: NativeEncryption) {
 		if (!options.origin) return {};
 		const origin = new URL(options.origin).origin;
 		const store = new NativeSessionAdapter(options.file, encryption);
+		const deviceApproval = options.deviceApprovalBinary
+			? new MacDeviceApprovalService(options.deviceApprovalBinary)
+			: undefined;
+		let auth: NativeAuthService;
 		const transport = {
 			origin: options.origin,
-			credentials: () => store.read(),
+			credentials: () => (deviceApproval && !auth.admitted ? Promise.resolve(null) : store.read()),
 			authorityVersion: () => store.generation
 		};
 		const http = new HostedHttpAdapter(transport);
+		auth = new NativeAuthService({
+			origin,
+			http,
+			store,
+			deviceApproval,
+			open: options.open,
+			onSignIn: options.onSignIn,
+			clearCache: () => options.cache.clear(),
+			onDisconnect: endConnection(options, store)
+		});
 		return {
 			authority: overviewAuthority(http, store),
 			remote: new RemoteHttpProjectAdapter({
@@ -43,19 +66,7 @@ export class NativeConnectionService {
 				cache: options.cache,
 				onCacheStatus: options.onCacheStatus
 			}),
-			auth: new NativeAuthService({
-				origin,
-				http,
-				store,
-				open: options.open,
-				onSignIn: options.onSignIn,
-				clearCache: () => options.cache.clear(),
-				onDisconnect: () => {
-					store.invalidate();
-					options.onDisconnect?.();
-					options.onCacheStatus?.({ projectId: '$projects', status: 'denied' });
-				}
-			})
+			auth
 		};
 	}
 }

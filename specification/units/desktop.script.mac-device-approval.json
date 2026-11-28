@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.script.mac-device-approval",
+	"uid": "u_ppwt4b24dj",
+	"kind": "script",
+	"title": "mac-device-approval",
+	"responsibility": "Runs the packaged Mac Secure Enclave device approval helper for one Electron login over private stdin and stdout.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/scripts/mac-device-approval.swift"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/scripts/mac-device-approval.swift",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/scripts/mac-device-approval.swift"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

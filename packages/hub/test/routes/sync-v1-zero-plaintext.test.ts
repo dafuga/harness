@@ -18,6 +18,8 @@ import {
 	sealedObjectId,
 	sealedScopeKeys
 } from '../../../remote/src/utils/networking-security/sealedScopeKeys';
+import { sealedDevice } from '../../../remote/src/utils/networking-security/sealedDevice';
+import { sealedEnrollCommit } from '../../../remote/src/utils/networking-security/sealedSas';
 import { startSync } from '../support/syncFixture';
 import type { SyncFixture } from '../support/syncFixture.types';
 import { storedByObject, storedObjects, storedRows } from '../support/syncCapture';
@@ -102,7 +104,7 @@ test('the server never holds a canary, and the owner of the keys can still read 
 	const segment = await writeRecords(keys, scope);
 	publisher.send(await streamFrame(keys));
 	await watcher.until(3);
-	await store('POST', 'enroll', JSON.stringify({ kemPublic: toBase64Url(new Uint8Array(65)) }));
+	await store('POST', 'enroll', JSON.stringify(await enrollmentRequest()));
 
 	// The positive control: the keys open exactly what the server returned.
 	const read = (await (await f.call(A, 'GET', `ops/${scope}`, { headers })).json()) as {
@@ -126,10 +128,31 @@ test('the server never holds a canary, and the owner of the keys can still read 
 	publisher.close();
 }, 120_000);
 
-test('the check itself notices plaintext: a canary sent in a sign-in step is caught', async () => {
-	const leaked = JSON.stringify({ name: canary.device });
-	expect((await f.call(A, 'POST', 'enroll', { body: leaked, headers })).status).toBe(201);
-	expect(() => expectNoPlaintext([...f.sent], [canary.device])).toThrow(/server saw/);
+test('an enrollment request cannot store a plaintext device name', async () => {
+	const fields = await enrollmentRequest();
+	const leaked = JSON.stringify({ ...fields, name: canary.device });
+	const before = await storedByObject(f, 'google:fixture-a');
+	const response = await f.call(A, 'POST', 'enroll', { body: leaked, headers });
+	expect(response.status).toBe(400);
+	expect(await response.json()).toEqual({ error: 'invalid-input' });
+	const withPlatform = { ...fields, platform: 'iphone', name: canary.device };
+	expect((await f.call(A, 'POST', 'enroll', { body: withPlatform, headers })).status).toBe(400);
 	const stored = await storedByObject(f, 'google:fixture-a');
-	expect(() => expectNoPlaintext(stored, [canary.device])).toThrow(/server saw/);
+	expect(stored).toEqual(before);
+	expectNoPlaintext(stored, [canary.device]);
+
+	const duplicate = `{"commit":${JSON.stringify(canary.device)},${JSON.stringify(fields).slice(1)}`;
+	const opened = await f.call(A, 'POST', 'enroll', { body: duplicate, headers });
+	expect(opened.status).toBe(201);
+	expectNoPlaintext(await storedByObject(f, 'google:fixture-a'), [canary.device]);
+	expect(() => expectNoPlaintext([...f.sent], [canary.device])).toThrow(/server saw/);
 }, 60_000);
+
+async function enrollmentRequest() {
+	const keys = await sealedDevice();
+	return {
+		kemPublic: toBase64Url(keys.kemPublic),
+		signingPublic: toBase64Url(keys.signingPublic),
+		commit: await sealedEnrollCommit(keys, new Uint8Array(32))
+	};
+}

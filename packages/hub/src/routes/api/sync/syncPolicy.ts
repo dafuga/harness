@@ -1,6 +1,11 @@
 import type { Handler } from './syncRoutes.types';
 import type { SyncCall, SyncDeps } from './syncPolicy.types';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
+import { approvalPush } from './syncApprovalPush';
+import { approvalApns } from './syncApprovalApns';
+import { bootstrap, readRecovery } from './syncBootstrap';
+import { changeDevices } from './syncDevices';
+import { bindDeviceSession, readDeviceSession, requireApprovedAccess } from './syncDeviceSession';
 import { appendChain, readChain } from './syncChain';
 import { enroll } from './syncEnroll';
 import { putGrants, readGrants } from './syncGrants';
@@ -10,6 +15,24 @@ import { getObject, listObjects, putObject } from './syncObjects';
 import { postOps, readOps } from './syncOps';
 
 const routes: Record<string, Record<string, { handler: Handler; parts: number[] }>> = {
+	bootstrap: {
+		GET: { handler: readRecovery, parts: [1] },
+		POST: { handler: bootstrap, parts: [1] }
+	},
+	devices: { POST: { handler: changeDevices, parts: [1] } },
+	'approval-push': {
+		GET: { handler: approvalPush, parts: [1] },
+		POST: { handler: approvalPush, parts: [1] },
+		DELETE: { handler: approvalPush, parts: [1] }
+	},
+	'approval-apns': {
+		GET: { handler: approvalApns, parts: [1] },
+		POST: { handler: approvalApns, parts: [1] }
+	},
+	'device-session': {
+		GET: { handler: readDeviceSession, parts: [1] },
+		POST: { handler: bindDeviceSession, parts: [1] }
+	},
 	chain: { GET: { handler: readChain, parts: [1] }, POST: { handler: appendChain, parts: [1] } },
 	grants: { GET: { handler: readGrants, parts: [1] }, POST: { handler: putGrants, parts: [1] } },
 	ops: { GET: { handler: readOps, parts: [2] }, POST: { handler: postOps, parts: [2] } },
@@ -69,9 +92,13 @@ async function dispatch(request: Request, deps: SyncDeps): Promise<Response> {
 		request,
 		url,
 		account: session.actor.id,
+		sessionHash: session.idHash,
+		sessionKind: session.kind,
 		device,
 		deps: { ...deps, db: deps.db },
 		parts
 	};
+	const denial = await requireApprovedAccess(call);
+	if (denial) return denial;
 	return route.handler(call);
 }

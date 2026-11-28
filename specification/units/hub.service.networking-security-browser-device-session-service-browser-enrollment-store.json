@@ -1,0 +1,206 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.service.networking-security-browser-device-session-service-browser-enrollment-store",
+	"uid": "u_liysz7uimm",
+	"kind": "service",
+	"title": "browserEnrollmentStore",
+	"responsibility": "Owns the browserEnrollmentStore service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/services/networking-security/browser-device-session-service/browserEnrollmentStore.ts",
+			"packages/hub/src/services/networking-security/browser-device-session-service/browserEnrollmentStore.types.ts"
+		],
+		"symbols": [
+			"openBrowserEnrollments",
+			"readBrowserEnrollment",
+			"keepBrowserEnrollment",
+			"resolveBrowserEnrollment",
+			"BrowserEnrollment",
+			"BrowserEnrollmentRecord"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readBrowserEnrollment.db",
+				"type": "IDBDatabase",
+				"required": true
+			},
+			{
+				"name": "readBrowserEnrollment.account",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "keepBrowserEnrollment.db",
+				"type": "IDBDatabase",
+				"required": true
+			},
+			{
+				"name": "keepBrowserEnrollment.account",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "keepBrowserEnrollment.record",
+				"type": "BrowserEnrollmentRecord",
+				"required": true
+			},
+			{
+				"name": "resolveBrowserEnrollment.db",
+				"type": "IDBDatabase",
+				"required": true
+			},
+			{
+				"name": "resolveBrowserEnrollment.account",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "openBrowserEnrollments",
+				"type": "Promise<IDBDatabase>"
+			},
+			{
+				"name": "readBrowserEnrollment",
+				"type": "Promise<BrowserEnrollmentRecord>"
+			},
+			{
+				"name": "keepBrowserEnrollment",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "resolveBrowserEnrollment",
+				"type": "Promise<BrowserEnrollment>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "openBrowserEnrollments",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "openBrowserEnrollments",
+						"type": "Promise<IDBDatabase>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readBrowserEnrollment",
+				"inputs": [
+					{
+						"name": "readBrowserEnrollment.db",
+						"type": "IDBDatabase",
+						"required": true
+					},
+					{
+						"name": "readBrowserEnrollment.account",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readBrowserEnrollment",
+						"type": "Promise<BrowserEnrollmentRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "keepBrowserEnrollment",
+				"inputs": [
+					{
+						"name": "keepBrowserEnrollment.db",
+						"type": "IDBDatabase",
+						"required": true
+					},
+					{
+						"name": "keepBrowserEnrollment.account",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "keepBrowserEnrollment.record",
+						"type": "BrowserEnrollmentRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "keepBrowserEnrollment",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resolveBrowserEnrollment",
+				"inputs": [
+					{
+						"name": "resolveBrowserEnrollment.db",
+						"type": "IDBDatabase",
+						"required": true
+					},
+					{
+						"name": "resolveBrowserEnrollment.account",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolveBrowserEnrollment",
+						"type": "Promise<BrowserEnrollment>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-device",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-request",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/services/networking-security/browser-device-session-service/browserEnrollmentStore.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/services/networking-security/browser-device-session-service/browserEnrollmentStore.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

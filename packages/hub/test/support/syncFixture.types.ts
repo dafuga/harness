@@ -10,6 +10,7 @@ export interface CallExtra {
 export interface SyncStart {
 	entry?: string;
 	migrations?: string[];
+	country?: string;
 }
 
 export interface SyncFixture {

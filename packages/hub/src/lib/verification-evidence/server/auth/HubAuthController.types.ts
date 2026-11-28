@@ -8,6 +8,7 @@ import type { AuthRoutes } from '../../../../utils/verification-evidence/authHtt
 
 export interface HubAuthControllerOptions {
 	clientId: string;
+	requiresDeviceApproval?: (account: string) => Promise<boolean>;
 	sessions: RequestSessionService;
 	repository: SessionRepository;
 	challenges: LoginChallengeService;

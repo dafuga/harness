@@ -1,4 +1,10 @@
 // @harness-uid u_7knh6lpstr
+import type {
+	EnrollmentAuthor,
+	EnrollmentDecision,
+	EnrollmentDisplay,
+	EnrollmentView
+} from './SyncEnrollments.types';
 import type { SyncHttpDeps } from './SyncHttp.types';
 import { isScopeId, syncLimits } from './syncWire';
 import { readJsonBody } from '../../../utils/development-tooling/readJsonBody';
@@ -56,31 +62,68 @@ export class SyncHttp {
 
 	private async enroll(request: Request, id: string | undefined): Promise<Response> {
 		const now = this.deps.now();
-		if (request.method === 'GET') return this.readEnroll(id, now);
+		if (request.method === 'GET') return this.readEnroll(request, id, now);
 		if (request.method !== 'POST') return failure(405, 'method');
 		const body = await readJsonBody(request, false);
 		const by = body?.by,
 			text = body?.body;
 		if (typeof by !== 'string' || typeof text !== 'string' || text.length > syncLimits.stepBytes)
 			return failure(400, 'invalid');
-		if (id === undefined) return this.openEnroll(by, text, now);
-		const step = this.deps.enrollments.append(id, by, text, now);
-		if (!step) return failure(409, 'enrollment-unavailable');
+		const author = { device: by, owner: typeof body?.owner === 'string' ? body.owner : undefined };
+		if (id === undefined)
+			return this.openEnroll(author, text, now, body?.display as EnrollmentDisplay | undefined);
+		if (body?.decision) return this.decide(id, by, body.decision as EnrollmentDecision, now);
+		const appended = this.deps.enrollments.append(id, author, text, now);
+		if (!appended) return failure(409, 'enrollment-unavailable');
+		const { step, created } = appended;
+		if (!created) return json(step);
 		this.deps.sockets.announce({ id, n: step.n });
 		return json(step, 201);
 	}
 
-	private readEnroll(id: string | undefined, now: number): Response {
-		if (id === undefined) return json({ requests: this.deps.enrollments.pending(now) });
-		const view = this.deps.enrollments.read(id, now);
-		return view ? json(view) : failure(404, 'not-found');
+	private decide(id: string, by: string, choice: EnrollmentDecision, now: number): Response {
+		const created = this.deps.enrollments.decide(id, by, choice, now);
+		if (created === null) return failure(409, 'enrollment-unavailable');
+		if (created && choice.kind === 'deny') this.deps.sockets.announce({ id, n: 3 });
+		return json({ denied: choice.kind === 'deny' }, created ? 201 : 200);
 	}
 
-	private async openEnroll(by: string, body: string, now: number): Promise<Response> {
-		const view = this.deps.enrollments.open(by, body, now);
-		if (!view) return failure(429, 'too-many-requests');
-		await this.deps.sweep();
-		this.deps.sockets.announce({ id: view.id, n: 0 });
-		return json(view, 201);
+	private readEnroll(request: Request, id: string | undefined, now: number): Response {
+		if (id === undefined)
+			return json({
+				requests: this.deps.enrollments.pending(now).map((view) => ({
+					...transcript(view),
+					display: view.display
+				}))
+			});
+		const view = this.deps.enrollments.read(id, now);
+		if (!view || !mayRead(request.headers, view)) return failure(404, 'not-found');
+		return json(transcript(view));
 	}
+
+	private async openEnroll(
+		author: EnrollmentAuthor,
+		body: string,
+		now: number,
+		display?: EnrollmentDisplay
+	): Promise<Response> {
+		const opened = this.deps.enrollments.open(author, body, now, display);
+		if (!opened) return failure(429, 'too-many-requests');
+		if (!opened.created) return json(transcript(opened.view));
+		await this.deps.sweep();
+		this.deps.sockets.announce({ id: opened.view.id, n: 0 });
+		return json(transcript(opened.view), 201);
+	}
+}
+
+function transcript({ id, createdAt, steps, decision }: EnrollmentView) {
+	return { id, createdAt, steps, ...(decision === 'denied' ? { denied: true } : {}) };
+}
+
+function mayRead(headers: Headers, view: EnrollmentView): boolean {
+	return (
+		!view.owner ||
+		headers.get('X-Harness-Enrollment-Owner') === view.owner ||
+		headers.get('X-Harness-Enrollment-Reviewer') === 'active'
+	);
 }

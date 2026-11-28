@@ -31,7 +31,7 @@
 				"type": "NativeHostedStatus",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Hosted account status selects checking, configured sign-in, pending handoff, or unavailable states."
+				"description": "Hosted account status selects checking, configured sign-in, pending Google handoff, installation check, first-device setup, waiting for an approved device, or unavailable states. A waiting installation may display its six-digit comparison code."
 			},
 			{
 				"name": "AccountSignIn.error",
@@ -44,6 +44,13 @@
 				"type": "boolean",
 				"required": true,
 				"description": "Disables sign-in, retry and cancel actions while an account request is in progress."
+			},
+			{
+				"name": "AccountSignIn.approvalEnded",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Shows a denied or expired approval outcome with an action to return to Google sign-in."
 			},
 			{
 				"name": "AccountSignIn.connect",
@@ -68,7 +75,7 @@
 			{
 				"name": "AccountSignIn",
 				"type": "markup",
-				"description": "Shows the Harness logo, Google sign-in or recovery controls, and the current sign-in status, error or one-time code."
+				"description": "Shows the Harness logo, Google sign-in or recovery controls, and the current sign-in status, error, one-time code or verified device comparison code."
 			}
 		],
 		"errors": [],

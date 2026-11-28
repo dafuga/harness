@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.migration.0010-sealed-recoveries",
+	"uid": "u_qurhzpa52p",
+	"kind": "migration",
+	"title": "0010-sealed-recoveries",
+	"responsibility": "Owns the 0010-sealed-recoveries migration unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/db/migrations/0010-sealed-recoveries.sql"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/db/migrations/0010-sealed-recoveries.sql",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/db/migrations/0010-sealed-recoveries.sql"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

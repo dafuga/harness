@@ -64,6 +64,11 @@
 				"required": false,
 				"description": "Mails proof codes to addresses Google does not vouch for; an explicit null sends none, so starting an email proof fails with email-delivery-disabled. Defaults to createResendDelivery(env) when the argument is omitted or undefined: a Resend-backed sender when HARNESS_EMAIL_API_KEY and HARNESS_EMAIL_FROM are both present and well formed, otherwise null.",
 				"examples": [null]
+			},
+			{
+				"name": "createHubAuth.requiresDeviceApproval",
+				"type": "(account: string) => Promise<boolean>",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -121,6 +126,11 @@
 						"required": false,
 						"description": "Mails proof codes to addresses Google does not vouch for; an explicit null sends none, so starting an email proof fails with email-delivery-disabled. Defaults to createResendDelivery(env) when the argument is omitted or undefined: a Resend-backed sender when HARNESS_EMAIL_API_KEY and HARNESS_EMAIL_FROM are both present and well formed, otherwise null.",
 						"examples": [null]
+					},
+					{
+						"name": "createHubAuth.requiresDeviceApproval",
+						"type": "(account: string) => Promise<boolean>",
+						"required": false
 					}
 				],
 				"outputs": [

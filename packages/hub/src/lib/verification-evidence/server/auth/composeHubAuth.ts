@@ -47,6 +47,7 @@ export function composeHubAuth(parts: HubAuthParts): HubAuth {
 	const email = new EmailProofController({ proofs: emailProofs, sessions });
 	const controller = new HubAuthController({
 		clientId: config.clientId,
+		requiresDeviceApproval: parts.requiresDeviceApproval,
 		sessions,
 		repository,
 		challenges: new LoginChallengeService({ store: store.challenges, secrets, now }),

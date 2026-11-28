@@ -4,6 +4,7 @@ import type { ProjectionCacheService } from './projection-cache-service/Projecti
 
 export interface NativeConnectionOptions {
 	origin?: string;
+	deviceApprovalBinary?: string;
 	onCacheStatus?: (status: CacheStatus) => void;
 	file: string;
 	cache: ProjectionCacheService;

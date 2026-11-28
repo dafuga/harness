@@ -1,12 +1,19 @@
 // @harness-uid u_fgcaimnxut
 // The package tsconfig replaces SvelteKit's `include`, so its generated `$env` modules are named here.
 /// <reference path="../.svelte-kit/ambient.d.ts" />
-import type { D1Database, DurableObjectNamespace, R2Bucket } from '@cloudflare/workers-types';
+import type {
+	D1Database,
+	DurableObjectNamespace,
+	ExecutionContext,
+	R2Bucket
+} from '@cloudflare/workers-types';
 import type { AuthEnv } from './models/accounts-access/HubAuth.types';
 
 declare global {
 	namespace App {
 		interface Platform {
+			/** Cloudflare keeps best-effort work alive after the HTTP response. */
+			ctx?: Pick<ExecutionContext, 'waitUntil'>;
 			/** Dedicated hub bindings. Every value is optional; a missing one disables its feature. */
 			env: AuthEnv & {
 				HARNESS_COLLABORATION_OWNER?: string;

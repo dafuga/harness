@@ -18,10 +18,14 @@
 			"SyncEnrollments.open",
 			"SyncEnrollments.read",
 			"SyncEnrollments.pending",
+			"SyncEnrollments.decide",
 			"SyncEnrollments.append",
 			"SyncEnrollments.expire",
 			"SyncEnrollments.any",
 			"EnrollStep",
+			"EnrollmentDisplay",
+			"EnrollmentDecision",
+			"EnrollmentAuthor",
 			"EnrollmentView",
 			"EnrollRow"
 		]
@@ -35,8 +39,8 @@
 				"required": true
 			},
 			{
-				"name": "SyncEnrollments.open.by",
-				"type": "string",
+				"name": "SyncEnrollments.open.author",
+				"type": "EnrollmentAuthor",
 				"required": true
 			},
 			{
@@ -48,6 +52,11 @@
 				"name": "SyncEnrollments.open.now",
 				"type": "number",
 				"required": true
+			},
+			{
+				"name": "SyncEnrollments.open.display",
+				"type": "EnrollmentDisplay",
+				"required": false
 			},
 			{
 				"name": "SyncEnrollments.read.id",
@@ -65,13 +74,33 @@
 				"required": true
 			},
 			{
+				"name": "SyncEnrollments.decide.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.decide.by",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.decide.choice",
+				"type": "EnrollmentDecision",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.decide.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "SyncEnrollments.append.id",
 				"type": "string",
 				"required": true
 			},
 			{
-				"name": "SyncEnrollments.append.by",
-				"type": "string",
+				"name": "SyncEnrollments.append.author",
+				"type": "EnrollmentAuthor",
 				"required": true
 			},
 			{
@@ -93,7 +122,7 @@
 		"outputs": [
 			{
 				"name": "SyncEnrollments.open",
-				"type": "EnrollmentView | null"
+				"type": "unknown"
 			},
 			{
 				"name": "SyncEnrollments.read",
@@ -104,8 +133,12 @@
 				"type": "EnrollmentView[]"
 			},
 			{
+				"name": "SyncEnrollments.decide",
+				"type": "boolean | null"
+			},
+			{
 				"name": "SyncEnrollments.append",
-				"type": "EnrollStep | null"
+				"type": "unknown"
 			},
 			{
 				"name": "SyncEnrollments.expire",
@@ -123,8 +156,8 @@
 				"name": "SyncEnrollments.open",
 				"inputs": [
 					{
-						"name": "SyncEnrollments.open.by",
-						"type": "string",
+						"name": "SyncEnrollments.open.author",
+						"type": "EnrollmentAuthor",
 						"required": true
 					},
 					{
@@ -136,12 +169,17 @@
 						"name": "SyncEnrollments.open.now",
 						"type": "number",
 						"required": true
+					},
+					{
+						"name": "SyncEnrollments.open.display",
+						"type": "EnrollmentDisplay",
+						"required": false
 					}
 				],
 				"outputs": [
 					{
 						"name": "SyncEnrollments.open",
-						"type": "EnrollmentView | null"
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -189,6 +227,39 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "SyncEnrollments.decide",
+				"inputs": [
+					{
+						"name": "SyncEnrollments.decide.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SyncEnrollments.decide.by",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SyncEnrollments.decide.choice",
+						"type": "EnrollmentDecision",
+						"required": true
+					},
+					{
+						"name": "SyncEnrollments.decide.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncEnrollments.decide",
+						"type": "boolean | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "SyncEnrollments.append",
 				"inputs": [
 					{
@@ -197,8 +268,8 @@
 						"required": true
 					},
 					{
-						"name": "SyncEnrollments.append.by",
-						"type": "string",
+						"name": "SyncEnrollments.append.author",
+						"type": "EnrollmentAuthor",
 						"required": true
 					},
 					{
@@ -215,7 +286,7 @@
 				"outputs": [
 					{
 						"name": "SyncEnrollments.append",
-						"type": "EnrollStep | null"
+						"type": "unknown"
 					}
 				],
 				"errors": [],

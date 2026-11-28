@@ -1,9 +1,14 @@
 // @harness-uid u_bt6e76o6y5
+import { MacDeviceApprovalError } from './MacDeviceApprovalError';
+import type {
+	DeviceApprovalAction,
+	DeviceApprovalResult
+} from '../../../models/development-tooling/Environment.types';
 import type { Pending, AuthOptions } from './NativeAuthService.types';
 import { NativeSignInError } from './NativeAuthService.types';
 import { NativeSignInService } from '../../../services/accounts-access/NativeSignInService';
 import type { NativeHostedStatus } from '../../../models/projects-sessions/ProjectContext.types';
-import { NativeAccountStatusService } from './NativeAccountStatusService';
+import { admitMacDevice, NativeAccountStatusService } from './NativeAccountStatusService';
 import { responseRecord } from '../../../validators/projects-sessions/RemoteProjectResponseValidator';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 
@@ -54,8 +59,7 @@ export class NativeAuthService {
 		return this.serial(() => this.refresh());
 	}
 	disconnect(): Promise<NativeHostedStatus> {
-		this.generation++;
-		this.signedIn = false;
+		this.closeDeviceApproval();
 		return this.serial(async () => {
 			this.options.onDisconnect?.();
 			this.clearPending();
@@ -76,16 +80,32 @@ export class NativeAuthService {
 	overview(): Promise<OverviewSnapshot> {
 		return readOverview(this.options);
 	}
-
+	closeDeviceApproval(): void {
+		this.generation++;
+		this.signedIn = false;
+		this.options.deviceApproval?.close();
+	}
+	deviceApproval(action: DeviceApprovalAction): Promise<DeviceApprovalResult> {
+		if (!this.signedIn || !this.options.deviceApproval)
+			throw new MacDeviceApprovalError('session-required');
+		return this.options.deviceApproval.action(action);
+	}
 	private serial(action: () => Promise<NativeHostedStatus>): Promise<NativeHostedStatus> {
 		const generation = this.generation;
-		const next = this.queue.then(action).then((status) => {
-			if (generation === this.generation) {
-				this.signedIn = status.state === 'signed-in';
-				if (this.signedIn && status.actor) this.options.onSignIn?.(status.actor.id);
-			}
-			return status;
-		});
+		const next = this.queue
+			.then(action)
+			.then((status) =>
+				generation === this.generation
+					? admitMacDevice(status, this.options)
+					: ({ configured: true, state: 'signed-out' } as const)
+			)
+			.then((status) => {
+				if (generation === this.generation) {
+					this.signedIn = status.state === 'signed-in';
+					if (this.signedIn && status.actor) this.options.onSignIn?.(status.actor.id);
+				}
+				return status;
+			});
 		this.queue = next.catch(() => undefined);
 		return next;
 	}

@@ -6,7 +6,16 @@ import { CommentOutboxService } from '../../../../services/projects-sessions/Com
 import { ProjectionCacheService } from '../projection-cache-service/ProjectionCacheService';
 import { startTrackerRealtime } from '../tracker-realtime/startTrackerRealtime';
 import { createTrackerOverviewPublisher } from '../tracker-overview-publisher/createTrackerOverviewPublisher';
-import { app, BrowserWindow, dialog, ipcMain, protocol, safeStorage, shell } from 'electron';
+import {
+	app,
+	BrowserWindow,
+	dialog,
+	ipcMain,
+	Notification,
+	protocol,
+	safeStorage,
+	shell
+} from 'electron';
 import type { IpcMainInvokeEvent } from 'electron';
 import { resolve } from 'node:path';
 import type { LocalBootstrap } from '../../../../../../remote/src/index';
@@ -20,10 +29,14 @@ import { desktopRemote } from './desktopRemote';
 import { chooseProject } from './chooseProject';
 import { confirmUnload } from './confirmUnload';
 import { desktopIpc } from './desktopIpc';
+import { deviceApprovalChannel } from '../../../../utils/agents-providers/desktopIpc';
+import { deviceApprovalInput } from './deviceApprovalInput';
+import { UntrustedRendererError } from './desktopIpc.types';
 import { remoteControl } from './remoteControl';
 import { rendererAssets } from './rendererAssets';
 import { trustedSender } from './trustedSender';
 import { prepareDesktopStorage, preserveMacProfile } from './macSafeStorage';
+import { packagedApprovalHelper, refreshAccountInBackground } from './desktopApprovalNotifications';
 import { guardDesktopNavigation } from './guardDesktopNavigation';
 
 protocol.registerSchemesAsPrivileged([
@@ -55,6 +68,13 @@ export async function initializeDesktop(): Promise<BrowserWindow | null> {
 		rendererAssets(assets, request.url, `ws://127.0.0.1:${port}`)
 	);
 	desktopIpc(ipcMain, (event) => bootstrap(backend, event));
+	ipcMain.handle(deviceApprovalChannel, (event, input: unknown) => {
+		const open = windows.current;
+		const approved = deviceApprovalInput(input);
+		if (!open || !trustedSender(event, open.window) || !approved || !backend.shared.auth)
+			throw new UntrustedRendererError('Device approval is not available.');
+		return backend.shared.auth.deviceApproval(approved);
+	});
 	appLifecycle(backend);
 
 	return openWindow(backend);
@@ -94,6 +114,7 @@ function desktopBackend() {
 	const { authority, ...connection } = new NativeConnectionService().create(
 		{
 			origin,
+			deviceApprovalBinary: packagedApprovalHelper(),
 			onSignIn: (ownerId) => remote.linkAccount(ownerId),
 			onDisconnect: () => remote.account.end(),
 			onCacheStatus: (status) => windows.current?.client.emit('cache', status),
@@ -112,9 +133,7 @@ function desktopBackend() {
 		env: process.env,
 		emit: (event) => windows.current?.client.emit('tracker', event)
 	});
-	const refreshAccount = () => void connection.auth?.status().catch(() => undefined);
-	refreshAccount();
-	const accountTimer = connection.auth ? setInterval(refreshAccount, 60_000).unref() : undefined;
+	const accountTimer = refreshAccountInBackground(connection.auth, () => windows.current?.window);
 	return {
 		shared: { ...stores, ...connection, home, homeChat },
 		remote,
@@ -145,6 +164,7 @@ function appLifecycle(backend: Backend): void {
 		backend.publisher?.stop();
 		backend.stopRealtime();
 		clearInterval(backend.accountTimer);
+		backend.shared.auth?.closeDeviceApproval();
 		void backend.lifecycle
 			.quit()
 			.then(() => backend.transport.close())

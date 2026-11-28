@@ -24,7 +24,7 @@ when the Mac is offline.
 
 | Party                                           | Can                                                                             | Cannot                                                                                   |
 | ----------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Cloudflare, or anyone with Hub/D1/R2 access     | See account id, device ids and public keys, opaque ids, padded sizes, times, IP | Read titles, notes, statuses, projects, computer or device names, session output         |
+| Cloudflare, or anyone with Hub/D1/R2 access     | See account id, device ids and public keys, opaque ids, padded sizes, times, platform and approximate location | Read titles, notes, statuses, projects, computer or device names, session output         |
 |                                                 | Withhold, delay or reorder data; serve an old chain head to a new device        | Forge or alter data, inject a key, enroll a device, roll a known device back unnoticed   |
 | Someone with Daniel's Google session only       | Download ciphertext; write garbage that clients reject                          | Decrypt anything: Google sign-in never unlocks keys                                      |
 | A revoked device                                | Keep what it already downloaded and decrypted                                   | Read anything written after the revocation rotates its scopes                            |
@@ -100,15 +100,55 @@ grant signature.
    Both screens show the same 6-digit code, `SHA-256("harness/sealed/v1/sas"
 ‖ 0 ‖ request keys ‖ approver signing key ‖ both nonces)` mod 10^6.
    Committing first means a server in the middle cannot grind keys to match.
-4. Daniel compares the codes and approves with Face ID or Touch ID. The
-   approver appends `enroll` and wraps a grant per scope for the new device.
+4. Compare the codes and approve with Face ID or Touch ID in the native app.
+   In Hub, a trusted click with active browser user activation confirms the
+   comparison. The approver appends `enroll` and wraps a grant per scope for
+   the new device.
 5. The new device checks the approver in the chain, verifies the chain to
    genesis, pins its head, unwraps its grants and writes its own sealed
    device name.
 
-No QR code exists in any flow, and a QR code is not an optional shortcut. Devices link only
-through Google sign-in (see `google-device-linking.md`). Sign-in alone shows "Approve this
-device on your iPhone or Mac". Revoking appends `revoke`, then `rotate` for
+The account mailbox accepts one claim, one reveal from its opener, and one
+receipt from its claimant. Retrying the same step returns its original
+position. Competing claims leave the transcript intact. Completed mailboxes
+leave the approval inbox and remain readable until their ten-minute expiry.
+The approved inbox may show a fixed device label derived from the platform,
+the relay's creation time, and the country observed by the Hub edge when
+available. The comparison code authenticates the public keys. Personal device
+names are sealed after enrollment. Retrying the same opening preserves the
+first display details. Individual mailbox reads and live announcements do
+not include the platform or country.
+On recoverable accounts, claiming and acknowledging require a current
+device-bound admin session. The individual request is readable by its
+opening session and the account's enrolled admins. The reveal belongs to the
+requesting device and session. The iPhone keeps polling its account while it
+shows the comparison code and withholds protected reads until admission.
+The reviewing client pins the opening before claiming it, checks the reveal
+against that commitment, and presents the comparison code. After local user
+confirmation it rechecks the same mailbox and uses its previously pinned
+account chain to wrap the current scope grants for those exact device keys.
+A cancelled review sends no enrollment or grant. Any approved installation
+can deny an undecided mailbox. The claimant's publication reserves that same
+mailbox for the exact signed entry before the chain transaction. Denial and
+publication reservation exclude each other. Neither can replace the other's
+decision. A denied request leaves the inbox. The waiting installation sees
+that outcome when it polls. A denied or expired sign-in clears the comparison
+code, stops polling and offers a return to sign-in. A lost publication reply retries the same signed
+entry and grant bytes.
+
+Approved installations show pending requests in their inbox. When notifications
+are enabled, a new request can also raise a generic system alert. Device and
+account details remain in the authenticated inbox. A notification opens
+Harness for review. Approval still requires the matching codes and local
+confirmation. Hub uses a separate notification tag for device approval so
+Tracker decision alerts retain their own state.
+
+Devices link through Google sign-in (see `google-device-linking.md`). A new
+installation waits for approval from an approved iPhone, Mac, or Hub browser.
+Sign-out erases the installation keys and keeps the last verified public chain
+head for the same installation. Reapproval checks that history before revealing
+the comparison nonce.
+Revoking appends `revoke`, then `rotate` for
 every scope that device held, with fresh grants for the remaining devices.
 Older epochs stay readable by remaining devices; re-sealing old data is
 optional later work.
@@ -119,6 +159,16 @@ salt, "harness/sealed/v1/recovery")` and stored on the server as salt 16 ‖
 nonce 12 ‖ ciphertext. With every device lost, Daniel enters the recovery secret
 from the Credential Vault on a new device, which acts as the recovery device
 to enroll itself.
+
+On first sign-in the client saves the recovery secret through the independent
+custody adapter before submitting the account's signed genesis, wrapped grants
+and encrypted recovery blob. Hub commits these together for an empty account.
+Only the signing installation and one recovery device are present in genesis.
+Both receive a grant for every initial scope. A competing bootstrap leaves all
+three stores unchanged. The losing installation requests approval through the
+existing-account flow. The recovery blob can be retrieved in the same Google
+account and opened with the independently held recovery secret. The client
+checks that its recovered public keys match the signed genesis before use.
 
 ## Sealed formats (v1)
 
@@ -151,7 +201,7 @@ seen per object and reject an older one.
 | Push                                  | Generic "Harness has updates"; the app fetches and decrypts                                                                        |
 
 API, under the Hub (`/api/sync/v1`, Google session plus device id):
-`GET chain?after`, `POST chain` (append, server checks `seq`/`prev` only),
+`GET chain?after`, `POST chain` (append a verified legacy entry),
 `GET grants?device`, `POST grants`, `POST ops/:scope` (batch), `GET
 ops/:scope?after&limit`, `PUT|GET objects/:scope/:id`, `GET live`
 (WebSocket to the account object), `POST enroll`, `GET enroll/:id`. The
@@ -168,7 +218,12 @@ Scope ids, device ids and object ids are base64url (16, 16 and 32 bytes); envelo
 | Call                          | Body and answer                                                                                                                                                                     |
 | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `GET chain?after=N`           | `{entries, head, more}`, 200 entries a page, oldest first                                                                                                                           |
-| `POST chain`                  | One signed entry as JSON. 201 `{seq, hash}`; 409 `chain-conflict` unless `seq` is 0 on an empty chain or `prev` is the hash of the stored `seq - 1`                                 |
+| `POST chain`                  | One entry signed by the named device and verified against the account and stored chain. 201 `{seq, hash}`. Existing positions, gaps and mismatched previous hashes return 409.      |
+| `POST bootstrap`              | `{entry, grants, recovery}` on an empty account. 201 `{seq: 0, hash}`; an exact retry returns 200, and a competing or changed request returns 409.                                  |
+| `GET bootstrap`               | `{recovery}` for the signed-in account, or 404 when the account has no stored recovery blob.                                                                                        |
+| `GET device-session`          | A stage from `first-device`, `waiting-for-approval`, `proof-required`, or `approved`. Only the proof stage carries a challenge.                                                     |
+| `POST device-session`         | `{challenge, signature}` proves the enrolled device's signing key for the current Google session. On success the session records the approved device.                               |
+| `POST devices`                | `{entries, grants, enrollment?}` commits a verified device change and its wrapped grants together. Mailbox approval supplies the request id. 201 on creation and 200 on exact retry. |
 | `POST grants`                 | A grant or an array of up to 32. First write per scope, epoch and device stays; `account` must be the session's. 201 `{stored}`                                                     |
 | `GET grants?device=ID`        | `{grants}` for that device                                                                                                                                                          |
 | `POST ops/:scope`             | JSON array of up to 64 record envelopes (base64url). Header scope must match; the header object id is the retry key. 201 `{ops: [{opId, seq}], head}`; seq is per scope from 1      |
@@ -176,10 +231,17 @@ Scope ids, device ids and object ids are base64url (16, 16 and 32 bytes); envelo
 | `PUT objects/:scope/:id`      | Body is the base64url record envelope; header scope, object id and revision are checked against the path. Up to 4 MiB; over 32 KiB it goes to R2. 409 `stale-revision` unless newer |
 | `GET objects/:scope/:id`      | The envelope as base64url text, revision in `X-Sealed-Revision`                                                                                                                     |
 | `GET objects/:scope?after=N`  | `{objects: [{id, revision, size, change}], next, more}`: what changed since the scope's change counter N                                                                            |
-| `POST enroll`                 | The new device's request as a JSON object (public keys and commitment, at most 4 KiB). 201 `{id, steps}`; 429 with 16 requests waiting                                              |
-| `GET enroll`, `GET enroll/ID` | Pending requests, or one request with its steps; requests expire after 10 minutes                                                                                                   |
-| `POST enroll/ID`              | Appends a step (claim, reveal, approval) as a JSON object. At most 8 steps. Steps are opaque to the server                                                                          |
+| `POST enroll`                 | Public keys and commitment, at most 4 KiB. 201 opens a mailbox. An identical live opening by the same device returns the existing mailbox (200) without notifying again. A new opening at capacity returns 429.                                              |
+| `GET enroll`, `GET enroll/ID` | Pending requests in the approved inbox, or the steps and outcome of one request. Requests expire after 10 minutes. |
+| `POST enroll/ID`              | Appends a claim, reveal or receipt. An approved installation can send `{deny: true}` before publication is reserved. |
 | `GET live` (WebSocket)        | Upgrade to the account's `AccountSyncObject`                                                                                                                                        |
+
+The device signs `harness/sealed/v1/session` followed by a zero byte and the
+base64url challenge using its P-256 signing key. The server binds the challenge
+to the account, device, Google session and a short time window. Standalone
+legacy chain and grant writes are disabled after recoverable bootstrap. The
+sealed HTTP log and object routes then require the matching approved session
+and an active grant for the requested scope. The recoverable account also requires an active, session-bound admin device to list all pending approvals or open its live WebSocket. A waiting device can still submit its opening and poll the individual mailbox.
 
 Revisions are limited to 2^53 - 1. Live socket: the client sends `{"t":"subscribe","scopes":[...],
 "after":ring}`; the server answers `{"t":"subscribed","ring":n}` and then sends text

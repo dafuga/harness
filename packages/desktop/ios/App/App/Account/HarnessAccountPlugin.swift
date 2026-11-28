@@ -1,7 +1,9 @@
 import AuthenticationServices
 import Capacitor
 import Foundation
+import LocalAuthentication
 import UIKit
+import UserNotifications
 
 /// The page's way to this phone's own Hub account, beside and apart from any paired computer.
 /// The page is told a public status and the answers of project reads; the origin, the verifier,
@@ -15,12 +17,20 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
         CAPPluginMethod(name: "status", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "connect", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "disconnect", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "deviceApproval", returnType: CAPPluginReturnPromise)
     ]
 
     static let sharedSession: HubAccountSession = {
         let session = HubAccountSession(origin: hubOrigin)
-        session.accountEnded = { TrackerRefresh.session.endAccount() }
+        session.accountEnded = HarnessAccountPlugin.accountEnded
+        HarnessAccountPlugin.registerApprovalAlerts(session)
+        if Bundle.main.object(forInfoDictionaryKey: "HarnessApprovalPushEnabled") as? String == "YES" {
+            session.approvalPush.request = { [weak session] generation in
+                guard let session else { return }
+                Task { @MainActor in await registerRemoteApprovalAlerts(generation, session) }
+            }
+        }
         return session
     }()
 
@@ -29,9 +39,10 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
     }
 
     static func storedSubject() -> String? {
-        guard let kept = HubAccountKeychain().load(), kept.origin == hubOrigin?.absoluteString,
-            kept.expiresAt > Date() else { return nil }
-        return kept.subject
+        sharedSession.queue.sync {
+            guard sharedSession.deviceStage == .approved else { return nil }
+            return sharedSession.live()?.subject
+        }
     }
 
     private var session: HubAccountSession { Self.sharedSession }
@@ -105,10 +116,104 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
         }
     }
 
+
     private static func settle(_ call: CAPPluginCall, _ result: Result<[String: Any], HubAccountFailure>) {
         switch result {
         case .success(let status): call.resolve(status)
         case .failure(let failure): call.reject(failure.message, failure.code)
+        }
+    }
+}
+
+extension HarnessAccountPlugin {
+    private static let approvalAlertID = "harness-device-approval"
+    @MainActor private static var nextApprovalRegistration = Date.distantPast
+
+    private static func accountEnded() {
+        TrackerRefresh.session.endAccount()
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [approvalAlertID])
+        center.removeDeliveredNotifications(withIdentifiers: [approvalAlertID])
+    }
+
+    private static func registerApprovalAlerts(_ session: HubAccountSession) {
+        session.approvalAlert = { [weak session] in
+            guard let session else { return }
+            let generation = session.generation
+            Task { @MainActor in
+                await showApprovalAlert {
+                    session.queue.sync {
+                        session.generation == generation && session.deviceStage == .approved && session.live() != nil
+                    }
+                }
+            }
+        }
+    }
+
+    @MainActor
+    private static func registerRemoteApprovalAlerts(_ generation: Int, _ session: HubAccountSession) async {
+        guard UIApplication.shared.applicationState == .active,
+            Date() >= nextApprovalRegistration else { return }
+        nextApprovalRegistration = Date().addingTimeInterval(30)
+        let center = UNUserNotificationCenter.current()
+        let settings = await center.notificationSettings()
+        let authorized = settings.authorizationStatus == .notDetermined
+            ? (try? await center.requestAuthorization(options: [.alert, .sound])) == true
+            : settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional
+        let current = session.queue.sync {
+            session.generation == generation && session.deviceStage == .approved
+        }
+        if authorized && current { UIApplication.shared.registerForRemoteNotifications() }
+    }
+
+    static func receivedApprovalPushToken(_ token: Data) {
+        sharedSession.receiveApprovalPushToken(token)
+    }
+
+    @MainActor
+    private static func showApprovalAlert(_ current: () -> Bool) async {
+        let center = UNUserNotificationCenter.current()
+        let settings = await center.notificationSettings()
+        guard current() else { return }
+        let authorized: Bool
+        if settings.authorizationStatus == .notDetermined, UIApplication.shared.applicationState == .active {
+            authorized = (try? await center.requestAuthorization(options: [.alert, .sound])) == true
+        } else {
+            authorized = settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional
+        }
+        guard authorized, current() else { return }
+        let content = UNMutableNotificationContent()
+        content.title = "Harness"
+        content.body = "A device sign-in is ready for review."
+        content.sound = .default
+        try? await center.add(UNNotificationRequest(identifier: approvalAlertID, content: content, trigger: nil))
+    }
+
+    /// The web view can review public approval details. Credentials and key wrapping stay here.
+    @objc func deviceApproval(_ call: CAPPluginCall) {
+        let done: HubAccountSession.Status = { Self.settle(call, $0) }
+        if call.getString("action") == "list" { return session.approvalRequests(done) }
+        guard let id = call.getString("id") else { return done(.failure(.refused)) }
+        switch call.getString("action") {
+        case "review": session.reviewApproval(id, done: done)
+        case "deny": session.denyDevice(id, done: done)
+        case "approve":
+            guard let code = call.getString("code") else { return done(.failure(.refused)) }
+            session.approveDevice(id, code: code, authenticate: Self.confirmDevice, done: done)
+        default: done(.failure(.refused))
+        }
+    }
+
+    private static func confirmDevice(_ done: @escaping (Bool) -> Void) {
+        DispatchQueue.main.async {
+            let context = LAContext()
+            context.touchIDAuthenticationAllowableReuseDuration = 0
+            context.localizedFallbackTitle = ""
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                                   localizedReason: "Approve the device with the matching code.") { accepted, _ in
+                context.invalidate()
+                done(accepted)
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+import { deviceApprovalInput } from '../../src/lib/development-tooling/desktop-initialization/initialize-desktop/deviceApprovalInput';
 import type { Handler } from './desktop-ipc.test.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
@@ -45,4 +46,19 @@ test('only the top frame of the app page in this window is a trusted sender', ()
 	expect(trustedSender({ sender: own.webContents, senderFrame: null } as never, own as never)).toBe(
 		false
 	);
+});
+
+test('the approval IPC forwards only the reviewed action, validated mailbox and comparison code', () => {
+	const id = 'a'.repeat(32);
+	expect(deviceApprovalInput({ action: 'list', url: 'https://fixture.invalid/' })).toEqual({
+		action: 'list'
+	});
+	expect(deviceApprovalInput({ action: 'approve', id, code: '012345', token: 'fixture' })).toEqual({
+		action: 'approve',
+		id,
+		code: '012345'
+	});
+	expect(deviceApprovalInput({ action: 'start' })).toBeUndefined();
+	expect(deviceApprovalInput({ action: 'review', id: '../devices' })).toBeUndefined();
+	expect(deviceApprovalInput({ action: 'approve', id, code: '12345\n' })).toBeUndefined();
 });

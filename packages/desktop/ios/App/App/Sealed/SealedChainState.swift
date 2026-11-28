@@ -69,7 +69,7 @@ struct SealedChainScope: Equatable {
 }
 
 /// What a client remembers so the server cannot roll it back or fork it.
-struct SealedChainPin: Equatable {
+struct SealedChainPin: Codable, Equatable {
     let seq: Int64
     let head: String
 }

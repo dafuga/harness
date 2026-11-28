@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "device-approval-ios-renderer",
+	"title": "Approving a sign-in in the iPhone renderer",
+	"kind": "ui",
+	"units": ["desktop.component.accounts-access-device-approval-inbox"],
+	"states": [
+		{
+			"id": "inbox",
+			"title": "The signed-in device sees pending requests",
+			"coverage": "required"
+		},
+		{ "id": "compare", "title": "The review shows the matching code", "coverage": "required" },
+		{ "id": "approved", "title": "The approved request leaves the inbox", "coverage": "required" },
+		{ "id": "denied", "title": "The denied request leaves the inbox", "coverage": "required" }
+	],
+	"viewports": [{ "id": "mobile", "width": 390, "height": 844 }],
+	"tests": [
+		{
+			"id": "approval-inbox",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/device-approval-inbox.spec.ts --project=chromium --workers=1",
+			"cwd": "packages/desktop"
+		}
+	],
+	"evidence": [
+		{
+			"id": "screens",
+			"kind": "screenshot",
+			"states": ["inbox", "compare", "approved", "denied"],
+			"viewports": ["mobile"],
+			"provenance": "actual-capture",
+			"capture": "viewport",
+			"build": "desktop-renderer",
+			"required": true
+		}
+	]
+}

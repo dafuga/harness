@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.migration.0012-approval-push",
+	"uid": "u_2klz7a2ig5",
+	"kind": "migration",
+	"title": "0012-approval-push",
+	"responsibility": "Owns the 0012-approval-push migration unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/db/migrations/0012-approval-push.sql"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/db/migrations/0012-approval-push.sql",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/db/migrations/0012-approval-push.sql"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

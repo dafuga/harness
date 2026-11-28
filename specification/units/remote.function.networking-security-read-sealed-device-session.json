@@ -1,0 +1,138 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-read-sealed-device-session",
+	"uid": "u_23yfiktdqa",
+	"kind": "function",
+	"title": "readSealedDeviceSession",
+	"responsibility": "Reads a signed-in installation’s stage and proves possession of its enrolled signing key to the Hub.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/remote/src/utils/networking-security/readSealedDeviceSession.ts",
+			"packages/remote/src/utils/networking-security/readSealedDeviceSession.types.ts"
+		],
+		"symbols": ["readSealedDeviceSession", "SealedDeviceSessionState", "SealedSessionRequest"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "readSealedDeviceSession.request",
+				"type": "SealedSessionRequest",
+				"required": true,
+				"description": "Same-origin transport backed by the current Google session and restricted to the sealed sync API."
+			},
+			{
+				"name": "readSealedDeviceSession.device",
+				"type": "SealedDeviceKeys",
+				"required": true,
+				"description": "The current installation’s public identity and nonextractable signing key for its Hub challenge."
+			},
+			{
+				"name": "readSealedDeviceSession.signal",
+				"type": "AbortSignal",
+				"required": false,
+				"description": "Cancels the Hub calls and prevents a proof from being sent for a superseded session."
+			},
+			{
+				"name": "readSealedDeviceSession.verifyApproval",
+				"type": "() => Promise<void>",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "readSealedDeviceSession",
+				"type": "Promise<SealedDeviceSessionState>",
+				"description": "Returns the first-device, waiting-for-approval or approved stage. Completes the same-session signing challenge when required."
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown",
+				"description": "The Hub refused the request, provided an invalid stage or challenge, or did not confirm the signed proof."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "readSealedDeviceSession",
+				"inputs": [
+					{
+						"name": "readSealedDeviceSession.request",
+						"type": "SealedSessionRequest",
+						"required": true,
+						"description": "Same-origin transport backed by the current Google session and restricted to the sealed sync API."
+					},
+					{
+						"name": "readSealedDeviceSession.device",
+						"type": "SealedDeviceKeys",
+						"required": true,
+						"description": "The current installation’s public identity and nonextractable signing key for its Hub challenge."
+					},
+					{
+						"name": "readSealedDeviceSession.signal",
+						"type": "AbortSignal",
+						"required": false,
+						"description": "Cancels the Hub calls and prevents a proof from being sent for a superseded session."
+					},
+					{
+						"name": "readSealedDeviceSession.verifyApproval",
+						"type": "() => Promise<void>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readSealedDeviceSession",
+						"type": "Promise<SealedDeviceSessionState>",
+						"description": "Returns the first-device, waiting-for-approval or approved stage. Completes the same-session signing challenge when required."
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/readSealedDeviceSession.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/readSealedDeviceSession.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

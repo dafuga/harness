@@ -9,6 +9,7 @@ import {
 	assembleMacApp,
 	bundleId,
 	migrationBinary,
+	deviceApprovalBinary,
 	restrictBundleModes,
 	verifyMacAppLayout
 } from './package-mac-app';
@@ -74,6 +75,7 @@ function verifyIdentity(binary: string): void {
 function verifyRelease(app: string): void {
 	verifyIdentity(app);
 	verifyIdentity(join(app, migrationBinary));
+	verifyIdentity(join(app, deviceApprovalBinary));
 	verifyTrackerBundle(app, verifyIdentity);
 	verifyMacAppLayout(app);
 	execFileSync(codesign, ['--verify', '--deep', '--strict', '-R', `=${requirement}`, app], {
@@ -110,7 +112,7 @@ async function packageRelease(): Promise<void> {
 			preAutoEntitlements: false,
 			preEmbedProvisioningProfile: false,
 			optionsForFile: (file) =>
-				file === join(candidate, migrationBinary)
+				[migrationBinary, deviceApprovalBinary].some((helper) => file === join(candidate, helper))
 					? { additionalArguments: ['--identifier', bundleId] }
 					: (trackerSigning(candidate, file, bundleId) ?? {})
 		});

@@ -65,7 +65,10 @@
 			"sealedChainEntry",
 			"sealedChain",
 			"sealedSas",
-			"sealedRecovery"
+			"sealedRecovery",
+			"readSealedDeviceSession",
+			"SealedEnrollmentReviewService",
+			"SealedEnrollmentRequestService"
 		]
 	},
 	"contract": {
@@ -78,6 +81,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-read-sealed-device-session",
+			"via": "reexport",
+			"origin": "derived"
+		},
 		{
 			"unit": "remote.function.networking-security-sealed-chain",
 			"via": "reexport",
@@ -210,6 +218,16 @@
 		},
 		{
 			"unit": "remote.service.host-pairing",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-request",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-review",
 			"via": "reexport",
 			"origin": "derived"
 		},

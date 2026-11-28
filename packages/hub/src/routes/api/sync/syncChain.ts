@@ -1,10 +1,13 @@
 import type { ChainRow } from './syncChain.types';
 import type { SyncCall } from './syncPolicy.types';
-import { chainHash } from './syncChainHash';
+import type { SealedChainEntry } from '../../../../../remote/src/models/networking-security/Sealed.types';
+import { sealedChain } from '../../../../../remote/src/utils/networking-security/sealedChain';
 import { queryNumber, readSyncJson, syncJson, syncProblem } from './syncHttp';
+import { deviceWriteConflict } from './syncRecovery';
 
 const entryBytes = 16 * 1024;
 const pageSize = 200;
+const maxChainEntries = 2048;
 
 function isLink(entry: Record<string, unknown>): boolean {
 	const prev = entry.prev;
@@ -16,11 +19,12 @@ function isLink(entry: Record<string, unknown>): boolean {
 	);
 }
 
-function isEntry(value: unknown): value is Record<string, unknown> {
+export function isEntry(value: unknown): value is SealedChainEntry {
 	if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
 	const entry = value as Record<string, unknown>;
 	const signed = typeof entry.by === 'string' && typeof entry.sig === 'string';
 	return (
+		Object.keys(entry).length === 6 &&
 		isLink(entry) &&
 		signed &&
 		Number.isSafeInteger(entry.at) &&
@@ -48,30 +52,55 @@ export async function readChain(call: SyncCall): Promise<Response> {
 	});
 }
 
-/**
- * Appends one signed entry. The server checks the sequence number and the hash of the previous
- * entry and nothing else: the signature and the rules of the chain are for the devices.
- */
+/** Appends an account-bound entry signed by the device authorized by the existing chain. */
 export async function appendChain(call: SyncCall): Promise<Response> {
 	const entry = await readSyncJson(call.request, entryBytes);
 	if (!isEntry(entry)) return syncProblem(400, 'invalid-input');
-	const seq = entry.seq as number;
+	const { seq } = entry;
 	if (seq === 0 && entry.prev !== '') return syncProblem(400, 'invalid-input');
 	if (seq > 0 && entry.prev === '') return syncProblem(400, 'invalid-input');
-	const hash = await chainHash(entry);
+	const verified = await verifyAppend(call, entry);
+	if (verified instanceof Response) return verified;
+	const hash = verified;
 	try {
 		const result = await call.deps.db
 			.prepare(
 				`INSERT INTO sealed_chain (account, seq, hash, entry, created_at)
 				 SELECT ?1, ?2, ?3, ?4, ?5
-				 WHERE (?2 = 0 AND NOT EXISTS (SELECT 1 FROM sealed_chain WHERE account = ?1))
-				    OR EXISTS (SELECT 1 FROM sealed_chain WHERE account = ?1 AND seq = ?2 - 1 AND hash = ?6)`
+			 WHERE NOT EXISTS (SELECT 1 FROM sealed_recoveries WHERE account = ?1)
+			   AND ((?2 = 0 AND NOT EXISTS (SELECT 1 FROM sealed_chain WHERE account = ?1))
+			    OR EXISTS (SELECT 1 FROM sealed_chain WHERE account = ?1 AND seq = ?2 - 1 AND hash = ?6))`
 			)
 			.bind(call.account, seq, hash, JSON.stringify(entry), call.deps.now, entry.prev)
 			.run();
-		if (result.meta.changes !== 1) return syncProblem(409, 'chain-conflict');
+		if (result.meta.changes !== 1) return deviceWriteConflict(call, 'chain-conflict');
 	} catch {
-		return syncProblem(409, 'chain-conflict');
+		return deviceWriteConflict(call, 'chain-conflict');
 	}
 	return syncJson({ seq, hash }, 201);
+}
+
+async function verifyAppend(call: SyncCall, entry: SealedChainEntry): Promise<string | Response> {
+	if (entry.by !== call.device) return syncProblem(400, 'invalid-chain');
+	if (entry.seq >= maxChainEntries) return syncProblem(409, 'chain-conflict');
+	const prefix = entry.seq === 0 ? [] : await readThrough(call, entry.seq);
+	if (prefix.length !== entry.seq || (prefix.at(-1)?.hash ?? '') !== entry.prev)
+		return syncProblem(409, 'chain-conflict');
+	try {
+		const entries = prefix.map((row) => JSON.parse(row.entry) as SealedChainEntry);
+		const verified = await sealedChain([...entries, entry], { account: call.account });
+		return verified.head;
+	} catch {
+		return syncProblem(400, 'invalid-chain');
+	}
+}
+
+async function readThrough(call: SyncCall, seq: number) {
+	const rows = await call.deps.db
+		.prepare(
+			'SELECT seq, hash, entry FROM sealed_chain WHERE account = ? AND seq <= ? ORDER BY seq'
+		)
+		.bind(call.account, seq)
+		.all<ChainRow & { hash: string }>();
+	return rows.results;
 }

@@ -75,6 +75,8 @@ export interface EmailProofStatus {
 
 /** GET /api/auth/status */
 export interface AuthStatus {
+	/** This browser must verify its device admission before exposing the account. */
+	deviceApproval?: true;
 	actor: Actor | null;
 	configured: boolean;
 	clientId: string | null;

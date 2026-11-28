@@ -1,0 +1,125 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.accounts-access-device-approval-inbox",
+	"uid": "u_v254xv7vyx",
+	"kind": "component",
+	"title": "DeviceApprovalInbox",
+	"responsibility": "Shows pending device sign-ins and lets the approved device review a comparison code or deny a request.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.modal",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-small",
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": ["packages/desktop/src/components/accounts-access/DeviceApprovalInbox.svelte"],
+		"symbols": ["DeviceApprovalInbox"]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
+		"inputs": [
+			{
+				"name": "DeviceApprovalInbox.request",
+				"type": "DeviceApprovalHandler",
+				"required": true,
+				"description": "The native approval bridge accepts list, review, approve and deny actions. Approval sends back the shown comparison code."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeviceApprovalInbox",
+				"type": "markup",
+				"description": "Shows each request with a platform label, place and time when known. Review opens a modal and requires a code before the approve action. A successful decision confirms the result and removes the row."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/accounts-access/DeviceApprovalInbox.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/accounts-access/DeviceApprovalInbox.svelte"
+			}
+		]
+	},
+	"scenarios": ["device-approval-ios-renderer"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

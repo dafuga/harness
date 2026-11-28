@@ -10,9 +10,16 @@ import {
 import { hubCache } from './hubCache';
 import { hubFail } from '../../../utils/development-tooling/hubJson';
 import { hubRemote } from './hubRemote';
+import { hasRecoverableAccount } from '../sync/syncRecovery';
 
 export function hubRuntime(env: HubEnv): HubApiRuntime {
-	const auth = createHubAuth(env, env.DB ? createD1AuthStore(env.DB) : null);
+	const { DB: db } = env;
+	const auth = createHubAuth(
+		env,
+		db ? createD1AuthStore(db) : null,
+		undefined,
+		db ? (account) => hasRecoverableAccount(db, account) : undefined
+	);
 	return {
 		auth,
 		projectOwnerId: env.HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID,

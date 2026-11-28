@@ -4,7 +4,7 @@
 	"uid": "u_pectymette",
 	"kind": "component",
 	"title": "HubHomeNotifications",
-	"responsibility": "Home's quiet notification row: turn notifications on, see their state, or learn why they cannot be.",
+	"responsibility": "Shows and manages browser notifications for device approvals and the Tracker owner's decisions.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -22,12 +22,19 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "HubHomeNotifications.owner",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether to load the Tracker owner's decision notification settings."
+			}
+		],
 		"outputs": [
 			{
 				"name": "HubHomeNotifications",
 				"type": "markup",
-				"description": "One row for the owner, nothing when the Hub offers no notifications, and the settings dialog."
+				"description": "One notification row for an eligible browser, with quiet hours in the Tracker owner's settings dialog."
 			}
 		],
 		"errors": [],

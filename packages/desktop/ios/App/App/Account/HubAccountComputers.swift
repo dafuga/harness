@@ -72,10 +72,8 @@ extension HubAccountSession {
 
     private func computerCall(_ call: HubAccountCall, _ done: @escaping Answer) {
         guard let origin = origin else { return done(.failure(.notConfigured)) }
-        guard let credential = live() else { return done(.failure(.signedOut)) }
-        send(call, origin, credential.token) { result in
+        authorizedCall(call, origin) { result in
             if case .success(let reply) = result, reply.status == 401 {
-                self.erase()
                 return done(.failure(.signedOut))
             }
             done(result)

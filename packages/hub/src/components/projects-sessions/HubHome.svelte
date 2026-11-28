@@ -13,7 +13,7 @@
 		HomeChatReceipt,
 		HomeSection
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import { onMount, tick } from 'svelte';
+	import { onMount, tick, type Snippet } from 'svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot } from './hubHomeClient';
@@ -36,6 +36,7 @@
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
 	import '$reports/lib/styles/home-scheme.css';
 	import '$reports/lib/styles/hub-home/index.css';
+	let { approvals }: { approvals?: Snippet } = $props();
 	const { api, session, projects } = browserContext();
 	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
 	const cosChat = provideHomeCosChat(() => reads.read());
@@ -63,9 +64,8 @@
 	);
 	const board = $derived(snapshot ? homeBoard(snapshot, routinesConnected, now) : null);
 	const pastDue = $derived(board?.pastDue ?? []);
-	const unavailable = { status: 'unavailable' } as const;
 	const overview = $derived(
-		workOverview(snapshot?.overview ?? (settled ? unavailable : null), pastDue)
+		workOverview(snapshot?.overview ?? (settled ? { status: 'unavailable' } : null), pastDue)
 	);
 	const linkedComputers = $derived(live?.linked ?? 0);
 	const projectsFailed = $derived(projectError && !list?.length);
@@ -189,8 +189,9 @@
 	<hx-div class="home-page hh-home">
 		<HubHomeHeader {view} {link} {needsOnly} accountName={session.actor?.name}>
 			{#snippet accountMenu()}<AccountMenu />{/snippet}
-			{#snippet notifications()}<HubHomeNotifications />{/snippet}
+			{#snippet notifications()}<HubHomeNotifications owner={view.owner} />{/snippet}
 		</HubHomeHeader>
+		{@render approvals?.()}
 		{#if link === 'live'}
 			<hx-p class="po-page hh-page hh-live" role="status" aria-label="Updates" data-state={link}>
 				Live

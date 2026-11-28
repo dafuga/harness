@@ -22,7 +22,10 @@ import { watchLocalTracker } from './watchLocalTracker';
 import { LocalTransportClientService } from './LocalTransportClientService';
 import type { LocalSocketPort } from './LocalTransportClientService';
 import { binaryArtifact } from '../../../utils/reports-media/binaryArtifact';
-import { bootstrapChannel } from '../../../utils/agents-providers/desktopIpc';
+import {
+	bootstrapChannel,
+	deviceApprovalChannel
+} from '../../../utils/agents-providers/desktopIpc';
 import { remoteBinary } from '../../../utils/networking-security/remoteBinary';
 /**
  * The page talks to the main process over a loopback socket. Its one-use ticket is asked for
@@ -76,6 +79,7 @@ const bridge: DesktopBridge = {
 	history: call('history'),
 	onCacheStatus: (listener) => transport.on('cache', (value) => listener(value as CacheStatus)),
 	hostedStatus: call('hostedStatus'),
+	deviceApproval: (action) => ipcRenderer.invoke(deviceApprovalChannel, action),
 	connectHosted: call('connectHosted'),
 	disconnectHosted: call('disconnectHosted'),
 	projectOverview: call('projectOverview'),

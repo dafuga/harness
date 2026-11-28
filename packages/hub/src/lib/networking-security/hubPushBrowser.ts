@@ -1,6 +1,7 @@
 // @harness-uid u_up46ysb3zk
 /** What this browser itself knows about push: support, permission and its own subscription. */
 const worker = '/push-sw.js';
+export const approvalPushScope = '/device-approval-notifications/';
 
 export function pushSupport(): 'supported' | 'install' | 'unsupported' {
 	if ('serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window)
@@ -25,15 +26,21 @@ function sameKey(subscription: PushSubscription, publicKey: string) {
 	return bytes.length === wanted.length && bytes.every((byte, index) => byte === wanted[index]);
 }
 
-export async function currentSubscription(): Promise<PushSubscription | null> {
-	const registration = await navigator.serviceWorker.getRegistration('/');
+export async function currentSubscription(scope = '/'): Promise<PushSubscription | null> {
+	const registration = await pushRegistration(scope);
 	return (await registration?.pushManager.getSubscription()) ?? null;
 }
 
+async function pushRegistration(scope: string): Promise<ServiceWorkerRegistration | undefined> {
+	const registration = await navigator.serviceWorker?.getRegistration(scope);
+	return registration && new URL(registration.scope).pathname === scope ? registration : undefined;
+}
+
 /** This browser's subscription for the Hub's current key; a replaced key subscribes again. */
-export async function subscribe(publicKey: string): Promise<PushSubscription> {
-	await navigator.serviceWorker.register(worker);
-	const registration = await navigator.serviceWorker.ready;
+export async function subscribe(publicKey: string, scope = '/'): Promise<PushSubscription> {
+	const registration = await navigator.serviceWorker.register(worker, { scope });
+	if (scope === '/') await navigator.serviceWorker.ready;
+	else await waitForWorker(registration);
 	const held = await registration.pushManager.getSubscription();
 	if (held && sameKey(held, publicKey)) return held;
 	await held?.unsubscribe();
@@ -41,6 +48,14 @@ export async function subscribe(publicKey: string): Promise<PushSubscription> {
 		userVisibleOnly: true,
 		applicationServerKey: keyBytes(publicKey)
 	});
+}
+
+async function waitForWorker(registration: ServiceWorkerRegistration): Promise<void> {
+	const deadline = Date.now() + 10_000;
+	while (registration.active?.state !== 'activated') {
+		if (Date.now() >= deadline) throw new Error('Notifications could not start.');
+		await new Promise((resolve) => setTimeout(resolve, 50));
+	}
 }
 
 export async function addressHash(address: string): Promise<string> {
@@ -57,4 +72,29 @@ export async function confirmOn(): Promise<void> {
 		icon: '/icons/harness-192.png',
 		data: { needs: 'all' }
 	});
+}
+
+/** The approved inbox may alert a browser that already enabled notifications. */
+export async function showApprovalNotice(signal: AbortSignal): Promise<boolean> {
+	if (
+		signal.aborted ||
+		typeof Notification === 'undefined' ||
+		Notification.permission !== 'granted'
+	)
+		return false;
+	try {
+		const registration =
+			(await pushRegistration(approvalPushScope)) ?? (await pushRegistration('/'));
+		if (!registration?.active || signal.aborted) return false;
+		if (!(await registration.pushManager.getSubscription()) || signal.aborted) return false;
+		await registration.showNotification('Harness', {
+			body: 'A device sign-in is ready for review.',
+			tag: 'harness-device-approval',
+			icon: '/icons/harness-192.png'
+		});
+		return true;
+	} catch {
+		// The card is still available when system notifications are unavailable.
+		return false;
+	}
 }
