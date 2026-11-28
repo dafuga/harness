@@ -71,17 +71,9 @@ export class TrackerOutgoingDraftService {
 	/** A missing channel/account binding cannot accept an owner approval. */
 	reviewQueue() {
 		const now = this.now();
-		return this.list({ kind: 'owner', by: 'Daniel' }).map((draft) => {
-			const expired =
-				draft.delivery === 'sending' && now - draft.updatedAt >= sendConfirmationWindowMs;
-			const delivery = expired ? ('unconfirmed' as const) : draft.delivery;
-			const canSend = draft.status === 'draft' && (delivery === 'idle' || delivery === 'failed');
-			return {
-				...draft,
-				delivery,
-				canSend: canSend && Boolean(this.options.provider?.(draft.message))
-			};
-		});
+		return this.list({ kind: 'owner', by: 'Daniel' }).map((draft) =>
+			reviewDraft(draft, now, this.options.provider)
+		);
 	}
 
 	edit(input: unknown, editor: unknown, actor: TrackerOutgoingActor): TrackerOutgoingDraft {
@@ -150,6 +142,17 @@ export class TrackerOutgoingDraftService {
 	private now() {
 		return (this.options.now ?? Date.now)();
 	}
+}
+
+function reviewDraft(
+	draft: TrackerOutgoingDraft,
+	now: number,
+	provider: TrackerOutgoingDraftServiceOptions['provider']
+) {
+	const expired = draft.delivery === 'sending' && now - draft.updatedAt >= sendConfirmationWindowMs;
+	const delivery = expired ? ('unconfirmed' as const) : draft.delivery;
+	const canSend = draft.status === 'draft' && (delivery === 'idle' || delivery === 'failed');
+	return { ...draft, delivery, canSend: canSend && Boolean(provider?.(draft.message)) };
 }
 
 function requireDraft(draft: TrackerOutgoingDraft | undefined) {
