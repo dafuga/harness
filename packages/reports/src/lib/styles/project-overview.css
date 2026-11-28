@@ -156,6 +156,7 @@
 }
 
 .po-band .po-detail {
-	display: grid;
+	display: flex;
+	flex-direction: column;
 	gap: var(--hx-space-16);
 }
