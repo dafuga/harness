@@ -29,4 +29,6 @@ export interface ResourceContext {
 	id: string;
 	env: Record<string, string | undefined>;
 	track(pid: number): void;
+	/** Nested work running under its parent's lease, which owns accounting and teardown. */
+	inherited?: boolean;
 }

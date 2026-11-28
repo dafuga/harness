@@ -122,7 +122,8 @@ test.each(['quota', 'auth'])(
 		const f = await moduleTaskFixture();
 		try {
 			await f.feature();
-			await f.cli(['add', '--input', await f.input()]);
+			const browserTested = { verificationFiles: ['tests/e2e/orders.spec.ts'] };
+			await f.cli(['add', '--input', await f.input(browserTested)]);
 			await writeFile(join(f.root, 'mode'), mode);
 			await f.cli(['worker', '--worker', 'owner', '--once', '--json'], mode === 'quota');
 			const task = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;

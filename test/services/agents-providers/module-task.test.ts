@@ -87,11 +87,16 @@ test('retry preserves abandoned claims and refuses to steal an active owner', as
 	}
 });
 test('auto owns model and intelligence, while exact model choices retain their effort', () => {
-	expect(taskSelection({ model: 'auto' })).toEqual({
-		provider: 'claude',
-		model: 'claude-haiku-5-5',
-		intelligence: 'medium'
-	});
+	const luna = { provider: 'codex', model: 'gpt-6-luna', intelligence: 'medium' };
+	const haiku = { provider: 'claude', model: 'claude-haiku-5-5', intelligence: 'medium' };
+	expect(taskSelection({ model: 'auto' })).toEqual(luna);
+	expect(taskSelection({ model: 'auto', verificationFiles: ['src/orders.test.ts'] })).toEqual(luna);
+	expect(taskSelection({ model: 'auto', verificationFiles: ['src/orders.spec.ts'] })).toEqual(
+		haiku
+	);
+	expect(taskSelection({ model: 'auto', verificationFiles: ['tests/e2e/orders.ts'] })).toEqual(
+		haiku
+	);
 	expect(taskSelection({ model: 'gpt-6-luna', intelligence: 'max' })).toEqual({
 		provider: 'codex',
 		model: 'gpt-6-luna',
@@ -161,6 +166,34 @@ test.each([
 				expect(quote?.maximumUsd).toBeCloseTo(Number(maximum), 10);
 			}
 			expect(quote).toHaveProperty('rateCard');
+		} finally {
+			await f.dispose();
+		}
+	}
+);
+test.each([
+	['codex', [], ['gpt-6-luna', 'claude-haiku-5-5'], 'medium'],
+	['claude', ['tests/e2e/orders.spec.ts'], ['claude-haiku-5-5', 'gpt-6-luna'], 'max']
+])(
+	'auto quota rejected by %s falls back to the other provider',
+	async (_rejected, verificationFiles, models, intelligence) => {
+		const f = await moduleTaskFixture();
+		try {
+			const service = new ModuleTaskService(f.root);
+			await service.feature({ id: 'checkout', goal: 'Reliable checkout', tldr: 'Orders.' });
+			await service.add(JSON.parse(await readFile(await f.input({ verificationFiles }), 'utf8')));
+			const calls: string[] = [];
+			const worker = new ModuleTaskWorkerService(f.root, {
+				run: async ({ provider, model, intelligence: effort }) => {
+					calls.push(model);
+					if (calls.length === 1) throw Object.assign(new Error('quota'), { quotaRejected: true });
+					return { provider, model, intelligence: effort, text: 'Done', reportedModel: model };
+				}
+			});
+			await worker.once('owner');
+			expect(calls).toEqual(models);
+			const { result } = (await service.show('orders-validation')).task;
+			expect(result).toMatchObject({ model: models[1], intelligence, fallback: true });
 		} finally {
 			await f.dispose();
 		}

@@ -101,7 +101,7 @@ These rules apply only to this Harness repository, including requests made in an
 
 - When a Codex session assigns module implementation to another agent, use `harness task feature <id> --goal <text> --tldr <text>` and `harness task add --input <file>` instead of an ephemeral delegation prompt.
 - Every task must name a registered module and include its wanted contract (`responsibility`, `inputs`, `outputs`, `errors`). Harness commits the task to `refs/harness/tasks` before it is eligible for pickup, without committing the source worktree.
-- Omitted models use auto: Claude Haiku 5.5/medium, with Codex GPT-6-Luna/max only after a structured Claude quota rejection. Explicit models and intelligence never silently fall back.
+- Omitted models use auto: Codex GPT-6-Luna/medium for headless tasks, Claude Haiku 5.5/medium when `verificationFiles` include a `*.spec.*` or `e2e/` file, because Chromium cannot start in the Codex sandbox. A structured quota rejection retries once on the other provider (Haiku 5.5/medium or Luna/max). Explicit models and intelligence never silently fall back.
 - Start an assigned foreground worker with `harness task worker --worker <id> --watch`; use `--modules <ids>` to limit pickup. Review isolated worker worktrees and run normal verification before landing changes. Sync with `harness task sync <remote>`; use one repository as the active queue owner.
 
 ## Reuse first

@@ -1,4 +1,5 @@
 // @harness-uid u_6hqybwhp3m
+import { spawn } from 'node:child_process';
 import { getPriority } from 'node:os';
 import { join } from 'node:path';
 import type { ResourceContext } from '../../core/execution-runtimes/resourceTypes';
@@ -15,6 +16,7 @@ export async function resourceCommand(
 	validateTimeout(timeoutMs);
 	if (!args.length)
 		throw new InvalidResourceCommandInputError('A managed command is required after --');
+	if (context.inherited) return inheritedCommand(args, context, signal);
 	const [command, ...argv] = launchArguments(args, context.env.HARNESS_RESOURCE_PRIORITY);
 	const result = await runIsolated({
 		command,
@@ -35,6 +37,19 @@ export async function resourceCommand(
 		);
 	if (result.status === 'passed') return 0;
 	return result.exitCode === 0 ? 1 : (result.exitCode ?? 1);
+}
+
+/** Under an inherited lease the outer lease holder owns priority, accounting and teardown. */
+function inheritedCommand(
+	[command, ...argv]: string[],
+	context: ResourceContext,
+	signal?: AbortSignal
+): Promise<number> {
+	return new Promise((resolve, reject) => {
+		const child = spawn(command, argv, { stdio: 'inherit', env: context.env, signal });
+		child.once('error', reject);
+		child.once('close', (code) => resolve(code ?? 1));
+	});
 }
 
 function launchArguments(args: string[], priority?: string): string[] {

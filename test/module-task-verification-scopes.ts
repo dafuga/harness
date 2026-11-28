@@ -107,6 +107,8 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 				'retry preserves abandoned claims and refuses to steal an active owner': 'owner-recovery',
 				'auto owns model and intelligence, while exact model choices retain their effort':
 					'contract-admission',
+				'auto quota rejected by codex falls back to the other provider': 'quota-fallback',
+				'auto quota rejected by claude falls back to the other provider': 'quota-fallback',
 				'API quotes use versioned rates and preserve unknown models (claude-haiku-5-5, 100 input)':
 					'usage-pricing',
 				'API quotes use versioned rates and preserve unknown models (claude-haiku-5-5, 100001 input)':
