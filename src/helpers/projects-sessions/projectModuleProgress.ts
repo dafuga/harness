@@ -1,9 +1,10 @@
 // @harness-uid u_m5tmgubvzt
 import { z } from 'zod';
+import type { ProjectModuleMilestone, ProjectModulePlan } from './projectModuleProgress.types';
 
 export const projectModuleStates = ['live', 'built', 'in_progress', 'planned'] as const;
 
-const moduleRow = z.object({
+export const projectModuleSchema = z.object({
 	id: z
 		.string()
 		.regex(/^[a-z0-9][a-z0-9._-]*$/)
@@ -17,7 +18,7 @@ export const projectModulePlanSchema = z.discriminatedUnion('state', [
 	z.object({
 		state: z.literal('available'),
 		modules: z
-			.array(moduleRow)
+			.array(projectModuleSchema)
 			.min(1)
 			.max(10_000)
 			.refine((rows) => new Set(rows.map(({ id }) => id)).size === rows.length)
@@ -25,18 +26,13 @@ export const projectModulePlanSchema = z.discriminatedUnion('state', [
 	z.object({ state: z.enum(['review', 'unavailable']) })
 ]);
 
-export type ProjectModulePlan = z.infer<typeof projectModulePlanSchema>;
-export type ProjectModule = z.infer<typeof moduleRow>;
-
 export const projectModuleMilestones = [
 	{ id: 'first', label: 'First release' },
 	{ id: 'full', label: 'Full' }
 ] as const;
 
-type Milestone = (typeof projectModuleMilestones)[number]['id'];
-
 /** Built includes live modules. The in-progress segment is independent of the built count. */
-export function projectModuleProgress(plan: ProjectModulePlan, milestone: Milestone) {
+export function projectModuleProgress(plan: ProjectModulePlan, milestone: ProjectModuleMilestone) {
 	if (plan.state !== 'available') return null;
 	const modules =
 		milestone === 'first'
@@ -54,7 +50,10 @@ export function projectModuleProgress(plan: ProjectModulePlan, milestone: Milest
 	};
 }
 
-export function projectModuleProgressLabel(plan: ProjectModulePlan, milestone: Milestone): string {
+export function projectModuleProgressLabel(
+	plan: ProjectModulePlan,
+	milestone: ProjectModuleMilestone
+): string {
 	const progress = projectModuleProgress(plan, milestone);
 	if (!progress)
 		return plan.state === 'review' ? 'Module plan awaiting review' : 'Module plan unavailable';

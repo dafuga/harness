@@ -82,6 +82,7 @@ export async function compatibilityFixture(
 		...node,
 		now,
 		backupDirectory: directory,
+		projectPlanDirectory: directory,
 		adapter,
 		...(configureDispatch && {
 			dispatch: {

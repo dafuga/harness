@@ -1,5 +1,5 @@
 // @harness-uid u_g7kdpz7bel
-import firstRelease from '../../../../specification/features/planned/harness-first-release-modules.json';
+import firstRelease from '../../../../specification/harness-first-release-modules.json';
 import { readHarborModulePlan } from './readHarborModulePlan';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -8,7 +8,7 @@ import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import type {
 	ProjectModule,
 	ProjectModulePlan
-} from '../../../helpers/projects-sessions/projectModuleProgress';
+} from '../../../helpers/projects-sessions/projectModuleProgress.types';
 import { UnitRegistryRepository } from '../../../repositories/verification-evidence/UnitRegistryRepository';
 import { ModuleTaskRepository } from '../../../repositories/agents-providers/ModuleTaskRepository';
 import type { ModuleTask } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
@@ -27,23 +27,31 @@ export async function readTrackerProjectProgress(
 	if (!project || !/^[a-z0-9][a-z0-9._-]{0,79}$/.test(project)) {
 		return trackerResponse(400, { error: 'A project name is required.' });
 	}
-	if (project !== 'harness') {
-		const root = ctx.options.harborPlanRoot ?? join(homedir(), 'projects', 'harbor');
-		const plan = project === 'harbor' ? await readHarborModulePlan(root) : unavailable;
-		return trackerResponse(200, { project, plan });
-	}
-	const root = ctx.options.modulePlanRoot ?? join(homedir(), 'projects', 'harness');
-	const items = ctx.items.list({ agent: 'harness', status: 'all', limit: -1 });
-	const active = new Set(
-		items.flatMap(({ title, status, sensitive, deleted }) => {
+	const directory = ctx.options.projectPlanDirectory ?? join(homedir(), 'projects');
+	const plan = await readModulePlan(project, directory, ctx.items).catch(() => unavailable);
+	return trackerResponse(200, { project, plan });
+}
+
+async function readModulePlan(
+	project: string,
+	directory: string,
+	items: TrackerLocalApiDependencies['items']
+) {
+	if (project === 'harbor') return readHarborModulePlan(join(directory, 'harbor'));
+	if (project !== 'harness') return unavailable;
+	return harnessPlan(join(directory, 'harness'), activeTaskModules(items));
+}
+
+function activeTaskModules(items: TrackerLocalApiDependencies['items']) {
+	const rows = items.list({ agent: 'harness', status: 'all', limit: -1 });
+	return new Set(
+		rows.flatMap(({ title, status, sensitive, deleted }) => {
 			if (sensitive || deleted || !['in_progress', 'blocked', 'done'].includes(status ?? ''))
 				return [];
 			const match = /(?:^|\()p4\.([a-z0-9][a-z0-9._-]*)(?=\)|\s|$)/.exec(title ?? '');
 			return match ? [match[1]] : [];
 		})
 	);
-	const plan = await harnessPlan(root, active).catch(() => unavailable);
-	return trackerResponse(200, { project, plan });
 }
 
 async function harnessPlan(root: string, active: ReadonlySet<string>): Promise<ProjectModulePlan> {

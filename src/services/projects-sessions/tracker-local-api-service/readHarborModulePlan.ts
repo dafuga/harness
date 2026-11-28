@@ -1,10 +1,10 @@
 // @harness-uid u_g7kdpz7bel
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
-import {
-	projectModulePlanSchema,
-	type ProjectModule,
-	type ProjectModulePlan
-} from '../../../helpers/projects-sessions/projectModuleProgress';
+import { projectModulePlanSchema } from '../../../helpers/projects-sessions/projectModuleProgress';
+import type {
+	ProjectModule,
+	ProjectModulePlan
+} from '../../../helpers/projects-sessions/projectModuleProgress.types';
 
 const document = 'refs/remotes/origin/main:specifications/project-module-plan.md';
 

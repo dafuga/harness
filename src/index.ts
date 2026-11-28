@@ -217,4 +217,3 @@ export { TrackerSupervisorService } from './services/projects-sessions/TrackerSu
 export * from './lib/agents-providers/projectAssistant';
 export { trackerStructuredAsk } from './utils/projects-sessions/trackerStructuredAsk';
 export { hubSessionMessages } from './utils/projects-sessions/hubSessionMessages';
-export { projectModuleProgress } from './helpers/projects-sessions/projectModuleProgress';

@@ -160,7 +160,6 @@ export class TrackerLocalApiService {
 		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
 	}
 }
-
 function trackerSpecialResponse(
 	request: Request,
 	parts: string[],
@@ -183,7 +182,6 @@ function trackerSpecialResponse(
 		);
 	return trackerItemSpecialResponse(request, parts, dependencies);
 }
-
 function trackerItemSpecialResponse(
 	request: Request,
 	parts: string[],
@@ -210,7 +208,6 @@ function trackerItemSpecialResponse(
 		}
 	).then((item) => trackerResponse(200, item));
 }
-
 function readActor(headers: Headers): string | null {
 	const actor = headers
 		.get('x-tracker-as')

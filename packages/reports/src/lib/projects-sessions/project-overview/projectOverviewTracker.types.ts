@@ -1,5 +1,5 @@
 // @harness-uid u_nves237tvx
-import type { ProjectModulePlan } from '../../../../../../src/helpers/projects-sessions/projectModuleProgress';
+import type { ProjectModulePlan } from '../../../../../../src/helpers/projects-sessions/projectModuleProgress.types';
 import type { TrackerMachineRunRef } from '../../../../../../src/utils/projects-sessions/trackerMachine.types';
 import type { HomeComputerResources } from '../hub-home/homeLive.types';
 import type { MachineStatus, OverviewItem } from './projectOverview.types';

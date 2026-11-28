@@ -1,5 +1,6 @@
 import { expect, afterEach, beforeEach, onTestFinished, test, vi } from 'vitest';
 import { rmSync } from 'node:fs';
+import { verifyProjectModuleProgress } from '../../support/trackerModuleProgressFixture';
 import { verifyArtifactCommand } from '../../support/trackerPlanningAssertions';
 import { createTempDirectory } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
@@ -78,12 +79,6 @@ test('native Tracker forwards existing run, report and model selection commands'
 			'sol (gpt-6.2-sol medium, codex) - named on the item\n  named on the item\n  computer: fixture-mac'
 		);
 		await verifyCodexReportRange();
-		const { run } = await compatibilityFixture();
-		expect(await run('progress', '--project', 'harbor')).toMatchObject({
-			code: 0,
-			out: 'harbor: Module plan awaiting review',
-			err: ''
-		});
 	}));
 
 async function verifyCodexReportRange() {
@@ -98,6 +93,7 @@ async function verifyCodexReportRange() {
 		.run(fixtureItem, Date.parse(fixtureTime));
 	const { code, out } = await run('models', 'report');
 	expect(code).toBe(0);
+	await verifyProjectModuleProgress(fixture);
 	expect(out).toContain('$0.71–$1.37');
 	expect(out).toContain('1/1');
 	expect(out).toContain('API-equivalent estimate');
