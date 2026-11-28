@@ -48,7 +48,7 @@
 		},
 		{
 			"id": "assigned-worker",
-			"title": "Assigned model and intelligence run in isolated worktrees",
+			"title": "Assigned model, intelligence and trusted checks run in isolated worktrees",
 			"coverage": "required"
 		},
 		{
@@ -58,7 +58,7 @@
 		},
 		{
 			"id": "quota-fallback",
-			"title": "Only Claude quota rejection selects Luna 6 max",
+			"title": "Confirmed provider quota switches auto tasks to the other provider",
 			"coverage": "required"
 		},
 		{

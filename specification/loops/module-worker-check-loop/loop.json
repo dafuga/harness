@@ -2,7 +2,7 @@
 	"name": "module-worker-check-loop",
 	"goal": "Prove that declared worktree checks feed bounded failures into the same provider session and persist every outcome before review.",
 	"createdAt": "2026-11-28T16:33:01.645Z",
-	"updatedAt": "2026-11-28T16:47:06.441Z",
+	"updatedAt": "2026-11-28T16:47:30.730Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T16:47:08.087Z",
+			"evidence": "The committed worker runs up to three checks, sends diagnostics into the original session, and preserves rejected completion evidence."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T16:47:30.730Z",
+			"evidence": "The unchanged Git-backed lifecycle and quota regressions pass in the same test runtime."
 		},
 		{
 			"id": "siblings",
