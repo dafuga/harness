@@ -2,7 +2,7 @@
 	"name": "current-machine-health",
 	"goal": "Prove the recorded primary Mac recovery clears the Hub overload chip on the next sample, with current machine reasons shared by Tracker and Hub.",
 	"createdAt": "2026-11-28T10:19:22.639Z",
-	"updatedAt": "2026-11-28T10:30:24.592Z",
+	"updatedAt": "2026-11-28T11:07:05.081Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T11:07:05.081Z",
+			"evidence": "Rebased Tracker red 8720a926b3 reproduced swap grew 6146 MB in 10 min and stale peer overload. Frozen command passed at 455420344d with the peer returning ok at its next one-minute sample while swap remains allocated."
 		},
 		{
 			"id": "verify",
