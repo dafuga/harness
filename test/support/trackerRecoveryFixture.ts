@@ -41,11 +41,8 @@ export function proveTrackerTmuxRecovery() {
 
 async function proveRecovery(root: string) {
 	const { config } = managedFixtureBindings(root);
-	const socket = 'harness-' + basename(root);
-	writeFileSync(config.tmux, isolatedTmux(socket), { mode: 0o700 });
+	const tmux = prepareIsolatedTmux(root, config.tmux);
 	writeFileSync(config.native.codex, '#!/bin/sh\nexec /bin/sleep 120\n', { mode: 0o700 });
-	const tmux = (...args: string[]) =>
-		execFileSync(tmuxExecutable!, ['-L', socket, ...args], { encoding: 'utf8', stdio: 'pipe' });
 	const database = new DatabaseSync(':memory:');
 	let offset = Date.parse('2026-11-25T09:00:00Z') - Date.now();
 	const realNow = Date.now;
@@ -195,6 +192,13 @@ async function startAndDrop(
 		state: 'finished',
 		outcome: 'abandoned'
 	});
+}
+
+function prepareIsolatedTmux(root: string, executable: string) {
+	const socket = 'harness-' + basename(root);
+	writeFileSync(executable, isolatedTmux(socket), { mode: 0o700 });
+	return (...args: string[]) =>
+		execFileSync(tmuxExecutable!, ['-L', socket, ...args], { encoding: 'utf8', stdio: 'pipe' });
 }
 
 function isolatedTmux(socket: string) {

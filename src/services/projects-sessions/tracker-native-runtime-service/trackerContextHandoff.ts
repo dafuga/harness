@@ -14,7 +14,7 @@ import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { handoffRunOwnership } from './trackerHostWatchdogState';
 import { contextAlert } from './trackerHostWatchdogAlerts';
 import { sessionHealthInterval } from './trackerSessionHealth';
-import { trackerContextCheckpointPrefix } from './trackerWatchdogContext';
+import { isContextCheckpoint, trackerContextCheckpointPrefix } from './trackerWatchdogContext';
 import type { TrackerHandoffAttempt, TrackerHandoffTarget } from './trackerWatchdogContext.types';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 
@@ -72,11 +72,6 @@ function checkpointStart(
 	)
 		? startedAt
 		: 0;
-}
-
-function isContextCheckpoint(text: string): boolean {
-	const prefix = trackerContextCheckpointPrefix;
-	return text.toLowerCase().startsWith(prefix) && text.slice(prefix.length).trim().length > 8;
 }
 
 function handoffEligible(row?: WatchdogItem): row is WatchdogItem {

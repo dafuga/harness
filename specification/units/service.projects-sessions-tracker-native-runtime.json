@@ -359,6 +359,7 @@
 			"queueIdleWork",
 			"watchLaunchRequests",
 			"trackerContextCheckpointPrefix",
+			"isContextCheckpoint",
 			"sampleTrackerContexts",
 			"TrackerContextSample",
 			"TrackerTranscriptRecord",
@@ -2180,6 +2181,11 @@
 				"type": "boolean",
 				"required": false,
 				"default": true
+			},
+			{
+				"name": "isContextCheckpoint.text",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "sampleTrackerContexts.panes",
@@ -6040,6 +6046,24 @@
 				"outputs": [
 					{
 						"name": "watchLaunchRequests",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isContextCheckpoint",
+				"inputs": [
+					{
+						"name": "isContextCheckpoint.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isContextCheckpoint",
 						"type": "boolean"
 					}
 				],

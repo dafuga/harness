@@ -13,7 +13,7 @@ import {
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { trackerStoredSchedulingHold } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { TrackerRecoveryState } from './trackerSessionRecovery.types';
-import { trackerContextCheckpointPrefix } from './trackerWatchdogContext';
+import { isContextCheckpoint } from './trackerWatchdogContext';
 
 export const maxRecoveryAttempts = 3;
 export const emptyRecoveryState: TrackerRecoveryState = {
@@ -68,7 +68,7 @@ function hasContextCheckpoint(run: TrackerListedRun, item: TrackerItem): boolean
 			node === run.node &&
 			Date.parse(at) >= start &&
 			Date.parse(at) <= (run.ended_at ?? Infinity) &&
-			text.toLowerCase().startsWith(trackerContextCheckpointPrefix)
+			isContextCheckpoint(text)
 	);
 }
 

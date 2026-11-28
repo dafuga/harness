@@ -11,6 +11,11 @@ export const trackerContextCheckpointPrefix = 'stopped: watchdog context handoff
 
 import type { TrackerContextSample, TrackerTranscriptRecord } from './trackerWatchdogContext.types';
 
+export function isContextCheckpoint(text: string): boolean {
+	const prefix = trackerContextCheckpointPrefix;
+	return text.toLowerCase().startsWith(prefix) && text.slice(prefix.length).trim().length > 8;
+}
+
 export async function sampleTrackerContexts(
 	panes: readonly WatchdogPane[],
 	roots: readonly string[],
