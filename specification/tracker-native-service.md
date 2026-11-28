@@ -108,7 +108,10 @@ operator verifies the stopped database and chooses a rollback.
   includes completed items. The digest counts distinct items chased in the
   last seven days.
   `ignore` and `unignore` use journal transitions and retain the actor, notes,
-  and prior status. Automatic expiry for `ignore --until` is still pending.
+  and prior status. The hub restores the previous status when an
+  `ignore --until` deadline passes and records an expiry note. Date-only
+  deadlines expire at midnight in the configured Tracker time zone.
+  Ignores without a deadline stay in place until explicitly cleared.
   `sync` wakes the configured spoke links. Native launch writes a durable
   intent for the selected node. A fenced host can also run the scheduler
   and reconcile launches. Commands outside the native list fail explicitly.
@@ -686,8 +689,8 @@ Change it in the configuration and restart the node.
       canonical block ships with Harness and names only native commands.
 - [x] Print human `history`, `check` and refused-duplicate matches, and the model pick
       after `add`. `block` accepts `--no-needs-daniel`; `--needs-daniel` points to `flag`.
-- [ ] Schedule ignore expiry on the hub. Compare remaining legacy output for
-      `rm` and empty `list`.
+- [x] Schedule ignore expiry on the hub.
+- [ ] Compare remaining legacy output for `rm` and empty `list`.
 
 ## Computers and placement
 

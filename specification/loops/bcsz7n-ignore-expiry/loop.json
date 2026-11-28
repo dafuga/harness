@@ -1,0 +1,67 @@
+{
+	"name": "bcsz7n-ignore-expiry",
+	"goal": "The native Tracker hub restores ignored items once ignored_until passes",
+	"createdAt": "2026-11-26T11:33:12.845Z",
+	"updatedAt": "2026-11-27T14:03:21.468Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T13:54:07.126Z",
+			"evidence": "An ignored item past ignored_until must return to its previous status on the native hub. Indefinite and future ignores remain ignored."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T13:54:08.683Z",
+			"evidence": "The supervisor test previously exercised status and worker shutdown only. It now runs hub and spoke with a shared clock across date and timestamp boundaries."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T13:55:00.920Z",
+			"evidence": "7a257c31f5: the unchanged supervisor test expected dated in_progress at Lisbon midnight and received ignored."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T13:55:04.040Z",
+			"evidence": "ac9cec1ece: hub sweep journals the existing unignore transition, adds an expiry note, and rechecks the row under the writer lock."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T13:55:45.254Z",
+			"evidence": "ac9cec1ece: unchanged supervisor regression passed with the same command and runtime profile as red."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-27T14:03:21.468Z",
+			"evidence": "siblings-81e4a24a-835a-4cf3-8a20-501549976024.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -6,6 +6,7 @@ import { measureWorkload } from '../../support/measureWorkload';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerSupervisorService } from '../../../src/services/projects-sessions/TrackerSupervisorService';
 import { fixturePolicy, primary, secondary } from '../../support/trackerDispatcherFixture';
+import { ignoringNode, allIgnored } from '../../support/trackerIgnoreFixture';
 
 const now = () => 1780000000000;
 const timestamp = new Date(now()).toISOString();
@@ -63,6 +64,55 @@ async function proveWorkerLifecycle() {
 		database.close();
 	}
 	expect(adapter).toHaveBeenCalledTimes(1);
+}
+
+test('the hub restores ignored items once their ignore expires, and a spoke leaves them', () =>
+	measureWorkload(
+		'service.projects-sessions-tracker-supervisor',
+		'ignore-expiry',
+		proveIgnoreExpiry
+	));
+
+async function proveIgnoreExpiry() {
+	// A date expires at 00:00 Lisbon, which is 23:00 UTC the day before in summer.
+	let at = Date.parse('2026-07-01T10:00:00Z');
+	const clock = () => at;
+	const hub = await ignoringNode('hub', clock);
+	const spoke = await ignoringNode('spoke', clock);
+	const abort = new AbortController();
+	const sweeps = vi.fn(async () => {});
+	const running = [hub, spoke].map(({ runtime }) =>
+		new TrackerSupervisorService(runtime, {
+			ticks: { adapter: sweeps },
+			intervalMs: 5,
+			now: clock
+		}).run(abort.signal)
+	);
+	const settle = async () => {
+		const target = sweeps.mock.calls.length + 6;
+		await expect.poll(() => sweeps.mock.calls.length).toBeGreaterThan(target);
+	};
+	try {
+		at = Date.parse('2026-07-01T22:59:59Z');
+		await settle();
+		expect(hub.statuses()).toEqual(allIgnored);
+		at = Date.parse('2026-07-01T23:00:00Z');
+		await expect.poll(hub.statuses).toEqual({ ...allIgnored, dated: 'in_progress' });
+		at = Date.parse('2026-07-02T09:30:00Z');
+		await expect.poll(hub.statuses).toEqual({ ...allIgnored, dated: 'in_progress', timed: 'open' });
+		const settled = hub.runtime.store.maxSeq();
+		await settle();
+		expect(hub.runtime.store.maxSeq()).toBe(settled);
+		expect(spoke.statuses()).toEqual(allIgnored);
+		expect(hub.row('dated')).toMatchObject({ ignored_until: null, needs_daniel: 1 });
+		expect(hub.lastNote('dated')).toBe('ignore expired; back to in_progress');
+		expect(hub.lastNote('timed')).toBe('ignore expired; back to open');
+	} finally {
+		abort.abort();
+		await Promise.all(running);
+		hub.database.close();
+		spoke.database.close();
+	}
 }
 
 function expectConnectedFleet(

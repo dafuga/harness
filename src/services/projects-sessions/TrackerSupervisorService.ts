@@ -75,6 +75,7 @@ export class TrackerSupervisorService {
 			this.runtime;
 		const chiefMessages = chiefMessageWorker(this.runtime);
 		const ticks = {
+			...ignoreExpiryWorker(this.runtime),
 			...(telemetry && { telemetry }),
 			...(backups.service && { backup: () => backups.service!.tick() }),
 			...webPushWorker(this.runtime),
@@ -96,6 +97,10 @@ export class TrackerSupervisorService {
 			(signal: AbortSignal) => Promise<void>
 		][];
 	}
+}
+
+function ignoreExpiryWorker({ ignoreExpiry }: TrackerNativeRuntimeService) {
+	return ignoreExpiry && { 'ignore-expiry': async () => ignoreExpiry() };
 }
 
 /** On the hub: tells Daniel's browsers about open decisions. */

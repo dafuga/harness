@@ -82,3 +82,29 @@ export async function verifyProjectFollowUp(hub: TrackerNodeFixture, spoke: Trac
 		.poll(() => fixtureTrackerJson(hub, ['digest']), { timeout: 8_000 })
 		.toMatchObject({ needs_daniel: [] });
 }
+
+export async function verifyIgnoreExpiry(spoke: TrackerNodeFixture, id: string) {
+	await expect
+		.poll(() => fixtureTrackerJson(spoke, ['list']), { timeout: 8_000 })
+		.toEqual(expect.arrayContaining([expect.objectContaining({ id })]));
+	const until = new Date(Date.now() + 2_500).toISOString();
+	expect(
+		await fixtureTrackerJson(spoke, [
+			'ignore',
+			id,
+			'--reason',
+			'Wait for the fixture deadline',
+			'--until',
+			until
+		])
+	).toMatchObject({ id, status: 'ignored', ignored_until: until });
+	const show = () => fixtureTrackerJson(spoke, ['show', id]);
+	await expect.poll(show, { timeout: 15_000 }).toMatchObject({
+		id,
+		status: 'open',
+		notes_log: expect.arrayContaining([
+			expect.objectContaining({ text: 'ignore expired; back to open' })
+		])
+	});
+	expect(await show()).not.toHaveProperty('ignored_until');
+}
