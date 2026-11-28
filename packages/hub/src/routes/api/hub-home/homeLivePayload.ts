@@ -1,5 +1,6 @@
 // @harness-uid u_ukg7o7reue
 import { z } from 'zod';
+import { projectModulePlanSchema } from '../../../../../../src/helpers/projects-sessions/projectModuleProgress';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
 import { parseHomePayload } from './homePayload';
 
@@ -36,6 +37,20 @@ const row = z.object({
 
 const project = z.object({
 	agent: short,
+	modulePlan: projectModulePlanSchema
+		.transform((plan) =>
+			plan.state === 'available'
+				? {
+						...plan,
+						modules: plan.modules.map(({ title, ...row }) => ({
+							...row,
+							title: title ? sanitizeText(title) : undefined
+						}))
+					}
+				: plan
+		)
+		.optional()
+		.catch(undefined),
 	running: count,
 	totalRows: count.optional(),
 	blockedRows: count.optional(),

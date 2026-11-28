@@ -181,3 +181,30 @@
 .hh-home .hh-live-now:has(.hx-text-link) {
 	display: block;
 }
+
+.hh-home .hh-module-progress {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: var(--hx-space-4);
+}
+.hh-home .hh-module-progress .hh-progress-bar {
+	display: flex;
+}
+.hh-home .hh-module-progress .hh-module-progress-started {
+	background: color-mix(in srgb, var(--hx-color-primary) 48%, var(--hx-color-surface));
+}
+.hh-home .hh-module-plan {
+	display: grid;
+	gap: var(--hx-space-4);
+	margin: 0 var(--hx-space-12) var(--hx-space-12);
+	padding-top: var(--hx-space-8);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-home .hh-module-plan summary {
+	cursor: pointer;
+	font-size: var(--hx-type-size-sm);
+}
+.hh-home .hh-module-plan ul {
+	margin: var(--hx-space-4) 0;
+	padding-inline-start: var(--hx-space-24);
+}

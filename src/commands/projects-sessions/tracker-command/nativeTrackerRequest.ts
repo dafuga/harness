@@ -90,6 +90,11 @@ function itemQuery(
 				}
 			};
 		}
+		case 'progress':
+			if (values.project === undefined) return undefined;
+			if (words.length || !String(values.project).trim())
+				throw new TypeError('usage: tracker progress --project <project>');
+			return { method: 'GET', path: '/progress' + query({ project: values.project }) };
 		case 'list':
 			if (words.length) throw new TypeError('usage: tracker list [options]');
 			return { method: 'GET', path: '/items' + query(fields) };

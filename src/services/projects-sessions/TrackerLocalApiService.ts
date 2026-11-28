@@ -12,6 +12,7 @@ import {
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
 import { trackerHostWorkEndpoint } from './tracker-local-api-service/trackerHostWorkEndpoint';
+import { readTrackerProjectProgress } from './tracker-local-api-service/readTrackerProjectProgress';
 import { readTrackerMachineEndpoint } from './tracker-local-api-service/readTrackerMachineEndpoint';
 import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
 import { trackerJobResponse } from './tracker-local-api-service/trackerLocalJobResponse';
@@ -167,6 +168,8 @@ function trackerSpecialResponse(
 ) {
 	if (parts.length === 1 && parts[0] === 'host-work' && dependencies.options.machines)
 		return trackerHostWorkEndpoint(request, dependencies.options.machines);
+	if (request.method === 'GET' && parts.length === 1 && parts[0] === 'progress')
+		return readTrackerProjectProgress(request, dependencies);
 	if (parts[0] === 'jobs') return trackerJobResponse(request, parts, dependencies);
 	if (isTrackerAlert(request, parts)) return trackerAlertResponse(request, parts[1], dependencies);
 	if (parts[0] === 'messages')

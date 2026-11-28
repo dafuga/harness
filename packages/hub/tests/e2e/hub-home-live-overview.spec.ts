@@ -40,10 +40,10 @@ for (const [device, width, height] of [
 			modulePlan: {
 				state: 'available',
 				modules: [
-					{ id: 'one', state: 'built' },
-					{ id: 'two', state: 'live' },
-					{ id: 'three', state: 'in_progress' },
-					{ id: 'four', state: 'planned' }
+					{ id: 'one', state: 'built', release: 'later' },
+					{ id: 'two', state: 'live', release: 'first' },
+					{ id: 'three', state: 'in_progress', release: 'first' },
+					{ id: 'four', state: 'planned', release: 'first' }
 				]
 			}
 		});
@@ -86,7 +86,18 @@ for (const [device, width, height] of [
 		const progress = groups.filter({ has: page.getByText(sample.agent, { exact: true }) });
 		await captureNeedsYou(page, `module-summary-${device}`, progress);
 		await expect(progress.locator(':scope > summary')).toContainText('2 of 4 modules built (50%)');
-		await expect(progress.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '50');
+		const firstBar = progress.getByRole('progressbar', { name: 'First release module completion' });
+		const fullBar = progress.getByRole('progressbar', { name: 'Full module completion' });
+		await expect(firstBar).toHaveAttribute('aria-valuenow', '33');
+		await expect(fullBar).toHaveAttribute('aria-valuenow', '50');
+		await expect(fullBar).toHaveAttribute(
+			'aria-valuetext',
+			'2 of 4 modules built (50%) · 1 in progress'
+		);
+		await expect(fullBar.locator('.hh-module-progress-started')).toHaveAttribute(
+			'style',
+			/width:\s*25%/
+		);
 		await progress.locator(':scope > summary').click();
 		await progress.getByText('Built · 1', { exact: true }).click();
 		await expect(progress.getByText('one', { exact: true })).toBeVisible();

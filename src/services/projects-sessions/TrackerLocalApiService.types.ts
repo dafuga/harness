@@ -19,6 +19,8 @@ export interface TrackerLocalApiOptions {
 	/** Record a rejected completion through the launcher that owns its run. */
 	reject?(itemId: string, reason: string): Promise<TrackerDispatchResult>;
 	now?: () => number;
+	modulePlanRoot?: string;
+	harborPlanRoot?: string;
 	phoneReplica?: TrackerPhoneReplicaService;
 	phoneWrite?: PhoneReplicaWriteGrant;
 	manualLaunch?: boolean;

@@ -142,6 +142,8 @@ function composeItemApi(
 		planLaunch,
 		role,
 		manualLaunch,
+		modulePlanRoot,
+		harborPlanRoot,
 		phoneWrite
 	}: TrackerNativeRuntimeOptions,
 	recurring?: ReturnType<typeof composeTrackerRecurrence>
@@ -156,6 +158,8 @@ function composeItemApi(
 		validateModel,
 		planLaunch,
 		manualLaunch,
+		modulePlanRoot,
+		harborPlanRoot,
 		...trackerItemViews(runtime),
 		reject: runtime.dispatch && ((id, reason) => runtime.dispatch!.reject(id, reason)),
 		runs,

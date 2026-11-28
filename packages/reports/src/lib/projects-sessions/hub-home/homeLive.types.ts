@@ -1,4 +1,5 @@
 // @harness-uid u_dpe5j4r3is
+import type { ProjectModulePlan } from '../../../../../../src/helpers/projects-sessions/projectModuleProgress';
 import type {
 	OverviewItem,
 	OverviewMachine,
@@ -41,6 +42,7 @@ export interface HomeWorkRow {
 }
 
 export interface HomeWorkProject {
+	modulePlan?: ProjectModulePlan;
 	agent: string;
 	/** Live runs on computers that are not offline. */
 	running: number;

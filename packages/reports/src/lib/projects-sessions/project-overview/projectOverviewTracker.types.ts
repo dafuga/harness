@@ -1,4 +1,5 @@
 // @harness-uid u_nves237tvx
+import type { ProjectModulePlan } from '../../../../../../src/helpers/projects-sessions/projectModuleProgress';
 import type { TrackerMachineRunRef } from '../../../../../../src/utils/projects-sessions/trackerMachine.types';
 import type { HomeComputerResources } from '../hub-home/homeLive.types';
 import type { MachineStatus, OverviewItem } from './projectOverview.types';
@@ -101,6 +102,7 @@ export type TrackerMachineRecord = {
 
 /** Validated item, run, and machine records from the tracker. */
 export type TrackerSources = {
+	modulePlans?: Partial<Record<'harness' | 'harbor', ProjectModulePlan>>;
 	items: TrackerItemRecord[];
 	runs: TrackerRunRecord[];
 	machines: TrackerMachineRecord[];
