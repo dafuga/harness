@@ -6,6 +6,24 @@ import type {
 	TrackerDispatchWrites,
 	TrackerRunReceipt
 } from '../TrackerDispatcherService.types';
+import { automaticRequestHold, schedulingHold, startable } from './launchEligibility';
+
+export function retryHeld(
+	item: TrackerDispatchItem,
+	run: TrackerRunReceipt,
+	manualStartup: boolean,
+	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
+) {
+	// Recovery owns its budget and backoff across separate launch tokens.
+	if (run.launch_source === 'recovery') return true;
+	if (manualStartup)
+		return !startable(item) || Boolean(schedulingHold({ ...item, scheduleOff: false }, now));
+	return Boolean(automaticRequestHold(item, policy, now));
+}
+
+export function isManualStartupFailure(run: TrackerRunReceipt, startup?: boolean): boolean {
+	return startup === true && run.launch_source === 'manual' && run.started_at === null;
+}
 
 export function retryRung(
 	item: TrackerDispatchItem,
@@ -15,6 +33,7 @@ export function retryRung(
 ) {
 	if (run.attempt > (policy.maxRetries ?? 1) || run.cli === 'none') return null;
 	if (!startup) return policy.retryModel(item, run);
+	if (run.attempt > 1) return null;
 	return { id: run.rung, cli: run.cli, model: run.model, effort: run.effort, pinned: run.pinned };
 }
 

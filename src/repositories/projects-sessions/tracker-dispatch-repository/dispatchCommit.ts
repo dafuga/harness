@@ -2,7 +2,8 @@
 import type {
 	TrackerDispatchDecision,
 	TrackerDispatchResult,
-	TrackerDispatchSnapshot
+	TrackerDispatchSnapshot,
+	TrackerDispatchWrites
 } from '../../../services/agents-providers/TrackerDispatcherService.types';
 import type {
 	TrackerDispatchCommitRequest,
@@ -20,16 +21,25 @@ export function commitDecision(
 	request: TrackerDispatchCommitRequest,
 	decide: (snapshot: TrackerDispatchSnapshot) => TrackerDispatchDecision
 ): TrackerDispatchResult {
-	const { store, node, now = Date.now } = target;
+	const { store, now = Date.now } = target;
 	const { itemId, read } = request;
 	return store.commitLocal(() => {
 		const snapshot = read(itemId);
 		const { result, writes } = decide(snapshot);
-		for (const run of writes?.runs ?? []) persistDispatchRun(store, run, node);
-		recordLaunchEvents(store.database, { snapshot, writes }, now());
-		if (writes?.lastDueStartAt !== undefined)
-			store.writeMeta({ [dueStartKey]: String(writes.lastDueStartAt) });
+		if (writes) persistDecision(target, { snapshot, writes }, now());
 		const fields = writes?.item && dispatchJournalFields(writes.item);
 		return { result, operation: fields && { itemId, fields } };
 	});
+}
+
+function persistDecision(
+	{ store, node, onStartupFailure }: TrackerDispatchCommitTarget,
+	{ snapshot, writes }: { snapshot: TrackerDispatchSnapshot; writes: TrackerDispatchWrites },
+	at: number
+) {
+	for (const run of writes.runs ?? []) persistDispatchRun(store, run, node);
+	recordLaunchEvents(store.database, { snapshot, writes }, at);
+	if (writes.startupFailure) onStartupFailure?.(writes.startupFailure, at);
+	if (writes.lastDueStartAt !== undefined)
+		store.writeMeta({ [dueStartKey]: String(writes.lastDueStartAt) });
 }

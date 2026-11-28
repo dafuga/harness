@@ -3,7 +3,8 @@
 export const trackerCosInboxKinds: ReadonlySet<string> = new Set([
 	'alert',
 	'flag-refused',
-	'cos-message'
+	'cos-message',
+	'launch-startup-failed'
 ]);
 
 /** How long a message stays in the inbox when its item is finished or unknown. */

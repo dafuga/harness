@@ -9,5 +9,6 @@ export interface LaunchEventFixtureOptions {
 export interface LaunchEventState {
 	at: number;
 	exited: Set<string>;
+	startupFailures: Map<string, number>;
 	sent: Record<string, unknown>[];
 }

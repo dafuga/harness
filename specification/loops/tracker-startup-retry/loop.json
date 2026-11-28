@@ -1,0 +1,67 @@
+{
+	"name": "tracker-startup-retry",
+	"goal": "Retry a confirmed Tracker host startup failure once for an explicit launch even with scheduling disabled, preserve duplicate-session fencing, and alert Chief of Staff after exhaustion.",
+	"createdAt": "2026-11-28T08:16:09.655Z",
+	"updatedAt": "2026-11-28T08:29:07.503Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T08:17:30.490Z",
+			"evidence": "Primary #1188 source/receipt/directory match Git worktree checkout before worker creation; manual scheduling opt-out drops retry. Require safe one-shot startup retry and durable CoS alert."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T08:17:46.502Z",
+			"evidence": "Existing launch event case covered failure after a session started; add pre-start host failure, grace, duplicate fencing, same explicit token with scheduling disabled and terminal CoS inbox assertions to that existing case."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T08:22:46.658Z",
+			"evidence": "Committed b34011911e, loop record red reproduced the exact scheduling opt-out assertion: one abandoned receipt and no retry."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T08:22:49.089Z",
+			"evidence": "Retain expiry and host absence fences; persist explicit startup retry authorization through dispatcher, queue and host checks, cap startup retries at one, write the CoS alert in the terminal transaction, and name Git worktree checkout in host errors."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T08:27:19.442Z",
+			"evidence": "Exact paired proof: red b34011911e and green ab10349c8f in the same minimal environment, unchanged test and fixture. The retry resumes one explicit launch despite schedule-off, with no alert on success and one durable alert after a second failure."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-28T08:29:07.503Z",
+			"evidence": "siblings-8e647abf-1fdd-4151-a456-ab7ae4ebd91c.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -1,0 +1,2052 @@
+{
+	"schemaVersion": 1,
+	"revision": "ab10349c8f5fd92e4cd03a47ef0df35abd1a55a1",
+	"bugClass": {
+		"id": "retry-suppressed-by-schedule-off",
+		"title": "Schedule-off state suppresses a confirmed startup retry",
+		"cause": "A manual request is still current and the host confirms the run never started, but retry preparation treats a scheduling-off state as an unattended cancellation hold. Without an applicable manual-startup-retry override, that gate suppresses the one explicit startup retry. Related variants may use scheduleOff/schedule_off, automaticRequestHold/schedulingHold, or retireUnstartedRun/prepareRetry/confirmNeverStarted/automaticHostHold.",
+		"criteria": "Positive when a site gates a confirmed never-started explicit retry for a still-current manual request on schedule-off or an equivalent unattended hold, and no applicable manualStartupRetry or equivalent override permits it. Either schedule-off or the equivalent unattended hold can independently produce the suppression. Exclude retries after a session started, explicit token withdrawal, owner/parked/answer holds, protective routing, and policy-helper definitions without the suppressing retry path.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "confirmNeverStarted",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "manualStartupRetry",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "retireUnstartedRun",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "scheduleOff",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "schedule_off",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "automaticRequestHold",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "schedulingHold",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "automaticHostHold",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "prepareRetry",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "neverStarted",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "confirmNeverStarted",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "retireUnstartedRun",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "prepareRetry",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "automaticHostHold",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "automaticRequestHold",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "schedulingHold",
+				"weight": 3
+			}
+		],
+		"contextTerms": [
+			"manualstartupretry",
+			"scheduleoff",
+			"schedule_off",
+			"automaticrequesthold",
+			"schedulinghold",
+			"retireunstartedrun",
+			"prepareretry",
+			"confirmneverstarted",
+			"automatichosthold"
+		],
+		"pathHints": [
+			{
+				"contains": "src/workflows/",
+				"weight": 5
+			},
+			{
+				"contains": "src/services/",
+				"weight": 4
+			},
+			{
+				"contains": "src/core/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 1
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "specification/",
+				"weight": -3
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -2
+			},
+			{
+				"contains": "src/cli/",
+				"weight": -2
+			}
+		]
+	},
+	"model": "gpt-6-luna",
+	"scannedFiles": 9717,
+	"skipped": [],
+	"candidates": [
+		{
+			"id": "5464b8f2129fbc077e9f",
+			"path": "src/services/agents-providers/TrackerDispatcherService.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "prepareRetry",
+					"weight": 3
+				},
+				{
+					"kind": "call",
+					"value": "prepareRetry",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 2,
+			"evidence": "Lines 33–45 route `prepare` through `prepareRetry` for the current owned attempt. The excerpt does not show whether the run was confirmed never started, whether schedule-off suppresses the retry, or whether a manual-startup override applies."
+		},
+		{
+			"id": "68beec67d302c00e6bfd",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerLegacyExitReceipt.ts",
+			"line": 29,
+			"lastLine": 32,
+			"score": 25,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "confirmNeverStarted",
+					"weight": 5
+				},
+				{
+					"kind": "call",
+					"value": "confirmNeverStarted",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "`trackerLegacyExitReceipt.ts` lines 17–32 detects legacy startup evidence and calls `confirmNeverStarted`; the excerpt shows confirmation only, with no retry preparation or scheduling-off gate."
+		},
+		{
+			"id": "6c652e5e27199447cdb4",
+			"path": "src/services/projects-sessions/trackerDispatchObservations.ts",
+			"line": 41,
+			"lastLine": 41,
+			"score": 25,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "confirmNeverStarted",
+					"weight": 5
+				},
+				{
+					"kind": "call",
+					"value": "confirmNeverStarted",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "`trackerDispatchObservations.ts` lines 29–41 emits a `never-started` event only for queued runs past the startup grace period when the runner confirms. It does not show how the resulting retry is prepared or gated."
+		},
+		{
+			"id": "c28960a83e121f3661fd",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/launchEligibility.ts",
+			"line": 122,
+			"lastLine": 128,
+			"score": 25,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "schedulingHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "schedulingHold",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "`launchEligibility.ts` lines 110–128 defines `automaticRequestHold` as a scheduling and launcher-enabled policy helper. This excerpt does not show a confirmed never-started retry path using it, so it cannot establish the candidate cause."
+		},
+		{
+			"id": "81894380d14a018dea25",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runTransition.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "retireUnstartedRun",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "retireUnstartedRun",
+					"weight": 4
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "`runTransition.ts` lines 19–31 routes a `never-started` event to `retireUnstartedRun`, but the excerpt does not show whether that path retries a still-current manual request or applies a scheduling-off hold."
+		},
+		{
+			"id": "ef04c7cdf2c9ea2c9e54",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
+			"line": 13,
+			"lastLine": 19,
+			"score": 22,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "schedulingHold",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5f11b5a394162c5cefba",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/launchEligibility.ts",
+			"line": 111,
+			"lastLine": 111,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "automaticRequestHold",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "76abee01742fbc053572",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/recoveryIntent.ts",
+			"line": 109,
+			"lastLine": 109,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "automaticRequestHold",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3b93b2b005ba94422535",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
+			"line": 144,
+			"lastLine": 144,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "manualStartupRetry",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f7dfffa0445de70a6992",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
+			"line": 166,
+			"lastLine": 166,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "automaticRequestHold",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "60c30f5227b3d101dac0",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types.ts",
+			"line": 74,
+			"lastLine": 74,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "confirmNeverStarted",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d14fe1d5e889ced8cc8a",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostRunner.ts",
+			"line": 217,
+			"lastLine": 217,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "confirmNeverStarted",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "59e40e248e664551c9aa",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerQueueAdmission.ts",
+			"line": 27,
+			"lastLine": 27,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "automaticRequestHold",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a645f7850e084b3a0bad",
+			"path": "src/services/projects-sessions/TrackerDispatchSchedulerService.types.ts",
+			"line": 37,
+			"lastLine": 37,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "confirmNeverStarted",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6102b829997863c8177d",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields.ts",
+			"line": 148,
+			"lastLine": 148,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a94f7a16775034260902",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/launchEligibility.ts",
+			"line": 132,
+			"lastLine": 132,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedulingHold",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1b0f5d2f25aec767719b",
+			"path": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.ts",
+			"line": 77,
+			"lastLine": 77,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "02c427ff036e8d79c954",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields.ts",
+			"line": 37,
+			"lastLine": 37,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c72ce859d107a01daa0c",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields.ts",
+			"line": 139,
+			"lastLine": 139,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedulingHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "schedulingHold",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b55659de052b03f4ca6f",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/launchEligibility.ts",
+			"line": 142,
+			"lastLine": 150,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "17fdef079bdaf25f6f82",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
+			"line": 61,
+			"lastLine": 61,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4efa464d2fe2a47a585b",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerRecoveryHistory.ts",
+			"line": 100,
+			"lastLine": 100,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3da72ae84f9641114e02",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/launchIntent.ts",
+			"line": 12,
+			"lastLine": 12,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c60c276e9b36b93ee7a7",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/recoveryIntent.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "95e9850b4f5ea44a212e",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
+			"line": 95,
+			"lastLine": 95,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "retireUnstartedRun",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fd72c1affd077c9703ac",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runResume.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6e7013ab0a62cb323ad5",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runTransition.ts",
+			"line": 11,
+			"lastLine": 11,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "retireUnstartedRun",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2cbb093f72864b5bca87",
+			"path": "src/services/agents-providers/TrackerDispatcherService.types.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a0f961a494d269c3984c",
+			"path": "src/services/projects-sessions/tracker-adapter-poll-service/commitTrackerIntake.ts",
+			"line": 154,
+			"lastLine": 154,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2ad2202e2e4245edc875",
+			"path": "src/services/projects-sessions/tracker-adapter-poll-service/commitTrackerIntake.ts",
+			"line": 186,
+			"lastLine": 186,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "97966ea3a4c971a3ded9",
+			"path": "src/services/projects-sessions/tracker-local-api-service/readTrackerRunEndpoint.ts",
+			"line": 28,
+			"lastLine": 28,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "de605c04d45f874b3f40",
+			"path": "src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts",
+			"line": 26,
+			"lastLine": 26,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "91d54d225a77b3e169fa",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
+			"line": 8,
+			"lastLine": 8,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedulingHold",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7c62d915fd0874ec093a",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerCosDeliveryAsk.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dfe1fc46843f4ace73a4",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerDueDelegation.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "980b24eb4c9c198efef5",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostRunner.ts",
+			"line": 68,
+			"lastLine": 68,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticHostHold",
+					"weight": 3
+				},
+				{
+					"kind": "call",
+					"value": "automaticHostHold",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4548abb4a004089e0f44",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerQueueAdmission.ts",
+			"line": 9,
+			"lastLine": 9,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8fdde253e31e429e88cc",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests.ts",
+			"line": 86,
+			"lastLine": 86,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2e19159722946857638d",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests.ts",
+			"line": 183,
+			"lastLine": 183,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4f963042a8f542122cdc",
+			"path": "src/services/projects-sessions/trackerDispatchQueue.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedulingHold",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c4fb07c6e19f74bd0c52",
+			"path": "src/services/projects-sessions/WatchdogRecoveryService.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ea0347f5be16706b9b7f",
+			"path": "src/services/projects-sessions/WatchdogRecoveryService.types.ts",
+			"line": 7,
+			"lastLine": 7,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3158d89330781e177605",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.ts",
+			"line": 60,
+			"lastLine": 60,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "confirmNeverStarted",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3c79199934939e326131",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchRunRows.ts",
+			"line": 154,
+			"lastLine": 154,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "manualStartupRetry",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "230ae4ba82653c527b1b",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchRunRows.ts",
+			"line": 191,
+			"lastLine": 191,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "manualStartupRetry",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "47d92fab388ed73504bf",
+			"path": "src/repositories/projects-sessions/TrackerDispatchRepository.types.ts",
+			"line": 42,
+			"lastLine": 42,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "manualStartupRetry",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "17bc1982064041ae683a",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "prepareRetry",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2a9675c5dd119a7b519f",
+			"path": "src/services/agents-providers/TrackerDispatcherService.ts",
+			"line": 14,
+			"lastLine": 14,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "prepareRetry",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "73b828d60e079c2deb3b",
+			"path": "packages/reports/src/lib/projects-sessions/hub-home/homeSchedule.ts",
+			"line": 41,
+			"lastLine": 41,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "79211bbfaf293beae0b3",
+			"path": "packages/reports/src/lib/projects-sessions/hub-home/homeSchedule.ts",
+			"line": 70,
+			"lastLine": 70,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "17c9d0138c3cac08349a",
+			"path": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.types.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6439b4e43bbdbf1d7b19",
+			"path": "src/adapters/projects-sessions/TrackerSchemaAdapter.ts",
+			"line": 53,
+			"lastLine": 53,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "218b4a9e34bf2774a1ae",
+			"path": "src/commands/projects-sessions/tracker-command/formatNativeTrackerInspection.ts",
+			"line": 108,
+			"lastLine": 108,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fe078b825306eeb657eb",
+			"path": "src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
+			"line": 77,
+			"lastLine": 77,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ceb5aa35e110f5762f57",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedulingHold",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "77bdef327a36f7d46927",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields.ts",
+			"line": 171,
+			"lastLine": 171,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7ab86531834fafbbcd5e",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl.ts",
+			"line": 91,
+			"lastLine": 91,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "64828064bd857b20bd4a",
+			"path": "src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9297789670ba46daa2c9",
+			"path": "src/repositories/projects-sessions/TrackerItemReadRepository.types.ts",
+			"line": 89,
+			"lastLine": 89,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d77e1d616c2578978e66",
+			"path": "src/utils/projects-sessions/normalizeTrackerItemFields.ts",
+			"line": 58,
+			"lastLine": 58,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4030dcbc5c37801e717b",
+			"path": "src/utils/projects-sessions/trackerItemInput.ts",
+			"line": 55,
+			"lastLine": 55,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "39be062b9cc111cc01fb",
+			"path": "src/utils/projects-sessions/trackerItemLaunchFields.ts",
+			"line": 17,
+			"lastLine": 17,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5e567e26d1017b5497bf",
+			"path": "test/support/trackerLaunchEventFixture.ts",
+			"line": 125,
+			"lastLine": 125,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "confirmNeverStarted",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "04d5588d5a3c34cafffb",
+			"path": "packages/hub/test/utils/hub-home-schedule.test.ts",
+			"line": 56,
+			"lastLine": 56,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b2bc2fc11b58de776293",
+			"path": "test/services/projects-sessions/tracker-launch-events.test.ts",
+			"line": 93,
+			"lastLine": 93,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "39cca5a31b4938695154",
+			"path": "test/repositories/projects-sessions/tracker-item-read.test.ts",
+			"line": 39,
+			"lastLine": 39,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "05e4eedd38d478a6ed55",
+			"path": "test/repositories/projects-sessions/trackerItemReadFixture.ts",
+			"line": 35,
+			"lastLine": 35,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d1bac6a3bff6034a1bb2",
+			"path": "test/repositories/projects-sessions/trackerItemReadFixture.ts",
+			"line": 172,
+			"lastLine": 172,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7f8acfe5ce3995f77d35",
+			"path": "test/services/agents-providers/tracker-dispatcher-due.test.ts",
+			"line": 25,
+			"lastLine": 30,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a4d0a92ad326cf927283",
+			"path": "test/services/agents-providers/tracker-dispatcher-due.test.ts",
+			"line": 71,
+			"lastLine": 71,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "27e6f7646704c9d5b8fc",
+			"path": "test/services/agents-providers/tracker-dispatcher-due.test.ts",
+			"line": 89,
+			"lastLine": 89,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1ed0b41a0d535da01860",
+			"path": "test/services/agents-providers/tracker-dispatcher-due.test.ts",
+			"line": 142,
+			"lastLine": 146,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f2d2dd46f57c1d924495",
+			"path": "test/services/projects-sessions/tracker-host-reminder.test.ts",
+			"line": 135,
+			"lastLine": 135,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1c289dabedbf3ef453b4",
+			"path": "test/services/projects-sessions/tracker-launch-events.test.ts",
+			"line": 109,
+			"lastLine": 109,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ac739693480de5f67360",
+			"path": "test/services/projects-sessions/tracker-session-health.test.ts",
+			"line": 107,
+			"lastLine": 107,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "55f236865c28a5a21dff",
+			"path": "test/services/projects-sessions/tracker-session-health.test.ts",
+			"line": 123,
+			"lastLine": 123,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b634fb10611097327d77",
+			"path": "test/services/projects-sessions/tracker-watchdog-context.test.ts",
+			"line": 143,
+			"lastLine": 143,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "219bf67ad11157f64c59",
+			"path": "test/services/projects-sessions/tracker-watchdog-context.test.ts",
+			"line": 172,
+			"lastLine": 172,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b96d7c92e33e57e96f37",
+			"path": "test/services/projects-sessions/watchdog-recovery.test.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2c3bdc59ae5fa8376918",
+			"path": "test/support/trackerDispatchQueueFixture.ts",
+			"line": 90,
+			"lastLine": 90,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a80b2879e4f9d3139ce6",
+			"path": "test/support/trackerLaunchOutcomeFixture.ts",
+			"line": 149,
+			"lastLine": 149,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ba4108cebdb19a436398",
+			"path": "test/support/trackerManagedLaunchAssertions.ts",
+			"line": 184,
+			"lastLine": 184,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e48bee52b9e39c85fd1a",
+			"path": "test/support/trackerManagedLaunchAssertions.ts",
+			"line": 193,
+			"lastLine": 193,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "afdcfbef39a05dc6ea1d",
+			"path": "test/support/trackerNodeProcess.ts",
+			"line": 212,
+			"lastLine": 212,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2e0bfeaa83aedde2686c",
+			"path": "test/support/trackerObservedRunFixture.ts",
+			"line": 29,
+			"lastLine": 29,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ddedc870b2e50c99950b",
+			"path": "test/support/trackerRecoveryAssertions.ts",
+			"line": 37,
+			"lastLine": 37,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fc0b13f5eb13d1fdee31",
+			"path": "test/support/trackerRecoveryFixture.ts",
+			"line": 119,
+			"lastLine": 119,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6636e0bdb3c31da47c13",
+			"path": "test/support/trackerRecoveryFixture.ts",
+			"line": 130,
+			"lastLine": 130,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e0fccde02db96bf9078a",
+			"path": "test/support/trackerRecoveryFixture.ts",
+			"line": 186,
+			"lastLine": 186,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "40381d6ffd01ee40f703",
+			"path": "test/tracker-cli-inspection.test.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cd523bb6acf818601e78",
+			"path": "test/utils/projects-sessions/tracker-repeating-reminder.test.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "01098553c0fa5c2d31a7",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
+			"line": 60,
+			"lastLine": 62,
+			"score": 32,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "retireUnstartedRun",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "retireUnstartedRun",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "schedulingHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "schedulingHold",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "manualStartupRetry",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "In `runClaim.ts` lines 48–62, `prepareRetry` clears `scheduleOff` before calling `schedulingHold` whenever `run.manualStartupRetry` is true. Thus schedule-off does not suppress this explicit startup retry; other holds may still apply."
+		},
+		{
+			"id": "c109fbebbc531eb6817b",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostRunner.ts",
+			"line": 190,
+			"lastLine": 196,
+			"score": 30,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticHostHold",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "manualStartupRetry",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "schedule_off",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "`trackerHostRunner.ts` lines 178–196 clears `schedule_off` when `run.manualStartupRetry` is true before checking the stored scheduling hold. Schedule-off therefore does not suppress this explicit retry at this site."
+		},
+		{
+			"id": "c09ba6fcbd883eea6ae4",
+			"path": "src/services/projects-sessions/trackerDispatchQueue.ts",
+			"line": 46,
+			"lastLine": 48,
+			"score": 28,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "manualStartupRetry",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "schedulingHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "schedulingHold",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "`trackerDispatchQueue.ts` lines 34–48 explicitly skips the scheduling and automatic-permission checks when `run.manualStartupRetry` is true, then calls `prepareQueuedRun`. This visible gate does not suppress the explicit retry for schedule-off."
+		},
+		{
+			"id": "17bc4ed708e440eb3782",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runGiveUp.ts",
+			"line": 20,
+			"lastLine": 21,
+			"score": 27,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "scheduleOff",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "schedulingHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "schedulingHold",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "automaticRequestHold",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "`runGiveUp.ts` lines 8–21 uses `schedulingHold` with `scheduleOff` cleared for manual startup; the non-manual branch uses `automaticRequestHold`. The excerpt shows an override for the relevant manual-startup path, not the reported suppression."
+		},
+		{
+			"id": "2838cb81c1adf0a0ef0e",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "schedulingHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "schedulingHold",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 40–52 define `holdWithoutRunner`, which checks `schedulingHold` and scheduler pause/disabled state for due-preview reporting. This excerpt has no confirmed never-started run, retry preparation, or manual request path."
+		},
+		{
+			"id": "e95d7b2bf0d76e947dcb",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/launchIntent.ts",
+			"line": 152,
+			"lastLine": 152,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "automaticRequestHold",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 140–152 apply `automaticRequestHold` while previewing due launches. The trigger is a due-preview request; there is no confirmed startup retry or still-current manual request in this path."
+		},
+		{
+			"id": "cd42ea781a6ad6c1b364",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/recoveryIntent.ts",
+			"line": 30,
+			"lastLine": 30,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "automaticRequestHold",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 18–30 apply `automaticRequestHold` in `recoveryIntent`, then queue a recovery launch only if it passes. This is a recovery-launch path, not evidence of suppressing the explicit startup retry described by the candidate class."
+		},
+		{
+			"id": "831ee7b8bba3d6c791c2",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runReceipt.ts",
+			"line": 178,
+			"lastLine": 178,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "manualStartupRetry",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 166–178 set `manualStartupRetry` on a retry after a startup failure when a retry choice exists. That is a visible override mechanism, and the excerpt does not show schedule-off suppressing this retry."
+		},
+		{
+			"id": "21c384df456219cda978",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runReceipt.types.ts",
+			"line": 42,
+			"lastLine": 42,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "manualStartupRetry",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 30–42 declare the optional `manualStartupRetry` field and describe it as continuing an explicitly requested launch that never started. This is a type definition, not a suppressing retry path."
+		},
+		{
+			"id": "41857bd70206d43b02d2",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/runResume.ts",
+			"line": 82,
+			"lastLine": 82,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "automaticRequestHold",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 70–82 require `automaticRequestHold` to be clear before considering an answered blocked run for resume. The trigger is an answered blocked run, which the criteria exclude; no never-started startup retry suppression is shown."
+		},
+		{
+			"id": "ba4f01c881780ed28634",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerDueDelegation.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "automaticRequestHold",
+					"weight": 4
+				},
+				{
+					"kind": "call",
+					"value": "automaticRequestHold",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 12–24 reject delegation when `automaticRequestHold` applies. The trigger is a due-launch delegation request; the excerpt does not show a confirmed never-started explicit retry."
+		}
+	],
+	"errors": [],
+	"classPath": "specification/bug-classes/retry-suppressed-by-schedule-off.json"
+}

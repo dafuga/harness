@@ -58,7 +58,10 @@ export function prepareRetry(
 	}
 	if (!item || item.launch?.token !== run.auto_token)
 		return retireUnstartedRun(snapshot, run, { policy, now });
-	const itemHold = schedulingHold(item, now);
+	const itemHold = schedulingHold(
+		run.manualStartupRetry ? { ...item, scheduleOff: false } : item,
+		now
+	);
 	if (itemHold)
 		return recordRun(finishRun(run, { outcome: 'abandoned', reason: itemHold, now }), {
 			launch: null
@@ -138,7 +141,7 @@ function claimHold(
 	now: number
 ): string | null {
 	const intent = item.launch!;
-	const eligibility = claimItemHold(item, Boolean(run), policy, now);
+	const eligibility = claimItemHold(item, Boolean(run && !run.manualStartupRetry), policy, now);
 	if (eligibility) return eligibility;
 	if (!ownsLaunch(intent, policy)) return 'launch is assigned to a different computer';
 	if (hasOpenSession(snapshot, policy, now, run)) return 'item already has an open session';

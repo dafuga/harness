@@ -10,6 +10,7 @@ export interface TrackerDispatchRepositoryOptions {
 	policy?: Pick<TrackerDispatchPolicy, 'resolveHost' | 'maxRunMinutes'>;
 	due?(): TrackerDuePolicy;
 	sessions?(itemId: string): { openSession?: boolean; activeSessionKeys?: readonly string[] };
+	onStartupFailure?(run: TrackerRunReceipt, at: number): void;
 	now?: () => number;
 }
 
@@ -38,6 +39,7 @@ export interface TrackerRunReservation {
 	revision: number;
 	launch_source: TrackerRunReceipt['launch_source'];
 	dispatch_at?: number;
+	manualStartupRetry?: boolean;
 	verificationFor?: string;
 	hostSessionId?: string;
 }

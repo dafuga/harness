@@ -20,6 +20,7 @@ export function launchEventFixture({ scheduleDue = false }: LaunchEventFixtureOp
 	const state: LaunchEventState = {
 		at: Date.parse('2026-11-25T20:00:00Z'),
 		exited: new Set(),
+		startupFailures: new Map(),
 		sent: []
 	};
 	const database = new DatabaseSync(':memory:');
@@ -109,14 +110,19 @@ function launchRuntime(database: DatabaseSync, state: LaunchEventState, schedule
 
 function scriptedRunner(state: LaunchEventState): TrackerDispatchRunner {
 	return {
-		start: async ({ run, key }) => ({
-			type: 'session',
-			session: { key, id: `session-${run.id}`, state: 'live', startedAt: state.at }
-		}),
-		observe: async (run) => ({
-			type: 'monitor',
-			session: state.exited.has(run.item_id) ? 'exited' : 'live'
-		})
+		start: async ({ run, key }) => {
+			if (run.attempt <= (state.startupFailures.get(run.item_id) ?? 0))
+				throw new Error('Git worktree add: Tracker host command did not complete');
+			return {
+				type: 'session',
+				session: { key, id: `session-${run.id}`, state: 'live', startedAt: state.at }
+			};
+		},
+		observe: async (run) =>
+			run.started_at === null
+				? undefined
+				: { type: 'monitor', session: state.exited.has(run.item_id) ? 'exited' : 'live' },
+		confirmNeverStarted: async (run) => state.startupFailures.has(run.item_id)
 	};
 }
 

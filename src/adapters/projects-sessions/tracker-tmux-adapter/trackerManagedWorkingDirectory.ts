@@ -2,6 +2,7 @@
 import { realpathSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';
+import { TrackerHostProcessError } from '../tracker-host-process-adapter/TrackerHostProcessError';
 import type { TrackerHostStartRequest } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 
 /**
@@ -24,7 +25,10 @@ export async function prepareTrackerWorkingDirectory(
 		source,
 		['-c', 'core.hooksPath=/dev/null', 'worktree', 'add', '--detach', worktree, 'HEAD'],
 		signal
-	);
+	).catch((error: unknown) => {
+		if (!(error instanceof TrackerHostProcessError)) throw error;
+		throw new TrackerHostProcessError(`Git worktree add: ${error.message}`, { cause: error });
+	});
 	return git.code === 0
 		? worktree
 		: { failure: `could not create a worktree of ${source}: ${git.stderr}` };
