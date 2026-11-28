@@ -2,7 +2,7 @@
 	"name": "4p0q7c-tracker-launch-context",
 	"goal": "A fresh tracker session loads bounded item history: tracker show and the launch brief stay small while every note stays readable in pages",
 	"createdAt": "2026-11-28T17:53:52.559Z",
-	"updatedAt": "2026-11-28T17:54:12.525Z",
+	"updatedAt": "2026-11-28T17:59:02.803Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T17:58:57.005Z",
+			"evidence": "Recorded at b6e6aab71b: expected 95561 to be less than 16000 (show); brief recent notes 8570 over 6500."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T17:58:59.956Z",
+			"evidence": "Fix 68addd4698: bounded show with --notes-page, bounded brief notes without routine bookkeeping or a duplicated handoff, Keep context small rule, no --json history instructions."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T17:59:02.803Z",
+			"evidence": "loop record green passed the unchanged tests at 68addd4698."
 		},
 		{
 			"id": "siblings",
