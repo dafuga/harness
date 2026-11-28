@@ -58,15 +58,7 @@
 				"weight": 2
 			}
 		],
-		"contextTerms": [
-			"mcp",
-			"tools",
-			"claude",
-			"context",
-			"worker",
-			"headless",
-			"strict"
-		],
+		"contextTerms": ["mcp", "tools", "claude", "context", "worker", "headless", "strict"],
 		"pathHints": [
 			{
 				"contains": "src/cli/",
