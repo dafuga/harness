@@ -9,7 +9,6 @@ import { pushAddress, pushBrowser } from './hub-web-push-fixture';
 import { captureDeviceApproval, shown } from './hub-web-push-page';
 
 test.use({ channel: 'chromium' });
-
 const account = 'google:fixture-a';
 const admin = 'session-a';
 const browser = 'session-a-browser';
@@ -18,7 +17,6 @@ const returning = 'session-a-browser-returning';
 const googleButton = { name: 'Sign in with Google' };
 const home = '[data-harness-component="hub-home"]';
 const waiting = { name: 'Waiting for approval' };
-
 async function startBrowser(page: Page, origin: string, sessions: string[]) {
 	const identity = { ...ada, id: account };
 	const state = await hostedFixture(page, { actor: identity, signedIn: false });

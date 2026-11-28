@@ -47,34 +47,46 @@ function readChange(value: unknown, call: SyncCall): DeviceChange | null {
 export async function changeDevices(call: SyncCall): Promise<Response> {
 	const change = readChange(await readSyncJson(call.request, 256 * 1024), call);
 	if (!change) return syncProblem(400, 'invalid-input');
-	const rows = await call.deps.db
-		.prepare('SELECT seq, entry FROM sealed_chain WHERE account = ? ORDER BY seq LIMIT ?')
-		.bind(call.account, maxHistory + 1)
-		.all<ChainRow>();
-	if (rows.results.length > maxHistory) return syncProblem(409, 'chain-too-long');
-	const stored = rows.results.map(({ entry }) => JSON.parse(entry) as SealedChainEntry);
+	const stored = await deviceHistory(call);
+	if (!stored) return syncProblem(409, 'chain-too-long');
 	const start = change.entries[0].seq;
-	if (start <= 0 || start > stored.length || start + change.entries.length > maxHistory)
-		return syncProblem(409, 'chain-conflict');
-	const prefix = stored.slice(0, start);
-
-	let after;
-	try {
-		const before = await sealedChain(prefix, { account: call.account });
-		if (change.entries[0].prev !== before.head) return syncProblem(409, 'chain-conflict');
-		after = await sealedChain([...prefix, ...change.entries], { account: call.account });
-		if (!matchesDeviceChange(change, before, after, call.device))
-			return syncProblem(400, 'invalid-change');
-	} catch {
-		return syncProblem(400, 'invalid-change');
-	}
-	const head = { seq: after.seq, hash: after.head };
+	const lastStart = Math.min(stored.length, maxHistory - change.entries.length);
+	if (start <= 0 || start > lastStart) return syncProblem(409, 'chain-conflict');
+	const head = await verifyDeviceChange(call, change, stored.slice(0, start));
+	if (head instanceof Response) return head;
 	if (change.enrollment) {
 		const denied = await reserveEnrollment(call, change, head.hash);
 		if (denied) return denied;
 	}
 	if (start < stored.length) return retry(call, change, stored, head);
 	return publish(call, change, head);
+}
+
+async function deviceHistory(call: SyncCall): Promise<SealedChainEntry[] | null> {
+	const rows = await call.deps.db
+		.prepare('SELECT seq, entry FROM sealed_chain WHERE account = ? ORDER BY seq LIMIT ?')
+		.bind(call.account, maxHistory + 1)
+		.all<ChainRow>();
+	if (rows.results.length > maxHistory) return null;
+	return rows.results.map(({ entry }) => JSON.parse(entry) as SealedChainEntry);
+}
+
+async function verifyDeviceChange(
+	call: SyncCall,
+	change: DeviceChange,
+	prefix: SealedChainEntry[]
+) {
+	try {
+		const account = { account: call.account };
+		const before = await sealedChain(prefix, account);
+		if (change.entries[0].prev !== before.head) return syncProblem(409, 'chain-conflict');
+		const after = await sealedChain([...prefix, ...change.entries], account);
+		if (!matchesDeviceChange(change, before, after, call.device))
+			return syncProblem(400, 'invalid-change');
+		return { seq: after.seq, hash: after.head };
+	} catch {
+		return syncProblem(400, 'invalid-change');
+	}
 }
 
 async function reserveEnrollment(call: SyncCall, change: DeviceChange, hash: string) {

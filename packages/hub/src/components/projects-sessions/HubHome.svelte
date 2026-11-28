@@ -64,9 +64,8 @@
 	);
 	const board = $derived(snapshot ? homeBoard(snapshot, routinesConnected, now) : null);
 	const pastDue = $derived(board?.pastDue ?? []);
-	const unavailable = { status: 'unavailable' } as const;
 	const overview = $derived(
-		workOverview(snapshot?.overview ?? (settled ? unavailable : null), pastDue)
+		workOverview(snapshot?.overview ?? (settled ? { status: 'unavailable' } : null), pastDue)
 	);
 	const linkedComputers = $derived(live?.linked ?? 0);
 	const projectsFailed = $derived(projectError && !list?.length);

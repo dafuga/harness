@@ -48,11 +48,14 @@ func accountGoogleChecks() {
     check(bench.hub.asked("/api/auth/native/exchange").count == 1,
           "Google account: a replay does not exchange again")
     nativeSignOutHistory(bench)
+    verifyCancelledGoogleLogin(url, state: handoff)
+}
 
+private func verifyCancelledGoogleLogin(_ url: URL, state: String) {
     let cancelled = AccountBench()
     _ = cancelled.waiting(google: true)
     _ = cancelled.disconnect()
-    cancelled.session.browserReturned(url, state: handoff)
+    cancelled.session.browserReturned(url, state: state)
     _ = cancelled.status()
     check(cancelled.hub.asked("/api/auth/native/exchange").isEmpty && cancelled.vault.credential == nil,
           "Google account: cancelling abandons the pending browser sign-in")
