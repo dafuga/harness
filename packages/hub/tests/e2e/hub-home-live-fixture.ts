@@ -42,8 +42,8 @@ export async function productionHome(page: Page, answer?: object, live = false) 
 
 export const overview = (page: Page) =>
 	page.getByRole('region', { name: 'Live overview', exact: true });
-export const liveRows = (page: Page) =>
-	overview(page).locator('.hh-live-row[data-state="running"]');
+export const liveCards = (page: Page) =>
+	overview(page).locator('.hh-live-card[data-state="running"]');
 
 export function seedLiveDisposition(tracker: RecordedTracker) {
 	const live = new Set(
@@ -69,23 +69,27 @@ export function seedLiveDisposition(tracker: RecordedTracker) {
 		queued_at: Date.parse(tracker.recordedAt),
 		failure_reason: 'Tracker host is at session capacity'
 	});
+	return blocked.title;
 }
 
-export async function expectLiveDisposition(page: Page, screenshot: string) {
-	const queued = overview(page).locator('.hh-live-row').filter({ hasText: 'Queued #2,000' });
-	await expect(queued).toContainText('Waiting for a slot');
-	const blocked = overview(page)
-		.locator('.hh-live-row[data-state="blocked"]')
-		.filter({ hasText: 'Waiting on Daniel' });
-	await expect(blocked.first()).toBeVisible();
-	await expect(overview(page)).not.toContainText('No live run');
-	if (!process.env.TAKE_SCREENSHOT) return;
-	await queued.scrollIntoViewIfNeeded();
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		await Promise.all([...document.images].map((image) => image.decode()));
+export async function expectLiveDisposition(page: Page, blockedTitle: string) {
+	const region = overview(page);
+	const queued = region.locator('.hh-live-card[data-state="queued"]').filter({
+		hasText: 'Queued #2,000'
 	});
-	await page.screenshot({ path: screenshot, animations: 'disabled' });
+	await queued.getByRole('button').click();
+	const detail = page.getByRole('dialog', { name: 'Job details' });
+	await expect(detail).toContainText('Waiting for a slot');
+	await detail.getByRole('button', { name: 'Close' }).click();
+	const blocked = region.locator('.hh-live-card[data-state="blocked"]').filter({
+		has: page.getByRole('button', { name: blockedTitle, exact: true })
+	});
+	await expect(blocked).toContainText('Blocked');
+	await expect(blocked).not.toContainText('Waiting on Daniel');
+	await blocked.getByRole('button').click();
+	await expect(detail).toContainText('Waiting on Daniel');
+	await detail.getByRole('button', { name: 'Close' }).click();
+	await expect(region).not.toContainText('No live run');
 }
 
 export async function expectNoSidewaysScroll(page: Page, width: number) {
@@ -162,22 +166,21 @@ export async function checkProjectDisclosure(
 	await expect(names).toHaveText(active.map((p) => p.agent));
 }
 
-export async function expectLiveRowFacts(page: Page, tracker: RecordedTracker) {
+export async function expectLiveCardFacts(page: Page, tracker: RecordedTracker) {
 	const live = tracker.runs.filter((run) => run.state === 'running' && run.ended_at === null);
 	for (const run of live) {
 		const item = tracker.items.find((entry) => entry.id === run.item_id)!;
-		const row = liveRows(page).filter({
+		const card = liveCards(page).filter({
 			has: page.getByText(item.title, { exact: true })
 		});
-		await expect(row).toBeVisible();
+		await expect(card).toBeVisible();
 		for (const fact of [
 			'Running',
-			item.owner ?? 'No owner',
 			run.node,
 			run.effort ? `${run.model}:${run.effort}` : run.model,
-			/running (under )?\d+[mhd] · updated .+ ago/
+			/updated (under )?\d+[mhd] ago/
 		])
-			await expect(row).toContainText(fact);
+			await expect(card).toContainText(fact);
 	}
 }
 
