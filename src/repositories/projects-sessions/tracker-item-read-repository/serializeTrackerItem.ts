@@ -41,10 +41,7 @@ export function serializeTrackerItem(
 		project: nullIfEmpty(row.project),
 		repo: nullIfEmpty(row.repo),
 		computer: nullIfEmpty(row.computer),
-		launch_target: nullIfEmpty(row.launch_target),
-		launch_source: nullIfEmpty(row.launch_source),
-		launch_pick: nullIfEmpty(row.launch_pick),
-		...scheduleFields(row, now),
+		...launchFields(row, now),
 		model: nullIfEmpty(row.model),
 		sensitive: Boolean(Number(row.sensitive)),
 		recurring: Boolean(row.every),
@@ -75,9 +72,12 @@ export function serializeTrackerItem(
 	};
 }
 
-function scheduleFields(row: TrackerItemRow, now: number) {
+function launchFields(row: TrackerItemRow, now: number) {
 	const hold = row.kind === 'reminder' ? null : trackerScheduleHold(row, now);
 	return {
+		launch_target: nullIfEmpty(row.launch_target),
+		launch_source: nullIfEmpty(row.launch_source),
+		launch_pick: nullIfEmpty(row.launch_pick),
 		schedule_off: Boolean(hold) || (row.kind === 'reminder' && Number(row.schedule_off) === 1),
 		...(hold && { schedule_hold: hold }),
 		schedule_status: nullIfEmpty(row.schedule_status)

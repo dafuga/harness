@@ -1,5 +1,4 @@
 // @harness-uid u_tzqekyfiyf
-import { trackerAreaProjection } from './tracker-schema-adapter/trackerAreaProjection';
 import { randomUUID } from 'node:crypto';
 import type { SqliteDatabase, SqliteValue } from '../../core/development-tooling/sqliteTypes';
 import type {
@@ -7,7 +6,7 @@ import type {
 	TrackerReplayOperation,
 	TrackerSchemaAdapterConfig
 } from './TrackerSchemaAdapter.types';
-
+import { trackerAreaProjection } from './tracker-schema-adapter/trackerAreaProjection';
 import {
 	trackerPlanningArtifactFields,
 	trackerPlanningPromotionFields
