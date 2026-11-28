@@ -7,8 +7,11 @@ private let approvalID = String(repeating: "a", count: 32)
 func hubApprovalChecks() {
     guard #available(iOS 17.0, macOS 14.0, *) else { return }
     let bench = AccountBench()
+    var alerts = 0
+    bench.session.approvalAlert = { alerts += 1 }
     let listed = try? awaited(bench.session.approvalRequests)?.get()
-    check(listed == nil && bench.hub.asked(requestsPath).isEmpty, "approval: a signed-out phone cannot read the inbox")
+    check(listed == nil && bench.hub.asked(requestsPath).isEmpty && alerts == 0,
+          "approval: a signed-out phone cannot read the inbox or receive a notification")
     bench.signIn()
     do {
         let device = try SealedDevice.create(enclave: false)
@@ -20,6 +23,8 @@ func hubApprovalChecks() {
         check(rows?.count == 1 && rows?.first?["id"] as? String == approvalID &&
             rows?.first?["platform"] as? String == "mac" && rows?.first?["country"] as? String == "PT" &&
             rows?.first?["steps"] == nil, "approval: the admitted phone receives only safe inbox display fields")
+        _ = try awaited(bench.session.approvalRequests)?.get()
+        check(alerts == 1, "approval: repeated reads of a pending request notify once")
         try checkApprovalReview(bench, mailbox: mailbox)
     } catch { check(false, "approval: native inbox and review complete") }
 }

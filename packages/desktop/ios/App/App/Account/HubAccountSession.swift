@@ -17,6 +17,7 @@ final class HubAccountSession {
     var authenticate: (URL, String) -> Void = { _, _ in }
     var cancelAuthentication: () -> Void = {}
     var accountEnded: () -> Void = {}
+    var approvalAlert: (() -> Void)?
     var deviceName = "Harness iPhone"
     var enrollmentPlatform = HubEnrollmentPlatform.iphone
     var now: () -> Date = { Date() }
