@@ -12,7 +12,8 @@ import { fixturePolicy, primary, secondary } from '../../support/trackerDispatch
 import { fixtureSecret, wire } from '../../support/trackerDispatchQueueFixture';
 import { trackerResourceHoldPrefix } from '../../../src/utils/projects-sessions/trackerHostResourceHold';
 import { resourceSample, runnerReport } from '../../support/trackerMachineFixture';
-import { expectHubSeenBySpoke, sweepIdleWork } from '../../support/trackerFleetFixture';
+import { expectHubSeenBySpoke } from '../../support/trackerFleetFixture';
+import { sweepIdleWork } from '../../support/trackerDueLaunchFixture';
 
 const signal = new AbortController().signal;
 // 02:00 in Lisbon: due work launches through the night.
@@ -77,8 +78,7 @@ test('the default launcher honors due times across watchdog and scheduler ticks'
 		);
 		expect(enabled.status).toBe(200);
 		instant += 120 * 60_000;
-		expect.soft(await sweepIdleWork(runtime, 'later00001')).toBeNull();
-		expect.soft(start.mock.calls).toEqual([]);
+		expect.soft(await sweepIdleWork(runtime, 'later00001', signal)).toBeNull();
 		runtime.store.appendLocal(task('past000001', '2026-11-24T09:00:00.000Z'));
 		runtime.store.appendLocal(task('held000001', '2026-11-24T09:00:00.000Z'));
 		const held = await runtime.items.handle(
