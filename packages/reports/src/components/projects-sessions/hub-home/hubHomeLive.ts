@@ -94,7 +94,7 @@ export function liveSummary(overview: HomeLiveOverview) {
 	return `${count(running, 'run')} live${where} · ${count(overview.projects.length, 'project')}`;
 }
 
-/** Counts include rows beyond the snapshot limit. Older Macs report item totals. */
+/** Current work counts include rows beyond the snapshot limit when the linked Mac reports them. */
 export function projectWorkCounts(project: HomeWorkProject) {
 	const running = project.running;
 	const blocked =
@@ -104,13 +104,11 @@ export function projectWorkCounts(project: HomeWorkProject) {
 			project.counts.blocked -
 				project.rows.filter((row) => row.state === 'running' && row.status === 'blocked').length
 		);
-	const total =
-		project.totalRows ??
-		Math.max(
-			project.rows.length,
-			Object.values(project.counts).reduce((sum, n) => sum + n, 0)
-		);
-	return { running, blocked, resting: Math.max(0, total - running - blocked) };
+	const waiting = project.rows.filter(
+		({ state }) => state === 'queued' || state === 'offline'
+	).length;
+	const resting = project.waitingRows ?? waiting;
+	return { running, blocked, resting };
 }
 
 /** @pure Why there is no overview to show, or null when there is one. */

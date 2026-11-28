@@ -139,14 +139,13 @@ export function sessionsText(liveSessions: number): string {
 		: 'No live session';
 }
 
-/** @pure The open, in-progress, blocked and done counts of a card, in words. */
+/** @pure The open, in-progress and blocked counts of a card, in words. */
 export function countsText(counts: OverviewCard['counts']): string {
 	const parts: string[] = [];
 	if (counts.open > 0) parts.push(`${counts.open} open`);
 	if (counts.in_progress > 0) parts.push(`${counts.in_progress} in progress`);
 	if (counts.blocked > 0) parts.push(`${counts.blocked} blocked`);
-	if (counts.done > 0) parts.push(`${counts.done} done`);
-	return parts.length ? parts.join(' · ') : 'No items';
+	return parts.length ? parts.join(' · ') : 'Nothing open';
 }
 
 /** @pure The text a card shows of an item that was surfaced for attention. */

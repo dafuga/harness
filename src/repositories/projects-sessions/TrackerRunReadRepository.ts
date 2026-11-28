@@ -21,13 +21,17 @@ export class TrackerRunReadRepository {
 	) {}
 
 	list(filters: TrackerRunFilters = {}): TrackerListedRun[] {
-		const { itemId, limit } = filters;
+		const { itemId, limit, includeActive } = filters;
 		if (itemId) {
 			return this.rows('WHERE item_id = ?', itemId).sort(compareQueue);
 		}
 		const cap = Number(limit) || 50;
 		const runs = this.rows('ORDER BY queued_at DESC, id DESC LIMIT ?', cap);
-		return runs.sort((left, right) => compareQueue(right, left)).slice(0, cap);
+		const recent = runs.sort((left, right) => compareQueue(right, left)).slice(0, cap);
+		if (!includeActive) return recent;
+		const active = this.rows("WHERE ended_at IS NULL AND state != 'finished'");
+		const unique = new Map([...recent, ...active].map((run) => [`${run.node}:${run.id}`, run]));
+		return [...unique.values()].sort((left, right) => compareQueue(right, left));
 	}
 
 	launchConsumed(itemId: string, token: string, replaceBlocked = false): boolean {

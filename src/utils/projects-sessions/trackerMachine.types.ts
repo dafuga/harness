@@ -44,6 +44,11 @@ export interface TrackerResourceSample {
 
 export type TrackerMachineState = 'ok' | 'busy' | 'overloaded' | 'offline';
 
+export interface TrackerMachineRunRef {
+	node: string;
+	id: number;
+}
+
 export interface TrackerMachineRow {
 	node: string;
 	role: TrackerMachineRole;
@@ -52,6 +57,7 @@ export interface TrackerMachineRow {
 	age_s: number | null;
 	sample: TrackerResourceSample | null;
 	remote_runs?: number;
+	remote_run_refs?: TrackerMachineRunRef[];
 }
 
 export type TrackerMachineRole = 'shared' | 'runner' | 'primary' | 'other';

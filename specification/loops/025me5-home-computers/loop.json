@@ -2,7 +2,7 @@
 	"name": "025me5-home-computers",
 	"goal": "Home hides historical project totals and reports active sessions and heartbeat capacity per computer through the shared Hub and Mac renderers.",
 	"createdAt": "2026-11-28T10:07:52.171Z",
-	"updatedAt": "2026-11-28T10:09:35.511Z",
+	"updatedAt": "2026-11-28T10:15:07.456Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T10:15:07.456Z",
+			"evidence": "604f2e856a: recorded Tracker-to-Hub parser regression fails for missing resource and session data. MB2 one-worker browser confirms expected 2 agents vs 2 remote runs and Nothing open vs 1 done on the actual Hub route; captures saved in artifacts-o7gN0c."
 		},
 		{
 			"id": "implement",

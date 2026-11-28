@@ -123,7 +123,7 @@
 					finished,
 					'Not running jobs'
 				)}{/if}
-			{#if counts.blocked + counts.resting > blocked.length + waiting.length + finished.length}
+			{#if counts.blocked + counts.resting > blocked.length + waiting.length}
 				<hx-p class="po-sessions"
 					>Additional jobs were counted but their details were not reported by this computer.</hx-p
 				>

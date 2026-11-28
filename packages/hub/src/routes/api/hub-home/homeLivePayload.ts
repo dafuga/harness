@@ -39,6 +39,7 @@ const project = z.object({
 	running: count,
 	totalRows: count.optional(),
 	blockedRows: count.optional(),
+	waitingRows: count.optional(),
 	counts: z.object({ open: count, in_progress: count, blocked: count, done: count }),
 	rows: z.array(row).max(100),
 	updatedAt: time
@@ -52,7 +53,21 @@ const liveOverview = z.object({
 			z.object({
 				name: short,
 				status: z.enum(['ok', 'busy', 'overloaded', 'offline']),
-				remoteRuns: count.optional()
+				remoteRuns: count.optional(),
+				agentCount: count.optional(),
+				resources: z
+					.object({
+						ramAvailableMB: z.number().nonnegative().optional(),
+						ramTotalMB: z.number().positive().optional(),
+						cores: z.number().int().positive().optional(),
+						loadOne: z.number().nonnegative().optional(),
+						diskFreeGB: z.number().nonnegative().optional()
+					})
+					.optional(),
+				sessions: z
+					.array(z.object({ key: text(300), title: text(500), origin: short.nullable() }))
+					.max(100)
+					.optional()
 			})
 		)
 		.max(200),

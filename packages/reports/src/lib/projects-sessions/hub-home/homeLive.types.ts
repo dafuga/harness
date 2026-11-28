@@ -48,17 +48,41 @@ export interface HomeWorkProject {
 	totalRows?: number;
 	/** Blocked rows without a running job, before the response size limit. */
 	blockedRows?: number;
+	/** Queue and offline rows before the response limit, excluding finished jobs. */
+	waitingRows?: number;
 	counts: Record<OverviewItem['status'], number>;
 	rows: HomeWorkRow[];
 	/** The newest change to any of the project's items. */
 	updatedAt: string;
 }
 
+/** The current resource sample reported by the computer. */
+export interface HomeComputerResources {
+	ramAvailableMB?: number;
+	ramTotalMB?: number;
+	cores?: number;
+	loadOne?: number;
+	diskFreeGB?: number;
+}
+
+export interface HomeComputerSession {
+	key: string;
+	title: string;
+	origin: string | null;
+}
+
+/** Older linked apps and offline computers omit live details. */
+export interface HomeComputer extends OverviewMachine {
+	agentCount?: number;
+	resources?: HomeComputerResources;
+	sessions?: HomeComputerSession[];
+}
+
 /** Every project, session and run one computer's Tracker knows, read when it was asked. */
 export interface HomeLiveOverview {
 	readAt: string;
 	projects: HomeWorkProject[];
-	machines: OverviewMachine[];
+	machines: HomeComputer[];
 	/** Live runs of private or ignored items: counted, never described. */
 	hiddenRuns: number;
 	/** Rows left out because a project had more than the list holds. */

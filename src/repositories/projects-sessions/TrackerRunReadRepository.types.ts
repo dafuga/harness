@@ -4,6 +4,7 @@ import type { TrackerRunRow } from '../../utils/agents-providers/trackerRunRepor
 export interface TrackerRunFilters {
 	itemId?: string;
 	limit?: string | number;
+	includeActive?: boolean;
 }
 
 export interface TrackerListedRun extends TrackerRunRow {

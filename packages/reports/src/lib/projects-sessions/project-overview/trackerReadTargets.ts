@@ -5,6 +5,7 @@ export const TRACKER_TIMEOUT_MS = 1500;
 /** The only tracker reads the overview may issue. Each is a fixed GET path on the local API. */
 export const TRACKER_GET_URLS = {
 	items: `${TRACKER_ORIGIN}/items?status=all&limit=-1`,
+	homeRuns: `${TRACKER_ORIGIN}/runs?limit=500&include_active=1`,
 	runs: `${TRACKER_ORIGIN}/runs?limit=500`,
 	machines: `${TRACKER_ORIGIN}/machines`,
 	status: `${TRACKER_ORIGIN}/status`
