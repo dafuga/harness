@@ -24,6 +24,7 @@ import { TrackerRecurringService } from './TrackerRecurringService';
 import { trackerAutolaunchAdmin } from './tracker-native-runtime-service/trackerAutolaunchAdmin';
 import { composeTrackerResponder } from './tracker-native-runtime-service/composeTrackerResponder';
 import { composeTrackerRecurrence } from './tracker-native-runtime-service/composeTrackerRecurrence';
+import { composeTrackerIgnoreExpiry } from './tracker-native-runtime-service/composeTrackerIgnoreExpiry';
 import { composeTrackerWebPush } from './tracker-native-runtime-service/composeTrackerWebPush';
 import { configuredHostAdapter } from './tracker-native-runtime-service/trackerHostAdapter';
 import {
@@ -59,6 +60,7 @@ export class TrackerNativeRuntimeService {
 	readonly hostEffectsHeld: boolean;
 	readonly sync?: TrackerHubSyncService;
 	readonly recurring?: TrackerRecurringService;
+	readonly ignoreExpiry?: () => void;
 	readonly telemetry?: (signal: AbortSignal) => Promise<void>;
 	readonly fleetSamples?: () => readonly unknown[];
 	readonly machines: TrackerMachineService;
@@ -68,8 +70,7 @@ export class TrackerNativeRuntimeService {
 	constructor(database: SqliteDatabase, options: TrackerNativeRuntimeOptions) {
 		validateLinks(options);
 		const { node, now = Date.now, storage, hostEffects, role } = options;
-		const store = new TrackerPersistenceService(database, node, { ...storage, now });
-		this.store = store;
+		const store = (this.store = new TrackerPersistenceService(database, node, { ...storage, now }));
 		this.role = role;
 		this.ladderConfig = options.ladderConfig;
 		this.now = now;
@@ -79,6 +80,7 @@ export class TrackerNativeRuntimeService {
 		[this.notifications, this.webPush] = composeOutbound(store, options);
 		const recurring = composeTrackerRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
+		this.ignoreExpiry = composeTrackerIgnoreExpiry(store, options);
 		this.links = composeTrackerLinks(store, options);
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
 		const dispatch =
@@ -104,7 +106,6 @@ export class TrackerNativeRuntimeService {
 	spokeStatus() {
 		return trackerSpokeStatus(this.links);
 	}
-
 	kickLinks(): void {
 		for (const link of this.links) link.kick();
 	}

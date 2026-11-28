@@ -14,7 +14,7 @@ import {
 } from './trackerNodeProcess';
 import type { TrackerFixtureReceipts, TrackerNodeFixture } from './trackerNodeProcess.types';
 import { verifyCosDryRun } from './verifyCosDryRun';
-import { verifyProjectFollowUp, verifyReminder } from './trackerNodeReminder';
+import { verifyIgnoreExpiry, verifyProjectFollowUp, verifyReminder } from './trackerNodeReminder';
 export async function proveForegroundSync(
 	hub: TrackerNodeFixture,
 	spoke: TrackerNodeFixture,
@@ -52,9 +52,7 @@ export async function proveForegroundSync(
 			await verifyDefaultPickup(hub);
 			await verifyTrackerWire(syncPort, id);
 			const reverse = await fixtureTrackerJson(hub, ['add', 'Reverse fixture item']);
-			await expect
-				.poll(() => fixtureTrackerJson(spoke, ['list']), { timeout: 8_000 })
-				.toEqual(expect.arrayContaining([expect.objectContaining({ id: reverse.id })]));
+			await verifyIgnoreExpiry(spoke, reverse.id);
 			await verifyTrackerNotificationFlow(hub, spoke, id, sink.receipts);
 			await verifyProjectFollowUp(hub, spoke);
 			expect(await fixtureTrackerJson(spoke, ['status'])).toMatchObject({

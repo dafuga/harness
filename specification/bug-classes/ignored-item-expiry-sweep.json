@@ -1,0 +1,125 @@
+{
+	"schemaVersion": 1,
+	"revision": "feb0a3abc7842761c5b8cd2009cf0881ddda08df",
+	"bugClass": {
+		"id": "ignored-item-expiry-sweep",
+		"title": "Ignored items never return to their prior status",
+		"cause": "Persisting an ignored-until timestamp and prior status without a hub-owned lifecycle sweep that detects expiry and restores the item leaves it ignored indefinitely. The same omission can affect other persisted pause, park, reminder, or scheduled-run transitions when their due time passes without a corresponding restoration or transition.",
+		"criteria": "A site exhibits this cause if it persists an ignored/parked state and expiry time (optionally with the prior state) but has no hub-owned runtime process that finds expired records and restores their prior status; or if an equivalent persisted pause/reminder/scheduled transition has no due-time processor to apply the required transition. Require evidence of both persisted state and the missing or ineffective expiry-driven transition; generic timers or deadlines alone do not qualify.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "ignored_until",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "ignored_prev_status",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "remind_at",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "pause_until",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "next_run_at",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "unpark",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "park",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "setInterval",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "onMount",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "{#each",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "setInterval",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "setTimeout",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "updateMany",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "findMany",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"ignored_until",
+			"ignored_prev_status",
+			"remind_at",
+			"pause_until",
+			"next_run_at",
+			"park",
+			"unpark"
+		],
+		"pathHints": [
+			{
+				"contains": "packages/hub/",
+				"weight": 5
+			},
+			{
+				"contains": "src/core/",
+				"weight": 4
+			},
+			{
+				"contains": "src/services/",
+				"weight": 3
+			},
+			{
+				"contains": "src/repositories/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": -1
+			}
+		]
+	}
+}

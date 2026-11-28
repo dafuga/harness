@@ -1,0 +1,125 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-ignore-expiry",
+	"uid": "u_k2n3yjm2vr",
+	"kind": "repository",
+	"title": "TrackerIgnoreExpiryRepository",
+	"responsibility": "Read ignored items that have an end and commit each planned restore after re-reading the row under the journal writer lock.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerIgnoreExpiryRepository.ts",
+			"src/repositories/projects-sessions/TrackerIgnoreExpiryRepository.types.ts"
+		],
+		"symbols": [
+			"TrackerIgnoreExpiryRepository",
+			"TrackerIgnoreExpiryRepository.constructor",
+			"TrackerIgnoreExpiryRepository.restore",
+			"TrackerIgnoreExpiryPlan"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerIgnoreExpiryRepository.constructor.store",
+				"type": "TrackerPersistenceService",
+				"required": true,
+				"description": "Journal holding the Tracker items and their operations."
+			},
+			{
+				"name": "TrackerIgnoreExpiryRepository.restore.plan",
+				"type": "TrackerIgnoreExpiryPlan",
+				"required": true,
+				"description": "Returns the fields to write when an ignore has ended, otherwise undefined."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerIgnoreExpiryRepository.restore",
+				"type": "void",
+				"description": "Completes after every ended ignore has been written to the journal."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "TrackerIgnoreExpiryRepository.restore",
+				"inputs": [
+					{
+						"name": "TrackerIgnoreExpiryRepository.restore.plan",
+						"type": "TrackerIgnoreExpiryPlan",
+						"required": true,
+						"description": "Returns the fields to write when an ignore has ended, otherwise undefined."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerIgnoreExpiryRepository.restore",
+						"type": "void",
+						"description": "Completes after every ended ignore has been written to the journal."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerIgnoreExpiryRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerIgnoreExpiryRepository.constructor.store",
+						"type": "TrackerPersistenceService",
+						"required": true,
+						"description": "Journal holding the Tracker items and their operations."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerIgnoreExpiryRepository.constructor",
+						"type": "unknown",
+						"description": "Repository bound to the journal."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-plan-tracker-ignore-expiry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerIgnoreExpiryRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerIgnoreExpiryRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
