@@ -57,7 +57,7 @@
 	});
 </script>
 
-<hx-section class={compact ? 'login-panel' : 'hub-card login-panel'}>
+<hx-section class={compact ? 'compact login-panel' : 'hub-card login-panel'}>
 	{#if !status}<hx-p class="muted" role={session.error ? 'alert' : undefined}>
 			{session.error || 'Checking sign-in…'}
 		</hx-p>{:else if !status.configured}<hx-h2>Sign-in is not configured</hx-h2>
@@ -104,6 +104,9 @@
 		display: grid;
 		justify-items: start;
 		gap: var(--hx-space-12);
+	}
+	.compact .approval-wait {
+		justify-items: center;
 	}
 	.approval-wait > :global(*) {
 		margin: 0;

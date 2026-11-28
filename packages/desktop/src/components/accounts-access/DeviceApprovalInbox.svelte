@@ -7,11 +7,15 @@
 	import Card from '$shared/explorer-ui/explorer-kit/Card.svelte';
 	import Modal from '$shared/shared-primitives/Modal.svelte';
 	import type {
-		AccountNativePlugin,
-		DeviceApprovalRequest
+		DeviceApprovalAction,
+		DeviceApprovalRequest,
+		DeviceApprovalResult
 	} from '../../models/development-tooling/Environment.types';
-
-	let { request }: { request: NonNullable<AccountNativePlugin['deviceApproval']> } = $props();
+	let {
+		request
+	}: {
+		request: (call: DeviceApprovalAction, event?: MouseEvent) => Promise<DeviceApprovalResult>;
+	} = $props();
 	let requests = $state<DeviceApprovalRequest[]>([]);
 	let selected = $state<DeviceApprovalRequest>();
 	let code = $state('');
@@ -29,7 +33,6 @@
 		timeStyle: 'short',
 		timeZone: 'Europe/Lisbon'
 	});
-
 	function device(item: DeviceApprovalRequest) {
 		if (item.platform === 'iphone') return 'Harness iPhone';
 		if (item.platform === 'mac') return 'Harness Mac';
@@ -79,8 +82,11 @@
 		error = '';
 		code = '';
 	}
-
-	async function decide(item: DeviceApprovalRequest, action: 'approve' | 'deny') {
+	async function decide(
+		item: DeviceApprovalRequest,
+		action: 'approve' | 'deny',
+		event: MouseEvent
+	) {
 		if (busy || (action === 'approve' && !code)) return;
 		busy = true;
 		turn++;
@@ -88,7 +94,8 @@
 		notice = '';
 		try {
 			const answer = await request(
-				action === 'approve' ? { action, id: item.id, code } : { action, id: item.id }
+				action === 'approve' ? { action, id: item.id, code } : { action, id: item.id },
+				event
 			);
 			if (!active) return;
 			if (!('state' in answer) || answer.state !== (action === 'approve' ? 'approved' : 'denied')) {
@@ -104,7 +111,6 @@
 			busy = false;
 		}
 	}
-
 	onMount(() => {
 		active = true;
 		reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -145,7 +151,7 @@
 										type="button"
 										disabled={busy}
 										aria-label={'Deny ' + device(item)}
-										onclick={() => void decide(item, 'deny')}>Deny</hx-button
+										onclick={(event) => void decide(item, 'deny', event)}>Deny</hx-button
 									>
 								</hx-div>
 							</Card>
@@ -173,7 +179,7 @@
 					type="button"
 					class="primary"
 					disabled={busy || !code}
-					onclick={() => void decide(item, 'approve')}
+					onclick={(event) => void decide(item, 'approve', event)}
 					>{busy ? 'Approving…' : 'Approve device'}</hx-button
 				>
 				<hx-button type="button" disabled={busy} onclick={close}>Cancel</hx-button>

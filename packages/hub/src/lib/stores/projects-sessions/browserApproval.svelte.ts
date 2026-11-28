@@ -1,3 +1,7 @@
+import type {
+	DeviceApprovalAction,
+	DeviceApprovalResult
+} from '$desktop/models/development-tooling/Environment.types';
 import { BrowserDeviceSessionService } from '../../../services/networking-security/BrowserDeviceSessionService';
 import type { EnrollmentResolution } from '../../../../../remote/src/services/networking-security/SealedEnrollmentRequestService.types';
 
@@ -5,6 +9,7 @@ export class BrowserApprovalState {
 	result = $state.raw<EnrollmentResolution | null>(null);
 	error = $state('');
 	private attempt: AbortController | null = null;
+	private reviewLifetime = new AbortController();
 
 	constructor(private readonly service = new BrowserDeviceSessionService()) {}
 
@@ -25,7 +30,25 @@ export class BrowserApprovalState {
 		}
 	}
 
+	review(
+		account: string,
+		call: DeviceApprovalAction,
+		event?: MouseEvent
+	): Promise<DeviceApprovalResult> {
+		if (this.result?.state !== 'approved')
+			return Promise.reject(new Error('This browser needs device approval.'));
+		if (call.action === 'approve' || call.action === 'deny') {
+			// Read transient activation while handling the actual click, before any network waits.
+			if (!event?.isTrusted || !navigator.userActivation?.isActive)
+				return Promise.reject(new Error('Confirm this decision on this device.'));
+		}
+		return this.service.review(account, this.reviewLifetime.signal, call);
+	}
+
 	reset(): void {
+		this.reviewLifetime.abort();
+		this.reviewLifetime = new AbortController();
+		this.service.clearReviews();
 		this.attempt?.abort();
 		this.attempt = null;
 		this.result = null;
