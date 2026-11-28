@@ -24,6 +24,7 @@ test.each(['functions', 'services', 'configs'] as const)(
 		});
 		const request = { ...f.request, entityId: entity.id, threadId: thread.id };
 		await settled(f, request);
+		expect(f.run.mock.calls[0][0].prompt).toContain('make “Mock mode first” a task');
 		const api = await createPlanning(f.root);
 		const saved = await api.readPlan({ unitId: entity.id });
 		const version = saved.versions[0];

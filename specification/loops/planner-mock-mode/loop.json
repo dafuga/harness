@@ -1,0 +1,45 @@
+{
+	"name": "planner-mock-mode",
+	"goal": "Costly app plans require a mock mode first task and module and Tracker briefs name the mock-mode skill",
+	"createdAt": "2026-11-28T14:25:37.812Z",
+	"updatedAt": "2026-11-28T14:27:18.922Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T14:25:53.551Z",
+			"evidence": "Tracker 9t6qpj and specification/features/planned/planner-mock-mode.md define the cost gate, checklist and planner and brief proof."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-28T14:27:18.922Z",
+			"evidence": "Desktop proposal and behavior planning prompts, the module-task worker prompt, and native Tracker launch briefs carry a common mock-mode checklist."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

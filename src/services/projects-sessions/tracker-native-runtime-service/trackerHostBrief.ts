@@ -8,6 +8,7 @@ import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { TrackerRunReceipt } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerHostTarget } from './trackerHostLaunch.types';
 import { floorReasons, projectOf } from '../../../utils/agents-providers/classifyTrackerTask';
+import { mockModePlanningRule } from '../../../utils/agents-providers/mockModePlanningRule';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
 import { trackerAskOptionsRule } from './trackerAskOptionsRule';
 import { trackerAutomationBrowserRule } from './trackerAutomationBrowserRule';
@@ -58,6 +59,9 @@ export function formatTrackerHostBrief(
 		'Use `tracker host-work colima <computer> -- ssh <host> <proof-script>` for Colima proofs. Keep VM startup, verification and task-owned teardown within the foreground script.',
 		'',
 		launchRules,
+		'',
+		'## Mock mode for costly app tests',
+		mockModePlanningRule,
 		'',
 		`# ${item.title}`,
 		'',

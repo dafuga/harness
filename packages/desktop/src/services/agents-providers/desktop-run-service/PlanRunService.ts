@@ -6,6 +6,7 @@ import { sourceSnapshot } from '../../../utils/verification-evidence/sourceSnaps
 import { sourceChanges } from '../../../utils/git-source-history/sourceChanges';
 import { planDesign } from '../../../utils/planning-collaboration/plan-design/planDesign';
 import { visualPlan } from '../../../utils/planning-collaboration/mockupPlan';
+import { mockModePlanningRule } from '../../../../../../src/utils/agents-providers/mockModePlanningRule';
 export class PlanRunService {
 	async run(context: RunContext) {
 		if (visualPlan(context.entity.category)) return planDesign(context, await runContext(context));
@@ -21,9 +22,11 @@ export class PlanRunService {
 			model: request.model,
 			effort: request.effort,
 			cwd: context.root,
-			prompt:
-				(await runContext(context)) +
-				'\nPlan only. Return a precise behavior proposal. Do not write project source.',
+			prompt: [
+				await runContext(context),
+				'Plan only. Return a precise behavior proposal. Do not write project source.',
+				mockModePlanningRule
+			].join('\n'),
 			access: 'read-only',
 			signal,
 			onText: (text) => emit({ runId: id, kind: 'text', text }),

@@ -7,6 +7,7 @@ import type {
 	TaskSelection
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
+import { mockModePlanningRule } from '../../../utils/agents-providers/mockModePlanningRule';
 export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
 	if (
 		createHash('sha256').update(stableJson(task.wantedContract)).digest('hex') !== task.contractHash
@@ -26,6 +27,7 @@ export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
 		`Overall goal: ${task.feature.goal}`,
 		`Feature TLDR: ${task.feature.tldr}`,
 		workerBrief,
+		mockModePlanningRule,
 		`Module: ${task.module.id}`,
 		`Overall module goal: ${task.module.goal}`,
 		`Allowed task files: ${task.module.files.join(', ')}`,
