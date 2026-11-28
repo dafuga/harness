@@ -73,23 +73,14 @@ export function placeTrackerWork(
 	rows: readonly TrackerMachineRow[],
 	request: TrackerPlacementRequest = {}
 ): TrackerPlacement {
-	const {
-		kind = 'general',
-		needsRamGB,
-		needsCores,
-		reserved,
-		exclude = [],
-		agentSession = kind === 'codex' || kind === 'claude'
-	} = request;
+	const { kind = 'general', needsRamGB, needsCores, exclude = [] } = request;
 	const demand = {
 		cores: needsCores ?? estimatedCores[kind],
 		ramGB: needsRamGB ?? trackerWorkRamGB[kind]
 	};
 	const ranked = rows
 		.filter(({ node }) => !exclude.includes(node))
-		.map((row) =>
-			candidate(row, demand, { agentSession, reserved: reserved?.get(row.node) ?? noWork })
-		)
+		.map((row) => candidate(row, demand, request))
 		.sort(
 			(left, right) =>
 				Number(right.fits) - Number(left.fits) ||
@@ -108,16 +99,30 @@ export function placeTrackerWork(
 function candidate(
 	row: TrackerMachineRow,
 	demand: TrackerWorkDemand,
-	{ agentSession, reserved }: { agentSession: boolean; reserved: TrackerWorkDemand }
+	request: TrackerPlacementRequest
 ): TrackerPlacementCandidate {
 	const { node, role, status, sample } = row;
 	if (status === 'offline' || !sample)
 		return { node, role, status, fits: false, score: null, reasons: row.reasons };
-	const limits = placementCapacity(row, sample);
-	const free = placementHeadroom(sample, limits, reserved);
+	const {
+		kind,
+		agentSession = kind === 'codex' || kind === 'claude',
+		sessionSlots,
+		reserved
+	} = request;
+	const slots = sessionSlots && (sessionSlots.get(node) ?? 0);
+	const free = placementHeadroom(
+		sample,
+		placementCapacity(row, sample),
+		reserved?.get(node) ?? noWork
+	);
 	const holds = fitHolds(row, sample, { demand, free, agentSession });
-	const score = matchScore(demand, free, limits, sample) - (role === 'shared' ? 25 : 0);
-	const estimate = `needs ${demand.cores.toFixed(2)} cores and ${demand.ramGB.toFixed(2)} GB RAM; ${Math.max(0, free.cores).toFixed(1)} cores and ${Math.max(0, free.ramGB).toFixed(1)} GB under targets`;
+	if (slots === 0) holds.push('no available launcher session slot');
+	const cpuHeavy = kind === 'browser-tests' || kind === 'build';
+	const score =
+		matchScore(demand, free, sample, { cpuHeavy, slots }) - (role === 'shared' ? 25 : 0);
+	const slotSummary = slots === undefined ? '' : `, ${slots} session slot(s) free`;
+	const estimate = `needs ${demand.cores.toFixed(2)} cores and ${demand.ramGB.toFixed(2)} GB RAM; ${Math.max(0, free.cores).toFixed(1)} cores and ${Math.max(0, free.ramGB).toFixed(1)} GB under targets${slotSummary}`;
 	return {
 		node,
 		role,
@@ -190,28 +195,26 @@ function fitHolds(
 function matchScore(
 	demand: TrackerWorkDemand,
 	free: TrackerWorkDemand,
-	limits: TrackerWorkDemand,
-	sample: TrackerResourceSample
+	sample: TrackerResourceSample,
+	{ cpuHeavy, slots = Infinity }: { cpuHeavy: boolean; slots?: number }
 ): number {
-	const jobRatio = demand.cores / demand.ramGB;
-	const hostRatio = sample.cores / (sample.ram.total_mb / 1024);
-	const mismatch = Math.abs(Math.log2(jobRatio / hostRatio));
-	const cpuFill = 1 - (free.cores - demand.cores) / limits.cores;
-	const ramFill = 1 - (free.ramGB - demand.ramGB) / limits.ramGB;
-	return 20 * (clamp(cpuFill) + clamp(ramFill)) - 20 * mismatch - 80 * Math.max(0, cpuFill - 1);
+	const coresPerGB = (sample.cores * 1024) / sample.ram.total_mb;
+	const capacity = cpuHeavy
+		? free.cores / demand.cores
+		: Math.min(free.ramGB / demand.ramGB, slots);
+	const affinity = cpuHeavy ? Math.log2(coresPerGB) : -Math.log2(coresPerGB);
+	const cpuPressure = Math.max(0, -free.cores) / sample.cores;
+	// Compare how many jobs fit on the limiting resource, with diminishing returns.
+	return 20 * Math.log2(1 + Math.max(0, capacity)) + 10 * affinity - 40 * cpuPressure;
 }
 
 function summary(sample: TrackerResourceSample): string {
 	const { claude, codex, test_runners, browsers } = sample.agents;
 	const heavy = test_runners + browsers;
 	const extra = heavy ? `, ${heavy} test runner/browser group(s)` : '';
-	return `${round(sample.ram.available_mb / 1024)} GB RAM free, load ${sample.load[1] ?? 0}/${sample.cores} cores, ${claude + codex} agent session(s)${extra}`;
+	return `${Math.round((sample.ram.available_mb / 1024) * 10) / 10} GB RAM free, load ${sample.load[1] ?? 0}/${sample.cores} cores, ${claude + codex} agent session(s)${extra}`;
 }
 
 function clamp(value: number): number {
 	return Math.max(0, Math.min(1, value));
-}
-
-function round(value: number): number {
-	return Math.round(value * 10) / 10;
 }

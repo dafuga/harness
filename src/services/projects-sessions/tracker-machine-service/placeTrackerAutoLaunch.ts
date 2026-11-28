@@ -1,23 +1,24 @@
 import type { PlanLaunch } from './placeTrackerAutoLaunch.types';
 // @harness-uid u_jey45slspx
-import { trackerLaunchPlacement } from './trackerLaunchPlacement';
+import { trackerDesktopLaunchHost, trackerLaunchPlacement } from './trackerLaunchPlacement';
 import type { TrackerFleetView } from './trackerLaunchPlacement.types';
 
 /**
- * Resolve an explicit `--computer auto` before the launch is planned. A request already queued
- * keeps its computer. With no known fit the plan keeps its own default, this computer.
+ * Place requests with no computer preference before planning the launch. An existing queue
+ * keeps its target. Desktop work queues on the primary Mac even when its slots are busy.
  */
 export function placeTrackerAutoLaunch(plan: PlanLaunch, view: TrackerFleetView): PlanLaunch {
 	return (fields, current, source) => {
-		if (
-			String(fields.computer ?? '')
-				.trim()
-				.toLowerCase() !== 'auto'
-		)
-			return plan(fields, current, source);
+		const requested = String(fields.computer ?? current?.computer ?? 'auto')
+			.trim()
+			.toLowerCase();
+		if (requested && requested !== 'auto') return plan(fields, current, source);
 		const queued = current?.auto ? (current.launch_target ?? current.computer) : undefined;
+		const item = launchSubject({ ...current, ...fields });
 		const placed =
-			queued ?? trackerLaunchPlacement(launchSubject({ ...current, ...fields }), view)?.node;
+			queued ??
+			(item.repo ? undefined : trackerDesktopLaunchHost(item)) ??
+			trackerLaunchPlacement(item, view)?.node;
 		return plan(placed ? { ...fields, computer: placed } : fields, current, source);
 	};
 }
