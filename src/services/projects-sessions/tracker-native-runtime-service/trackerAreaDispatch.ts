@@ -1,5 +1,4 @@
 // @harness-uid u_bl6xl2h4a3
-import { TrackerHostProcessError } from '../../../adapters/projects-sessions/tracker-host-process-adapter/TrackerHostProcessError';
 import type { AreaPermit } from './trackerAreaDispatch.types';
 import type {
 	TrackerDispatchStore,
@@ -19,6 +18,7 @@ import type {
 	TrackerDispatchRunner
 } from '../TrackerDispatchSchedulerService.types';
 import { trackerAreaCommands } from './trackerAreaCommands';
+import type { AreaDecision } from '../tracker-hub-sync/trackerAreaClaim.types';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
 import type { TrackerDispatchPolicy } from '../../agents-providers/TrackerDispatcherService.types';
@@ -82,16 +82,33 @@ function areaInputs(item: TrackerDispatchItem) {
 	return JSON.stringify([item.title, item.notes, item.project, item.agent, item.repo, item.launch]);
 }
 
+/** Warnings travel in the brief only; an item note would change the history being admitted. */
+function admissionBrief(id: string, { reason, recorded, warnings }: AreaDecision, waits: string[]) {
+	const quiet = !warnings.length && 'Overlapping siblings: none.';
+	return [
+		reason,
+		warnings.length && ['Area warnings (they did not hold this launch):', ...warnings].join('\n- '),
+		waits.length ? 'Previous sibling order: ' + waits.join(' → ') : quiet,
+		recorded
+			? `Edit only the claimed paths. Use tracker claim ${id} <path...> before extending the work or resuming edits after a block or stop.`
+			: `No areas are claimed for this start. Run tracker claim ${id} <path...> before editing, and again after a block or stop.`,
+		`Land through the repository queue with tracker land ${id} <PR>. It rebases and submits the exact candidate to the shared check service. Full checks are reserved for the combined release.`
+	]
+		.filter(Boolean)
+		.join('\n');
+}
+
 export function trackerAreaDispatch(
 	store: TrackerPersistenceService,
 	options: TrackerNativeRuntimeOptions
 ) {
 	const { commands, inspect, history } = trackerAreaCommands(store, options);
 	const permit: AreaPermit = async (item, start) => {
-		const { allowed: granted, reason } = await inspect(item, {
+		const decision = await inspect(item, {
 			token: start.run.auto_token,
 			attempt: start.run.attempt
 		});
+		const { allowed: granted, reason } = decision;
 		const receiptKey = 'tracker_area_admission:' + item.id;
 		const raw = store.getMeta(receiptKey);
 		const last = raw
@@ -99,14 +116,7 @@ export function trackerAreaDispatch(
 			: undefined;
 		const waits = last?.key === start.key ? last.waits : [];
 		if (granted) {
-			const brief = [
-				reason,
-				waits.length
-					? 'Previous sibling order: ' + waits.join(' → ')
-					: 'Overlapping siblings: none.',
-				`Edit only the claimed paths. Use tracker claim ${item.id} <path...> before extending the work or resuming edits after a block or stop.`,
-				`Land through the repository queue with tracker land ${item.id} <PR>. It rebases and submits the exact candidate to the shared check service. Full checks are reserved for the combined release.`
-			].join('\n');
+			const brief = admissionBrief(item.id, decision, waits);
 			store.writeMeta({ [receiptKey]: JSON.stringify({ key: start.key, waits, brief }) });
 		} else if (!waits.includes(reason)) {
 			recordWatchdogAlert(
@@ -127,11 +137,8 @@ export function trackerAreaDispatch(
 		briefFor(start: TrackerReservedStart) {
 			const raw = store.getMeta('tracker_area_admission:' + start.run.item_id);
 			const record = raw ? (JSON.parse(raw) as { key: string; brief?: string }) : undefined;
-			if (record?.key !== start.key || !record.brief)
-				throw new TrackerHostProcessError(
-					'Tracker needs an area claim before starting this reservation'
-				);
-			return record.brief;
+			if (record?.key === start.key && record.brief) return record.brief;
+			return `No area check is recorded for this start. Run tracker claim ${start.run.item_id} <path...> before editing.`;
 		}
 	};
 }

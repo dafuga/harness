@@ -471,9 +471,21 @@ held on the protected hosts until the production seams pass rehearsal.
 
 ### Area claims and Harness PR landings
 
-List the intended repository-relative paths in an `Areas: src/launcher, test/launcher` line in the item notes. The launcher also reads tracked paths and linked pull requests. It reserves the entire repository when it cannot infer a narrower area. An overlapping owner or open PR holds the launch and records the waiting order for Chief of Staff. Closing the item, blocking it or stopping the run releases its claim. The current claim appears in the item data and Hub Home. A running session requests additional paths with `tracker claim ITEM PATH...` before editing them.
+A session declares the repository-relative paths it intends to edit in two ways: an `Areas: src/launcher, test/launcher` line in the item notes, or `tracker claim ITEM PATH...`. A launch is held only when two sessions declared the same code area. A directory covers its descendants and Mac case aliases match. The hold records the waiting order for Chief of Staff. Only declared areas are stored. Closing the item, blocking it or stopping the run releases its claim. The current claim appears in the item data and Hub Home. A running session claims additional paths before editing them.
 
-Each GitHub checkout in `hostEffects.launch.repositories` needs a `github` object with an absolute `executable` path and a private `configDirectory` for that repository's read identity. During the combined restart, configure these bindings on participating computers and have existing sessions declare their paths. A failed inventory or unreachable hub holds the launch. Non-Git workspaces use the configured project name as their claim namespace.
+Every other doubt starts the session and is listed under area warnings in its brief:
+
+- paths guessed from mentioned file names or linked pull requests that fall in another session's declared area. These guesses are compared and never stored, and only the first 512 are compared;
+- open pull requests that touch the declared or guessed paths, or a note that none were compared because the item names no path;
+- a GitHub checkout with no read binding, a failed pull request read, or an origin that is not a recognised GitHub remote;
+- invalid declared paths, and declarations beyond the first 512;
+- live runs on the project that declared no areas;
+- a claim the hub could not record, because it does not show the current launch or an earlier session of the item still holds a claim (the same declared area still holds);
+- an unreadable checkout or an unreachable hub. Declared areas are then neither checked nor recorded.
+
+Until sessions declare their areas, the guard warns about overlaps and does not prevent them. `tracker claim` exits non-zero unless its paths are held, and prints the warnings either way.
+
+For pull request warnings, give each GitHub checkout in `hostEffects.launch.repositories` a `github` object with an absolute `executable` path and a private `configDirectory` for that repository's read identity. Launches work without it. Non-Git workspaces and checkouts without a recognised GitHub origin use the configured project name as their claim namespace.
 
 Every Harness session and Chief of Staff runs `tracker land ITEM PR` from its clean PR checkout. The hub grants one FIFO slot per repository. The caller rebases on fresh main, pushes its feature branch with a lease, and submits the exact head through `bun run check --item ITEM --commit SHA --exact --json`. A changed base, changed PR head, failed check or mismatched receipt prevents the merge. The caller requests a squash merge using GitHub's expected-head check, then verifies the squash parent and tree. GitHub has no expected-base argument for that operation, so every writer to main must participate in the queue.
 

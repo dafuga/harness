@@ -1,5 +1,10 @@
 // @harness-uid u_jkomno4o5u
-import type { TrackerAreaClaim, Owner, AreaDecision } from './trackerAreaClaim.types';
+import type {
+	TrackerAreaClaim,
+	Owner,
+	AreaDecision,
+	AreaReservation
+} from './trackerAreaClaim.types';
 import { z } from 'zod';
 import { TrackerHubInputError } from './TrackerHubInputError';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
@@ -22,9 +27,17 @@ export const areaClaim = z.strictObject({
 		.string()
 		.regex(/^[\w.-]+\/[\w.-]+$/)
 		.max(200),
-	probe: z.boolean().optional(),
 	project: z.string().min(1).max(200).optional(),
-	areas: z.array(path).min(1).max(512)
+	/** Declared by an Areas line or `tracker claim`; only these hold other sessions. */
+	areas: z.array(path).max(512),
+	/** Guessed from mentioned names. Compared for warnings and never stored. */
+	inferred: z.array(path).max(512).optional()
+});
+export const areaDecision = z.object({
+	allowed: z.boolean(),
+	reason: z.string(),
+	recorded: z.boolean(),
+	warnings: z.array(z.string())
 });
 const schema = `
 CREATE TABLE IF NOT EXISTS tracker_area_claims (
@@ -67,48 +80,41 @@ const eligibleItem = `SELECT 1 FROM items WHERE id=? AND deleted=0
  (status='blocked' AND resolved=1 AND needs_daniel=0
  AND json_extract(clocks,'$.answer') > json_extract(clocks,'$.status')))`;
 
+/** The one hold: declared paths that another session has also declared. Other doubts only warn. */
 function acquireAreas(store: TrackerPersistenceService, req: TrackerAreaClaim, node: string) {
-	const item = store.database.prepare(eligibleItem).get(req.id, req.token, req.token);
-	if (!item) return denied('waiting for the current launch on the Tracker hub');
-	const legacy = legacyOwner(store, req);
-	if (legacy) return denied('waiting for existing run ' + legacy.id + ' to claim its areas');
 	const owners = store.database
 		.prepare('SELECT * FROM tracker_area_claims WHERE repo = ? OR id = ? ORDER BY rowid')
 		.all(req.repo, req.id) as Owner[];
 	const existing = owners.find(({ id }) => id === req.id);
-	if (existing && !sameOwner(existing, req, node))
-		return denied('previous run still owns the item claim on ' + existing.node);
-	return reservePaths(store, { req, node }, owners, existing);
+	const own = existing && sameOwner(existing, req, node) ? existing : undefined;
+	const areas: string[] = [
+		...new Set<string>([...req.areas, ...JSON.parse(own?.areas ?? '[]')])
+	].sort();
+	const rivals = owners.filter((owner) => owner !== own && owner.repo === req.repo);
+	const holders = overlapping(rivals, areas);
+	if (holders.length)
+		return decided(false, `waiting for ${named(holders)}, which declared the same area`);
+	const others = rivals.filter(({ id }) => id !== req.id);
+	const warnings = overlapWarnings(store, req, others);
+	if (!areas.length) return decided(true, 'No declared areas to claim', warnings);
+	const unrecorded = unrecordedBecause(store, req, own ? undefined : existing);
+	if (unrecorded)
+		return decided(true, 'No declared-area clash; areas were not recorded', [
+			...warnings,
+			unrecorded
+		]);
+	return reserveAreas(store, { req, node, areas, own }, warnings);
 }
 
-function reservePaths(
+function reserveAreas(
 	store: TrackerPersistenceService,
-	{ req, node }: { req: TrackerAreaClaim; node: string },
-	owners: Owner[],
-	existing?: Owner
+	{ req, node, areas, own }: AreaReservation,
+	warnings: string[]
 ) {
-	const areas: string[] = [
-		...new Set<string>([...req.areas, ...JSON.parse(existing?.areas ?? '[]')])
-	].sort();
-	const blockers = owners.filter(
-		(owner) =>
-			owner.id !== req.id &&
-			(JSON.parse(owner.areas) as string[]).some((path) =>
-				areas.some((area) => areaIntersects(path, area))
-			)
-	);
-	if (blockers.length)
-		return {
-			result: {
-				allowed: false,
-				reason: 'waiting for ' + blockers.map((b) => b.id + ' on ' + b.node).join(', ')
-			}
-		};
-	if (req.probe) return { result: { allowed: true, reason: 'No overlapping Tracker claims' } };
 	const json = JSON.stringify(areas);
 	const reason = `Area claim on ${req.repo} by ${req.id} (${node}): ${areas.join(', ')}`;
-	const result = { allowed: true, reason };
-	if (json === existing?.areas) return { result };
+	const result: AreaDecision = { allowed: true, reason, recorded: true, warnings };
+	if (json === own?.areas) return { result };
 	store.database
 		.prepare(
 			'INSERT INTO tracker_area_claims VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET areas = excluded.areas'
@@ -135,21 +141,66 @@ function sameOwner(existing: Owner, req: TrackerAreaClaim, node: string) {
 	);
 }
 
-// Before upgrading, running sessions may own edits without a claim. Let those sessions declare
-// their areas first, then compare their actual paths for all subsequent starts.
-function legacyOwner(store: TrackerPersistenceService, req: TrackerAreaClaim) {
-	if (!req.project) return undefined;
+function overlapping(owners: Owner[], areas: string[]) {
+	return owners.filter((owner) =>
+		(JSON.parse(owner.areas) as string[]).some((held) =>
+			areas.some((area) => areaIntersects(held, area))
+		)
+	);
+}
+
+function named(owners: Owner[]) {
+	return owners.map(({ id, node }) => id + ' on ' + node).join(', ');
+}
+
+function overlapWarnings(store: TrackerPersistenceService, req: TrackerAreaClaim, others: Owner[]) {
+	const near = overlapping(others, req.inferred ?? []);
+	const silent = undeclaredRuns(store, req);
+	const warnings: string[] = [];
+	if (near.length)
+		warnings.push(
+			'Possible overlap: paths mentioned here fall in areas declared by ' + named(near)
+		);
+	if (silent.length)
+		warnings.push(
+			'Live runs on this project declared no areas: ' +
+				listed(silent) +
+				'. Overlap with them cannot be checked'
+		);
+	return warnings;
+}
+
+function listed(ids: string[]) {
+	return ids.slice(0, 5).join(', ') + (ids.length > 5 ? ` and ${ids.length - 5} more` : '');
+}
+
+// A live run without a claim declared nothing, so its edits cannot be compared.
+function undeclaredRuns(store: TrackerPersistenceService, req: TrackerAreaClaim) {
+	if (!req.project) return [];
 	const live = `WITH live AS (
 	  SELECT item_id,project FROM runs WHERE state IN ('queued','running','observed','verifying')
 	  UNION ALL SELECT item_id,project FROM remote_runs WHERE state IN ('queued','running','observed','verifying')
 	) SELECT DISTINCT i.id FROM live r JOIN items i ON i.id=r.item_id
-	WHERE lower(coalesce(r.project,i.project,i.agent,''))=lower(?)
+	WHERE lower(coalesce(r.project,i.project,i.agent,''))=lower(?) AND i.id != ?
 	AND i.status IN ('open','in_progress') AND i.deleted=0
 	AND NOT EXISTS (SELECT 1 FROM tracker_area_claims c WHERE c.id=i.id)`;
-	const owners = store.database.prepare(live).all(req.project) as { id: string }[];
-	return owners.some(({ id }) => id === req.id) ? undefined : owners[0];
+	const rows = store.database.prepare(live).all(req.project, req.id) as { id: string }[];
+	return rows.map(({ id }) => id);
 }
 
-function denied(reason: string) {
-	return { result: { allowed: false, reason } };
+/** A claim is stored only for the launch the hub shows, so its release triggers can fire. */
+function unrecordedBecause(
+	store: TrackerPersistenceService,
+	req: TrackerAreaClaim,
+	earlier?: Owner
+) {
+	if (earlier) return `An earlier session of this item on ${earlier.node} still holds its claim`;
+	if (!store.database.prepare(eligibleItem).get(req.id, req.token, req.token))
+		return 'The Tracker hub does not show this as the current launch of the item';
+	return undefined;
+}
+
+function decided(allowed: boolean, reason: string, warnings: string[] = []) {
+	const result: AreaDecision = { allowed, reason, recorded: false, warnings };
+	return { result };
 }

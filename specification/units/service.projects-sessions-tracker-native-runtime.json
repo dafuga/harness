@@ -50,6 +50,8 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaDispatch.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaDispatch.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaInventory.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaPulls.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaPulls.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAutolaunchAdmin.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosAlertKinds.ts",
@@ -188,6 +190,11 @@
 			"AreaPermit",
 			"intendedAreas",
 			"trackerAreaInventory",
+			"areaPull",
+			"openAreaPulls",
+			"openPullWarning",
+			"AreaPull",
+			"OpenPulls",
 			"duePauseKey",
 			"trackerAutolaunchAdmin",
 			"trackerHubDuePolicy",
@@ -679,7 +686,7 @@
 			},
 			{
 				"name": "intendedAreas.linked",
-				"type": "z.infer<typeof pull>[]",
+				"type": "AreaPull[]",
 				"required": true
 			},
 			{
@@ -713,6 +720,31 @@
 				"type": "string[]",
 				"required": false,
 				"default": []
+			},
+			{
+				"name": "openAreaPulls.route",
+				"type": "TrackerHostRepository",
+				"required": true
+			},
+			{
+				"name": "openAreaPulls.repo",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "openAreaPulls.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "openPullWarning.repo",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "openPullWarning.pulls",
+				"type": "AreaPull[]",
+				"required": true
 			},
 			{
 				"name": "trackerAutolaunchAdmin.store",
@@ -3345,7 +3377,7 @@
 					},
 					{
 						"name": "intendedAreas.linked",
-						"type": "z.infer<typeof pull>[]",
+						"type": "AreaPull[]",
 						"required": true
 					},
 					{
@@ -3400,12 +3432,58 @@
 						"type": "unknown"
 					}
 				],
-				"errors": [
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openAreaPulls",
+				"inputs": [
 					{
-						"name": "TrackerHostProcessError",
-						"type": "thrown"
+						"name": "openAreaPulls.route",
+						"type": "TrackerHostRepository",
+						"required": true
+					},
+					{
+						"name": "openAreaPulls.repo",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "openAreaPulls.signal",
+						"type": "AbortSignal",
+						"required": true
 					}
 				],
+				"outputs": [
+					{
+						"name": "openAreaPulls",
+						"type": "Promise<OpenPulls>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openPullWarning",
+				"inputs": [
+					{
+						"name": "openPullWarning.repo",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "openPullWarning.pulls",
+						"type": "AreaPull[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openPullWarning",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{

@@ -5,7 +5,13 @@ import { createTrackerSpokeRequester } from '../TrackerSpokeSyncService';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
-import { areaClaim, trackerAreaAuthority } from '../tracker-hub-sync/trackerAreaClaim';
+import {
+	areaClaim,
+	areaDecision,
+	trackerAreaAuthority
+} from '../tracker-hub-sync/trackerAreaClaim';
+import type { AreaDecision } from '../tracker-hub-sync/trackerAreaClaim.types';
+import { TrackerHostProcessError } from '../../../adapters/projects-sessions/tracker-host-process-adapter/TrackerHostProcessError';
 import {
 	landingDecision,
 	landingRequest,
@@ -15,7 +21,7 @@ import { trackerAreaInventory } from './trackerAreaInventory';
 
 const claimRequest = z.strictObject({
 	id: z.string(),
-	areas: areaClaim.shape.areas,
+	areas: areaClaim.shape.areas.min(1),
 	run: z.int().positive().optional(),
 	session: z.string().regex(/^[a-f0-9]{64}$/)
 });
@@ -23,30 +29,43 @@ function authorityPort(store: TrackerPersistenceService, options: TrackerNativeR
 	if (options.role === 'hub') {
 		const claim = trackerAreaAuthority(store);
 		const landing = trackerLandingAuthority(store, options.now);
-		return async (kind: 'area-claim' | 'landing', input: unknown) =>
-			(kind === 'area-claim' ? claim : landing)(input, store.node);
+		return {
+			claim: async (input: unknown) => claim(input, store.node),
+			landing: async (input: unknown) => landing(input, store.node)
+		};
 	}
-	const hub = options.links?.find(({ link }) => (link ?? 'hub') === 'hub');
-	const send =
-		hub &&
-		createTrackerSpokeRequester({
-			...hub,
-			store,
-			transport: (r) => hub.transport(r, AbortSignal.timeout(10000))
-		});
-	return async (kind: 'area-claim' | 'landing', input: unknown) => {
-		if (!send) return { allowed: false, reason: 'Waiting for the Tracker hub authority' };
-		return landingDecision.parse(
-			await send(
-				{ method: 'POST', pathAndQuery: '/sync/' + kind, body: JSON.stringify(input) },
-				10000
-			)
-		);
+	const post = hubSender(store, options);
+	return {
+		claim: async (input: unknown) => {
+			if (!post) throw new TrackerHostProcessError('This computer has no Tracker hub link');
+			return areaDecision.parse(await post('area-claim', input));
+		},
+		landing: async (input: unknown) => {
+			if (!post) return { allowed: false, reason: 'Waiting for the Tracker hub authority' };
+			return landingDecision.parse(await post('landing', input));
+		}
 	};
 }
+function hubSender(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
+	const hub = options.links?.find(({ link }) => (link ?? 'hub') === 'hub');
+	if (!hub) return undefined;
+	const send = createTrackerSpokeRequester({
+		...hub,
+		store,
+		transport: (r) => hub.transport(r, AbortSignal.timeout(10000))
+	});
+	return (kind: 'area-claim' | 'landing', input: unknown) =>
+		send({ method: 'POST', pathAndQuery: '/sync/' + kind, body: JSON.stringify(input) }, 10000);
+}
+const unchecked =
+	'Chief of Staff: verify the checkout and Tracker hub; declared areas were not checked or recorded';
+function unrecorded(reason: string, warnings: string[] = []): AreaDecision {
+	return { allowed: true, recorded: false, reason, warnings };
+}
+/** Only the hub's declared-area verdict can hold. A check that cannot run starts with a warning. */
 function claimInspector(
 	options: TrackerNativeRuntimeOptions,
-	send: ReturnType<typeof authorityPort>,
+	claim: ReturnType<typeof authorityPort>['claim'],
 	history: (id: string) => string
 ) {
 	const routes = Object.entries(options.hostEffects?.launch?.repositories ?? {});
@@ -56,36 +75,21 @@ function claimInspector(
 		const route = project
 			? routes.find(([key]) => key.toLowerCase() === project.toLowerCase())
 			: routes.find(([, route]) => route.repo === item.repo);
-		if (!route)
-			return { allowed: extra.length === 0, reason: 'Operations workdir has no repository claim' };
+		if (!route) return unrecorded('Operations workdir has no repository claim');
+		const found: string[] = [];
 		try {
-			const inspection = await trackerAreaInventory(
+			const { repo, areas, inferred, warnings } = await trackerAreaInventory(
 				route[1],
 				[item.title, item.notes, history(item.id)].join('\n'),
 				AbortSignal.timeout(30000),
 				{ project: route[0], extra }
 			);
-			const { repo, areas, siblings } = inspection;
-			const request = { repo, areas, project: route[0], id: item.id, ...attempt };
-			if (!siblings.length) return await send('area-claim', request);
-			const owners = await send('area-claim', { ...request, probe: true });
-			const pulls = siblings
-				.map(
-					(pr) => `${repo}#${pr.number} (${pr.author?.login ?? 'unknown owner'}, ${pr.headRefName})`
-				)
-				.join(', ');
-			return {
-				allowed: false,
-				reason: ['Land after ' + pulls, owners.allowed ? '' : owners.reason]
-					.filter(Boolean)
-					.join('. ')
-			};
+			found.push(...warnings);
+			const request = { repo, areas, inferred, project: route[0], id: item.id, ...attempt };
+			const decision = await claim(request);
+			return { ...decision, warnings: [...found, ...decision.warnings] };
 		} catch {
-			return {
-				allowed: false,
-				reason:
-					'Chief of Staff: verify the checkout, GitHub PR read binding and Tracker hub before launching'
-			};
+			return unrecorded('Area overlap was not fully checked', [...found, unchecked]);
 		}
 	};
 }
@@ -107,7 +111,7 @@ export function trackerAreaCommands(
 					)
 			)
 			.join('\n');
-	const inspect = claimInspector(options, authority, history);
+	const inspect = claimInspector(options, authority.claim, history);
 	const items = new TrackerItemReadRepository(store.database);
 	return {
 		history,
@@ -116,7 +120,7 @@ export function trackerAreaCommands(
 			async landing(input: unknown) {
 				const req = landingRequest.parse(input);
 				req.id = items.resolve(req.id).id;
-				return authority('landing', req);
+				return authority.landing(req);
 			},
 			async claim(input: unknown) {
 				const req = claimRequest.parse(input);
@@ -129,11 +133,16 @@ export function trackerAreaCommands(
 							.get(req.run, item.id) as Attempt | undefined)
 					: undefined;
 				if (req.run && !run) return { allowed: false, reason: 'run does not own this item' };
-				return inspect(
+				const decision = await inspect(
 					{ ...item, title: item.title ?? '' },
 					run ?? { token: 'manual:' + req.session, attempt: 1 },
 					req.areas
 				);
+				// A claim command succeeds only when its paths are actually held.
+				return {
+					allowed: decision.allowed && decision.recorded,
+					reason: [decision.reason, ...decision.warnings].join('\n')
+				};
 			}
 		}
 	};

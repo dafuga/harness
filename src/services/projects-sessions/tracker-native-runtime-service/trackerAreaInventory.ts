@@ -2,51 +2,59 @@
 import { TrackerHostProcessError } from '../../../adapters/projects-sessions/tracker-host-process-adapter/TrackerHostProcessError';
 import { basename } from 'node:path';
 import { stat } from 'node:fs/promises';
-import { z } from 'zod';
 import { runTrackerHostCommand } from '../../../adapters/projects-sessions/tracker-host-process-adapter/trackerHostCommand';
 import { areaClaim, areaIntersects } from '../tracker-hub-sync/trackerAreaClaim';
-import { trackerGithubRequest } from './trackerGithubCli';
+import { openAreaPulls, openPullWarning } from './trackerAreaPulls';
+import type { AreaPull, OpenPulls } from './trackerAreaPulls.types';
 import type { TrackerHostRepository } from './nativeTrackerHostEffects.types';
 
-const pull = z.object({
-	number: z.int().positive(),
-	headRefName: z.string(),
-	headRefOid: z.string(),
-	baseRefName: z.string(),
-	author: z.object({ login: z.string() }).nullable(),
-	changedFiles: z.int().nonnegative(),
-	files: z.array(z.object({ path: z.string(), changeType: z.string() }))
-});
-const maxPulls = 1000;
+const maxAreas = 512;
 const links = /https:\/\/github\.com\/([\w.-]+\/[\w.-]+)\/pull\/(\d+)\b/gi;
 const shortLink = /\bPR\s*#(\d+)\b/gi;
 
-/** Explicit Areas lines include new files. Existing paths and unambiguous module names can be inferred. */
+/**
+ * Only Areas lines and claimed paths are declarations. Tracked names and linked pull request
+ * paths are guesses: they are compared for warnings and never hold another session.
+ */
 export function intendedAreas(
 	text: string,
 	tracked: string[],
-	linked: z.infer<typeof pull>[],
+	linked: AreaPull[],
 	extra: string[] = []
 ) {
-	const declared = [...text.matchAll(/^\s*areas:\s*(.+)$/gim)].flatMap(([, value]) =>
+	const lines = [...text.matchAll(/^\s*areas:\s*(.+)$/gim)].flatMap(([, value]) =>
 		value.split(',').map((s) => s.trim().replace(/\/$/, ''))
 	);
+	const stated = usablePaths([...extra, ...lines]);
 	const names = new Set(text.match(/[\w./-]+/g) ?? []);
-	const inferred = tracked.filter(
+	const mentioned = tracked.filter(
 		(path) =>
 			names.has(path) ||
 			names.has(basename(path)) ||
 			names.has(basename(path).replace(/\.[^.]+$/, ''))
 	);
-	const paths = [
-		...new Set([
-			...extra,
-			...declared,
-			...inferred,
-			...linked.flatMap((pr) => pr.files.map((f) => f.path))
-		])
-	];
-	return paths.length ? areaClaim.shape.areas.parse(paths) : ['.'];
+	const guessed = usablePaths([
+		...linked.flatMap((pr) => pr.files.map((f) => f.path)),
+		...mentioned
+	]);
+	const declared = stated.paths.slice(0, maxAreas);
+	const inferred = guessed.paths.filter((path) => !declared.includes(path));
+	const warnings = [
+		stated.invalid.length &&
+			'Ignored invalid declared areas: ' +
+				stated.invalid.slice(0, 5).map((path) => JSON.stringify(path.slice(0, 80))),
+		stated.paths.length > maxAreas &&
+			`More than ${maxAreas} areas are declared; only the first ${maxAreas} are claimed`,
+		inferred.length > maxAreas &&
+			`The item mentions ${inferred.length} paths; only the first ${maxAreas} were compared`
+	].filter((warning) => typeof warning === 'string');
+	return { declared, inferred: inferred.slice(0, maxAreas), warnings };
+}
+
+function usablePaths(candidates: string[]) {
+	const unique = [...new Set(candidates.filter(Boolean))];
+	const usable = (path: string) => areaClaim.shape.areas.element.safeParse(path).success;
+	return { paths: unique.filter(usable), invalid: unique.filter((path) => !usable(path)) };
 }
 
 /** Keep credentials and repository URLs out of diagnostics. Only a configured checkout is scanned. */
@@ -56,85 +64,52 @@ export async function trackerAreaInventory(
 	signal: AbortSignal,
 	{ project = basename(route.repo), extra = [] }: { project?: string; extra?: string[] } = {}
 ) {
-	const git = checkoutReader(route, signal);
-	const tracked = await checkoutPaths(route, git, signal);
-	const localRepo = {
-		repo: 'workspace/' + project.toLowerCase(),
-		areas: intendedAreas(text, tracked ?? [], [], extra),
-		siblings: []
-	};
-	if (!tracked || !(await git(['remote']))) return localRepo;
-	const repo = githubRepository(await git(['remote', 'get-url', 'origin']));
-	if (!route.github)
-		throw new TrackerHostProcessError(
-			'Configure the repository GitHub read binding for Tracker area checks'
-		);
-	const request = trackerGithubRequest(route.github);
-	const pulls = await readAreaPulls(repo, request, signal);
-	const refs = linkedPulls(text, repo);
-	const areas = intendedAreas(
+	const { tracked, repo, unrecognised } = await checkoutIdentity(route, signal);
+	const open: OpenPulls = repo ? await openAreaPulls(route, repo, signal) : { pulls: [] };
+	const refs = repo ? linkedPulls(text, repo) : new Set<number>();
+	const { declared, inferred, warnings } = intendedAreas(
 		text,
 		tracked,
-		pulls.filter((p) => refs.has(p.number)),
+		open.pulls.filter((p) => refs.has(p.number)),
 		extra
 	);
-	const siblings = pulls.filter((pr) =>
-		pr.files.some(({ path }) => areas.some((a) => areaIntersects(a, path)))
+	const compared = [...declared, ...inferred];
+	const siblings = open.pulls.filter((pr) =>
+		pr.files.some(({ path }) => compared.some((a) => areaIntersects(a, path)))
 	);
-	return { repo, areas, siblings };
+	if (unrecognised)
+		warnings.push(
+			'The origin is not a recognised GitHub remote, so pull requests were not checked'
+		);
+	warnings.push(...pullWarnings(open, compared, repo ? { repo, siblings } : undefined));
+	return {
+		repo: repo ?? 'workspace/' + project.toLowerCase(),
+		areas: declared,
+		inferred,
+		siblings,
+		warnings
+	};
 }
 
-async function readAreaPulls(
-	repo: string,
-	request: ReturnType<typeof trackerGithubRequest>,
-	signal: AbortSignal
+function pullWarnings(
+	open: OpenPulls,
+	compared: string[],
+	found?: { repo: string; siblings: AreaPull[] }
 ) {
-	const args = [
-		'pr',
-		'list',
-		'--repo',
-		'github.com/' + repo,
-		'--state',
-		'open',
-		'--limit',
-		String(maxPulls + 1),
-		'--json',
-		'number,headRefName,headRefOid,baseRefName,author,changedFiles,files'
-	];
-	const response = await request(args, signal);
-	if (response.code !== 0)
-		throw new TrackerHostProcessError('Tracker cannot read open pull requests');
-	const pulls = z.array(pull).max(maxPulls).parse(JSON.parse(response.stdout));
-	for (const pr of pulls) {
-		if (pr.files.length === pr.changedFiles && !pr.files.some((f) => f.changeType === 'RENAMED'))
-			continue;
-		const reply = await request(
-			[
-				'api',
-				'--hostname',
-				'github.com',
-				'--paginate',
-				'--slurp',
-				`repos/${repo}/pulls/${pr.number}/files?per_page=100`
-			],
-			signal
-		);
-		if (reply.code !== 0)
-			throw new TrackerHostProcessError('Tracker cannot read the complete pull request paths');
-		const files = z
-			.array(z.array(z.object({ filename: z.string(), previous_filename: z.string().optional() })))
-			.parse(JSON.parse(reply.stdout))
-			.flat();
-		if (files.length !== pr.changedFiles)
-			throw new TrackerHostProcessError('Incomplete pull request path inventory');
-		pr.files = files.flatMap((f) =>
-			[f.filename, ...(f.previous_filename ? [f.previous_filename] : [])].map((path) => ({
-				path,
-				changeType: 'CHANGED'
-			}))
-		);
-	}
-	return pulls.sort((a, b) => a.number - b.number);
+	if (open.warning) return [open.warning];
+	if (open.pulls.length && !compared.length)
+		return ['No areas are declared or inferred, so open pull requests were not compared'];
+	return found?.siblings.length ? [openPullWarning(found.repo, found.siblings)] : [];
+}
+
+async function checkoutIdentity(route: TrackerHostRepository, signal: AbortSignal) {
+	const git = checkoutReader(route, signal);
+	const tracked = await checkoutPaths(route, git, signal);
+	const remotes = tracked ? (await git(['remote'])).split('\n').filter(Boolean) : [];
+	const repo = remotes.includes('origin')
+		? githubRepository(await git(['remote', 'get-url', 'origin']))
+		: undefined;
+	return { tracked: tracked ?? [], repo, unrecognised: remotes.length > 0 && !repo };
 }
 
 function linkedPulls(text: string, repo: string) {
@@ -169,13 +144,7 @@ async function checkoutPaths(
 }
 
 function githubRepository(remote: string) {
-	const repo =
-		/^(?:git@github\.com:|https:\/\/github\.com\/|ssh:\/\/git@github\.com\/)([\w.-]+\/[\w.-]+?)(?:\.git)?\/?$/i
-			.exec(remote)?.[1]
-			?.toLowerCase();
-	if (!repo)
-		throw new TrackerHostProcessError(
-			'Tracker needs the GitHub repository identity for this checkout'
-		);
-	return repo;
+	return /^(?:git@github\.com:|https:\/\/github\.com\/|ssh:\/\/git@github\.com\/)([\w.-]+\/[\w.-]+?)(?:\.git)?\/?$/i
+		.exec(remote)?.[1]
+		?.toLowerCase();
 }
