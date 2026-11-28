@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"id": "script.tracker-screenshot-browser",
+	"uid": "u_auvse3vf4t",
+	"kind": "script",
+	"title": "tracker-screenshot-browser",
+	"responsibility": "Opens an owned tab in the dedicated automation Chrome and exposes viewport PNGs, coordinate clicks, ordinary text entry and tab teardown.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"scripts/tracker-screenshot-browser.ts",
+			"scripts/tracker-screenshot-browser.types.ts"
+		],
+		"symbols": ["openScreenshotBrowser", "ScreenshotBrowser", "ScreenshotBrowserReply"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "openScreenshotBrowser.origin",
+				"type": "string",
+				"required": true,
+				"description": "A canonical HTTPS origin without a path, query, fragment, or user information. HTTP is accepted for local loopback fixtures at 127.0.0.1."
+			}
+		],
+		"outputs": [
+			{
+				"name": "openScreenshotBrowser",
+				"type": "Promise<ScreenshotBrowser>",
+				"description": "A session with screenshot, click, type and close methods bound to the new tab. The screenshot method returns PNG bytes and the other methods return no data."
+			}
+		],
+		"errors": [
+			{
+				"name": "ScreenshotBrowserError",
+				"type": "thrown",
+				"description": "Rejects with a fixed error when origin validation, tab creation, connection, navigation or teardown during setup fails. Browser-provided payloads are omitted."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "openScreenshotBrowser",
+				"inputs": [
+					{
+						"name": "openScreenshotBrowser.origin",
+						"type": "string",
+						"required": true,
+						"description": "A canonical HTTPS origin without a path, query, fragment, or user information. HTTP is accepted for local loopback fixtures at 127.0.0.1."
+					}
+				],
+				"outputs": [
+					{
+						"name": "openScreenshotBrowser",
+						"type": "Promise<ScreenshotBrowser>",
+						"description": "A session with screenshot, click, type and close methods bound to the new tab. The screenshot method returns PNG bytes and the other methods return no data."
+					}
+				],
+				"errors": [
+					{
+						"name": "ScreenshotBrowserError",
+						"type": "thrown",
+						"description": "Rejects with a fixed error when origin validation, tab creation, connection, navigation or teardown during setup fails. Browser-provided payloads are omitted."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/tracker-screenshot-browser.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/tracker-screenshot-browser.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
