@@ -1,0 +1,76 @@
+/* Chat inside the dock: the question, its choices in a grid, and the one composer. */
+.chat {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 12px;
+	padding: 16px;
+}
+.bubble {
+	max-width: 88%;
+	padding: 10px 12px;
+	border-radius: 12px 12px 12px 4px;
+	background: var(--hx-color-surface-raised);
+	line-height: 20px;
+}
+.bubble.mine {
+	align-self: flex-end;
+	border-radius: 12px 12px 4px 12px;
+	background: var(--hx-color-info-soft);
+}
+.ask {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 12px;
+	border: 1px solid var(--hx-color-primary-line);
+	border-radius: 10px;
+	background: var(--hx-color-primary-wash);
+}
+.ask-q {
+	font-weight: 600;
+	line-height: 20px;
+}
+.options {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 8px;
+}
+.option {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	min-height: 44px;
+	padding: 10px 12px;
+	border: 1px solid var(--hx-color-border-strong);
+	border-radius: 8px;
+	background: var(--hx-color-surface);
+	font-weight: 500;
+	line-height: 18px;
+}
+.option small {
+	color: var(--hx-color-text-muted);
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 16px;
+}
+.badge {
+	align-self: flex-start;
+	padding: 0 6px;
+	border-radius: 4px;
+	background: var(--hx-color-primary-soft);
+	color: var(--hx-color-accent);
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 18px;
+}
+.composer {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 16px 16px;
+	padding: 6px 6px 6px 12px;
+	border: 1px solid var(--hx-color-border-strong);
+	border-radius: 10px;
+	color: var(--hx-color-text-muted);
+}

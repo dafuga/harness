@@ -115,7 +115,10 @@ function executionOutcome(
 ): RunOutcome {
 	if (failureCause === 'timeout') return 'timed_out';
 	if (failureCause === 'cancelled' || failureCause === 'abandoned') return 'abandoned';
-	if (event.status === 'failed' || failureCause === 'workspace-error' || failureCause === 'scope')
+	if (
+		event.status === 'failed' ||
+		['workspace-error', 'scope', 'check'].includes(failureCause ?? '')
+	)
 		return 'failed';
 	if (review === 'accepted') return 'done';
 	if (review === 'incomplete') return 'rejected';

@@ -1,0 +1,67 @@
+{
+	"name": "module-worker-check-loop",
+	"goal": "Prove that declared worktree checks feed bounded failures into the same provider session and persist every outcome before review.",
+	"createdAt": "2026-11-28T16:33:01.645Z",
+	"updatedAt": "2026-11-28T16:56:26.116Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T16:34:15.858Z",
+			"evidence": "An implementation can use the entire prompt self-check budget and still submit with a failing Phase 4 gate. Assert native verification and resume in the Git-backed worker fixture."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T16:34:17.158Z",
+			"evidence": "The worker fixture covered claims and review, but never executed a gate between provider turns. Extend the worker lifecycle for repaired and exhausted statuses. Cover provider quota events and completion receipt dispositions in their existing suites."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T16:47:06.441Z",
+			"evidence": "Committed failing fixture 21415ecf88fd3bdd31fe4348d298a7f4f337d367 rejects the declared check; the Codex cases drop provider quota facts."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T16:47:08.087Z",
+			"evidence": "The committed worker runs up to three checks, sends diagnostics into the original session, and preserves rejected completion evidence."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T16:47:30.730Z",
+			"evidence": "The unchanged Git-backed lifecycle and quota regressions pass in the same test runtime."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-28T16:56:26.116Z",
+			"evidence": "siblings-20bf3095-3f12-4ca5-b926-ffe05359202a.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

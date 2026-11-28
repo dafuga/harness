@@ -6,7 +6,7 @@ import type {
 import type { AnalyticsEvent } from '../../../core/reports-media/analyticsTypes';
 import type { TaskAnalyticsDetail, TaskRunPosition } from '../ModuleTaskAnalyticsService.types';
 import { fingerprint } from '../../../workflows/reports-media/analyticsRecord';
-import { taskApiCost } from './taskPricing';
+import { executionsOf } from './taskProviderExecutions';
 import { taskSelection } from '../module-task-service/taskPrompt';
 export function taskEvents(tasks: ModuleTask[], project: string): AnalyticsEvent[] {
 	return tasks.flatMap((task) => [
@@ -54,7 +54,7 @@ function executionEvents(task: ModuleTask, project: string): AnalyticsEvent[] {
 				project
 			)
 		);
-		priorEscalations += Math.max(0, result.executions.length - 1);
+		priorEscalations += Math.max(0, executionsOf(result).length - 1);
 		nextClaim = Math.max(nextClaim, claimIndex + 1);
 	}
 	events.push(...abandonedEvents(task, project, { start: nextClaim, priorEscalations }));
@@ -196,23 +196,4 @@ function resultDetails(result: ModuleTask['result'], status: TaskExecution['stat
 		failureCause:
 			result?.failureCause ?? (result?.error && status === 'succeeded' ? 'workspace-error' : null)
 	};
-}
-
-function executionsOf(
-	result: NonNullable<ModuleTask['result']>
-): (Omit<TaskExecution, 'startedAt'> & { startedAt?: string })[] {
-	return result.executions.length
-		? result.executions
-		: [
-				{
-					provider: result.provider,
-					model: result.model,
-					intelligence: result.intelligence,
-					reportedModel: result.reportedModel,
-					usage: result.usage,
-					apiCost: taskApiCost(result.reportedModel ?? result.model, result.usage),
-					status: result.error ? 'failed' : 'succeeded',
-					finishedAt: result.finishedAt
-				}
-			];
 }

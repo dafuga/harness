@@ -88,6 +88,7 @@ function trackerHome(home: OwnerHomeSnapshot | null, settled: boolean, now: numb
 		quota: providers.quota ?? [],
 		projectDirectory: home.projectDirectory ?? [],
 		trackerConnected: overview.status === 'ready',
-		quotaConnected: Array.isArray(providers.quota)
+		quotaConnected: Array.isArray(providers.quota),
+		providerPreference: home.providerPreference
 	};
 }

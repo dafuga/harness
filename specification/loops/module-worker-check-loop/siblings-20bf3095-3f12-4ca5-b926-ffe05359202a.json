@@ -1,0 +1,520 @@
+{
+	"schemaVersion": 1,
+	"revision": "0fc88ccf7218dc445747eb5375792699983077db",
+	"bugClass": {
+		"id": "provider-turn-skips-local-verification",
+		"title": "Provider turns bypass declared local verification",
+		"cause": "A managed module-task flow declares a local verification operation, but after a provider result it transitions to review or completion without executing that operation or requiring evidence that it ran. This leaves the decision dependent on provider output rather than the declared local check.",
+		"criteria": "Classify when both conditions hold: (1) the module-task flow has a declared local verification operation, such as a command or check; and (2) a provider-result-to-review or completion path neither executes that operation nor requires proof of its execution. Either a missing execution step or a missing evidence gate is sufficient. Exclude code that only transports provider events, orchestration with no declared local command, Docker fixtures, and paths with an actual execution or evidence gate.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "dispatchTaskAttempt",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "snapshotTaskWork",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "taskCheckLoop",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "moduleVerification",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "evaluateCompletion",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "requireTaskAcceptanceEvidence",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "verificationCommand",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "localCheckCommand",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "acceptanceEvidence",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "providerResult",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "evaluateCompletion",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "requireTaskAcceptanceEvidence",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "dispatchTaskAttempt",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "snapshotTaskWork",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "taskCheckLoop",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "moduleVerification",
+				"weight": 3
+			}
+		],
+		"contextTerms": [
+			"moduleverification",
+			"evaluatecompletion",
+			"acceptanceevidence",
+			"providerresult",
+			"verificationcommand"
+		],
+		"pathHints": [
+			{
+				"contains": "src/workflows/",
+				"weight": 4
+			},
+			{
+				"contains": "src/services/",
+				"weight": 3
+			},
+			{
+				"contains": "src/core/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -1
+			}
+		]
+	},
+	"model": "gpt-6-luna",
+	"scannedFiles": 9766,
+	"skipped": [],
+	"candidates": [
+		{
+			"id": "bdea0784797eb07d437c",
+			"path": "src/services/agents-providers/completion-hooks/moduleCompletion.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "evaluateCompletion",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 2,
+			"evidence": "The excerpt only shows `completeModule` loading completion config at line 13; it does not show the declared local verification operation or the provider-result transition, so the suspected bypass cannot be established."
+		},
+		{
+			"id": "ba26bee848ae4173472f",
+			"path": "src/services/agents-providers/completion-hooks/orchestratorCompletion.ts",
+			"line": 12,
+			"lastLine": 12,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "evaluateCompletion",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 2,
+			"evidence": "The excerpt shows imports and the start of `completeOrchestration` at line 12, but not the verification command or subsequent result handling; it is insufficient to establish either a bypass or a guard."
+		},
+		{
+			"id": "61665c676b2294091e9e",
+			"path": "src/services/agents-providers/ModuleTaskWorkerService.ts",
+			"line": 26,
+			"lastLine": 26,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "taskCheckLoop",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 2,
+			"evidence": "Lines 14–26 only show `ModuleTaskWorkerService` importing `taskCheckLoop` and constructor setup. They do not show whether the loop executes local verification or requires evidence after a provider result."
+		},
+		{
+			"id": "d5399be8832b66a03b88",
+			"path": "src/services/agents-providers/ModuleTaskWorkerService.ts",
+			"line": 115,
+			"lastLine": 115,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "taskCheckLoop",
+					"weight": 5
+				},
+				{
+					"kind": "call",
+					"value": "taskCheckLoop",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "`ModuleTaskWorkerService.ts:107-126` runs `taskCheckLoop`, records a check error, and passes completion context to `snapshotTaskWork` only when no error occurred. The excerpt does not establish what local check is declared or whether the snapshot path requires its evidence."
+		},
+		{
+			"id": "4ef752cac67a5cf46d69",
+			"path": "src/services/agents-providers/ModuleTaskWorkerService.ts",
+			"line": 124,
+			"lastLine": 124,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "snapshotTaskWork",
+					"weight": 5
+				},
+				{
+					"kind": "call",
+					"value": "snapshotTaskWork",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "`ModuleTaskWorkerService.ts:115-124` shows `snapshotTaskWork` receives completion context only when `taskCheckLoop` returns no error; the excerpt does not show whether this operation executes the declared local verification or requires proof."
+		},
+		{
+			"id": "fa3d17abf66a64f42a88",
+			"path": "src/services/agents-providers/ModuleTaskWorkerService.ts",
+			"line": 133,
+			"lastLine": 133,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchTaskAttempt",
+					"weight": 5
+				},
+				{
+					"kind": "call",
+					"value": "dispatchTaskAttempt",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "`ModuleTaskWorkerService.ts:128-137` calls `dispatchTaskAttempt` and handles provider quota fallback, but the excerpt does not show a declared local verification operation or a provider-result-to-review/completion transition."
+		},
+		{
+			"id": "d5a8ad5922d19add22ff",
+			"path": "src/services/agents-providers/ModuleTaskWorkerService.ts",
+			"line": 145,
+			"lastLine": 145,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchTaskAttempt",
+					"weight": 5
+				},
+				{
+					"kind": "call",
+					"value": "dispatchTaskAttempt",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "`ModuleTaskWorkerService.ts:133-145` retries through another provider after an auto-model quota rejection. This excerpt does not establish that a successful provider result skips a declared local verification operation."
+		},
+		{
+			"id": "4f8a4a2e9ae8e894fe87",
+			"path": "src/services/agents-providers/completion-hooks/moduleCompletion.types.ts",
+			"line": 29,
+			"lastLine": 29,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "moduleVerification",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "The excerpt at `moduleCompletion.types.ts:29` only shows a `verification` configuration field on `ModuleCandidate`; it does not show a provider-result path or whether local verification runs."
+		},
+		{
+			"id": "7171e818c07af0bcc246",
+			"path": "src/services/agents-providers/module-task-worker-service/dispatchTaskAttempt.ts",
+			"line": 12,
+			"lastLine": 12,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchTaskAttempt",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "`dispatchTaskAttempt.ts:10-22` records a provider attempt and starts analytics, but the excerpt does not show a declared local verification operation or a transition to review/completion."
+		},
+		{
+			"id": "4d38ce755740800d88aa",
+			"path": "src/services/agents-providers/module-task-service/reviewModuleTask.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "acceptanceEvidence",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "`reviewModuleTask.ts:1-20` imports `acceptanceEvidence` and documents that acceptance requires verification evidence, but the excerpt does not show how evidence is enforced or whether a provider-result path can bypass it."
+		},
+		{
+			"id": "63e5abc85176acaea67d",
+			"path": "src/services/agents-providers/ModuleTaskWorkerService.ts",
+			"line": 8,
+			"lastLine": 11,
+			"score": 23,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchTaskAttempt",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "snapshotTaskWork",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 8–11 only import `dispatchTaskAttempt` and `snapshotTaskWork`; they do not show a declared local verification operation or the provider-result path."
+		},
+		{
+			"id": "58eec0fb41ef494ac9de",
+			"path": "src/services/agents-providers/completion-hooks/completionConfig.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "moduleVerification",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 13–16 define `moduleVerification` as an optional configuration field, but this excerpt does not show a provider-result transition or whether that operation executes or is gated."
+		},
+		{
+			"id": "62f572a9a91367b71c68",
+			"path": "src/services/agents-providers/completion-hooks/completionRun.ts",
+			"line": 27,
+			"lastLine": 27,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "evaluateCompletion",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 27 onward show `evaluateCompletion` iterating enabled checks and invoking `runCheck`, but omit the check execution details and do not establish a module-task provider-result path or its verification guard."
+		},
+		{
+			"id": "bc7d7f99b70429c90b66",
+			"path": "src/services/agents-providers/module-task-worker-service/taskWorkspace.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "snapshotTaskWork",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 59–66 show `snapshotTaskWork` invoking `completeModule` when a completion context exists, but omit the completion implementation and any local verification execution or evidence gate."
+		},
+		{
+			"id": "dead7a02af1734fdafbe",
+			"path": "src/services/agents-providers/module-task-service/acceptanceEvidence.ts",
+			"line": 9,
+			"lastLine": 17,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "acceptanceEvidence",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 9–17 describe acceptance evidence requiring a checkpoint and verification record, but the excerpt does not establish that this evidence is used on the provider-result-to-review path or that a declared local command is skipped."
+		},
+		{
+			"id": "2793aa1b7deeb0686a94",
+			"path": "src/services/agents-providers/completion-hooks/moduleCompletion.ts",
+			"line": 40,
+			"lastLine": 41,
+			"score": 29,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "evaluateCompletion",
+					"weight": 5
+				},
+				{
+					"kind": "call",
+					"value": "evaluateCompletion",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "moduleVerification",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 40–47 pass `config.moduleVerification` into `withModuleCandidate` and `reviewModule` for each completion check; this excerpt shows the declared module verification is part of the evaluation path, so it does not establish a bypass."
+		},
+		{
+			"id": "1cc64741c52f31af6cbe",
+			"path": "src/services/agents-providers/completion-hooks/orchestratorCompletion.ts",
+			"line": 42,
+			"lastLine": 42,
+			"score": 23,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "evaluateCompletion",
+					"weight": 5
+				},
+				{
+					"kind": "call",
+					"value": "evaluateCompletion",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 42–51 are explicitly the orchestrator-scope completion flow (`scope: 'orchestrator'`) and evaluate configured orchestration checks; the class concerns a managed module-task flow."
+		},
+		{
+			"id": "f44f28d07a5cf3040ab7",
+			"path": "src/services/agents-providers/completion-hooks/moduleCompletionMeasurement.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "moduleVerification",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "At `moduleCompletionMeasurement.ts:11-23`, missing runnable verification files or a configured `moduleVerification` command raises `CompletionCheckError`, and the code proceeds to construct and run a local verification command. This is a guard and local check, not a provider bypass."
+		},
+		{
+			"id": "5b412d6689d71f5e49bb",
+			"path": "src/services/agents-providers/module-task-worker-service/taskCheckLoop.ts",
+			"line": 14,
+			"lastLine": 14,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "taskCheckLoop",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 14–26 show a real guard: when `task.check` is configured, `taskCheckLoop` runs `runTaskCheck` and continues after failures. This is the declared-check execution path, not a provider-result bypass."
+		},
+		{
+			"id": "25bab9d386a6f93efd0d",
+			"path": "src/services/agents-providers/module-task-service/reviewModuleTask.ts",
+			"line": 34,
+			"lastLine": 34,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "acceptanceEvidence",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 34–36 show accepted reviews call `acceptanceEvidence(root, before, review.evidence!)` before proceeding, a visible evidence gate at this review site. The excerpt does not establish a provider-result-to-review bypass."
+		}
+	],
+	"errors": [],
+	"classPath": "specification/bug-classes/provider-turn-skips-local-verification.json"
+}

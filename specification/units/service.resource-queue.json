@@ -8,7 +8,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/execution-runtimes/ResourceQueueService.ts"],
+		"source": [
+			"src/services/execution-runtimes/ResourceQueueService.ts",
+			"src/services/execution-runtimes/resource-queue-service/inheritedLease.ts"
+		],
 		"symbols": [
 			"Dependencies",
 			"RunOptions",
@@ -16,7 +19,8 @@
 			"ResourceQueueService.constructor",
 			"ResourceQueueService.snapshot",
 			"ResourceQueueService.run",
-			"ResourceQueueService.close"
+			"ResourceQueueService.close",
+			"inheritedLeaseContext"
 		]
 	},
 	"contract": {
@@ -61,6 +65,21 @@
 				"examples": [
 					{}
 				]
+			},
+			{
+				"name": "inheritedLeaseContext.request",
+				"type": "ResourceRequest",
+				"required": true
+			},
+			{
+				"name": "inheritedLeaseContext.env",
+				"type": "Record<string, string | undefined>",
+				"required": true
+			},
+			{
+				"name": "inheritedLeaseContext.queue",
+				"type": "ResourceQueueRepository",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -200,6 +219,39 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "inheritedLeaseContext",
+				"inputs": [
+					{
+						"name": "inheritedLeaseContext.request",
+						"type": "ResourceRequest",
+						"required": true
+					},
+					{
+						"name": "inheritedLeaseContext.env",
+						"type": "Record<string, string | undefined>",
+						"required": true
+					},
+					{
+						"name": "inheritedLeaseContext.queue",
+						"type": "ResourceQueueRepository",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inheritedLeaseContext",
+						"type": "ResourceContext | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "ResourceQueueError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [

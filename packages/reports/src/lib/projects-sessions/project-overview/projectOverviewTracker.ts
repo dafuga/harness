@@ -18,18 +18,21 @@ import {
 } from './trackerReadTargets';
 import { trackerRunDetail } from './projectOverviewRunDetail';
 import { getTrackerJson } from './trackerJsonRead';
+import { readTrackerPreference } from './readTrackerPreference';
 
 /** Read and validate items, runs and machines. The native tracker exposes machines in /status. */
 export async function readTrackerSources(
 	fetcher: typeof fetch,
 	includeHomeFields = false
 ): Promise<Tracker.TrackerSources> {
-	const [items, runs, machines] = await Promise.all([
+	const [items, runs, machines, providerPreference] = await Promise.all([
 		getTrackerJson(fetcher, TRACKER_GET_URLS.items),
 		getTrackerJson(fetcher, includeHomeFields ? TRACKER_GET_URLS.homeRuns : TRACKER_GET_URLS.runs),
-		getTrackerJson(fetcher, TRACKER_GET_URLS.machines)
+		getTrackerJson(fetcher, TRACKER_GET_URLS.machines),
+		includeHomeFields ? readTrackerPreference(fetcher) : undefined
 	]);
 	return {
+		...(providerPreference && { providerPreference }),
 		items: asList(items, 'items').map((item) => parseItem(item, includeHomeFields)),
 		runs: asList(runs, 'runs').map((run) => parseRun(run, includeHomeFields)),
 		machines: asList(machines, 'machines').map((machine) =>

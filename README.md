@@ -139,6 +139,21 @@ service. Restore never changes the live database: it writes a checked copy that 
 current run and delivery records and has a new database identity, so spokes send their journals again,
 then prints the steps to swap it in, including moving the old identity's backups into a subfolder. Add `--without-local-state` if the live database is unreadable.
 
+### Model provider preference
+
+`harness tracker autolaunch prefer claude --until <ISO>` sends every launch to
+Claude until that time: auto-launches, retries, watchdog handoffs, and choices
+saved before the switch. `pause codex --until <ISO>` does the same, and
+`prefer default` or `resume codex` ends it early. Simple work uses Sonnet low,
+default work Sonnet medium, hard work Sonnet high and Harness module jobs Haiku
+medium. Deploys keep their model and computer use stays on Terra. A Codex model
+named on an item is replaced; a Claude one is kept.
+
+Set it on the hub to reach every computer through sync. Set on another computer,
+it applies there until the hub sets a newer one. `autolaunch status` and Hub
+Home show the active preference. It ends by time only; Tracker does not read the
+Claude weekly usage percentage.
+
 Compare quiesced SQLite backup copies before changing a Tracker service.
 `--node` is the spoke's configured name. Add `--hub-relay-ops` when the spoke
 relays other nodes' operations to the hub and `--peer-relay-ops` when it uses a
@@ -1288,6 +1303,31 @@ to the selected provider using the CLI's existing login. Harness coding sessions
 disable Codex Apps so their model traffic stays on the supervised transport.
 `--context-tokens` lowers the orchestrator threshold for a controlled trial.
 Harness declines an initial provider prompt larger than 96 KiB.
+
+A native module task can declare a required host check in its task input JSON.
+For a trusted task queue, start the worker with `--allow-task-checks`. The
+executable and its arguments are passed directly in the worktree. The default
+timeout is three minutes and the maximum is ten.
+
+```json
+{
+	"check": {
+		"argv": ["bun", "test", "test/orders.test.ts"],
+		"timeoutMs": 180000
+	}
+}
+```
+
+After a nonzero exit, the worker sends a bounded diagnostic tail to the same
+provider session. It allows three repair turns and records each check outcome and
+duration in `task show`. A timeout, cancellation or command error stops the
+attempt. The offline Docker pilot does not run host checks. Only enable host
+checks in queues whose executable commands and task code you trust.
+
+A size-reduction candidate is evaluated in a scratch worktree after the original
+passes verification. If the provider rejects the candidate, or it loses coverage
+or fails a check, Harness records the reason and preserves the verified original.
+The original still has to pass its required checks to reach review.
 
 The managed provider runtime has an offline Linux Docker pilot. Set
 `"platform": "linux"` in a module task input or pass `--platform linux` to

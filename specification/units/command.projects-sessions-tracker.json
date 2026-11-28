@@ -294,6 +294,11 @@
 				"required": true
 			},
 			{
+				"name": "nativeTrackerAutolaunchRequest.until",
+				"type": "string | boolean",
+				"required": false
+			},
+			{
 				"name": "wantsNativeTrackerHelp.args",
 				"type": "string[]",
 				"required": true
@@ -570,7 +575,7 @@
 			},
 			{
 				"name": "nativeTrackerAutolaunchRequest",
-				"type": "| NativeTrackerRequest | undefined"
+				"type": "NativeTrackerRequest | undefined"
 			},
 			{
 				"name": "wantsNativeTrackerHelp",
@@ -1138,12 +1143,17 @@
 						"name": "nativeTrackerAutolaunchRequest.[mode, ...rest]",
 						"type": "string[]",
 						"required": true
+					},
+					{
+						"name": "nativeTrackerAutolaunchRequest.until",
+						"type": "string | boolean",
+						"required": false
 					}
 				],
 				"outputs": [
 					{
 						"name": "nativeTrackerAutolaunchRequest",
-						"type": "| NativeTrackerRequest | undefined"
+						"type": "NativeTrackerRequest | undefined"
 					}
 				],
 				"errors": [
@@ -1152,7 +1162,7 @@
 						"type": "thrown"
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "wantsNativeTrackerHelp",

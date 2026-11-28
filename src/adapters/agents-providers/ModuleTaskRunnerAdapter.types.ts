@@ -19,7 +19,10 @@ export interface TaskPublicEvent {
 	model?: string;
 	is_error?: boolean;
 	result?: string;
-	error?: string | { type?: string; code?: string };
+	thread_id?: string;
+	session_id?: string;
+	message?: string;
+	error?: string | { type?: string; code?: string; message?: string; resets_at?: number };
 	rate_limit_info?: { status?: string; resetsAt?: number };
 	item?: { type?: string; text?: string };
 	modelUsage?: Record<string, unknown>;

@@ -19,7 +19,7 @@ export const completionHooksConfig = {
 			required: true,
 			enabled: true,
 			prompt:
-				'Reduce the bytes of both the module and its tests without weakening any required behavior, assertion, or coverage. Harness keeps a reduction only when the source bytes and the test bytes both shrink, the tests still pass, and line coverage of every changed source file is measured and does not drop. A partial reduction (source only, tests only, or a changed file without line coverage) is rejected and blocks the task, so make a complete reduction or change nothing. When no such reduction is available, leave every file unchanged and return status "passed" with a summary saying so.'
+				'Reduce the bytes of both the module and its tests without weakening any required behavior, assertion, or coverage. Harness keeps a reduction only when the source bytes and the test bytes both shrink, the tests still pass, and line coverage of every changed source file is measured and does not drop. Harness discards a reduction if it cannot verify the candidate against the baseline and the declared task check. When no such reduction is available, leave every file unchanged and return status "passed" with a summary saying so.'
 		},
 		...(['orchestrator', 'module'] as const).map((scope) => ({
 			name: 'security-review',

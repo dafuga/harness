@@ -4,17 +4,24 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { completionHooksConfig } from '../../../configs/agents-providers/completionHooksConfig';
+import type { TaskRunInput } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { taskWrites } from '../module-task-worker-service/taskClaim';
 import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/ModuleTaskWorktreeAdapter';
+import { assessReduction, measureBaseline } from './assessReduction';
 import { CompletionCheckError } from './CompletionCheckError';
 import { loadCompletionConfig } from './completionConfig';
-import { askCompletion, completionRecordPath, evaluateCompletion } from './completionRun';
+import {
+	askCompletion,
+	completionRecordPath,
+	completionSummary,
+	evaluateCompletion
+} from './completionRun';
 import type { CompletionCheck, CompletionReceipt } from './completionRun.types';
-import { moduleCompletionMeasurement } from './moduleCompletionMeasurement';
-import { requireNondecreasingCoverage } from './lcovCoverage';
-import type { ModuleCandidate, ModuleCompletionInput } from './moduleCompletion.types';
-
-export const moduleCompletionContext = Symbol('module completion context');
+import type {
+	ModuleCandidate,
+	ModuleCompletionContext,
+	ModuleCompletionInput
+} from './moduleCompletion.types';
 
 export async function completeModule(input: ModuleCompletionInput): Promise<void> {
 	const { owner, task, result, context } = input;
@@ -44,7 +51,7 @@ export async function completeModule(input: ModuleCompletionInput): Promise<void
 				'Required module completion check failed. See the completion record.'
 			);
 	} finally {
-		result.text += '\nCompletion record: ' + path + '\n' + moduleCheckSummary(run.checks);
+		result.text += '\nCompletion record: ' + path + '\n' + completionSummary(run.checks);
 	}
 }
 
@@ -100,16 +107,12 @@ async function reviewModule(
 		signal: context.signal
 	};
 	if (measured) {
-		await moduleCompletionMeasurement(
-			measure,
-			base,
-			join(candidate.reportDirectory, 'before'),
-			(reading) => (receipt.before = reading)
-		);
+		const readable = await measureBaseline(candidate, receipt, measure);
 		await requireSameTree(base, await candidateCheckpoint(input, scratch, base), scratch);
+		if (!readable) return;
 	}
-	receipt.summary = await askCompletion(
-		context.runner.run.bind(context.runner),
+	const proposedReduction = await moduleReviewVerdict(
+		context,
 		{
 			...result,
 			cwd: scratch.root,
@@ -117,23 +120,43 @@ async function reviewModule(
 			prompt: moduleCheckPrompt(task.module.id, source, tests)
 		},
 		check,
-		!measured
+		receipt
 	);
 	const paths = await taskWrites(scratch, { ...task, sourceCommit: base });
+	if (!proposedReduction) return;
 	if (!measured) {
 		if (paths.length)
 			throw new CompletionCheckError('A read-only completion check changed the worktree.');
 		return;
 	}
 	const proposed = await candidateCheckpoint(input, scratch, base);
-	await moduleCompletionMeasurement(
-		measure,
-		proposed,
-		join(candidate.reportDirectory, 'after'),
-		(reading) => (receipt.after = reading)
-	);
+	const accepted = await assessReduction(candidate, { proposed, paths, receipt, measure });
+	if (!accepted || !paths.length) return;
 	await requireSameTree(proposed, await candidateCheckpoint(input, scratch, base), scratch);
-	await promoteModule(candidate, proposed, paths, receipt);
+	await promoteModule(candidate, proposed, receipt);
+}
+
+async function moduleReviewVerdict(
+	context: ModuleCompletionContext,
+	input: TaskRunInput,
+	check: CompletionCheck,
+	receipt: CompletionReceipt
+): Promise<boolean> {
+	const measured = check.name === completionHooksConfig.reduce;
+	try {
+		receipt.summary = await askCompletion(
+			context.runner.run.bind(context.runner),
+			input,
+			check,
+			!measured
+		);
+		return true;
+	} catch (error) {
+		if (!measured || !(error instanceof CompletionCheckError) || !error.summary) throw error;
+		receipt.summary = error.summary;
+		receipt.reason = error.message;
+		return false;
+	}
 }
 
 function moduleCheckPrompt(module: string, source: string[], tests: string[]): string {
@@ -148,23 +171,9 @@ function moduleCheckPrompt(module: string, source: string[], tests: string[]): s
 async function promoteModule(
 	candidate: ModuleCandidate,
 	proposed: string,
-	paths: string[],
 	receipt: CompletionReceipt
 ) {
 	const { input, scratch, base } = candidate;
-	const { before, after } = receipt;
-	const tests = input.task.verificationFiles ?? [];
-	requireNondecreasingCoverage(
-		before!.coverage!,
-		after!.coverage!,
-		paths.filter((path) => !tests.includes(path))
-	);
-	if (!paths.length) {
-		receipt.disposition = 'unchanged';
-		return;
-	}
-	if (after!.bytes.source >= before!.bytes.source || after!.bytes.tests >= before!.bytes.tests)
-		throw new CompletionCheckError('The candidate did not reduce both source and test bytes.');
 	const working = new GitAdapter(input.result.worktree);
 	const current = await candidateCheckpoint(
 		input,
@@ -202,17 +211,4 @@ async function requireSameTree(before: string, after: string, git: GitAdapter) {
 	);
 	if (first !== last)
 		throw new CompletionCheckError('The measured worktree changed during verification.');
-}
-
-function moduleCheckSummary(receipts: CompletionReceipt[]): string {
-	return receipts
-		.map((receipt) => {
-			const line = `Completion check ${receipt.name}: ${receipt.status}`;
-			const evidence =
-				receipt.before || receipt.after
-					? ` ${JSON.stringify({ before: receipt.before, after: receipt.after, disposition: receipt.disposition })}`
-					: '';
-			return line + evidence;
-		})
-		.join('\n');
 }

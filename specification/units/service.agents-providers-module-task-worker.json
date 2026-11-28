@@ -14,6 +14,8 @@
 			"src/services/agents-providers/module-task-worker-service/preflightClaim.ts",
 			"src/services/agents-providers/module-task-worker-service/providerCooldown.ts",
 			"src/services/agents-providers/module-task-worker-service/providerCooldown.types.ts",
+			"src/services/agents-providers/module-task-worker-service/taskCheck.ts",
+			"src/services/agents-providers/module-task-worker-service/taskCheckLoop.ts",
 			"src/services/agents-providers/module-task-worker-service/taskClaim.ts",
 			"src/services/agents-providers/module-task-worker-service/taskClaim.types.ts",
 			"src/services/agents-providers/module-task-worker-service/taskPreflight.ts"
@@ -29,6 +31,8 @@
 			"readCooldowns",
 			"recordCooldown",
 			"ProviderCooldowns",
+			"runTaskCheck",
+			"taskCheckLoop",
 			"pendingTaskResult",
 			"claimable",
 			"claimedTask",
@@ -59,6 +63,11 @@
 			{
 				"name": "ModuleTaskWorkerService.constructor.tracker",
 				"type": "string",
+				"required": false
+			},
+			{
+				"name": "ModuleTaskWorkerService.constructor.allowTaskChecks",
+				"type": "boolean",
 				"required": false
 			},
 			{
@@ -102,8 +111,8 @@
 				"required": true
 			},
 			{
-				"name": "preflightClaim.modules",
-				"type": "string[]",
+				"name": "preflightClaim.options",
+				"type": "{ modules: string[]; allowTaskChecks?: boolean }",
 				"required": true
 			},
 			{
@@ -140,6 +149,41 @@
 				"name": "recordCooldown.now",
 				"type": "number",
 				"required": false
+			},
+			{
+				"name": "runTaskCheck.check",
+				"type": "NonNullable<ModuleTask['check']>",
+				"required": true
+			},
+			{
+				"name": "runTaskCheck.cwd",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "runTaskCheck.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "taskCheckLoop.task",
+				"type": "ModuleTask",
+				"required": true
+			},
+			{
+				"name": "taskCheckLoop.input",
+				"type": "TaskRunInput",
+				"required": true
+			},
+			{
+				"name": "taskCheckLoop.result",
+				"type": "NonNullable<ModuleTask['result']>",
+				"required": true
+			},
+			{
+				"name": "taskCheckLoop.turn",
+				"type": "(input: TaskRunInput) => Promise<TaskExecution>",
+				"required": true
 			},
 			{
 				"name": "pendingTaskResult.selection",
@@ -912,8 +956,8 @@
 						"required": true
 					},
 					{
-						"name": "preflightClaim.modules",
-						"type": "string[]",
+						"name": "preflightClaim.options",
+						"type": "{ modules: string[]; allowTaskChecks?: boolean }",
 						"required": true
 					}
 				],
@@ -995,6 +1039,67 @@
 					{
 						"name": "recordCooldown",
 						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runTaskCheck",
+				"inputs": [
+					{
+						"name": "runTaskCheck.check",
+						"type": "NonNullable<ModuleTask['check']>",
+						"required": true
+					},
+					{
+						"name": "runTaskCheck.cwd",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "runTaskCheck.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runTaskCheck",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "taskCheckLoop",
+				"inputs": [
+					{
+						"name": "taskCheckLoop.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "taskCheckLoop.input",
+						"type": "TaskRunInput",
+						"required": true
+					},
+					{
+						"name": "taskCheckLoop.result",
+						"type": "NonNullable<ModuleTask['result']>",
+						"required": true
+					},
+					{
+						"name": "taskCheckLoop.turn",
+						"type": "(input: TaskRunInput) => Promise<TaskExecution>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskCheckLoop",
+						"type": "Promise<string | undefined>"
 					}
 				],
 				"errors": [],
@@ -1673,6 +1778,11 @@
 						"name": "ModuleTaskWorkerService.constructor.tracker",
 						"type": "string",
 						"required": false
+					},
+					{
+						"name": "ModuleTaskWorkerService.constructor.allowTaskChecks",
+						"type": "boolean",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -1705,7 +1815,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-redact-secrets",
 			"via": "import",
 			"origin": "derived"
 		},

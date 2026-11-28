@@ -8,6 +8,7 @@ import { dirname, join } from 'node:path';
 import { verifiedSubmission, verifiedTaskBaseline } from '../../support/moduleTaskEvidence';
 import { observedTaskOperation } from '../../support/taskProfiles';
 import { seedTaskFrameFlag, hash } from '../../support/frameFlagFixture';
+import { assertDeclaredTaskCheck } from '../../support/moduleTaskCheckFixture';
 import { LfsAdapter } from '../../../src/adapters/git-source-history/LfsAdapter';
 test('module filters and assignment claims select once, then preserve changes for review', async () => {
 	const f = await moduleTaskFixture();
@@ -170,3 +171,9 @@ async function acceptVerified(
 	await service.review(id, { ...accept, evidence: evidence.commit });
 	return evidence;
 }
+
+test.each(['repaired', 'exhausted'] as const)(
+	'declared checks retain each round and resume the same provider session (%s)',
+	assertDeclaredTaskCheck,
+	30000
+);

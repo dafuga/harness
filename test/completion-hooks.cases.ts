@@ -72,7 +72,12 @@ test.each(models)(
 				provider,
 				checks: [
 					{ name: 'reduce-module-bytes', status: 'passed', disposition: 'applied' },
-					{ name: 'security-review', status: 'failed', required: false }
+					{
+						name: 'security-review',
+						status: 'failed',
+						required: false,
+						summary: 'Implemented order validation.'
+					}
 				]
 			});
 			const check = receipt.checks[0];
@@ -90,33 +95,64 @@ test.each(models)(
 	30000
 );
 
-test.each(['completion-coverage-loss', 'completion-test-failure'])(
-	'managed module completion discards %s and blocks review',
+const baselineCheck = {
+	argv: [
+		'bun',
+		'--eval',
+		"process.exit((await Bun.file('src/orders.ts').text()).includes('Comments') ? 0 : 1)"
+	]
+};
+
+test.each([
+	'completion-coverage-loss',
+	'completion-test-failure',
+	'completion-declared-check',
+	'completion-provider-rejected'
+])(
+	'managed module completion discards %s and preserves the verified baseline',
 	async (mode) => {
 		const f = await moduleTaskFixture({ checks: [] });
 		try {
 			await f.feature();
 			await writeFile(join(f.root, 'mode'), mode);
+			const check = mode === 'completion-declared-check' ? baselineCheck : undefined;
 			await f.cli([
 				'add',
 				'--input',
 				await f.input({
 					model: 'claude-haiku-5-5',
-					verificationFiles: ['src/orders.test.ts']
+					verificationFiles: ['src/orders.test.ts'],
+					check
 				})
 			]);
-			const run = await f.cli(['worker', '--worker=owner', '--once', '--json'], false);
-			expect(run.exitCode).toBe(1);
+			const run = await f.cli(
+				['worker', '--worker=owner', '--once', '--allow-task-checks', '--json'],
+				false
+			);
+			expect(run.exitCode).toBe(0);
 			const { result, status } = JSON.parse(run.stdout);
-			expect(status).toBe('failed');
+			expect(status).toBe('review');
 			const receipt = await completionReceipt(result.text);
 			expect(receipt.checks[0]).toMatchObject({
 				name: 'reduce-module-bytes',
-				status: 'failed',
+				status: 'passed',
 				disposition: 'discarded',
-				before: { testExitCode: 0 },
-				after: { testExitCode: mode === 'completion-test-failure' ? 1 : 0 }
+				before: { testExitCode: 0 }
 			});
+			if (mode === 'completion-provider-rejected') {
+				expect(receipt.checks[0].summary).toBe(
+					'Removed redundant comments and condensed test layout.'
+				);
+				expect(receipt.checks[0].after).toBeUndefined();
+			} else {
+				expect(receipt.checks[0].after.testExitCode).toBe(
+					mode === 'completion-test-failure' ? 1 : 0
+				);
+			}
+			if (check) {
+				expect(result.checkRounds).toMatchObject([{ status: 'passed', exitCode: 0 }]);
+				expect(receipt.checks[0].candidateCheck).toMatchObject({ status: 'failed', exitCode: 1 });
+			}
 			expect(await readFile(join(result.worktree, 'src/orders.test.ts'), 'utf8')).toContain(
 				'expect(orders(false)).toBe(0)'
 			);
@@ -156,7 +192,7 @@ test('managed module completion verifies with the repository installed packages'
 	}
 }, 30000);
 
-async function completionReceipt(text: string) {
+export async function completionReceipt(text: string) {
 	const path = text.match(/^Completion record: (.+)$/m)?.[1];
 	expect(path, 'worker result links its completion record').toBeDefined();
 	return JSON.parse(await readFile(path!, 'utf8'));

@@ -1,0 +1,146 @@
+/* Agents dock: a pill in the bottom-right corner of every page, and the panel it opens. */
+.dock-pill {
+	position: absolute;
+	right: 32px;
+	bottom: 16px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	height: 48px;
+	padding: 0 16px 0 10px;
+	border: 1px solid var(--hx-color-border-strong);
+	border-radius: 999px;
+	background: var(--hx-color-surface);
+	box-shadow: var(--hx-shadow-popover);
+	font-weight: 600;
+}
+.av-stack {
+	display: flex;
+}
+.av-stack .av {
+	width: 28px;
+	height: 28px;
+	margin-left: 4px;
+	font-size: 10px;
+}
+.av-stack .av:first-child {
+	margin-left: 0;
+}
+.dock {
+	position: absolute;
+	right: 32px;
+	bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	width: 392px;
+	border: 1px solid var(--hx-color-border-strong);
+	border-radius: 14px;
+	background: var(--hx-color-surface);
+	box-shadow: var(--hx-shadow-overlay);
+}
+.dock-head {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 14px 12px 14px 16px;
+	border-bottom: 1px solid var(--hx-color-border);
+}
+.dock-title {
+	font-size: 16px;
+	line-height: 22px;
+	font-weight: 600;
+}
+.icon-btn {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 6px;
+	color: var(--hx-color-text-muted);
+	font-size: 20px;
+	line-height: 1;
+}
+.dock-body {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding: 16px;
+}
+.dock-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.dock-group .kicker {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.dock-group[data-tone='needs'] .kicker {
+	color: var(--hx-color-accent);
+}
+.agent {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	width: 100%;
+	min-height: 52px;
+	padding: 8px 10px;
+	border: 1px solid transparent;
+	border-radius: 8px;
+}
+.agent.asks {
+	border-color: var(--hx-color-primary-line);
+	background: var(--hx-color-primary-wash);
+}
+.agent-name {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	font-weight: 600;
+	line-height: 20px;
+}
+.agent-name .when i {
+	font-style: normal;
+}
+.agent-name .when {
+	margin-left: auto;
+	color: var(--hx-color-text-muted);
+	font-size: 12px;
+	font-weight: 400;
+	white-space: nowrap;
+}
+.agent-sub {
+	display: block;
+	color: var(--hx-color-text-muted);
+	font-size: 13px;
+	line-height: 18px;
+}
+.agent.asks .agent-sub {
+	color: var(--hx-color-text-supporting);
+}
+.go {
+	flex: none;
+	color: var(--hx-color-text-muted);
+	font-size: 18px;
+}
+.dock-rows {
+	display: flex;
+	flex-direction: column;
+}
+.dock-rows .agent {
+	border-radius: 0;
+	border-width: 0 0 1px;
+	border-color: var(--hx-color-border);
+	padding: 8px 2px;
+}
+.dock-rows .agent:last-child {
+	border-bottom: 0;
+}
+.dock-foot {
+	display: flex;
+	gap: 8px;
+	padding: 12px 16px 16px;
+	border-top: 1px solid var(--hx-color-border);
+}

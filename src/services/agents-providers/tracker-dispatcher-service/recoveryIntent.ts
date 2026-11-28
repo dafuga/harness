@@ -4,7 +4,8 @@ import type {
 	TrackerDispatchItem,
 	TrackerDispatchPolicy,
 	TrackerDispatchSnapshot,
-	TrackerLaunchRequest
+	TrackerLaunchRequest,
+	TrackerLaunchRung
 } from '../TrackerDispatcherService.types';
 import {
 	automaticRequestHold,
@@ -57,9 +58,7 @@ function queueRecovery(
 	now: number
 ): TrackerDispatchDecision {
 	const target = canonicalNode(policy.node, policy);
-	const pick = request.rung
-		? { rung: request.rung, kind: item.kind, reason: 'resume on the same provider and model' }
-		: policy.pickModel(item);
+	const pick = recoveryPick(item, request.rung, policy);
 	if ('error' in pick) return skip('held', 'Tracker model cannot be selected for recovery');
 	const intent = { source: 'recovery', target, token: request.token, scheduledPick: pick } as const;
 	const hold = policy.admit(item, intent, pick.rung);
@@ -81,6 +80,22 @@ function queueRecovery(
 			runs: [{ ...run, failure_reason: hold }]
 		}
 	};
+}
+
+// A handoff resumes its model unless the provider preference now rules that model out.
+function recoveryPick(
+	item: TrackerDispatchItem,
+	rung: TrackerLaunchRung | undefined,
+	policy: TrackerDispatchPolicy
+) {
+	if (!rung) return policy.pickModel(item);
+	return (
+		policy.redirectPick?.(item, rung) ?? {
+			rung,
+			kind: item.kind,
+			reason: 'resume on the same provider and model'
+		}
+	);
 }
 
 function pendingIntent(item: TrackerDispatchItem, { runs }: TrackerDispatchSnapshot) {

@@ -8,6 +8,7 @@ import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { TrackerSpokeLoopService } from '../TrackerSpokeLoopService';
 import { observeTrackerDuePolicy } from './nativeTrackerDuePolicy';
+import { observeTrackerProviderPreference } from './trackerProviderPreference';
 import { trackerMachineSample } from './trackerFleetSampleSchema';
 
 export { trackerMachineSample, trackerRunnerSample } from './trackerFleetSampleSchema';
@@ -23,7 +24,10 @@ export function composeTrackerLinks(
 				...link,
 				store,
 				onDuePolicy(value) {
-					if ((link.link ?? 'hub') === 'hub') observeTrackerDuePolicy(store, value);
+					if ((link.link ?? 'hub') === 'hub') {
+						observeTrackerDuePolicy(store, value);
+						observeTrackerProviderPreference(store, value);
+					}
 					link.onDuePolicy?.(value);
 				}
 			})
