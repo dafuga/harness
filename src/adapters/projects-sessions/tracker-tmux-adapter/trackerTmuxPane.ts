@@ -1,6 +1,13 @@
 // @harness-uid u_fyf7e7kyi5
 import type { TrackerTmuxPane } from '../TrackerTmuxAdapter.types';
 
+/** MB2's Aqua Tracker service starts this server for new native Claude runs. */
+export const trackerClaudeAquaSocket = 'tracker-claude-aqua';
+
+export function trackerTmuxSockets(node: string): string[] {
+	return node === 'harbor-mbp-2' ? ['claude', trackerClaudeAquaSocket, 'default'] : ['default'];
+}
+
 const fields = [
 	'session_name',
 	'session_created',
@@ -23,7 +30,7 @@ export { trackerWatchdogSessionName as trackerSessionName } from '../../../servi
 
 export function trackerTmuxPane(
 	raw: string,
-	scope: { socket: string; runnerSocket: boolean; names: RegExp }
+	scope: { socket: string; primarySocket: boolean; names: RegExp }
 ): TrackerTmuxPane | undefined {
 	const [
 		name,
@@ -50,7 +57,7 @@ export function trackerTmuxPane(
 		)
 	)
 		return undefined;
-	const { socket, runnerSocket } = scope;
+	const { socket, primarySocket } = scope;
 	const live = dead === '0';
 	const readable = live && mode === '0' && off === '0';
 	const ready = readable && windows === '1' && count === '1';
@@ -69,7 +76,7 @@ export function trackerTmuxPane(
 			readable,
 			ready,
 			attached: Number(attached) > 0,
-			runnerSocket,
+			runnerSocket: primarySocket || socket === trackerClaudeAquaSocket,
 			currentCommand: command,
 			screen: null
 		}

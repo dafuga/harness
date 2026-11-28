@@ -14,7 +14,7 @@ if (basename(process.argv[1]) === 'claude') {
 		process.stdout.write(JSON.stringify({ loggedIn, authMethod: loggedIn ? 'claude.ai' : 'none' }));
 		process.exit(loggedIn ? 0 : 1);
 	}
-	if (startup === 'onboarding') process.exit(0);
+	if (startup === 'onboarding' || startup === 'locked-keychain') process.exit(0);
 	if (startup === 'crash') process.exit(3);
 	const session = argv[argv.indexOf('--session-id') + 1];
 	if (argv.includes('--session-id')) {

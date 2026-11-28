@@ -67,22 +67,18 @@ export async function stopManagedRun(
 	const name = managedSessionName(itemId, runId);
 	const path = join(directory, token);
 	const record = checkTrackerManagedReceipt(path, node, key);
-	const probe = await managedTmuxEnvironment(tmux, node, name, signal);
+	const socket = trackerSocket(node, record?.socket);
+	const probe = await managedTmuxEnvironment(tmux, socket, name, signal);
 	if (probe.code === 1 && missingTmuxSession(probe.stderr, name)) return true;
-	if (
-		probe.code !== 0 ||
-		probe.stdout.trim() !== `HARNESS_TRACKER_ATTEMPT=${token}` ||
-		!matchesManagedStop(record, { itemId, runId, name })
-	)
-		return false;
+	if (!matchesManagedStop(record, { itemId, runId, name }, probe)) return false;
 	// Recheck ownership inside the tmux server before terminating the exact session.
-	const pane = await managedSessionPane(tmux, node, name, signal);
+	const pane = await managedSessionPane(tmux, socket, name, signal);
 	if (!pane) return false;
 	const result = await runTrackerHostCommand(
 		tmux,
 		[
 			'-L',
-			trackerSocket(node),
+			socket,
 			'if-shell',
 			'-F',
 			'-t',
@@ -93,14 +89,14 @@ export async function stopManagedRun(
 		signal
 	);
 	if (result.code !== 0 || result.stdout.trim() !== 'tracker-session-stopped') return false;
-	const after = await managedTmuxEnvironment(tmux, node, name, signal);
+	const after = await managedTmuxEnvironment(tmux, socket, name, signal);
 	return after.code === 1 && missingTmuxSession(after.stderr, name);
 }
 
-async function managedSessionPane(tmux: string, node: string, name: string, signal: AbortSignal) {
+async function managedSessionPane(tmux: string, socket: string, name: string, signal: AbortSignal) {
 	const result = await runTrackerHostCommand(
 		tmux,
-		['-L', trackerSocket(node), 'list-panes', '-s', '-t', `=${name}`, '-F', '#{pane_id}'],
+		['-L', socket, 'list-panes', '-s', '-t', `=${name}`, '-F', '#{pane_id}'],
 		signal
 	);
 	const pane = result.stdout.split('\n')[0];
@@ -109,19 +105,26 @@ async function managedSessionPane(tmux: string, node: string, name: string, sign
 
 function matchesManagedStop(
 	record: TrackerManagedReceipt | undefined,
-	{ itemId, runId, name }: { itemId: string; runId: number; name: string }
+	{ itemId, runId, name }: { itemId: string; runId: number; name: string },
+	probe: { code: number; stdout: string }
 ) {
-	return record?.itemId === itemId && record.runId === runId && record.tmux === name;
+	return (
+		record?.itemId === itemId &&
+		record.runId === runId &&
+		record.tmux === name &&
+		probe.code === 0 &&
+		probe.stdout.trim() === `HARNESS_TRACKER_ATTEMPT=${record.token}`
+	);
 }
 export function managedTmuxEnvironment(
 	tmux: string,
-	node: string,
+	socket: string,
 	name: string,
 	signal: AbortSignal
 ) {
 	return runTrackerHostCommand(
 		tmux,
-		['-L', trackerSocket(node), 'show-environment', '-t', `=${name}`, 'HARNESS_TRACKER_ATTEMPT'],
+		['-L', socket, 'show-environment', '-t', `=${name}`, 'HARNESS_TRACKER_ATTEMPT'],
 		signal
 	);
 }

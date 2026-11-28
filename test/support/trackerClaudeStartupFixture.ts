@@ -52,6 +52,7 @@ export async function verifyUnusableWorktree(
 
 const startupCauses = {
 	'signed-out': /sign in/i,
+	'locked-keychain': /sign in/i,
 	onboarding: /onboarding/i,
 	untrusted: /trust this project folder/i,
 	crash: /synthetic launcher crash/i

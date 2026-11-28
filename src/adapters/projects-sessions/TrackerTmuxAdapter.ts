@@ -17,7 +17,8 @@ import {
 	matchesTrackerTmuxPane,
 	trackerPaneFormat,
 	trackerSessionName,
-	trackerTmuxPane
+	trackerTmuxPane,
+	trackerTmuxSockets
 } from './tracker-tmux-adapter/trackerTmuxPane';
 
 import { trackerTmuxWindows } from './tracker-tmux-adapter/trackerTmuxWindows';
@@ -53,7 +54,7 @@ export class TrackerTmuxAdapter {
 
 	constructor(config: TrackerTmuxAdapterConfig) {
 		this.executable = controlledTrackerExecutable(config.executable);
-		this.sockets = config.node === 'harbor-mbp-2' ? ['claude', 'default'] : ['default'];
+		this.sockets = trackerTmuxSockets(config.node);
 	}
 
 	async scan(signal: AbortSignal, names: RegExp = trackerSessionName): Promise<WatchdogPane[]> {
@@ -135,7 +136,7 @@ export class TrackerTmuxAdapter {
 			if (result.code !== 0)
 				throw new TrackerHostProcessError('Tracker tmux pane inventory failed');
 			for (const raw of result.stdout.trimEnd().split('\n')) {
-				const layout = trackerTmuxPane(raw, { socket, runnerSocket: index === 0, names });
+				const layout = trackerTmuxPane(raw, { socket, primarySocket: index === 0, names });
 				if (layout) layouts.push(layout);
 			}
 		}

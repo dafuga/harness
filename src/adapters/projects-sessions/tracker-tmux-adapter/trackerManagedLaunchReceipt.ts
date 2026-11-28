@@ -17,6 +17,7 @@ import { claudeStartupFailure } from '../../../services/projects-sessions/tracke
 import type { TrackerHostSession } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import { managedClaudeStartupPhase } from './trackerClaudeStartupPhase';
 import { trackerStartupCause } from './trackerStartupCause';
+import { trackerClaudeAquaSocket } from './trackerTmuxPane';
 import type {
 	TrackerManagedPresence,
 	TrackerManagedReceipt
@@ -29,6 +30,7 @@ const receiptSchema = z.strictObject({
 	key: z.string(),
 	token: z.string().regex(/^[a-f0-9]{64}$/),
 	tmux: z.string().regex(/^auto-[a-z0-9]{6}-r[0-9]+$/),
+	socket: z.literal(trackerClaudeAquaSocket).optional(),
 	issuedAt: z.int().nonnegative(),
 	checkClaudeStartup: z.literal(true).optional()
 });
