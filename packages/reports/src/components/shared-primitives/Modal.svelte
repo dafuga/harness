@@ -45,7 +45,25 @@
 		else dialog.show();
 		openedAsModal = modal;
 	});
-	function close() {
+	let closing = false;
+	async function close() {
+		if (closing) return;
+		const target = dialog;
+		if (
+			target?.closest('.hh-home, .inbox') &&
+			!matchMedia('(prefers-reduced-motion: reduce)').matches
+		) {
+			closing = true;
+			try {
+				await target.animate([{ opacity: 1 }, { opacity: 0 }], {
+					duration: 150,
+					easing: 'ease-out'
+				}).finished;
+			} finally {
+				closing = false;
+			}
+			if (!target.isConnected || target !== dialog || !shown) return;
+		}
 		onClose?.();
 		onclose?.();
 	}
@@ -54,7 +72,10 @@
 {#if shown}
 	<hx-dialog
 		bind:this={dialog}
-		oncancel={close}
+		oncancel={(event) => {
+			event.preventDefault();
+			void close();
+		}}
 		onkeydown={(event) => {
 			if (modal || event.key !== 'Escape' || !(event.target instanceof Element)) return;
 			if (event.target.closest('dialog') !== dialog) return;

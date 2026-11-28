@@ -13,15 +13,15 @@
 		OwnerHomeSnapshot
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
-	import HubHomeHeader from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeHeader.svelte';
-	import HubHomeCards from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeCards.svelte';
-	import HubHomeLive from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte';
-	import HubHomeDialogs from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte';
-	import { provideHomeCosChat } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
-	import { hubSpecDocumentKey } from '../../../../reports/src/components/projects-sessions/hub-home/hubSpecDocument';
-	import type { SendHomeChat } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeView.types';
-	import '../../../../reports/src/lib/styles/home-scheme.css';
-	import '../../../../reports/src/lib/styles/hub-home/index.css';
+	import HubHomeHeader from '$reports/components/projects-sessions/hub-home/HubHomeHeader.svelte';
+	import HubHomeCards from '$reports/components/projects-sessions/hub-home/HubHomeCards.svelte';
+	import HubHomeLive from '$reports/components/projects-sessions/hub-home/HubHomeLive.svelte';
+	import HubHomeDialogs from '$reports/components/projects-sessions/hub-home/HubHomeDialogs.svelte';
+	import { provideHomeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
+	import { hubSpecDocumentKey } from '$reports/components/projects-sessions/hub-home/hubSpecDocument';
+	import type { SendHomeChat } from '$reports/components/projects-sessions/hub-home/hubHomeView.types';
+	import '$reports/lib/styles/home-scheme.css';
+	import '$reports/lib/styles/hub-home/index.css';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { followTrackerSource } from '../../lib/development-tooling/tracker-inbox/followTrackerSource';
 	import { ProjectSyncService } from '../../services/projects-sessions/ProjectSyncService';
@@ -133,6 +133,7 @@
 					reading={null}
 					{now}
 					local={home.liveOverview}
+					pastDue={view.pastDue}
 				/>{/if}
 			<hx-div class="gate-actions" aria-label="Project and account actions">
 				{#if needsOnly}

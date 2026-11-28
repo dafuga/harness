@@ -47,6 +47,13 @@
 				"description": "Disables the choices while an answer is being sent. Defaults to false."
 			},
 			{
+				"name": "HubHomeChoices.selected",
+				"type": "number",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "One-based option number to mark as chosen while the answer is being confirmed."
+			},
+			{
 				"name": "HubHomeChoices.onpick",
 				"type": "(number: number, confirmed: boolean) => void",
 				"required": true,

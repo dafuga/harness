@@ -3,7 +3,7 @@
 <!-- @harness-uid u_suxmf5vsuw -->
 <script lang="ts">
 	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
-	import { homeCosChat, provideHomeCosChat } from './hubHomeChatContext.svelte';
+	import { askKey, homeCosChat, provideHomeCosChat } from './hubHomeChatContext.svelte';
 	import Modal from '$reports/components/Modal.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
@@ -38,7 +38,12 @@
 	const name = 'Chief of Staff';
 	const phone = new MediaQuery('max-width: 560px');
 	const askId = $derived(chat.target?.askId);
-	const ask = $derived(asks.find((entry) => entry.itemId === askId));
+	const ask = $derived.by(() => {
+		const current = asks.find((entry) => entry.itemId === askId);
+		if (current) return chat.answers.get(askKey(current))?.dismissed ? undefined : current;
+		return [...chat.answers.values()].find((held) => held.ask.itemId === askId && !held.dismissed)
+			?.ask;
+	});
 	const item = $derived(
 		ask ? { id: ask.itemId, title: ask.title, details: ask.question } : chat.target?.item
 	);

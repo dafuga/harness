@@ -110,7 +110,7 @@
 	font-weight: var(--hx-style-weight-semibold);
 	white-space: nowrap;
 }
-.po-eta[data-tone='overdue'] {
+.po-eta[data-tone='blocked'] {
 	border-color: var(--hx-color-error-line);
 	background: var(--hx-color-error-soft);
 	color: var(--po-error-text);

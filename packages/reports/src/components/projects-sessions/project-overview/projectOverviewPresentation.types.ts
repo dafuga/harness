@@ -24,8 +24,8 @@ export interface OverviewBand {
 	cards: OverviewCard[];
 }
 
-/** An item's ETA: overdue, not set, or the day it is due. */
+/** An item's ETA: current state, not set, or the day it is due. */
 export interface OverviewEta {
 	text: string;
-	tone: 'overdue' | 'none' | 'scheduled';
+	tone: 'current' | 'none' | 'scheduled';
 }

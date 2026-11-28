@@ -5,7 +5,7 @@ import { recordPreviewCapture } from './recordPreviewCapture';
 import { captureClip, usesNativePopup } from './previewCapturePolicy';
 import { routeShellCatalog } from './shellCatalogRoutes';
 import type { PreviewCaptureTarget } from './previewPage.types';
-import { expect, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 import { join } from 'node:path';
 import { mkdirSync } from 'node:fs';
 import { evidenceRequested } from '../../../../../../src/utils/reports-media/record-capture/recordCapture';
@@ -19,7 +19,6 @@ import { routeLoadingZoom } from './imageZoomActions';
 import { settlePreviewAudio } from './audioPreviewReadiness';
 import { prepareDesktopPage, frameDesktopCapture } from './desktopStateActions';
 import { explorerPreviewInteraction } from './explorerCatalogVariants';
-
 import {
 	assertPreviewCaptureState,
 	assertPreviewLoading,
@@ -100,15 +99,7 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		await expect(content.locator('.image-button').first()).toBeDisabled();
 	await applyActivityPreviewContext(page, content, id);
 	await readyRoute(page, id);
-	const dialog = {
-		'desktop.component.deployment-activity': 'Deployments',
-		'desktop.component.deployment-dialog': 'Deploy'
-	}[id];
-	if (dialog && !(await page.getByRole('dialog').isVisible())) {
-		await content.getByRole('button', { name: dialog, exact: true }).click();
-		await expect(page.getByRole('dialog')).toBeVisible();
-		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
-	}
+	await openDeploymentDialog(page, content, id);
 	const emptyComponent = emptyPreviews.has(`${id}:${variant}`);
 	if (!emptyComponent) {
 		await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
@@ -119,6 +110,20 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 	await settlePreviewImages(page, content, id, variant);
 	return content;
 }
+
+async function openDeploymentDialog(page: Page, content: Locator, id: string) {
+	const dialog = {
+		'desktop.component.deployment-activity': 'Deployments',
+		'desktop.component.deployment-dialog': 'Deploy'
+	}[id];
+	if (dialog && !(await page.getByRole('dialog').isVisible())) {
+		await content.getByRole('button', { name: dialog, exact: true }).click();
+		await expect(page.getByRole('dialog')).toBeVisible();
+		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
+	}
+}
+const hubHeadline = /^\d+ sessions? running(?: for \d+ agents?)?, 1 needs you$/;
+
 /** Wait for the real route store, rather than its earlier gate or loading frame. */
 async function readyRoute(page: Page, id: string) {
 	if (overviewPreviews.has(id))
@@ -143,8 +148,8 @@ async function readyRoute(page: Page, id: string) {
 		await expect(
 			page.getByRole('cell', { name: 'ada@example.invalid', exact: true })
 		).toBeVisible();
-	if (id === 'hub.page.root' || id === 'hub.component.projects-sessions-hub-home')
-		await expect(page.getByRole('heading', { name: /working, .* need[s]? you/ })).toBeVisible();
+	if (['hub.page.root', 'hub.component.projects-sessions-hub-home'].includes(id))
+		await expect(page.getByRole('heading', { name: hubHeadline })).toBeVisible();
 	else if (isHubHomePreview(id))
 		await expect(page.locator('[data-catalog-home-part]')).toBeAttached();
 }

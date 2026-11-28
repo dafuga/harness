@@ -5,7 +5,7 @@ import type {
 	HomeWorkRow,
 	HomeWorkState
 } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
-import type { LinkedHome } from './hubHomeView.types';
+import type { LinkedHome } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 import { count } from './hubHomePresentation';
 import { runMoment } from './hubHomeTime';
 
@@ -94,16 +94,23 @@ export function liveSummary(overview: HomeLiveOverview) {
 	return `${count(running, 'run')} live${where} · ${count(overview.projects.length, 'project')}`;
 }
 
-export function projectSummary(project: HomeWorkProject) {
-	const { running, counts } = project;
-	const parts = [
-		running && `${running} running`,
-		counts.in_progress && `${counts.in_progress} in progress`,
-		counts.blocked && `${counts.blocked} blocked`,
-		counts.open && `${counts.open} open`,
-		counts.done && `${counts.done} done`
-	].filter(Boolean);
-	return parts.join(' · ') || 'No items';
+/** Counts include rows beyond the snapshot limit. Older Macs report item totals. */
+export function projectWorkCounts(project: HomeWorkProject) {
+	const running = project.running;
+	const blocked =
+		project.blockedRows ??
+		Math.max(
+			0,
+			project.counts.blocked -
+				project.rows.filter((row) => row.state === 'running' && row.status === 'blocked').length
+		);
+	const total =
+		project.totalRows ??
+		Math.max(
+			project.rows.length,
+			Object.values(project.counts).reduce((sum, n) => sum + n, 0)
+		);
+	return { running, blocked, resting: Math.max(0, total - running - blocked) };
 }
 
 /** @pure Why there is no overview to show, or null when there is one. */

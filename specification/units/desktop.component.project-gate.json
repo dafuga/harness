@@ -120,6 +120,13 @@
 				"description": "Optional phone access settings. When given, a quiet hint says to connect a phone by signing in with the same Google account, and its Phone access button opens this snippet in a dialog titled Phone access. Defaults to JavaScript undefined (omitted): no hint and no dialog."
 			},
 			{
+				"name": "ProjectGate.blockers",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Home blocker section rendered before the recent projects list."
+			},
+			{
 				"name": "ProjectGate.children",
 				"type": "Snippet",
 				"required": false,

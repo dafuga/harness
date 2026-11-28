@@ -1,5 +1,7 @@
 // @harness-uid u_u3mne4fgyr
 import type { ProjectSummary } from 'collaboration';
+import type { LinkedHome } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
+import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type {
 	HomeAgent,
 	HomeChatReceipt,
@@ -10,7 +12,6 @@ import type {
 	HomePastDue,
 	HomeSubscription,
 	HomeTrackerProject,
-	OwnerHomeSnapshot,
 	OpenHomeSection,
 	SendHomeChat
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
@@ -19,15 +20,7 @@ import type { ProjectSnapshot } from '../../../../../desktop/src/models/developm
 import type { DesktopProject } from '../../../../../desktop/src/models/projects-sessions/ProjectContext.types';
 import type { soonestWork } from './hubHomePresentation';
 
-export interface LinkedHome {
-	/** Computers linked to the signed-in account, online or not. */
-	linked: number;
-	/** How many of them answered this read. */
-	answered: number;
-	snapshot: OwnerHomeSnapshot | null;
-	/** The list of linked computers itself could not be read, so zero linked means unknown. */
-	unlisted?: true;
-}
+export type { LinkedHome };
 
 export interface HomeView {
 	overview: OverviewSnapshot | null;

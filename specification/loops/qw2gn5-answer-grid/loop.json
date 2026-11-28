@@ -1,0 +1,60 @@
+{
+	"name": "qw2gn5-answer-grid",
+	"goal": "Prove equal-width responsive Tracker answer tiles in desktop and tablet, one column at phone widths, and preserve the Other answer modal.",
+	"createdAt": "2026-11-27T15:05:30.167Z",
+	"updatedAt": "2026-11-27T15:33:20.560Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T15:06:33.261Z",
+			"evidence": "Tracker 15:03 canary report: open Hub Home and the contextual ask in chat, or open the native Tracker inbox. Compare equal-width tiles at 1440/820 px and one tile per row at 390 px."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T15:06:34.435Z",
+			"evidence": "Existing Hub and native cases counted and clicked choices without checking their bounds. Strengthened the unchanged user flows to assert columns and equal tile widths after screenshot capture."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T15:28:53.859Z",
+			"evidence": "The committed browser tests failed on harbor-mbp-2. Hub Home and chat failed the responsive grid assertions; the Mac inbox rendered one tile per row, and inbox rows exposed the option description."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T15:33:17.587Z",
+			"evidence": "Shared Hub Home and chat use a width-aware grid. The Mac and iPhone inbox list uses compact tiles and keeps option effects in the detail view. The repository design guidance documents the grid and Other dialog."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T15:33:20.560Z",
+			"evidence": "At 164e9d5bd3, the unchanged tests passed on the isolated app on harbor-mbp-2 using 1 Chromium worker. Hub: 7/7. Mac and iPhone inbox renderer: 3/3. Reviewed desktop, tablet and phone screenshots."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

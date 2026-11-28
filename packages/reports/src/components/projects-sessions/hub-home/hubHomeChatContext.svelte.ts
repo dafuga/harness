@@ -1,4 +1,6 @@
 // @harness-uid u_7j4igv6rwg
+import { SvelteMap } from 'svelte/reactivity';
+import type { HomeOpenAsk } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { getContext, setContext, tick } from 'svelte';
 import type {
 	HomeCosChatTarget,
@@ -7,6 +9,9 @@ import type {
 } from './hubHomeChatContext.types';
 
 const cosChatKey = Symbol('hub-home-cos-chat');
+
+/** An answer belongs to this question, including when Tracker reuses its item id. */
+export const askKey = (ask: HomeOpenAsk) => JSON.stringify([ask.itemId, ask.question, ask.since]);
 
 /** Provides the one Chief of Staff chat to every entry point on Home. */
 export function provideHomeCosChat(refreshAsk?: () => void) {
@@ -18,7 +23,12 @@ export function provideHomeCosChat(refreshAsk?: () => void) {
 		target = { trigger, askId };
 		refreshAsk?.();
 	};
+	const answers = new SvelteMap<
+		string,
+		{ ask: HomeOpenAsk; status: string; selection?: number; dismissed: boolean }
+	>();
 	const chat = {
+		answers,
 		get target() {
 			return target;
 		},

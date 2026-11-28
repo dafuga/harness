@@ -36,16 +36,16 @@
 				"description": "Tracker status and grouped project activity shown under active work."
 			},
 			{
+				"name": "HubHomeWork.work",
+				"type": "(OverviewItem & { project: string })[]",
+				"required": true,
+				"description": "In-progress and blocked work items enriched with project labels and due dates."
+			},
+			{
 				"name": "HubHomeWork.pastDue",
 				"type": "HomePastDue[]",
 				"required": true,
 				"description": "Past-due Tracker runs that are not yet started or are blocked."
-			},
-			{
-				"name": "HubHomeWork.work",
-				"type": "ReturnType<typeof soonestWork>",
-				"required": true,
-				"description": "In-progress and blocked work items enriched with project labels and due dates."
 			},
 			{
 				"name": "HubHomeWork.now",
@@ -102,11 +102,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.projects-sessions-hub-home-view-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
@@ -138,6 +133,11 @@
 		},
 		{
 			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
 			"via": "import",
 			"origin": "derived"
 		}

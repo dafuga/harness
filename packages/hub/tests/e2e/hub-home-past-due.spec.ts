@@ -55,6 +55,7 @@ for (const viewport of [
 		await expect(page.getByText(/routine dates are unknown/)).toHaveCount(0);
 
 		const work = page.getByRole('region', { name: 'Work in progress', exact: true });
+		await expect(work).not.toContainText(/overdue \d/i);
 		const waiting = work.getByRole('region', { name: 'Past due, not started' });
 		await expect(waiting).toContainText('2 queued · 2 blocked');
 		await expect(waiting.getByRole('listitem').first()).toContainText(

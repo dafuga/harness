@@ -12,6 +12,7 @@
 			"packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInboxMessages.ts"
 		],
 		"symbols": [
+			"syncMessage",
 			"loadFailureMessage",
 			"overviewFailureMessage",
 			"writeSentMessage",
@@ -21,6 +22,21 @@
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "syncMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": true
+			},
+			{
+				"name": "syncMessage.loaded",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "syncMessage.sync",
+				"type": "Pick<InboxReply<never>, 'freshness' | 'lastSyncedAt'>",
+				"required": false
+			},
 			{
 				"name": "loadFailureMessage.code",
 				"type": "string | undefined",
@@ -66,6 +82,10 @@
 		],
 		"outputs": [
 			{
+				"name": "syncMessage",
+				"type": "string"
+			},
+			{
 				"name": "loadFailureMessage",
 				"type": "string"
 			},
@@ -83,8 +103,36 @@
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "syncMessage",
+				"inputs": [
+					{
+						"name": "syncMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": true
+					},
+					{
+						"name": "syncMessage.loaded",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "syncMessage.sync",
+						"type": "Pick<InboxReply<never>, 'freshness' | 'lastSyncedAt'>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "syncMessage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "loadFailureMessage",
 				"inputs": [
