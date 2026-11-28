@@ -13,6 +13,7 @@ import { fixtureSecret, wire } from '../../support/trackerDispatchQueueFixture';
 import { trackerResourceHoldPrefix } from '../../../src/utils/projects-sessions/trackerHostResourceHold';
 import { resourceSample, runnerReport } from '../../support/trackerMachineFixture';
 import { expectHubSeenBySpoke } from '../../support/trackerFleetFixture';
+import { sweepIdleWork } from '../../support/trackerDueLaunchFixture';
 
 const signal = new AbortController().signal;
 // 02:00 in Lisbon: due work launches through the night.
@@ -50,7 +51,7 @@ function task(id: string, due: string, computer = primary) {
 	};
 }
 
-test('a past-due task launches within one scheduler tick on the default launch config', async () => {
+test('the default launcher honors due times across watchdog and scheduler ticks', async () => {
 	const database = new DatabaseSync(':memory:');
 	const start = starter();
 	let instant = night;
@@ -67,7 +68,17 @@ test('a past-due task launches within one scheduler tick on the default launch c
 		}
 	});
 	try {
-		runtime.store.appendLocal(task('later00001', '2026-11-25T13:00:00.000Z'));
+		const future = '2026-11-25T13:00:00.000Z';
+		runtime.store.appendLocal(task('later00001', future));
+		const enabled = await runtime.items.handle(
+			new Request('http://tracker-fixture.invalid/items/later00001/schedule-on', {
+				method: 'POST',
+				body: '{}'
+			})
+		);
+		expect(enabled.status).toBe(200);
+		instant += 120 * 60_000;
+		expect.soft(await sweepIdleWork(runtime, 'later00001', signal)).toBeNull();
 		runtime.store.appendLocal(task('past000001', '2026-11-24T09:00:00.000Z'));
 		runtime.store.appendLocal(task('held000001', '2026-11-24T09:00:00.000Z'));
 		const held = await runtime.items.handle(
@@ -78,10 +89,15 @@ test('a past-due task launches within one scheduler tick on the default launch c
 		);
 		expect(held.status).toBe(200);
 		await runtime.scheduler!.tick(signal);
-		expect(start.mock.calls.map(([{ run }]) => [run.item_id, run.launch_source])).toEqual([
-			['past000001', 'due']
-		]);
-		instant += 24 * 60 * 60_000;
+		expect
+			.soft(start.mock.calls.map(([{ run }]) => [run.item_id, run.launch_source]))
+			.toEqual([['past000001', 'due']]);
+		instant = Date.parse(future);
+		await runtime.scheduler!.tick(signal);
+		expect
+			.soft(start.mock.calls.map(([{ run }]) => [run.item_id, run.launch_source]))
+			.toContainEqual(['later00001', 'due']);
+		instant = night + 26 * 60 * 60_000;
 		await runtime.scheduler!.tick(signal);
 		expect(start.mock.calls.map(([{ run }]) => run.item_id)).toContain('held000001');
 	} finally {

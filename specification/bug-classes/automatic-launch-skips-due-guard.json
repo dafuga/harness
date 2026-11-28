@@ -1,0 +1,139 @@
+{
+	"schemaVersion": 1,
+	"revision": "09c71be8ccde7913a0b2bdaa74faf0e6428c532c",
+	"bugClass": {
+		"id": "automatic-launch-skips-due-guard",
+		"title": "Automatic launch starts future-due tasks",
+		"cause": "An automatic launch, claim, reservation, recovery, resumption, or final startup path can proceed without enforcing the task’s due-time eligibility check, allowing work scheduled for the future to start early. Manual starts may intentionally bypass this guard.",
+		"criteria": "Include a site if any unattended path can request, claim, reserve, recover, resume, or finally start scheduled work without checking that its due time has arrived. Each path is independently sufficient. Exclude cases where the due check is enforced before automatic dispatch and only explicit manual starts bypass it.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "dueAt",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "scheduledAt",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "isDue",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "nextRunAt",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "claim",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "reservation",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "watchdog",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "claim",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "reserve",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "recover",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "resume",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "dispatch",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "start",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "setTimeout",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"due",
+			"scheduled",
+			"watchdog",
+			"claim",
+			"reservation",
+			"recovery",
+			"resumption",
+			"automatic",
+			"launch"
+		],
+		"pathHints": [
+			{
+				"contains": "src/services/",
+				"weight": 5
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 5
+			},
+			{
+				"contains": "src/core/",
+				"weight": 4
+			},
+			{
+				"contains": "src/repositories/",
+				"weight": 3
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "packages/reports/",
+				"weight": -2
+			}
+		]
+	}
+}

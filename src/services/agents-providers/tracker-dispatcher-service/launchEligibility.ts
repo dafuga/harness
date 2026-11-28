@@ -107,10 +107,7 @@ export function mayScheduleHere(
 }
 
 export function dueItemHold(item: TrackerDispatchItem, policy: TrackerDispatchPolicy, now: number) {
-	return (
-		automaticRequestHold(item, policy, now) ??
-		(isDueNow(item.due, policy.timezone, now) ? null : 'item is not due')
-	);
+	return automaticRequestHold(item, policy, now) ?? (item.due ? null : 'item is not due');
 }
 
 export function automaticEnabled(
@@ -125,7 +122,9 @@ export function automaticRequestHold(
 	now: number
 ) {
 	return (
-		schedulingHold(item, now) ?? (automaticEnabled(policy) ? null : 'automatic launcher disabled')
+		schedulingHold(item, now) ??
+		(automaticEnabled(policy) ? null : 'automatic launcher disabled') ??
+		(item.due && !isDueNow(item.due, policy.timezone, now) ? 'item is not due' : null)
 	);
 }
 
