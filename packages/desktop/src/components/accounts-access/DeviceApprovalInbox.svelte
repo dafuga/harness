@@ -7,15 +7,10 @@
 	import Card from '$shared/explorer-ui/explorer-kit/Card.svelte';
 	import Modal from '$shared/shared-primitives/Modal.svelte';
 	import type {
-		DeviceApprovalAction,
-		DeviceApprovalRequest,
-		DeviceApprovalResult
+		DeviceApprovalHandler,
+		DeviceApprovalRequest
 	} from '../../models/development-tooling/Environment.types';
-	let {
-		request
-	}: {
-		request: (call: DeviceApprovalAction, event?: MouseEvent) => Promise<DeviceApprovalResult>;
-	} = $props();
+	let { request }: { request: DeviceApprovalHandler } = $props();
 	let requests = $state<DeviceApprovalRequest[]>([]);
 	let selected = $state<DeviceApprovalRequest>();
 	let code = $state('');

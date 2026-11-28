@@ -142,6 +142,12 @@ export type DeviceApprovalResult =
 	| { state: 'waiting' | 'approved' | 'denied' }
 	| { state: 'compare'; code: string };
 
+/** The inbox supplies its originating click to browser handlers that check user presence. */
+export type DeviceApprovalHandler = (
+	call: DeviceApprovalAction,
+	event?: MouseEvent
+) => Promise<DeviceApprovalResult>;
+
 /**
  * The `HarnessAccount` plugin as the page sees it. The Swift side owns the Hub origin, the
  * verifier, the nonce and the session, and signs every call; none of them crosses this interface.
