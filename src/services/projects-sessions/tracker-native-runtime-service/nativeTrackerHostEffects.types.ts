@@ -62,6 +62,8 @@ export interface TrackerManagedLaunchConfig {
 }
 
 export interface TrackerHostRepository {
+	/** Repository-scoped reader used to inspect open PR paths. */
+	github?: { executable: string; configDirectory: string };
 	repo: string;
 	platform: 'linux' | 'macos';
 	/** Shell command that must pass after done. Managed macOS routes only. */

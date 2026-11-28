@@ -1,4 +1,6 @@
 // @harness-uid u_gvqtr5mdwv
+import { reportDuplicateAdd } from './trackerDuplicateAdd';
+import { readItemBody } from '../tracker-local-api-service/trackerLocalItemMutation';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
 import { takeTrackerBackupNow } from '../tracker-backup-service/takeTrackerBackupNow';
@@ -95,6 +97,15 @@ function trackerCompatibleApi(
 ) {
 	const path = new URL(request.url).pathname;
 	switch (`${request.method} ${path}`) {
+		case 'POST /items':
+			return reportDuplicateAdd(runtime.items.handle(request), runtime.store, runtime.now);
+		case 'POST /coordination/claim':
+		case 'POST /coordination/landing':
+			return coordinateTrackerRequest(
+				request,
+				runtime,
+				path.endsWith('/claim') ? 'claim' : 'landing'
+			);
 		case 'GET /health':
 			return Response.json({
 				app: 'tracker',
@@ -182,4 +193,21 @@ export function trackerNodeSync(request: Request, runtime: TrackerNativeRuntimeS
 		body: request.body,
 		signal: request.signal
 	});
+}
+
+async function coordinateTrackerRequest(
+	request: Request,
+	runtime: TrackerNativeRuntimeService,
+	action: 'claim' | 'landing'
+) {
+	const port = runtime.coordination;
+	try {
+		const reply = await port[action](await readItemBody(request));
+		return Response.json(reply, { status: reply.allowed || action === 'landing' ? 200 : 409 });
+	} catch {
+		return Response.json(
+			{ error: 'Invalid or unavailable Tracker coordination request' },
+			{ status: 400 }
+		);
+	}
 }

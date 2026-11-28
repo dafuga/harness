@@ -21,7 +21,7 @@ export function trackerMetaKeys(prefix: string) {
 	};
 }
 
-function createTrackerSpokeRequester(options: TrackerSpokeOptions) {
+export function createTrackerSpokeRequester(options: TrackerSpokeOptions) {
 	const { store, transport } = options;
 	const auth = new TrackerSyncAuthService(options.secret);
 	return (request: Omit<TrackerSpokeRequest, 'headers' | 'timeoutMs'>, timeoutMs: number) =>

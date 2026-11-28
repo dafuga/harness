@@ -18,7 +18,8 @@ import {
 	trackerStage
 } from '../../utils/projects-sessions/trackerPlanning';
 
-const itemChases = 'items i LEFT JOIN tracker_item_chases ON chase_item_id = id';
+const itemChases =
+	'items i LEFT JOIN tracker_item_chases ON chase_item_id = id LEFT JOIN tracker_item_areas ON area_item_id = id';
 // Native adapter creation journals the source ID as actor. A manual source stays manual
 // even when an older replica supplied its creation before reason fields existed.
 export const trackerManualIntakeProjection = `CASE WHEN i.schedule_off = '1' AND EXISTS (

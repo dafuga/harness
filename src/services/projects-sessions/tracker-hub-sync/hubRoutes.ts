@@ -9,9 +9,20 @@ import type {
 import { trackerHubResponse } from './hubHttp';
 import { TrackerHubInputError } from './TrackerHubInputError';
 
-export function receiveJournalPush(store: TrackerHubStore, body: string): Response {
+export function receiveJournalPush(
+	store: TrackerHubStore,
+	body: string,
+	review?: TrackerHubOptions['reviewIncomingAdds']
+): Response {
 	const { ops } = parseBody(body);
-	const applied = store.applyOps(Array.isArray(ops) ? ops.map(parseOperation) : []);
+	const operations = Array.isArray(ops) ? ops.map(parseOperation) : [];
+	const applied = store.applyOps(operations);
+	if (review) {
+		const created = operations.filter(
+			({ fields }) => typeof fields.created_at === 'string' && typeof fields.title === 'string'
+		);
+		review([...new Set(created.map(({ item_id }) => item_id))]);
+	}
 	return trackerHubResponse(200, { ok: true, applied, db_id: store.dbId, last: store.maxSeq() });
 }
 
@@ -59,7 +70,7 @@ function recordMachineSample(
 	machines?.record({ ...sample, node: peer });
 }
 
-function parseBody(body: string): TrackerWireObject {
+export function parseBody(body: string): TrackerWireObject {
 	let parsed: unknown;
 	try {
 		parsed = JSON.parse(body);

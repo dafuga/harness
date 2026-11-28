@@ -1,3 +1,4 @@
+import { claimFrom } from '../../support/trackerAreaClient';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test, vi } from 'vitest';
 import { TrackerSyncAuthService } from '../../../src/services/networking-security/TrackerSyncAuthService';
@@ -159,3 +160,47 @@ async function proveAdapterDelegation() {
 		peerDb.close();
 	}
 }
+
+test('two fleet sessions acquire intersecting paths through one hub before editing', async () => {
+	const hub = nativeStore('hub', 'hub');
+	const first = 'alpha00001';
+	const second = 'beta000002';
+	try {
+		for (const id of [first, second]) {
+			hub.store.appendLocal({ itemId: id, fields: { title: id, status: 'open', auto: id } });
+		}
+		const claim = claimFrom(hub.sync!);
+		const grants = await Promise.all([
+			claim('alpha', first, ['src/launcher']),
+			claim('beta', second, ['src/launcher/start.ts'])
+		]);
+		expect(grants.map(({ allowed }) => allowed).sort()).toEqual([false, true]);
+		const aWon = grants[0].allowed;
+		const [winner, loser] = aWon ? [first, second] : [second, first];
+		expect(grants[aWon ? 1 : 0].reason).toContain(winner);
+		expect(
+			await claim(aWon ? 'alpha' : 'beta', winner, [
+				aWon ? 'src/launcher' : 'src/launcher/start.ts'
+			])
+		).toMatchObject({ allowed: true });
+		expect(await claim('unrelated-host', winner, ['src/launcher'])).toMatchObject({
+			allowed: false
+		});
+		const owned = await (await local(hub.api, '/items/' + winner)).json();
+		expect(owned.area_claim).toContain('src/launcher');
+		expect(owned.notes_log.at(-1).text).toBe(owned.area_claim);
+		expect(
+			(
+				await local(hub.api, '/items/' + winner + '/block', 'POST', {
+					reason: 'fixture dependency'
+				})
+			).status
+		).toBe(200);
+		expect((await (await local(hub.api, '/items/' + winner)).json()).area_claim).toBeUndefined();
+		expect(await claim(aWon ? 'beta' : 'alpha', loser, ['src/launcher'])).toMatchObject({
+			allowed: true
+		});
+	} finally {
+		hub.database.close();
+	}
+});

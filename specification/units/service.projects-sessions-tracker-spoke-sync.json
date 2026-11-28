@@ -17,6 +17,7 @@
 		],
 		"symbols": [
 			"trackerMetaKeys",
+			"createTrackerSpokeRequester",
 			"TrackerSpokeSyncService",
 			"TrackerSpokeSyncService.constructor",
 			"TrackerSpokeSyncService.push",
@@ -42,6 +43,11 @@
 			{
 				"name": "trackerMetaKeys.prefix",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "createTrackerSpokeRequester.options",
+				"type": "TrackerSpokeOptions",
 				"required": true
 			},
 			{
@@ -147,6 +153,24 @@
 				"outputs": [
 					{
 						"name": "trackerMetaKeys",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "createTrackerSpokeRequester",
+				"inputs": [
+					{
+						"name": "createTrackerSpokeRequester.options",
+						"type": "TrackerSpokeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createTrackerSpokeRequester",
 						"type": "unknown"
 					}
 				],

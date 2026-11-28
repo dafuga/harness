@@ -28,6 +28,7 @@
 			"src/services/projects-sessions/tracker-node-service/trackerAdapterRoutes.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerAutolaunchCommand.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerDigestSession.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerDuplicateAdd.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.types.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeListeners.ts",
@@ -54,6 +55,8 @@
 			"trackerAdapterRoute",
 			"trackerCommandOrItemResponse",
 			"trackerDigestSession",
+			"reportDuplicateAdd",
+			"reviewIncomingAdds",
 			"loadTrackerNodeConfig",
 			"trackerSyncPort",
 			"verifyTrackerLegacyFence",
@@ -186,6 +189,36 @@
 			{
 				"name": "trackerDigestSession.node",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "reportDuplicateAdd.response",
+				"type": "Promise<Response>",
+				"required": true
+			},
+			{
+				"name": "reportDuplicateAdd.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "reportDuplicateAdd.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
+				"name": "reviewIncomingAdds.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "reviewIncomingAdds.ids",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "reviewIncomingAdds.now",
+				"type": "() => number",
 				"required": true
 			},
 			{
@@ -357,6 +390,14 @@
 			},
 			{
 				"name": "trackerDigestSession",
+				"type": "unknown"
+			},
+			{
+				"name": "reportDuplicateAdd",
+				"type": "unknown"
+			},
+			{
+				"name": "reviewIncomingAdds",
 				"type": "unknown"
 			},
 			{
@@ -670,6 +711,62 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "reportDuplicateAdd",
+				"inputs": [
+					{
+						"name": "reportDuplicateAdd.response",
+						"type": "Promise<Response>",
+						"required": true
+					},
+					{
+						"name": "reportDuplicateAdd.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "reportDuplicateAdd.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportDuplicateAdd",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reviewIncomingAdds",
+				"inputs": [
+					{
+						"name": "reviewIncomingAdds.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "reviewIncomingAdds.ids",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "reviewIncomingAdds.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewIncomingAdds",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "loadTrackerNodeConfig",
@@ -1165,6 +1262,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
 			"via": "import",
 			"origin": "derived"
 		},

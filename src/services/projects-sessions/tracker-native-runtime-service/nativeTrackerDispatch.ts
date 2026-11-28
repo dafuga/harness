@@ -1,6 +1,8 @@
+// @harness-uid u_bl6xl2h4a3
 import { chooseTrackerFleetHost } from './composeTrackerFleet';
 import type { PeerStarts, TrackerFleetRuntime } from './nativeTrackerDispatch.types';
-// @harness-uid u_bl6xl2h4a3
+import { trackerAreaCommands } from './trackerAreaCommands';
+import { areaDispatchServices, trackerAreaDispatch } from './trackerAreaDispatch';
 import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { adapterFailover } from './trackerAdapterFailover';
 import { TrackerDispatchRepository } from '../../../repositories/projects-sessions/TrackerDispatchRepository';
@@ -11,7 +13,6 @@ import {
 	mayScheduleHere
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { previewDueLaunch } from '../../agents-providers/tracker-dispatcher-service/launchIntent';
-import { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
 import type {
 	TrackerDispatchPolicy,
 	TrackerDuePolicy
@@ -40,6 +41,7 @@ export function composeTrackerDispatch(
 
 function emptyDispatch(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
 	return {
+		coordination: trackerAreaCommands(store, options).commands,
 		dispatch: undefined,
 		scheduler: undefined,
 		permitAutomatic: undefined,
@@ -68,7 +70,7 @@ function nativeDispatch(
 		sessions,
 		now
 	});
-	const dispatch = new TrackerDispatcherService(repository, policy);
+	const guarded = nativeAreaServices(store, options, repository, { policy, runner });
 	const grant =
 		configuredGrant ??
 		spokeGrant(store, options, (itemId) => {
@@ -82,12 +84,13 @@ function nativeDispatch(
 		machines: fleet?.machines
 	});
 	return {
-		dispatch,
+		coordination: guarded.coordination,
+		dispatch: guarded.dispatch,
 		permitAutomatic: permits.hubAutomatic,
 		permitDue: permits.permitDue,
 		duePreview: configuredDuePreview(repository, policy, { duePolicy, scheduleDue }),
-		scheduler: new TrackerDispatchSchedulerService(repository, dispatch, {
-			runner,
+		scheduler: new TrackerDispatchSchedulerService(repository, guarded.dispatch, {
+			runner: guarded.runner,
 			scheduleDue,
 			policy,
 			grant,
@@ -171,5 +174,24 @@ function configuredDuePreview(
 		due,
 		preview: (id) =>
 			previewDueLaunch({ ...repository.readSnapshot(id), due: due() }, policy, policy.now())
+	};
+}
+
+function nativeAreaServices(
+	store: TrackerPersistenceService,
+	options: TrackerNativeRuntimeOptions,
+	repository: TrackerDispatchRepository,
+	{
+		policy,
+		runner
+	}: {
+		policy: TrackerDispatchPolicy;
+		runner: NonNullable<TrackerNativeRuntimeOptions['dispatch']>['runner'];
+	}
+) {
+	const guard = options.hostEffects?.launch && trackerAreaDispatch(store, options);
+	return {
+		...areaDispatchServices(repository, policy, guard, runner),
+		coordination: guard?.commands ?? trackerAreaCommands(store, options).commands
 	};
 }

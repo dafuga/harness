@@ -1,0 +1,65 @@
+{
+	"name": "gqrac3-area-claim-warnings",
+	"goal": "The area-claim launch gate holds a launch only when two sessions declared the same code area; a missing GitHub read binding, unknown or inferred areas, over 512 mentioned paths, open pull requests, undeclared runs and an unreachable hub become warnings in the session brief",
+	"createdAt": "2026-11-28T17:15:12.180Z",
+	"updatedAt": "2026-11-28T17:48:41.900Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T17:17:58.618Z",
+			"evidence": "r1304 reproduction at c6fc9eb4e7: with the live launcher routing (no github binding: 0/6 primary, 0/4 MB2) #462 holds every GitHub-checkout launch; items naming no path claim '.' and block each other; >512 mentioned paths throws and holds; open PRs hold. Expected (Daniel via CoS 17:05Z, Option 1): hold only when two sessions declared the same code area (Areas: lines or tracker claim); otherwise start and warn in the brief."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T17:18:00.483Z",
+			"evidence": "#462's tests asserted the strict behaviour (inventory rejects without a GitHub binding; unknown text claims every open PR) and its dispatch test only used declared areas on a non-Git root with a hub link, so no fixture routed a GitHub checkout without a binding or two items with no declared areas; 4 older tracker-host-resources/quota-pause tests do the latter and were not run before. New reusable fixture test/support/trackerAreaFixture.ts routes a GitHub origin with no binding by default."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T17:48:32.394Z",
+			"evidence": "loop record --phase red at 6ba9ecec4f (rebased on main 2ce7a068e4): 6 files, assertion 'expected [] to deeply equal [ nobind0001 ]' reproduced on unchanged product code."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T17:48:39.198Z",
+			"evidence": "Commit 015c76b7b7: hold only on a declared same-area clash; every other case warns in the session brief. No test file changed in the repair."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T17:48:41.900Z",
+			"evidence": "loop record --phase green at 015c76b7b7: the same 6 unchanged test files, fixtures and command pass."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

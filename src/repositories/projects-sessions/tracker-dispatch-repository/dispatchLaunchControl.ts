@@ -90,6 +90,7 @@ function trackerStopControl(
 				fields: {
 					schedule_off: 1,
 					schedule_hold_reason: 'Run stopped by operator',
+					...(!run && { area_stop_idle: item.auto ?? '' }),
 					auto: null,
 					launch_target: null,
 					launch_source: null,
@@ -125,10 +126,13 @@ function finishStoppedDispatch(
 			finishRun(current, { outcome: 'abandoned', reason, now: now() }),
 			node
 		);
-		const operation = canRequeueStoppedRun(snapshot, current)
-			? { itemId: run.item_id, fields: { status: 'open', blocked_reason: null } }
-			: undefined;
-		return { result: undefined, operation };
+		const fields = {
+			area_release: current.auto_token,
+			area_attempt: current.attempt,
+			'note+': 'Confirmed run stop; released code area claims',
+			...(canRequeueStoppedRun(snapshot, current) && { status: 'open', blocked_reason: null })
+		};
+		return { result: undefined, operation: { itemId: run.item_id, fields } };
 	});
 }
 

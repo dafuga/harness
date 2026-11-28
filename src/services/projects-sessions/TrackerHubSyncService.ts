@@ -5,6 +5,7 @@ import { TrackerHubInputError } from './tracker-hub-sync/TrackerHubInputError';
 import { TrackerHubPolls } from './tracker-hub-sync/TrackerHubPolls';
 import {
 	grantDuePermission,
+	parseBody,
 	recordFleetTelemetry,
 	receiveJournalPush
 } from './tracker-hub-sync/hubRoutes';
@@ -71,7 +72,7 @@ export class TrackerHubSyncService {
 		const store = this.#options.store;
 		switch (`${method} ${path}`) {
 			case 'POST /sync/push':
-				return receiveJournalPush(store, body);
+				return receiveJournalPush(store, body, this.#options.reviewIncomingAdds);
 			case 'GET /sync/pull':
 				return readJournalPage(
 					this.#options,
@@ -92,7 +93,19 @@ export class TrackerHubSyncService {
 			case 'POST /sync/machine':
 				return recordFleetTelemetry(this.#options, body, peer);
 			default:
-				return trackerHubResponse(404, { error: 'not found' });
+				return coordinateHubRequest(this.#options, { method, path, body, peer });
 		}
 	}
+}
+
+function coordinateHubRequest(
+	options: TrackerHubOptions,
+	request: { method: string; path: string; body: string; peer: string }
+) {
+	if (request.method !== 'POST' || !['/sync/area-claim', '/sync/landing'].includes(request.path))
+		return trackerHubResponse(404, { error: 'not found' });
+	const command = request.path === '/sync/landing' ? options.landing : options.claimAreas;
+	return command
+		? trackerHubResponse(200, command(parseBody(request.body), request.peer))
+		: trackerHubResponse(404, { error: 'coordination authority unavailable' });
 }

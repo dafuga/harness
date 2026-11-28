@@ -6,7 +6,7 @@ import type {
 	TrackerReplayOperation,
 	TrackerSchemaAdapterConfig
 } from './TrackerSchemaAdapter.types';
-
+import { trackerAreaProjection } from './tracker-schema-adapter/trackerAreaProjection';
 import {
 	trackerPlanningArtifactFields,
 	trackerPlanningPromotionFields
@@ -132,6 +132,7 @@ export class TrackerSchemaAdapter {
 			this.database.exec(trackerSchema);
 			this.migrateColumns();
 			this.database.exec(chaseProjection);
+			this.database.exec(trackerAreaProjection);
 			const now = this.config.now ?? Date.now;
 			const createdAt = Number(this.metadata('created_at', () => String(now())));
 			const dbId = this.metadata('db_id', this.config.databaseId ?? randomUUID);

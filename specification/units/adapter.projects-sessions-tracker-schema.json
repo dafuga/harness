@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/adapters/projects-sessions/TrackerSchemaAdapter.ts",
-			"src/adapters/projects-sessions/TrackerSchemaAdapter.types.ts"
+			"src/adapters/projects-sessions/TrackerSchemaAdapter.types.ts",
+			"src/adapters/projects-sessions/tracker-schema-adapter/trackerAreaProjection.ts"
 		],
 		"symbols": [
 			"trackerItemFields",
@@ -23,7 +24,8 @@
 			"TrackerSchemaAdapterConfig",
 			"TrackerSchemaAdapterConfig",
 			"TrackerDatabaseIdentity",
-			"TrackerReplayOperation"
+			"TrackerReplayOperation",
+			"trackerAreaProjection"
 		]
 	},
 	"contract": {
@@ -72,6 +74,10 @@
 			{
 				"name": "TrackerSchemaAdapter.setMeta",
 				"type": "void"
+			},
+			{
+				"name": "trackerAreaProjection",
+				"type": "unknown"
 			}
 		],
 		"errors": [],

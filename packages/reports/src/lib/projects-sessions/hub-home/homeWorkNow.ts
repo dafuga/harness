@@ -26,10 +26,12 @@ export function homeWorkNow(item: TrackerItemRecord): string | null {
 		const reason = line(item.blocked_reason ?? item.question);
 		if (reason) return `Blocked: ${reason}`;
 	}
+	const claim = line(item.area_claim);
 	const notes = item.notes_log ?? [];
 	for (let index = notes.length - 1; index >= 0; index -= 1) {
 		const text = notes[index]?.text.trim();
-		if (text && !automatedNote.test(text)) return line(text);
+		if (text && !automatedNote.test(text) && !text.startsWith('Area claim on '))
+			return [claim, line(text)].filter(Boolean).join(' · ');
 	}
-	return null;
+	return claim;
 }

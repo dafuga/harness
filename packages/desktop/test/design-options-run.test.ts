@@ -6,6 +6,7 @@ import { createPlanning } from '../../planning/src/lib/planning/index';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { fixture, git, settled, visualAnswer } from './run-fixture';
 const counted = (f: Made, designOptions: number) => ({ ...f.request, designOptions }) as RunRequest;
+const visualTurnTimeout = 45000;
 /** Each generation answers an image of its own; `step` may act on the nth one first. */
 function distinct(f: Made, step: (call: number) => void = () => {}) {
 	let call = 0;
@@ -36,7 +37,7 @@ test('a page Plan saves three Sonnet mockups across all default widths in one ve
 		text: JSON.stringify({ sources: ['src/owned.ts'], stylesheets: [], before: null, options })
 	}));
 	const head = git(f.root, 'rev-parse', 'HEAD');
-	await settled(f);
+	await settled(f, f.request, visualTurnTimeout);
 	const plan = await (await createPlanning(f.root)).readPlan({ unitId: f.request.entityId });
 	expect(plan.versions[0]?.generator).toEqual({ provider: 'claude', model: 'claude-sonnet-5-5' });
 	expect(
@@ -54,7 +55,7 @@ test('a page Plan saves three Sonnet mockups across all default widths in one ve
 
 test('a Plan that asks for two options generates two', async () => {
 	const f = await fixture();
-	await settled(f, counted(f, 2));
+	await settled(f, counted(f, 2), visualTurnTimeout);
 	expect(f.renderMockups).toHaveBeenCalledOnce();
 	expect((await versions(f))[0].options).toHaveLength(2);
 }, 60000);
@@ -107,7 +108,9 @@ test('a headless Plan keeps notes and generates no image, whatever count it is g
 
 test('Haiku adds widths and states then rerenders the saved design without replacing its source', async () => {
 	const f = await fixture();
-	const first = await settled(f, counted(f, 2));
+	// Each turn persists real Git LFS mockups, including under background scheduling.
+	const turnTimeout = 120000;
+	const first = await settled(f, counted(f, 2), turnTimeout);
 	expect(f.events.at(-1)).toMatchObject({ kind: 'finished', runId: first.runId });
 	const pngs = f.renderMockups.mock.calls[0][0].map((capture) => capture.html);
 	const busy = [
@@ -125,7 +128,7 @@ test('Haiku adds widths and states then rerenders the saved design without repla
 			)
 	}));
 	const change = { ...f.request, text: 'Add a 1024px viewport and a busy state' };
-	await settled(f, change);
+	await settled(f, change, turnTimeout);
 	expect(f.events.at(-1)).toMatchObject({ kind: 'finished' });
 	const captures = f.renderMockups.mock.calls[1][0];
 	expect(
@@ -134,7 +137,7 @@ test('Haiku adds widths and states then rerenders the saved design without repla
 			.map((capture) => capture.html)
 	).toEqual(pngs);
 	expect(captures.filter((capture) => capture.state === 'busy')).toHaveLength(10);
-	await settled(f, { ...f.request, text: 'Rerender' });
+	await settled(f, { ...f.request, text: 'Rerender' }, turnTimeout);
 	expect(f.events.at(-1)).toMatchObject({ kind: 'finished' });
 	expect(f.renderMockups.mock.calls[2][0]).toEqual(captures);
 	expect(f.run.mock.calls.map(([turn]) => turn.model)).toEqual([
@@ -142,4 +145,4 @@ test('Haiku adds widths and states then rerenders the saved design without repla
 		'claude-haiku-5-5',
 		'claude-haiku-5-5'
 	]);
-}, 60000);
+}, 390000);

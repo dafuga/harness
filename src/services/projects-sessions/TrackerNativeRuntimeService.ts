@@ -46,6 +46,7 @@ import { configuredTrackerDestinations } from './tracker-native-runtime-service/
 /** Composes the Tracker node's API, delivery and link workers over one SQLite journal. */
 export class TrackerNativeRuntimeService {
 	readonly role: 'hub' | 'spoke';
+	readonly coordination: ReturnType<typeof composeTrackerDispatch>['coordination'];
 	readonly dispatch?: TrackerDispatcherService;
 	readonly scheduler?: TrackerDispatchSchedulerService;
 	readonly duePreview: TrackerDuePreviewPolicy;
@@ -76,7 +77,10 @@ export class TrackerNativeRuntimeService {
 		this.now = now;
 		this.hostEffectsHeld = options.hostEffectsHeld === true;
 		const runs = new TrackerRunReadRepository(database, node);
-		this.machines = composeMachines(store, options, this.now);
+		this.machines = new TrackerMachineService(store, {
+			now: this.now,
+			sampler: options.machineSampler
+		});
 		[this.notifications, this.webPush] = composeOutbound(store, options);
 		const recurring = composeTrackerRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
@@ -87,6 +91,7 @@ export class TrackerNativeRuntimeService {
 			options.dispatch ?? configuredHostDispatch(store, hostEffects, { ...options, now: this.now });
 		const composed = composeTrackerDispatch(store, { ...options, dispatch }, this);
 		({
+			coordination: this.coordination,
 			dispatch: this.dispatch,
 			scheduler: this.scheduler,
 			duePreview: this.duePreview
@@ -122,14 +127,6 @@ export class TrackerNativeRuntimeService {
 			await Promise.allSettled(links);
 		}
 	}
-}
-
-function composeMachines(
-	store: TrackerPersistenceService,
-	{ machineSampler }: TrackerNativeRuntimeOptions,
-	now: () => number
-) {
-	return new TrackerMachineService(store, { now, sampler: machineSampler });
 }
 
 function composeItemApi(

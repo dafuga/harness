@@ -30,10 +30,12 @@ const children: ChildProcess[] = [];
 const daemons: TrackedProcess[] = [];
 
 const daemonSource = `
+#include <errno.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 static const char *journal;
 static void note(const char *text) {
@@ -46,7 +48,9 @@ int main(int count, char **arguments) {
 	journal = arguments[2];
 	int every[] = { SIGTERM, SIGINT, SIGHUP, SIGQUIT, SIGUSR1, SIGUSR2 };
 	for (unsigned index = 0; index < sizeof every / sizeof *every; index++) signal(every[index], signalled);
-	for (int left = atoi(arguments[1]) * 10; left > 0; left--) usleep(100000);
+	// Repeated short sleeps accumulate timer delays under macOS background scheduling.
+	struct timespec remaining = { .tv_sec = atoi(arguments[1]), .tv_nsec = 0 };
+	while (nanosleep(&remaining, &remaining) == -1 && errno == EINTR) {}
 	note("retired\\n");
 	return 0;
 }

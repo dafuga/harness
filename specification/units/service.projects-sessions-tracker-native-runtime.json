@@ -45,6 +45,13 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAdapterFailover.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAnswerDelivery.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAnswerDelivery.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaCommands.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaCommands.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaDispatch.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaDispatch.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaInventory.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaPulls.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaPulls.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAutolaunchAdmin.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosAlertKinds.ts",
@@ -174,6 +181,20 @@
 			"trackerAnswerDelivery",
 			"PendingTrackerAnswer",
 			"TrackerAnswerAttempt",
+			"trackerAreaCommands",
+			"Item",
+			"Attempt",
+			"guardedDispatchStore",
+			"trackerAreaDispatch",
+			"areaDispatchServices",
+			"AreaPermit",
+			"intendedAreas",
+			"trackerAreaInventory",
+			"areaPull",
+			"openAreaPulls",
+			"openPullWarning",
+			"AreaPull",
+			"OpenPulls",
 			"duePauseKey",
 			"trackerAutolaunchAdmin",
 			"trackerHubDuePolicy",
@@ -197,6 +218,7 @@
 			"closeFinishedTrackerSessions",
 			"linkedWorkActive",
 			"trackerGithubCli",
+			"trackerGithubRequest",
 			"handLaunchSelection",
 			"handLaunchNode",
 			"trackerHandoffHold",
@@ -598,6 +620,133 @@
 				"required": true
 			},
 			{
+				"name": "trackerAreaCommands.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerAreaCommands.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "guardedDispatchStore.repository",
+				"type": "TrackerDispatchRepository",
+				"required": true
+			},
+			{
+				"name": "guardedDispatchStore.permit",
+				"type": "AreaPermit",
+				"required": true
+			},
+			{
+				"name": "guardedDispatchStore.history",
+				"type": "(id: string) => string",
+				"required": true
+			},
+			{
+				"name": "trackerAreaDispatch.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerAreaDispatch.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "areaDispatchServices.repository",
+				"type": "TrackerDispatchRepository",
+				"required": true
+			},
+			{
+				"name": "areaDispatchServices.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "areaDispatchServices.guard",
+				"type": "ReturnType<typeof trackerAreaDispatch> | undefined",
+				"required": true
+			},
+			{
+				"name": "areaDispatchServices.runner",
+				"type": "TrackerDispatchRunner",
+				"required": true
+			},
+			{
+				"name": "intendedAreas.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "intendedAreas.tracked",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "intendedAreas.linked",
+				"type": "AreaPull[]",
+				"required": true
+			},
+			{
+				"name": "intendedAreas.extra",
+				"type": "string[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "trackerAreaInventory.route",
+				"type": "TrackerHostRepository",
+				"required": true
+			},
+			{
+				"name": "trackerAreaInventory.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerAreaInventory.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "trackerAreaInventory.project",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "trackerAreaInventory.extra",
+				"type": "string[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "openAreaPulls.route",
+				"type": "TrackerHostRepository",
+				"required": true
+			},
+			{
+				"name": "openAreaPulls.repo",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "openAreaPulls.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "openPullWarning.repo",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "openPullWarning.pulls",
+				"type": "AreaPull[]",
+				"required": true
+			},
+			{
 				"name": "trackerAutolaunchAdmin.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -785,6 +934,11 @@
 			{
 				"name": "trackerGithubCli.binding",
 				"type": "{ executable: string; configDirectory: string; }",
+				"required": true
+			},
+			{
+				"name": "trackerGithubRequest.binding",
+				"type": "{ executable: string; configDirectory: string }",
 				"required": true
 			},
 			{
@@ -3102,6 +3256,237 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "trackerAreaCommands",
+				"inputs": [
+					{
+						"name": "trackerAreaCommands.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerAreaCommands.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAreaCommands",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "guardedDispatchStore",
+				"inputs": [
+					{
+						"name": "guardedDispatchStore.repository",
+						"type": "TrackerDispatchRepository",
+						"required": true
+					},
+					{
+						"name": "guardedDispatchStore.permit",
+						"type": "AreaPermit",
+						"required": true
+					},
+					{
+						"name": "guardedDispatchStore.history",
+						"type": "(id: string) => string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "guardedDispatchStore",
+						"type": "TrackerDispatchStore"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerAreaDispatch",
+				"inputs": [
+					{
+						"name": "trackerAreaDispatch.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerAreaDispatch.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAreaDispatch",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "areaDispatchServices",
+				"inputs": [
+					{
+						"name": "areaDispatchServices.repository",
+						"type": "TrackerDispatchRepository",
+						"required": true
+					},
+					{
+						"name": "areaDispatchServices.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "areaDispatchServices.guard",
+						"type": "ReturnType<typeof trackerAreaDispatch> | undefined",
+						"required": true
+					},
+					{
+						"name": "areaDispatchServices.runner",
+						"type": "TrackerDispatchRunner",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "areaDispatchServices",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "intendedAreas",
+				"inputs": [
+					{
+						"name": "intendedAreas.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "intendedAreas.tracked",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "intendedAreas.linked",
+						"type": "AreaPull[]",
+						"required": true
+					},
+					{
+						"name": "intendedAreas.extra",
+						"type": "string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "intendedAreas",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerAreaInventory",
+				"inputs": [
+					{
+						"name": "trackerAreaInventory.route",
+						"type": "TrackerHostRepository",
+						"required": true
+					},
+					{
+						"name": "trackerAreaInventory.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerAreaInventory.signal",
+						"type": "AbortSignal",
+						"required": true
+					},
+					{
+						"name": "trackerAreaInventory.project",
+						"type": "string",
+						"required": false
+					},
+					{
+						"name": "trackerAreaInventory.extra",
+						"type": "string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAreaInventory",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openAreaPulls",
+				"inputs": [
+					{
+						"name": "openAreaPulls.route",
+						"type": "TrackerHostRepository",
+						"required": true
+					},
+					{
+						"name": "openAreaPulls.repo",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "openAreaPulls.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openAreaPulls",
+						"type": "Promise<OpenPulls>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openPullWarning",
+				"inputs": [
+					{
+						"name": "openPullWarning.repo",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "openPullWarning.pulls",
+						"type": "AreaPull[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openPullWarning",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerAutolaunchAdmin",
 				"inputs": [
 					{
@@ -3455,6 +3840,24 @@
 					{
 						"name": "trackerGithubCli",
 						"type": "TrackerGithubAdapterProvider"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerGithubRequest",
+				"inputs": [
+					{
+						"name": "trackerGithubRequest.binding",
+						"type": "{ executable: string; configDirectory: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerGithubRequest",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -6783,6 +7186,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-spoke-telemetry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
 			"via": "import",
 			"origin": "derived"
 		},

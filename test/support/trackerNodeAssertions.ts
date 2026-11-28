@@ -1,3 +1,4 @@
+import { proveDuplicateIntake } from './trackerDuplicateIntakeFixture';
 import { qualifyPlanningStages } from './trackerPlanningAssertions';
 import { verifyLaunchCliOptions } from './trackerManagedLaunchAssertions';
 import { createServer } from 'node:http';
@@ -85,13 +86,7 @@ async function verifySpokePublication(hub: TrackerNodeFixture) {
 
 async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 	const short = id.slice(0, 6);
-	expect(
-		(await trackerProcess(spoke, ['add', 'Synthetic loopback qualification']).exited).code
-	).toBe(5);
-	expect(await fixtureTrackerJson(spoke, ['note', short, 'Retain this note'])).toMatchObject({
-		id,
-		notes_log: [{ text: 'Retain this note' }]
-	});
+	await proveDuplicateIntake(spoke, id, short);
 	expect(
 		await fixtureTrackerJson(spoke, [
 			'chase',
@@ -107,6 +102,7 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 		chased_by: 'Chief of Staff',
 		chased_reason: 'Daniel asked for status'
 	});
+
 	await verifyLaunchCliOptions(spoke, id);
 }
 async function verifyTrackerNotificationFlow(

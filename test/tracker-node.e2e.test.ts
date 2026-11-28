@@ -1,3 +1,4 @@
+import { proveTrackerLandingCli } from './support/trackerLandingCliFixture';
 import { proveTrackerTmuxRecovery, tmuxExecutable } from './support/trackerRecoveryFixture';
 import { existsSync, realpathSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
@@ -130,6 +131,12 @@ test('startup refuses an unfenced role or competing API, sync or journal owner a
 		expect(existsSync(join(root, 'legacy-used'))).toBe(false);
 	});
 }, 25_000);
+
+test(
+	'a coordination-only hub lands a rebased PR using an exact receipt and pinned GitHub request',
+	proveTrackerLandingCli,
+	60000
+);
 
 test('the hub CLI manages box jobs and a spoke is refused', proveTrackerJobCommands, 40_000);
 

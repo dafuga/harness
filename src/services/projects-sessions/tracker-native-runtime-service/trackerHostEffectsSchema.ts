@@ -49,6 +49,9 @@ const launchPolicy = {
 		z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/),
 		z.strictObject({
 			repo: absolutePath,
+			github: z
+				.strictObject({ executable: absolutePath, configDirectory: absolutePath })
+				.optional(),
 			platform: z.enum(['linux', 'macos']),
 			verify: z.string().trim().min(1).max(2000).optional(),
 			worktree: z.boolean().optional()

@@ -33,9 +33,13 @@
 			"src/commands/projects-sessions/tracker-command/printNativeTrackerError.ts",
 			"src/commands/projects-sessions/tracker-command/runLocalTrackerBackup.ts",
 			"src/commands/projects-sessions/tracker-command/runNativeTracker.ts",
+			"src/commands/projects-sessions/tracker-command/runTrackerCoordination.ts",
 			"src/commands/projects-sessions/tracker-command/runTrackerInstructions.ts",
 			"src/commands/projects-sessions/tracker-command/runTrackerInstructions.types.ts",
 			"src/commands/projects-sessions/tracker-command/trackerInstructionsBlock.ts",
+			"src/commands/projects-sessions/tracker-command/trackerLandPull.ts",
+			"src/commands/projects-sessions/tracker-command/trackerLandPull.types.ts",
+			"src/commands/projects-sessions/tracker-command/trackerLandingGit.ts",
 			"src/commands/projects-sessions/tracker-command/trackerRequestTimeout.ts"
 		],
 		"symbols": [
@@ -102,11 +106,18 @@
 			"renderTrackerBackup",
 			"selectedTrackerConfig",
 			"runNativeTracker",
+			"isTrackerCoordinationCommand",
+			"runTrackerCoordination",
 			"runTrackerInstructions",
 			"TrackerInstructionsRepair",
 			"TrackerInstructionsResult",
 			"trackerInstructionsBlock",
 			"repairTrackerInstructions",
+			"trackerLandPull",
+			"reconcileLanding",
+			"LandingPort",
+			"Checkout",
+			"trackerLandingGit",
 			"trackerRequestTimeout"
 		]
 	},
@@ -465,6 +476,21 @@
 				"required": true
 			},
 			{
+				"name": "isTrackerCoordinationCommand.verb",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "runTrackerCoordination.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "runTrackerCoordination.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
 				"name": "runTrackerInstructions.args",
 				"type": "string[]",
 				"required": true
@@ -472,6 +498,51 @@
 			{
 				"name": "repairTrackerInstructions.source",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerLandPull.target",
+				"type": "{ id: string; pr: number }",
+				"required": true
+			},
+			{
+				"name": "trackerLandPull.queue",
+				"type": "LandingPort",
+				"required": true
+			},
+			{
+				"name": "trackerLandPull.git",
+				"type": "ReturnType<typeof trackerLandingGit>",
+				"required": true
+			},
+			{
+				"name": "trackerLandPull.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "reconcileLanding.target",
+				"type": "{ id: string; pr: number }",
+				"required": true
+			},
+			{
+				"name": "reconcileLanding.queue",
+				"type": "LandingPort",
+				"required": true
+			},
+			{
+				"name": "reconcileLanding.git",
+				"type": "ReturnType<typeof trackerLandingGit>",
+				"required": true
+			},
+			{
+				"name": "trackerLandingGit.cwd",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerLandingGit.signal",
+				"type": "AbortSignal",
 				"required": true
 			},
 			{
@@ -662,6 +733,14 @@
 				"type": "Promise<number>"
 			},
 			{
+				"name": "isTrackerCoordinationCommand",
+				"type": "unknown"
+			},
+			{
+				"name": "runTrackerCoordination",
+				"type": "unknown"
+			},
+			{
 				"name": "runTrackerInstructions",
 				"type": "number"
 			},
@@ -674,11 +753,27 @@
 				"type": "TrackerInstructionsRepair"
 			},
 			{
+				"name": "trackerLandPull",
+				"type": "unknown"
+			},
+			{
+				"name": "reconcileLanding",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerLandingGit",
+				"type": "unknown"
+			},
+			{
 				"name": "trackerRequestTimeout",
 				"type": "unknown"
 			}
 		],
 		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			},
 			{
 				"name": "TypeError",
 				"type": "thrown"
@@ -1575,6 +1670,52 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "isTrackerCoordinationCommand",
+				"inputs": [
+					{
+						"name": "isTrackerCoordinationCommand.verb",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerCoordinationCommand",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "runTrackerCoordination",
+				"inputs": [
+					{
+						"name": "runTrackerCoordination.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "runTrackerCoordination.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runTrackerCoordination",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "runTrackerInstructions",
 				"inputs": [
 					{
@@ -1605,6 +1746,100 @@
 					{
 						"name": "repairTrackerInstructions",
 						"type": "TrackerInstructionsRepair"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerLandPull",
+				"inputs": [
+					{
+						"name": "trackerLandPull.target",
+						"type": "{ id: string; pr: number }",
+						"required": true
+					},
+					{
+						"name": "trackerLandPull.queue",
+						"type": "LandingPort",
+						"required": true
+					},
+					{
+						"name": "trackerLandPull.git",
+						"type": "ReturnType<typeof trackerLandingGit>",
+						"required": true
+					},
+					{
+						"name": "trackerLandPull.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLandPull",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reconcileLanding",
+				"inputs": [
+					{
+						"name": "reconcileLanding.target",
+						"type": "{ id: string; pr: number }",
+						"required": true
+					},
+					{
+						"name": "reconcileLanding.queue",
+						"type": "LandingPort",
+						"required": true
+					},
+					{
+						"name": "reconcileLanding.git",
+						"type": "ReturnType<typeof trackerLandingGit>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reconcileLanding",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerLandingGit",
+				"inputs": [
+					{
+						"name": "trackerLandingGit.cwd",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerLandingGit.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLandingGit",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -1698,6 +1933,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-check-tracker-item",
 			"via": "import",
 			"origin": "derived"
@@ -1759,6 +1999,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-backup-service-restore-tracker-backup",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-hub-sync",
 			"via": "import",
 			"origin": "derived"
 		},

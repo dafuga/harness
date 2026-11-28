@@ -18,7 +18,11 @@
 			"src/services/projects-sessions/tracker-hub-sync/TrackerHubPolls.ts",
 			"src/services/projects-sessions/tracker-hub-sync/hubHttp.ts",
 			"src/services/projects-sessions/tracker-hub-sync/hubRoutes.ts",
-			"src/services/projects-sessions/tracker-hub-sync/readJournalPage.ts"
+			"src/services/projects-sessions/tracker-hub-sync/readJournalPage.ts",
+			"src/services/projects-sessions/tracker-hub-sync/trackerAreaClaim.ts",
+			"src/services/projects-sessions/tracker-hub-sync/trackerAreaClaim.types.ts",
+			"src/services/projects-sessions/tracker-hub-sync/trackerLandingQueue.ts",
+			"src/services/projects-sessions/tracker-hub-sync/trackerLandingQueue.types.ts"
 		],
 		"symbols": [
 			"TrackerHubSyncService",
@@ -45,7 +49,22 @@
 			"receiveJournalPush",
 			"grantDuePermission",
 			"recordFleetTelemetry",
-			"readJournalPage"
+			"parseBody",
+			"readJournalPage",
+			"areaClaim",
+			"areaDecision",
+			"areaIntersects",
+			"trackerAreaAuthority",
+			"TrackerAreaClaim",
+			"AreaDecision",
+			"AreaReservation",
+			"Owner",
+			"landingRequest",
+			"landingDecision",
+			"trackerLandingAuthority",
+			"LandingRequest",
+			"LandingDecision",
+			"Entry"
 		]
 	},
 	"contract": {
@@ -114,6 +133,11 @@
 				"required": true
 			},
 			{
+				"name": "receiveJournalPush.review",
+				"type": "TrackerHubOptions['reviewIncomingAdds']",
+				"required": false
+			},
+			{
 				"name": "grantDuePermission.options",
 				"type": "TrackerHubOptions",
 				"required": true
@@ -150,6 +174,11 @@
 				"required": true
 			},
 			{
+				"name": "parseBody.body",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "readJournalPage.options",
 				"type": "TrackerHubOptions",
 				"required": true
@@ -168,6 +197,31 @@
 				"name": "readJournalPage.signal",
 				"type": "AbortSignal | undefined",
 				"required": true
+			},
+			{
+				"name": "areaIntersects.left",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "areaIntersects.right",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerAreaAuthority.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerLandingAuthority.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerLandingAuthority.now",
+				"type": "() => number",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -344,6 +398,11 @@
 						"name": "receiveJournalPush.body",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "receiveJournalPush.review",
+						"type": "TrackerHubOptions['reviewIncomingAdds']",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -418,6 +477,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "parseBody",
+				"inputs": [
+					{
+						"name": "parseBody.body",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseBody",
+						"type": "TrackerWireObject"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerHubInputError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "readJournalPage",
 				"inputs": [
 					{
@@ -445,6 +527,70 @@
 					{
 						"name": "readJournalPage",
 						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "areaIntersects",
+				"inputs": [
+					{
+						"name": "areaIntersects.left",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "areaIntersects.right",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "areaIntersects",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerAreaAuthority",
+				"inputs": [
+					{
+						"name": "trackerAreaAuthority.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAreaAuthority",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerLandingAuthority",
+				"inputs": [
+					{
+						"name": "trackerLandingAuthority.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerLandingAuthority.now",
+						"type": "() => number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLandingAuthority",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -518,6 +664,11 @@
 	"dependencies": [
 		{
 			"unit": "service.networking-security-tracker-sync-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
 			"via": "import",
 			"origin": "derived"
 		}

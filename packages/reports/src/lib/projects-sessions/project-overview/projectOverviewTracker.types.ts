@@ -35,6 +35,7 @@ export type TrackerItemRecord = {
 	confirm?: 'deploy' | 'money' | 'secret';
 	askedAt?: string | null;
 	attachments?: TrackerAttachment[];
+	area_claim?: string | null;
 	notes_log?: TrackerNote[];
 	kind?: string | null;
 	parent?: string | null;

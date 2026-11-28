@@ -141,9 +141,13 @@ export async function fixture(action: (turn: AgentTurn) => Promise<void> = async
 		request
 	};
 }
-export async function settled(f: Awaited<ReturnType<typeof fixture>>, request = f.request) {
+export async function settled(
+	f: Awaited<ReturnType<typeof fixture>>,
+	request = f.request,
+	timeout = 30000
+) {
 	const started = await f.service.start(request);
-	await expect.poll(() => f.session.busy, { timeout: 30000 }).toBe(false);
+	await expect.poll(() => f.session.busy, { timeout }).toBe(false);
 	return started;
 }
 export async function approve(f: Awaited<ReturnType<typeof fixture>>) {

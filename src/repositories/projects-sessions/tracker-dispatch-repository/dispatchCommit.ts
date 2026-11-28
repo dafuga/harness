@@ -29,7 +29,24 @@ export function commitDecision(
 		recordLaunchEvents(store.database, { snapshot, writes }, now());
 		if (writes?.lastDueStartAt !== undefined)
 			store.writeMeta({ [dueStartKey]: String(writes.lastDueStartAt) });
-		const fields = writes?.item && dispatchJournalFields(writes.item);
+		const fields = operationFields(snapshot, writes);
 		return { result, operation: fields && { itemId, fields } };
 	});
+}
+
+function operationFields(
+	snapshot: TrackerDispatchSnapshot,
+	writes: TrackerDispatchDecision['writes']
+) {
+	const finished = writes?.runs?.find(
+		(run) =>
+			run.state === 'finished' &&
+			snapshot.runs.some((old) => old.id === run.id && old.state !== 'finished')
+	);
+	return writes?.item || finished
+		? {
+				...(writes?.item && dispatchJournalFields(writes.item)),
+				...(finished && { area_release: finished.auto_token, area_attempt: finished.attempt })
+			}
+		: undefined;
 }

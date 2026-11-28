@@ -11,14 +11,19 @@ function item(fields: Partial<TrackerItemRecord>): TrackerItemRecord {
 
 describe('where a piece of work really is', () => {
 	test('the latest milestone its owner noted, skipping Tracker and Hub notes after it', () => {
+		const milestone = 'Browser proof is ready. '.repeat(8) + 'https://example.test/proof';
 		const notes = [
 			{ at, text: 'Started; branched from main.' },
-			{ at, text: 'PR #401 open; full check running.' },
+			{ at, text: milestone },
 			{ at, text: 'watchdog context: Session exceeded 150,000 tokens.' },
 			{ at, text: 'auto-launch requested on harbor-mbp-2' },
 			{ at, text: 'Hub message: please hurry' }
 		];
-		expect(homeWorkNow(item({ notes_log: notes }))).toBe('PR #401 open; full check running.');
+		const area = 'Area claim on dafuga/harness by task (mac): src/launcher';
+		expect(homeWorkNow(item({ notes_log: notes, area_claim: area }))).toBe(
+			`${area} · ${milestone}`
+		);
+		expect(homeWorkNow(item({ notes_log: notes }))).toBe(milestone);
 	});
 
 	test('a blocked task says why, before any note', () => {
