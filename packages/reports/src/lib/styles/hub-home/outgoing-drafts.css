@@ -1,4 +1,9 @@
 /* @harness-uid u_sd5h4qimru */
+@media (min-width: 561px) {
+	.hh-home dialog.hh-dialog:has(.hh-cos-widget .outgoing-entry) {
+		height: min(40rem, calc(100dvh - var(--hx-space-32)));
+	}
+}
 .outgoing-card {
 	display: grid;
 	gap: var(--hx-space-12);

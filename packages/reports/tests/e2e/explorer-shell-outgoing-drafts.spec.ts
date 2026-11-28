@@ -49,6 +49,9 @@ for (const [size, width, height] of [
 		await screenshot(page, `draft-${size}`);
 		const card = chat.getByRole('article', { name: 'Friday production notes' });
 		await expect(card).toBeVisible({ timeout: 2500 });
+		await expect(card.getByText('studio@example.test', { exact: true })).toBeInViewport({
+			ratio: 1
+		});
 		await expect(card.getByRole('textbox')).toHaveCount(0);
 		await expect(card.getByRole('link', { name: 'November production schedule' })).toHaveAttribute(
 			'href',

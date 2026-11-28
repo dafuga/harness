@@ -278,10 +278,6 @@
 			"profile": "entity-preview-playwright"
 		},
 		{
-			"path": "packages/reports/tests/e2e/explorer-shell-outgoing-drafts.spec.ts",
-			"command": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts explorer-shell-outgoing-drafts.spec.ts"
-		},
-		{
 			"path": "packages/reports/tests/e2e/explorer-shell-browser-errors.spec.ts",
 			"command": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts explorer-shell-browser-errors.spec.ts",
 			"timeoutMs": 180000
