@@ -1,5 +1,6 @@
-// Harness "needs you" notifications only: no caching and no request handling.
-const tag = 'harness-needs-you';
+// Harness notifications only: no caching and no request handling.
+const approvalTag = 'harness-device-approval';
+const needsTag = 'harness-needs-you';
 const icon = '/icons/harness-192.png';
 const fallback = {
 	title: 'A decision needs you',
@@ -14,6 +15,8 @@ self.addEventListener('activate', (event) => event.waitUntil(self.clients.claim(
 function read(data) {
 	try {
 		const value = data.json();
+		if (value.kind === 'device-approval' && Object.keys(value).length === 1)
+			return { approval: true };
 		const texts = [value.title, value.body, value.needs];
 		if (texts.every((text) => typeof text === 'string')) return value;
 	} catch {
@@ -23,22 +26,40 @@ function read(data) {
 }
 
 self.addEventListener('push', (event) => {
-	const { title, body, needs } = read(event.data);
-	// One tag: each repeat replaces the last one, and alerts again.
-	const options = { body, tag, renotify: true, requireInteraction: true, icon, data: { needs } };
+	const { title, body, needs, approval } = read(event.data);
+	if (approval) {
+		event.waitUntil(
+			self.registration.showNotification('Harness', {
+				body: 'A device sign-in is ready for review.',
+				tag: approvalTag,
+				icon
+			})
+		);
+		return;
+	}
+	const options = {
+		body,
+		tag: needsTag,
+		renotify: true,
+		requireInteraction: true,
+		icon,
+		data: { needs }
+	};
 	event.waitUntil(self.registration.showNotification(title, options));
 });
 
-async function openNeeds(needs) {
+async function openHome(needs) {
 	const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
 	const home = windows.find((client) => new URL(client.url).pathname === '/');
 	// Only ever this site's own Home, whatever the message said.
-	if (!home) return self.clients.openWindow(`/?needs=${encodeURIComponent(needs)}`);
-	home.postMessage({ type: 'harness:needs-you', needs });
+	if (!home) return self.clients.openWindow(needs ? `/?needs=${encodeURIComponent(needs)}` : '/');
+	if (needs) home.postMessage({ type: 'harness:needs-you', needs });
 	return home.focus();
 }
 
 self.addEventListener('notificationclick', (event) => {
 	event.notification.close();
-	event.waitUntil(openNeeds(event.notification.data?.needs ?? 'all'));
+	const needs =
+		event.notification.tag === approvalTag ? undefined : (event.notification.data?.needs ?? 'all');
+	event.waitUntil(openHome(needs));
 });
