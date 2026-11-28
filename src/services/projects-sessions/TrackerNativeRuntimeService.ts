@@ -147,8 +147,8 @@ function composeItemApi(
 	}: TrackerNativeRuntimeOptions,
 	recurring?: ReturnType<typeof composeTrackerRecurrence>
 ) {
-	const { store } = runtime;
-	const items = new TrackerItemReadRepository(store.database, runtime.now);
+	const { store, now: runtimeNow } = runtime;
+	const items = new TrackerItemReadRepository(store.database, runtimeNow);
 	return new TrackerLocalApiService(store, items, {
 		now,
 		phoneReplica:
@@ -182,7 +182,6 @@ function validateLinks({
 	const kinds = new Set(links.map((link) => link.link ?? 'hub'));
 	if (kinds.size !== links.length) throw new TypeError('Duplicate Tracker spoke link');
 }
-
 /** What the node sends out: its notification outbox and Daniel's browser notifications. */
 function composeOutbound(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
 	return [composeNotifications(store, options), composeTrackerWebPush(store, options)] as const;
