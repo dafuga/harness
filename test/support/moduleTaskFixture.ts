@@ -88,6 +88,9 @@ if (mode.startsWith('completion-')) {
   } else if (check === 'simplify-contract') {
     writeFileSync('contract.md', 'Validate before storing orders.\\n');
     summary = 'Combined duplicate validation rules.';
+  } else if (!check && mode === 'completion-measurement-unavailable') {
+    const original = readFileSync('src/orders.test.ts','utf8');
+    writeFileSync('src/orders.test.ts', original + "\nif (process.env.HARNESS_COMPLETION_LCOV) throw new Error('Coverage runner unavailable');\n");
   } else if (!check && mode === 'completion-orchestrator') {
     writeFileSync('contract.md', 'Validate before storing orders.\\nOrders must be validated before storage.\\n');
   }
