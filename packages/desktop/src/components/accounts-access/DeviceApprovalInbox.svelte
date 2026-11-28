@@ -31,8 +31,7 @@
 	function device(item: DeviceApprovalRequest) {
 		if (item.platform === 'iphone') return 'Harness iPhone';
 		if (item.platform === 'mac') return 'Harness Mac';
-		if (item.platform === 'web') return 'Harness Hub';
-		return 'Harness device';
+		return item.platform === 'web' ? 'Harness Hub' : 'Harness device';
 	}
 	function details(item: DeviceApprovalRequest) {
 		const country = item.country ? regions.of(item.country) : undefined;
