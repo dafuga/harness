@@ -1,6 +1,7 @@
 // @harness-uid u_ukg7o7reue
 import { z } from 'zod';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
+import { trackerUtilizationSchema } from '$reports/lib/projects-sessions/project-overview/trackerReadTargets';
 import { parseHomePayload } from './homePayload';
 
 const text = (max: number) =>
@@ -68,7 +69,8 @@ const liveOverview = z.object({
 				sessions: z
 					.array(z.object({ key: text(300), title: text(500), origin: short.nullable() }))
 					.max(100)
-					.optional()
+					.optional(),
+				utilization: trackerUtilizationSchema.optional()
 			})
 		)
 		.max(200),

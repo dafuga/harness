@@ -12,11 +12,27 @@
 			"src/utils/projects-sessions/placeTrackerWork.ts",
 			"src/utils/projects-sessions/placeTrackerWork.types.ts"
 		],
-		"symbols": ["trackerWorkRamGB", "placeTrackerWork", "TrackerWorkPreference"]
+		"symbols": [
+			"trackerWorkRamGB",
+			"trackerObservedDemand",
+			"placeTrackerWork",
+			"trackerMachineTargets",
+			"TrackerWorkPreference"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "trackerObservedDemand.kind",
+				"type": "TrackerWorkKind",
+				"required": true
+			},
+			{
+				"name": "trackerObservedDemand.history",
+				"type": "readonly TrackerResourceSample[]",
+				"required": true
+			},
 			{
 				"name": "placeTrackerWork.rows",
 				"type": "readonly TrackerMachineRow[]",
@@ -29,6 +45,16 @@
 				"required": false,
 				"default": {},
 				"description": "Kind of work, RAM it needs in GB and computers to leave out. Defaults to general work with none left out."
+			},
+			{
+				"name": "trackerMachineTargets.row",
+				"type": "TrackerMachineRow",
+				"required": true
+			},
+			{
+				"name": "trackerMachineTargets.sample",
+				"type": "TrackerResourceSample",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,6 +72,29 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "trackerObservedDemand",
+				"inputs": [
+					{
+						"name": "trackerObservedDemand.kind",
+						"type": "TrackerWorkKind",
+						"required": true
+					},
+					{
+						"name": "trackerObservedDemand.history",
+						"type": "readonly TrackerResourceSample[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerObservedDemand",
+						"type": "TrackerWorkDemand"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "placeTrackerWork",
 				"inputs": [
@@ -68,6 +117,29 @@
 						"name": "placeTrackerWork",
 						"type": "TrackerPlacement",
 						"description": "Candidates ranked with fitting ones first, their reasons, and the recommended computer or null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerMachineTargets",
+				"inputs": [
+					{
+						"name": "trackerMachineTargets.row",
+						"type": "TrackerMachineRow",
+						"required": true
+					},
+					{
+						"name": "trackerMachineTargets.sample",
+						"type": "TrackerResourceSample",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMachineTargets",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

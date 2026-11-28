@@ -5,6 +5,10 @@ import { ResourceQueueService } from '../../services/execution-runtimes/Resource
 import { resourceCommand } from '../../utils/execution-runtimes/resourceCommand';
 import { resourceConfig, saveResourceConfig } from '../../utils/execution-runtimes/resourceConfig';
 import { resourceRequest } from '../../utils/execution-runtimes/resourceRequest';
+import {
+	isHeavyTestCommand,
+	withMacHeavyTestLane
+} from '../../utils/execution-runtimes/withMacHeavyTestLane';
 export function registerResourcesCommand(program: Command): void {
 	const resources = program
 		.command('resources')
@@ -56,27 +60,48 @@ function registerResourceRun(resources: Command): void {
 		.option('--memory-mib <n>', 'Estimated peak additional RAM', '512')
 		.option('--timeout <ms>', 'Maximum execution time after admission', '21600000')
 		.option('--wait-timeout <ms>', 'Maximum time queued', '1800000')
-		.action(async (command: string[], flags: Record<string, string>) => {
+		.option('--heavy-test', 'Queue a heavy test command in the macOS test lanes')
+		.action(async (command: string[], flags: Record<string, string> & { heavyTest?: boolean }) => {
 			const service = new ResourceQueueService(),
 				abort = new AbortController();
 			const cancel = () => abort.abort(new Error('Managed work cancelled'));
 			process.once('SIGINT', cancel);
 			process.once('SIGTERM', cancel);
 			try {
-				const request = await resourceRequest(flags, service);
-				process.exitCode = await service.run(
-					request,
-					(context) => resourceCommand(command, context, abort.signal, Number(flags.timeout)),
-					{
-						signal: abort.signal,
-						waitTimeoutMs: Number(flags.waitTimeout),
-						onWaiting: (reason) => console.error(`[harness resources] ${reason}`)
-					}
-				);
+				process.exitCode = await runResourceCommand(command, flags, service, abort.signal);
 			} finally {
 				process.removeListener('SIGINT', cancel);
 				process.removeListener('SIGTERM', cancel);
 				service.close();
 			}
 		});
+}
+
+async function runResourceCommand(
+	command: string[],
+	{ heavyTest, ...flags }: Record<string, string> & { heavyTest?: boolean },
+	service: ResourceQueueService,
+	signal: AbortSignal
+) {
+	const heavy = heavyTest === true || isHeavyTestCommand(command);
+	const waitTimeoutMs = Number(flags.waitTimeout);
+	const request = await resourceRequest(
+		heavy && process.platform === 'darwin' ? { ...flags, priority: 'agent-test' } : flags,
+		service
+	);
+	return await withMacHeavyTestLane({ enabled: heavy, signal, waitTimeoutMs }, (env, beforeStart) =>
+		service.run(
+			request,
+			async (context) => {
+				await beforeStart();
+				return await resourceCommand(command, context, signal, Number(flags.timeout));
+			},
+			{
+				env,
+				signal,
+				waitTimeoutMs,
+				onWaiting: (reason) => console.error(`[harness resources] ${reason}`)
+			}
+		)
+	);
 }

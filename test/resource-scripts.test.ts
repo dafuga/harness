@@ -46,6 +46,9 @@ test('resource script preserves argv boundaries, defaults and explicit admission
 	const separator = managed.indexOf('--');
 	expect(managed.slice(separator + 1)).toEqual(fullCheck);
 	expect(managed.slice(0, separator)).toContain('Full repository check');
+	expect(
+		resourceArguments(['agent-test', '--', 'sh', '-c', 'playwright test "$@"', '--'], {})
+	).toContain('--heavy-test');
 	for (const args of [[], ['coding'], ['coding', '--'], ['unknown', '--', 'true']])
 		expect(() => resourceArguments(args, {})).toThrow('Usage:');
 });

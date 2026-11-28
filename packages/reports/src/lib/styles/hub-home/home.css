@@ -105,6 +105,18 @@
 .hh-home .hh-head .po-machine {
 	white-space: nowrap;
 }
+.hh-home .hh-head .hh-machine-with-usage {
+	max-width: 100%;
+}
+.hh-home .hh-head .hh-machine-with-usage .hh-computer-trigger {
+	flex-wrap: wrap;
+	padding-block: var(--hx-space-4);
+}
+.po-machine-utilization {
+	flex-basis: 100%;
+	text-align: start;
+	color: var(--hx-color-text-muted);
+}
 /* Tablet: two columns, Agents across the top, Work in progress across the bottom in one column. */
 @media (max-width: 1000px) {
 	.hh-home .hh-grid {

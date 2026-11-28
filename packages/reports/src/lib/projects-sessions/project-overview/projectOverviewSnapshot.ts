@@ -42,10 +42,11 @@ export function projectOverviewSnapshot(sources: TrackerSources, now: number): O
 			.map((machine) => machine.node)
 	);
 	const machines = sources.machines
-		.map(({ node, status, remoteRuns }) => ({
+		.map(({ node, status, remoteRuns, utilization }) => ({
 			name: sanitizeText(node),
 			status,
-			...(remoteRuns !== undefined && { remoteRuns })
+			...(remoteRuns !== undefined && { remoteRuns }),
+			...(utilization && { utilization })
 		}))
 		.sort(compareOverviewMachines);
 	const items = sources.items.filter(isIncludedItem);

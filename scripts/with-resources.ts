@@ -1,12 +1,7 @@
 // @harness-uid u_d2pmwm5tae
-import { spawn } from 'node:child_process';
-import { once } from 'node:events';
-import { constants } from 'node:fs';
-import { open } from 'node:fs/promises';
-import { userInfo } from 'node:os';
-import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ExpectedCliError } from '../src/core/errors';
+import { isHeavyTestCommand } from '../src/utils/execution-runtimes/withMacHeavyTestLane';
 
 const fullCheckLabel = 'Full repository check';
 
@@ -33,6 +28,7 @@ export function resourceArguments(
 		'resources',
 		'run',
 		...(fullCheck ? ['--label', fullCheckLabel] : []),
+		...(isHeavyTestCommand(command) ? ['--heavy-test'] : []),
 		'--priority',
 		fullCheck && process.platform === 'darwin'
 			? 'agent-test'
@@ -53,44 +49,4 @@ async function runResources(args: string[]): Promise<void> {
 	await runCli(entry);
 }
 
-async function waitForFullCheckLock(fd: number): Promise<void> {
-	// In fd mode lockf locks our open file description and leaves the inode in place.
-	const waiter = spawn('/usr/bin/lockf', ['3'], { stdio: ['ignore', 'ignore', 'inherit', fd] });
-	const cancel = () => waiter.kill('SIGTERM');
-	const notice = setTimeout(
-		() => console.error('[harness resources] Waiting for the Mac full-check slot'),
-		1000
-	);
-	process.once('SIGINT', cancel);
-	process.once('SIGTERM', cancel);
-	try {
-		const [code] = await once(waiter, 'exit');
-		if (code !== 0) throw new ExpectedCliError('Mac full-check lock wait ended before admission');
-	} finally {
-		clearTimeout(notice);
-		process.removeListener('SIGINT', cancel);
-		process.removeListener('SIGTERM', cancel);
-	}
-}
-
-if (import.meta.main) {
-	const args = process.argv.slice(2);
-	const resourceArgs = resourceArguments(args, process.env);
-	if (process.platform === 'darwin' && isFullCheck(args.slice(2))) {
-		// Use the OS account home so different resource homes still share this lock.
-		const path = join(userInfo().homedir, '.harness-full-check.lock');
-		const lock = await open(
-			path,
-			constants.O_WRONLY | constants.O_CREAT | constants.O_NOFOLLOW,
-			0o600
-		);
-		try {
-			await waitForFullCheckLock(lock.fd);
-			await runResources(resourceArgs);
-		} finally {
-			await lock.close();
-		}
-	} else {
-		await runResources(resourceArgs);
-	}
-}
+if (import.meta.main) await runResources(resourceArguments(process.argv.slice(2), process.env));

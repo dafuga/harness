@@ -12,7 +12,7 @@
 			"source": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostEffectsSchema.ts",
 			"name": "nonHarborSessionLimit",
 			"audience": "operator",
-			"purpose": "Set how many non-Harbor sessions may run concurrently on a host with a CPU budget. Defaults to one."
+			"purpose": "Optionally lower the number of concurrent non-Harbor sessions on MB2. Without an override they share the general session ceiling and memory budget."
 		},
 		{
 			"source": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostEffectsSchema.ts",
@@ -204,6 +204,8 @@
 			"adapterWrite",
 			"trackerHostCapacityHold",
 			"trackerHostAdmission",
+			"trackerHostSessionCap",
+			"freeHostSessionSlots",
 			"occupiedHostSlots",
 			"occupiedHostRuns",
 			"TrackerOccupiedRun",
@@ -860,6 +862,31 @@
 			{
 				"name": "trackerHostAdmission.now",
 				"type": "() => number",
+				"required": false
+			},
+			{
+				"name": "trackerHostSessionCap.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHostSessionCap.config",
+				"type": "TrackerHostLaunchConfig",
+				"required": true
+			},
+			{
+				"name": "freeHostSessionSlots.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "freeHostSessionSlots.config",
+				"type": "TrackerHostLaunchConfig",
+				"required": true
+			},
+			{
+				"name": "freeHostSessionSlots.resources",
+				"type": "TrackerHostResources",
 				"required": false
 			},
 			{
@@ -3459,6 +3486,57 @@
 					{
 						"name": "trackerHostAdmission",
 						"type": "TrackerDispatchPolicy['admit']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHostSessionCap",
+				"inputs": [
+					{
+						"name": "trackerHostSessionCap.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerHostSessionCap.config",
+						"type": "TrackerHostLaunchConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHostSessionCap",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "freeHostSessionSlots",
+				"inputs": [
+					{
+						"name": "freeHostSessionSlots.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "freeHostSessionSlots.config",
+						"type": "TrackerHostLaunchConfig",
+						"required": true
+					},
+					{
+						"name": "freeHostSessionSlots.resources",
+						"type": "TrackerHostResources",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "freeHostSessionSlots",
+						"type": "number"
 					}
 				],
 				"errors": [],
@@ -6119,6 +6197,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.projects-sessions-tracker-host-resource",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.projects-sessions-tracker-schema",
 			"via": "import",
 			"origin": "derived"
@@ -6190,6 +6273,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-host-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-status",
 			"via": "import",
 			"origin": "derived"
 		},

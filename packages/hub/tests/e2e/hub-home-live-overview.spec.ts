@@ -33,6 +33,9 @@ for (const [device, width, height] of [
 		await page.emulateMedia({
 			colorScheme: ['phone', 'desktop-dark'].includes(device) ? 'dark' : 'light'
 		});
+		Object.assign(tracker.machines.find(({ node }) => node === 'harbor-mbp-2')!, {
+			utilization: { actual: { cpu: 42, ram: 61 }, target: { cpu: 80, ram: 75 } }
+		});
 		seedLiveDisposition(tracker);
 		const answer = await macAnswer(tracker);
 		const sample = answer.liveOverview!.projects[0];
@@ -74,6 +77,9 @@ for (const [device, width, height] of [
 		await expectComputerWorkload(page, device, remoteTitles);
 		if (process.env.TAKE_SCREENSHOT === 'true')
 			await recordRendererMetrics(page, device, navigation?.request().timing().responseEnd);
+		await expect(page.getByRole('list', { name: 'Computers' })).toContainText(
+			/CPU 42% \/ 80% · RAM 61% \/ 75% target/
+		);
 		await checkProjectDisclosure(page, answer.liveOverview!.projects, device);
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);

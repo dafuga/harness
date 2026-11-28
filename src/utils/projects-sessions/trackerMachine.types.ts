@@ -64,7 +64,13 @@ export type TrackerMachineRole = 'shared' | 'runner' | 'primary' | 'other';
 
 export type TrackerWorkKind = 'codex' | 'claude' | 'browser-tests' | 'build' | 'general';
 
+export type TrackerWorkDemand = { cores: number; ramGB: number };
+
 export interface TrackerPlacementRequest {
+	needsCores?: number;
+	reserved?: ReadonlyMap<string, TrackerWorkDemand>;
+	/** Rank a launcher session. CPU load affects preference on Macs, but never blocks admission. */
+	agentSession?: boolean;
 	kind?: TrackerWorkKind;
 	needsRamGB?: number;
 	exclude?: readonly string[];
@@ -83,6 +89,7 @@ export interface TrackerPlacementCandidate {
 export interface TrackerPlacement {
 	kind: TrackerWorkKind;
 	needs_ram_gb: number;
+	needs_cores: number;
 	recommended: string | null;
 	ranked: TrackerPlacementCandidate[];
 }

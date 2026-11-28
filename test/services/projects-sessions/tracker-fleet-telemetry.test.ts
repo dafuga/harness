@@ -25,6 +25,10 @@ vi.mock(
 test('both computers see each other in machines, place and status', async () => {
 	const nodes = fleet();
 	try {
+		nodes.readings[hubNode] = {
+			cores: 18,
+			ram: { total_mb: 36_864, used_mb: 8192, available_mb: 28_672, available_pct: 78 }
+		};
 		await nodes.tick();
 		nodes.clock.at += minute;
 		await nodes.tick();
@@ -38,9 +42,15 @@ test('both computers see each other in machines, place and status', async () => 
 				[peerNode, 'ok']
 			]);
 			expect(text).toContain('harbor-mbp-2  OK  (runner)');
+			expect(data.find(({ node }: { node: string }) => node === peerNode).utilization).toEqual({
+				actual: { cpu: 5, ram: 25 },
+				target: { cpu: 80, ram: 75 }
+			});
 			const placed = await call(runtime, ['place', '--kind', 'claude']);
 			expect(placed.data.recommended).toBe(peerNode);
 			expect(placed.text).toContain('use harbor-mbp-2 (claude, needs 2 GB)');
+			const heavy = await call(runtime, ['place', '--kind', 'build']);
+			expect(heavy.data).toMatchObject({ recommended: hubNode, needs_cores: 5, needs_ram_gb: 4 });
 		}
 		const detail = await call(nodes.hub, ['machines', 'mb2', '--hours', '1']);
 		expect(detail.data.history.length).toBeGreaterThan(0);
@@ -145,9 +155,9 @@ test('a peer that stops reporting loses its due-start grant and alerts Chief of 
 		expect(nudge).toHaveBeenCalledTimes(1);
 		await exchangeFleetReport(nodes, fleetReport(nodes, peerNode, ['harbor']));
 		expect(nodes.hub.watchdog!.alerts()).toEqual([]);
-		nodes.readings[peerNode] = { load: [23, 6, 5] };
+		nodes.readings[peerNode] = { load: [23, 23, 5] };
 		await nodes.tick();
-		expect(nodes.hub.machines.peerStartHold(peerNode)).toContain('1-min load 23');
+		expect(nodes.hub.machines.peerStartHold(peerNode)).toBeNull();
 	} finally {
 		clock.mockRestore();
 		nudge.mockRestore();
@@ -169,7 +179,9 @@ test('--computer auto picks the computer whose launcher maps the project', async
 		const add = async (...extra: string[]) =>
 			(await call(nodes.hub, ['add', `Fixture ${extra.join(' ')}`, '--auto', '--force', ...extra]))
 				.data;
-		await exchangeFleetReport(nodes, fleetReport(nodes, peerNode, ['harbor']));
+		const busy = fleetReport(nodes, peerNode, ['harbor']);
+		busy.resources.load = [23, 23, 5];
+		await exchangeFleetReport(nodes, busy);
 		expect(await add('--agent', 'harbor', '--computer', 'auto')).toMatchObject({
 			computer: peerNode
 		});

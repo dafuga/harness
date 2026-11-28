@@ -22,7 +22,6 @@ const unit = 'service.projects-sessions-tracker-native-runtime';
 const shortages: [string, string, Partial<TrackerResourceScenario>, RegExp][] = [
 	['Mac free memory', primary, { freePercent: 24 }, /free memory 24% \(need at least 25%\)/],
 	['unknown Mac memory', mb2, { freePercent: null }, /free memory unknown/],
-	['Mac load', primary, { load: [15, 1] }, /load 15\.00 \(need under 15\)/],
 	['available RAM', primary, { availableMB: 2047 }, /only 2047 MB RAM available/],
 	['fleet disk floor', primary, { freeGB: 29.9 }, /only 29\.9 GB disk free .*at least 30 GB/],
 	['other host disk', 'fixture-linux', { freeGB: 4.9 }, /only 4\.9 GB disk free/],
@@ -108,51 +107,36 @@ test('applies configured RAM and disk minimums', () =>
 		})
 	));
 
-test('enforces the MB2 non-Harbor session budget and load limit', () =>
-	measureWorkload(unit, 'mb2-cpu-budget', async () => {
-		await withTempDir('hnt-mb2-', proveMb2Budget);
-		await withTempDir('hnt-mb2-cap-', (root) => proveMb2Budget(root, 3));
-	}));
-
-async function proveMb2Budget(root: string, nonHarborSessionLimit?: number) {
-	const fixture = trackerResourceHost(root, mb2, { nonHarborSessionLimit });
-	const cap = nonHarborSessionLimit ?? 1;
-	try {
-		fixture.host.load = [4, 1];
-		fixture.queue('other00001', 'Harness');
-		await fixture.tick();
-		expect(fixture.running()).toEqual([]);
-		expect(fixture.waiting()).toMatch(/load 4\.00 \(need under 4 for non-Harbor\)/);
-		fixture.host.load = [3.9, 1];
-		await fixture.tick();
-		expect(fixture.running()).toEqual(['other00001']);
-		expect(fixture.started()).toMatchObject({ cpuBudget: 4 });
-		expect(fixture.started().brief).toContain('**CPU budget:**');
-		expect(fixture.started().brief).toContain('--maxWorkers=4');
-		const admitted = Array.from({ length: cap }, (_, index) => `other0000${index + 1}`);
-		for (const id of admitted.slice(1)) {
-			fixture.queue(id, 'Harness');
-			await fixture.tick();
-			expect(fixture.running(), fixture.waiting() ?? undefined).toContain(id);
-		}
-		fixture.queue('other00009', 'Harness');
-		await fixture.tick();
-		expect(fixture.running()).toEqual(admitted);
-		expect(fixture.waiting()).toContain(`${cap}/${cap} non-Harbor sessions running`);
-		fixture.host.load = [6, 23];
-		fixture.queue('harbor0001', 'Harbor');
-		await fixture.tick();
-		expect(fixture.running()).toEqual(admitted);
-		expect(fixture.waiting()).toMatch(/5-min load 23\.00/);
-		fixture.host.load = [6, 1];
-		await fixture.tick();
-		expect(fixture.running()).toEqual([...admitted, 'harbor0001']);
-		expect(fixture.started()).not.toHaveProperty('cpuBudget');
-		expect(fixture.started().brief).not.toContain('CPU budget');
-	} finally {
-		fixture.database.close();
-	}
-}
+test.each([mb2, primary])(
+	'admits sessions by RAM and slots on %s while CPU load stays high',
+	(node) =>
+		measureWorkload(unit, 'mb2-cpu-budget', () =>
+			withTempDir('hnt-mac-', async (root) => {
+				const fixture = trackerResourceHost(root, node, { maxConcurrent: 20 });
+				try {
+					fixture.host.load = [23, 23];
+					for (let index = 1; index <= 20; index++) {
+						fixture.queue(`work${String(index).padStart(6, '0')}`, 'Harness');
+						await fixture.tick();
+						expect(fixture.running()).toHaveLength(index);
+					}
+					fixture.queue('work000021', 'Harness');
+					await fixture.tick();
+					expect(fixture.waiting()).toContain('at session capacity');
+					fixture.database.exec("UPDATE runs SET state = 'finished' WHERE id = 1");
+					fixture.host.freePercent = 25;
+					await fixture.tick();
+					expect(fixture.waiting()).toMatch(/RAM available/);
+					fixture.host.freePercent = 80;
+					await fixture.tick();
+					expect(fixture.running().at(-1)).toBe('work000021');
+				} finally {
+					fixture.database.close();
+				}
+			})
+		),
+	30000
+);
 
 test('considers Harbor first on MB2 only', () =>
 	measureWorkload(unit, 'mb2-harbor-first', async () => {

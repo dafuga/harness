@@ -1,5 +1,6 @@
 // @harness-uid u_k4rxbz6pq3
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
+import { trackerUtilizationSchema } from '$reports/lib/projects-sessions/project-overview/trackerReadTargets';
 import { hubFail } from '../../../utils/development-tooling/hubJson';
 export { MAX_BODY_BYTES, readOverviewText } from './trackerOverviewBody';
 import type {
@@ -102,12 +103,18 @@ function milestone(value: unknown) {
 }
 
 function machine(value: unknown) {
-	const hasRemote = Object.hasOwn(objectOf(value), 'remoteRuns');
-	const body = record(value, hasRemote ? ['name', 'status', 'remoteRuns'] : ['name', 'status']);
+	const incoming = objectOf(value);
+	const keys = ['name', 'status'];
+	if (Object.hasOwn(incoming, 'remoteRuns')) keys.push('remoteRuns');
+	if (Object.hasOwn(incoming, 'utilization')) keys.push('utilization');
+	const body = record(incoming, keys);
+	const utilization = trackerUtilizationSchema.optional().safeParse(body.utilization);
+	if (!utilization.success) return invalid();
 	return {
 		name: identifier(body.name, 200),
 		status: oneOf(body.status, MACHINE_STATUSES),
-		...(hasRemote && { remoteRuns: count(body.remoteRuns) })
+		...(keys.includes('remoteRuns') && { remoteRuns: count(body.remoteRuns) }),
+		...(utilization.data && { utilization: utilization.data })
 	};
 }
 

@@ -41,7 +41,7 @@ function homeComputer(
 	known: ReadonlyMap<string, TrackerRunRecord>,
 	titles: ReadonlyMap<string, string>
 ): HomeComputer {
-	const { node, status, remoteRuns, remoteRunRefs, resources } = machine;
+	const { node, status, remoteRuns, remoteRunRefs, resources, utilization } = machine;
 	const reasons = machine.reasons?.flatMap((reason) => homeText(reason, 200) ?? []);
 	const name = homeText(node, 200) ?? '';
 	if (status === 'offline') return { name, status, reasons };
@@ -63,6 +63,7 @@ function homeComputer(
 		status,
 		reasons,
 		resources,
+		...(utilization && { utilization }),
 		remoteRuns,
 		agentCount: runs.size + (remoteRunRefs ? 0 : (remoteRuns ?? 0)),
 		sessions: sessions.slice(0, maxListedSessions)

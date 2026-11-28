@@ -35,7 +35,9 @@
 							"A running test finishes under pressure. Later work waits; unavailable, stale or pressured telemetry blocks admission.",
 							"Nested commands share a validated bounded parent budget. Standard Vitest workers and Rust/Go/OpenMP/Xcode build workers inherit that budget.",
 							"Harness verification checks, loop evaluators, Desktop agent turns and repository build/test/check scripts use admission automatically.",
-							"On macOS, repository full checks share one OS lock across worktrees. Managed agent-test commands and their children run at nice +10 or lower priority under the Darwin background policy.",
+							"On macOS, full checks and managed browser or E2E suites share one heavy test lane on smaller hosts and two lanes on hosts with at least 10 cores. A one-minute load of 15 or five-minute load above 1.5 times the core count delays new heavy work.",
+							"Heavy test commands use agent-test priority on macOS. Managed agent-test commands and their children run at nice +10 or lower priority under the Darwin background policy.",
+							"Use resources run --heavy-test for heavy test commands outside the standard Harness entry points.",
 							"macOS uses VM counters and memory pressure; Linux uses MemAvailable, affinity and cgroup-v2 quotas. Unsupported monitoring fails closed.",
 							"Queue waiting defaults to 30 minutes; execution --timeout defaults to six hours. Cancellation cleans owned work only."
 						],

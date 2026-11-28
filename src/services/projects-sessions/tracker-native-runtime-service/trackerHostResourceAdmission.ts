@@ -1,15 +1,19 @@
 // @harness-uid u_2jymbzvxjz
 import { homedir } from 'node:os';
 import {
-	trackerBudgetSessions,
-	trackerCpuBudget,
+	trackerBudgetNode,
 	trackerHomeProject
 } from '../../../utils/projects-sessions/trackerCpuBudget';
-import { TrackerHostResourceAdapter } from '../../../adapters/projects-sessions/TrackerHostResourceAdapter';
 import {
 	trackerHostResourceHold,
 	trackerResourceHoldPrefix
 } from '../../../utils/projects-sessions/trackerHostResourceHold';
+import {
+	trackerMacRole,
+	trackerMacSessionMemoryReservePercent,
+	trackerMacSessionRamSlots,
+	trackerMachineRole
+} from '../../../utils/projects-sessions/trackerMachineStatus';
 import type { TrackerHostResources } from '../../../utils/projects-sessions/trackerHostResources.types';
 import type { TrackerDispatchItem } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
@@ -17,31 +21,39 @@ import type { TrackerHostLaunchConfig } from './nativeTrackerHostEffects.types';
 import type { TrackerHostTarget } from './trackerHostLaunch.types';
 import type { TrackerOccupiedRun } from './trackerHostAdmission.types';
 
-/** Apply MB2's session budget, then this computer's RAM, disk, inode and load guards. */
+/** Apply configured limits and check the local launch filesystems. */
 export function trackerHostResourceAdmission(
 	store: TrackerPersistenceService,
 	config: TrackerHostLaunchConfig,
 	{
-		resources: provided,
+		resources,
 		occupied
 	}: { resources?: TrackerHostResources; occupied: () => TrackerOccupiedRun[] }
 ) {
-	// A driver owns its own host; the managed launcher runs sessions on this computer.
-	const resources =
-		provided ?? ('managed' in config ? new TrackerHostResourceAdapter() : undefined);
-	const budget = config.nonHarborSessionLimit ?? trackerBudgetSessions;
-	const budgetHold = `${trackerResourceHoldPrefix}${budget}/${budget} non-Harbor sessions running`;
+	const budget = config.nonHarborSessionLimit;
 	return (item: TrackerDispatchItem, route: TrackerHostTarget): string | null => {
-		const budgeted = Boolean(trackerCpuBudget(store.node, item.project ?? item.agent));
-		if (budgeted && budgetedRuns(store, occupied()) >= budget) return budgetHold;
+		const project = (item.project ?? item.agent)?.trim().toLowerCase();
+		if (budget && trackerBudgetNode(store.node) && project !== trackerHomeProject) {
+			if (budgetedRuns(store, occupied()) >= budget)
+				return `${trackerResourceHoldPrefix}${budget}/${budget} non-Harbor sessions running`;
+		}
 		if (!resources) return null;
-		return trackerHostResourceHold(resources, {
+		const hold = trackerHostResourceHold(resources, {
 			node: store.node,
-			budgeted,
 			paths: [homedir(), ...launchPaths(config, route)],
 			limits: config
 		});
+		if (hold) return hold;
+		return trackerHostRamSlots(store.node, resources) < 1
+			? `${trackerResourceHoldPrefix}RAM available above the ${trackerMacSessionMemoryReservePercent}% reserve is under 1 GiB`
+			: null;
 	};
+}
+
+export function trackerHostRamSlots(node: string, resources?: TrackerHostResources): number {
+	if (!resources || !trackerMacRole(trackerMachineRole(node))) return Infinity;
+	const { availableMB, freePercent } = resources.memory();
+	return trackerMacSessionRamSlots(availableMB, freePercent);
 }
 
 function launchPaths(config: TrackerHostLaunchConfig, route: TrackerHostTarget) {

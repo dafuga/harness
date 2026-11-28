@@ -24,8 +24,6 @@ export interface TrackerHostResourceLimits {
 
 export interface TrackerHostResourceRequest {
 	node: string;
-	/** Work outside the computer's home project. */
-	budgeted: boolean;
 	/** Filesystems the launch writes to. The first is the home volume. */
 	paths: readonly string[];
 	limits: TrackerHostResourceLimits;

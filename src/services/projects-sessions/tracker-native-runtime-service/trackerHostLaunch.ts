@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import { statfsSync, statSync } from 'node:fs';
-import { occupiedHostSlots, trackerHostAdmission } from './trackerHostAdmission';
+import { freeHostSessionSlots, trackerHostAdmission } from './trackerHostAdmission';
+import { TrackerHostResourceAdapter } from '../../../adapters/projects-sessions/TrackerHostResourceAdapter';
 import { trackerHostLaunchPort } from './trackerHostLaunchPort';
 import { canonicalNode } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
@@ -49,6 +50,8 @@ export function trackerHostLaunch(
 		Object.entries(config.repositories).map(([project, route]) => [project.toLowerCase(), route])
 	);
 	const opsWorkdir = 'managed' in config ? config.managed.opsWorkdir : undefined;
+	const hostResources =
+		effects.hostResources ?? ('managed' in config ? new TrackerHostResourceAdapter() : undefined);
 	const routeFor = (item: TrackerHostRouteItem) =>
 		approvedRoute(item, repositories, node, opsWorkdir);
 	const tmux = trackerLaunchTmux(config, node, effects.tmuxExecutable);
@@ -61,7 +64,7 @@ export function trackerHostLaunch(
 		automaticEnabled: effects.automaticEnabled
 	});
 	return {
-		runner: trackerCapacityRunner(host, store, config, repositories),
+		runner: trackerCapacityRunner(host, store, config, { repositories, hostResources }),
 		sessions: host.sessions,
 		policy: {
 			timezone: 'Europe/Lisbon',
@@ -70,7 +73,7 @@ export function trackerHostLaunch(
 			chooseHost: chooseTrackerHost(routeFor, node),
 			localRepoAvailable: (item) => Boolean(routeFor(item)),
 			opsWorkdirAvailable: (item) => 'workdir' in (routeFor(item) ?? {}),
-			admit: trackerHostAdmission(store, { ...effects, config, routeFor }),
+			admit: trackerHostAdmission(store, { ...effects, config, routeFor, hostResources }),
 			providerHold: configuredTrackerProviderHold(store, config.codexPausedUntil, effects.now),
 			...trackerHostModelPolicy(store, config, effects)
 		},
@@ -95,12 +98,18 @@ function trackerCapacityRunner(
 	host: ReturnType<typeof trackerHostRunner>,
 	store: TrackerPersistenceService,
 	config: TrackerHostLaunchConfig,
-	repositories: ReadonlyMap<string, TrackerHostRepository>
+	{
+		repositories,
+		hostResources
+	}: {
+		repositories: ReadonlyMap<string, TrackerHostRepository>;
+		hostResources?: TrackerHostResources;
+	}
 ) {
 	return {
 		...host.runner,
 		capacity: () => ({
-			freeSlots: Math.max(0, (config.maxConcurrent ?? 2) - occupiedHostSlots(store)),
+			freeSlots: freeHostSessionSlots(store, config, hostResources),
 			projects: adapterProjectCapacity(config, repositories)
 		})
 	};

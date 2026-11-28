@@ -1,7 +1,7 @@
 // @harness-uid u_nves237tvx
 import type { TrackerMachineRunRef } from '../../../../../../src/utils/projects-sessions/trackerMachine.types';
 import type { HomeComputerResources } from '../hub-home/homeLive.types';
-import type { MachineStatus, OverviewItem } from './projectOverview.types';
+import type { MachineStatus, MachineUtilization, OverviewItem } from './projectOverview.types';
 
 /** Item statuses the tracker reports, including ignored records that never affect a card. */
 import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
@@ -97,6 +97,7 @@ export type TrackerMachineRecord = {
 	reasons?: string[];
 	remoteRunRefs?: TrackerMachineRunRef[];
 	resources?: HomeComputerResources;
+	utilization?: MachineUtilization;
 };
 
 /** Validated item, run, and machine records from the tracker. */

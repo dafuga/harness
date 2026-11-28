@@ -1,7 +1,10 @@
 // @harness-uid u_5hr7siszzq
+import type { TrackerWorkDemand } from '../../../utils/projects-sessions/trackerMachine.types';
 import type { TrackerMachineService } from '../TrackerMachineService';
 
-export type TrackerPlacedLaunch = { node: string; why: string };
+export type TrackerPlacementReservation = TrackerWorkDemand & { sessions: number };
+
+export type TrackerPlacedLaunch = { node: string; why: string; demand: TrackerWorkDemand };
 
 export type TrackerFleetView = {
 	machines: TrackerMachineService;

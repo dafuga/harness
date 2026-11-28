@@ -107,6 +107,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.execution-runtimes-with-mac-heavy-test-lane",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.resource-command",
 			"via": "import",
 			"origin": "derived"

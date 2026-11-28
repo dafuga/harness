@@ -126,7 +126,7 @@ function dispatchPermits(
 	return {
 		automatic: localPermit,
 		hubAutomatic: localPermit,
-		// A due start also needs a fresh, calm reading from a peer that reports its resources.
+		// A due start also needs a fresh, healthy memory and storage reading from a peer that reports its resources.
 		permitDue: (id: string, token: string, target: string) =>
 			!machines?.peerStartHold(canonicalNode(target, policy)) &&
 			grantsDelegation(repository.readSnapshot(id), { token, target }, policy)

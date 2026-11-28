@@ -1,0 +1,166 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-with-mac-heavy-test-lane",
+	"uid": "u_czp53bdy3p",
+	"kind": "function",
+	"title": "withMacHeavyTestLane",
+	"responsibility": "Owns the withMacHeavyTestLane shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/execution-runtimes/withMacHeavyTestLane.ts",
+			"src/utils/execution-runtimes/withMacHeavyTestLane.types.ts"
+		],
+		"symbols": ["isHeavyTestCommand", "withMacHeavyTestLane", "LaneEnvironment", "LaneHost"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "isHeavyTestCommand.args",
+				"type": "readonly string[]",
+				"required": true
+			},
+			{
+				"name": "withMacHeavyTestLane.enabled",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "withMacHeavyTestLane.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "withMacHeavyTestLane.waitTimeoutMs",
+				"type": "number",
+				"required": false
+			},
+			{
+				"name": "withMacHeavyTestLane.env",
+				"type": "LaneEnvironment",
+				"required": false
+			},
+			{
+				"name": "withMacHeavyTestLane.run",
+				"type": "(env: LaneEnvironment, beforeStart: () => Promise<void>) => Promise<T>",
+				"required": true
+			},
+			{
+				"name": "withMacHeavyTestLane.host",
+				"type": "LaneHost",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "isHeavyTestCommand",
+				"type": "boolean"
+			},
+			{
+				"name": "withMacHeavyTestLane",
+				"type": "Promise<T>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "isHeavyTestCommand",
+				"inputs": [
+					{
+						"name": "isHeavyTestCommand.args",
+						"type": "readonly string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isHeavyTestCommand",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withMacHeavyTestLane",
+				"inputs": [
+					{
+						"name": "withMacHeavyTestLane.enabled",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "withMacHeavyTestLane.signal",
+						"type": "AbortSignal",
+						"required": true
+					},
+					{
+						"name": "withMacHeavyTestLane.waitTimeoutMs",
+						"type": "number",
+						"required": false
+					},
+					{
+						"name": "withMacHeavyTestLane.env",
+						"type": "LaneEnvironment",
+						"required": false
+					},
+					{
+						"name": "withMacHeavyTestLane.run",
+						"type": "(env: LaneEnvironment, beforeStart: () => Promise<void>) => Promise<T>",
+						"required": true
+					},
+					{
+						"name": "withMacHeavyTestLane.host",
+						"type": "LaneHost",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "withMacHeavyTestLane",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-status",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/execution-runtimes/withMacHeavyTestLane.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/execution-runtimes/withMacHeavyTestLane.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

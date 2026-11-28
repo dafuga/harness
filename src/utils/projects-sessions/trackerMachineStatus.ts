@@ -13,7 +13,23 @@ const swapWindow = 10 * minute;
 
 export const trackerBusyLoadPerCore = 1;
 export const trackerOverloadedLoadPerCore = 1.5;
-export const trackerMacLaunchLoad = 15;
+export const trackerMacHeavyTestLoad = 15;
+export const trackerMacSessionMemoryReservePercent = 25;
+export const trackerUtilizationTargets = { cpu: 80, ram: 75 };
+
+export function trackerActualUtilization(sample: TrackerResourceSample) {
+	const ramFree = sample.ram.pressure_free_pct ?? sample.ram.available_pct;
+	return {
+		cpu: sample.cpu_busy_pct === null ? null : percent(sample.cpu_busy_pct),
+		ram: percent(100 - ramFree)
+	};
+}
+
+function percent(value: number): number {
+	return Math.round(Math.max(0, Math.min(100, value)));
+}
+
+const sustainedLoadPrefix = '5-min load ';
 
 const overloaded = {
 	loadPerCore: trackerOverloadedLoadPerCore,
@@ -31,6 +47,29 @@ const roles = new Map<string, TrackerMachineRole>([
 
 export function trackerMachineRole(node: string): TrackerMachineRole {
 	return roles.get(node) ?? 'other';
+}
+
+export function trackerMacRole(role: TrackerMachineRole): boolean {
+	return role === 'primary' || role === 'runner';
+}
+
+/** A GiB above the existing Mac memory reserve buys one pending launch. */
+export function trackerMacSessionRamSlots(availableMB: number, freePercent: number | null): number {
+	const reserve = trackerMacSessionMemoryReservePercent;
+	if (freePercent === null || freePercent <= reserve) return 0;
+	return Math.floor((availableMB * (freePercent - reserve)) / freePercent / 1024);
+}
+
+export function trackerMacReportedRamSlots(ram: TrackerResourceSample['ram']): number {
+	const percent = ram.pressure_free_pct ?? ram.available_pct;
+	return trackerMacSessionRamSlots((ram.total_mb * percent) / 100, percent);
+}
+
+/** Keep memory, swap and disk overload holds for Mac sessions, independent of CPU load. */
+export function trackerSessionOverload(row: TrackerMachineRow): string | undefined {
+	if (row.status !== 'overloaded') return undefined;
+	const mac = trackerMacRole(row.role);
+	return row.reasons.find((reason) => !mac || !reason.startsWith(sustainedLoadPrefix));
 }
 
 /** Judge a computer from its latest sample and the samples of the last few minutes. */
@@ -77,7 +116,7 @@ function breaches(
 	const loadLimit = limits.loadPerCore * sample.cores;
 	if (load > loadLimit)
 		reasons.push(
-			`5-min load ${load} > ${round(loadLimit)} (${limits.loadPerCore}x ${sample.cores} cores)`
+			`${sustainedLoadPrefix}${load} > ${round(loadLimit)} (${limits.loadPerCore}x ${sample.cores} cores)`
 		);
 	reasons.push(...memoryBreaches(sample.ram, limits.ramPct, status));
 	if (growth > limits.swapGrowthMB) reasons.push(`swap grew ${growth} MB in 10 min`);
