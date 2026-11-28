@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-hub-home-hub-board-column-switch",
+	"uid": "u_ihssei4kbr",
+	"kind": "component",
+	"title": "HubBoardColumnSwitch",
+	"responsibility": "Owns the HubBoardColumnSwitch Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": ["reports.component.shared-primitives-atoms-html-div"]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubBoardColumnSwitch.svelte"
+		],
+		"symbols": ["HubBoardColumnSwitch"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubBoardColumnSwitch.columns",
+				"type": "BoardSwitchColumn[]",
+				"required": true
+			},
+			{
+				"name": "HubBoardColumnSwitch.selected",
+				"type": "BoardColumnId",
+				"required": true
+			},
+			{
+				"name": "HubBoardColumnSwitch.onselect",
+				"type": "(id: BoardColumnId) => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubBoardColumnSwitch",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-board-column-switch-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubBoardColumnSwitch.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubBoardColumnSwitch.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

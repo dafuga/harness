@@ -1,0 +1,99 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.projects-sessions-hub-home-hub-strip-quota",
+	"uid": "u_lttwnjwv4v",
+	"kind": "function",
+	"title": "hubStripQuota",
+	"responsibility": "Owns the hubStripQuota shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubStripQuota.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubStripQuota.types.ts"
+		],
+		"symbols": ["stripQuota", "StripQuota"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "stripQuota.subscriptions",
+				"type": "HomeSubscription[] | null",
+				"required": true
+			},
+			{
+				"name": "stripQuota.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "stripQuota",
+				"type": "StripQuota[]"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "stripQuota",
+				"inputs": [
+					{
+						"name": "stripQuota.subscriptions",
+						"type": "HomeSubscription[] | null",
+						"required": true
+					},
+					{
+						"name": "stripQuota.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "stripQuota",
+						"type": "StripQuota[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-strip-computers",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubStripQuota.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubStripQuota.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

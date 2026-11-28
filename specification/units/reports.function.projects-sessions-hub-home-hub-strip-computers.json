@@ -1,0 +1,83 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.projects-sessions-hub-home-hub-strip-computers",
+	"uid": "u_q6vu4wcrvc",
+	"kind": "function",
+	"title": "hubStripComputers",
+	"responsibility": "Owns the hubStripComputers shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubStripComputers.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubStripComputers.types.ts"
+		],
+		"symbols": ["stripComputers", "StripTone", "StripComputerState", "StripComputer"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "stripComputers.machines",
+				"type": "HomeComputer[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "stripComputers",
+				"type": "StripComputer[]"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "stripComputers",
+				"inputs": [
+					{
+						"name": "stripComputers.machines",
+						"type": "HomeComputer[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "stripComputers",
+						"type": "StripComputer[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubStripComputers.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubStripComputers.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

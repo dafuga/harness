@@ -1,0 +1,110 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-hub-home-hub-stats-strip",
+	"uid": "u_jeymogffwf",
+	"kind": "component",
+	"title": "HubStatsStrip",
+	"responsibility": "Owns the HubStatsStrip Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.shared-primitives-atoms-html-section"]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubStatsStrip.svelte"],
+		"symbols": ["HubStatsStrip"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubStatsStrip.computers",
+				"type": "StripComputer[]",
+				"required": true
+			},
+			{
+				"name": "HubStatsStrip.quota",
+				"type": "StripQuota[]",
+				"required": true
+			},
+			{
+				"name": "HubStatsStrip.counts",
+				"type": "StripCounts",
+				"required": true
+			},
+			{
+				"name": "HubStatsStrip.compact",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "HubStatsStrip.pressed",
+				"type": "'sessions' | 'needs-you' | null",
+				"required": false,
+				"default": null
+			},
+			{
+				"name": "HubStatsStrip.onsessions",
+				"type": "() => void",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "HubStatsStrip.onneedsyou",
+				"type": "() => void",
+				"required": false,
+				"default": "undefined (omitted)"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubStatsStrip",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-strip-computers",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-strip-counts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-hub-home-hub-strip-quota",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubStatsStrip.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubStatsStrip.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
