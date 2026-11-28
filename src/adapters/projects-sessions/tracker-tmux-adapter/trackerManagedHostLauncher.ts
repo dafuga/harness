@@ -45,7 +45,9 @@ export function trackerManagedHostLauncher(
 	const tmux = controlledTrackerExecutable(config.tmux);
 	const directory = privateTrackerDirectory(config.stateDirectory);
 	const trackerBin = realpathSync(config.trackerBinDirectory);
-	const trackerExecutable = controlledTrackerExecutable(join(trackerBin, 'harness'));
+	// Validate the installed binary, but give workers the path the installer updates.
+	const trackerExecutable = join(trackerBin, 'harness');
+	controlledTrackerExecutable(trackerExecutable);
 	const profiles = validateManagedProfiles(config);
 	return {
 		readUsage: trackerManagedUsage(
