@@ -26,8 +26,11 @@ When several linked computers answer, the overview holding the newest Tracker ch
 ## Computers on Home
 
 Hub web and Harness Mac Home use the shared computer header to show active Tracker agent
-sessions on each computer. Runs are identified by their origin computer and run number. Tracked work delegated to
-a second computer also counts there, once per run even if it holds multiple leases. Finished and
+sessions on each computer. The online primary Mac appears first, followed by other online
+computers by name, then offline computers by name. The same order applies to the shared
+Project Overview computer strip. Runs are identified by their origin computer and run number.
+Tracked work delegated to a second computer also counts there, once per run even if it holds
+multiple leases. Finished and
 queued runs do not count. Private runs can contribute to the count without exposing their titles.
 
 Selecting a computer opens a read-only detail with available and total RAM, one-minute load and

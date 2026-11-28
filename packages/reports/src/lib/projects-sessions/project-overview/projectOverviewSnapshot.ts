@@ -13,6 +13,7 @@ import type {
 } from './projectOverviewTracker.types';
 import {
 	compareItems,
+	compareOverviewMachines,
 	DAY_MS,
 	isWithin,
 	isoTime,
@@ -46,7 +47,7 @@ export function projectOverviewSnapshot(sources: TrackerSources, now: number): O
 			status,
 			...(remoteRuns !== undefined && { remoteRuns })
 		}))
-		.sort((a, b) => compareText(a.name, b.name));
+		.sort(compareOverviewMachines);
 	const items = sources.items.filter(isIncludedItem);
 	const liveByItem = countLiveRuns(sources.runs, new Set(items.map((item) => item.id)), offline);
 	const cards = [...groupByAgent(items).entries()]

@@ -9,6 +9,7 @@
 	import BrandMark from '$reports/components/BrandMark.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import { count, homeHeadline, summaryLine } from './hubHomePresentation';
+	import { compareOverviewMachines } from '$reports/lib/projects-sessions/project-overview/projectOverviewItems';
 	import type { HomeComputer } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 	import HubHomeComputerDetail from './HubHomeComputerDetail.svelte';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
@@ -35,9 +36,13 @@
 	} = $props();
 	const liveSessions = $derived(view.overview?.status === 'ready' ? view.overview.liveSessions : 0);
 	const machines: HomeComputer[] = $derived(
-		localMachines ??
+		(
+			localMachines ??
 			view.computers?.snapshot?.liveOverview?.machines ??
 			(view.overview?.status === 'ready' ? view.overview.machines : [])
+		)
+			.slice()
+			.sort(compareOverviewMachines)
 	);
 	const offline = $derived(
 		machines.filter((machine) => machine.status === 'offline').map((machine) => machine.name)
