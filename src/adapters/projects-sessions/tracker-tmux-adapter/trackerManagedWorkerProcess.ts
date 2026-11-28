@@ -124,14 +124,15 @@ export function trackerSocket(node: string): string {
 	return node === 'harbor-mbp-2' ? 'claude' : 'default';
 }
 
-export function managedBrief(input: TrackerHostStartRequest): string {
+export function managedBrief(input: TrackerHostStartRequest, checkout?: string): string {
 	const { backend, itemId } = input;
-	const brief = input.brief.startsWith(trackerSecretSafetyRule)
-		? input.brief
-		: trackerSecretSafetyRule + '\n\n' + input.brief.replace(trackerSecretSafetyRule + '\n\n', '');
+	const body = input.brief.startsWith(trackerSecretSafetyRule)
+		? input.brief.slice(trackerSecretSafetyRule.length).trimStart()
+		: input.brief.replace(trackerSecretSafetyRule + '\n\n', '');
+	const brief = [trackerSecretSafetyRule, checkout, body].filter(Boolean).join('\n\n');
 	const source = Buffer.from(brief);
 	if (backend !== 'docker' || source.length <= 15_900) return brief;
-	const completion = brief.indexOf('## Completion and worktree cleanup');
+	const completion = brief.lastIndexOf('## Completion and worktree cleanup');
 	const finalInstructions = completion < 0 ? '' : brief.slice(completion);
 	const pointer = '\n\nRead the full task with `tracker show ' + itemId + '`.\n\n';
 	// The orchestrator refuses briefs over 16,000 bytes, so the final instructions come first.

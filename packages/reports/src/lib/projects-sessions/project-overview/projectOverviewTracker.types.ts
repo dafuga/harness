@@ -38,11 +38,15 @@ export type TrackerItemRecord = {
 	computer?: string | null;
 	model?: string | null;
 	occurrence?: string | null;
+	/** When the item next reminds, and the schedule it repeats on. */
+	remindAt?: string | null;
+	every?: string | null;
 	recurring?: boolean;
 	scheduleOff?: boolean;
 	priority?: string | null;
 	/** A launch has been requested and not cancelled. */
 	launchRequested?: boolean;
+	launchToken?: string | null;
 	owner?: string | null;
 	answer?: string | null;
 	answeredAt?: string | null;
@@ -61,7 +65,10 @@ export type TrackerRunDetailValue = string | number | boolean | object | null | 
 
 /** The run fields Home reads, as the Tracker sends them, before they are checked. */
 export type TrackerRunDetailInput = Partial<
-	Record<'queued_at' | 'started_at' | 'outcome' | 'model' | 'effort', TrackerRunDetailValue>
+	Record<
+		'queued_at' | 'started_at' | 'outcome' | 'model' | 'effort' | 'auto_token' | 'failure_reason',
+		TrackerRunDetailValue
+	>
 >;
 
 /** A run from GET /runs. The item's agent, not the run's project, names the card. */
@@ -72,6 +79,8 @@ export type TrackerRunRecord = {
 	state: string;
 	ended_at: number | null;
 	queued_at?: number | null;
+	auto_token?: string | null;
+	failure_reason?: string | null;
 	started_at?: number | null;
 	outcome?: string | null;
 	model?: string | null;

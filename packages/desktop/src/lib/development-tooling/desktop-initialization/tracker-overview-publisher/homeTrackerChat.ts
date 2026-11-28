@@ -4,6 +4,7 @@ import type {
 	HomeChatReceipt,
 	HomeAgent,
 	HomeOpenAsk,
+	HomeReminder,
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
@@ -14,19 +15,14 @@ const trackerOrigin = 'http://127.0.0.1:7701';
 /** Checks the fresh projected item, including the question, before one fixed Tracker write. */
 export async function deliverHomeChat(
 	input: HomeChatInput,
-	home: Pick<OwnerHomeSnapshot, 'agents' | 'openAsks'>,
+	home: Pick<OwnerHomeSnapshot, 'agents' | 'openAsks' | 'reminders'>,
 	fetcher: typeof fetch = fetch
 ): Promise<HomeChatReceipt> {
 	if (input.kind === 'message') return deliverHomeMessage(input, home, fetcher);
-	const ask = home.openAsks?.find(
-		(entry) => entry.itemId === input.itemId && entry.agentId === input.agentId
-	);
-	const path = chatPath(input, home.agents, ask);
 	const id = input.id;
-	if (!path) return { id, status: 'refused' };
-	const text = deliverableText(input, ask);
-	if (text === null) return { id, status: 'refused' };
-	const body = chatBody(input, text, ask);
+	const write = input.armed ? reminderWrite(input, home.reminders) : chatWrite(input, home);
+	if (!write) return { id, status: 'refused' };
+	const { path, body } = write;
 	try {
 		const response = await fetcher(trackerOrigin + path, {
 			method: 'POST',
@@ -41,6 +37,28 @@ export async function deliverHomeChat(
 	} catch {
 		return { id, status: 'unconfirmed' };
 	}
+}
+
+function chatWrite(input: HomeChatInput, home: Pick<OwnerHomeSnapshot, 'agents' | 'openAsks'>) {
+	const ask = home.openAsks?.find(
+		(entry) => entry.itemId === input.itemId && entry.agentId === input.agentId
+	);
+	const path = chatPath(input, home.agents, ask);
+	const text = path ? deliverableText(input, ask) : null;
+	return path && text !== null ? { path, body: chatBody(input, text, ask) } : null;
+}
+
+/** Done and snooze go only to a listed personal reminder still armed for the time shown. */
+function reminderWrite(input: HomeChatInput, reminders: HomeReminder[] = []) {
+	const listed = reminders.some(
+		(entry) => entry.itemId === input.itemId && entry.at === input.armed
+	);
+	if (!listed || !/^[a-z0-9-]+$/i.test(input.itemId)) return null;
+	const path = `/items/${input.itemId}`;
+	const by = 'Daniel via Hub';
+	return input.kind === 'reminder-snooze'
+		? { path: path + '/remind', body: { at: input.until, by } }
+		: { path: path + '/done', body: { occurrence: input.armed, by } };
 }
 
 /** The sanitized text to write, or null when it or the tapped option does not fit the ask. */

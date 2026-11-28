@@ -13,11 +13,14 @@
 	let {
 		flag,
 		busy = false,
+		compact = false,
 		onpick,
 		onother
 	}: {
 		flag: InboxFlag;
 		busy?: boolean;
+		/** Keep the overview tiles to labels and badges. Item detail shows the effects. */
+		compact?: boolean;
 		/** Called with the option's 1-based number once any confirm step is done. */
 		onpick: (number: number) => void;
 		/** Called with the answer written in the Other modal. */
@@ -45,7 +48,7 @@
 
 {#if flag.state === 'open'}
 	<hx-section class="choices" aria-label="Choose an answer">
-		<hx-ul class="plain">
+		<hx-ul class="plain" class:compact>
 			{#each choices as { number, option } (number)}
 				<hx-li>
 					<hx-button
@@ -55,9 +58,9 @@
 						disabled={busy}
 						onclick={() => tap(number)}
 					>
-						<hx-strong>{option.label}</hx-strong>
+						<hx-strong title={compact ? option.label : undefined}>{option.label}</hx-strong>
 						{#if option.recommended}<hx-span class="badge">Recommended</hx-span>{/if}
-						{#if option.effect}<hx-span class="effect">{option.effect}</hx-span>{/if}
+						{#if !compact && option.effect}<hx-span class="effect">{option.effect}</hx-span>{/if}
 					</hx-button>
 				</hx-li>
 			{/each}
@@ -70,7 +73,7 @@
 					onclick={() => (writing = true)}
 				>
 					<hx-strong>Other…</hx-strong>
-					<hx-span class="effect">Write a different answer.</hx-span>
+					{#if !compact}<hx-span class="effect">Write a different answer.</hx-span>{/if}
 				</hx-button>
 			</hx-li>
 		</hx-ul>

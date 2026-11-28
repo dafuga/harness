@@ -1,10 +1,11 @@
 // @harness-uid u_xxjw7sfoen
+import { workOverview } from '$reports/components/projects-sessions/hub-home/hubHomeStatusText';
 import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { homeProviderReadingIsStale } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
-import { homeBoard } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
-import { soonestWork } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
-import type { HomeView } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeView.types';
+import { homeBoard } from '$reports/components/projects-sessions/hub-home/hubHomeMerge';
+import { soonestWork } from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
+import type { HomeView } from '$reports/components/projects-sessions/hub-home/hubHomeView.types';
 import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 
 const hubNotices = {
@@ -35,6 +36,7 @@ export function desktopHomeView(
 	].filter(Boolean);
 	return {
 		...tracker,
+		reminders: home?.reminders ?? null,
 		controlled: [],
 		projects: [],
 		projectsFailed: false,
@@ -77,7 +79,7 @@ function trackerHome(home: OwnerHomeSnapshot | null, settled: boolean, now: numb
 		Array.isArray(providers.routines) && !homeProviderReadingIsStale(providers.routinesReadAt, now);
 	const { upcoming, pastDue } = homeBoard(home, routines, now);
 	return {
-		overview,
+		overview: workOverview(overview, pastDue),
 		agents,
 		openAsks,
 		plans,

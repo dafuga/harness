@@ -1,0 +1,176 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders",
+	"uid": "u_x6knq6fa2b",
+	"kind": "component",
+	"title": "TrackerInboxReminders",
+	"responsibility": "Lists personal reminders in the Mac and phone inbox and sends Done or Snooze.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-linkified-text"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminders.svelte",
+			"packages/desktop/src/components/development-tooling/tracker-inbox/trackerInboxReminders.css"
+		],
+		"symbols": ["TrackerInboxReminders"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerInboxReminders.source",
+				"type": "TrackerInboxSource",
+				"required": true,
+				"description": "Reads and writes the Tracker on the Mac or phone."
+			},
+			{
+				"name": "TrackerInboxReminders.mode",
+				"type": "'phone' | 'mac'",
+				"required": true,
+				"description": "Whether the Mac or the phone copy is shown, for the result wording."
+			},
+			{
+				"name": "TrackerInboxReminders.reminders",
+				"type": "InboxHeader[]",
+				"required": true,
+				"description": "Personal reminders, soonest first."
+			},
+			{
+				"name": "TrackerInboxReminders.onchanged",
+				"type": "() => Promise<void>",
+				"required": true,
+				"description": "Reads the list again after a tap."
+			},
+			{
+				"name": "TrackerInboxReminders.onnotice",
+				"type": "(message: string) => void",
+				"required": true,
+				"description": "Told what a Done or Snooze tap did."
+			},
+			{
+				"name": "TrackerInboxReminders.onselect",
+				"type": "(id: string) => void",
+				"required": true,
+				"description": "Opens the item behind a reminder."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerInboxReminders",
+				"type": "markup",
+				"description": "The Personal group with next times, Done and Snooze."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox-messages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-reminders",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-personal-reminder",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.strings-link-segments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-reminder-times",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminders.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminders.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

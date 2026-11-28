@@ -28,6 +28,7 @@
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-record",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
 		"desktop.component.development-tooling-tracker-work",
@@ -141,6 +142,8 @@
 		"hub.component.projects-sessions-hub-home-projects",
 		"hub.component.projects-sessions-hub-home-quota",
 		"hub.component.projects-sessions-hub-home-quota-pills",
+		"hub.component.projects-sessions-hub-home-reminder",
+		"hub.component.projects-sessions-hub-home-reminders",
 		"hub.component.projects-sessions-hub-home-row",
 		"hub.component.projects-sessions-hub-home-schedule",
 		"hub.component.projects-sessions-hub-home-skeleton",
@@ -162,6 +165,7 @@
 		"hub.page.public-site-about",
 		"hub.page.root",
 		"hub.page.tracker-overview",
+		"reports.component.accounts-access-device-list-row",
 		"reports.component.activity-list",
 		"reports.component.audio-comparison",
 		"reports.component.audio-comparison-viewer",
@@ -870,6 +874,12 @@
 			"title": "Tracker item notes and runs",
 			"coverage": "required",
 			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-record"]
+		},
+		{
+			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-reminders",
+			"title": "TrackerInboxReminders",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders"]
 		},
 		{
 			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-rows",
@@ -2348,6 +2358,18 @@
 			"units": ["hub.component.projects-sessions-hub-home-quota-pills"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home-reminder",
+			"title": "HubHomeReminder",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-reminder"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-reminders",
+			"title": "HubHomeReminders",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-reminders"]
+		},
+		{
 			"id": "hub-component-projects-sessions-hub-home-row",
 			"title": "HubHomeRow",
 			"coverage": "required",
@@ -2472,6 +2494,12 @@
 			"title": "/tracker-overview",
 			"coverage": "required",
 			"units": ["hub.page.tracker-overview"]
+		},
+		{
+			"id": "reports-component-accounts-access-device-list-row",
+			"title": "DeviceListRow",
+			"coverage": "required",
+			"units": ["reports.component.accounts-access-device-list-row"]
 		},
 		{
 			"id": "reports-component-activity-list",
@@ -8906,6 +8934,7 @@
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-choices",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-detail",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-record",
+				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-reminders",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-rows",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-writes",
 				"desktop-component-development-tooling-tracker-work",
@@ -9132,6 +9161,8 @@
 				"hub-component-projects-sessions-hub-home-projects",
 				"hub-component-projects-sessions-hub-home-quota",
 				"hub-component-projects-sessions-hub-home-quota-pills",
+				"hub-component-projects-sessions-hub-home-reminder",
+				"hub-component-projects-sessions-hub-home-reminders",
 				"hub-component-projects-sessions-hub-home-row",
 				"hub-component-projects-sessions-hub-home-schedule",
 				"hub-component-projects-sessions-hub-home-skeleton",
@@ -9153,6 +9184,7 @@
 				"hub-page-public-site-about",
 				"hub-page-root",
 				"hub-page-tracker-overview",
+				"reports-component-accounts-access-device-list-row",
 				"reports-component-activity-list",
 				"reports-component-activity-list-empty",
 				"reports-component-activity-list-short",

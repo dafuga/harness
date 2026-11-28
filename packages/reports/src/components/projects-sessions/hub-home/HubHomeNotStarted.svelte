@@ -3,10 +3,7 @@
 <!-- @harness-uid u_ufkzhmhxgn -->
 <script lang="ts">
 	import type { HomePastDue } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import {
-		pastDueLabel,
-		pastDueSummary
-	} from './hubHomePresentation';
+	import { pastDueLabel, pastDueSummary } from './hubHomePresentation';
 	import HubHomeRow from './HubHomeRow.svelte';
 
 	let { pastDue, work, limit }: { pastDue: HomePastDue[]; work: { id: string }[]; limit?: number } =
@@ -23,7 +20,7 @@
 			{#each unlisted.slice(0, limit) as run (run.id)}
 				<HubHomeRow title={run.title} meta={[run.agent, run.reason].filter(Boolean).join(' · ')}>
 					{#snippet trailing()}
-						<hx-span class="po-eta" data-tone={run.state === 'blocked' ? 'overdue' : 'soon'}
+						<hx-span class="po-eta" data-tone={run.state === 'blocked' ? 'blocked' : 'current'}
 							>{pastDueLabel(run)}</hx-span
 						>
 					{/snippet}

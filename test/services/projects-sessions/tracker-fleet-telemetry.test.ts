@@ -1,9 +1,11 @@
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
+import { TrackerTmuxAdapter } from '../../../src/adapters/projects-sessions/TrackerTmuxAdapter';
 import { randomUUID } from 'node:crypto';
 import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/tracker-command/nativeTrackerRequest';
 import { assignTrackerLaunches } from '../../../src/services/projects-sessions/tracker-machine-service/assignTrackerLaunches';
 import {
 	call,
+	checkRemoteWork,
 	exchangeFleetReport,
 	fleet,
 	fleetReport,
@@ -11,47 +13,14 @@ import {
 	hubNode,
 	minute,
 	originRun,
-	peerNode
+	peerNode,
+	signal
 } from '../../support/trackerFleetFixture';
 
-async function expectRemoteRuns(nodes: ReturnType<typeof fleet>, count: number) {
-	for (const runtime of [nodes.hub, nodes.peer]) {
-		const machine = (await call(runtime, ['machines', 'mb2'])).data;
-		expect(machine.remote_runs).toBe(count);
-	}
-}
-
-async function checkRemoteWork(nodes: ReturnType<typeof fleet>) {
-	const run = originRun(nodes.hub);
-	const ssh = { run, lease: randomUUID(), host: peerNode, kind: 'ssh' };
-	const colima = { ...ssh, lease: randomUUID(), kind: 'colima' };
-	expect((await hostLease(nodes.hub, 'POST', { ...ssh, host: hubNode })).status).toBe(400);
-	expect((await hostLease(nodes.hub, 'POST', { ...ssh, run: run + 100 })).status).toBe(409);
-	expect((await hostLease(nodes.hub, 'POST', ssh)).status).toBe(200);
-	expect((await hostLease(nodes.hub, 'POST', colima)).status).toBe(200);
-	nodes.clock.at += minute;
-	await nodes.tick();
-	await expectRemoteRuns(nodes, 1);
-	expect((await hostLease(nodes.hub, 'DELETE', ssh)).status).toBe(200);
-	nodes.clock.at += minute;
-	await nodes.tick();
-	await expectRemoteRuns(nodes, 1);
-	nodes.hub.store.database
-		.prepare("UPDATE runs SET state = 'finished', ended_at = ? WHERE id = ?")
-		.run(nodes.clock.at, run);
-	nodes.clock.at += minute;
-	await nodes.tick();
-	await expectRemoteRuns(nodes, 0);
-	expect((await hostLease(nodes.hub, 'POST', colima)).status).toBe(409);
-
-	const expired = { ...ssh, lease: randomUUID(), run: originRun(nodes.hub) };
-	expect((await hostLease(nodes.hub, 'POST', expired)).status).toBe(200);
-	nodes.clock.at += minute;
-	await nodes.tick();
-	await expectRemoteRuns(nodes, 1);
-	nodes.clock.at += 3 * minute;
-	await expectRemoteRuns(nodes, 0);
-}
+vi.mock(
+	'../../../src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPeer',
+	() => ({ readTrackerWatchdogPeer: async () => [] })
+);
 
 test('both computers see each other in machines, place and status', async () => {
 	const nodes = fleet();
@@ -140,8 +109,13 @@ test('raises one Chief of Staff alert for a sustained overload and closes it whe
 	}
 });
 
-test('a peer that stops reporting or is overloaded loses its due-start grant', async () => {
-	const nodes = fleet();
+test('a peer that stops reporting loses its due-start grant and alerts Chief of Staff once', async () => {
+	const nodes = fleet({ hostEffects: { watchdog: { tmux: '/bin/sh', chiefOfStaff: true } } });
+	const scan = vi
+		.spyOn(TrackerTmuxAdapter.prototype, 'scan')
+		.mockImplementation(async (_, names) => (names?.test('cos') ? [{} as never] : []));
+	const nudge = vi.spyOn(TrackerTmuxAdapter.prototype, 'nudge').mockResolvedValue(true);
+	const clock = vi.spyOn(Date, 'now').mockImplementation(() => nodes.clock.at);
 	try {
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toBeNull();
 		await nodes.tick();
@@ -153,12 +127,31 @@ test('a peer that stops reporting or is overloaded loses its due-start grant', a
 		expect((await hostLease(nodes.peer, 'DELETE', claim)).status).toBe(200);
 		await nodes.tick();
 		expect((await call(nodes.hub, ['machines', 'mac'])).data.remote_runs).toBe(0);
+		await exchangeFleetReport(nodes, fleetReport(nodes, peerNode, ['harbor']));
 		nodes.clock.at += 3 * minute;
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toBe('no fresh machine sample');
+		expect(nodes.hub.watchdog!.alerts()).toEqual([]);
+		nodes.clock.at += minute;
+		await nodes.hub.watchdog!.tick(signal);
+		expect(nodes.hub.watchdog!.alerts()).toMatchObject([
+			{ host: peerNode, kind: 'stale-dispatch-heartbeat' }
+		]);
+		expect(nudge).toHaveBeenCalledExactlyOnceWith(
+			expect.objectContaining({ message: expect.stringContaining(peerNode) }),
+			signal
+		);
+		nodes.clock.at += minute;
+		await nodes.hub.watchdog!.tick(signal);
+		expect(nudge).toHaveBeenCalledTimes(1);
+		await exchangeFleetReport(nodes, fleetReport(nodes, peerNode, ['harbor']));
+		expect(nodes.hub.watchdog!.alerts()).toEqual([]);
 		nodes.readings[peerNode] = { load: [23, 6, 5] };
 		await nodes.tick();
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toContain('1-min load 23');
 	} finally {
+		clock.mockRestore();
+		nudge.mockRestore();
+		scan.mockRestore();
 		nodes.close();
 	}
 });

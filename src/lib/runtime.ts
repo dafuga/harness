@@ -70,3 +70,21 @@ export type {
 } from '../core/agents-providers/platformAdapter.types';
 export { PlatformAuditLogRepository } from '../repositories/agents-providers/PlatformAuditLogRepository';
 export { PlatformMessagingService } from '../services/agents-providers/PlatformMessagingService';
+
+export { AgentToolSafetyService } from '../services/agents-providers/AgentToolSafetyService';
+export type {
+	AgentToolAction,
+	AgentToolApproval,
+	AgentToolCharge,
+	AgentToolDecision,
+	AgentToolDefinition,
+	AgentToolDenial,
+	AgentToolEvent,
+	AgentToolJournal,
+	AgentToolJournalTransaction,
+	AgentToolPolicy,
+	AgentToolReview,
+	AgentToolSafetyOptions,
+	AgentToolScope,
+	PreparedAgentTool
+} from '../services/agents-providers/AgentToolSafetyService.types';

@@ -20,7 +20,7 @@
 			"workTimes",
 			"workFacts",
 			"liveSummary",
-			"projectSummary",
+			"projectWorkCounts",
 			"liveNotice",
 			"liveSystemNotice"
 		]
@@ -83,10 +83,10 @@
 				"description": "The overview being totalled."
 			},
 			{
-				"name": "projectSummary.project",
+				"name": "projectWorkCounts.project",
 				"type": "HomeWorkProject",
 				"required": true,
-				"description": "The project whose running and status counts are worded."
+				"description": "Project snapshot with its running count, item totals and summarized work rows."
 			},
 			{
 				"name": "liveNotice.reading",
@@ -199,7 +199,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "span",
@@ -313,20 +313,19 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "projectSummary",
+				"name": "projectWorkCounts",
 				"inputs": [
 					{
-						"name": "projectSummary.project",
+						"name": "projectWorkCounts.project",
 						"type": "HomeWorkProject",
 						"required": true,
-						"description": "The project whose running and status counts are worded."
+						"description": "Project snapshot with its running count, item totals and summarized work rows."
 					}
 				],
 				"outputs": [
 					{
-						"name": "projectSummary",
-						"type": "unknown",
-						"description": "The non-zero counts of a project in one line."
+						"name": "projectWorkCounts",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -377,11 +376,6 @@
 	"dependencies": [
 		{
 			"unit": "hub.function.projects-sessions-hub-home-presentation",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.projects-sessions-hub-home-view-types",
 			"via": "import",
 			"origin": "derived"
 		},

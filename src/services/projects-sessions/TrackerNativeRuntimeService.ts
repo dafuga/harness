@@ -91,10 +91,10 @@ export class TrackerNativeRuntimeService {
 			scheduler: this.scheduler,
 			duePreview: this.duePreview
 		} = composed);
-		this.watchdog = configuredHostWatchdog(this, hostEffects, options.automaticEnabled);
 		const fleet = composeTrackerFleet(runs, { ...options, dispatch }, this);
 		({ tick: this.telemetry, samples: this.fleetSamples } = fleet);
 		this.outgoingDrafts = composeOutgoingDrafts(store, options);
+		this.watchdog = configuredHostWatchdog(this, hostEffects, options.automaticEnabled);
 		this.items = composeItemApi(this, runs, fleet.apiOptions(options), recurring);
 		this.backups = composeTrackerBackups(this, options);
 		this.sync = composeTrackerResponder(this, runs, fleet.syncOptions, composed);

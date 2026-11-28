@@ -2,6 +2,7 @@
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type {
 	TrackerDispatchItem,
+	TrackerDispatchSnapshot,
 	TrackerDispatchWrites,
 	TrackerLaunchIntent,
 	TrackerRunReceipt
@@ -161,3 +162,17 @@ export const dispatchLaunchSource = `CASE
 		AND n.text LIKE 'auto-launch requested on %'
 	) THEN 'manual'
 	ELSE 'automatic' END`;
+
+export function canBlockStoppedRun(
+	{ item, runs, openSession, activeSessionKeys }: TrackerDispatchSnapshot,
+	run: TrackerRunReceipt
+) {
+	return (
+		item?.status === 'in_progress' &&
+		!item.launch &&
+		item.scheduleOff &&
+		!openSession &&
+		!activeSessionKeys?.length &&
+		!runs.some((entry) => entry !== run && entry.state !== 'finished')
+	);
+}

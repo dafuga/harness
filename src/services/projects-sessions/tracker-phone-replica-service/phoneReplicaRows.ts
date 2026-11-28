@@ -3,6 +3,8 @@ import { phoneAskAttachments } from './phoneAskAttachments';
 import { trackerStructuredAsk } from '../../../utils/projects-sessions/trackerStructuredAsk';
 import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { createHash } from 'node:crypto';
+import { trackerPersonalReminder } from '../../../utils/projects-sessions/trackerPersonalReminder';
+import { trackerPersonalAgent } from '../../../utils/projects-sessions/trackerUnattendedHold';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
 import {
@@ -53,7 +55,9 @@ export function attentionRevision(item: PhoneItemSource): string {
 				item.needs_daniel,
 				item.resolved,
 				...(item.options ? [item.options] : []),
-				...(item.attachments ? [item.attachments] : [])
+				...(item.attachments ? [item.attachments] : []),
+				// A reminder that moved makes an earlier Done or Snooze stale.
+				...(phoneReminder(item) ? [item.remind_at] : [])
 			])
 		)
 		.digest('hex');
@@ -64,8 +68,10 @@ function projectItem(
 	notes: PhoneNoteSource[],
 	runs: PhoneRunSource[]
 ): PhoneTrackerRow {
+	const reminder = phoneReminder(item);
 	return {
 		id: item.id,
+		...(reminder && { reminder }),
 		title: excerpt(item.title, 240),
 		project: excerpt(item.project, 120),
 		status: item.status,
@@ -87,7 +93,9 @@ function projectItem(
 						at: clockTime(item.flag_clock),
 						question: excerpt(item.question, 512),
 						...phoneAskChoices(item),
-						...(trackerStructuredAsk(item) && phoneAskAttachments(item))
+						...(!trackerPersonalAgent(item.agent) &&
+							trackerStructuredAsk(item) &&
+							phoneAskAttachments(item))
 					}
 				: null,
 		runs: runs.map((run) => ({
@@ -104,7 +112,8 @@ function projectItem(
 
 /** Choices travel only on a structured ask: the phone counts and offers exactly those. */
 function phoneAskChoices(item: PhoneItemSource) {
-	if (!trackerStructuredAsk(item)) return {};
+	// A personal item is never a "Needs you" ask, so its choices stay on the computer.
+	if (trackerPersonalAgent(item.agent) || !trackerStructuredAsk(item)) return {};
 	const options = trackerAskOptions(item.options);
 	return {
 		options: options.map(({ label, effect, recommended }) => ({
@@ -114,6 +123,10 @@ function phoneAskChoices(item: PhoneItemSource) {
 		})),
 		...(item.confirm && { confirm: item.confirm })
 	};
+}
+
+function phoneReminder(item: PhoneItemSource) {
+	return trackerPersonalReminder({ ...item, remindAt: item.remind_at });
 }
 
 function excerpt(value: string | null, bytes: number): string {
@@ -137,7 +150,7 @@ function clockTime(clock: string | null): string | null {
 }
 
 const itemSql = `
-	SELECT id, status, CASE WHEN length(title) <= 16384 THEN title ELSE '' END AS title,
+	SELECT id, status, agent, remind_at, every, CASE WHEN length(title) <= 16384 THEN title ELSE '' END AS title,
 		CASE WHEN length(coalesce(nullif(project, ''), agent)) <= 1024
 			THEN coalesce(nullif(project, ''), agent) END AS project,
 		updated_at, due, needs_daniel, resolved,

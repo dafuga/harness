@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_bizwcg2fkv -->
 <script lang="ts">
+	import Select from '../../shared-primitives/Select.svelte';
 	import HarnessIcon from '$reports/components/explorer-ui/HarnessIcon.svelte';
 	import type {
 		HomeAgent,
@@ -73,18 +74,17 @@
 {#if active}
 	<hx-form class="hh-composer" onsubmit={post}>
 		{#if !agentId}
-			<hx-label class="hh-composer-to">
-				<hx-span class="hh-sr">To</hx-span>
-				<hx-select
-					class="hh-to-chip"
-					value={active.id}
-					onchange={(event) => (recipient = event.currentTarget.value)}
+			<hx-span class="hh-composer-to hh-to-chip">
+				<Select
+					label="To"
+					compact
+					bind:value={() => active?.id ?? '', (value) => (recipient = value)}
 				>
 					{#each options as option (option.id)}
 						<hx-option value={option.id}>{option.name}</hx-option>
 					{/each}
-				</hx-select>
-			</hx-label>
+				</Select>
+			</hx-span>
 		{/if}
 		<hx-input
 			class="hh-composer-input"

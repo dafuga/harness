@@ -32,7 +32,9 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
         guard let name = call.getString("name"), let input = call.options["input"] as? [String: Any] else {
             return call.reject(RemoteFailure.invalid.message, RemoteFailure.invalid.code)
         }
-        if ["tracker_note", "tracker_flag", "tracker_answer", "tracker_discard_write"].contains(name) {
+        let writes = ["tracker_note", "tracker_flag", "tracker_answer", "tracker_done", "tracker_remind",
+                      "tracker_discard_write"]
+        if writes.contains(name) {
             confirmTrackerWrite(String(name.dropFirst(8)), input: input, call: call)
         } else {
             session.trackerTool(name, input: input) { call.resolve($0) }
@@ -60,9 +62,11 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
         else { return call.resolve(session.trackerWriteReply(code: "unavailable")) }
         let intent = confirmation.intent
         let choice = intent.option.map { "Option \($0): " + intent.text }
-        let message = [confirmation.itemTitle, confirmation.question, choice ?? intent.text].compactMap { $0 }.joined(separator: "\n\n")
-        let title = confirmation.discard ? "Discard queued Tracker write" : "Queue Tracker " + intent.action
-        let button = confirmation.discard ? "Discard" : "Queue " + intent.action
+        let message = [confirmation.itemTitle, confirmation.question, choice ?? Self.readable(intent)]
+            .compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: "\n\n")
+        let verb = intent.action == "remind" ? "snooze" : intent.action
+        let title = confirmation.discard ? "Discard queued Tracker write" : "Queue Tracker " + verb
+        let button = confirmation.discard ? "Discard" : "Queue " + verb
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { [session] _ in
             call.resolve(session.trackerWriteReply(code: "cancelled"))
@@ -74,6 +78,14 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
             }
         })
         presenter.present(alert, animated: true)
+    }
+
+    /// A snooze's text is a time, shown in the phone's own format.
+    private static func readable(_ intent: TrackerReplicaIntent) -> String {
+        let parser = ISO8601DateFormatter()
+        parser.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        guard intent.action == "remind", let time = parser.date(from: intent.text) else { return intent.text }
+        return "Until " + DateFormatter.localizedString(from: time, dateStyle: .medium, timeStyle: .short)
     }
 
     /// Deploy, money and secret asks need Face ID (or the passcode) on top of the confirm dialog.

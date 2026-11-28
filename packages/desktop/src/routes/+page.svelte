@@ -19,6 +19,8 @@
 	} from '../models/development-tooling/Environment.types';
 	import { ProjectSyncService } from '../services/projects-sessions/ProjectSyncService';
 	import { isWorkspacePath } from '../utils/projects-sessions/workspaceRoute';
+	import TrackerInbox from '../components/development-tooling/tracker-inbox/TrackerInbox.svelte';
+	import { phoneTrackerInboxSource } from '../lib/development-tooling/tracker-inbox/phoneTrackerInboxSource';
 	import ProjectGate from '../components/projects-sessions/ProjectGate.svelte';
 	import DesktopHome from '../components/projects-sessions/DesktopHome.svelte';
 	import RemoteConnection from '../components/networking-security/RemoteConnection.svelte';
@@ -26,6 +28,11 @@
 	import '../lib/styles/workspace.css';
 	import '../lib/styles/design.css';
 	const account = getContext<NativeAccountContext>(nativeAccountContext);
+	const inbox = $derived(
+		account.environment?.tracker
+			? phoneTrackerInboxSource(account.environment.tracker)
+			: account.environment?.bridge?.trackerInbox
+	);
 	const workspace = createWorkspaceStore();
 	const remote = {
 		host: createRemoteHostStore(workspace),
@@ -123,7 +130,15 @@
 		choose={(projectId) => void workspace.switchProject(projectId)}
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
 	>
-		{#if account.environment?.tracker || account.environment?.bridge?.trackerInbox}
+		{#snippet blockers()}
+			{#if inbox}<TrackerInbox source={inbox} mode={local ? 'mac' : 'phone'} home />
+			{:else if kind === 'electron' || kind === 'capacitor'}
+				<hx-section aria-label="Blocked - needs you"
+					><hx-h2>Blocked - needs you</hx-h2><hx-p>Blockers are unavailable.</hx-p></hx-section
+				>
+			{/if}
+		{/snippet}
+		{#if inbox}
 			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
 		{/if}
 		{#if account.environment?.trackerHome}

@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto';
+import { expect } from 'vitest';
 import { TrackerSpokeSyncService } from '../../src/services/projects-sessions/TrackerSpokeSyncService';
 import type { TrackerWireValue } from '../../src/services/projects-sessions/TrackerHubSyncService.types';
 import { DatabaseSync } from 'node:sqlite';
@@ -115,4 +117,43 @@ export async function exchangeFleetReport(
 		transport: wire(nodes.hub.sync!)
 	});
 	await client.exchangeMachine(sample as unknown as TrackerWireValue, []);
+}
+
+async function expectRemoteRuns(nodes: ReturnType<typeof fleet>, count: number) {
+	for (const runtime of [nodes.hub, nodes.peer]) {
+		const machine = (await call(runtime, ['machines', 'mb2'])).data;
+		expect(machine.remote_runs).toBe(count);
+	}
+}
+
+export async function checkRemoteWork(nodes: ReturnType<typeof fleet>) {
+	const run = originRun(nodes.hub);
+	const ssh = { run, lease: randomUUID(), host: peerNode, kind: 'ssh' };
+	const colima = { ...ssh, lease: randomUUID(), kind: 'colima' };
+	expect((await hostLease(nodes.hub, 'POST', { ...ssh, host: hubNode })).status).toBe(400);
+	expect((await hostLease(nodes.hub, 'POST', { ...ssh, run: run + 100 })).status).toBe(409);
+	expect((await hostLease(nodes.hub, 'POST', ssh)).status).toBe(200);
+	expect((await hostLease(nodes.hub, 'POST', colima)).status).toBe(200);
+	nodes.clock.at += minute;
+	await nodes.tick();
+	await expectRemoteRuns(nodes, 1);
+	expect((await hostLease(nodes.hub, 'DELETE', ssh)).status).toBe(200);
+	nodes.clock.at += minute;
+	await nodes.tick();
+	await expectRemoteRuns(nodes, 1);
+	nodes.hub.store.database
+		.prepare("UPDATE runs SET state = 'finished', ended_at = ? WHERE id = ?")
+		.run(nodes.clock.at, run);
+	nodes.clock.at += minute;
+	await nodes.tick();
+	await expectRemoteRuns(nodes, 0);
+	expect((await hostLease(nodes.hub, 'POST', colima)).status).toBe(409);
+
+	const expired = { ...ssh, lease: randomUUID(), run: originRun(nodes.hub) };
+	expect((await hostLease(nodes.hub, 'POST', expired)).status).toBe(200);
+	nodes.clock.at += minute;
+	await nodes.tick();
+	await expectRemoteRuns(nodes, 1);
+	nodes.clock.at += 3 * minute;
+	await expectRemoteRuns(nodes, 0);
 }

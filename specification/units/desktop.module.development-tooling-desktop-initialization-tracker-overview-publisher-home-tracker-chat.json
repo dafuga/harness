@@ -24,7 +24,7 @@
 			},
 			{
 				"name": "deliverHomeChat.home",
-				"type": "Pick<OwnerHomeSnapshot, 'agents' | 'openAsks'>",
+				"type": "Pick<OwnerHomeSnapshot, 'agents' | 'openAsks' | 'reminders'>",
 				"required": true
 			},
 			{
@@ -71,7 +71,7 @@
 					},
 					{
 						"name": "deliverHomeChat.home",
-						"type": "Pick<OwnerHomeSnapshot, 'agents' | 'openAsks'>",
+						"type": "Pick<OwnerHomeSnapshot, 'agents' | 'openAsks' | 'reminders'>",
 						"required": true
 					},
 					{

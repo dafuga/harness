@@ -71,6 +71,10 @@ running sessions. Quota stays Unknown until a computer reports it. `Connect a co
 appears only when the account has no linked computer. The owner snapshot below remains a
 fallback.
 
+While Home is visible and the account remains signed in, it re-reads the stored Home,
+linked computers and Hub projects every 20 seconds, including when the live socket
+stays connected without a Home change notice.
+
 ### Scheduled shows only the future
 
 Scheduled lists only runs whose time is still ahead. Work whose time has passed is Running,
@@ -81,6 +85,17 @@ work are bounded separately. Hub applies the same rule to a published run whose 
 later, and to snapshots from older Mac apps. Personal and family agents, including the Chief
 of Staff's list, never appear in Scheduled or in past-due work. Hub shows no line about Claude
 routine dates when it has no current reading of them.
+
+### Release acceptance for live counts
+
+For each Hub Home release, compare the signed-in Agents card's working session total with
+live Tracker runs on the online linked Macs. Include any synced Mac whose runs the
+release is expected to show. The Agents card can group several runs under one working agent.
+Require a stable sample with at least one eligible running session and exact count parity.
+A zero working count during that sample fails the release check.
+Record this result beside the Needs you answer canary on the same release item.
+Both checks must pass before closing a release that changes Home counts or their data sources.
+Follow the [post-release gate](../../../README.md#post-release-gate).
 
 ### Owner-host data
 

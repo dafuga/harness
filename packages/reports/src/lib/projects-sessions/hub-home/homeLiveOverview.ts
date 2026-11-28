@@ -18,7 +18,7 @@ import { homeText } from './homeTrackerText';
 import { homeWorkNow } from './homeWorkNow';
 
 export const homeLiveLimits = { projects: 200, rows: 100 } as const;
-const stateOrder: HomeWorkState[] = ['running', 'offline', 'queued', 'no-run', 'finished'];
+const stateOrder: HomeWorkState[] = ['running', 'offline', 'queued', 'blocked', 'finished'];
 
 const at = (time: number | null | undefined) => (time ? new Date(time).toISOString() : null);
 
@@ -41,11 +41,12 @@ function workRow({ item }: ItemWork, state: HomeWorkState, run?: TrackerRunRecor
 	return {
 		key: run ? `run:${run.node ?? ''}:${run.id}` : `item:${item.id}`,
 		itemId: item.id,
+		...(run && { runId: run.id }),
 		title: homeText(item.title, 500) ?? 'Untitled task',
 		state,
 		status: item.status,
 		stage: item.stage ?? null,
-		now: homeWorkNow(item),
+		now: state === 'queued' ? queuedReason(run) : homeWorkNow(item),
 		owner: homeText(item.owner, 200),
 		model: homeText(runModel(run) ?? item.model, 200),
 		updatedAt: isoTime(item.updated_at),
@@ -54,7 +55,7 @@ function workRow({ item }: ItemWork, state: HomeWorkState, run?: TrackerRunRecor
 }
 
 function liveState(run: TrackerRunRecord, offline: ReadonlySet<string>): HomeWorkState {
-	if (run.state !== 'running') return 'queued';
+	if (!['running', 'verifying', 'observed'].includes(run.state)) return 'queued';
 	return run.node && offline.has(run.node) ? 'offline' : 'running';
 }
 
@@ -64,16 +65,32 @@ function endedToday(work: ItemWork) {
 		.sort((a, b) => (b.ended_at ?? 0) - (a.ended_at ?? 0))[0];
 }
 
-/** A task in motion without a live run: waiting to start, stalled, or just finished. */
+function queuedReason(run?: TrackerRunRecord) {
+	if (run?.failure_reason === 'Tracker host is at session capacity') return 'Waiting for a slot';
+	return homeText(run?.failure_reason, 240) ?? 'Waiting to start';
+}
+
+/** The current request can be pending before Tracker creates a run. */
 function restingRow(work: ItemWork): HomeWorkRow[] {
-	const { item } = work;
-	const last = endedToday(work);
+	const { item, runs } = work;
+	if (item.status === 'blocked') return [workRow(work, 'blocked')];
+	const pending =
+		item.launchRequested &&
+		!runs.some((run) => run.auto_token && run.auto_token === item.launchToken);
+	if (pending && ['open', 'in_progress'].includes(item.status)) return [workRow(work, 'queued')];
 	if (item.status === 'in_progress') {
-		const row = workRow(work, 'no-run');
-		return [{ ...row, outcome: homeText(last?.outcome, 200) }];
+		const last = endedToday(work);
+		const reason = homeText(item.blocked_reason ?? last?.failure_reason, 240);
+		return [
+			{
+				...workRow(work, 'blocked'),
+				status: 'blocked',
+				now: reason ?? 'Waiting for Tracker to reconcile this item'
+			}
+		];
 	}
-	if (last) return [workRow(work, 'finished', last)];
-	return item.status === 'open' && item.launchRequested ? [workRow(work, 'queued')] : [];
+	const last = endedToday(work);
+	return last ? [workRow(work, 'finished', last)] : [];
 }
 
 function itemRows(work: ItemWork): HomeWorkRow[] {
@@ -97,6 +114,8 @@ function workProject(agent: string, works: ItemWork[]) {
 	const project: HomeWorkProject = {
 		agent: homeText(agent, 200) ?? 'No project',
 		running: rows.filter((row) => row.state === 'running').length,
+		blockedRows: rows.filter((row) => row.state !== 'running' && row.status === 'blocked').length,
+		totalRows: rows.length,
 		counts,
 		rows: rows.slice(0, homeLiveLimits.rows),
 		updatedAt: works

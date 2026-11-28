@@ -3,6 +3,7 @@
 <!-- @harness-uid u_xzmlyw4yjt -->
 <!-- @harness-view overview -->
 <script lang="ts">
+	import DeviceListRow from '$shared/accounts-access/DeviceListRow.svelte';
 	import LinkedComputers from '../../../components/accounts-access/LinkedComputers.svelte';
 	import { formatTime } from '$reports/helpers/strings/formatTime';
 	import LoginPanel from '../../../components/accounts-access/login-panel/LoginPanel.svelte';
@@ -63,35 +64,28 @@
 			{#if inventory?.devices.length}
 				<hx-ul aria-label="Signed-in devices">
 					{#each inventory.devices as device (device.id)}
-						<hx-li class="hub-list-row">
-							<hx-span class="hub-list-name"
-								><hx-strong>{device.name}</hx-strong><hx-small
-									>Last seen {formatTime(device.lastSeenAt)}</hx-small
-								></hx-span
-							>
-							<hx-span class="hub-list-meta">
-								{#if inventory.currentDeviceId === device.id}
-									<hx-small>This browser</hx-small>
-								{:else if confirm === device.id}
-									<hx-button
-										type="button"
-										disabled={Boolean(removing)}
-										onclick={() => void remove(device.id)}>Confirm removal</hx-button
-									>
-									<hx-button
-										type="button"
-										disabled={Boolean(removing)}
-										onclick={() => (confirm = undefined)}>Cancel</hx-button
-									>
-								{:else}
-									<hx-button
-										type="button"
-										aria-label={'Remove ' + device.name}
-										onclick={() => (confirm = device.id)}>Remove</hx-button
-									>
-								{/if}
-							</hx-span>
-						</hx-li>
+						<DeviceListRow name={device.name} status={`Last seen ${formatTime(device.lastSeenAt)}`}>
+							{#if inventory.currentDeviceId === device.id}
+								<hx-small>This browser</hx-small>
+							{:else if confirm === device.id}
+								<hx-button
+									type="button"
+									disabled={Boolean(removing)}
+									onclick={() => void remove(device.id)}>Confirm removal</hx-button
+								>
+								<hx-button
+									type="button"
+									disabled={Boolean(removing)}
+									onclick={() => (confirm = undefined)}>Cancel</hx-button
+								>
+							{:else}
+								<hx-button
+									type="button"
+									aria-label={'Remove ' + device.name}
+									onclick={() => (confirm = device.id)}>Remove</hx-button
+								>
+							{/if}
+						</DeviceListRow>
 					{/each}
 				</hx-ul>
 			{:else if inventory}

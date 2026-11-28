@@ -1,0 +1,193 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-agent-tool-safety-service-agent-tool-admission",
+	"uid": "u_xm3geixk5t",
+	"kind": "service",
+	"title": "agentToolAdmission",
+	"responsibility": "Validates model proposals, resolves tool scope through the trusted adapter and applies specialty content checks.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/agent-tool-safety-service/agentToolAdmission.ts",
+			"src/services/agents-providers/agent-tool-safety-service/agentToolAdmission.types.ts"
+		],
+		"symbols": ["allowsAgentTool", "admitAgentTool", "agentToolContentDenial", "AgentToolAdmission"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "allowsAgentTool.policy",
+				"type": "AgentToolPolicy | undefined",
+				"required": true,
+				"description": "The current host policy for the agent."
+			},
+			{
+				"name": "allowsAgentTool.admission",
+				"type": "AgentToolAdmission",
+				"required": true,
+				"description": "Validated adapter arguments, resource, action and policy snapshot."
+			},
+			{
+				"name": "admitAgentTool.options",
+				"type": "AgentToolSafetyOptions",
+				"required": true,
+				"description": "Trusted tool definitions, current agent policy, durable journal, clock and optional independent classifier."
+			},
+			{
+				"name": "admitAgentTool.agentId",
+				"type": "string",
+				"required": true,
+				"description": "Host-assigned identity for the agent whose grants apply."
+			},
+			{
+				"name": "admitAgentTool.proposal",
+				"type": "string",
+				"required": true,
+				"description": "Bounded, untrusted JSON with a tool name and exact tool arguments."
+			},
+			{
+				"name": "agentToolContentDenial.options",
+				"type": "AgentToolSafetyOptions",
+				"required": true,
+				"description": "Trusted tool definitions, current agent policy, durable journal, clock and optional independent classifier."
+			},
+			{
+				"name": "agentToolContentDenial.admission",
+				"type": "AgentToolAdmission",
+				"required": true,
+				"description": "Validated adapter arguments, resource, action and policy snapshot."
+			}
+		],
+		"outputs": [
+			{
+				"name": "allowsAgentTool",
+				"type": "policy is AgentToolPolicy",
+				"description": "Whether the current declaration, grant, revision and specialty authorize the resource."
+			},
+			{
+				"name": "admitAgentTool",
+				"type": "AgentToolAdmission | AgentToolDenial",
+				"description": "The canonical admitted action or a fixed denial code."
+			},
+			{
+				"name": "agentToolContentDenial",
+				"type": "Promise<AgentToolDenial | undefined>",
+				"description": "A content denial reason when screening is required and fails or rejects the content."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "allowsAgentTool",
+				"inputs": [
+					{
+						"name": "allowsAgentTool.policy",
+						"type": "AgentToolPolicy | undefined",
+						"required": true,
+						"description": "The current host policy for the agent."
+					},
+					{
+						"name": "allowsAgentTool.admission",
+						"type": "AgentToolAdmission",
+						"required": true,
+						"description": "Validated adapter arguments, resource, action and policy snapshot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "allowsAgentTool",
+						"type": "policy is AgentToolPolicy",
+						"description": "Whether the current declaration, grant, revision and specialty authorize the resource."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "admitAgentTool",
+				"inputs": [
+					{
+						"name": "admitAgentTool.options",
+						"type": "AgentToolSafetyOptions",
+						"required": true,
+						"description": "Trusted tool definitions, current agent policy, durable journal, clock and optional independent classifier."
+					},
+					{
+						"name": "admitAgentTool.agentId",
+						"type": "string",
+						"required": true,
+						"description": "Host-assigned identity for the agent whose grants apply."
+					},
+					{
+						"name": "admitAgentTool.proposal",
+						"type": "string",
+						"required": true,
+						"description": "Bounded, untrusted JSON with a tool name and exact tool arguments."
+					}
+				],
+				"outputs": [
+					{
+						"name": "admitAgentTool",
+						"type": "AgentToolAdmission | AgentToolDenial",
+						"description": "The canonical admitted action or a fixed denial code."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "agentToolContentDenial",
+				"inputs": [
+					{
+						"name": "agentToolContentDenial.options",
+						"type": "AgentToolSafetyOptions",
+						"required": true,
+						"description": "Trusted tool definitions, current agent policy, durable journal, clock and optional independent classifier."
+					},
+					{
+						"name": "agentToolContentDenial.admission",
+						"type": "AgentToolAdmission",
+						"required": true,
+						"description": "Validated adapter arguments, resource, action and policy snapshot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "agentToolContentDenial",
+						"type": "Promise<AgentToolDenial | undefined>",
+						"description": "A content denial reason when screening is required and fails or rejects the content."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.agents-providers-agent-tool-safety",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/agent-tool-safety-service/agentToolAdmission.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/agent-tool-safety-service/agentToolAdmission.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

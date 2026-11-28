@@ -1,0 +1,94 @@
+/* @harness-uid u_louqa62vat */
+/* Reminders on Home: one Personal group, each row with its next time, Done and Snooze. */
+.hh-home .hh-reminders {
+	display: grid;
+	gap: var(--hx-space-12);
+	margin-bottom: var(--hx-space-16);
+	padding: var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-large);
+	background: var(--hx-color-surface);
+}
+.hh-home .hh-reminders-title,
+.hh-home .hh-reminders-group,
+.hh-home .hh-reminders-empty,
+.hh-home .hh-reminder-status {
+	margin: 0;
+}
+.hh-home .hh-reminders-title {
+	font-size: var(--hx-type-size-base);
+}
+.hh-home .hh-reminders-head {
+	display: flex;
+	align-items: baseline;
+	gap: var(--hx-space-8);
+}
+.hh-home .hh-reminders-group {
+	font-size: var(--hx-type-size-sm);
+}
+.hh-home .hh-reminders-count,
+.hh-home .hh-reminders-empty,
+.hh-home .hh-reminder-meta,
+.hh-home .hh-reminder-status {
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+}
+.hh-home .hh-reminders-list {
+	display: grid;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.hh-home .hh-reminder {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: var(--hx-space-8) var(--hx-space-16);
+	padding: var(--hx-space-12) 0;
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
+}
+/* The card's own padding closes the list. */
+.hh-home .hh-reminder:last-child {
+	padding-bottom: 0;
+}
+.hh-home .hh-reminder-text {
+	display: grid;
+	gap: var(--hx-space-4);
+	min-width: 0;
+}
+.hh-home .hh-reminder-title {
+	overflow-wrap: anywhere;
+	font-size: var(--hx-type-size-sm);
+}
+.hh-home .hh-reminder-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-4) var(--hx-space-12);
+}
+.hh-home .hh-reminder[data-due='true'] .hh-reminder-when {
+	color: var(--hx-color-text);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.hh-home .hh-reminder-actions,
+.hh-home .hh-reminder-snooze {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: var(--hx-space-8);
+}
+.hh-home .hh-reminder-snooze,
+.hh-home .hh-reminder-status {
+	grid-column: 1 / -1;
+}
+.hh-home .hh-reminders-more {
+	justify-self: start;
+}
+@media (max-width: 560px) {
+	.hh-home .hh-reminder {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.hh-home .hh-reminder-actions,
+	.hh-home .hh-reminder-snooze {
+		justify-content: flex-start;
+	}
+}

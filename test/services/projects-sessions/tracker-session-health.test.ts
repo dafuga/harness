@@ -3,8 +3,13 @@ import { test, vi } from 'vitest';
 import { expect } from '../../verificationExpect';
 import type { TrackerItem } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
+import { TrackerDispatchRepository } from '../../../src/repositories/projects-sessions/TrackerDispatchRepository';
+import { TrackerDispatcherService } from '../../../src/services/agents-providers/TrackerDispatcherService';
+import { fixturePolicy } from '../../support/trackerDispatcherFixture';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import {
+	applyTrackerSessionHealth,
+	trackerRecoveryLaunch,
 	readTrackerSessionHealth,
 	recheckTrackerRecovery
 } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthRuntime';
@@ -130,4 +135,67 @@ function seedRecoveryItems(store: TrackerPersistenceService) {
 			auto: 'fixture-intent'
 		}
 	});
+}
+
+test.each([
+	{ outcome: 'timed_out', reason: 'old ETA timeout', state: 'open' },
+	{ outcome: 'abandoned', reason: 'managed session disappeared', state: 'open' },
+	{ outcome: 'blocked', reason: 'waiting on a credential', state: 'blocked' }
+])(
+	'reconciles old $outcome receipts only after their local or peer sessions disappear',
+	async ({ outcome, reason, state }) => {
+		const db = new DatabaseSync(':memory:');
+		try {
+			const store = new TrackerPersistenceService(db, host, { now: () => now - 720_000 });
+			const repository = new TrackerDispatchRepository(store);
+			const policy = fixturePolicy(() => now, { node: host });
+			const launch = trackerRecoveryLaunch(new TrackerDispatcherService(repository, policy));
+			const items = new TrackerItemReadRepository(db);
+			store.appendLocal({
+				itemId,
+				fields: {
+					title: 'Resume existing work',
+					status: 'in_progress',
+					computer: host,
+					auto: 'old-token'
+				}
+			});
+			seedEndedReceipt(db, { outcome, reason });
+			const tick = (panes: readonly WatchdogPane[] = []) => {
+				const rows = items.list();
+				return applyTrackerSessionHealth(
+					store,
+					readTrackerSessionHealth(store, rows, panes, now),
+					{ now, items: rows, launch },
+					signal
+				);
+			};
+			await tick([observedPane('auto-abc123-r1')]);
+			expect(items.getStored(itemId).status).toBe('in_progress');
+			db.prepare(
+				"INSERT INTO remote_runs (node,id,item_id,state) VALUES ('daniel-primary-mbp',1,?,'running')"
+			).run(itemId);
+			await tick();
+			expect(items.getStored(itemId).status).toBe('in_progress');
+			db.prepare('DELETE FROM remote_runs WHERE item_id = ?').run(itemId);
+			await Promise.all([tick(), tick()]);
+			await tick();
+			expect(items.getStored(itemId).status).toBe(state);
+			const runs = db.prepare("SELECT id FROM runs WHERE state = 'queued'").all();
+			expect(runs).toEqual(state === 'open' ? [{ id: 2 }] : []);
+			if (state === 'blocked') expect(items.getStored(itemId).blocked_reason).toBe(reason);
+		} finally {
+			db.close();
+		}
+	}
+);
+
+function seedEndedReceipt(
+	db: DatabaseSync,
+	{ outcome, reason }: { outcome: string; reason: string }
+) {
+	db.prepare(
+		`INSERT INTO runs (item_id, auto_token, rung, cli, model, state, outcome, failure_reason, queued_at, started_at, ended_at)
+		VALUES (?, 'old-token', 'sol', 'codex', 'gpt-6.2-sol', 'finished', ?, ?, ?, ?, ?)`
+	).run(itemId, outcome, reason, now - 700_000, now - 690_000, now - 60_000);
 }

@@ -1,0 +1,152 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-agent-tool-safety-service-reserve-agent-tool",
+	"uid": "u_ztf5s6newj",
+	"kind": "service",
+	"title": "reserveAgentTool",
+	"responsibility": "Atomically reserves an allowed tool dispatch in the journal or issues an expiring, request-bound approval.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/agent-tool-safety-service/reserveAgentTool.ts"],
+		"symbols": ["requiresAgentToolApproval", "reserveAgentTool"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "requiresAgentToolApproval.action",
+				"type": "AgentToolAdmission['action']",
+				"required": true,
+				"description": "The operation class declared by the trusted tool implementation."
+			},
+			{
+				"name": "reserveAgentTool.journal",
+				"type": "AgentToolJournalTransaction",
+				"required": true,
+				"description": "The active host transaction for durable admission."
+			},
+			{
+				"name": "reserveAgentTool.attempt",
+				"type": "Pick<AgentToolEvent, 'at' | 'agentId' | 'attemptId' | 'tool'>",
+				"required": true,
+				"description": "Host-generated identity and clock metadata for this attempt."
+			},
+			{
+				"name": "reserveAgentTool.admission",
+				"type": "AgentToolAdmission",
+				"required": true,
+				"description": "Validated adapter arguments, resource, action and policy snapshot."
+			},
+			{
+				"name": "reserveAgentTool.approvalId",
+				"type": "string",
+				"required": false,
+				"description": "Optional owner approval. Without it, a risky request returns a pending challenge."
+			}
+		],
+		"outputs": [
+			{
+				"name": "requiresAgentToolApproval",
+				"type": "boolean",
+				"description": "Whether policy requires an exact owner approval for this operation."
+			},
+			{
+				"name": "reserveAgentTool",
+				"type": "Exclude<AgentToolDecision, { status: 'executed' | 'failed' }> | undefined",
+				"description": "A denial, or an exact challenge for confirmation, or undefined after a durable reservation."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "requiresAgentToolApproval",
+				"inputs": [
+					{
+						"name": "requiresAgentToolApproval.action",
+						"type": "AgentToolAdmission['action']",
+						"required": true,
+						"description": "The operation class declared by the trusted tool implementation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "requiresAgentToolApproval",
+						"type": "boolean",
+						"description": "Whether policy requires an exact owner approval for this operation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "reserveAgentTool",
+				"inputs": [
+					{
+						"name": "reserveAgentTool.journal",
+						"type": "AgentToolJournalTransaction",
+						"required": true,
+						"description": "The active host transaction for durable admission."
+					},
+					{
+						"name": "reserveAgentTool.attempt",
+						"type": "Pick<AgentToolEvent, 'at' | 'agentId' | 'attemptId' | 'tool'>",
+						"required": true,
+						"description": "Host-generated identity and clock metadata for this attempt."
+					},
+					{
+						"name": "reserveAgentTool.admission",
+						"type": "AgentToolAdmission",
+						"required": true,
+						"description": "Validated adapter arguments, resource, action and policy snapshot."
+					},
+					{
+						"name": "reserveAgentTool.approvalId",
+						"type": "string",
+						"required": false,
+						"description": "Optional owner approval. Without it, a risky request returns a pending challenge."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reserveAgentTool",
+						"type": "Exclude<AgentToolDecision, { status: 'executed' | 'failed' }> | undefined",
+						"description": "A denial, or an exact challenge for confirmation, or undefined after a durable reservation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.agents-providers-agent-tool-safety",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-agent-tool-safety-service-agent-tool-admission",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/agent-tool-safety-service/reserveAgentTool.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/agent-tool-safety-service/reserveAgentTool.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

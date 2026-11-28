@@ -210,8 +210,12 @@ operator verifies the stopped database and chooses a rollback.
   decisions without taking action. Set `watchdog.chiefOfStaff` on the
   primary Mac to deliver alerts to its idle CoS tmux pane and include MB2
   alerts over the existing host-key-verified SSH link. Delivery observes
-  Lisbon quiet hours and the thirty-minute watchdog cadence. The separate
-  tick can still read `tracker list --flagged --json` for decisions.
+  Lisbon quiet hours and the thirty-minute cadence for routine alerts. The hub
+  checks each enabled launcher's last completed tick about once a minute.
+  A heartbeat more than three minutes old prompts a Chief of Staff alert
+  outside the routine cadence during delivery hours. Tracker sends one alert
+  per missed heartbeat and clears it from the active list when polling resumes.
+  The separate tick can still read `tracker list --flagged --json` for decisions.
 
   CoS dependency messages are delivered once per item and message text.
   When tmux misses an acceptance, Tracker checks Claude's recorded prompt
@@ -256,6 +260,12 @@ operator verifies the stopped database and chooses a rollback.
   GitHub sources. It uses the existing source owner, cursor, and
   `adapter-runner.lock` beside the journal. The GitHub CLI binding uses an
   explicit, private account directory and the existing `tracked` label.
+- **Dispatch watchdog.** A dispatch tick has two minutes to finish.
+  On timeout the scheduler cancels that tick and resumes polling. The
+  next tick reconciles reservations for which a host start may have
+  happened before the reply was lost. Host commands have a separate
+  deadline and settle on child close, with an exit-event fallback when
+  close does not arrive. A partial response is discarded.
 - **Fleet telemetry.** Each node samples itself; see
   [Computers and placement](#computers-and-placement).
 - **Box jobs.** A recurring item on the hub can run a shell command at each
@@ -536,6 +546,21 @@ never start or recover a session, including when an explicit launch is
 requested. The hub delivers to Chief of Staff at the scheduled time,
 including overnight, and follows up after two
 hours, six hours, and at 08:00 daily until the item is done or snoozed.
+
+### Repeating reminders
+
+`tracker add --reminder --every "0 10 * * 0" "Title"` creates a reminder that
+repeats (`--tz` defaults to Europe/Lisbon; `--at` may set the first time).
+`tracker update <id> --every "<cron>" --kind reminder` makes an existing item
+repeat. The item has one armed time, `remind_at`. `tracker done <id>` records
+this one as done and arms the first scheduled time after both now and the armed
+time, so done before the time skips it. `--occurrence <armed time>` refuses a
+second done once the reminder has moved. `tracker remind <id> --at <time>`
+snoozes this one only; the schedule stays. Nothing else re-arms it: until it is
+done or snoozed it follows up like any reminder. To end the series, run
+`tracker update <id> --every none`, then `tracker done <id>`. The recurring job
+scheduler ignores reminders. Every computer needs this release before it can
+create or finish a repeating reminder.
 
 ### Scheduled reminders on other items
 

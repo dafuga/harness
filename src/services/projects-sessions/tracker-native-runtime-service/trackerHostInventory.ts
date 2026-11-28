@@ -38,6 +38,7 @@ export async function trackerHostInventory(
 		tmux?.inventory(signal) ?? [],
 		tmux?.windows(signal) ?? []
 	]);
+	signal.throwIfAborted();
 	const direct = panes.flatMap((pane) => {
 		const evidence = legacyTmuxSession(pane);
 		return evidence &&
@@ -48,6 +49,7 @@ export async function trackerHostInventory(
 			: [];
 	});
 	await watchTrackerQuota(store, { tmux, runs, now }, signal);
+	signal.throwIfAborted();
 	if (tmux) await closeFinishedTrackerSessions(store, { tmux, panes, node, now }, signal);
 	const active = tmux ? await withPaneActivity(sessions, { tmux, panes, now }, signal) : sessions;
 	return { sessions: [...active, ...direct], panes, windows };
@@ -61,6 +63,7 @@ async function withPaneActivity(
 ): Promise<TrackerHostSession[]> {
 	const observed = [];
 	for (const session of sessions) {
+		signal.throwIfAborted();
 		const pane = panes.find(
 			({ name, live, runnerSocket }) => live && runnerSocket && name === session.tmux
 		);

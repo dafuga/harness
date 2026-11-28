@@ -5,6 +5,9 @@ import type { HomeLiveOverview } from './homeLive.types';
 
 import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 import type { HubMessageStatus } from '../../../../../../src/utils/projects-sessions/hubSessionMessages.types';
+import type { HomeChatInput, HomeChatReceipt } from './homeChat.types';
+
+export type * from './homeChat.types';
 
 export type HomeAgentState = 'needs-you' | 'working' | 'idle' | 'offline';
 export type HomePlanState = 'draft' | 'in-review' | 'approved' | 'in-progress' | 'done';
@@ -84,6 +87,17 @@ export interface HomeOpenAsk {
 	since: string;
 }
 
+/** One personal reminder: a Tracker item that reminds Daniel, listed only under Reminders. */
+export interface HomeReminder {
+	itemId: string;
+	title: string;
+	/** The armed time. Done and snooze name it, so a stale tap changes nothing. */
+	at: string;
+	/** "Daily", "Weekly" and so on; null for a reminder that happens once. */
+	repeats: string | null;
+	updatedAt: string;
+}
+
 export interface HomePlan {
 	id: string;
 	title: string;
@@ -112,7 +126,7 @@ export interface HomeRun {
 }
 
 export interface HomeWhenDue {
-	state: 'running' | 'queued' | 'blocked';
+	state: 'running' | 'queued' | 'blocked' | 'due';
 	reason: string | null;
 	/** Launch order class: 0 urgent, 1 normal, 2 low. */
 	urgency: number;
@@ -165,6 +179,8 @@ export interface OwnerHomeSnapshot {
 	agents: HomeAgent[];
 	/** Every open structured ask, oldest first. Older Mac apps omit it. */
 	openAsks?: HomeOpenAsk[];
+	/** Personal reminders, soonest first. Older Mac apps omit them. */
+	reminders?: HomeReminder[];
 	plans: HomePlan[];
 	scheduled: HomeRun[];
 	overdue?: HomeRun[];
@@ -174,30 +190,6 @@ export interface OwnerHomeSnapshot {
 	 * connection carries it: it is never uploaded or stored. Older Mac apps omit it.
 	 */
 	liveOverview?: HomeLiveOverview;
-}
-
-export interface HomeChatInput {
-	id: string;
-	agentId: string;
-	itemId: string;
-	/** `message` is typed into Chief of Staff's or one live run's prompt; a note is only stored. */
-	kind: 'note' | 'answer' | 'message';
-	question: string | null;
-	text: string;
-	/** The exact live run a session message is for; Chief of Staff's need none. */
-	runId?: string;
-	/** A tapped option's 1-based number. The text then carries that option's label. */
-	option?: number;
-	confirmed?: boolean;
-}
-
-export type HomeChatStatus = 'queued' | 'sent' | 'refused' | 'unconfirmed';
-
-export interface HomeChatReceipt {
-	id: string;
-	status: HomeChatStatus;
-	/** The Tracker id of a stored Hub message. */
-	messageId?: string;
 }
 
 /** The active local Mac or approved connection used by the installed apps. */

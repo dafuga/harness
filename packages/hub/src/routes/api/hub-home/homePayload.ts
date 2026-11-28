@@ -95,6 +95,14 @@ const openAsk = z.object({
 	since: time
 });
 
+const reminder = z.object({
+	itemId: id,
+	title,
+	at: time,
+	repeats: short.nullable(),
+	updatedAt: time
+});
+
 const planning = trackerPlanningSchema.refine(
 	({ artifacts }) =>
 		Object.values(artifacts).every(
@@ -132,6 +140,7 @@ const snapshot = z.object({
 		.optional(),
 	agents: z.array(agent).max(100),
 	openAsks: z.array(openAsk).max(100).optional(),
+	reminders: z.array(reminder).max(100).optional(),
 	plans: z.array(plan).max(100),
 	scheduled: z.array(homeRunPayload).max(200),
 	overdue: z.array(homeRunPayload).max(200).optional(),

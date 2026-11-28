@@ -49,6 +49,7 @@
 			"dispatchJournalFields",
 			"trackerStoredSchedulingHold",
 			"dispatchLaunchSource",
+			"canBlockStoppedRun",
 			"trackerDispatchControl",
 			"cancelQueuedDispatchRuns",
 			"recordLaunchEvents",
@@ -170,6 +171,31 @@
 			{
 				"name": "trackerStoredSchedulingHold.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "canBlockStoppedRun.item",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "canBlockStoppedRun.runs",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "canBlockStoppedRun.openSession",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "canBlockStoppedRun.activeSessionKeys",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "canBlockStoppedRun.run",
+				"type": "TrackerRunReceipt",
 				"required": true
 			},
 			{
@@ -389,6 +415,10 @@
 			},
 			{
 				"name": "dispatchLaunchSource",
+				"type": "unknown"
+			},
+			{
+				"name": "canBlockStoppedRun",
 				"type": "unknown"
 			},
 			{
@@ -740,6 +770,44 @@
 				"outputs": [
 					{
 						"name": "trackerStoredSchedulingHold",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "canBlockStoppedRun",
+				"inputs": [
+					{
+						"name": "canBlockStoppedRun.item",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "canBlockStoppedRun.runs",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "canBlockStoppedRun.openSession",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "canBlockStoppedRun.activeSessionKeys",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "canBlockStoppedRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "canBlockStoppedRun",
 						"type": "unknown"
 					}
 				],

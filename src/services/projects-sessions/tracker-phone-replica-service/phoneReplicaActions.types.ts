@@ -10,4 +10,5 @@ export type PhoneReplicaAction =
 	| 'resolve'
 	| 'done'
 	| 'ignore'
-	| 'unignore';
+	| 'unignore'
+	| 'remind';

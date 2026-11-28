@@ -1,15 +1,17 @@
 // @harness-uid u_u3mne4fgyr
 import type { ProjectSummary } from 'collaboration';
+import type { LinkedHome } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
+import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type {
 	HomeAgent,
 	HomeChatReceipt,
 	HomeOpenAsk,
 	HomePlan,
+	HomeReminder,
 	HomeRun,
 	HomePastDue,
 	HomeSubscription,
 	HomeTrackerProject,
-	OwnerHomeSnapshot,
 	OpenHomeSection,
 	SendHomeChat
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
@@ -18,21 +20,15 @@ import type { ProjectSnapshot } from '../../../../../desktop/src/models/developm
 import type { DesktopProject } from '../../../../../desktop/src/models/projects-sessions/ProjectContext.types';
 import type { soonestWork } from './hubHomePresentation';
 
-export interface LinkedHome {
-	/** Computers linked to the signed-in account, online or not. */
-	linked: number;
-	/** How many of them answered this read. */
-	answered: number;
-	snapshot: OwnerHomeSnapshot | null;
-	/** The list of linked computers itself could not be read, so zero linked means unknown. */
-	unlisted?: true;
-}
+export type { LinkedHome };
 
 export interface HomeView {
 	overview: OverviewSnapshot | null;
 	agents: HomeAgent[] | null;
 	/** The open structured asks: what "needs you" counts and what the Agents card lists. */
 	openAsks: HomeOpenAsk[];
+	/** Personal reminders; null until a computer that lists them has answered. */
+	reminders: HomeReminder[] | null;
 	/** Tracker agent values Daniel added as sessions he created himself. */
 	controlled: string[];
 	plans: HomePlan[] | null;

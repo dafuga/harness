@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
+import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type {
 	WatchdogItem,
@@ -13,6 +14,8 @@ import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLo
 import type { TrackerHandoffAttempt } from './trackerWatchdogContext.types';
 import { heldTrackerProviders } from './trackerProviderHolds';
 import { trackerWatchdogAlerts } from './trackerHostWatchdogSchema';
+import { trackerMachineSample } from './trackerFleetSampleSchema';
+import { staleDispatchHeartbeatKind } from './trackerCosAlertKinds';
 
 export function watchdogItem(item: TrackerItem): WatchdogItem {
 	return {
@@ -139,4 +142,36 @@ export function activeWatchdogItem(
 		return undefined;
 	}
 	return undefined;
+}
+
+const dispatchHeartbeatGrace = 3 * 60_000;
+
+/** One stable alert identity per computer and missed heartbeat, until the launcher recovers. */
+export function staleDispatchAlerts(
+	runtime: Pick<TrackerNativeRuntimeService, 'store' | 'scheduler' | 'fleetSamples' | 'now'>
+) {
+	const { store, scheduler, fleetSamples, now } = runtime;
+	const reports = (fleetSamples?.() ?? []).flatMap((sample) => {
+		const report = trackerMachineSample.safeParse(sample).data;
+		return report && report.node !== store.node ? [report] : [];
+	});
+	const local = { node: store.node, runner: scheduler?.runnerStatus() };
+	const checkedAt = now();
+	return [...reports, local].flatMap(({ node, runner }) => {
+		if (!runner?.enabled || !/^[a-z0-9][a-z0-9._-]*$/i.test(node)) return [];
+		const lastTick = Date.parse(runner.last_tick_at ?? '');
+		const at = lastTick + dispatchHeartbeatGrace;
+		if (!(checkedAt > at)) return [];
+		return [
+			{
+				id: `${node}:${staleDispatchHeartbeatKind}:${at}`,
+				item_id: 'scheduler',
+				host: node,
+				kind: staleDispatchHeartbeatKind,
+				identity: String(lastTick),
+				reason: `Tracker launch scheduler last completed a tick at ${new Date(lastTick).toISOString()}. Check the dispatch worker and host commands on this computer.`,
+				at
+			}
+		];
+	});
 }

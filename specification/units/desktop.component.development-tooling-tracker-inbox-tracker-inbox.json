@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
+			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders",
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
 			"reports.component.shared-primitives-atoms-html-button",
@@ -31,7 +32,7 @@
 			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
 			"packages/desktop/src/components/development-tooling/tracker-inbox/tracker-inbox.css"
 		],
-		"symbols": ["TrackerInbox", "reload", "TrackerInbox.rows"]
+		"symbols": ["TrackerInbox", "reload", "TrackerInbox.rows", "TrackerInbox.needsHeading"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -48,6 +49,13 @@
 				"required": false,
 				"default": "phone",
 				"description": "Chooses direct Mac status or phone sync and outbox status."
+			},
+			{
+				"name": "TrackerInbox.home",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Keeps the Home blockers summary visible even when there are no open asks."
 			},
 			{
 				"name": "TrackerInbox.project",
@@ -90,10 +98,38 @@
 		"snippets": [
 			{
 				"name": "TrackerInbox.rows",
-				"inputs": [],
+				"inputs": [
+					{
+						"name": "TrackerInbox.rows.items",
+						"type": "InboxRow[]",
+						"required": false
+					},
+					{
+						"name": "TrackerInbox.rows.label",
+						"type": "string",
+						"required": false
+					},
+					{
+						"name": "TrackerInbox.rows.empty",
+						"type": "string",
+						"required": false
+					}
+				],
 				"outputs": [
 					{
 						"name": "TrackerInbox.rows",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerInbox.needsHeading",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerInbox.needsHeading",
 						"type": "markup"
 					}
 				],
@@ -110,6 +146,11 @@
 		},
 		{
 			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -135,6 +176,11 @@
 		},
 		{
 			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox-messages",
 			"via": "import",
 			"origin": "derived"
 		},

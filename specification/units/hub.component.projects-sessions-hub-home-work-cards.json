@@ -12,8 +12,6 @@
 		"uses": [
 			"hub.component.projects-sessions-hub-home-card",
 			"hub.component.projects-sessions-hub-home-not-started",
-			"hub.component.projects-sessions-hub-home-plannable",
-			"hub.component.projects-sessions-hub-home-project-card",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
@@ -35,7 +33,7 @@
 		"inputs": [
 			{
 				"name": "HubHomeWorkCards.view",
-				"type": "HomeView",
+				"type": "HomeWorkView",
 				"required": true,
 				"description": "Home data, project snapshots, source availability and clock used for presentation."
 			},
@@ -107,16 +105,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.component.projects-sessions-hub-home-plannable",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.projects-sessions-hub-home-project-card",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.component.projects-sessions-hub-home-row",
 			"via": "import",
 			"origin": "derived"
@@ -128,11 +116,6 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-presentation",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.projects-sessions-hub-home-view-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -163,6 +146,16 @@
 		},
 		{
 			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

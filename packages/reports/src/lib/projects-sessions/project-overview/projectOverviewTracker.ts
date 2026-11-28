@@ -9,13 +9,9 @@ import { readHomeAskConfirm, readHomeAskOptions } from '../hub-home/homeAskOptio
 import type { HomeAskInput } from '../hub-home/hubHome.types';
 import type { MachineStatus } from './projectOverview.types';
 import type * as Tracker from './projectOverviewTracker.types';
-import {
-	TRACKER_GET_URLS,
-	ITEM_STATUSES,
-	MACHINE_STATUSES,
-	TRACKER_TIMEOUT_MS
-} from './trackerReadTargets';
+import { TRACKER_GET_URLS, ITEM_STATUSES, MACHINE_STATUSES } from './trackerReadTargets';
 import { trackerRunDetail } from './projectOverviewRunDetail';
+import { getTrackerJson } from './trackerJsonRead';
 
 /** Read and validate items, runs and machines. The native tracker exposes machines in /status. */
 export async function readTrackerSources(
@@ -32,57 +28,6 @@ export async function readTrackerSources(
 		runs: asList(runs, 'runs').map((run) => parseRun(run, includeHomeFields)),
 		machines: asList(machines, 'machines').map(parseMachine)
 	};
-}
-
-/** Fixed loopback GETs with one deadline, no redirects and no credentials. */
-async function getTrackerJson(fetcher: typeof fetch, url: string): Promise<unknown> {
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
-	const expired = new Promise<never>((_resolve, reject) => {
-		timer = setTimeout(() => {
-			controller.abort();
-			reject(new Error('tracker read timed out'));
-		}, TRACKER_TIMEOUT_MS);
-	});
-	try {
-		const read = (target: string) =>
-			Promise.race([
-				fetcher(target, {
-					method: 'GET',
-					redirect: 'error',
-					cache: 'no-store',
-					credentials: 'omit',
-					headers: { accept: 'application/json' },
-					signal: controller.signal
-				}),
-				expired
-			]);
-		const response = await read(url);
-		if (url === TRACKER_GET_URLS.machines && response.status === 404) {
-			await closeBody(response);
-			const status = await readTrackerResponse(await read(TRACKER_GET_URLS.status), expired);
-			return asRecord(status, 'status').machines;
-		}
-		return await readTrackerResponse(response, expired);
-	} finally {
-		clearTimeout(timer);
-	}
-}
-
-async function readTrackerResponse(response: Response, expired: Promise<never>): Promise<unknown> {
-	if (!response.ok) {
-		await closeBody(response);
-		throw new Error('tracker read failed');
-	}
-	return Promise.race([response.json(), expired]);
-}
-
-async function closeBody(response: Response): Promise<void> {
-	try {
-		await response.body?.cancel();
-	} catch {
-		// The body was already closed or locked; nothing else to release.
-	}
 }
 
 function parseItem(value: unknown, includeHomeFields: boolean): Tracker.TrackerItemRecord {
@@ -127,10 +72,13 @@ function homeFields(row: Record<string, unknown>): Partial<Tracker.TrackerItemRe
 		model: optionalText(row.model, 'item model'),
 		occurrence: optionalTime(row.occurrence, 'item occurrence'),
 		recurring: row.recurring === true || Boolean(row.every),
+		remindAt: optionalTime(row.remind_at, 'item remind_at'),
+		every: optionalText(row.every, 'item every'),
 		scheduleOff: row.schedule_off === true || row.schedule_off === 1,
 		priority: optionalText(row.priority, 'item priority'),
 		owner: typeof row.owner === 'string' ? row.owner : null,
 		launchRequested: Boolean(row.auto),
+		launchToken: typeof row.auto === 'string' ? row.auto : null,
 		answer: typeof row.answer === 'string' ? row.answer : null,
 		answeredAt: optionalTime(row.answered_at, 'item answered_at'),
 		stage: trackerStageSchema.safeParse(row.stage).data ?? null,

@@ -1,22 +1,28 @@
 // @harness-uid u_dpe5j4r3is
-import type { OverviewItem, OverviewMachine } from '../project-overview/projectOverview.types';
+import type {
+	OverviewItem,
+	OverviewMachine,
+	OverviewSnapshot
+} from '../project-overview/projectOverview.types';
 import type {
 	IncludedTrackerItem,
 	TrackerRunRecord
 } from '../project-overview/projectOverviewTracker.types';
+import type { HomeAgent, HomePastDue, OwnerHomeSnapshot } from './hubHome.types';
 import type { TrackerStage } from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
 
 /**
  * What a piece of work is doing now. `running` and `offline` are live Tracker runs (the second on
- * a computer Tracker reports offline), `queued` waits to start, `no-run` is in progress with no
- * live run, and `finished` ended within the last day.
+ * a computer Tracker reports offline), `queued` waits to start, `blocked` awaits a resolution, and `finished` ended within the last day.
  */
-export type HomeWorkState = 'running' | 'offline' | 'queued' | 'no-run' | 'finished';
+export type HomeWorkState = 'running' | 'offline' | 'queued' | 'blocked' | 'finished';
 
 /** One live run, or one task that is in motion without one. */
 export interface HomeWorkRow {
 	key: string;
 	itemId: string;
+	/** Local Tracker run number, when reported by the linked computer. */
+	runId?: number;
 	title: string;
 	state: HomeWorkState;
 	/** How the latest run ended, as Tracker records it. */
@@ -38,6 +44,10 @@ export interface HomeWorkProject {
 	agent: string;
 	/** Live runs on computers that are not offline. */
 	running: number;
+	/** Total run and task rows before the response size limit. Absent on older Macs. */
+	totalRows?: number;
+	/** Blocked rows without a running job, before the response size limit. */
+	blockedRows?: number;
 	counts: Record<OverviewItem['status'], number>;
 	rows: HomeWorkRow[];
 	/** The newest change to any of the project's items. */
@@ -60,5 +70,24 @@ export interface ItemWork {
 	item: IncludedTrackerItem;
 	runs: TrackerRunRecord[];
 	offline: ReadonlySet<string>;
+	now: number;
+}
+
+export interface LinkedHome {
+	/** Computers linked to the signed-in account, online or not. */
+	linked: number;
+	/** How many of them answered this read. */
+	answered: number;
+	snapshot: OwnerHomeSnapshot | null;
+	/** The list of linked computers itself could not be read, so zero linked means unknown. */
+	unlisted?: true;
+}
+
+export interface HomeWorkView {
+	overview: OverviewSnapshot | null;
+	work: (OverviewItem & { project: string })[];
+	agents: HomeAgent[] | null;
+	pastDue: HomePastDue[];
+	trackerConnected: boolean;
 	now: number;
 }

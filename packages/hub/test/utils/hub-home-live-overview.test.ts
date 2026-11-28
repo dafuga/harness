@@ -74,15 +74,29 @@ describe('what the linked Mac reports', () => {
 });
 
 describe('what the Mac reports about work that is not simply running', () => {
-	test('work without a live run says so instead of looking busy', async () => {
+	test('ended work shows a block or a numbered retry', async () => {
 		const live = new Set(liveRuns().map((run) => run.item_id));
 		const idle = tracker.items.find((item) => item.status === 'in_progress' && !live.has(item.id))!;
 		const waiting = tracker.items.find((item) => item.status === 'open' && !live.has(item.id))!;
 		tracker.runs = tracker.runs.filter((run) => ![idle.id, waiting.id].includes(run.item_id));
+		idle.status = 'blocked';
+		idle.blocked_reason = 'Waiting on Daniel';
 		waiting.auto = 'launch-requested';
+		tracker.runs.push({
+			...liveRuns()[0],
+			id: 2000,
+			item_id: waiting.id,
+			state: 'queued',
+			started_at: null,
+			queued_at: now()
+		});
 
-		expect(await rowOf(idle.id)).toMatchObject({ state: 'no-run', startedAt: null });
-		expect(await rowOf(waiting.id)).toMatchObject({ state: 'queued' });
+		expect(await rowOf(idle.id)).toMatchObject({
+			state: 'blocked',
+			startedAt: null,
+			now: 'Blocked: Waiting on Daniel'
+		});
+		expect(await rowOf(waiting.id)).toMatchObject({ state: 'queued', runId: 2000 });
 	});
 
 	test('a run that ended in the last day keeps its recorded outcome', async () => {
