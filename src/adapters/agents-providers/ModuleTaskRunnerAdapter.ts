@@ -118,6 +118,8 @@ function claudeTaskCommand(selection: TaskSelection): string[] {
 		'Read,Edit,Write,Glob,Grep,Bash',
 		'--allowedTools',
 		'Read,Edit,Write,Glob,Grep,Bash',
+		// --tools leaves MCP alone: account connectors would join mid-session and fill the context.
+		'--strict-mcp-config',
 		'--no-session-persistence'
 	];
 }
