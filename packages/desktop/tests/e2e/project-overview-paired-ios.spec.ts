@@ -43,6 +43,11 @@ test('a paired owner opens the overview from the landing link and sees the synth
 	await overviewLink(page).click();
 	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();
 	await expect(page.getByText('fixture-done', { exact: true }).first()).toBeVisible();
+	await expect(page.getByRole('list', { name: 'Computers' }).getByRole('listitem')).toHaveText([
+		'fixture-computer busy',
+		'fixture-runner ok',
+		'fixture-offline offline'
+	]);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		phone.width
 	);
