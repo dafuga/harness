@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from './verificationExpect';
 import { moduleTaskFixture } from './support/moduleTaskFixture';
+import { useInstalledPackage } from './support/moduleTaskPackage';
 
 const models = [
 	['claude-haiku-5-5', 'claude'],
@@ -126,6 +127,34 @@ test.each(['completion-coverage-loss', 'completion-test-failure'])(
 	},
 	30000
 );
+
+test('managed module completion verifies with the repository installed packages', async () => {
+	const f = await moduleTaskFixture({ checks: [] });
+	try {
+		await useInstalledPackage(f);
+		await f.feature();
+		await writeFile(join(f.root, 'mode'), 'completion-module');
+		await f.cli([
+			'add',
+			'--input',
+			await f.input({ model: 'claude-haiku-5-5', verificationFiles: ['src/orders.test.ts'] })
+		]);
+		const worker = await f.cli(['worker', '--worker=owner', '--once', '--json'], false);
+		const run = JSON.parse(worker.stdout);
+		const receipt = await completionReceipt(run.result.text);
+		expect(receipt.checks[0]).toMatchObject({
+			name: 'reduce-module-bytes',
+			status: 'passed',
+			disposition: 'applied',
+			before: { testExitCode: 0 },
+			after: { testExitCode: 0 }
+		});
+		expect(run.status).toBe('review');
+		expect(worker.exitCode).toBe(0);
+	} finally {
+		await f.dispose();
+	}
+}, 30000);
 
 async function completionReceipt(text: string) {
 	const path = text.match(/^Completion record: (.+)$/m)?.[1];

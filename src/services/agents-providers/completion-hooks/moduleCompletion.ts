@@ -73,6 +73,7 @@ async function withModuleCandidate(
 			base
 		]);
 		added = true;
+		await input.prepare?.(scratch.root);
 		await review({ scratch, input, base, verification, reportDirectory: directory });
 	} finally {
 		if (added) await owner.run(['worktree', 'remove', '--force', scratch.root]);

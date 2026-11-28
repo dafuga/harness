@@ -66,7 +66,14 @@ export async function snapshotTaskWork(
 	const context = result[moduleCompletionContext];
 	delete result[moduleCompletionContext];
 	try {
-		if (context) await completeModule({ owner: new GitAdapter(root), task, result, context });
+		if (context)
+			await completeModule({
+				owner: new GitAdapter(root),
+				task,
+				result,
+				context,
+				prepare: (worktree) => prepareTaskWorkspace(root, worktree)
+			});
 	} finally {
 		await preserveTaskWork(root, task, result);
 	}
