@@ -32,7 +32,7 @@
 		"inputs": [
 			{
 				"name": "DeviceApprovalInbox.request",
-				"type": "NonNullable<AccountNativePlugin['deviceApproval']>",
+				"type": "DeviceApprovalHandler",
 				"required": true,
 				"description": "The native approval bridge accepts list, review, approve and deny actions. Approval sends back the shown comparison code."
 			}

@@ -1,0 +1,167 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.service.networking-security-sealed-enrollment-request",
+	"uid": "u_4uztsikiqd",
+	"kind": "service",
+	"title": "SealedEnrollmentRequestService",
+	"responsibility": "Owns the SealedEnrollmentRequestService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/remote/src/services/networking-security/SealedEnrollmentRequestService.ts",
+			"packages/remote/src/services/networking-security/SealedEnrollmentRequestService.types.ts"
+		],
+		"symbols": [
+			"SealedEnrollmentRequestService",
+			"SealedEnrollmentRequestService.constructor",
+			"SealedEnrollmentRequestService.resolve",
+			"EnrollmentClaimPin",
+			"EnrollmentProgress",
+			"ApprovedInstallation",
+			"EnrollmentResolution",
+			"KeepEnrollmentProgress"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SealedEnrollmentRequestService.constructor.options",
+				"type": "EnrollmentTransportOptions",
+				"required": true
+			},
+			{
+				"name": "SealedEnrollmentRequestService.resolve.progress",
+				"type": "EnrollmentProgress",
+				"required": true
+			},
+			{
+				"name": "SealedEnrollmentRequestService.resolve.keep",
+				"type": "KeepEnrollmentProgress",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "SealedEnrollmentRequestService.resolve",
+				"type": "Promise<EnrollmentResolution>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SealedEnrollmentRequestService.resolve",
+				"inputs": [
+					{
+						"name": "SealedEnrollmentRequestService.resolve.progress",
+						"type": "EnrollmentProgress",
+						"required": true
+					},
+					{
+						"name": "SealedEnrollmentRequestService.resolve.keep",
+						"type": "KeepEnrollmentProgress",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SealedEnrollmentRequestService.resolve",
+						"type": "Promise<EnrollmentResolution>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SealedEnrollmentRequestService.constructor",
+				"inputs": [
+					{
+						"name": "SealedEnrollmentRequestService.constructor.options",
+						"type": "EnrollmentTransportOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SealedEnrollmentRequestService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-read-sealed-device-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-sas",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-request-service-verify-enrollment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-review",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-review-service-review-transport",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/services/networking-security/SealedEnrollmentRequestService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/services/networking-security/SealedEnrollmentRequestService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

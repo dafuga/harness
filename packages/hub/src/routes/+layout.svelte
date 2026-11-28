@@ -37,7 +37,7 @@
 	});
 </script>
 
-{#if approver}
+{#if approver && page.url.pathname !== '/'}
 	{@const account = approver.id}
 	{#key account}
 		<DeviceApprovalInbox

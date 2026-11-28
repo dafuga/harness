@@ -21,7 +21,7 @@
 	},
 	"owns": {
 		"source": ["packages/hub/src/routes/+page.svelte"],
-		"symbols": ["+page"]
+		"symbols": ["+page", "+page.approvals"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,7 +42,21 @@
 		],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "+page.approvals",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "+page.approvals",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

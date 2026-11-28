@@ -1,3 +1,4 @@
+// @harness-uid u_liysz7uimm
 import { sealedDevice } from '../../../../../remote/src/utils/networking-security/sealedDevice';
 import type { BrowserEnrollment, BrowserEnrollmentRecord } from './browserEnrollmentStore.types';
 

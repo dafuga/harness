@@ -94,7 +94,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "hub.config.hub-env",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.middleware.hub-responses",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.tracker-overview-api",
 			"via": "import",
 			"origin": "derived"
 		}

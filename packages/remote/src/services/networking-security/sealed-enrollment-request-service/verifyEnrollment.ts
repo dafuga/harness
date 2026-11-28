@@ -1,3 +1,4 @@
+// @harness-uid u_uc636z6tgg
 import { SealedError } from '../../../models/networking-security/SealedError';
 import { fromBase64Url, toBase64Url } from '../../../utils/networking-security/remoteBytes';
 import { sealedChain } from '../../../utils/networking-security/sealedChain';
@@ -101,7 +102,7 @@ export async function verifyEnrollmentAdmission(
 	return { state: 'approved', pin: { seq: chain.seq, head: chain.head }, keys };
 }
 
-export function enrollmentNonceBytes(value: unknown): Uint8Array {
+export function enrollmentNonceBytes(value: string): Uint8Array {
 	if (typeof value !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(value))
 		throw new SealedError('Invalid approval nonce.');
 	const bytes = fromBase64Url(value);

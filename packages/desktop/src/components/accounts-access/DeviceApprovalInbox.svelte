@@ -75,7 +75,6 @@
 		if (busy) return;
 		selected = undefined;
 		error = '';
-		code = '';
 	}
 	async function decide(
 		item: DeviceApprovalRequest,
@@ -203,6 +202,9 @@
 		display: grid;
 		gap: var(--hx-space-8);
 		padding: var(--hx-space-16);
+		border: 1px solid var(--hx-color-border);
+		border-radius: var(--hx-radius-large);
+		background: var(--hx-color-surface-raised);
 	}
 	.approval-actions {
 		display: flex;

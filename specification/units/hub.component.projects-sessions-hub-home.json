@@ -27,7 +27,14 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "HubHome.approvals",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)"
+			}
+		],
 		"outputs": [
 			{
 				"name": "HubHome",

@@ -1,3 +1,4 @@
+// @harness-uid u_liysz7uimm
 import type {
 	SealedChainPin,
 	SealedDeviceKeys

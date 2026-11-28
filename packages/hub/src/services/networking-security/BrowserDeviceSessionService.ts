@@ -5,6 +5,7 @@ import type {
 	DeviceApprovalResult
 } from '$desktop/models/development-tooling/Environment.types';
 import type { EnrollmentView } from '../../../../relay/src/lib/networking-security/sync/SyncEnrollments.types';
+import { SealedError } from '../../../../remote/src/models/networking-security/SealedError';
 import type { SealedDeviceKeys } from '../../../../remote/src/models/networking-security/Sealed.types';
 import { SealedEnrollmentReviewService } from '../../../../remote/src/services/networking-security/SealedEnrollmentReviewService';
 import type { EnrollmentTransportOptions } from '../../../../remote/src/services/networking-security/SealedEnrollmentReviewService.types';
@@ -44,8 +45,9 @@ export class BrowserDeviceSessionService {
 	): Promise<DeviceApprovalResult> {
 		return this.withDatabase(account, signal, async (db) => {
 			const { installation } = await readBrowserEnrollment(db, account);
+			signal.throwIfAborted();
 			const pin = installation?.progress.pin;
-			if (!installation || !pin) throw new Error('This browser needs device approval.');
+			if (!installation || !pin) throw new SealedError('This browser needs device approval.');
 			const options = { ...this.transport(account, installation.device, signal), pin };
 			if (call.action === 'list') return this.list(options);
 			const review =
@@ -61,7 +63,7 @@ export class BrowserDeviceSessionService {
 				this.reviews.delete(call.id);
 				return { state: 'denied' };
 			}
-			if (!('code' in call)) throw new Error('Compare the codes before approving.');
+			if (!('code' in call)) throw new SealedError('Compare the codes before approving.');
 			const confirmed = await review.approve(call.code, async () => !signal.aborted);
 			if (!confirmed) return { state: 'waiting' };
 			signal.throwIfAborted();

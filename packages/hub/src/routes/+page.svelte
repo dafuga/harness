@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_5k4pvex6a2 -->
 <script lang="ts">
+	import DeviceApprovalInbox from '$desktop/components/accounts-access/DeviceApprovalInbox.svelte';
 	import HubHome from '../components/projects-sessions/HubHome.svelte';
 	import { browserContext } from '../utils/development-tooling/browserContext';
 	import BrandMark from '$shared/shared-primitives/BrandMark.svelte';
@@ -11,7 +12,18 @@
 
 <svelte:head><title>{session.actor ? 'Harness · Home' : 'Harness · Sign in'}</title></svelte:head>
 {#if session.actor}
-	{#key session.actor.id}<HubHome />{/key}
+	{@const account = session.actor.id}
+	{#key account}
+		<HubHome>
+			{#snippet approvals()}
+				{#if session.status?.deviceApproval}
+					<DeviceApprovalInbox
+						request={(call, event) => session.deviceApproval.review(account, call, event)}
+					/>
+				{/if}
+			{/snippet}
+		</HubHome>
+	{/key}
 {:else if session.status || session.error}
 	<hx-main class="sign-in" aria-label="Sign in to Harness">
 		<hx-div class="sign-in-inner">

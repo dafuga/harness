@@ -1,7 +1,9 @@
+// @harness-uid u_2z6ismqvvf
 import type {
 	DeviceApprovalAction,
 	DeviceApprovalResult
 } from '$desktop/models/development-tooling/Environment.types';
+import { SealedError } from '../../../../../remote/src/models/networking-security/SealedError';
 import { BrowserDeviceSessionService } from '../../../services/networking-security/BrowserDeviceSessionService';
 import type { EnrollmentResolution } from '../../../../../remote/src/services/networking-security/SealedEnrollmentRequestService.types';
 
@@ -11,7 +13,7 @@ export class BrowserApprovalState {
 	private attempt: AbortController | null = null;
 	private reviewLifetime = new AbortController();
 
-	constructor(private readonly service = new BrowserDeviceSessionService()) {}
+	private readonly service = new BrowserDeviceSessionService();
 
 	async check(account: string): Promise<void> {
 		if (this.attempt) return;
@@ -36,11 +38,11 @@ export class BrowserApprovalState {
 		event?: MouseEvent
 	): Promise<DeviceApprovalResult> {
 		if (this.result?.state !== 'approved')
-			return Promise.reject(new Error('This browser needs device approval.'));
+			return Promise.reject(new SealedError('This browser needs device approval.'));
 		if (call.action === 'approve' || call.action === 'deny') {
 			// Read transient activation while handling the actual click, before any network waits.
 			if (!event?.isTrusted || !navigator.userActivation?.isActive)
-				return Promise.reject(new Error('Confirm this decision on this device.'));
+				return Promise.reject(new SealedError('Confirm this decision on this device.'));
 		}
 		return this.service.review(account, this.reviewLifetime.signal, call);
 	}

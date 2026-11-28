@@ -12,7 +12,7 @@
 		HomeChatReceipt,
 		HomeSection
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import { onMount, tick } from 'svelte';
+	import { onMount, tick, type Snippet } from 'svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot } from './hubHomeClient';
@@ -35,6 +35,7 @@
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
 	import '../../../../reports/src/lib/styles/home-scheme.css';
 	import '../../../../reports/src/lib/styles/hub-home/index.css';
+	let { approvals }: { approvals?: Snippet } = $props();
 	const { api, session, projects } = browserContext();
 	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
 	provideHubSpecDocuments(({ id }) => api.get('/api/hub-home/doc', { id }));
@@ -191,6 +192,7 @@
 			{#snippet accountMenu()}<AccountMenu />{/snippet}
 			{#snippet notifications()}<HubHomeNotifications />{/snippet}
 		</HubHomeHeader>
+		{@render approvals?.()}
 		{#if link === 'live'}
 			<hx-p class="po-page hh-page hh-live" role="status" aria-label="Updates" data-state={link}>
 				Live

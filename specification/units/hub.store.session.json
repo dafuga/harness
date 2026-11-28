@@ -73,6 +73,11 @@
 			"unit": "hub.model.hub-auth-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "hub.store.projects-sessions-browser-approval",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

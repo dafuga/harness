@@ -1,0 +1,242 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.service.networking-security-browser-device-session",
+	"uid": "u_kaxmzq62j7",
+	"kind": "service",
+	"title": "BrowserDeviceSessionService",
+	"responsibility": "Owns the BrowserDeviceSessionService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/services/networking-security/BrowserDeviceSessionService.ts"],
+		"symbols": [
+			"BrowserDeviceSessionService",
+			"BrowserDeviceSessionService.constructor",
+			"BrowserDeviceSessionService.resolve",
+			"BrowserDeviceSessionService.review",
+			"BrowserDeviceSessionService.clearReviews",
+			"BrowserDeviceSessionService.forget"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "BrowserDeviceSessionService.constructor.fetcher",
+				"type": "typeof fetch",
+				"required": false
+			},
+			{
+				"name": "BrowserDeviceSessionService.resolve.account",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "BrowserDeviceSessionService.resolve.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "BrowserDeviceSessionService.review.account",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "BrowserDeviceSessionService.review.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "BrowserDeviceSessionService.review.call",
+				"type": "DeviceApprovalAction",
+				"required": true
+			},
+			{
+				"name": "BrowserDeviceSessionService.forget.account",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "BrowserDeviceSessionService.resolve",
+				"type": "Promise<EnrollmentResolution>"
+			},
+			{
+				"name": "BrowserDeviceSessionService.review",
+				"type": "Promise<DeviceApprovalResult>"
+			},
+			{
+				"name": "BrowserDeviceSessionService.clearReviews",
+				"type": "void"
+			},
+			{
+				"name": "BrowserDeviceSessionService.forget",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "BrowserDeviceSessionService.resolve",
+				"inputs": [
+					{
+						"name": "BrowserDeviceSessionService.resolve.account",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "BrowserDeviceSessionService.resolve.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserDeviceSessionService.resolve",
+						"type": "Promise<EnrollmentResolution>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserDeviceSessionService.review",
+				"inputs": [
+					{
+						"name": "BrowserDeviceSessionService.review.account",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "BrowserDeviceSessionService.review.signal",
+						"type": "AbortSignal",
+						"required": true
+					},
+					{
+						"name": "BrowserDeviceSessionService.review.call",
+						"type": "DeviceApprovalAction",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserDeviceSessionService.review",
+						"type": "Promise<DeviceApprovalResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserDeviceSessionService.clearReviews",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "BrowserDeviceSessionService.clearReviews",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserDeviceSessionService.forget",
+				"inputs": [
+					{
+						"name": "BrowserDeviceSessionService.forget.account",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserDeviceSessionService.forget",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "BrowserDeviceSessionService.constructor",
+				"inputs": [
+					{
+						"name": "BrowserDeviceSessionService.constructor.fetcher",
+						"type": "typeof fetch",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserDeviceSessionService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.service.networking-security-browser-device-session-service-browser-enrollment-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.module.networking-security-sync-sync-enrollments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-request",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-review",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.service.networking-security-sealed-enrollment-review-service-review-transport",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/services/networking-security/BrowserDeviceSessionService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/services/networking-security/BrowserDeviceSessionService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

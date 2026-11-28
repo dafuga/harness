@@ -34,6 +34,11 @@
 				"type": "AbortSignal",
 				"required": false,
 				"description": "Cancels the Hub calls and prevents a proof from being sent for a superseded session."
+			},
+			{
+				"name": "readSealedDeviceSession.verifyApproval",
+				"type": "() => Promise<void>",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -72,6 +77,11 @@
 						"type": "AbortSignal",
 						"required": false,
 						"description": "Cancels the Hub calls and prevents a proof from being sent for a superseded session."
+					},
+					{
+						"name": "readSealedDeviceSession.verifyApproval",
+						"type": "() => Promise<void>",
+						"required": false
 					}
 				],
 				"outputs": [
