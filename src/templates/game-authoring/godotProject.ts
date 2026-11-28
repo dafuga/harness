@@ -141,6 +141,11 @@ import { dirname } from 'node:path';
 const mode = process.argv[2];
 const godot = process.env.GODOT_BIN || 'godot';
 
+/** The command line named a mode this script does not offer. */
+class UnknownModeError extends Error {
+	override name = 'UnknownModeError';
+}
+
 function run(args: string[]) {
 	const processResult = Bun.spawnSync([godot, '--headless', '--path', '.', ...args], {
 		stdout: 'inherit', stderr: 'inherit'
@@ -155,7 +160,9 @@ if (mode === 'test') {
 		native: { preset: 'macOS', output: 'build/native/game.zip' },
 		web: { preset: 'Web', output: 'build/web/index.html' }
 	} as const;
-	if (mode !== 'native' && mode !== 'web') throw new Error('Choose test, native, or web.');
+	if (mode !== 'native' && mode !== 'web') {
+		throw new UnknownModeError('Choose test, native, or web.');
+	}
 	const { preset, output } = configs[mode];
 	mkdirSync(dirname(output), { recursive: true });
 	run(['--export-release', preset, output]);
