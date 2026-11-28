@@ -20,6 +20,7 @@ import {
 	trackerFailureResponse,
 	trackerResponse
 } from './tracker-local-api-service/trackerLocalResponse';
+import { readChiefReviews, writeChiefReview } from './tracker-local-api-service/trackerChiefReview';
 import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
 import { trackerRejectItem } from './tracker-local-api-service/trackerLocalRejection';
 import {
@@ -137,10 +138,14 @@ export class TrackerLocalApiService {
 		const action = itemAction(request.method, id, verb);
 		const manual =
 			this.options.manualLaunch && request.method === 'POST' && id && isTrackerManualLaunch(verb);
-		if (!action && !manual) return undefined;
+		const release = request.method === 'POST' && id && verb === 'release';
+		if (!action && !manual && !release) return undefined;
 		const input = await readItemBody(request);
 		request.signal.throwIfAborted();
 		const actor = readActor(request.headers);
+		const reviewed = id && writeChiefReview({ store: this.store, items: this.items, options: this.options }, id, { verb, actor, body: input });
+		if (reviewed) return reviewed;
+		if (release) return trackerResponse(404, { error: 'review queue unavailable' });
 		const context = itemMutationContext(this.store, this.items, this.options, verb === 'launch');
 		const body = trackerMutationBody(input, action, actor, Boolean(context.planLaunch));
 		const plan = action
@@ -152,11 +157,18 @@ export class TrackerLocalApiService {
 			if (manual && verb === 'unlaunch')
 				cancelQueuedDispatchRuns(this.store, plan.itemId, context.now);
 		};
-		if (plan.fields)
-			this.store.appendLocal({ itemId: plan.itemId, fields: plan.fields, actor }, persist);
-		const flag = { itemId: plan.itemId, action, question: body.question };
-		recordCosFlag(this.store, flag, context.now);
-		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
+		const privateFlag = this.store.chiefReview && action === 'flag' &&
+			typeof body.question === 'string' && !plan.fields?.needs_daniel;
+		const fields = privateFlag ? { question: body.question, needs_daniel: 1, resolved: 0 } : plan.fields;
+		const operation = fields &&
+			this.store.appendLocal({ itemId: plan.itemId, fields, actor }, persist);
+		if (!this.store.chiefReview)
+			recordCosFlag(this.store, { itemId: plan.itemId, action, question: body.question }, context.now);
+		const pending = operation?.fields.chief_review;
+		return trackerResponse(action === 'add' ? 201 : 200, {
+			...this.items.getStored(plan.itemId),
+			...(typeof pending === 'string' && { review_status: 'awaiting Chief of Staff review' })
+		});
 	}
 }
 
@@ -167,6 +179,8 @@ function trackerSpecialResponse(
 ) {
 	if (parts.length === 1 && parts[0] === 'host-work' && dependencies.options.machines)
 		return trackerHostWorkEndpoint(request, dependencies.options.machines);
+	if (request.method === 'GET' && parts[0] === 'review' && parts.length <= 2)
+		return Promise.resolve(readChiefReviews(dependencies, parts[1], readActor(request.headers)));
 	if (parts[0] === 'jobs') return trackerJobResponse(request, parts, dependencies);
 	if (isTrackerAlert(request, parts)) return trackerAlertResponse(request, parts[1], dependencies);
 	if (parts[0] === 'messages')

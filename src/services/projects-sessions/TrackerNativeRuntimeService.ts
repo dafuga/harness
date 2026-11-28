@@ -70,7 +70,7 @@ export class TrackerNativeRuntimeService {
 	constructor(database: SqliteDatabase, options: TrackerNativeRuntimeOptions) {
 		validateLinks(options);
 		const { node, now = Date.now, storage, hostEffects, role } = options;
-		const store = (this.store = new TrackerPersistenceService(database, node, { ...storage, now }));
+		const store = (this.store = new TrackerPersistenceService(database, node, { ...storage, now, chiefReview: true }));
 		this.role = role;
 		this.ladderConfig = options.ladderConfig;
 		this.now = now;

@@ -26,6 +26,8 @@ export const trackerItemFields = [
 	'notes',
 	'parent',
 	'needs_daniel',
+	'chief_review',
+	'chief_answer',
 	'question',
 	'answer',
 	'answered_at',
