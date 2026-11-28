@@ -10,6 +10,7 @@ import type {
 	CompletionReceipt,
 	CompletionRun
 } from './completionRun.types';
+import { redactSecrets } from '../../../utils/agents-providers/redactSecrets';
 import { CompletionCheckError } from './CompletionCheckError';
 
 export const completionTurn = Symbol('completion turn read-only');
@@ -61,6 +62,7 @@ async function runCheck(
 		await evaluate();
 	} catch (error) {
 		receipt.status = 'failed';
+		if (error instanceof CompletionCheckError && error.summary) receipt.summary = error.summary;
 		receipt.reason =
 			error instanceof CompletionCheckError ? error.message : 'Completion check could not finish.';
 	}
@@ -105,7 +107,7 @@ export async function askCompletion(
 	input.signal.throwIfAborted();
 	const result = completionReply(reply.text);
 	if (result.status === 'failed')
-		throw new CompletionCheckError('Provider reported a failed check.');
+		throw new CompletionCheckError('Provider reported a failed check.', result.summary);
 	return result.summary;
 }
 
@@ -115,7 +117,7 @@ function completionReply(text: string): { status: string; summary: string } {
 			text.trim().replace(/^```(?:json)?\s*([\s\S]+)\s*```$/, '$1')
 		);
 		if (['passed', 'failed'].includes(status) && typeof summary === 'string' && summary.trim()) {
-			return { status, summary: summary.trim().replace(/\s+/g, ' ').slice(0, 500) };
+			return { status, summary: redactSecrets(summary).trim().replace(/\s+/g, ' ').slice(0, 500) };
 		}
 	} catch {
 		// Provider output is untrusted and stays out of failure messages.

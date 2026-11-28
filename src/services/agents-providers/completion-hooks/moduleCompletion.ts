@@ -6,15 +6,13 @@ import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { completionHooksConfig } from '../../../configs/agents-providers/completionHooksConfig';
 import { taskWrites } from '../module-task-worker-service/taskClaim';
 import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/ModuleTaskWorktreeAdapter';
+import { assessReduction } from './assessReduction';
 import { CompletionCheckError } from './CompletionCheckError';
 import { loadCompletionConfig } from './completionConfig';
 import { askCompletion, completionRecordPath, evaluateCompletion } from './completionRun';
 import type { CompletionCheck, CompletionReceipt } from './completionRun.types';
 import { moduleCompletionMeasurement } from './moduleCompletionMeasurement';
-import { requireNondecreasingCoverage } from './lcovCoverage';
 import type { ModuleCandidate, ModuleCompletionInput } from './moduleCompletion.types';
-
-export const moduleCompletionContext = Symbol('module completion context');
 
 export async function completeModule(input: ModuleCompletionInput): Promise<void> {
 	const { owner, task, result, context } = input;
@@ -126,14 +124,10 @@ async function reviewModule(
 		return;
 	}
 	const proposed = await candidateCheckpoint(input, scratch, base);
-	await moduleCompletionMeasurement(
-		measure,
-		proposed,
-		join(candidate.reportDirectory, 'after'),
-		(reading) => (receipt.after = reading)
-	);
+	const accepted = await assessReduction(candidate, { proposed, paths, receipt, measure });
+	if (!accepted || !paths.length) return;
 	await requireSameTree(proposed, await candidateCheckpoint(input, scratch, base), scratch);
-	await promoteModule(candidate, proposed, paths, receipt);
+	await promoteModule(candidate, proposed, receipt);
 }
 
 function moduleCheckPrompt(module: string, source: string[], tests: string[]): string {
@@ -148,23 +142,9 @@ function moduleCheckPrompt(module: string, source: string[], tests: string[]): s
 async function promoteModule(
 	candidate: ModuleCandidate,
 	proposed: string,
-	paths: string[],
 	receipt: CompletionReceipt
 ) {
 	const { input, scratch, base } = candidate;
-	const { before, after } = receipt;
-	const tests = input.task.verificationFiles ?? [];
-	requireNondecreasingCoverage(
-		before!.coverage!,
-		after!.coverage!,
-		paths.filter((path) => !tests.includes(path))
-	);
-	if (!paths.length) {
-		receipt.disposition = 'unchanged';
-		return;
-	}
-	if (after!.bytes.source >= before!.bytes.source || after!.bytes.tests >= before!.bytes.tests)
-		throw new CompletionCheckError('The candidate did not reduce both source and test bytes.');
 	const working = new GitAdapter(input.result.worktree);
 	const current = await candidateCheckpoint(
 		input,

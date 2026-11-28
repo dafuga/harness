@@ -7,15 +7,13 @@ import type {
 	TaskUsage
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { ModuleTaskAnalyticsService } from '../ModuleTaskAnalyticsService';
-import { moduleCompletionContext } from '../completion-hooks/moduleCompletion';
-import type { ModuleCompletionContext } from '../completion-hooks/moduleCompletion.types';
 import type { TaskRunResult } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 /** Keep every provider call, including failed or quota-rejected calls before fallback. */
 export async function dispatchTaskAttempt(
 	runner: TaskRunner,
 	input: TaskRunInput,
 	executions: TaskExecution[]
-): Promise<TaskRunResult & { [moduleCompletionContext]?: ModuleCompletionContext }> {
+): Promise<TaskRunResult> {
 	const startedAt = new Date().toISOString();
 	const base = {
 		provider: input.provider,
@@ -35,7 +33,7 @@ export async function dispatchTaskAttempt(
 			status: 'succeeded',
 			finishedAt: new Date().toISOString()
 		});
-		return { ...result, [moduleCompletionContext]: { runner, signal: input.signal } };
+		return result;
 	} catch (error) {
 		const failure = (error ?? {}) as {
 			usage?: TaskUsage;

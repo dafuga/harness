@@ -4,7 +4,8 @@ import type {
 	TaskRunner
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
-import type { CompletionConfig } from './completionRun.types';
+import type { ModuleCompletionMeasurement } from './moduleCompletionMeasurement.types';
+import type { CompletionConfig, CompletionReceipt } from './completionRun.types';
 
 export interface ModuleCompletionInput {
 	owner: GitAdapter;
@@ -26,4 +27,11 @@ export interface ModuleCandidate {
 	base: string;
 	reportDirectory: string;
 	verification: CompletionConfig['moduleVerification'];
+}
+
+export interface ModuleReductionAssessment {
+	proposed: string;
+	paths: string[];
+	receipt: CompletionReceipt;
+	measure: ModuleCompletionMeasurement;
 }

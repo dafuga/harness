@@ -28,6 +28,8 @@ export interface TaskRunInput extends TaskSelection {
 	images?: string[];
 	signal: AbortSignal;
 	platform?: TaskPlatform;
+	/** Present only when a worker will run a declared check and may resume this conversation. */
+	session?: { resume?: string };
 	supervision?: TaskSupervision;
 	onRotation?: (checkpoint: string, session: TaskSessionMetric) => Promise<void>;
 }

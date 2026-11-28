@@ -33,6 +33,9 @@ export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
 		`Allowed task files: ${task.module.files.join(', ')}`,
 		`Task: ${task.title} (${task.id})`,
 		task.instructions,
+		...(task.check
+			? ['Harness runs the declared check after your turn and can return failures for repair.']
+			: []),
 		'Implement only the wanted contract below. A previous attempt may have left edits; inspect current files before changing them. Report verification performed and remaining gaps.',
 		`Original source revision: ${task.sourceCommit}`,
 		`Current repair source revision: ${task.repairCommit ?? task.sourceCommit}`,
