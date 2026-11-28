@@ -1,27 +1,27 @@
-import { existsSync, mkdtempSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { existsSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
-import { afterEach, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import type { ResourceContext } from '../../../src/core/execution-runtimes/resourceTypes';
 import { resourceCommand } from '../../../src/utils/execution-runtimes/resourceCommand';
 import { runIsolated } from '../../../src/utils/reports-media/run-isolated/runIsolated';
 import type * as RunIsolatedModule from '../../../src/utils/reports-media/run-isolated/runIsolated';
+import { createTempDirectory } from '../../support/temporary';
 
 vi.mock('../../../src/utils/reports-media/run-isolated/runIsolated', async (importOriginal) => {
 	const actual = await importOriginal<typeof RunIsolatedModule>();
 	return { ...actual, runIsolated: vi.fn(actual.runIsolated) };
 });
 
-const directories: string[] = [];
+let home: string;
+beforeEach(async () => {
+	home = await createTempDirectory('inherited-command-');
+});
 afterEach(() => {
 	vi.mocked(runIsolated).mockClear();
-	for (const directory of directories.splice(0))
-		rmSync(directory, { recursive: true, force: true });
+	rmSync(home, { recursive: true, force: true });
 });
 
 function inheritedContext(track: (pid: number) => void = () => undefined): ResourceContext {
-	const home = mkdtempSync(join(tmpdir(), 'inherited-command-'));
-	directories.push(home);
 	return {
 		id: 'parent-lease',
 		env: { HARNESS_RESOURCES_HOME: home, PATH: '/usr/bin:/bin' },

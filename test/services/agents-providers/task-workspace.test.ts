@@ -2,28 +2,27 @@ import {
 	existsSync,
 	lstatSync,
 	mkdirSync,
-	mkdtempSync,
 	readdirSync,
 	realpathSync,
 	rmSync,
 	symlinkSync,
 	writeFileSync
 } from 'node:fs';
-import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterEach, expect, test } from 'vitest';
+import { afterEach, beforeEach, expect, test } from 'vitest';
 import { prepareTaskWorkspace } from '../../../src/services/agents-providers/module-task-worker-service/taskWorkspace';
+import { createTempDirectory } from '../../support/temporary';
 
-const directories: string[] = [];
+let base: string;
+beforeEach(async () => {
+	base = await createTempDirectory('task-workspace-');
+});
 afterEach(() => {
-	for (const directory of directories.splice(0))
-		rmSync(directory, { recursive: true, force: true });
+	rmSync(base, { recursive: true, force: true });
 });
 
 /** A checkout with installed packages, a linked workspace package and a stray file. */
 function fixture() {
-	const base = mkdtempSync(join(tmpdir(), 'task-workspace-'));
-	directories.push(base);
 	const root = join(base, 'root'),
 		worktree = join(base, 'worktree'),
 		modules = join(root, 'node_modules');

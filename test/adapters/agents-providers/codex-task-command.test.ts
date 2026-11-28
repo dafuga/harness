@@ -1,22 +1,24 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { afterEach, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import {
 	codexTaskCommand,
 	codexWritableRoots
 } from '../../../src/adapters/agents-providers/module-task-runner-adapter/codexTaskCommand';
+import { createTempDirectory } from '../../support/temporary';
 
-const directories: string[] = [];
+let root: string;
+beforeEach(async () => {
+	root = await createTempDirectory('codex-task-');
+});
 afterEach(() => {
 	vi.unstubAllEnvs();
-	for (const directory of directories.splice(0))
-		rmSync(directory, { recursive: true, force: true });
+	rmSync(root, { recursive: true, force: true });
 });
 
 function temporary(prefix: string): string {
-	const directory = mkdtempSync(join(tmpdir(), prefix));
-	directories.push(directory);
+	const directory = join(root, prefix);
+	mkdirSync(directory);
 	return directory;
 }
 
