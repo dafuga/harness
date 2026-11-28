@@ -1,6 +1,10 @@
 // @harness-uid u_rwxks6olfz
 export const trackerDoneProofRule = `## Done proof
 
+Read the \`computer-hygiene\` skill before using a browser, app, simulator, container or background process. On every computer, track and close only the tabs and windows you opened as soon as you finish with them. Leave Daniel’s and other sessions’ resources alone.
+
+- Before \`tracker done\`, \`tracker block\` or handoff, check your list. Put this on its own line in the done note or block reason: \`hygiene: closed <N> tabs/windows I opened; left open: <none or what and why>\`. Use 0 and none if you opened nothing. Tracker requires this line for launched sessions.
+
 Before \`tracker done\`, reread every note with \`tracker show <id> --json\`. This brief may omit or shorten notes, and requirements can be appended after launch.
 
 - The done note maps EVERY requirement (title, task and all notes, including appended ones) to evidence for each named computer: \`<requirement> | <computer> | <evidence>\`.

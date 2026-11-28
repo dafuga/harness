@@ -20,6 +20,10 @@ import { nativeTrackerInspectionRequest } from './nativeTrackerInspectionRequest
 import { nativeTrackerQuery as query, nativeTrackerRunRequest } from './nativeTrackerRunRequest';
 
 export const nativeTrackerCommands = [...nativeTrackerCommandOptions.keys()].join(', ');
+const trackerHygieneFields = new Map([
+	['done', 'note'],
+	['block', 'reason']
+]);
 
 export function nativeTrackerArgs(args: string[]) {
 	const command = args[0];
@@ -33,7 +37,28 @@ export function nativeTrackerArgs(args: string[]) {
 	});
 	const request =
 		command === 'reply' ? replyRequest(words) : nativeTrackerRequest(command, words, values);
+	requireTrackerHygiene(command, words[0], request.body);
 	return { command, values, words, request };
+}
+
+function requireTrackerHygiene(
+	command: string,
+	item: string,
+	body: NativeTrackerRequest['body']
+): void {
+	const field = trackerHygieneFields.get(command);
+	if (!field || !process.env.TRACKER_RUN_ID) return;
+	const runItem = process.env.TRACKER_ITEM_ID ?? '';
+	if (!runItem.startsWith(item.trim().toLowerCase())) return;
+	const proof = body?.[field];
+	const hygiene =
+		/^[ \t]*hygiene:[ \t]+closed[ \t]+\d+[ \t]+tabs\/windows I opened;[ \t]+left open:[ \t]+\S/im;
+	if (typeof proof !== 'string' || !hygiene.test(proof))
+		throw new TypeError(
+			'close your unused tabs and windows, then include a separate line ' +
+				'"hygiene: closed <N> tabs/windows I opened; left open: <none or what and why>" ' +
+				(field === 'note' ? 'in --note.' : 'in the block reason.')
+		);
 }
 
 function nativeTrackerRequest(
