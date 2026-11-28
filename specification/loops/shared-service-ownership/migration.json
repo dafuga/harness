@@ -5026,14 +5026,22 @@
 			"unit": "desktop.function.project-proposal",
 			"from": "packages/desktop/src/services/project-run-service/projectProposal.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/projectProposal.ts",
-			"definition": "8f1642c7360a5dd3620f4bc3405df09250e0e70d1be3adca9542713c1d112a89",
+			"definition": "4ca487c41ec5c0572d47b4ad1e93cec14e5921c35a4ff28690baa06ce430e95d",
 			"relocationDefinition": "c5dbabc19a9f02002c27313d9fe1ee9e5f47ce026dd70ecd610d9d4841c4a00c",
 			"review": {
-				"commit": "548897946bd658707e0b9e9d12fef4a7509463aa",
+				"commit": "66a32ed5e8b2ed42bb220d89e82f87a2663c4747",
 				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/projectProposal.ts",
-				"definition": "8f1642c7360a5dd3620f4bc3405df09250e0e70d1be3adca9542713c1d112a89",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.project-proposal, written by haiku); messages and behavior unchanged."
-			}
+				"definition": "4ca487c41ec5c0572d47b4ad1e93cec14e5921c35a4ff28690baa06ce430e95d",
+				"reason": "Include the mock-mode checklist in app planning prompts."
+			},
+			"previousReviews": [
+				{
+					"commit": "548897946bd658707e0b9e9d12fef4a7509463aa",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/projectProposal.ts",
+					"definition": "8f1642c7360a5dd3620f4bc3405df09250e0e70d1be3adca9542713c1d112a89",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.project-proposal, written by haiku); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.proposal-units",
@@ -6291,13 +6299,13 @@
 			"unit": "desktop.service.plan-run",
 			"from": "packages/desktop/src/services/PlanRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
-			"definition": "5b9d26ab31918964f905f0a13f03f1ceb9ba4a950373144b7929ec9c9afbbe13",
+			"definition": "e9d722e5b0c4114ffc33e9697acf0a0664bfd38b32e87daf5288900332f853fd",
 			"relocationDefinition": "efa5aeed6c9be2c1a74d7f9a7cf08cbb3b31bf7a61c504518418a0d81d498da8",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "66a32ed5e8b2ed42bb220d89e82f87a2663c4747",
 				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
-				"definition": "5b9d26ab31918964f905f0a13f03f1ceb9ba4a950373144b7929ec9c9afbbe13",
-				"reason": "Preserves named planning errors while routing visual plan creation through the selected mockup provider."
+				"definition": "e9d722e5b0c4114ffc33e9697acf0a0664bfd38b32e87daf5288900332f853fd",
+				"reason": "Include the mock-mode checklist in app planning prompts."
 			},
 			"previousReviews": [
 				{
@@ -6311,6 +6319,12 @@
 					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
 					"reason": "Route visual entities to HTML and CSS mockups and preserve the selected runner for behavior notes.",
 					"definition": "8ff720c60d089a3819652c9fe27092f942894d1e7e459246fec94a95362c2018"
+				},
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
+					"definition": "5b9d26ab31918964f905f0a13f03f1ceb9ba4a950373144b7929ec9c9afbbe13",
+					"reason": "Preserves named planning errors while routing visual plan creation through the selected mockup provider."
 				}
 			]
 		},

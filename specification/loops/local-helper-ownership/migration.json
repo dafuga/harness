@@ -6959,6 +6959,13 @@
 			"commit": "03259124cf3b2fd6212b6a458098c59a5ce089a2",
 			"reason": "Allows HTTPS plan mockups on signed-in Mac Home and the Plans and schedule view.",
 			"definition": "fb762d46bd29138d129f553d50d3c1388506ddbeb78efbc8570da070444870a1"
+		},
+		{
+			"unit": "desktop.function.project-proposal",
+			"name": "proposalPrompt",
+			"commit": "66a32ed5e8b2ed42bb220d89e82f87a2663c4747",
+			"reason": "Ask the planner to estimate real test cost and include the mock-mode checklist in costly app proposals.",
+			"definition": "8bd18d770bb636dbf1ed28c5a0bbe1471d261c8c9e870acf9e22ed74de3a01d3"
 		}
 	],
 	"retiredOwners": [
