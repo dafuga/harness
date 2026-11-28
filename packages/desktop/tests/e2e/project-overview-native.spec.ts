@@ -1,5 +1,9 @@
 import { expect as baseExpect, test } from '../../../../test/support/browserTest';
-import { captureOverview, fakeOverviewBridge } from './support/projectOverviewNativeFixture';
+import {
+	captureOverview,
+	fakeOverviewBridge,
+	overviewHomeSnapshot
+} from './support/projectOverviewNativeFixture';
 import { scenarioCapture } from './scenario-capture';
 import scenario from '../../../../specification/scenarios/project-overview-desktop.json' with { type: 'json' };
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
@@ -17,8 +21,23 @@ const viewports = [
 test('the desktop landing reaches the overview, which shows the synthetic states', async ({
 	page
 }) => {
-	await fakeOverviewBridge(page, 'ready');
+	await fakeOverviewBridge(page, 'ready', overviewHomeSnapshot);
 	await page.goto('/');
+	const priority = page.getByRole('region', { name: 'Quota', exact: true });
+	const live = page.getByRole('region', { name: 'Live overview' });
+	await expect(live).toBeVisible();
+	expect((await live.boundingBox())!.y).toBeGreaterThan((await priority.boundingBox())!.y);
+	await live.getByText('fixture-active', { exact: true }).click();
+	const job = live.getByRole('button', { name: 'Synthetic live item', exact: true });
+	await expect(job).toContainText('Running');
+	await expect(job).toContainText('fixture-model');
+	await job.scrollIntoViewIfNeeded();
+	await captureOverview(page, 'mac-home-live-grid');
+	await job.click();
+	const detail = page.getByRole('dialog', { name: 'Job details' });
+	await expect(detail).toContainText('Synthetic milestone');
+	await detail.getByRole('button', { name: 'Close' }).click();
+	await expect(job).toBeFocused();
 	await page.getByRole('link', { name: 'Project Overview', exact: true }).click();
 	await expect(page).toHaveURL(/\/projects$/);
 	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();

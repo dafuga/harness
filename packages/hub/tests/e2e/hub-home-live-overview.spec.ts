@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '../../../../test/support/browserTest';
+import { expect as baseExpect, test, type Page } from '../../../../test/support/browserTest';
 import { captureNeedsYou } from './hub-home-capture';
 import { recordedTracker, seedComputerWork } from '../../test/support/recordedTracker';
 import {
@@ -7,15 +7,16 @@ import {
 	expectComputerWorkload,
 	expectEvenHeaderSpacing,
 	expectLiveDisposition,
-	expectLiveRowFacts,
+	expectLiveCardFacts,
 	expectNoSidewaysScroll,
 	expectRecordedProjects,
-	liveRows,
+	liveCards,
 	macAnswer,
 	overview,
 	productionHome,
 	seedLiveDisposition
 } from './hub-home-live-fixture';
+const expect = baseExpect.configure({ timeout: 20000 });
 test.setTimeout(90000);
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
@@ -24,7 +25,7 @@ for (const [device, width, height] of [
 	['desktop-dark', 1440, 900],
 	['phone-light', 390, 844]
 ] as const) {
-	test(`${device}: every project and live run of a recorded Tracker shows with its facts`, async ({
+	test(`${device}: recorded Tracker jobs appear as cards below Home priorities`, async ({
 		page
 	}) => {
 		const tracker = recordedTracker();
@@ -36,7 +37,7 @@ for (const [device, width, height] of [
 		Object.assign(tracker.machines.find(({ node }) => node === 'harbor-mbp-2')!, {
 			utilization: { actual: { cpu: 42, ram: 61 }, target: { cpu: 80, ram: 75 } }
 		});
-		seedLiveDisposition(tracker);
+		const blockedTitle = seedLiveDisposition(tracker);
 		const answer = await macAnswer(tracker);
 		const sample = answer.liveOverview!.projects[0];
 		answer.liveOverview!.projects.push({
@@ -59,7 +60,7 @@ for (const [device, width, height] of [
 			/Running \d+ · Blocked \d+ · Not running \d+/
 		);
 		await expect(overview(page).locator('details.hh-live-project[open]')).toHaveCount(0);
-		await expect(liveRows(page).first()).toBeHidden();
+		await expect(overview(page).getByRole('listitem').first()).toBeHidden();
 		const alert = page.getByRole('status', { name: 'System alerts' });
 		await expect(alert).toContainText('Offline: grok-box');
 		await expect(overview(page)).not.toContainText('Offline: grok-box');
@@ -67,6 +68,7 @@ for (const [device, width, height] of [
 		const sections = main.locator(':scope > section');
 		await expect(sections.first()).toHaveAccessibleName('Blocked - needs you');
 		await expect(sections.last()).toHaveAccessibleName('Live overview');
+		await expectLivePlacement(page);
 		expect((await alert.boundingBox())!.y).toBeLessThan(
 			(await page.getByRole('heading', { level: 1 }).boundingBox())!.y
 		);
@@ -82,20 +84,59 @@ for (const [device, width, height] of [
 		);
 		await checkProjectDisclosure(page, answer.liveOverview!.projects, device);
 		await expandProjects(page);
-		await expect(liveRows(page)).toHaveCount(live.length);
+		const busiest = answer.liveOverview!.projects.find((project) => project.running >= 5)!;
+		const grid = overview(page).getByRole('list', { name: `${busiest.agent} running jobs` });
+		await captureNeedsYou(page, `live-grid-${device}`, grid);
+		await expectCardGrid(grid, width);
+		await expect(liveCards(page)).toHaveCount(live.length);
 		await expect(overview(page).getByRole('status')).toHaveText(
 			`${live.length} runs live on 2 computers · ${answer.liveOverview!.projects.length} projects`
 		);
-		await expectLiveRowFacts(page, tracker);
+		await expectLiveCardFacts(page, tracker);
 		await expectRecordedProjects(page, tracker);
 		await expandProjects(page);
-		await expectLiveDisposition(page, test.info().outputPath(`live-disposition-${device}.png`));
+		await expectLiveDisposition(page, blockedTitle);
 		await expect(overview(page)).toContainText('over an encrypted connection · read');
 		await expectNoSidewaysScroll(page, width);
 		if (width === 390) await expectEvenHeaderSpacing(page);
 		expect(requests.filter((entry) => entry.path === '/api/tracker-overview')).toEqual([]);
 		expect(requests.filter((entry) => entry.method === 'PUT')).toEqual([]);
 	});
+}
+
+async function expectLivePlacement(page: Page) {
+	const live = overview(page);
+	const priorities = [
+		page.getByRole('region', { name: 'Blocked - needs you' }),
+		page.getByRole('region', { name: 'Chief of Staff', exact: true }),
+		page.getByRole('list', { name: 'Computers' }),
+		page.getByRole('region', { name: 'Quota', exact: true })
+	];
+	for (const panel of priorities) {
+		await expect(panel).toBeVisible();
+		expect((await panel.boundingBox())!.y + (await panel.boundingBox())!.height).toBeLessThan(
+			(await live.boundingBox())!.y
+		);
+	}
+}
+
+async function expectCardGrid(grid: ReturnType<Page['getByRole']>, width: number) {
+	const boxes = await grid.getByRole('listitem').evaluateAll((items) =>
+		items.map((item) => {
+			const { top, width, height } = item.getBoundingClientRect();
+			return { top, width, height };
+		})
+	);
+	expect(boxes.length).toBeGreaterThanOrEqual(5);
+	const firstRow = boxes.filter(({ top }) => top === boxes[0].top);
+	expect(firstRow.length, 'Jobs share a horizontal row').toBeGreaterThanOrEqual(
+		width > 1000 ? 3 : 2
+	);
+	expect(firstRow.length).toBeLessThanOrEqual(width > 1000 ? 5 : 2);
+	for (const { width, height } of firstRow) {
+		expect(height / width).toBeGreaterThanOrEqual(0.85);
+		expect(height / width).toBeLessThanOrEqual(1.2);
+	}
 }
 
 async function recordRendererMetrics(page: Page, device: string, responseEndMs?: number) {
@@ -114,7 +155,7 @@ async function recordRendererMetrics(page: Page, device: string, responseEndMs?:
 	}
 }
 
-test('a paragraph-long title keeps its row short on a phone', async ({ page }) => {
+test('a paragraph-long title stays compact and opens full details on a phone', async ({ page }) => {
 	const tracker = recordedTracker();
 	const run = tracker.runs.find((entry) => entry.ended_at === null)!;
 	const item = tracker.items.find((entry) => entry.id === run.item_id)!;
@@ -125,30 +166,20 @@ test('a paragraph-long title keeps its row short on a phone', async ({ page }) =
 	await page.goto('/');
 
 	await expandProjects(page);
-	const title = overview(page).getByTitle(item.title);
+	const title = overview(page).getByTitle(item.title, { exact: true });
 	await expect(title).toBeVisible();
-	const height = async (target: typeof title) => (await target.boundingBox())!.height;
-	const other = tracker.runs.filter((entry) => entry.ended_at === null)[1];
-	const short = tracker.items.find((entry) => entry.id === other.item_id)!;
-	const oneLine = await height(overview(page).getByTitle(short.title, { exact: true }));
-	const weight = (target: typeof title) =>
-		target.evaluate((node) => getComputedStyle(node).fontWeight);
-	expect(await weight(title)).toBe(await weight(overview(page).getByRole('status')));
-	expect(await height(title)).toBeLessThanOrEqual(oneLine * 2 + 1);
-
-	await title.click();
-	expect(await height(title)).toBeGreaterThan(oneLine * 3);
-	const row = overview(page)
-		.locator('.hh-live-row')
-		.filter({ has: page.getByTitle(item.title) });
-	await expect(
-		row.getByText(
-			/^Started \d{1,2} \w{3,4} \d\d:\d\d · updated \d{1,2} \w{3,4} \d\d:\d\d, Lisbon time$/
-		)
-	).toBeVisible();
+	expect(await title.evaluate((node) => getComputedStyle(node).webkitLineClamp)).toBe('2');
+	const trigger = overview(page).getByRole('button', { name: item.title, exact: true });
+	await trigger.focus();
+	await trigger.press('Enter');
+	const detail = page.getByRole('dialog', { name: 'Job details' });
+	await expect(detail.getByRole('heading', { name: item.title })).toBeVisible();
+	await expect(detail.getByText(/Started .+ · updated .+, Lisbon time/)).toBeVisible();
+	await captureNeedsYou(page, 'live-card-detail-phone', detail);
+	await page.keyboard.press('Escape');
+	await expect(detail).toBeHidden();
+	await expect(trigger).toBeFocused();
 	await expectNoSidewaysScroll(page, 390);
-	if (process.env.TAKE_SCREENSHOT)
-		await page.screenshot({ path: test.info().outputPath('live-overview-title-open.png') });
 });
 
 test('a change on the Mac shows within one turn, also while change notices are connected', async ({
@@ -163,7 +194,7 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	await page.clock.setSystemTime(Date.parse(tracker.recordedAt));
 	await page.goto('/');
 	const live = tracker.runs.filter((run) => run.ended_at === null);
-	await expect(liveRows(page)).toHaveCount(live.length);
+	await expect(liveCards(page)).toHaveCount(live.length);
 	await expect(page.getByRole('status', { name: 'Updates' })).toHaveText('Live');
 	const stored = () => requests.filter((entry) => entry.path === '/api/hub-home').length;
 	const projects = () => requests.filter((entry) => entry.path === '/api/projects').length;
@@ -181,7 +212,7 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	Object.assign(answer, await macAnswer(tracker));
 	await page.clock.runFor(20_000);
 
-	await expect(liveRows(page)).toHaveCount(live.length - 1);
+	await expect(liveCards(page)).toHaveCount(live.length - 1);
 	const group = overview(page)
 		.locator('details.hh-live-project')
 		.filter({ has: page.locator('summary.hh-live-head', { hasText: item.agent! }) });
@@ -199,10 +230,14 @@ test('a change on the Mac shows within one turn, also while change notices are c
 		'true'
 	);
 	const row = overview(page)
-		.locator('.hh-live-row')
+		.locator('.hh-live-card')
 		.filter({ has: page.getByText(item.title, { exact: true }) });
-	await expect(row).toContainText('Finished: done');
-	await expect(row).toContainText('Stage: Implementation');
+	await expect(row).toContainText('Done');
+	await row.getByRole('button', { name: item.title, exact: true }).click();
+	const detail = page.getByRole('dialog', { name: 'Job details' });
+	await expect(detail).toContainText('Finished: done');
+	await expect(detail).toContainText('Stage: Implementation');
+	await detail.getByRole('button', { name: 'Close' }).click();
 	await expect(page.getByRole('status', { name: 'Updates' })).toHaveText('Live');
 	await captureNeedsYou(page, 'live-home-fallback');
 	expect(stored(), 'stored Home is re-read on the first quiet live turn').toBe(storedBefore + 1);
@@ -213,7 +248,7 @@ test('with no computer linked the overview says so and shows no rows', async ({ 
 	await productionHome(page);
 	await page.goto('/');
 	await expect(overview(page)).toContainText('No computer is linked to this account.');
-	await expect(overview(page).locator('.hh-live-row')).toHaveCount(0);
+	await expect(overview(page).locator('.hh-live-card')).toHaveCount(0);
 });
 
 test('a linked Mac that is off is reported as not answering', async ({ page }) => {
@@ -229,7 +264,7 @@ test('a linked Mac that is off is reported as not answering', async ({ page }) =
 	await expect(page.getByRole('status', { name: 'System alerts' })).toContainText(
 		'No linked computer answered'
 	);
-	await expect(overview(page).locator('.hh-live-row')).toHaveCount(0);
+	await expect(overview(page).locator('.hh-live-card')).toHaveCount(0);
 	await expectNoSidewaysScroll(page, 390);
 	if (process.env.TAKE_SCREENSHOT)
 		await page.screenshot({ path: test.info().outputPath('live-overview-offline.png') });
@@ -242,5 +277,5 @@ test('a Mac app without the overview is asked to update instead of showing a par
 	await productionHome(page, older);
 	await page.goto('/');
 	await expect(overview(page)).toContainText('Update Harness on your Mac');
-	await expect(overview(page).locator('.hh-live-row')).toHaveCount(0);
+	await expect(overview(page).locator('.hh-live-card')).toHaveCount(0);
 });
