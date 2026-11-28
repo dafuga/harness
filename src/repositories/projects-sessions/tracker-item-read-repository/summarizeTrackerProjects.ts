@@ -1,10 +1,29 @@
 // @harness-uid u_uic5j4k2vi
+import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { isTrackerPhase4Worker } from '../../../utils/projects-sessions/isTrackerPhase4Worker';
 import type { TrackerItemRow, TrackerProjectStatus } from '../TrackerItemReadRepository.types';
 import type { TrackerProjectNoteRow } from './summarizeTrackerProjects.types';
 
 const AUTOMATED_NOTE =
 	/^(?:watchdog\b|auto-launch\b|launch on \b|Closed (?:idle|finished) tmux\b)/i;
+
+/** Read every unfinished project item, including snoozed ones the digest lists leave out. */
+export function readTrackerProjectStatuses(
+	database: SqliteDatabase,
+	unfinished: string,
+	now: number
+) {
+	const rows = database
+		.prepare(`SELECT * FROM items WHERE ${unfinished}`)
+		.all() as TrackerItemRow[];
+	const notes = database
+		.prepare(
+			`SELECT item_id, hlc, text FROM item_notes
+		 WHERE item_id IN (SELECT id FROM items WHERE ${unfinished}) ORDER BY hlc DESC`
+		)
+		.all() as TrackerProjectNoteRow[];
+	return summarizeTrackerProjects(rows, notes, now);
+}
 
 /** @pure One status per project over every unfinished item. Notes must arrive newest first. */
 export function summarizeTrackerProjects(

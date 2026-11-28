@@ -11,7 +11,7 @@
 		"source": [
 			"src/services/projects-sessions/tracker-native-runtime-service/composeTrackerFleet.ts"
 		],
-		"symbols": ["composeTrackerFleet"]
+		"symbols": ["composeTrackerFleet", "chooseTrackerFleetHost"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -30,12 +30,26 @@
 				"name": "composeTrackerFleet.runtime",
 				"type": "{ machines: TrackerMachineService; scheduler?: TrackerDispatchSchedulerService; now: () => number; }",
 				"required": true
+			},
+			{
+				"name": "chooseTrackerFleetHost.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "chooseTrackerFleetHost.view",
+				"type": "TrackerFleetView",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "composeTrackerFleet",
 				"type": "unknown"
+			},
+			{
+				"name": "chooseTrackerFleetHost",
+				"type": "TrackerDispatchPolicy['chooseHost']"
 			}
 		],
 		"errors": [],
@@ -68,13 +82,46 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "chooseTrackerFleetHost",
+				"inputs": [
+					{
+						"name": "chooseTrackerFleetHost.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "chooseTrackerFleetHost.view",
+						"type": "TrackerFleetView",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "chooseTrackerFleetHost",
+						"type": "TrackerDispatchPolicy['chooseHost']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
 		{
+			"unit": "function.projects-sessions-tracker-host-resource-hold",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.projects-sessions-tracker-run-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -105,6 +152,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-sample-schema",
 			"via": "import",
 			"origin": "derived"
 		},

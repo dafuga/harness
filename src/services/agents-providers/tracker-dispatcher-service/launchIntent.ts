@@ -11,6 +11,7 @@ import type {
 import {
 	automaticRequestHold,
 	canonicalNode,
+	chooseDueTarget,
 	dueItemHold,
 	dueOwner,
 	hasOpenSession,
@@ -137,7 +138,15 @@ function dueIntent(
 		return skip('conflict', 'launch token was already used');
 	const choice = selectDueLaunch(item, dueOwner(item, due, policy), policy);
 	if (!choice.pick) return skip('held', choice.reason);
-	return writeIntent({ token, target: choice.target, source: 'due', scheduledPick: choice.pick });
+	const decision = writeIntent({
+		token,
+		target: choice.target,
+		source: 'due',
+		scheduledPick: choice.pick
+	});
+	if (choice.transferred && decision.writes?.item)
+		decision.writes.item.appendNote = `due scheduler requested launch on ${choice.target} (${choice.reason})`;
+	return decision;
 }
 
 /** Read the same item, session, host and model admission facts as a due request. */
@@ -157,26 +166,24 @@ export function previewDueLaunch(
 	return selectDueLaunch(item, dueOwner(item, due, policy), policy);
 }
 
-function preferredComputer(item: TrackerDispatchItem, policy: TrackerDispatchPolicy) {
-	const preferred = item.computer?.trim().toLowerCase();
-	return preferred && preferred !== 'auto' ? canonicalNode(preferred, policy) : null;
-}
-
 function selectDueLaunch(
 	item: TrackerDispatchItem,
 	owner: string | null,
 	policy: TrackerDispatchPolicy
 ) {
-	const requestedNode = owner ?? preferredComputer(item, policy);
-	const choice = policy.chooseHost(item, { source: 'due', requestedNode });
+	const choice = chooseDueTarget(item, owner, policy);
 	if (!choice.node) return { reason: choice.why };
-	const target = canonicalNode(choice.node, policy);
-	if (requestedNode && target !== requestedNode)
-		return { reason: 'due launch assigned to a different computer' };
 	const pick = policy.pickModel(item);
 	if ('error' in pick) return { reason: pick.error };
-	const held = target === policy.node ? policy.providerHold?.(pick.rung.cli) : null;
-	return held ? { reason: held } : ({ target, pick, reason: choice.why } as const);
+	const held = choice.node === policy.node ? policy.providerHold?.(pick.rung.cli) : null;
+	return held
+		? { reason: held }
+		: ({
+				target: choice.node,
+				pick,
+				reason: choice.why,
+				transferred: choice.transferred
+			} as const);
 }
 
 function dueIntentHold(

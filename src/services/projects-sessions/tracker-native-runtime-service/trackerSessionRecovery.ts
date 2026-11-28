@@ -187,7 +187,7 @@ function flagRecovery(
 	now: number,
 	detail: string
 ): null {
-	const current = new TrackerItemReadRepository(store.database).getStored(item.id);
+	const current = new TrackerItemReadRepository(store.database, () => now).getStored(item.id);
 	if (
 		current.deleted ||
 		(current.status !== 'in_progress' &&

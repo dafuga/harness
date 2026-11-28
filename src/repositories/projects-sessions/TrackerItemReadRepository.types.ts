@@ -9,13 +9,17 @@ import type {
 	TrackerStage
 } from '../../utils/projects-sessions/trackerPlanning.types';
 
+type LegacySchedule = 'schedule_hold_reason';
+
 type ItemFlags = 'needs_daniel' | 'resolved' | 'deleted';
 
 export type TrackerItemRow = Omit<
 	Record<(typeof trackerItemFields)[number], string | null>,
-	ItemFlags
+	ItemFlags | LegacySchedule
 > &
+	Partial<Record<LegacySchedule, string | null>> &
 	Record<ItemFlags, number> & {
+		legacy_adapter_manual?: number | null;
 		id: string;
 		updated_at: string | null;
 		clocks: string;
@@ -87,6 +91,7 @@ export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> & {
 		launch_source: string | null;
 		launch_pick: string | null;
 		schedule_off: boolean;
+		schedule_hold?: { reason: string; until: string | null };
 		schedule_status: string | null;
 		model: string | null;
 		sensitive: boolean;
@@ -159,6 +164,7 @@ export type TrackerDigestGroups = {
 	due_today: TrackerDigestItem[];
 	recurring_missed: TrackerRecurringProblem[];
 	chased_7d: TrackerDigestItem[];
+	launch_holds: (TrackerDigestItem & { reason: string; until: string | null })[];
 	queued: (TrackerDigestItem & {
 		requested_at: string;
 		waiting_minutes: number;

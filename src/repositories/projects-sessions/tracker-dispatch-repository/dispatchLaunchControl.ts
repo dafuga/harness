@@ -11,7 +11,7 @@ import {
 import { finishRun } from '../../../services/agents-providers/tracker-dispatcher-service/runReceipt';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
 import { TrackerItemReadRepository } from '../TrackerItemReadRepository';
-import { canBlockStoppedRun } from './dispatchItemFields';
+import { canMoveUnclaimedLaunch, canRequeueStoppedRun } from './dispatchItemFields';
 import { managedDispatchRuns, persistDispatchRun } from './dispatchRunRows';
 
 const automaticStartsKey = 'harness_automatic_launch_slots';
@@ -32,9 +32,9 @@ export function trackerDispatchControl(
 				return { result: true };
 			});
 		},
-		reassignAdapterLaunch(id: string, token: string, target: string) {
+		moveUnclaimedLaunch(id: string, token: string, target: string, reason: string) {
 			return store.commitLocal(() => {
-				if (!canDelegate(snapshot(id), node, token)) return { result: false };
+				if (!canMoveUnclaimedLaunch(snapshot(id), node, token, now())) return { result: false };
 				return {
 					result: true,
 					operation: {
@@ -42,7 +42,7 @@ export function trackerDispatchControl(
 						fields: {
 							computer: target,
 							launch_target: target,
-							'note+': `Tester intake moved to ${target} because ${node} is at session capacity`
+							'note+': reason
 						}
 					}
 				};
@@ -79,7 +79,7 @@ function trackerStopControl(
 ) {
 	return {
 		stopTarget(reference: string) {
-			const items = new TrackerItemReadRepository(store.database);
+			const items = new TrackerItemReadRepository(store.database, now);
 			const runId = localRunId(reference);
 			const itemId = stopItemId(store, items, { reference, runId });
 			const item = items.getStored(itemId);
@@ -89,13 +89,14 @@ function trackerStopControl(
 				itemId,
 				fields: {
 					schedule_off: 1,
+					schedule_hold_reason: 'Run stopped by operator',
 					auto: null,
 					launch_target: null,
 					launch_source: null,
 					launch_pick: null,
 					'note+': run
-						? `stop requested for run #${run.id}; automatic launch turned off`
-						: 'launch stopped; automatic launch turned off'
+						? `stop requested for run #${run.id}; automatic launch paused for 24 hours`
+						: 'launch stopped; automatic launch paused for 24 hours'
 				}
 			});
 			return { item: items.getStored(itemId), run };
@@ -124,23 +125,11 @@ function finishStoppedDispatch(
 			finishRun(current, { outcome: 'abandoned', reason, now: now() }),
 			node
 		);
-		const operation = canBlockStoppedRun(snapshot, current)
-			? { itemId: run.item_id, fields: { status: 'blocked', blocked_reason: reason } }
+		const operation = canRequeueStoppedRun(snapshot, current)
+			? { itemId: run.item_id, fields: { status: 'open', blocked_reason: null } }
 			: undefined;
 		return { result: undefined, operation };
 	});
-}
-
-function canDelegate({ item, runs }: TrackerDispatchSnapshot, node: string, token: string) {
-	if (!item?.adapterDueOwner || canonicalNode(item.adapterDueOwner, {}) !== node) return false;
-	const intent = item.launch;
-	return (
-		intent?.token === token &&
-		intent.source === 'due' &&
-		intent.target !== null &&
-		canonicalNode(intent.target, {}) === node &&
-		!runs.some((run) => run.auto_token === token)
-	);
 }
 
 function localRunId(reference: string): number | null {

@@ -114,6 +114,7 @@ test('digest returns counts, unanswered asks and the configured local day', () =
 		to_unblock: [blocked],
 		recurring_missed: [problem],
 		queued: [],
+		launch_holds: [],
 		chased_7d: [],
 		counts: {
 			blocked: 1,
@@ -126,6 +127,7 @@ test('digest returns counts, unanswered asks and the configured local day', () =
 			due_today: 3,
 			recurring_missed: 1,
 			queued: 0,
+			launch_holds: 0,
 			chased_7d: 0,
 			projects: 1,
 			to_unblock: 1
@@ -172,6 +174,8 @@ test('digestText renders legacy section order and omits blocked rows from other 
 			'CoS/WORKER PINGS (0)',
 			'  (none)',
 			'QUEUED (0)',
+			'  (none)',
+			'AUTOMATIC LAUNCH HOLDS (0)',
 			'  (none)',
 			'Chased (7d) (0)',
 			'  (none)',

@@ -1,0 +1,65 @@
+{
+	"name": "7pbgwx-auto-launch",
+	"goal": "Prove operator holds expire, open launch holds explain why work is waiting, and a held preferred Mac can fall back safely",
+	"createdAt": "2026-11-28T10:21:58.987Z",
+	"updatedAt": "2026-11-28T11:15:44.460Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T10:24:00.457Z",
+			"evidence": "Scheduler retained explicit unlaunch past 24h, legacy opt-outs had no reason/expiry and digest omitted the hold."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T10:24:02.425Z",
+			"evidence": "Extended the existing runtime due tick, native dry-run and digest project cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:15:36.372Z",
+			"evidence": "Committed red replay 732546767ed37a8ff3c1ff8e4315c4534149aad4: held000001 stayed suppressed and the digest omitted the legacy hold."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:15:40.168Z",
+			"evidence": "Expiry uses the pause journal clock. Item and digest reads expose the reason and deadline."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T11:15:44.460Z",
+			"evidence": "Byte-identical Tracker fixtures passed on replay fe504454a6114c156006a712cc72f31e33c020fb (same source tree as fe0356d613)."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

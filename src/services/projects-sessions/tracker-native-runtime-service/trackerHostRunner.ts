@@ -47,7 +47,7 @@ export function trackerHostRunner(
 	options: TrackerHostRunnerOptions = {}
 ) {
 	const { tmux, legacyRunDirectory, now = Date.now, automaticEnabled } = options;
-	const items = new TrackerItemReadRepository(store.database);
+	const items = new TrackerItemReadRepository(store.database, now);
 	const node = canonicalNode(store.node, {});
 	let inventory = emptyHostInventory();
 	const legacySession = legacySessionReader(legacyRunDirectory, () => inventory.sessions);

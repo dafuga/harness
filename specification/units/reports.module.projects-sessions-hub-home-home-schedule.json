@@ -9,11 +9,21 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeSchedule.ts"],
-		"symbols": ["listHomeSchedule", "splitHomeSchedule"]
+		"symbols": ["homeLaunchPause", "listHomeSchedule", "splitHomeSchedule"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "homeLaunchPause.item",
+				"type": "TrackerItemRecord",
+				"required": true
+			},
+			{
+				"name": "homeLaunchPause.now",
+				"type": "number",
+				"required": true
+			},
 			{
 				"name": "listHomeSchedule.items",
 				"type": "TrackerItemRecord[]",
@@ -47,6 +57,10 @@
 		],
 		"outputs": [
 			{
+				"name": "homeLaunchPause",
+				"type": "unknown"
+			},
+			{
 				"name": "listHomeSchedule",
 				"type": "unknown"
 			},
@@ -58,6 +72,29 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "homeLaunchPause",
+				"inputs": [
+					{
+						"name": "homeLaunchPause.item",
+						"type": "TrackerItemRecord",
+						"required": true
+					},
+					{
+						"name": "homeLaunchPause.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeLaunchPause",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "listHomeSchedule",
 				"inputs": [
@@ -118,6 +155,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-schedule-hold",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.projects-sessions-tracker-unattended-hold",
 			"via": "import",

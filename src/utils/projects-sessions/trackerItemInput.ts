@@ -53,6 +53,7 @@ export function trackerItemInput(
 	if (!current && body.later === true) {
 		if (requestsTrackerLaunch(fields.auto)) throw trackerItemError('--later conflicts with --auto');
 		fields.schedule_off = 1;
+		fields.schedule_hold_reason = 'Task added with --later';
 	}
 	checkItemInput(fields, context, body.force, current);
 	return trackerItemLaunchFields(fields, context, current);

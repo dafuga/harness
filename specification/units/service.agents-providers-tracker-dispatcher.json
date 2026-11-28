@@ -100,6 +100,7 @@
 			"attemptKey",
 			"matchesRequest",
 			"trackerReminderTitle",
+			"chooseDueTarget",
 			"requestLaunch",
 			"previewDueLaunch",
 			"recoveryIntent",
@@ -404,7 +405,7 @@
 			},
 			{
 				"name": "schedulingHold.item",
-				"type": "Pick< TrackerDispatchItem, | 'title' | 'kind' | 'status' | 'agent' | 'owner' | 'deleted' | 'awaitingAnswer' | 'scheduleOff' | 'recurring' | 'parkedUntil' >",
+				"type": "Pick< TrackerDispatchItem, | 'title' | 'kind' | 'status' | 'agent' | 'owner' | 'deleted' | 'awaitingAnswer' | 'scheduleOff' | 'scheduleHoldReason' | 'recurring' | 'parkedUntil' >",
 				"required": true
 			},
 			{
@@ -435,6 +436,21 @@
 			{
 				"name": "isDueNow.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "chooseDueTarget.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "chooseDueTarget.owner",
+				"type": "string | null",
+				"required": true
+			},
+			{
+				"name": "chooseDueTarget.policy",
+				"type": "TrackerDispatchPolicy",
 				"required": true
 			},
 			{
@@ -1540,7 +1556,7 @@
 				"inputs": [
 					{
 						"name": "schedulingHold.item",
-						"type": "Pick< TrackerDispatchItem, | 'title' | 'kind' | 'status' | 'agent' | 'owner' | 'deleted' | 'awaitingAnswer' | 'scheduleOff' | 'recurring' | 'parkedUntil' >",
+						"type": "Pick< TrackerDispatchItem, | 'title' | 'kind' | 'status' | 'agent' | 'owner' | 'deleted' | 'awaitingAnswer' | 'scheduleOff' | 'scheduleHoldReason' | 'recurring' | 'parkedUntil' >",
 						"required": true
 					},
 					{
@@ -1604,6 +1620,34 @@
 					{
 						"name": "isDueNow",
 						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "chooseDueTarget",
+				"inputs": [
+					{
+						"name": "chooseDueTarget.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "chooseDueTarget.owner",
+						"type": "string | null",
+						"required": true
+					},
+					{
+						"name": "chooseDueTarget.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "chooseDueTarget",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

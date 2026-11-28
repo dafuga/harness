@@ -1,10 +1,10 @@
 // @harness-uid u_4rnjtzp6cn
-import { trackerHostCapacityHold } from './tracker-native-runtime-service/trackerHostAdmission';
 import { randomUUID } from 'node:crypto';
 import { awaitStartEvidence, trackerStartError } from './trackerStartError';
 import {
 	automaticQueueHold,
-	queuedRung
+	queuedRung,
+	transferHeldTrackerLaunch
 } from './tracker-native-runtime-service/trackerQueueAdmission';
 import type { TrackerDispatchRepository } from '../../repositories/projects-sessions/TrackerDispatchRepository';
 import type { TrackerDispatchCandidate } from '../../repositories/projects-sessions/TrackerDispatchRepository.types';
@@ -12,7 +12,6 @@ import type {
 	TrackerDispatcherService,
 	TrackerLaunchIntent,
 	TrackerDispatchResult,
-	TrackerDispatchItem,
 	TrackerLaunchRung,
 	TrackerRunReceipt
 } from '../agents-providers/TrackerDispatcherService';
@@ -72,12 +71,11 @@ export class TrackerDispatchQueue {
 		const permission =
 			intent.source === 'due' ? await grant?.(id, intent.token, signal) : undefined;
 		signal.throwIfAborted();
-		if (
-			permission?.decision !== 'denied' &&
-			intent.source !== 'manual' &&
-			!(await this.automaticPermission(id, intent, signal))
-		)
-			return false;
+		const allowed =
+			permission?.decision === 'denied'
+				? !this.transferHeldDue(id, intent)
+				: await this.permitIntent(id, intent, signal);
+		if (!allowed) return false;
 		signal.throwIfAborted();
 		return this.release(
 			{ id, token: intent.token },
@@ -98,10 +96,11 @@ export class TrackerDispatchQueue {
 		const item = this.repository.readSnapshot(id).item;
 		const hold = automaticQueueHold(item, { policy, intent, now, queued });
 		if (hold) {
-			const moved =
-				item && hold === trackerHostCapacityHold
-					? delegateAdapterIntake(this.repository, this.options, { item, intent })
-					: undefined;
+			const moved = transferHeldTrackerLaunch(this.repository, this.options, {
+				item,
+				intent,
+				hold
+			});
 			this.waits.set(id, { token: intent.token, reason: moved ?? hold });
 			return false;
 		}
@@ -112,6 +111,20 @@ export class TrackerDispatchQueue {
 				reason: 'automatic launch waiting for a fleet slot'
 			});
 		return !refused;
+	}
+
+	private permitIntent(id: string, intent: TrackerLaunchIntent, signal: AbortSignal) {
+		return intent.source === 'manual' || this.automaticPermission(id, intent, signal);
+	}
+
+	private transferHeldDue(id: string, intent: TrackerLaunchIntent) {
+		const item = this.repository.readSnapshot(id).item;
+		const { policy } = this.options;
+		const hold = automaticQueueHold(item, { policy, intent, now: policyNow(this.options) });
+		const moved =
+			hold && transferHeldTrackerLaunch(this.repository, this.options, { item, intent, hold });
+		if (moved) this.waits.set(id, { token: intent.token, reason: moved });
+		return Boolean(moved);
 	}
 
 	private async release(
@@ -147,17 +160,6 @@ async function takeFleetSlot(
 		refusedSlots.add(lane);
 	signal.throwIfAborted();
 	return !refusedSlots.has(lane);
-}
-
-function delegateAdapterIntake(
-	repository: TrackerDispatchRepository,
-	{ alternateAdapterHost }: TrackerDispatchSchedulerOptions,
-	{ item, intent }: { item: TrackerDispatchItem; intent: TrackerLaunchIntent }
-) {
-	const alternate = alternateAdapterHost?.(item, item.launch ?? intent);
-	if (alternate && repository.launches.reassignAdapterLaunch(item.id, intent.token, alternate))
-		return `tester intake queued on ${alternate}`;
-	return undefined;
 }
 
 function policyNow({ policy }: TrackerDispatchSchedulerOptions) {

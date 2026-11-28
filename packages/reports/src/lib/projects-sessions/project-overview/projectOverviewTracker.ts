@@ -71,6 +71,11 @@ function askFields(row: Record<string, unknown>): Partial<Tracker.TrackerItemRec
 	};
 }
 
+const scheduleHold = z.object({
+	reason: z.string().min(1).max(200),
+	until: z.iso.datetime().nullable()
+});
+
 function homeFields(row: Record<string, unknown>): Partial<Tracker.TrackerItemRecord> {
 	return {
 		project: typeof row.project === 'string' ? row.project : null,
@@ -83,6 +88,7 @@ function homeFields(row: Record<string, unknown>): Partial<Tracker.TrackerItemRe
 		remindAt: optionalTime(row.remind_at, 'item remind_at'),
 		every: optionalText(row.every, 'item every'),
 		scheduleOff: row.schedule_off === true || row.schedule_off === 1,
+		scheduleHold: scheduleHold.safeParse(row.schedule_hold).data,
 		priority: optionalText(row.priority, 'item priority'),
 		owner: typeof row.owner === 'string' ? row.owner : null,
 		launchRequested: Boolean(row.auto),

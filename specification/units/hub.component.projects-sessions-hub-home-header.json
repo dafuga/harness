@@ -43,17 +43,17 @@
 				"description": "Home data, project snapshots, source availability and clock used for presentation."
 			},
 			{
+				"name": "HubHomeHeader.localOverview",
+				"type": "HomeLiveOverview",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional local Tracker projection used to count active project and owner pairs on the Mac."
+			},
+			{
 				"name": "HubHomeHeader.link",
 				"type": "RealtimeState | null",
 				"required": true,
 				"description": "Provides the linked computer data and connection notices for the banner."
-			},
-			{
-				"name": "HubHomeHeader.localMachines",
-				"type": "HomeComputer[]",
-				"required": false,
-				"default": "undefined (omitted)",
-				"description": "Current computer summaries from the local or paired Tracker reader. When omitted, use linked Hub data and the overview fallback."
 			},
 			{
 				"name": "HubHomeHeader.accountName",

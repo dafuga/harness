@@ -1,4 +1,5 @@
 // @harness-uid u_xba7ieg4je
+import { describeTrackerScheduleHold } from '../../../utils/projects-sessions/trackerScheduleHold';
 import { isTrackerPhase4Worker } from '../../../utils/projects-sessions/isTrackerPhase4Worker';
 import { trackerStaleDecisionMinutes } from './splitTrackerAsks';
 import { clipTrackerText } from './clipTrackerText';
@@ -30,6 +31,7 @@ export function formatTrackerDigest(digest: TrackerDigest): string {
 				.filter(Boolean)
 				.join(' · ')
 		),
+		...section('AUTOMATIC LAUNCH HOLDS', digest.launch_holds, describeTrackerScheduleHold),
 		...section('Chased (7d)', digest.chased_7d, (item) =>
 			[
 				`×${item.chased_count}`,

@@ -85,7 +85,7 @@ export class TrackerNativeRuntimeService {
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
 		const dispatch =
 			options.dispatch ?? configuredHostDispatch(store, hostEffects, { ...options, now: this.now });
-		const composed = composeTrackerDispatch(store, { ...options, dispatch }, this.machines);
+		const composed = composeTrackerDispatch(store, { ...options, dispatch }, this);
 		({
 			dispatch: this.dispatch,
 			scheduler: this.scheduler,
@@ -147,8 +147,9 @@ function composeItemApi(
 	}: TrackerNativeRuntimeOptions,
 	recurring?: ReturnType<typeof composeTrackerRecurrence>
 ) {
-	const { store } = runtime;
-	return new TrackerLocalApiService(store, new TrackerItemReadRepository(store.database), {
+	const { store, now: runtimeNow } = runtime;
+	const items = new TrackerItemReadRepository(store.database, runtimeNow);
+	return new TrackerLocalApiService(store, items, {
 		now,
 		phoneReplica:
 			role === 'hub' ? new TrackerPhoneReplicaService(store, runtime.now, phoneWrite) : undefined,
@@ -181,7 +182,6 @@ function validateLinks({
 	const kinds = new Set(links.map((link) => link.link ?? 'hub'));
 	if (kinds.size !== links.length) throw new TypeError('Duplicate Tracker spoke link');
 }
-
 /** What the node sends out: its notification outbox and Daniel's browser notifications. */
 function composeOutbound(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
 	return [composeNotifications(store, options), composeTrackerWebPush(store, options)] as const;

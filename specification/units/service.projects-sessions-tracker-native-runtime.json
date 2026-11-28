@@ -143,6 +143,7 @@
 			"configuredTrackerReminderHost",
 			"composeTrackerDispatch",
 			"PeerStarts",
+			"TrackerFleetRuntime",
 			"liveTrackerDuePolicy",
 			"observeTrackerDuePolicy",
 			"TrackerHostEffectsMode",
@@ -314,6 +315,7 @@
 			"observeTrackerQuota",
 			"automaticQueueHold",
 			"queuedRung",
+			"transferHeldTrackerLaunch",
 			"maxRecoveryAttempts",
 			"emptyRecoveryState",
 			"recoveryBudget",
@@ -430,8 +432,8 @@
 				"required": true
 			},
 			{
-				"name": "composeTrackerDispatch.machines",
-				"type": "PeerStarts",
+				"name": "composeTrackerDispatch.fleet",
+				"type": "TrackerFleetRuntime",
 				"required": false
 			},
 			{
@@ -1816,6 +1818,31 @@
 				"required": true
 			},
 			{
+				"name": "transferHeldTrackerLaunch.repository",
+				"type": "TrackerDispatchRepository",
+				"required": true
+			},
+			{
+				"name": "transferHeldTrackerLaunch.options",
+				"type": "TrackerDispatchSchedulerOptions",
+				"required": true
+			},
+			{
+				"name": "transferHeldTrackerLaunch.item",
+				"type": "TrackerDispatchItem | null",
+				"required": true
+			},
+			{
+				"name": "transferHeldTrackerLaunch.intent",
+				"type": "TrackerLaunchIntent",
+				"required": true
+			},
+			{
+				"name": "transferHeldTrackerLaunch.hold",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "recoveryBudget.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -2635,8 +2662,8 @@
 						"required": true
 					},
 					{
-						"name": "composeTrackerDispatch.machines",
-						"type": "PeerStarts",
+						"name": "composeTrackerDispatch.fleet",
+						"type": "TrackerFleetRuntime",
 						"required": false
 					}
 				],
@@ -5361,6 +5388,44 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "transferHeldTrackerLaunch",
+				"inputs": [
+					{
+						"name": "transferHeldTrackerLaunch.repository",
+						"type": "TrackerDispatchRepository",
+						"required": true
+					},
+					{
+						"name": "transferHeldTrackerLaunch.options",
+						"type": "TrackerDispatchSchedulerOptions",
+						"required": true
+					},
+					{
+						"name": "transferHeldTrackerLaunch.item",
+						"type": "TrackerDispatchItem | null",
+						"required": true
+					},
+					{
+						"name": "transferHeldTrackerLaunch.intent",
+						"type": "TrackerLaunchIntent",
+						"required": true
+					},
+					{
+						"name": "transferHeldTrackerLaunch.hold",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "transferHeldTrackerLaunch",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "recoveryBudget",
 				"inputs": [
 					{
@@ -6259,6 +6324,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-machine-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-schedule-hold",
 			"via": "import",
 			"origin": "derived"
 		},

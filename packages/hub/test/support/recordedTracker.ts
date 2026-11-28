@@ -55,3 +55,26 @@ export function seedComputerWork(tracker: RecordedTracker) {
 	);
 	return running.map((run) => tracker.items.find((item) => item.id === run.item_id)!.title);
 }
+
+/** Add an item paused for one hour from the recorded Tracker snapshot. */
+export function seedLaunchPause(tracker: RecordedTracker) {
+	tracker.items.push(
+		Object.assign(
+			{
+				...tracker.items[0],
+				id: 'paused-fixture',
+				title: 'Waiting on CI maintenance',
+				status: 'open',
+				due: null,
+				auto: null
+			},
+			{
+				schedule_off: true,
+				schedule_hold: {
+					reason: 'Automatic launch paused by operator',
+					until: new Date(Date.parse(tracker.recordedAt) + 3_600_000).toISOString()
+				}
+			}
+		)
+	);
+}

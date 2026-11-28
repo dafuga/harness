@@ -44,7 +44,7 @@ async function proveRecovery() {
 					item_id: itemId,
 					kind: 'missing',
 					recover: false,
-					reason: expect.stringContaining('automatic launch opted out')
+					reason: expect.stringContaining('Legacy automatic launch pause until')
 				}),
 				expect.objectContaining({
 					item_id: queued,

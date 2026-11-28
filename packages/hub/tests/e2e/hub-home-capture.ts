@@ -6,7 +6,7 @@ import {
 	evidenceRequested,
 	recordCapture
 } from '../../../../src/utils/reports-media/record-capture/recordCapture';
-import type { Page } from '../../../../test/support/browserTest';
+import { expect, type Page } from '../../../../test/support/browserTest';
 import type { CapturePosition } from './hub-home-fixture.types';
 
 export async function fullDialog(page: Page, position: CapturePosition, screen: string) {
@@ -87,4 +87,26 @@ export async function captureNeedsYou(page: Page, name: string, target: Page | L
 		path: `${directory}/${process.env.SCREENSHOT_LABEL ?? 'current'}-${name}.png`,
 		animations: 'disabled'
 	});
+}
+
+export async function captureHomeTop(page: Page, path: string) {
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(() => document.fonts.ready.then(() => {}));
+		await page.screenshot({ path: path });
+	}
+}
+
+export async function expectLaunchPause(page: Page, overview: Locator, device: string) {
+	const trigger = overview.getByRole('list', { name: 'Waiting jobs' }).getByRole('button', {
+		name: 'Waiting on CI maintenance',
+		exact: true
+	});
+	await captureNeedsYou(page, `launch-hold-${device}`, overview);
+	await expect(trigger).toContainText('Launch paused');
+	await trigger.click();
+	const detail = page.getByRole('dialog', { name: 'Job details' });
+	await captureNeedsYou(page, `launch-hold-detail-${device}`, detail);
+	await expect(detail).toContainText(/Automatic launch paused by operator until .+, Lisbon time/);
+	await detail.getByRole('button', { name: 'Close' }).click();
+	await expect(page.getByRole('heading', { level: 1 })).toContainText('for 14 agents');
 }

@@ -1,5 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { expect } from 'vitest';
+import { expect as verify } from '../verificationExpect';
+import { trackerSupervisorStatus } from '../../src/services/projects-sessions/tracker-supervisor-service/trackerSupervisorStatus';
 import { TrackerSpokeSyncService } from '../../src/services/projects-sessions/TrackerSpokeSyncService';
 import type { TrackerWireValue } from '../../src/services/projects-sessions/TrackerHubSyncService.types';
 import { DatabaseSync } from 'node:sqlite';
@@ -157,4 +159,24 @@ export async function checkRemoteWork(nodes: ReturnType<typeof fleet>) {
 	await expectRemoteRuns(nodes, expired.run);
 	nodes.clock.at += 3 * minute;
 	await expectRemoteRuns(nodes);
+}
+
+/** An unclaimed hub request and its runner report are both readable from the spoke. */
+export async function expectHubSeenBySpoke(
+	peer: TrackerNativeRuntimeService,
+	link: TrackerSpokeSyncService,
+	at: number
+) {
+	await link.pull();
+	await peer.telemetry!(signal);
+	const request = new Request('http://tracker-fixture.invalid/items/primary001');
+	verify(await (await peer.items.handle(request)).json()).toMatchObject({
+		launch_status: { computer: hubNode, reason: `queued on ${hubNode}` }
+	});
+	const stamp = new Date(at).toISOString();
+	verify(trackerSupervisorStatus(peer, stamp).autolaunch.computers).toEqual(
+		verify.arrayContaining([
+			verify.objectContaining({ computer: hubNode, state: 'polling', last_tick_at: stamp })
+		])
+	);
 }

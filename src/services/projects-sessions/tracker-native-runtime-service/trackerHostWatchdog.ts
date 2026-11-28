@@ -45,7 +45,7 @@ export function trackerHostWatchdog(
 	const driver = trackerWatchdogPort(config, store.node);
 	store.database.exec(trackerRunSchema);
 	const scanTranscripts = trackerTranscriptScan(store, config.transcriptRoots ?? [], now);
-	const items = new TrackerItemReadRepository(store.database);
+	const items = new TrackerItemReadRepository(store.database, now);
 	const chiefOfStaff = config.chiefOfStaff === true && store.node === 'daniel-primary-mbp';
 	const readItems = () => items.list({ status: 'all', limit: -1 });
 	let liveSessions = new Set<string>();

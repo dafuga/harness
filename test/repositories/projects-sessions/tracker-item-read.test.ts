@@ -36,7 +36,7 @@ test('get selects the exact normalized ID and returns full public fields and ord
 			launch_target: 'fixture-target',
 			launch_source: 'fixture-source',
 			launch_pick: 'fixture-pick',
-			schedule_off: true,
+			schedule_off: false,
 			schedule_status: 'fixture-schedule',
 			model: 'fixture-model',
 			sensitive: true,

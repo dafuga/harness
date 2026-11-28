@@ -19,16 +19,15 @@ test('every agent gets one line with its counts, soonest ETA and latest human no
 	add('pj0005', { agent: null });
 	add('pj0006', { agent: 'finished', status: 'done' });
 	add('pj0007', { agent: 'late', status: 'in_progress', due: '2026-06-30' });
-	const note = fixture.database.prepare(
-		'INSERT INTO item_notes (item_id, hlc, node, text) VALUES (?, ?, ?, ?)'
-	);
-	const hlc = (at: string) => `${String(Date.parse(at)).padStart(15, '0')}-000000-n`;
-	note.run('pj0001', hlc('2026-07-01T08:00:00Z'), 'n', `Tests pass.\n${'detail '.repeat(60)}`);
-	note.run('pj0002', hlc('2026-07-01T09:00:00Z'), 'n', 'watchdog missing: no live run');
-	note.run('pj0002', hlc('2026-07-01T09:01:00Z'), 'n', 'auto-launch turned off');
-	note.run('pj0002', hlc('2026-07-01T09:02:00Z'), 'n', 'Closed idle tmux session auto-x');
-
-	const { projects } = fixture.repository.digest(NOW);
+	setProjectActivity();
+	const { projects, launch_holds: holds } = fixture.repository.digest(NOW);
+	expect(holds).toEqual([
+		expect.objectContaining({
+			id: 'pj0005',
+			reason: 'Legacy automatic launch pause',
+			until: '2026-07-02T08:00:00.000Z'
+		})
+	]);
 	expect(projects.map(({ project }) => project)).toEqual([
 		'alpha',
 		'fixture-agent',
@@ -45,6 +44,7 @@ test('every agent gets one line with its counts, soonest ETA and latest human no
 		latest_note: { id: 'pj0001', at: '2026-07-01T08:00:00.000Z' }
 	});
 	const text = fixture.repository.digestText(NOW);
+	expect(text).toContain('Legacy automatic launch pause');
 	const line = text.split('\n').find((value) => value.startsWith('  - alpha:'))!;
 	expect(line).toContain('latest 2026-07-01 [pj0001]: Tests pass. detail');
 	expect(line.endsWith('…')).toBe(true);
@@ -54,6 +54,20 @@ test('every agent gets one line with its counts, soonest ETA and latest human no
 	);
 	expect(text).toContain('  - snoozed: 0 in progress, 0 blocked, 1 open · no ETA or note');
 });
+
+function setProjectActivity() {
+	const note = fixture.database.prepare(
+		'INSERT INTO item_notes (item_id, hlc, node, text) VALUES (?, ?, ?, ?)'
+	);
+	const hlc = (at: string) => `${String(Date.parse(at)).padStart(15, '0')}-000000-n`;
+	fixture.database
+		.prepare("UPDATE items SET schedule_off = '1', clocks = ? WHERE id = 'pj0005'")
+		.run(JSON.stringify({ schedule_off: hlc('2026-07-01T08:00:00Z') }));
+	note.run('pj0001', hlc('2026-07-01T08:00:00Z'), 'n', `Tests pass.\n${'detail '.repeat(60)}`);
+	note.run('pj0002', hlc('2026-07-01T09:00:00Z'), 'n', 'watchdog missing: no live run');
+	note.run('pj0002', hlc('2026-07-01T09:01:00Z'), 'n', 'auto-launch turned off');
+	note.run('pj0002', hlc('2026-07-01T09:02:00Z'), 'n', 'Closed idle tmux session auto-x');
+}
 
 test('To unblock lists unflagged blockers only when the blocker is Daniel', () => {
 	const reasons: Record<string, [string, boolean]> = {

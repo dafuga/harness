@@ -21,6 +21,7 @@
 		updatedWorkAge,
 		workAge,
 		workFacts,
+		workNow,
 		workStateLabel,
 		workTimes
 	} from './hubHomeLive';
@@ -52,6 +53,7 @@
 	}
 
 	function cardState(row: HomeWorkRow) {
+		if (row.launchHold) return workStateLabel(row);
 		const due = dueById?.get(row.itemId);
 		if (due && row.state === 'queued' && !row.runId) return pastDueLabel(due);
 		if (row.state === 'finished' && (row.outcome === 'done' || row.status === 'done'))
@@ -67,9 +69,13 @@
 	};
 	const counts = $derived(projectWorkCounts(project));
 	const running = $derived(project.rows.filter((row) => row.state === 'running'));
-	const blocked = $derived(project.rows.filter((row) => row.state === 'blocked'));
+	const blocked = $derived(
+		project.rows.filter((row) => row.state === 'blocked' && !row.launchHold)
+	);
 	const waiting = $derived(
-		project.rows.filter((row) => row.state === 'queued' || row.state === 'offline')
+		project.rows.filter(
+			(row) => row.launchHold || row.state === 'queued' || row.state === 'offline'
+		)
 	);
 	const finished = $derived(project.rows.filter((row) => row.state === 'finished'));
 </script>
@@ -154,6 +160,7 @@
 </hx-details>
 
 {#if detail}
+	{@const detailText = workNow(detail)}
 	<Modal isOpen title="Job details" variant="section" onClose={closeDetails}>
 		<hx-div class="hh-live-detail">
 			<hx-h3><LinkifiedText text={detail.title} /></hx-h3>
@@ -164,7 +171,7 @@
 			</hx-p>
 			<hx-p class="hh-live-detail-facts">{workFacts(detail).join(' · ')}</hx-p>
 			<hx-p class="hh-live-detail-facts">{workAge(detail, now)} · {workTimes(detail)}</hx-p>
-			{#if detail.now}<hx-p><LinkifiedText text={detail.now} /></hx-p>{/if}
+			{#if detailText}<hx-p><LinkifiedText text={detailText} /></hx-p>{/if}
 		</hx-div>
 	</Modal>
 {/if}

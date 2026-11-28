@@ -1,5 +1,5 @@
 import { expect as baseExpect, test, type Page } from '../../../../test/support/browserTest';
-import { captureNeedsYou } from './hub-home-capture';
+import { captureHomeTop, captureNeedsYou, expectLaunchPause } from './hub-home-capture';
 import { recordedTracker, seedComputerWork } from '../../test/support/recordedTracker';
 import {
 	checkProjectDisclosure,
@@ -72,10 +72,7 @@ for (const [device, width, height] of [
 		expect((await alert.boundingBox())!.y).toBeLessThan(
 			(await page.getByRole('heading', { level: 1 }).boundingBox())!.y
 		);
-		if (process.env.TAKE_SCREENSHOT === 'true') {
-			await page.evaluate(() => document.fonts.ready.then(() => {}));
-			await page.screenshot({ path: test.info().outputPath(`home-top-${device}.png`) });
-		}
+		await captureHomeTop(page, test.info().outputPath(`home-top-${device}.png`));
 		await expectComputerWorkload(page, device, remoteTitles);
 		if (process.env.TAKE_SCREENSHOT === 'true')
 			await recordRendererMetrics(page, device, navigation?.request().timing().responseEnd);
@@ -96,6 +93,7 @@ for (const [device, width, height] of [
 		await expectRecordedProjects(page, tracker);
 		await expandProjects(page);
 		await expectLiveDisposition(page, blockedTitle);
+		await expectLaunchPause(page, overview(page), device);
 		await expect(overview(page)).toContainText('over an encrypted connection · read');
 		await expectNoSidewaysScroll(page, width);
 		if (width === 390) await expectEvenHeaderSpacing(page);
@@ -164,7 +162,6 @@ test('a paragraph-long title stays compact and opens full details on a phone', a
 	await productionHome(page, await macAnswer(tracker));
 	await page.clock.setFixedTime(Date.parse(tracker.recordedAt));
 	await page.goto('/');
-
 	await expandProjects(page);
 	const title = overview(page).getByTitle(item.title, { exact: true });
 	await expect(title).toBeVisible();

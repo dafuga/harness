@@ -9,6 +9,7 @@ import {
 import { readTrackerSources } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
 import {
 	expectedComputerOrder,
+	seedLaunchPause,
 	recordedTrackerFetch,
 	type RecordedTracker
 } from '../../test/support/recordedTracker';
@@ -46,6 +47,7 @@ export const liveCards = (page: Page) =>
 	overview(page).locator('.hh-live-card[data-state="running"]');
 
 export function seedLiveDisposition(tracker: RecordedTracker) {
+	seedLaunchPause(tracker);
 	const live = new Set(
 		tracker.runs.filter((run) => run.ended_at === null).map((run) => run.item_id)
 	);

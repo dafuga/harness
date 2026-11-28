@@ -54,7 +54,7 @@ test('native autolaunch status and dry-run inspect the configured policy without
 				id: 'skipped',
 				title: 'Skipped fixture',
 				due: '2026-11-20',
-				reason: 'automatic launch opted out'
+				reason: 'Legacy automatic launch pause until 2026-11-22T12:00:00.000Z'
 			}
 		]
 	});

@@ -20,6 +20,7 @@ import {
 	recordedTrackerFetch,
 	expectedComputerOrder,
 	seedComputerWork,
+	seedLaunchPause,
 	type RecordedTracker
 } from '../support/recordedTracker';
 import { recordedMacAnswer } from '../support/recordedTrackerMac';
@@ -66,9 +67,42 @@ const linked = (answer: unknown) =>
 			}) as never
 	).read();
 
+function expectComputerDetails(
+	machine: HomeLiveOverview['machines'][number] | undefined,
+	remoteTitle: string
+) {
+	expect(machine).toMatchObject({
+		agentCount: 2,
+		reasons: ['memory pressure is critical'],
+		resources: {
+			ramAvailableMB: 12288,
+			ramTotalMB: 65536,
+			cores: 10,
+			loadOne: 3.5,
+			diskFreeGB: 45.5
+		},
+		sessions: ['Use [redacted]', remoteTitle].map((title) => ({
+			title,
+			origin: 'studio-mac'
+		}))
+	});
+}
+
+function expectPausedLaunch(overview: HomeLiveOverview) {
+	const paused = overview.projects
+		.flatMap(({ rows }) => rows)
+		.find(({ itemId }) => itemId === 'paused-fixture');
+	expect(paused).toMatchObject({
+		status: 'open',
+		state: 'blocked',
+		now: 'Automatic launch paused by operator'
+	});
+}
+
 describe('how the browser receives it', () => {
 	test('the overview arrives from the linked computer, with credentials redacted', async () => {
 		const remoteTitles = seedComputerWork(tracker);
+		seedLaunchPause(tracker);
 		const secret = 'ghp_' + 'a'.repeat(36);
 		itemOf(liveRuns()[0].item_id).title = `Use ${secret}`;
 		const utilization = { actual: { cpu: 42, ram: 61 }, target: { cpu: 80, ram: 75 } };
@@ -88,22 +122,10 @@ describe('how the browser receives it', () => {
 			expectedComputerOrder
 		);
 		const machine = snapshot!.liveOverview!.machines.find(({ name }) => name === 'harbor-mbp-2');
-		expect(machine).toMatchObject({
-			agentCount: 2,
-			reasons: ['memory pressure is critical'],
-			resources: {
-				ramAvailableMB: 12288,
-				ramTotalMB: 65536,
-				cores: 10,
-				loadOne: 3.5,
-				diskFreeGB: 45.5
-			},
-			sessions: ['Use [redacted]', remoteTitles[1]].map((title) => ({
-				title,
-				origin: 'studio-mac'
-			}))
-		});
+		expectComputerDetails(machine, remoteTitles[1]);
 		expectInitialProjectList(snapshot!.liveOverview!);
+		expect(snapshot?.liveOverview?.runningAgentCount).toBe(14);
+		expectPausedLaunch(snapshot!.liveOverview!);
 	});
 
 	test('an overview this Hub cannot read leaves the rest of Home in place', async () => {

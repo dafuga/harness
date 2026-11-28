@@ -32,6 +32,8 @@ export interface HomeWorkRow {
 	stage: TrackerStage | null;
 	/** Where the work really is: why it is blocked, or the latest milestone its owner noted. */
 	now: string | null;
+	/** Present only on an open task waiting for automatic pickup. */
+	launchHold?: { until: string | null };
 	owner: string | null;
 	computer: string | null;
 	model: string | null;
@@ -86,6 +88,8 @@ export interface HomeLiveOverview {
 	machines: HomeComputer[];
 	/** Live runs of private or ignored items: counted, never described. */
 	hiddenRuns: number;
+	/** Distinct project and owner pairs with visible live runs, before project or row truncation. */
+	runningAgentCount?: number;
 	/** Rows left out because a project had more than the list holds. */
 	omittedRows: number;
 }

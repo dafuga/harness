@@ -15,6 +15,7 @@
 			"statusWords",
 			"stageLabel",
 			"workStateLabel",
+			"workNow",
 			"span",
 			"updatedWorkAge",
 			"workAge",
@@ -40,6 +41,12 @@
 				"type": "HomeWorkRow",
 				"required": true,
 				"description": "The row whose run state and latest recorded outcome are worded."
+			},
+			{
+				"name": "workNow.row",
+				"type": "HomeWorkRow",
+				"required": true,
+				"description": "Home work row with its status text and optional automatic launch hold."
 			},
 			{
 				"name": "span.from",
@@ -214,6 +221,26 @@
 						"name": "workStateLabel",
 						"type": "unknown",
 						"description": "The run state in words, with the recorded outcome when there is one."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workNow",
+				"inputs": [
+					{
+						"name": "workNow.row",
+						"type": "HomeWorkRow",
+						"required": true,
+						"description": "Home work row with its status text and optional automatic launch hold."
+					}
+				],
+				"outputs": [
+					{
+						"name": "workNow",
+						"type": "string | null",
+						"description": "Status text, with the Lisbon deadline appended for a temporary launch pause."
 					}
 				],
 				"errors": [],

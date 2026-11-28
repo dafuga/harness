@@ -1,7 +1,7 @@
 // @harness-uid u_ukg7o7reue
 import { z } from 'zod';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
-import { trackerUtilizationSchema } from '../../../../../reports/src/lib/projects-sessions/project-overview/trackerReadTargets';
+import { trackerUtilizationSchema } from '$reports/lib/projects-sessions/project-overview/trackerReadTargets';
 import { parseHomePayload } from './homePayload';
 
 const text = (max: number) =>
@@ -28,6 +28,7 @@ const row = z.object({
 	now: text(300)
 		.nullish()
 		.transform((value) => value ?? null),
+	launchHold: z.object({ until: time.nullable() }).optional(),
 	owner: short.nullable(),
 	computer: short.nullable(),
 	model: short.nullable(),
@@ -75,6 +76,7 @@ const liveOverview = z.object({
 		)
 		.max(200),
 	hiddenRuns: count,
+	runningAgentCount: count.optional(),
 	omittedRows: count
 });
 
