@@ -31,6 +31,7 @@
 			"preferredClaudeRoute",
 			"switchedSelection",
 			"preferredSelection",
+			"nextClaudeRung",
 			"redirectTrackerRung"
 		]
 	},
@@ -131,6 +132,16 @@
 			{
 				"name": "preferredSelection.context",
 				"type": "PreferredSelectionContext",
+				"required": true
+			},
+			{
+				"name": "nextClaudeRung.route",
+				"type": "ClaudeRoute",
+				"required": true
+			},
+			{
+				"name": "nextClaudeRung.run",
+				"type": "TrackerRetryRun",
 				"required": true
 			},
 			{
@@ -353,6 +364,29 @@
 					{
 						"name": "preferredSelection",
 						"type": "TrackerModelSelection"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nextClaudeRung",
+				"inputs": [
+					{
+						"name": "nextClaudeRung.route",
+						"type": "ClaudeRoute",
+						"required": true
+					},
+					{
+						"name": "nextClaudeRung.run",
+						"type": "TrackerRetryRun",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextClaudeRung",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

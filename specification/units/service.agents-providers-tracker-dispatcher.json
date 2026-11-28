@@ -106,7 +106,7 @@
 			"requestLaunch",
 			"previewDueLaunch",
 			"currentPick",
-			"redirectedRun",
+			"retryStart",
 			"recoveryIntent",
 			"unattendedIntent",
 			"launchStartupGrace",
@@ -515,13 +515,18 @@
 				"required": true
 			},
 			{
-				"name": "redirectedRun.run",
-				"type": "TrackerRunReceipt",
+				"name": "retryStart.item",
+				"type": "TrackerDispatchItem",
 				"required": true
 			},
 			{
-				"name": "redirectedRun.pick",
-				"type": "TrackerLaunchPick",
+				"name": "retryStart.run",
+				"type": "Run",
+				"required": true
+			},
+			{
+				"name": "retryStart.policy",
+				"type": "TrackerDispatchPolicy",
 				"required": true
 			},
 			{
@@ -1800,22 +1805,27 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "redirectedRun",
+				"name": "retryStart",
 				"inputs": [
 					{
-						"name": "redirectedRun.run",
-						"type": "TrackerRunReceipt",
+						"name": "retryStart.item",
+						"type": "TrackerDispatchItem",
 						"required": true
 					},
 					{
-						"name": "redirectedRun.pick",
-						"type": "TrackerLaunchPick",
+						"name": "retryStart.run",
+						"type": "Run",
+						"required": true
+					},
+					{
+						"name": "retryStart.policy",
+						"type": "TrackerDispatchPolicy",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "redirectedRun",
+						"name": "retryStart",
 						"type": "unknown"
 					}
 				],

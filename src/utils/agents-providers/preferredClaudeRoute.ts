@@ -13,7 +13,8 @@ import type { TrackerModelRung } from './parseTrackerModelSpec.types';
 import type {
 	ClaudeRoute,
 	PreferredSelectionContext,
-	TrackerModelSelection
+	TrackerModelSelection,
+	TrackerRetryRun
 } from './pickTrackerModel.types';
 
 /** The reason text every run records while the provider preference is on. */
@@ -78,4 +79,12 @@ export function preferredSelection(
 		kind: context.kind,
 		reason: `${context.kind}/${context.size}: ${rung.id} ${rung.effort}; ${why}; ${claudePreferenceNote(context.preferred)}`
 	};
+}
+
+// A failed Claude rung moves to the next step of its route; an unknown rung restarts at the first.
+export function nextClaudeRung(route: ClaudeRoute, run: TrackerRetryRun) {
+	const { steps } = route;
+	const exact = steps.findIndex((step) => step.id === run.rung && step.effort === run.effort);
+	const found = exact >= 0 ? exact : steps.map(({ id }) => id).lastIndexOf(run.rung);
+	return steps[Math.min(found + 1, steps.length - 1)];
 }

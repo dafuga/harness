@@ -12,6 +12,7 @@ import {
 } from './classifyTrackerTask';
 import {
 	activePreferenceEnd,
+	nextClaudeRung,
 	preferredClaudeRoute,
 	preferredSelection,
 	switchedSelection
@@ -33,7 +34,6 @@ import type {
 } from './pickTrackerModel.types';
 import type { TrackerModelItem, TrackerTaskRoute } from './classifyTrackerTask.types';
 
-// Codex's weekly limit resets 27 Nov 2026 10:39 Europe/Lisbon (UTC+0 in November).
 const codexResetAt = Date.parse('2026-11-27T10:39:00Z');
 const windowNote = 'Claude only until the Codex reset, 27 Nov 10:39 Lisbon';
 
@@ -97,16 +97,13 @@ function pinnedSelection(
 	ladder: TrackerModelRung[],
 	context: SelectionContext
 ): TrackerModelSelection {
-	const { kind, size, route, claude, preferred } = context;
+	const { kind, size, route, preferred } = context;
 	const rung = parseTrackerModelSpec(item.model ?? '', ladder);
 	if (preferred && rung.cli === 'codex' && route !== 'computer-use')
 		return switchedSelection(item, ladder, { kind, until: preferred });
 	const raised = raisedPinReason(item, rung, context);
 	if (!raised) return { rung, kind, reason: `named on the item (${item.model})` };
-	const routeFor = preferred ? preferredClaudeRoute : claudeRoute;
-	const replacement = claude
-		? routeFor(item, ladder, true).steps[0]
-		: eligibleLadder(route === 'live-deploy' ? route : 'default', ladder, true)[0];
+	const replacement = raisedRung(item, ladder, context);
 	const name = { opus: 'Opus', sonnet: 'Sonnet' }[replacement.id] ?? 'Sol';
 	const effort = replacement.id === 'sol' ? solEffort(kind, size) : replacement.effort;
 	return {
@@ -114,6 +111,17 @@ function pinnedSelection(
 		kind,
 		reason: `named ${item.model}, raised to ${name} (${raised})`
 	};
+}
+
+function raisedRung(
+	item: TrackerModelItem,
+	ladder: TrackerModelRung[],
+	{ route, claude, preferred }: SelectionContext
+) {
+	const routeFor = preferred ? preferredClaudeRoute : claudeRoute;
+	return claude
+		? routeFor(item, ladder, true).steps[0]
+		: eligibleLadder(route === 'live-deploy' ? route : 'default', ladder, true)[0];
 }
 
 function automaticSelection(
@@ -160,15 +168,20 @@ export function retryTrackerModel(
 	run: TrackerRetryRun,
 	options: TrackerRetryOptions = {}
 ): TrackerModelRung {
-	const { cfg, now } = options;
 	if (run.pinned)
 		return pickTrackerModel({ ...item, model: `${run.model}:${run.effort ?? ''}` }, options).rung;
 	const restricted = floorReasons(item).length > 0;
-	const ladder = ladderFrom(cfg);
-	if (activePreferenceEnd(options.claudePreferredUntil, now))
-		return nextClaudeRung(preferredClaudeRoute(item, ladder, restricted), run);
-	if (claudeOnly({ cfg, now })) return nextClaudeRung(claudeRoute(item, ladder, restricted), run);
-	const eligible = eligibleLadder(trackerTaskRoute(item), ladder, restricted);
+	const ladder = ladderFrom(options.cfg);
+	const claudeSteps = retryClaudeRoute(options);
+	if (claudeSteps) return nextClaudeRung(claudeSteps(item, ladder, restricted), run);
+	return nextEligibleRung(item, eligibleLadder(trackerTaskRoute(item), ladder, restricted), run);
+}
+
+function nextEligibleRung(
+	item: TrackerModelItem,
+	eligible: TrackerModelRung[],
+	run: TrackerRetryRun
+): TrackerModelRung {
 	const previous = run.rung === 'sol-xhigh' ? 'sol' : run.rung;
 	const index = eligible.findIndex(({ id }) => id === previous);
 	const rung = eligible[Math.min(index + 1, eligible.length - 1)];
@@ -181,11 +194,10 @@ export function retryTrackerModel(
 	return { ...rung, effort };
 }
 
-// A failed Claude rung moves to the next step of its route; an unknown rung restarts at the first.
-function nextClaudeRung({ steps }: ClaudeRoute, run: TrackerRetryRun) {
-	const exact = steps.findIndex((step) => step.id === run.rung && step.effort === run.effort);
-	const found = exact >= 0 ? exact : steps.map(({ id }) => id).lastIndexOf(run.rung);
-	return steps[Math.min(found + 1, steps.length - 1)];
+// The Claude table a retry climbs, when the preference or the reset window sends it to Claude.
+function retryClaudeRoute(options: TrackerRetryOptions) {
+	if (activePreferenceEnd(options.claudePreferredUntil, options.now)) return preferredClaudeRoute;
+	return claudeOnly(options) ? claudeRoute : undefined;
 }
 
 // Automatic selection starts at its eligibility floor. Learning can only move up.

@@ -22,7 +22,7 @@ import {
 	startable
 } from './launchEligibility';
 import { dueGrantHold } from './dueGrantHold';
-import { currentPick, redirectedRun } from './providerRedirect';
+import { currentPick, retryStart } from './providerRedirect';
 import { etaFor, failRun, finishRun, queueRun, recordRun, reviseRun } from './runReceipt';
 
 // Give an interrupted host start time to publish its session evidence.
@@ -67,14 +67,7 @@ export function prepareRetry(
 		});
 	const hold = claimHold(snapshot, { item, grant, run }, policy, now);
 	if (hold) return skip('held', hold);
-	const redirected = policy.redirectPick?.(item, run);
-	const rung = redirected?.rung ?? {
-		id: run.rung,
-		cli: run.cli,
-		model: run.model,
-		effort: run.effort,
-		pinned: run.pinned
-	};
+	const { rung, next } = retryStart(item, run, policy);
 	const problem = policy.admit(item, item.launch, rung);
 	if (problem) {
 		if (problem === run.failure_reason) return skip('held', problem);
@@ -83,7 +76,6 @@ export function prepareRetry(
 			writes: { runs: [reviseRun(run, { failure_reason: problem })] }
 		};
 	}
-	const next = redirected ? redirectedRun(run, redirected) : run;
 	return reserveStart(item, { run: next, rung }, policy, now);
 }
 
