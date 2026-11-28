@@ -78,13 +78,15 @@
 				"name": "VideoEvidence.playbackOnly",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "When true, suppresses review feedback and evidence details so the retained clip can play inline in a list."
 			},
 			{
 				"name": "VideoEvidence.metadata",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional supplemental markup rendered beside the clip title, such as delivery date and stage."
 			}
 		],
 		"outputs": [

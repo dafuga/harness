@@ -4,8 +4,8 @@
 	"uid": "u_vuxtdbv3tu",
 	"kind": "component",
 	"title": "DeliveredFeatures",
-	"responsibility": "Owns the DeliveredFeatures Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows a project’s delivered feature recordings inline with dates, stages and continued loading on demand.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -16,7 +16,8 @@
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-time"
+			"reports.component.shared-primitives-atoms-html-time",
+			"reports.component.verification-evidence-video-evidence"
 		]
 	},
 	"owns": {
@@ -24,27 +25,24 @@
 		"symbols": ["DeliveredFeatures", "DeliveredFeatures.metadata"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeliveredFeatures.project",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The Tracker project label assigned to the surrounding project overview."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeliveredFeatures",
-				"type": "markup"
+				"type": "markup",
+				"description": "A list of delivered feature recordings with date and stage, plus loading, empty and retry states."
 			}
 		],
-		"errors": [
-			{
-				"name": "Error",
-				"type": "thrown"
-			}
-		],
-		"errorStatus": "found",
+		"errors": [],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
@@ -100,6 +98,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-time",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.verification-evidence-video-evidence",
 			"via": "import",
 			"origin": "derived"
 		}

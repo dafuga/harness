@@ -3,7 +3,7 @@
 <!-- @harness-uid u_vuxtdbv3tu -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import VideoEvidence from '$shared/verification-evidence/VideoEvidence.svelte';
+	import VideoEvidence from '../../../../reports/src/components/verification-evidence/VideoEvidence.svelte';
 	import {
 		featureDeliveryApi,
 		featureDeliveryPageSchema,

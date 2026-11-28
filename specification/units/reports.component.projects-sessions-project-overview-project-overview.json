@@ -65,7 +65,8 @@
 				"name": "ProjectOverview.deliveries",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional feature delivery content rendered after the project heading and before Tracker status."
 			},
 			{
 				"name": "ProjectOverview.snapshot",
