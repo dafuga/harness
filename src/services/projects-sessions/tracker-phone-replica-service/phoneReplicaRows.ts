@@ -3,14 +3,16 @@ import { phoneAskAttachments } from './phoneAskAttachments';
 import { trackerStructuredAsk } from '../../../utils/projects-sessions/trackerStructuredAsk';
 import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { createHash } from 'node:crypto';
-import { trackerPersonalReminder } from '../../../utils/projects-sessions/trackerPersonalReminder';
+import {
+	trackerReminderGroup,
+	trackerUpcomingReminder
+} from '../../../utils/projects-sessions/trackerUpcomingReminder';
 import { trackerPersonalAgent } from '../../../utils/projects-sessions/trackerUnattendedHold';
+import { itemSql, noteSql } from './phoneReplicaQueries';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
 import {
 	trackerPlanning,
-	trackerPlanningArtifactFields,
-	trackerPlanningPromotionFields,
 	trackerPlanningStage
 } from '../../../utils/projects-sessions/trackerPlanning';
 import type {
@@ -34,7 +36,7 @@ export function phoneReplicaRows(db: SqliteDatabase, node: string, now: number):
 		items.map(({ id }) => id)
 	);
 	return items.map((item) =>
-		projectItem(item, notes.all(item.id) as PhoneNoteSource[], runs.get(item.id) ?? [])
+		projectItem(item, notes.all(item.id) as PhoneNoteSource[], runs.get(item.id) ?? [], now)
 	);
 }
 
@@ -57,7 +59,7 @@ export function attentionRevision(item: PhoneItemSource): string {
 				...(item.options ? [item.options] : []),
 				...(item.attachments ? [item.attachments] : []),
 				// A reminder that moved makes an earlier Done or Snooze stale.
-				...(phoneReminder(item) ? [item.remind_at] : [])
+				...(trackerReminderGroup(reminderSource(item)) && item.remind_at ? [item.remind_at] : [])
 			])
 		)
 		.digest('hex');
@@ -66,9 +68,10 @@ export function attentionRevision(item: PhoneItemSource): string {
 function projectItem(
 	item: PhoneItemSource,
 	notes: PhoneNoteSource[],
-	runs: PhoneRunSource[]
+	runs: PhoneRunSource[],
+	now: number
 ): PhoneTrackerRow {
-	const reminder = phoneReminder(item);
+	const reminder = trackerUpcomingReminder(reminderSource(item), now);
 	return {
 		id: item.id,
 		...(reminder && { reminder }),
@@ -125,8 +128,8 @@ function phoneAskChoices(item: PhoneItemSource) {
 	};
 }
 
-function phoneReminder(item: PhoneItemSource) {
-	return trackerPersonalReminder({ ...item, remindAt: item.remind_at });
+function reminderSource(item: PhoneItemSource) {
+	return { ...item, remindAt: item.remind_at, autoLaunch: Boolean(item.auto_launch) };
 }
 
 function excerpt(value: string | null, bytes: number): string {
@@ -148,39 +151,6 @@ function clockTime(clock: string | null): string | null {
 	const match = /^(\d{15})-\d{6}-/.exec(clock ?? '');
 	return match ? new Date(Number(match[1])).toISOString() : null;
 }
-
-const itemSql = `
-	SELECT id, status, agent, remind_at, every, CASE WHEN length(title) <= 16384 THEN title ELSE '' END AS title,
-		CASE WHEN length(coalesce(nullif(project, ''), agent)) <= 1024
-			THEN coalesce(nullif(project, ''), agent) END AS project,
-		updated_at, due, needs_daniel, resolved,
-		${[...trackerPlanningArtifactFields, ...trackerPlanningPromotionFields].join(', ')},
-		CASE WHEN length(question) <= 16384 THEN question END AS question,
-		CASE WHEN length(options) <= 4096 THEN options END AS options, confirm,
-		CASE WHEN length(attachments) <= 8192 THEN attachments END AS attachments,
-		CASE WHEN needs_daniel = 1 AND resolved = 0 AND length(attachment_docs) <= 524288
-			THEN attachment_docs END AS attachment_docs,
-		coalesce(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel')) AS flag_clock,
-		json_array(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel'),
-			json_extract(clocks, '$.resolved'), json_extract(clocks, '$.answered_at'),
-			json_extract(clocks, '$.answer')) AS attention_clock
-	FROM items
-	WHERE deleted = 0 AND coalesce(sensitive, 0) = 0 AND title IS NOT NULL
-		AND length(id) BETWEEN 1 AND 80 AND id NOT GLOB '*[^a-z0-9_-]*'
-		AND status IN ('open', 'in_progress', 'blocked', 'done', 'ignored')
-		AND (status NOT IN ('done', 'ignored') OR (needs_daniel = 1 AND resolved = 0)
-			OR updated_at >= ?)
-	ORDER BY (status IN ('done', 'ignored') AND NOT (needs_daniel = 1 AND resolved = 0)),
-		updated_at DESC, id
-	LIMIT 2000
-`;
-
-const noteSql = `
-	SELECT notes.hlc, coalesce(ops.actor, notes.node) AS author,
-		CASE WHEN length(notes.text) <= 16384 THEN notes.text ELSE NULL END AS text
-	FROM item_notes AS notes LEFT JOIN ops ON ops.op_id = notes.hlc
-	WHERE notes.item_id = ? ORDER BY notes.hlc DESC LIMIT 10
-`;
 
 function phoneRuns(db: SqliteDatabase, node: string, items: string[]) {
 	const byItem = new Map<string, PhoneRunSource[]>();
