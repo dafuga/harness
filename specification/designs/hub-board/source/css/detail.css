@@ -1,0 +1,108 @@
+/* Card detail: a side panel on desktop and a sheet on iPhone. Answers and typing live here. */
+.scrim {
+	position: absolute;
+	inset: 0;
+	background: var(--hx-color-scrim);
+}
+.detail {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	width: 520px;
+	padding: 20px 24px 24px;
+	border-left: 1px solid var(--hx-color-border-strong);
+	background: var(--hx-color-surface);
+	box-shadow: var(--hx-shadow-dialog);
+}
+.detail-head {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.detail-head .icon-btn {
+	margin-left: auto;
+}
+.detail-title {
+	font-size: 22px;
+	line-height: 28px;
+	font-weight: 600;
+	letter-spacing: -0.02em;
+}
+.facts {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px 24px;
+}
+.fact {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+.fact b {
+	font-weight: 500;
+}
+.detail-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+.notes {
+	display: flex;
+	flex-direction: column;
+}
+.note {
+	display: flex;
+	gap: 12px;
+	padding: 10px 0;
+	border-bottom: 1px solid var(--hx-color-border);
+	line-height: 20px;
+}
+.note:last-child {
+	border-bottom: 0;
+}
+.note time {
+	flex: none;
+	width: 44px;
+	color: var(--hx-color-text-muted);
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+}
+.section {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+/* A plain list page, used to show the dock on a page other than Home. */
+.list-card {
+	border: 1px solid var(--hx-color-border);
+	border-radius: 10px;
+	background: var(--hx-color-surface);
+}
+.list-row {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	min-height: 56px;
+	padding: 8px 20px;
+	border-bottom: 1px solid var(--hx-color-border);
+}
+.list-row:last-child {
+	border-bottom: 0;
+}
+.list-row .when {
+	flex: none;
+	width: 96px;
+	color: var(--hx-color-text-muted);
+	font-variant-numeric: tabular-nums;
+}
+.page-title {
+	font-size: 26px;
+	line-height: 32px;
+	font-weight: 600;
+	letter-spacing: -0.02em;
+}
