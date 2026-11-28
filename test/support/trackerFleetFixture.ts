@@ -28,7 +28,7 @@ export async function sweepIdleWork(runtime: TrackerNativeRuntimeService, id: st
 		runtime.store,
 		{
 			rows: items.list({ status: 'all', limit: -1 }),
-			snapshot: { now: runtime.now(), panes: [], items: [], runs: [] },
+			snapshot: { host: runtime.store.node, now: runtime.now(), panes: [], items: [], runs: [] },
 			dispatch: runtime.dispatch!,
 			minutes: 120
 		},
