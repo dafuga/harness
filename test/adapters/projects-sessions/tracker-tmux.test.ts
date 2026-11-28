@@ -5,10 +5,15 @@ import { TrackerTmuxAdapter } from '../../../src/adapters/projects-sessions/Trac
 import { measureWorkload } from '../../support/measureWorkload';
 import { withTempDir } from '../../support/temporary';
 
-test('rechecks the idle pane and sends literal keys only to its unchanged socket identity', () =>
-	measureWorkload('adapter.projects-sessions-tracker-tmux', 'pane-identity', () =>
-		withTempDir('hnt-tmux-', proveTmuxPaneIdentity)
-	));
+// Every fake tmux command starts a Bun process, so the three-socket scan outlasts the 5 s default.
+test(
+	'rechecks the idle pane and sends literal keys only to its unchanged socket identity',
+	() =>
+		measureWorkload('adapter.projects-sessions-tracker-tmux', 'pane-identity', () =>
+			withTempDir('hnt-tmux-', proveTmuxPaneIdentity)
+		),
+	20_000
+);
 
 async function proveTmuxPaneIdentity(root: string) {
 	const executable = join(root, 'tmux-fixture');
