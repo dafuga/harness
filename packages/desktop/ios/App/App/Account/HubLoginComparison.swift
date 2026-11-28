@@ -34,9 +34,13 @@ struct HubLoginComparison {
             if let pin, pin.mailbox != mailbox.id || pin.approver != claim.approver || pin.nonce != claim.nonce {
                 return done(.failure(.failed))
             }
+            let saved = try HubLoginDeviceStore(credential, base: session.loginPins)
+            let accountPin = try saved.load(HubLoginAdmission.pinName)
+                .map { try JSONDecoder().decode(SealedChainPin.self, from: $0) }
             try ledger.readChain([]) { result in
                 do {
-                    let state = try SealedChain.verify(result.get(), account: credential.subject, pin: pin?.chain)
+                    let state = try SealedChain.verify(result.get(), account: credential.subject,
+                                                       pin: pin?.chain ?? accountPin)
                     guard let admin = state.devices[claim.approver], admin.active, admin.role == "admin",
                         let key = RemoteCoding.data(base64url: admin.signingPublic),
                         pin == nil || pin?.signingKey == key else { return done(.failure(.failed)) }

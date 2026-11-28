@@ -108,9 +108,7 @@ final class HubAccountSession {
             enrollment.forget(store)
             store.remove(SealedDeviceStore.name)
         }
-        if let credential, let pins = try? HubLoginDeviceStore(credential, base: loginPins) {
-            pins.remove(HubLoginAdmission.pinName)
-        }
+        // The public chain pin remains to anchor reapproval on this installation.
         enrolledDevice = nil
         approvalReviews.removeAll()
         notifiedApprovals.removeAll()

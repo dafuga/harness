@@ -145,6 +145,9 @@ Tracker decision alerts retain their own state.
 
 Devices link through Google sign-in (see `google-device-linking.md`). A new
 installation waits for approval from an approved iPhone, Mac, or Hub browser.
+Sign-out erases the installation keys and keeps the last verified public chain
+head for the same installation. Reapproval checks that history before revealing
+the comparison nonce.
 Revoking appends `revoke`, then `rotate` for
 every scope that device held, with fresh grants for the remaining devices.
 Older epochs stay readable by remaining devices; re-sealing old data is
