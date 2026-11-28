@@ -7,7 +7,7 @@ import {
 	writeFileSync
 } from 'node:fs';
 import { join } from 'node:path';
-import { afterAll, beforeAll, expect, test } from 'vitest';
+import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
 import { classifyProcess } from '../src/utils/platformServices';
 import { processTable, type TrackedProcess } from '../src/utils/processDescendants';
 import { runIsolated } from '../src/utils/reports-media/run-isolated/runIsolated';
@@ -18,6 +18,7 @@ import {
 	journal,
 	pause,
 	remembered,
+	stopFixtureProcesses,
 	syntheticServices,
 	type SyntheticServices
 } from './support/syntheticServices';
@@ -33,6 +34,9 @@ const mac = process.platform === 'darwin';
 let made: SyntheticServices;
 beforeAll(() => {
 	if (mac) made = syntheticServices();
+});
+afterEach(() => {
+	if (mac) stopFixtureProcesses(made.home);
 });
 afterAll(async () => {
 	if (mac) await cleared(made.home);

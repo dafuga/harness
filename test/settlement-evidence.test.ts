@@ -15,6 +15,7 @@ import {
 	adopted,
 	alive,
 	cleared,
+	identityOf,
 	journal,
 	pause,
 	remembered,
@@ -31,11 +32,18 @@ import {
 const mac = process.platform === 'darwin';
 const group = 4242;
 let made: SyntheticServices;
+let timeoutWrapper: TrackedProcess | undefined;
 beforeAll(() => {
 	if (mac) made = syntheticServices();
 });
 afterAll(async () => {
-	if (mac) await cleared(made.home);
+	if (!mac) return;
+	try {
+		await cleared(made.home);
+	} finally {
+		// Contain the regression even when the fixture fails to clean up.
+		if (timeoutWrapper && alive(timeoutWrapper)) process.kill(-timeoutWrapper.pid, 'SIGKILL');
+	}
 });
 
 const file = (name: string) => join(made.home, name);
@@ -116,7 +124,7 @@ test.skipIf(!mac)(
 			"fs.writeFileSync(dir + '/child', child.pid + ' ' + when);",
 			// Keep the parent alive until every initial signal has been attempted. If it exits
 			// on TERM, settling cancels the slower child observation before that child is asked.
-			"process.on('SIGTERM', () => {});",
+			"process.on('SIGTERM', () => fs.appendFileSync(dir + '/wrapper.journal', 'signalled\\n'));",
 			'setInterval(() => {}, 1000);'
 		].join('\n');
 		const started = () => {
@@ -130,6 +138,7 @@ test.skipIf(!mac)(
 			// Model a child observation that completes after its parent's. This ordering must
 			// still reach the intended surviving, signalled child state.
 			if (existsSync(join(dir, 'child')) && pid === started().pid) await pause(200);
+			if (pid === timeoutWrapper?.pid && journal(join(dir, 'wrapper.journal'))) return null;
 			return pid === asked() ? null : realProbes.executable(pid);
 		};
 		// No look is answered before the child says that it runs: the limit finds it ready.
@@ -147,16 +156,23 @@ test.skipIf(!mac)(
 			timeoutMs: 1200,
 			log: join(dir, 'run.log'),
 			maxLogBytes: 64_000,
+			onSpawn: (pid) => (timeoutWrapper = identityOf(pid)),
 			platform: { authority: () => made.authority, table, probes }
 		});
 		await running(join(dir, 'ready'));
 		const child = remembered(started());
 		const line = told(readFileSync(join(dir, 'run.log'), 'utf8'), child);
-		expect(result).toMatchObject({ status: 'timeout', timedOut: true, survivors: [child] });
-		expect(result).toMatchObject({ stopped: 0, resisted: 1, unknown: false });
+		expect(result).toMatchObject({ status: 'timeout', timedOut: true, stopped: 0, unknown: false });
+		expect(result.survivors).toContainEqual(child);
 		expect([alive(child), journal(join(dir, 'journal'))]).toEqual([true, 'signalled\n']);
 		expect(line).toContain('signalled but still running');
 		expect(line).not.toContain('not signalled');
+		expect(alive(timeoutWrapper!)).toBe(true);
+		await cleared(made.home);
+		await expect
+			.poll(() => alive(timeoutWrapper!), { message: 'fixture left its timeout wrapper alive' })
+			.toBe(false);
+		expect(alive(child)).toBe(false);
 	},
 	30_000
 );

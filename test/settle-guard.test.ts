@@ -1,8 +1,15 @@
+import { spawn } from 'node:child_process';
+import { existsSync, readFileSync, realpathSync } from 'node:fs';
 import { join } from 'node:path';
-import { afterAll, beforeAll, expect, test } from 'vitest';
+import { fileURLToPath } from 'node:url';
+import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
 import type { FollowedProcess, TrackedProcess } from '../src/utils/processDescendants';
 import { settleProcesses } from '../src/utils/reports-media/run-isolated/settleProcesses';
 import { epoch, realProbes } from './support/realProbes';
+import { stopFixtureProcesses } from './support/syntheticFixtureCleanup';
+import { isStaleSyntheticWrapper } from './support/sweepSyntheticServices';
+import { fixtureProcessTable } from './support/syntheticProcessTable';
+import { withTempDir } from './support/temporary';
 import {
 	adopted,
 	alive,
@@ -23,6 +30,9 @@ const group = 4242;
 let made: SyntheticServices;
 beforeAll(() => {
 	if (mac) made = syntheticServices();
+});
+afterEach(() => {
+	if (mac) stopFixtureProcesses(made.home);
 });
 afterAll(async () => {
 	if (mac) await cleared(made.home);
@@ -72,6 +82,75 @@ test.skipIf(!mac)(
 	},
 	30_000
 );
+
+test.skipIf(!mac)(
+	'a crashed fixture worker leaves neither its wrapper nor its unrecorded child',
+	() =>
+		withTempDir('harness-services-', async (directory) => {
+			const home = realpathSync(directory);
+			const ready = file('crashed-worker');
+			const cleanup = fileURLToPath(
+				new URL('./support/syntheticFixtureCleanup.ts', import.meta.url)
+			);
+			const wrapper = `
+		const {spawn} = require('node:child_process');
+		const child = spawn('/bin/sleep', ['60'], {stdio: 'ignore'});
+		require('node:fs').writeFileSync(${JSON.stringify(ready)}, process.pid + ' ' + child.pid);
+		setInterval(() => {}, 1000);
+	`;
+			const script = `
+		import {spawn, execFileSync} from 'node:child_process';
+		import {watchFixture, recordFixtureProcess} from ${JSON.stringify(cleanup)};
+		const home = ${JSON.stringify(home)};
+		watchFixture(home);
+		const child = spawn(${JSON.stringify(process.execPath)}, ['-e', ${JSON.stringify(wrapper)}],
+			{detached: true, stdio: 'ignore'});
+		const started = execFileSync('/bin/ps', ['-p', String(child.pid), '-o', 'lstart=']).toString().trim();
+		recordFixtureProcess(home, {pid: child.pid, started});
+		setInterval(() => {}, 1000);
+	`;
+			const worker = spawn('bun', ['-e', script], { stdio: 'inherit' });
+			try {
+				await expect
+					.poll(() => existsSync(ready) && existsSync(join(home, '.processes')))
+					.toBe(true);
+				const pids = readFileSync(ready, 'utf8').split(' ').map(Number);
+				const known = pids.map((pid) => fixtureProcessTable(pid)[0]);
+				expect(known.map((row) => row.group)).toEqual([pids[0], pids[0]]);
+				worker.kill('SIGKILL');
+				await expect
+					.poll(() => [existsSync(home), ...known.map(alive)])
+					.toEqual([false, false, false]);
+			} finally {
+				worker.kill('SIGKILL');
+				stopFixtureProcesses(home);
+				await expect.poll(() => existsSync(home)).toBe(false);
+			}
+		}),
+	15_000
+);
+
+test('the stale fixture sweep requires an older private orphan group and a fixture command', () => {
+	const dir = '/private/var/folders/abc/def/T/harness-services-x12345';
+	const wrapper = {
+		pid: 42,
+		group: 42,
+		parent: 1,
+		started: 'Mon Oct 12 10:00:00 2026',
+		ageSeconds: 1801,
+		command: `/opt/homebrew/bin/node -e setInterval(() => {}, 1000); ${dir}/limit ${dir}/helper`
+	};
+	expect(
+		[
+			wrapper,
+			{ ...wrapper, parent: 2 },
+			{ ...wrapper, group: 43 },
+			{ ...wrapper, ageSeconds: 1800 },
+			{ ...wrapper, command: wrapper.command.replace('/T/', '/work/') },
+			{ ...wrapper, command: wrapper.command.replace('node -e', 'node task.js') }
+		].map(isStaleSyntheticWrapper)
+	).toEqual([true, false, false, false, false, false]);
+});
 
 test.skipIf(!mac)(
 	'a process whose program changed or cannot be read at the last look is not signalled',

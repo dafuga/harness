@@ -1,7 +1,7 @@
 import type { Seam } from './closing-ownership.test.types';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { afterAll, beforeAll, expect, test } from 'vitest';
+import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
 import { processDescendants, processTable, type ProcessRow } from '../src/utils/processDescendants';
 import { runIsolated } from '../src/utils/reports-media/run-isolated/runIsolated';
 import { settleProcesses } from '../src/utils/reports-media/run-isolated/settleProcesses';
@@ -12,6 +12,7 @@ import {
 	journal,
 	pause,
 	remembered,
+	stopFixtureProcesses,
 	syntheticServices,
 	type SyntheticServices
 } from './support/syntheticServices';
@@ -27,6 +28,9 @@ const mac = process.platform === 'darwin';
 let made: SyntheticServices;
 beforeAll(() => {
 	if (mac) made = syntheticServices();
+});
+afterEach(() => {
+	if (mac) stopFixtureProcesses(made.home);
 });
 afterAll(async () => {
 	if (mac) await cleared(made.home);
