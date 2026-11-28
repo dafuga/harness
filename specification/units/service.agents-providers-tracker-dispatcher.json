@@ -98,6 +98,7 @@
 			"activeRun",
 			"hasOpenSession",
 			"attemptKey",
+			"continuesStartedRun",
 			"matchesRequest",
 			"trackerReminderTitle",
 			"chooseDueTarget",
@@ -111,6 +112,7 @@
 			"retireUnstartedRun",
 			"retryRung",
 			"giveUp",
+			"continuesStartedRun",
 			"activeRun",
 			"hasOpenSession",
 			"attemptKey",
@@ -404,6 +406,12 @@
 				"required": true
 			},
 			{
+				"name": "automaticRequestHold.continuingStartedWork",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
 				"name": "schedulingHold.item",
 				"type": "Pick< TrackerDispatchItem, | 'title' | 'kind' | 'status' | 'agent' | 'owner' | 'deleted' | 'awaitingAnswer' | 'scheduleOff' | 'scheduleHoldReason' | 'recurring' | 'parkedUntil' >",
 				"required": true
@@ -633,6 +641,21 @@
 				"name": "giveUp.reopen",
 				"type": "TrackerDispatchWrites['item']",
 				"required": false
+			},
+			{
+				"name": "continuesStartedRun.source",
+				"type": "TrackerLaunchSource",
+				"required": true
+			},
+			{
+				"name": "continuesStartedRun.runs",
+				"type": "readonly Pick<TrackerRunReceipt, 'node' | 'started_at'>[]",
+				"required": true
+			},
+			{
+				"name": "continuesStartedRun.policy",
+				"type": "Pick<TrackerDispatchPolicy, 'node' | 'resolveHost'>",
+				"required": true
 			},
 			{
 				"name": "activeRun.run",
@@ -1540,6 +1563,12 @@
 						"name": "automaticRequestHold.now",
 						"type": "number",
 						"required": true
+					},
+					{
+						"name": "automaticRequestHold.continuingStartedWork",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [
@@ -1946,6 +1975,34 @@
 					{
 						"name": "giveUp",
 						"type": "TrackerDispatchWrites['item']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "continuesStartedRun",
+				"inputs": [
+					{
+						"name": "continuesStartedRun.source",
+						"type": "TrackerLaunchSource",
+						"required": true
+					},
+					{
+						"name": "continuesStartedRun.runs",
+						"type": "readonly Pick<TrackerRunReceipt, 'node' | 'started_at'>[]",
+						"required": true
+					},
+					{
+						"name": "continuesStartedRun.policy",
+						"type": "Pick<TrackerDispatchPolicy, 'node' | 'resolveHost'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "continuesStartedRun",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

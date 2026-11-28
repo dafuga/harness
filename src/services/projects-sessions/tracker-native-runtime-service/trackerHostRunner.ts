@@ -10,16 +10,13 @@ import {
 	retiredTrackerSession,
 	trackerHostInventory
 } from './trackerHostInventory';
-import { trackerStoredSchedulingHold } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import {
 	attemptKey,
 	canonicalNode,
-	isDueNow,
 	trackerReminderTitle
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
-import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
 import type {
 	TrackerDispatchEvent,
 	TrackerRunReceipt
@@ -41,6 +38,7 @@ import { recordedHostEvent } from './trackerHostRunEvents';
 import { startTrackerHost } from './trackerHostLaunchPort';
 import { trackerCpuBudget } from '../../../utils/projects-sessions/trackerCpuBudget';
 import { recordOverdueAlert } from './trackerHostWatchdogAlerts';
+import { automaticHostHold } from './trackerQueueAdmission';
 
 export function trackerHostRunner(
 	store: TrackerPersistenceService,
@@ -67,7 +65,7 @@ export function trackerHostRunner(
 			},
 			async start(reservation: TrackerReservedStart, signal: AbortSignal, instructions: string) {
 				const item = items.getStored(reservation.run.item_id);
-				if (automaticHostHold(item, reservation.run, { now, automaticEnabled }))
+				if (automaticHostHold(store, item, reservation.run, { now, automaticEnabled }))
 					return {
 						type: 'startup-failed',
 						reason: 'automatic launch no longer permitted'
@@ -187,17 +185,6 @@ async function launchApprovedItem(
 		},
 		signal
 	);
-}
-
-function automaticHostHold(
-	item: TrackerItem,
-	run: TrackerRunReceipt,
-	{ now, automaticEnabled }: { now: () => number; automaticEnabled?: () => boolean }
-) {
-	if (run.launch_source === 'manual' && run.attempt <= 1) return false;
-	const at = now();
-	if (item.due && !isDueNow(item.due, trackerTimeZone, at)) return true;
-	return automaticEnabled?.() === false || trackerStoredSchedulingHold(item, at);
 }
 
 function hostItemMatchesRun(item: TrackerItem, run: TrackerRunReceipt) {

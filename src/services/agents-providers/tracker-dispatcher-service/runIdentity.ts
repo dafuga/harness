@@ -3,9 +3,23 @@ import type {
 	TrackerDispatchItem,
 	TrackerDispatchPolicy,
 	TrackerDispatchSnapshot,
+	TrackerLaunchSource,
 	TrackerRunReceipt
 } from '../TrackerDispatcherService.types';
 import { canonicalNode, ownsLaunch, minute } from './launchEligibility';
+
+/** Recovery can continue before a deadline when this host has an observed start for the item. */
+export function continuesStartedRun(
+	source: TrackerLaunchSource,
+	runs: readonly Pick<TrackerRunReceipt, 'node' | 'started_at'>[],
+	policy: Pick<TrackerDispatchPolicy, 'node' | 'resolveHost'>
+) {
+	const host = canonicalNode(policy.node, policy);
+	return (
+		source === 'recovery' &&
+		runs.some(({ node, started_at }) => node === host && started_at !== null)
+	);
+}
 
 export function activeRun(run: TrackerRunReceipt, policy: TrackerDispatchPolicy, now: number) {
 	if (run.state === 'finished') return false;

@@ -11,6 +11,7 @@ import type {
 import {
 	attemptKey,
 	automaticRequestHold,
+	continuesStartedRun,
 	dueItemHold,
 	hasOpenSession,
 	matchesRequest,
@@ -138,7 +139,12 @@ function claimHold(
 	now: number
 ): string | null {
 	const intent = item.launch!;
-	const eligibility = claimItemHold(item, Boolean(run), policy, now);
+	const eligibility = claimItemHold(
+		item,
+		{ retry: Boolean(run), runs: snapshot.runs },
+		policy,
+		now
+	);
 	if (eligibility) return eligibility;
 	if (!ownsLaunch(intent, policy)) return 'launch is assigned to a different computer';
 	if (hasOpenSession(snapshot, policy, now, run)) return 'item already has an open session';
@@ -154,13 +160,14 @@ function claimHold(
 
 function claimItemHold(
 	item: TrackerDispatchItem,
-	retry: boolean,
+	{ retry, runs }: { retry: boolean; runs: TrackerDispatchSnapshot['runs'] },
 	policy: TrackerDispatchPolicy,
 	now: number
 ) {
 	if (policy.enabled === false) return 'launcher disabled';
-	if (item.launch!.source !== 'manual' || retry) {
-		const hold = automaticRequestHold(item, policy, now);
+	const { source } = item.launch!;
+	if (source !== 'manual' || retry) {
+		const hold = automaticRequestHold(item, policy, now, continuesStartedRun(source, runs, policy));
 		if (hold) return hold;
 	}
 	if (!startable(item)) return 'item is not startable';

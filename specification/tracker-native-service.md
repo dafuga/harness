@@ -162,7 +162,10 @@ operator verifies the stopped database and chooses a rollback.
 - **Recovery and handoff.** Tracker alerts on missing sessions and uses its
   normal dispatch path to recover eligible items with briefs after a grace
   period. It rechecks the live pane inventory before requesting recovery.
-  Recovery and retry use the same gates as automatic pickup. Tracker holds
+  A host can recover an item ahead of its due date when it has a recorded
+  start for that item. A current answer can also resume its original live
+  session ahead of the deadline. First unattended starts still wait until due.
+  Recovery, retry, and automatic pickup share the scheduling holds. Tracker holds
   personal and Chief of Staff work, reminders, non-task items, opted-out,
   blocked, inactive or parked items, and items waiting on Daniel. Titles
   containing `PROD DEPLOY` require an explicit launch for every attempt.

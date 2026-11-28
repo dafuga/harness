@@ -119,12 +119,15 @@ export function automaticEnabled(
 export function automaticRequestHold(
 	item: TrackerDispatchItem,
 	policy: TrackerDispatchPolicy,
-	now: number
+	now: number,
+	continuingStartedWork = false
 ) {
 	return (
 		schedulingHold(item, now) ??
 		(automaticEnabled(policy) ? null : 'automatic launcher disabled') ??
-		(item.due && !isDueNow(item.due, policy.timezone, now) ? 'item is not due' : null)
+		(!continuingStartedWork && item.due && !isDueNow(item.due, policy.timezone, now)
+			? 'item is not due'
+			: null)
 	);
 }
 
@@ -189,7 +192,13 @@ export function isDueNow(due: string | null | undefined, timezone: string, now: 
 	return /^\d{4}-\d{2}-\d{2}$/.test(due) && due <= date.join('-');
 }
 
-export { activeRun, hasOpenSession, attemptKey, matchesRequest } from './runIdentity';
+export {
+	activeRun,
+	hasOpenSession,
+	attemptKey,
+	continuesStartedRun,
+	matchesRequest
+} from './runIdentity';
 export { trackerReminderTitle };
 
 export function chooseDueTarget(

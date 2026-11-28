@@ -88,7 +88,7 @@ test('verification failure reopens the item and escalates; the eventual success 
 });
 
 test('a current answer revives only its original live session and preserves the run identity', async () => {
-	const fixture = dispatcherFixture();
+	const fixture = dispatcherFixture({ item: { due: '2026-11-22' } });
 	const { run, session } = await runFixture(fixture);
 	const { service, item, changeItem, advance, conditions } = fixture;
 	changeItem({ status: 'blocked', awaitingAnswer: true, blockedReason: 'fixture needs Daniel' });

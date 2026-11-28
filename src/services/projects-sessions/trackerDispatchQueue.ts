@@ -93,8 +93,8 @@ export class TrackerDispatchQueue {
 		const { policy, permitAutomatic } = this.options;
 		if (!permitAutomatic) return true;
 		const now = policyNow(this.options);
-		const item = this.repository.readSnapshot(id).item;
-		const hold = automaticQueueHold(item, { policy, intent, now, queued });
+		const { item, runs } = this.repository.readSnapshot(id);
+		const hold = automaticQueueHold(item, { policy, intent, now, queued, runs });
 		if (hold) {
 			const moved = transferHeldTrackerLaunch(this.repository, this.options, {
 				item,
