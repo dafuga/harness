@@ -95,7 +95,7 @@ test('the Tracker artifact command merges delivery links without replacing the b
 	const link = { label: 'Feature video · dev', url: 'https://example.test/delivery' };
 	await writeFile(file, JSON.stringify({ links: [link] }));
 	const { request: parsed } = nativeTrackerArgs(['artifact', id, 'build', file, '--merge-links']);
-	const updated = await request(parsed.path, parsed.method, parsed.body as object);
+	const updated = await request(parsed.path, parsed.method, parsed.body);
 	expect(updated.status).toBe(200);
 	expect(await updated.json()).toMatchObject({
 		planning: { artifacts: { build: { ...existing, links: [existing.links[0], link] } } }

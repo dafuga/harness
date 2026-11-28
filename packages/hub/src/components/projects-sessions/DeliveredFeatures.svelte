@@ -3,7 +3,8 @@
 <!-- @harness-uid u_vuxtdbv3tu -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import VideoEvidence from '../../../../reports/src/components/verification-evidence/VideoEvidence.svelte';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import VideoEvidence from '$shared/verification-evidence/VideoEvidence.svelte';
 	import {
 		featureDeliveryApi,
 		featureDeliveryPageSchema,
@@ -35,7 +36,7 @@
 		loading = true;
 		error = false;
 		try {
-			const query = new URLSearchParams({ project });
+			const query = new SvelteURLSearchParams({ project });
 			if (next) query.set('cursor', next);
 			const response = await fetch(featureDeliveryApi + '?' + query, { signal: controller.signal });
 			if (!response.ok) throw new Error('Delivery list unavailable');

@@ -16,6 +16,13 @@ export async function deliveryMedia(
 	const range = rangeHeader === null ? undefined : deliveryRange(rangeHeader, size);
 	if (range === null)
 		return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${size}` } });
+	const response = featureVideoResponse(size, range);
+	if (request.method === 'HEAD') return new Response(null, response);
+	const video = await bucket.get(key, { range });
+	return video ? new Response(video.body, response) : new Response(null, { status: 404 });
+}
+
+function featureVideoResponse(size: number, range?: NonNullable<ReturnType<typeof deliveryRange>>) {
 	const headers = new Headers({
 		'Content-Type': 'video/webm',
 		'Content-Length': String(range?.length ?? size),
@@ -26,7 +33,5 @@ export async function deliveryMedia(
 			'Content-Range',
 			`bytes ${range.offset}-${range.offset + range.length - 1}/${size}`
 		);
-	const video = request.method === 'HEAD' ? null : await bucket.get(key, { range });
-	if (request.method !== 'HEAD' && video === null) return new Response(null, { status: 404 });
-	return new Response(video?.body ?? null, { status: range ? 206 : 200, headers });
+	return { status: range ? 206 : 200, headers };
 }
