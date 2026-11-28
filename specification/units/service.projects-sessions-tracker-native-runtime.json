@@ -266,7 +266,6 @@
 			"recordStartupAlerts",
 			"recordWatchdogAlert",
 			"contextAlert",
-			"recordHandoffFailure",
 			"recordOverdueAlert",
 			"blockMissingItem",
 			"applyIdleDecision",
@@ -359,6 +358,7 @@
 			"launchWithoutRunKind",
 			"queueIdleWork",
 			"watchLaunchRequests",
+			"trackerContextCheckpointPrefix",
 			"sampleTrackerContexts",
 			"TrackerContextSample",
 			"TrackerTranscriptRecord",
@@ -1345,21 +1345,6 @@
 			{
 				"name": "contextAlert.detail",
 				"type": "string",
-				"required": true
-			},
-			{
-				"name": "recordHandoffFailure.store",
-				"type": "TrackerPersistenceService",
-				"required": true
-			},
-			{
-				"name": "recordHandoffFailure.target",
-				"type": "TrackerHandoffTarget",
-				"required": true
-			},
-			{
-				"name": "recordHandoffFailure.now",
-				"type": "number",
 				"required": true
 			},
 			{
@@ -4384,34 +4369,6 @@
 				"outputs": [
 					{
 						"name": "contextAlert",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "recordHandoffFailure",
-				"inputs": [
-					{
-						"name": "recordHandoffFailure.store",
-						"type": "TrackerPersistenceService",
-						"required": true
-					},
-					{
-						"name": "recordHandoffFailure.target",
-						"type": "TrackerHandoffTarget",
-						"required": true
-					},
-					{
-						"name": "recordHandoffFailure.now",
-						"type": "number",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "recordHandoffFailure",
 						"type": "unknown"
 					}
 				],

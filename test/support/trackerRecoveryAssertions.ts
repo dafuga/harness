@@ -163,7 +163,7 @@ export async function verifyContextContinuation(
 	const history = () =>
 		runtime.store.database
 			.prepare('SELECT id,state,tmux,model,effort FROM runs WHERE item_id = ? ORDER BY id')
-			.all(id);
+			.all(id) as { id: number; state: string; tmux: string; model: string; effort: string }[];
 	const runState = async (index: number) => {
 		await dispatch();
 		return history()[index]?.state;
@@ -172,7 +172,7 @@ export async function verifyContextContinuation(
 	const original = history()[0];
 	expect((await managedTrackerItemRequest(runtime, id, 'start')).ok).toBe(true);
 	await expect
-		.poll(() => tmux('capture-pane', '-p', '-t', '=' + original.tmux))
+		.poll(() => tmux('capture-pane', '-p', '-t', original.tmux + ':0.0'))
 		.toContain('40% context left');
 	const checkpoint =
 		'stopped: watchdog context handoff; resume from: original worktree at fixture checkpoint';

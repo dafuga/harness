@@ -62,7 +62,7 @@ function settledRecoveryRun(run: TrackerListedRun, item: TrackerItem) {
 }
 
 function hasContextCheckpoint(run: TrackerListedRun, item: TrackerItem): boolean {
-	const start = Math.max(run.resumed_at ?? run.started_at ?? 0, run.queued_at ?? 0);
+	const start = Math.max(run.started_at ?? 0, run.queued_at ?? 0);
 	return item.notes_log.some(
 		({ node, at, text }) =>
 			node === run.node &&

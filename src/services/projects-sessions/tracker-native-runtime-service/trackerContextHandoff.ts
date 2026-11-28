@@ -54,7 +54,7 @@ function handoffTarget(
 		: panes.manualItem(pane, scan.items);
 	if (!handoffEligible(row)) return undefined;
 	const requested =
-		Number(store.getMeta(handoffKey(pane))) || checkpointStart(row, pane, run, scan.host);
+		checkpointStart(row, pane, run, scan.host) || Number(store.getMeta(handoffKey(pane)));
 	if ((pane.contextTokens ?? 0) <= contextLimit && !requested) return undefined;
 	return { pane, id: row.id, requested, runId: run?.id };
 }
