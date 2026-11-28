@@ -1,0 +1,234 @@
+{
+	"schemaVersion": 1,
+	"revision": "e38d75611b705e9f8e435002807faacf75daf451",
+	"bugClass": {
+		"id": "first-start-gate-on-continuation",
+		"title": "First-start date gate blocks previously started work",
+		"cause": "A due-date check intended to control the first unattended start also governs continuation. When the due date is still in the future, the shared gate can reject a replacement process restoring a checkpoint or prevent an already-started live session from reopening after an answer.",
+		"criteria": "Match either a checkpoint or reboot recovery path that cannot relaunch previously started work, or a post-answer path that cannot reopen its already-started live session. Trace the continuation through the request, queue, claim, host-start, or resume logic and identify the first-start date predicate that rejects or suppresses it. Verify ownership and a prior start for the same execution using a persisted start timestamp, a recorded start event, or a checkpoint linked to a started execution. A claim, retry count, answer, or resume label alone is insufficient. Untouched future-due work and retries that have never started still belong behind the first-start gate.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "dueAt > now",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "scheduledAt <= Date.now()",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "canStartUnattended",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "canStart",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "isDue",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "isEligible",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "Date.now",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "Date.parse",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "isFuture",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "isAfter",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "startedAt != null",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "firstStartedAt",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "started_at",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "executionId",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "claimedBy",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "ownerId",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "requestResume",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "enqueueResume",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "enqueue",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "claimNext",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "startHost",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "spawn",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "restartWatchdog",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "restoreCheckpoint",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "loadCheckpoint",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "recoverSessions",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "submitAnswer",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "reopenSession",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "resumeSession",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": ".filter(",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"due",
+			"eligible",
+			"unattended",
+			"request",
+			"queue",
+			"claim",
+			"owner",
+			"started",
+			"session",
+			"host",
+			"watchdog",
+			"reboot",
+			"checkpoint",
+			"resume",
+			"answer",
+			"retry"
+		],
+		"pathHints": [
+			{
+				"contains": "src/services/",
+				"weight": 8
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 8
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 7
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 6
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 6
+			},
+			{
+				"contains": "src/repositories/",
+				"weight": 5
+			},
+			{
+				"contains": "src/core/",
+				"weight": 5
+			},
+			{
+				"contains": "src/cli/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/reports/",
+				"weight": -4
+			},
+			{
+				"contains": "specification/",
+				"weight": -7
+			},
+			{
+				"contains": "test/",
+				"weight": -8
+			},
+			{
+				"contains": ".test.ts",
+				"weight": -8
+			},
+			{
+				"contains": ".spec.ts",
+				"weight": -8
+			}
+		]
+	}
+}

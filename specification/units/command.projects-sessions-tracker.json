@@ -349,6 +349,12 @@
 				"required": true
 			},
 			{
+				"name": "nativeTrackerPlanningRequest.mergeLinks",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
 				"name": "nativeTrackerArgs.args",
 				"type": "string[]",
 				"required": true
@@ -1274,6 +1280,12 @@
 						"name": "nativeTrackerPlanningRequest.[stage, file, ...rest]",
 						"type": "string[]",
 						"required": true
+					},
+					{
+						"name": "nativeTrackerPlanningRequest.mergeLinks",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [

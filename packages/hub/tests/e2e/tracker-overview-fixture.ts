@@ -136,6 +136,9 @@ export async function overviewFixture(
 		open = resolve;
 	});
 	const overview: OverviewControl = { mode, calls: [], release: () => open() };
+	await page.route('**/api/tracker-overview/deliveries?project=*', (route) =>
+		route.fulfill({ json: { deliveries: [], cursor: null } })
+	);
 	await page.route('**/api/tracker-overview', async (route) => {
 		const request = route.request();
 		const url = new URL(request.url());

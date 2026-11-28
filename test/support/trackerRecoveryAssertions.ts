@@ -51,6 +51,8 @@ export async function verifyStoppedRun(
 			.prepare('SELECT state, failure_reason FROM runs WHERE id = ?')
 			.get(row.id)
 	).toEqual({ state: 'finished', failure_reason: 'stopped by operator' });
+	// Retire this disposable item before the next case advances the clock past its pause.
+	expect((await managedTrackerItemRequest(runtime, itemId, 'done')).ok).toBe(true);
 }
 
 export async function verifyKilledReminder(

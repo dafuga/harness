@@ -1,5 +1,6 @@
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
+import { verifyStartedRecoveryBeforeDue } from '../../support/trackerDueLaunchFixture';
 import {
 	dispatcherFixture,
 	primary,
@@ -16,6 +17,7 @@ test('due intent uses a local-zone date, holds future or ineligible work and kee
 	const { changeItem, service, policy, runs } = fixture;
 	const due = { source: 'due', token: sampleToken } as const;
 	await verifyRecoveryGates(fixture);
+	await verifyStartedRecoveryBeforeDue();
 
 	changeItem({ due: '2026-11-21' });
 	await verifyQueuedLaunchGates(fixture);

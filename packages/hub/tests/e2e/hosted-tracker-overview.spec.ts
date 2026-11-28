@@ -217,3 +217,51 @@ for (const viewport of viewports) {
 		await capture(page, testInfo, 'switching', viewport);
 	});
 }
+
+test('a project shows available delivery videos inline in newest-first order', async ({
+	page
+}, testInfo) => {
+	await overviewFixture(page);
+	const project = 'synthetic-sync';
+	const video = (id: string, title: string, at: string, stage: string) => ({
+		id,
+		project,
+		title,
+		at,
+		stage,
+		sha256: 'a'.repeat(64),
+		durationSeconds: 24
+	});
+	await page.route('**/api/tracker-overview/deliveries?project=synthetic-sync', (route) =>
+		route.fulfill({
+			json: {
+				deliveries: [
+					video('testrelease', 'Release to live', '2026-11-28T10:15:00.000Z', 'live'),
+					video('testpreview', 'Preview on staging', '2026-11-27T10:15:00.000Z', 'staging')
+				],
+				cursor: null
+			}
+		})
+	);
+	await page.route('**/api/tracker-overview/deliveries?item=*', (route) =>
+		route.fulfill({ status: 204 })
+	);
+	await page.goto('/tracker-overview?project=synthetic-sync');
+	await expect(page.getByRole('heading', { name: project, exact: true, level: 1 })).toBeVisible();
+	if (process.env.HEADLESS_RUN_ARTIFACTS)
+		await page.screenshot({
+			path:
+				process.env.HEADLESS_RUN_ARTIFACTS + '/project-overview-' + testInfo.project.name + '.png'
+		});
+	const section = page.getByRole('region', { name: 'Delivered features' });
+	await expect(section.getByRole('heading', { level: 3 })).toHaveText(
+		['Release to live', 'Preview on staging'],
+		{ timeout: 5000 }
+	);
+	await expect(section.locator('video[controls]')).toHaveCount(2);
+	await expect(section.locator('time').first()).toHaveAttribute(
+		'datetime',
+		'2026-11-28T10:15:00.000Z'
+	);
+	await expect(section.getByText('Live', { exact: true })).toBeVisible();
+});

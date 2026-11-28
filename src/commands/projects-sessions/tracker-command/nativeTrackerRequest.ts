@@ -95,7 +95,12 @@ function itemQuery(
 			return { method: 'GET', path: '/items' + query(fields) };
 		case 'stage':
 		case 'artifact':
-			return nativeTrackerPlanningRequest(command, words[0], words.slice(1));
+			return nativeTrackerPlanningRequest(
+				command,
+				words[0],
+				words.slice(1),
+				values['merge-links'] === true
+			);
 		case 'check':
 			return {
 				method: 'GET',

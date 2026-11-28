@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"id": "script.deliver-feature-deliver-feature",
+	"kind": "script",
+	"title": "deliverFeature",
+	"responsibility": "Owns the deliverFeature build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"scripts/deliver-feature/deliverFeature.ts",
+			"scripts/deliver-feature/deliverFeature.types.ts"
+		],
+		"symbols": ["deliverFeature", "DeliveryInput", "DeliveryCapture", "DeliveryServices"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "deliverFeature.input",
+				"type": "DeliveryInput",
+				"required": true
+			},
+			{
+				"name": "deliverFeature.services",
+				"type": "DeliveryServices",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "deliverFeature",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "deliverFeature",
+				"inputs": [
+					{
+						"name": "deliverFeature.input",
+						"type": "DeliveryInput",
+						"required": true
+					},
+					{
+						"name": "deliverFeature.services",
+						"type": "DeliveryServices",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "deliverFeature",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-feature-delivery",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-sanitize-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/deliver-feature/deliverFeature.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/deliver-feature/deliverFeature.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

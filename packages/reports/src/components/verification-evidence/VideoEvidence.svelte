@@ -10,7 +10,13 @@
 	import Status from '../shared-primitives/status/Status.svelte';
 	import { loadVideoFlags, submitVideoFlag } from './video-evidence/videoFeedback';
 	import { videoProvenance } from './video-evidence/videoProvenance';
-	let { item, assetBase, initialFlags = [] }: VideoEvidenceProps = $props();
+	let {
+		item,
+		assetBase,
+		initialFlags = [],
+		playbackOnly = false,
+		metadata
+	}: VideoEvidenceProps = $props();
 	let player = $state<HTMLVideoElement>();
 	let frame = $state(0),
 		note = $state(''),
@@ -46,7 +52,7 @@
 		error = '';
 		loading = false;
 		untrack(updatePlayer);
-		if (!current?.reference) return;
+		if (playbackOnly || !current?.reference) return;
 		loading = true;
 		void refresh(current, controller);
 		return () => controller.abort();
@@ -114,7 +120,11 @@
 </script>
 
 <hx-article class="video-evidence" data-harness-component="video-evidence" aria-label={item.title}>
-	<hx-header><hx-h3>{item.title}</hx-h3><Status variant="badge" status={item.status} /></hx-header>
+	<hx-header
+		><hx-h3>{item.title}</hx-h3>
+		{#if metadata}{@render metadata()}{/if}
+		{#if !playbackOnly}<Status variant="badge" status={item.status} />{/if}
+	</hx-header>
 	{#if item.missing || !item.file}<hx-p role="status">{item.note ?? 'No video was recorded.'}</hx-p>
 	{:else}<hx-video
 			bind:this={player}
@@ -133,66 +143,75 @@
 			onemptied={updatePlayer}
 			onerror={() => {
 				settled = false;
-				error = 'The recorded video could not be played. Download the original to inspect it.';
+				error = playbackOnly
+					? 'The recorded video could not be played.'
+					: 'The recorded video could not be played. Download the original to inspect it.';
 			}}
 		></hx-video>{/if}
-	{#if video}
-		<hx-div class="video-timeline">
-			<hx-label
-				>Frame timeline<hx-input-range
-					aria-label="Frame timeline"
-					min="0"
-					max={lastFrame}
-					step="1"
-					value={frame}
-					oninput={(event) => seek(Number(event.currentTarget.value))}
-				/></hx-label
-			>
-			<hx-div class="flag-track" aria-label="Flagged frames">
-				{#each shownFlags as flag (flag.id)}<hx-button
-						type="button"
-						class:stale={flag.status === 'stale'}
-						style:left={`${Math.min(100, (flag.frameNumber / Math.max(1, lastFrame)) * 100)}%`}
-						aria-label={`${standing(flag)} flag at ${flag.atSeconds}s: ${flag.note}`}
-						title={`${standing(flag)} · ${flag.atSeconds}s`}
-						onclick={() => seek(flag.frameNumber, flag)}
-					></hx-button>{/each}
+	{#if !playbackOnly}
+		{#if video}
+			<hx-div class="video-timeline">
+				<hx-label
+					>Frame timeline<hx-input-range
+						aria-label="Frame timeline"
+						min="0"
+						max={lastFrame}
+						step="1"
+						value={frame}
+						oninput={(event) => seek(Number(event.currentTarget.value))}
+					/></hx-label
+				>
+				<hx-div class="flag-track" aria-label="Flagged frames">
+					{#each shownFlags as flag (flag.id)}<hx-button
+							type="button"
+							class:stale={flag.status === 'stale'}
+							style:left={`${Math.min(100, (flag.frameNumber / Math.max(1, lastFrame)) * 100)}%`}
+							aria-label={`${standing(flag)} flag at ${flag.atSeconds}s: ${flag.note}`}
+							title={`${standing(flag)} · ${flag.atSeconds}s`}
+							onclick={() => seek(flag.frameNumber, flag)}
+						></hx-button>{/each}
+				</hx-div>
+				<hx-output aria-live="polite"
+					>Frame {frame} · {(frame / video.frameRate).toFixed(2)}s</hx-output
+				>
 			</hx-div>
-			<hx-output aria-live="polite"
-				>Frame {frame} · {(frame / video.frameRate).toFixed(2)}s</hx-output
-			>
-		</hx-div>
+		{/if}
+		{#if video?.reference && !item.missing}<hx-form onsubmit={save}>
+				<hx-label
+					>Frame note<hx-textarea
+						aria-label="Frame note"
+						bind:value={note}
+						maxlength="2000"
+						rows="2"
+					></hx-textarea></hx-label
+				>
+				<hx-p class="muted">Pause playback and let seeking settle before flagging a frame.</hx-p>
+				<hx-button type="submit" disabled={!canFlag()}
+					>{saving ? 'Saving frame…' : 'Flag current frame'}</hx-button
+				>
+			</hx-form>{:else}<hx-p class="muted"
+				>No attached clip reference is available for frame feedback.</hx-p
+			>{/if}
+		{#if loading}<hx-p role="status">Loading frame feedback…</hx-p>{/if}
+		{#if shownFlags.length}<hx-ul class="frame-flags" aria-label="Frame feedback">
+				{#each shownFlags as flag (flag.id)}<hx-li
+						><hx-button type="button" onclick={() => seek(flag.frameNumber, flag)}>
+							{standing(flag)} · {flag.atSeconds.toFixed(2)}s</hx-button
+						><hx-span>{flag.note || 'No note'}</hx-span></hx-li
+					>{/each}
+			</hx-ul>{/if}
+		{#if selected}<hx-figure
+				><hx-img src={frameImage(selected)} alt={`Flagged frame at ${selected.atSeconds}s`} />
+				<hx-figcaption>{standing(selected)} · {selected.note}</hx-figcaption></hx-figure
+			>{/if}
+		{#if item.file && !item.missing}<hx-a href={source(item.file)} target="_blank" rel="noreferrer"
+				>Download original video</hx-a
+			>{/if}
+		<hx-details
+			><hx-summary>Clip details</hx-summary><EvidenceProvenance item={details} /></hx-details
+		>
 	{/if}
-	{#if video?.reference && !item.missing}<hx-form onsubmit={save}>
-			<hx-label
-				>Frame note<hx-textarea aria-label="Frame note" bind:value={note} maxlength="2000" rows="2"
-				></hx-textarea></hx-label
-			>
-			<hx-p class="muted">Pause playback and let seeking settle before flagging a frame.</hx-p>
-			<hx-button type="submit" disabled={!canFlag()}
-				>{saving ? 'Saving frame…' : 'Flag current frame'}</hx-button
-			>
-		</hx-form>{:else}<hx-p class="muted"
-			>No attached clip reference is available for frame feedback.</hx-p
-		>{/if}
-	{#if loading}<hx-p role="status">Loading frame feedback…</hx-p>{/if}
 	{#if error}<hx-p role="alert">{error}</hx-p>{/if}
-	{#if shownFlags.length}<hx-ul class="frame-flags" aria-label="Frame feedback">
-			{#each shownFlags as flag (flag.id)}<hx-li
-					><hx-button type="button" onclick={() => seek(flag.frameNumber, flag)}>
-						{standing(flag)} · {flag.atSeconds.toFixed(2)}s</hx-button
-					><hx-span>{flag.note || 'No note'}</hx-span></hx-li
-				>{/each}
-		</hx-ul>{/if}
-	{#if selected}<hx-figure
-			><hx-img src={frameImage(selected)} alt={`Flagged frame at ${selected.atSeconds}s`} />
-			<hx-figcaption>{standing(selected)} · {selected.note}</hx-figcaption></hx-figure
-		>{/if}
-	{#if item.file && !item.missing}<hx-a href={source(item.file)} target="_blank" rel="noreferrer"
-			>Download original video</hx-a
-		>{/if}
-	<hx-details><hx-summary>Clip details</hx-summary><EvidenceProvenance item={details} /></hx-details
-	>
 </hx-article>
 
 <style>

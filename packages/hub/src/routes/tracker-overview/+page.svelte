@@ -6,6 +6,7 @@
 	import { page } from '$app/state';
 	import ProjectOverview from '$shared/projects-sessions/project-overview/ProjectOverview.svelte';
 	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
+	import DeliveredFeatures from '../../components/projects-sessions/DeliveredFeatures.svelte';
 	import HubFrame from '../../components/shared-primitives/HubFrame.svelte';
 	import LoginPanel from '../../components/accounts-access/login-panel/LoginPanel.svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
@@ -66,6 +67,12 @@
 			snapshot={outcome?.kind === 'owner' ? outcome.snapshot : null}
 			{project}
 			standalone={false}
-		/>
+		>
+			{#snippet deliveries()}
+				{#if outcome?.kind === 'owner' && project}
+					{#key project}<DeliveredFeatures {project} />{/key}
+				{/if}
+			{/snippet}
+		</ProjectOverview>
 	{/if}
 </HubFrame>

@@ -68,6 +68,12 @@
 	],
 	"references": [
 		{
+			"from": "packages/hub/src/components/projects-sessions/DeliveredFeatures.svelte",
+			"specifier": "$shared/verification-evidence/VideoEvidence.svelte",
+			"to": "packages/reports/src/components/verification-evidence/VideoEvidence.svelte",
+			"reason": "Shared Reports video playback in the Hub delivery feed."
+		},
+		{
 			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
 			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
 			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",

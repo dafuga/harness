@@ -112,8 +112,8 @@ async function verifyEligibleRecovery(
 ) {
 	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual({ total: 1 });
 	expect(items.getStored(id)).toMatchObject({
-		status: 'blocked',
-		blocked_reason: expect.stringContaining('automatic launch opted out')
+		status: 'open',
+		schedule_hold: { reason: 'Automatic launch paused by operator', until: expect.any(String) }
 	});
 	runtime.store.appendLocal({
 		itemId: id,
@@ -184,7 +184,11 @@ async function startAndDrop(
 	expect((await managedTrackerItemRequest(runtime, id, 'start')).ok).toBe(true);
 	runtime.store.appendLocal({
 		itemId: id,
-		fields: { schedule_off: true, model: 'gpt-6.2-sol:low' }
+		fields: {
+			schedule_off: 1,
+			schedule_hold_reason: 'Automatic launch paused by operator',
+			model: 'gpt-6.2-sol:low'
+		}
 	});
 	tmux('kill-session', '-t', '=auto-recovr-r1');
 	await dispatch();

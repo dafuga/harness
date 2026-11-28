@@ -105,7 +105,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['unlaunch', {}],
 	['show', {}],
 	['stage', {}],
-	['artifact', {}],
+	['artifact', { 'merge-links': flag }],
 	[
 		'list',
 		{
