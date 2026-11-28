@@ -34,11 +34,20 @@ export function trackerCosRound(
 					store,
 					pending.filter(({ id }) => confirmed.has(id))
 				);
-			// Run state can change while transcript acceptance is checked.
 			const stillDeliverable = deliverable.filter(current);
-			// Checked before sending, so a send that throws cannot hide the backlog.
-			watchCosDelivery(store, unsentCosAlerts(store, stillDeliverable), now());
-			await sendWatchdogAlerts(store, driver, stillDeliverable, signal);
+			let progressExpected = false;
+			try {
+				progressExpected =
+					(await sendWatchdogAlerts(store, driver, stillDeliverable, signal)) !== false;
+			} finally {
+				if (!signal.aborted)
+					watchCosDelivery(
+						store,
+						unsentCosAlerts(store, stillDeliverable.filter(current)),
+						now(),
+						progressExpected
+					);
+			}
 		}
 	};
 }

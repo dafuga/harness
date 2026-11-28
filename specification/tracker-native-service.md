@@ -232,6 +232,10 @@ operator verifies the stopped database and chooses a rollback.
   When tmux misses an acceptance, Tracker checks Claude's recorded prompt
   or queue receipt before retrying. Changes to the dependency text can
   trigger a new alert. Open blockers continue to appear in the daily digest.
+  While the CoS pane is working or waiting for the next delivery interval,
+  Tracker keeps the alerts queued and retries without asking Daniel to intervene.
+  The fallback question remains available if the pane is unavailable and delivery
+  has exceeded its grace period.
   CoS batches carry up to four alerts within a 450-byte composer budget. A long alert uses its item ID
   and a short sentence, with full details available in Tracker. The batch
   includes the slot summary when it fits.
