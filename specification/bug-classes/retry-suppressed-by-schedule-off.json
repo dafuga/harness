@@ -1,0 +1,141 @@
+{
+	"schemaVersion": 1,
+	"revision": "ab10349c8f5fd92e4cd03a47ef0df35abd1a55a1",
+	"bugClass": {
+		"id": "retry-suppressed-by-schedule-off",
+		"title": "Schedule-off state suppresses a confirmed startup retry",
+		"cause": "A manual request is still current and the host confirms the run never started, but retry preparation treats a scheduling-off state as an unattended cancellation hold. Without an applicable manual-startup-retry override, that gate suppresses the one explicit startup retry. Related variants may use scheduleOff/schedule_off, automaticRequestHold/schedulingHold, or retireUnstartedRun/prepareRetry/confirmNeverStarted/automaticHostHold.",
+		"criteria": "Positive when a site gates a confirmed never-started explicit retry for a still-current manual request on schedule-off or an equivalent unattended hold, and no applicable manualStartupRetry or equivalent override permits it. Either schedule-off or the equivalent unattended hold can independently produce the suppression. Exclude retries after a session started, explicit token withdrawal, owner/parked/answer holds, protective routing, and policy-helper definitions without the suppressing retry path.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "confirmNeverStarted",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "manualStartupRetry",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "retireUnstartedRun",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "scheduleOff",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "schedule_off",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "automaticRequestHold",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "schedulingHold",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "automaticHostHold",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "prepareRetry",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "neverStarted",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "confirmNeverStarted",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "retireUnstartedRun",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "prepareRetry",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "automaticHostHold",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "automaticRequestHold",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "schedulingHold",
+				"weight": 3
+			}
+		],
+		"contextTerms": [
+			"manualstartupretry",
+			"scheduleoff",
+			"schedule_off",
+			"automaticrequesthold",
+			"schedulinghold",
+			"retireunstartedrun",
+			"prepareretry",
+			"confirmneverstarted",
+			"automatichosthold"
+		],
+		"pathHints": [
+			{
+				"contains": "src/workflows/",
+				"weight": 5
+			},
+			{
+				"contains": "src/services/",
+				"weight": 4
+			},
+			{
+				"contains": "src/core/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 1
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "specification/",
+				"weight": -3
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -2
+			},
+			{
+				"contains": "src/cli/",
+				"weight": -2
+			}
+		]
+	}
+}

@@ -2,7 +2,7 @@
 	"name": "tracker-startup-retry",
 	"goal": "Retry a confirmed Tracker host startup failure once for an explicit launch even with scheduling disabled, preserve duplicate-session fencing, and alert Chief of Staff after exhaustion.",
 	"createdAt": "2026-11-28T08:16:09.655Z",
-	"updatedAt": "2026-11-28T08:22:49.089Z",
+	"updatedAt": "2026-11-28T08:29:07.503Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,12 +41,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T08:27:19.442Z",
+			"evidence": "Exact paired proof: red b34011911e and green ab10349c8f in the same minimal environment, unchanged test and fixture. The retry resumes one explicit launch despite schedule-off, with no alert on success and one durable alert after a second failure."
 		},
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T08:29:07.503Z",
+			"evidence": "siblings-8e647abf-1fdd-4151-a456-ab7ae4ebd91c.json"
 		},
 		{
 			"id": "verify",
