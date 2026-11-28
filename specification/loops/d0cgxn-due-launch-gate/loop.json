@@ -2,11 +2,9 @@
 	"name": "d0cgxn-due-launch-gate",
 	"goal": "Keep scheduled work out of unattended launch until the due time, then launch it through normal dispatch",
 	"createdAt": "2026-11-28T13:01:22.371Z",
-	"updatedAt": "2026-11-28T13:02:42.429Z",
+	"updatedAt": "2026-11-28T13:08:11.388Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,22 +25,30 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T13:05:35.580Z",
+			"evidence": "Committed replay 49c242db33 failed: the watchdog set a launch token and the runner recorded later00001 as automatic before its due time."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T13:05:36.870Z",
+			"evidence": "The dispatcher reuses the scheduler due-time calculation for unattended admission. The native runner rechecks the stored due time before starting."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T13:07:01.562Z",
+			"evidence": "Clean snapshot 09c71be8cc passed the same ten tests. The watchdog left the item unqueued, it started as due at the exact time, and automatic claims and recovery respected the gate."
 		},
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T13:08:11.388Z",
+			"evidence": "siblings-3b95a059-de38-479e-9442-1321b9a05ab5.json"
 		},
 		{
 			"id": "verify",

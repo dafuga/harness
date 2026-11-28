@@ -11,6 +11,8 @@ import { TrackerSyncAuthService } from '../../src/services/networking-security/T
 import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import type { TrackerNativeRuntimeOptions } from '../../src/services/projects-sessions/TrackerNativeRuntimeService.types';
 import { trackerFleetMachineStore } from '../../src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks';
+import { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
+import { queueIdleWork } from '../../src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests';
 import type { Reading } from './trackerFleetFixture.types';
 import { fixtureSecret, wire } from './trackerDispatchQueueFixture';
 import { resourceSample, runnerReport } from './trackerMachineFixture';
@@ -19,6 +21,21 @@ export const hubNode = 'daniel-primary-mbp';
 export const peerNode = 'harbor-mbp-2';
 export const minute = 60_000;
 export const signal = new AbortController().signal;
+
+export async function sweepIdleWork(runtime: TrackerNativeRuntimeService, id: string) {
+	const items = new TrackerItemReadRepository(runtime.store.database, runtime.now);
+	await queueIdleWork(
+		runtime.store,
+		{
+			rows: items.list({ status: 'all', limit: -1 }),
+			snapshot: { now: runtime.now(), panes: [], items: [], runs: [] },
+			dispatch: runtime.dispatch!,
+			minutes: 120
+		},
+		signal
+	);
+	return items.getStored(id).auto;
+}
 
 /** A hub and a spoke that report the readings each test sets, over the signed sync wire. */
 export function fleet(extra: Partial<TrackerNativeRuntimeOptions> = {}) {

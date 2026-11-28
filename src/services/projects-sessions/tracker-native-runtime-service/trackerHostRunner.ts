@@ -194,13 +194,10 @@ function automaticHostHold(
 	run: TrackerRunReceipt,
 	{ now, automaticEnabled }: { now: () => number; automaticEnabled?: () => boolean }
 ) {
+	if (run.launch_source === 'manual' && run.attempt <= 1) return false;
 	const at = now();
-	return (
-		(run.launch_source !== 'manual' || run.attempt > 1) &&
-		(automaticEnabled?.() === false ||
-			trackerStoredSchedulingHold(item, at) ||
-			(item.due && !isDueNow(item.due, trackerTimeZone, at)))
-	);
+	if (item.due && !isDueNow(item.due, trackerTimeZone, at)) return true;
+	return automaticEnabled?.() === false || trackerStoredSchedulingHold(item, at);
 }
 
 function hostItemMatchesRun(item: TrackerItem, run: TrackerRunReceipt) {

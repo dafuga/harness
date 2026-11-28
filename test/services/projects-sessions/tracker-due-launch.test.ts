@@ -8,13 +8,11 @@ import { TrackerSpokeSyncService } from '../../../src/services/projects-sessions
 import { trackerFleetMachineStore } from '../../../src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks';
 import { trackerHostLaunch } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
-import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
-import { queueIdleWork } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests';
 import { fixturePolicy, primary, secondary } from '../../support/trackerDispatcherFixture';
 import { fixtureSecret, wire } from '../../support/trackerDispatchQueueFixture';
 import { trackerResourceHoldPrefix } from '../../../src/utils/projects-sessions/trackerHostResourceHold';
 import { resourceSample, runnerReport } from '../../support/trackerMachineFixture';
-import { expectHubSeenBySpoke } from '../../support/trackerFleetFixture';
+import { expectHubSeenBySpoke, sweepIdleWork } from '../../support/trackerFleetFixture';
 
 const signal = new AbortController().signal;
 // 02:00 in Lisbon: due work launches through the night.
@@ -79,7 +77,7 @@ test('the default launcher honors due times across watchdog and scheduler ticks'
 		);
 		expect(enabled.status).toBe(200);
 		instant += 120 * 60_000;
-		await sweepIdleWork(runtime);
+		expect.soft(await sweepIdleWork(runtime, 'later00001')).toBeNull();
 		expect.soft(start.mock.calls).toEqual([]);
 		runtime.store.appendLocal(task('past000001', '2026-11-24T09:00:00.000Z'));
 		runtime.store.appendLocal(task('held000001', '2026-11-24T09:00:00.000Z'));
@@ -106,21 +104,6 @@ test('the default launcher honors due times across watchdog and scheduler ticks'
 		database.close();
 	}
 });
-
-async function sweepIdleWork(runtime: TrackerNativeRuntimeService) {
-	const items = new TrackerItemReadRepository(runtime.store.database, runtime.now);
-	await queueIdleWork(
-		runtime.store,
-		{
-			rows: items.list({ status: 'all', limit: -1 }),
-			snapshot: { now: runtime.now(), panes: [], items: [], runs: [] },
-			dispatch: runtime.dispatch!,
-			minutes: 120
-		},
-		signal
-	);
-	expect.soft(items.getStored('later00001').auto).toBeNull();
-}
 
 test.each([
 	{ name: 'a calm computer', reading: [1, 1, 1], ageMs: 0, starts: ['mbtwo00001'] },
