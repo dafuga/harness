@@ -2,7 +2,7 @@
 	"name": "eprdz4-module-progress",
 	"goal": "Prove project progress derives from module plans and merged acceptance proof, and the Tracker CLI and shared Hub Home show the same count.",
 	"createdAt": "2026-11-28T10:18:29.623Z",
-	"updatedAt": "2026-11-28T10:32:18.356Z",
+	"updatedAt": "2026-11-28T10:52:19.568Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -26,12 +26,16 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T10:51:40.478Z",
+			"evidence": "Primary Mac: nine focused Tracker/progress/module-acceptance tests, 13 Hub overview tests; Harbor draft/approved/missing-proof and Harness merged/unmerged fixture receipts. harbor-mbp-2: desktop, tablet and phone Home browser cases passed with one worker, against edd5ccdeeb."
 		},
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T10:52:19.568Z",
+			"evidence": "Primary Mac: root tsc, changed root ESLint, zero Harness audit findings, Hub svelte-check zero errors and two existing warnings. harbor-mbp-2: one-worker desktop/tablet/phone browser proof on edd5ccdeeb; later changes restricted to tests and loop evidence. Release remains outside this PR qualification."
 		}
 	],
 	"evaluators": [
