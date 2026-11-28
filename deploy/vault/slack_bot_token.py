@@ -14,10 +14,10 @@ Packet forms, both read from a private 0600 file (or `-` for stdin outside secre
 import json
 import os
 import sys
-import urllib.error
-import urllib.request
+import urllib.parse
 
 import slack_binding as pins
+from private_provider_http import ProviderError, request_json
 
 API = 'https://slack.com/api/'
 
@@ -30,26 +30,20 @@ class Failure(Exception):
         self.code = code
 
 
-class NoRedirect(urllib.request.HTTPRedirectHandler):
-    def redirect_request(self, *_args, **_kwargs):
-        return None
-
-
 def slack_call(base, method, token, params=None):
     """POST a Slack Web API method and return (body, granted scopes). Redirects are refused."""
-    body = '&'.join(f'{key}={value}' for key, value in (params or {}).items()).encode()
-    request = urllib.request.Request(base + method, data=body, method='POST', headers={
+    parts = urllib.parse.urlsplit(base)
+    origin = urllib.parse.urlunsplit((parts.scheme, parts.netloc, '', '', ''))
+    body = urllib.parse.urlencode(params or {}).encode()
+    headers = {
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/x-www-form-urlencoded',
-    })
+    }
     try:
-        with urllib.request.build_opener(NoRedirect).open(request, timeout=15) as response:
-            payload = json.loads(response.read(65536))
-            header = response.headers.get('x-oauth-scopes') or ''
-    except (OSError, ValueError, urllib.error.URLError):
+        payload, response_headers = request_json(origin, parts.path + method, 'POST', data=body, headers=headers)
+    except ProviderError:
         raise Failure('slack-unreachable') from None
-    if not isinstance(payload, dict):
-        raise Failure('slack-unreachable')
+    header = response_headers.get('x-oauth-scopes') or ''
     return payload, {scope.strip() for scope in header.split(',') if scope.strip()}
 
 
@@ -67,7 +61,7 @@ def read_packet(path):
 def claims_from(packet, expect_bot, expect_user):
     """Return (token, expected bot ID, expected bot-user ID, scopes) from either packet form."""
     token = packet.get('access_token', packet.get('token'))
-    if not isinstance(token, str) or not pins.TOKEN.match(token):
+    if not isinstance(token, str) or not pins.TOKEN.fullmatch(token):
         raise Failure('not-a-bot-token')
     if 'access_token' not in packet:
         if not (expect_bot and expect_user):
@@ -84,11 +78,13 @@ def claims_from(packet, expect_bot, expect_user):
     return token, expect_bot, packet.get('bot_user_id') or expect_user, scopes
 
 
-def verify(base, claims):
+def verify(base, claims, *, allowed_scopes=None):
     """Check auth.test and the private channel for (token, bot ID, bot-user ID, scopes)."""
     token, expect_bot, expect_user, scopes = claims
     identity, header = slack_call(base, 'auth.test', token)
     scopes = scopes | header
+    if allowed_scopes is not None and scopes - allowed_scopes:
+        raise Failure('slack-oauth-grant-outside-approved-scope')
     if identity.get('ok') is not True or identity.get('team_id') != pins.BINDING['workspaceId']:
         raise Failure('identity-mismatch')
     bot_id, user_id = identity.get('bot_id'), identity.get('user_id')

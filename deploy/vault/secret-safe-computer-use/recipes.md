@@ -52,6 +52,33 @@ script the project selector, creation and one-time reveal in the disposable brow
 Verify scope and registration through metadata without a model request.
 [OpenAI API keys and service accounts](https://developers.openai.com/api/docs/guides/api-keys)
 
+### Fluora Demo project key
+
+`deploy/vault/openai_project_key.py` runs inside a trusted executor. Bind its reviewed
+revision to the Personal organization, the dedicated active `Fluora Demo` project,
+its workload service account, and the primary Mac user. The executor supplies one
+private stdin JSON packet with `project_id`, `service_account_id`, and `admin_key`.
+Resolve the Admin API credential inside Vault. The executor must authorize the
+action and match those IDs to its approved binding before opening that credential.
+
+The script uses `https://api.openai.com` and refuses redirects. It checks both
+resource IDs and existing key metadata, applies the USD 5 monthly hard limit and
+reads back enforcement before creating `Fluora Demo Realtime`. The key expires after
+24 hours and has the `api.model.request` scope required by the demo's Realtime
+WebSocket. The script publishes `OPENAI_API_KEY` atomically to the execution user's
+`~/.secrets/openai.env` with mode 0600. The existing owner-controlled directory must be
+present. The stdout receipt contains only IDs, the scope, expiry and limit amount.
+The script uses no inference endpoint. OpenAI's spend-limit enforcement can lag.
+
+An existing destination or same-name key requires reconciliation before any retry.
+If a known newly created key cannot be saved, the executor attempts to revoke it
+and reports the outcome. For an uncertain creation response, use the project's key
+metadata to check for an orphan first. Creating the dedicated project or service
+account, if absent, is a separate preflight in the approved organization.
+[Spend limits](https://developers.openai.com/api/docs/guides/spend-limits)
+· [Service-account key creation](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/projects/subresources/service_accounts/subresources/api_keys/methods/create)
+· [API permissions](https://developers.openai.com/api/docs/guides/rbac)
+
 ## Twilio
 
 Bind the correct account or subaccount and region. Use the Key Resource v1 API for a
@@ -87,11 +114,65 @@ The writer refuses any receipt that is not a PASS for the pinned app, workspace 
 The store keeps `bot.token` and `bot.receipt.json` at mode 0600 under
 `<root>/harness/slack-smoke/buildflexity-alerts/` (an owner-only directory). The smoke
 consumer reads `python3 deploy/vault/slack_binding.py emit <root>`, which re-checks the receipt and
-prints the `{"token"}` packet for a private pipe. Obtaining the token live (OAuth install and
-reveal) needs Daniel's approval and a reviewed live recipe. The synthetic tests cover only
-the producer, the pins and the store.
+provides the `{"token"}` packet to its private pipe.
+
+`deploy/vault/slack_install.py` performs the exchange inside a trusted executor. The
+executor authorizes the existing app, workspace and binding, verifies and consumes
+the OAuth callback state, and resolves the app-specific OAuth client secret in Vault.
+It passes one private stdin JSON packet containing `app_id`, `workspace_id`,
+`client_id`, `client_secret`, `code`, and `redirect_uri`. Use the originally approved
+HTTPS redirect URI, or `null` when the authorization request omitted it. The callback
+code is single-use and stays inside the executor.
+
+The script sends Basic client authentication and the code to the fixed Slack Web API
+origin and refuses redirects. The returned workspace, app, bot type and bot user
+must match. The grant must include `chat:write`. It can also include the app's existing
+`incoming-webhook` grant. The runner verifies the Slack token through `auth.test` and
+writes it and a metadata receipt to the existing owner-only
+`~/.local/state/harness/vault` root in the pinned binding. This grant cannot read
+private channel membership, so the receipt records membership as unverified. The
+one-message smoke is handled separately by `tm6ynf`. If an exchange result is uncertain
+or a binding already exists, reconcile the installation first. Uninstalling the app
+could disrupt existing webhook notifications.
+
+Qualify both private issuance paths without provider credentials using
+`python3 -B -m unittest discover -s deploy/vault -p '*_test.py'`.
+The dummy canary runs the stdin entry point, mock provider HTTP API and real sink.
+The current Harness browser executor accepts `.test` recipes. Live execution still
+requires the approved private Admin API or Slack OAuth inputs described above.
 [Slack OAuth exchange](https://docs.slack.dev/reference/methods/oauth.v2.access/)
 · [auth.test](https://docs.slack.dev/reference/methods/auth.test/)
+
+## Harbor Google Calendar Desktop test client
+
+The one-off primary Mac recipe is pinned to Daniel's signed-in Chrome and the
+unbilled `harbor-calendar-oauth-test` project. Verify Testing consent, Daniel as
+the only test user, and the Calendar scopes before running it. Check the client
+list for an existing registration and check that the final destination is absent.
+The Desktop application uses Google's loopback redirect.
+
+Run `python3 -B deploy/vault/harbor_google_oauth_download.py live`. After READY,
+launch `harbor_google_oauth_capture.js` as a bookmarklet from the exact project
+client list in a task-owned tab. Strip JavaScript line comments before flattening
+the source for the bookmarklet. Verify the address field before triggering it.
+The runner obscures the document and hides it from accessibility before opening
+the form. It selects Desktop, fills the pinned name and clicks Create at most
+once. The observer clicks only the documented Download JSON control in the
+success dialog. Keep captures disabled and close the masked task tab after the
+watcher finishes, including on failure. Read back the live Clients list in a
+separate safe tab and reconcile the registration before any retry.
+
+The watcher requires Chrome's current download folder `~/Downloads` to be
+owner-only, validates the new export against the pinned project, Desktop type,
+client ID and endpoints, then atomically installs it in owner-only mode
+`0600` at `~/.secrets/harbor-google-oauth-test.json`. It removes the download
+after storage. If the transfer fails, check metadata in Downloads and the
+provider list before retrying. Receipt fields are project ID, public client ID
+and outcome. Apple Events and Chrome download settings stay as configured.
+Use `canary` with a dummy browser download to prove the transfer before any live
+action. Run `node --test deploy/vault/harbor_google_oauth_capture.test.cjs` to
+check mask ordering and origin guards without a live provider action.
+[Google desktop OAuth and PKCE](https://developers.google.com/identity/protocols/oauth2/native-app)
 
 ## Bind the destination
 

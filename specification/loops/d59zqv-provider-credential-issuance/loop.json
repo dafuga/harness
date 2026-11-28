@@ -1,0 +1,59 @@
+{
+	"name": "d59zqv-provider-credential-issuance",
+	"goal": "Prove both approved provider issuance flows validate scope and origin, deliver only to the private store, and return metadata only in a dummy end-to-end canary.",
+	"createdAt": "2026-11-25T20:20:05.607Z",
+	"updatedAt": "2026-11-27T18:33:38.514Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T20:21:45.546Z",
+			"evidence": "4n1chc, tm6ynf and jw0799 pin the project, app, scope and destinations. OpenAI uses the published Admin API with the documented model request scope for the demo Realtime WebSocket. Slack uses the official OAuth exchange and the existing identity and Vault writer. Test dummy issuance and storage on harbor-mbp-2. Live broker inputs remain required."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-25T20:25:58.380Z",
+			"evidence": "Added trusted stdin-only OpenAI and Slack issuer scripts with fixed HTTPS origins, direct private stores, duplicate checks and metadata-only receipts. No live provider credentials were provided."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-25T20:29:56.765Z",
+			"evidence": "On harbor-mbp-2, /usr/bin/python3 -B -m unittest discover -s deploy/vault -p *_test.py passed all 22 cases. Both stdin-to-store canaries verify mode 0600, scoped provider requests and metadata-only output. Redirects, wrong targets and an existing sink fail closed. Repeat on the committed revision."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		},
+		{
+			"id": "harbor-canary",
+			"title": "Prove the Harbor Google console Download JSON transfer with dummy data.",
+			"status": "complete",
+			"completedAt": "2026-11-27T18:29:56.283Z",
+			"evidence": "Primary Mac real signed-in Chrome: origin and project guard ran a dummy browser download, watcher installed it in a temporary private store, removed the source, and returned metadata only. Separate node:test fixture verified mask-before-create, correct success dialog, and refusal on wrong origin/project, direct form launch or ineffective mask. Read-only live console rehearsal matched the project list, Desktop option and Name/Create controls."
+		},
+		{
+			"id": "harbor-live",
+			"title": "Verify the test client and owner-only store on Daniel’s primary Mac.",
+			"status": "complete",
+			"completedAt": "2026-11-27T18:33:38.514Z",
+			"evidence": "Primary Mac official Google Console Download JSON with document masked before provider Create. Live Clients list shows exactly one active Desktop registration and public ID matches the watcher receipt and private JSON. Store regular file owned by Daniel, mode 0600; browser export removed. Testing consent, sole Daniel test user, four Calendar scopes and billing disabled verified. The preflight orphan was revoked and read back first."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
