@@ -69,6 +69,8 @@ export type TrackerWorkDemand = { cores: number; ramGB: number };
 export interface TrackerPlacementRequest {
 	needsCores?: number;
 	reserved?: ReadonlyMap<string, TrackerWorkDemand>;
+	/** Free launcher session slots after reservations, keyed by eligible computer. */
+	sessionSlots?: ReadonlyMap<string, number>;
 	/** Rank a launcher session. CPU load affects preference on Macs, but never blocks admission. */
 	agentSession?: boolean;
 	kind?: TrackerWorkKind;

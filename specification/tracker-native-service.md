@@ -757,17 +757,20 @@ Sampling is read-only, so it also runs while host effects are held.
   `overload` watchdog alert with its heaviest sessions and a suggested move.
   It never asks Daniel. After 10 calm minutes the item closes and the alert
   clears. An ignored item is not raised again.
-- `--computer auto` picks, among computers whose launcher is polling, maps the
-  task's project and has a free slot, the best one that fits. Heavy work
-  prefers the primary Mac and light work the shared box. A task that names a
-  checkout, or has no known fit, stays on this computer. A request without
-  `--computer` also stays on this computer, and so do due tasks.
+- A launch without a computer preference, or with `--computer auto`, considers
+  polling launchers that map the project and have free slots. Light sessions
+  favor available RAM and slots on memory-rich computers like MB2. Builds and
+  portable browser tests favor free cores on CPU-rich computers like the primary
+  Mac. Desktop computer-use and Chrome work queue on the primary Mac. A named
+  computer or checkout keeps its target. With no known fit, portable launches
+  use the local default. Due tasks keep their configured ownership rules.
 - The hub assigns a queued launch that names no computer to such a peer, with
   a note, and keeps it otherwise.
 - The hub grants a due start to a peer that reports resources only while its
-  sample is at most 135 seconds old and it is not overloaded. A Mac peer is also
-  held while its latest one-minute load is at least 15. A peer that has never
-  reported resources runs an earlier release and keeps its grant.
+  sample is at most 135 seconds old and its session admission checks pass.
+  Mac sessions use memory, swap and disk admission checks. Mac heavy-test lanes
+  have a separate CPU load guard. A peer that has never reported resources
+  keeps its grant and applies its local checks.
 
 ### Work sent to another computer
 

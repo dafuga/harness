@@ -92,6 +92,9 @@ export async function verifyStaleIdleAlert(
 
 export async function verifyBlockedLaunchCli(spoke: TrackerNodeFixture, id: string, token: string) {
 	const item = await fixtureTrackerJson(spoke, ['block', id, 'Old dependency']);
+	await expect
+		.poll(() => fixtureTrackerJson(spoke, ['status']), { timeout: 8000 })
+		.toMatchObject({ sync: { connected: true, pending_push: 0 } });
 	const db = new DatabaseSync(spoke.config.database);
 	try {
 		db.exec('PRAGMA busy_timeout = 5000');
