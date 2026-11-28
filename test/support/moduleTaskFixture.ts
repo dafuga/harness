@@ -110,6 +110,7 @@ if (mode.startsWith('context-')) {
   if (!prompt.includes('Verified orders fixture. Next: update orders.')) process.exit(8);
   if (mode!=='context-worker' && !existsSync(root+'/tracker.ndjson')) process.exit(9);
 }
+if(provider==='codex'&&mode==='codex-quota') { console.log(JSON.stringify({type:'turn.failed',error:{message:"You've hit your usage limit. Try again later."}})); process.exit(1); }
 if(provider==='claude'&&mode==='quota') { console.log(JSON.stringify({type:'rate_limit_event',rate_limit_info:{status:'rejected',resetsAt:2000000000}})); console.log(JSON.stringify({type:'result',is_error:true,result:'Quota exhausted'})); process.exit(1); }
 if(provider==='claude'&&mode==='auth') {console.log(JSON.stringify({type:'result',is_error:true,result:'Authentication required'}));process.exit(1);}
 if(mode==='outside') writeFileSync('outside.txt','outside requested module');

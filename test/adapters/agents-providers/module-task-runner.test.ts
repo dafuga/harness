@@ -215,24 +215,3 @@ test.each<[string, 'claude' | 'codex', number, object[]]>([
 	await expect(failure).rejects.toMatchObject({ name: 'ModuleTaskRunError' });
 	await expect(failure).rejects.toThrow(message);
 });
-
-test.each([
-	['usage_limit_reached', true],
-	['rate_limit_exceeded', true],
-	['invalid_api_key', false]
-] as const)('Codex failure classifies provider quota code %s', async (code, quotaRejected) => {
-	const runner = new ModuleTaskRunnerAdapter(async () => ({
-		code: 1,
-		stdout: JSON.stringify({ type: 'turn.failed', error: { code } })
-	}));
-	await expect(
-		runner.run({
-			provider: 'codex',
-			model: 'gpt-6-luna',
-			intelligence: 'medium',
-			cwd: '.',
-			prompt: 'Goal',
-			signal: new AbortController().signal
-		})
-	).rejects.toMatchObject({ quotaRejected });
-});
