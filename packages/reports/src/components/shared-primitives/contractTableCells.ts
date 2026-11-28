@@ -10,6 +10,7 @@ export function requirementLabel(field: ContractField): string {
 
 /** @pure A recorded default as source text, or null when the field declares none. */
 export function defaultText(field: ContractField): string | null {
+	if (field.defaultKind === 'undefined') return 'undefined';
 	if (!Object.hasOwn(field, 'default')) return null;
 	return JSON.stringify(field.default) ?? String(field.default);
 }

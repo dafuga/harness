@@ -21,7 +21,15 @@ export async function assertContractTableState(
 	variant: string,
 	viewport: string
 ) {
-	if (!variant) await assertContractTypeColor(component);
+	if (!variant) {
+		await assertContractTypeColor(component);
+		await expect(component.getByRole('row').filter({ hasText: 'label' })).toContainText(
+			'No default'
+		);
+		await expect(component.getByRole('row').filter({ hasText: 'override' })).toContainText(
+			'Default: undefined'
+		);
+	}
 	if (['empty', 'empty-kept', 'plain-empty'].includes(variant))
 		await expect(component.getByText('No inputs', { exact: true })).toBeVisible();
 	if (variant === 'plain') await expect(component.locator('.label')).toHaveText('Inputs');

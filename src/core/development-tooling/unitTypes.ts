@@ -2,7 +2,7 @@
 import { z } from 'zod';
 import { videoManifestSchema } from '../../utils/verification-evidence/videoClipSchema';
 import { compositionSchema } from './composition';
-import { sourceContractSchema } from './contractSchemas';
+import { contractItemSchema, sourceContractSchema } from './contractSchemas';
 
 import {
 	dependencyVias,
@@ -19,19 +19,7 @@ const identifier = z
 	.regex(unitIdPattern, 'must be a lowercase dotted or dashed identifier');
 const text = z.string().trim().min(1, 'must not be empty');
 
-export const contractItemSchema = z.strictObject({
-	name: text,
-	type: text,
-	/** Whether callers must provide this input; omitted for historical contracts that lack it. */
-	required: z.boolean().optional(),
-	/** A literal prop default, kept as data so contract viewers can show it exactly. */
-	default: z.json().optional(),
-	description: z.string().optional(),
-	/** Values a person declared as examples of the item; any JSON, kept exactly as written. */
-	examples: z.array(z.json()).optional(),
-	/** Why a declared boundary intentionally accepts an unknown type; required by strict checks. */
-	unknownReason: text.optional()
-});
+export { contractItemSchema } from './contractSchemas';
 
 /** Authored usage, distinct from observed verification evidence. */
 export const usageExampleSchema = z

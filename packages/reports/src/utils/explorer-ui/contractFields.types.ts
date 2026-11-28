@@ -1,4 +1,6 @@
 // @harness-uid u_plxodrc2ry
+import type { HarnessContractItem } from '../../models/explorer-ui/Harness.types';
+
 export type Guess = { value: unknown } | undefined;
 
 /** One example of a field, with the exact text it is shown as. */
@@ -20,6 +22,7 @@ export interface ContractField {
 	required?: boolean;
 	/** An own literal default; false, zero, null and empty text remain distinct from absence. */
 	default?: unknown;
+	defaultKind?: HarnessContractItem['defaultKind'];
 	/**
 	 * `declared` when the contract records examples; `illustrative` when it records none and the
 	 * type is plain data a placeholder can show; `missing` when it is neither.

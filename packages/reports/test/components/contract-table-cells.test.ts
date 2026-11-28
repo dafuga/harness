@@ -12,6 +12,7 @@ const field = (extra: Record<string, unknown>) =>
 test('requirement names required, optional and unrecorded fields', () => {
 	expect(requirementLabel(field({ required: true }))).toBe('Required');
 	expect(requirementLabel(field({ required: false }))).toBe('Optional');
+	expect(requirementLabel(field({ required: false, defaultKind: 'omitted' }))).toBe('Optional');
 	expect(requirementLabel(field({}))).toBe('Requiredness not recorded');
 });
 
@@ -19,6 +20,8 @@ test('a default is source text, including values JSON cannot show, and absent wh
 	expect(defaultText(field({}))).toBeNull();
 	expect(defaultText(field({ default: 'x' }))).toBe('"x"');
 	expect(defaultText(field({ default: null }))).toBe('null');
+	expect(defaultText(field({ defaultKind: 'undefined' }))).toBe('undefined');
+	expect(defaultText(field({ default: 'undefined (omitted)' }))).toBe('"undefined (omitted)"');
 	expect(defaultText(field({ default: undefined }))).toBe('undefined');
 });
 

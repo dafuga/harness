@@ -1,4 +1,5 @@
 import { test } from 'vitest';
+import { z } from 'zod';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { sourceContractSchema } from '../../src/core/development-tooling/contractSchemas';
@@ -38,12 +39,33 @@ const scenario = {
 test('Contract items and source facts validate strictly', () => {
 	const accepted = contractItemSchema.parse(item);
 	const rejected = contractItemSchema.safeParse({ ...item, extra: true }).success;
-	const source = sourceContractSchema(contractItemSchema).parse({
+	const explicit = { name: 'option', type: 'string', required: false, defaultKind: 'undefined' };
+	const legacy = {
+		name: 'option',
+		type: 'string',
+		required: false,
+		default: 'undefined (omitted)'
+	};
+	expect(contractItemSchema.parse(explicit)).toEqual(explicit);
+	expect(contractItemSchema.parse(legacy)).toEqual(legacy);
+	expect(contractItemSchema.safeParse({ ...explicit, default: null }).success).toBe(false);
+	const reader = sourceContractSchema(contractItemSchema);
+	const source = reader.parse({
 		origin: 'declared',
 		inputs: [item],
 		outputs: [],
 		errors: [],
 		storage: [{ name: 'accounts', fields: [{ ...item, nullable: true }], unresolved: [] }]
+	});
+	expect(
+		reader.safeParse({
+			...source,
+			storage: [{ name: 'accounts', fields: [{ ...explicit, default: null }] }]
+		}).success
+	).toBe(false);
+	expect(z.toJSONSchema(contractItemSchema).not).toEqual({ required: ['default', 'defaultKind'] });
+	expect(z.toJSONSchema(reader.shape.storage.unwrap().element.shape.fields.element).not).toEqual({
+		required: ['default', 'defaultKind']
 	});
 	expect([accepted.name, accepted.type, rejected, source.storage?.[0].fields[0].nullable]).toEqual([
 		'accountId',

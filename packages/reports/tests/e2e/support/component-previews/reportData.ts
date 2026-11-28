@@ -136,6 +136,22 @@ export const group = {
 			description: 'Duration in seconds.',
 			source: 'declared',
 			examples: [{ form: 'literal', value: 90, text: '90' }]
+		},
+		{
+			name: 'label',
+			type: 'string',
+			required: false,
+			defaultKind: 'omitted',
+			source: 'missing',
+			examples: []
+		},
+		{
+			name: 'override',
+			type: 'number | undefined',
+			required: false,
+			defaultKind: 'undefined',
+			source: 'missing',
+			examples: []
 		}
 	]
 };

@@ -1,10 +1,30 @@
 // @harness-uid u_6shfrcvyqy
 import { z } from 'zod';
-import type { contractItemSchema } from './unitTypes';
+const text = z.string().trim().min(1);
+const exclusiveDefault = { not: { required: ['default', 'defaultKind'] } };
+
+export const contractItemSchema = z
+	.strictObject({
+		name: text,
+		type: text,
+		/** Whether callers must provide this input; omitted for historical contracts that lack it. */
+		required: z.boolean().optional(),
+		/** A literal prop default, kept as data so contract viewers can show it exactly. */
+		default: z.json().optional(),
+		defaultKind: z.enum(['omitted', 'undefined']).optional(),
+		description: z.string().optional(),
+		/** Values a person declared as examples of the item; any JSON, kept exactly as written. */
+		examples: z.array(z.json()).optional(),
+		/** Why a declared boundary intentionally accepts an unknown type; required by strict checks. */
+		unknownReason: text.optional()
+	})
+	.refine((item) => !item.defaultKind || !Object.hasOwn(item, 'default'), {
+		message: 'A contract item declares either default or defaultKind.'
+	})
+	.meta(exclusiveDefault);
 
 /** Additive source facts preserve every historical contract's three array fields. */
 export function sourceContractSchema(item: typeof contractItemSchema) {
-	const text = z.string().trim().min(1);
 	const status = z.enum(['declared', 'none-found', 'unknown', 'found']);
 	const operation = z.strictObject({
 		name: text,
@@ -18,12 +38,14 @@ export function sourceContractSchema(item: typeof contractItemSchema) {
 		table: text.optional(),
 		primaryKey: text.optional(),
 		fields: z.array(
-			item.extend({
-				nullable: z.boolean().optional(),
-				primaryKey: z.boolean().optional(),
-				validation: text.optional(),
-				relations: text.optional()
-			})
+			item
+				.safeExtend({
+					nullable: z.boolean().optional(),
+					primaryKey: z.boolean().optional(),
+					validation: text.optional(),
+					relations: text.optional()
+				})
+				.meta(exclusiveDefault)
 		),
 		validation: text.optional(),
 		relations: text.optional(),
