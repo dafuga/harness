@@ -8,11 +8,14 @@ import type { ImpactReport, ImpactSide } from '../src/core/development-tooling/i
 import { ImpactService } from '../src/services/reports-media/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
-import { readBuildAliases, readSelectImports } from './utils/shared-select-impact/imports';
+import {
+	hasExpectedSourceBinding,
+	readBuildAliases,
+	readSelectImports
+} from './utils/shared-select-impact/imports';
 import { loadUnits } from '../src/workflows/development-tooling/load-units/loadUnits';
 const select = 'packages/reports/src/components/Select.svelte';
 const canonicalSelect = 'packages/reports/src/components/shared-primitives/Select.svelte';
-const shared = '$shared';
 const selectTest = 'packages/reports/test/components/select.test.ts';
 const indexer = new sourceIndex.SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
@@ -71,6 +74,7 @@ test('no import written through a build alias of any package is left as a packag
 		reports: { $reports: './src', $desktop: '../desktop/src', $shared: './src/components' }
 	});
 	const resolved = (item: Written) =>
+		hasExpectedSourceBinding(loaded.config.references, item) &&
 		loaded.index.files
 			.get(item.from)
 			?.references.some((found) => found.path === item.to && item.to);
@@ -190,7 +194,7 @@ test('a change of Select reaches every unit, test and scenario that a change of 
 }, 60_000);
 test('declaring the Select imports moves those references alone: packages and uncertainties stay', async () => {
 	const kept = loaded.config.references.filter(
-		(entry) => entry.specifier !== `${shared}/Select.svelte`
+		(entry) => entry.specifier !== '$shared/Select.svelte'
 	);
 	const bare = await indexer.index(new WorkingTreeAdapter(loaded.root), {
 		...loaded.config,
@@ -204,10 +208,10 @@ test('declaring the Select imports moves those references alone: packages and un
 				: [[file.path, was?.external, now.path]];
 		})
 	);
-	expect(moved.filter(([, was, to]) => was !== shared || to !== select)).toEqual([]);
+	expect(moved.filter(([, was, to]) => was !== '$shared' || to !== select)).toEqual([]);
 	expect(moved.map(([from]) => from).sort()).toEqual(
 		consumers()
-			.filter((item) => item.specifier.startsWith(`${shared}/`))
+			.filter((item) => item.specifier.startsWith('$shared/'))
 			.map((item) => item.from)
 			.sort()
 	);

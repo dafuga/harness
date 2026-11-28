@@ -167,7 +167,7 @@ export function failRun(
 		!item ||
 		!matchesRequest(item, run, policy) ||
 		unavailableRetry(item, failure.reopen) ||
-		automaticRequestHold({ ...item, ...reopen }, policy, now)
+		retryDropHold({ ...item, ...reopen }, run, { policy, now })
 	)
 		return recordFailedRun(finished, reopen);
 	const choice = retryRung(item, run, policy, failure.startup);
@@ -187,6 +187,16 @@ export function failRun(
 		result: { status: 'recorded', run: finished, retry },
 		writes: { runs: [finished, retry], failedRunId: finished.id, ...(reopen && { item: reopen }) }
 	};
+}
+
+/** Unstarted work on an open item keeps its retry; the claim holds it until the item is due. */
+function retryDropHold(
+	item: TrackerDispatchItem,
+	run: TrackerRunReceipt,
+	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
+) {
+	const heldAtClaim = run.started_at === null && item.status === 'open';
+	return automaticRequestHold(item, policy, now, heldAtClaim);
 }
 
 function recordFailedRun(run: TrackerRunReceipt, item?: TrackerDispatchWrites['item']) {

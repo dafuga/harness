@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "script.deliver-feature-record-delivery",
+	"uid": "u_msy2owooob",
 	"kind": "script",
 	"title": "recordDelivery",
 	"responsibility": "Owns the recordDelivery build or maintenance script.",
@@ -36,7 +37,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
 		],
@@ -59,7 +60,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown"
 					}
 				],
@@ -87,6 +88,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.projects-sessions-feature-delivery",
 			"via": "import",

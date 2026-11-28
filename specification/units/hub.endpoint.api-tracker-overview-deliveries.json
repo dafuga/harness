@@ -1,64 +1,134 @@
 {
 	"schemaVersion": 1,
 	"id": "hub.endpoint.api-tracker-overview-deliveries",
+	"uid": "u_kgyfgod62o",
 	"kind": "endpoint",
 	"title": "/api/tracker-overview/deliveries",
-	"responsibility": "Owns the /api/tracker-overview/deliveries HTTP endpoint.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Owns the owner-only /api/tracker-overview/deliveries GET and HEAD endpoint: one project's delivered feature video feed and ranged playback of a stored clip.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/routes/api/tracker-overview/deliveries/+server.ts"],
 		"symbols": ["GET", "HEAD"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GET.request",
-				"type": "unknown",
-				"required": true
+				"type": "Request",
+				"required": true,
+				"description": "The GET or HEAD request for the exact path; either ?project=<name>[&cursor] for the feed or ?item=<id>&sha=<digest> for a clip. Credentials are read by the verified session resolver."
 			},
 			{
 				"name": "GET.platform",
-				"type": "unknown",
-				"required": true
+				"type": "App.Platform | undefined",
+				"required": true,
+				"description": "Cloudflare platform bindings, including the private EVIDENCE bucket and the overview owner setting."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown"
+				"type": "Response",
+				"description": "The owner's project delivery page as JSON, or the WebM clip with range support. Every response carries Cache-Control private, no-store and X-Content-Type-Options nosniff."
 			},
 			{
 				"name": "HEAD",
-				"type": "unknown"
+				"type": "Response",
+				"description": "The same handler as GET."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "not-found",
+				"type": "Response 404",
+				"description": "The owner setting is missing, the path is not exact, or no clip or bucket exists for a media read."
+			},
+			{
+				"name": "session-required",
+				"type": "Response 401",
+				"description": "No verified session resolves from the request."
+			},
+			{
+				"name": "forbidden",
+				"type": "Response 403",
+				"description": "A verified actor other than the owner."
+			},
+			{
+				"name": "method-not-allowed",
+				"type": "Response 405",
+				"description": "A method other than GET or HEAD reaches the policy."
+			},
+			{
+				"name": "invalid-input",
+				"type": "Response 400",
+				"description": "Unknown, missing or malformed query parameters."
+			},
+			{
+				"name": "unavailable",
+				"type": "Response 503",
+				"description": "The evidence bucket is not bound for a feed read, or the store failed; no store detail is returned."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GET",
 				"inputs": [
 					{
 						"name": "GET.request",
-						"type": "unknown",
-						"required": true
+						"type": "Request",
+						"required": true,
+						"description": "The GET or HEAD request for the exact path; either ?project=<name>[&cursor] for the feed or ?item=<id>&sha=<digest> for a clip. Credentials are read by the verified session resolver."
 					},
 					{
 						"name": "GET.platform",
-						"type": "unknown",
-						"required": true
+						"type": "App.Platform | undefined",
+						"required": true,
+						"description": "Cloudflare platform bindings, including the private EVIDENCE bucket and the overview owner setting."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "unknown"
+						"type": "Response",
+						"description": "The owner's project delivery page as JSON, or the WebM clip with range support. Every response carries Cache-Control private, no-store and X-Content-Type-Options nosniff."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "not-found",
+						"type": "Response 404",
+						"description": "The owner setting is missing, the path is not exact, or no clip or bucket exists for a media read."
+					},
+					{
+						"name": "session-required",
+						"type": "Response 401",
+						"description": "No verified session resolves from the request."
+					},
+					{
+						"name": "forbidden",
+						"type": "Response 403",
+						"description": "A verified actor other than the owner."
+					},
+					{
+						"name": "method-not-allowed",
+						"type": "Response 405",
+						"description": "A method other than GET or HEAD reaches the policy."
+					},
+					{
+						"name": "invalid-input",
+						"type": "Response 400",
+						"description": "Unknown, missing or malformed query parameters."
+					},
+					{
+						"name": "unavailable",
+						"type": "Response 503",
+						"description": "The evidence bucket is not bound for a feed read, or the store failed; no store detail is returned."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

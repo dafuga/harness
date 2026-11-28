@@ -1,3 +1,4 @@
+// @harness-uid u_k3aa2avlte
 import { execFile } from 'node:child_process';
 
 /** Child output can contain credentials or test data. Keep it private to the calling script. */

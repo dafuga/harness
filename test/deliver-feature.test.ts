@@ -1,10 +1,10 @@
 import { expect, test, vi } from 'vitest';
-import { deliverFeature } from '../../scripts/deliver-feature/deliverFeature';
+import { deliverFeature } from '../scripts/deliver-feature/deliverFeature';
 import type {
 	DeliveryInput,
 	DeliveryServices
-} from '../../scripts/deliver-feature/deliverFeature.types';
-import type { TrackerItem } from '../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
+} from '../scripts/deliver-feature/deliverFeature.types';
+import type { TrackerItem } from '../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 
 const item = {
 	id: 'delivery01',

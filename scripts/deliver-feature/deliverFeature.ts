@@ -1,20 +1,22 @@
+// @harness-uid u_fakvbxkf72
 import { createHash } from 'node:crypto';
 import {
 	featureDeliverySchema,
 	featureDeliverySource
-} from '../../src/utils/projects-sessions/featureDelivery';
+} from '../../src/core/projects-sessions/featureDelivery';
 import { sanitizeTrackerText } from '../../src/utils/projects-sessions/sanitizeTrackerText';
 import type { DeliveryInput, DeliveryServices } from './deliverFeature.types';
+import { ExpectedCliError } from '../../src/core/errors';
 
 /** Make the clip durable before completion, then expose the delivery on the project page. */
 export async function deliverFeature(input: DeliveryInput, services: DeliveryServices) {
 	const item = await services.readItem(input.id);
 	if (item.sensitive || item.deleted || item.recurring || item.status === 'ignored')
-		throw new Error('Tracker item cannot publish feature evidence');
+		throw new ExpectedCliError('Tracker item cannot publish feature evidence');
 	if ((item.status === 'done') !== Boolean(input.attach || input.backfillAt))
-		throw new Error('Use --attach or --backfill-at for an already completed item');
+		throw new ExpectedCliError('Use --attach or --backfill-at for an already completed item');
 	const capture = await services.capture();
-	if (!capture.bytes.length) throw new Error('The feature video is empty');
+	if (!capture.bytes.length) throw new ExpectedCliError('The feature video is empty');
 	const delivery = featureDeliverySchema.parse({
 		id: item.id,
 		project: item.agent,

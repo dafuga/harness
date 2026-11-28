@@ -93,10 +93,13 @@ export async function verifyExpiredClaim(
 		clock.mockReturnValue(daytime.getTime() + 6 * 60_000);
 		await tick();
 		await tick();
-		expect(runs()).toEqual([
-			{ id: 6, state: 'finished', attempt: 1, started_at: null },
-			{ id: 7, state: 'running', attempt: 2, started_at: expect.any(Number) }
-		]);
+		const expired = { id: 6, state: 'finished', attempt: 1, started_at: null };
+		const held = { id: 7, state: 'queued', attempt: 2, started_at: null };
+		expect(runs(), 'a future due time holds the unattended retry').toEqual([expired, held]);
+		runtime.store.appendLocal({ itemId, fields: { due: '2020-03-04' } });
+		await tick();
+		const resumed = { ...held, state: 'running', started_at: expect.any(Number) };
+		expect(runs()).toEqual([expired, resumed]);
 	} finally {
 		clock.mockRestore();
 	}

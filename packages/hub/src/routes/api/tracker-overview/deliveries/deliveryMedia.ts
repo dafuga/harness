@@ -1,4 +1,4 @@
-import { featureDeliveryVideoKey } from '../../../../../../../src/utils/projects-sessions/featureDelivery';
+import { featureDeliveryVideoKey } from '../../../../../../../src/core/projects-sessions/featureDelivery';
 import { deliveryRange } from './deliveryRange';
 
 export async function deliveryMedia(

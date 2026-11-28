@@ -1,8 +1,9 @@
+// @harness-uid u_fakvbxkf72
 import type { TrackerItem } from '../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 import type {
 	FeatureDelivery,
 	FeatureDeliveryStage
-} from '../../src/utils/projects-sessions/featureDelivery.types';
+} from '../../src/core/projects-sessions/featureDelivery.types';
 import type { TrackerArtifact } from '../../src/utils/projects-sessions/trackerPlanning.types';
 
 export type DeliveryInput = {
