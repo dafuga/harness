@@ -61,3 +61,13 @@ export function projectModuleProgressLabel(plan: ProjectModulePlan, milestone: M
 	const { built, total, percent } = progress;
 	return `${built.toLocaleString('en-US')} of ${total.toLocaleString('en-US')} modules built (${percent}%)`;
 }
+
+export function formatProjectModuleProgress(command: string, data: unknown) {
+	if (command !== 'project-progress') return undefined;
+	const { project, plan } = data as { project: string; plan: ProjectModulePlan };
+	if (plan.state !== 'available') return `${project}: ${projectModuleProgressLabel(plan, 'full')}`;
+	const summary = projectModuleMilestones.map(
+		({ id, label }) => `${label}: ${projectModuleProgressLabel(plan, id)}`
+	);
+	return [project, ...summary].join('\n');
+}

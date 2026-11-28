@@ -1,0 +1,45 @@
+{
+	"name": "eprdz4-module-progress",
+	"goal": "Prove project progress derives from module plans and merged acceptance proof, and the Tracker CLI and shared Hub Home show the same count.",
+	"createdAt": "2026-11-28T10:18:29.623Z",
+	"updatedAt": "2026-11-28T10:32:18.356Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T10:32:16.608Z",
+			"evidence": "Tracker eprdz4 Daniel answer; first release and full scope in Harbor PR #60 and specification/features/planned/project-module-progress.md."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-28T10:32:18.356Z",
+			"evidence": "Harness PR #484 wires the merged registry and proof reads through native Tracker to the shared Home row; Harbor review gate implemented."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -3,6 +3,7 @@ import { nativeTrackerAutolaunchRequest } from './nativeTrackerAutolaunchRequest
 import { nativeTrackerMachineRequest } from './nativeTrackerMachineRequest';
 import { nativeTrackerJobRequest } from './nativeTrackerJobRequest';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
+import { nativeTrackerQuery } from './nativeTrackerRunRequest';
 import { nativeTrackerAdapterRequest } from './nativeTrackerAdapterRequest';
 
 const inspectionRoutes = new Map<string, Record<string, string>>([
@@ -16,6 +17,7 @@ export function nativeTrackerInspectionRequest(
 	words: string[],
 	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
+	if (command === 'progress') return readProjectProgress(words, values.project);
 	if (command === 'job') return nativeTrackerJobRequest(words, values);
 	if (command === 'backup' && words.join() === 'now')
 		return { method: 'POST', path: '/backup/now' };
@@ -39,4 +41,14 @@ function nativeTrackerReadInspection(
 	if (words.length > 1 || !Object.hasOwn(routes, sub))
 		throw new TypeError(`usage: tracker ${command} ${Object.keys(routes).join('|')}`);
 	return { method: 'GET', path: routes[sub] };
+}
+
+function readProjectProgress(
+	words: string[],
+	project: string | boolean | undefined
+): NativeTrackerRequest | undefined {
+	if (project === undefined) return undefined;
+	if (words.length || typeof project !== 'string' || !project.trim())
+		throw new TypeError('usage: tracker progress --project <project>');
+	return { method: 'GET', path: '/progress' + nativeTrackerQuery({ project }) };
 }

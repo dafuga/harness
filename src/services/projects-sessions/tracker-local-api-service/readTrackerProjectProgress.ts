@@ -109,35 +109,51 @@ async function mergedModuleProofs(
 ) {
 	const git = new GitAdapter(root);
 	const revisions = new Map<string, Promise<boolean>>();
+	const merged = (commit: string) => {
+		const cached = revisions.get(commit);
+		if (cached) return cached;
+		const exists = git
+			.attempt(['merge-base', '--is-ancestor', commit, revision])
+			.then((result) => result !== undefined);
+		revisions.set(commit, exists);
+		return exists;
+	};
 	const proven = new Set<string>();
 	for (const [id, moduleTasks] of tasks) {
 		for (const task of moduleTasks) {
-			if (task.status !== 'accepted' || !task.result?.attempt) continue;
-			const review = task.reviews.find(({ attempt }) => attempt === task.result?.attempt);
-			const proof = review?.verdict === 'accepted' && review.evidence;
-			if (!proof || !proof.checks) continue;
-			let merged = revisions.get(proof.commit);
-			if (!merged) {
-				merged = git
-					.attempt(['merge-base', '--is-ancestor', proof.commit, revision])
-					.then((result) => result !== undefined);
-				revisions.set(proof.commit, merged);
-			}
-			if (!(await merged)) continue;
-			const paths = [...task.module.files, ...(task.verificationFiles ?? [])];
-			const matches = await git.attempt([
-				'--literal-pathspecs',
-				'diff',
-				'--quiet',
-				proof.commit,
-				revision,
-				'--',
-				...paths
-			]);
-			if (matches === undefined) continue;
+			const proof = acceptedProof(task);
+			if (!proof || !(await merged(proof.commit))) continue;
+			if (!(await modulePathsMatch(git, task, proof.commit, revision))) continue;
 			proven.add(id);
 			break;
 		}
 	}
 	return proven;
+}
+
+// Older accepted tasks may have no acceptance record or a pass that ran no checks.
+function acceptedProof(task: ModuleTask) {
+	if (task.status !== 'accepted' || !task.result?.attempt) return undefined;
+	const review = task.reviews.find(({ attempt }) => attempt === task.result?.attempt);
+	return review?.verdict === 'accepted' && review.evidence?.checks ? review.evidence : undefined;
+}
+
+async function modulePathsMatch(
+	git: GitAdapter,
+	task: ModuleTask,
+	proof: string,
+	revision: string
+) {
+	const paths = [...task.module.files, ...(task.verificationFiles ?? [])];
+	return (
+		(await git.attempt([
+			'--literal-pathspecs',
+			'diff',
+			'--quiet',
+			proof,
+			revision,
+			'--',
+			...paths
+		])) !== undefined
+	);
 }

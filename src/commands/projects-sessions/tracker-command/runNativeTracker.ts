@@ -1,9 +1,5 @@
 // @harness-uid u_r7qgepnoax
-import {
-	projectModuleMilestones,
-	projectModuleProgressLabel,
-	type ProjectModulePlan
-} from '../../../helpers/projects-sessions/projectModuleProgress';
+import { formatProjectModuleProgress } from '../../../helpers/projects-sessions/projectModuleProgress';
 import { lstatSync } from 'node:fs';
 import { homedir, userInfo } from 'node:os';
 import { join } from 'node:path';
@@ -112,17 +108,9 @@ async function sendNativeTracker(
 	if (request.path === '/backup/now') return renderTrackerBackup(data, Boolean(values.json));
 	if (command === 'check') return renderCheck(data, Boolean(values.json));
 	if (values.json) console.log(JSON.stringify(data, null, 2));
-	else if (command === 'progress' && request.method === 'GET') {
-		const { project, plan } = data as { project: string; plan: ProjectModulePlan };
-		const summary =
-			plan.state === 'available'
-				? projectModuleMilestones
-						.map(({ id, label }) => `${label}: ${projectModuleProgressLabel(plan, id)}`)
-						.join('\n')
-				: projectModuleProgressLabel(plan, 'full');
-		console.log(plan.state === 'available' ? `${project}\n${summary}` : `${project}: ${summary}`);
-	} else {
-		renderNativeTracker(command, data, { quiet: Boolean(values.quiet), first: words[0] });
+	else {
+		const verb = request.path.startsWith('/progress?') ? 'project-progress' : command;
+		renderNativeTracker(verb, data, { quiet: Boolean(values.quiet), first: words[0] });
 		if (!values.quiet) await printNativeTrackerAddHint(command, data as NativeTrackerItem, config);
 	}
 	return 0;
@@ -214,6 +202,7 @@ function renderNativeTrackerItemOrReport(command: string, data: unknown, first?:
 		return;
 	}
 	const rendered =
+		formatProjectModuleProgress(command, data) ??
 		formatNativeTrackerInspection(command, data as NativeTrackerInspection) ??
 		formatNativeTrackerRunRead(command, data as NativeTrackerRunRead);
 	const item = data as NativeTrackerItem;
