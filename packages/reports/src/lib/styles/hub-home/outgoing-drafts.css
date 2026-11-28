@@ -63,6 +63,7 @@
 	justify-content: space-between;
 }
 .outgoing-card h3 {
+	margin: 0;
 	font-size: var(--hx-type-size-base);
 	line-height: 1.25;
 }
@@ -83,6 +84,9 @@
 	color: var(--home-accent, var(--hx-color-primary));
 	text-decoration: underline;
 	text-underline-offset: var(--hx-space-3);
+}
+.outgoing-card p {
+	margin: 0;
 }
 .outgoing-body {
 	padding: var(--hx-space-12);
