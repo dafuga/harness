@@ -202,6 +202,7 @@ export async function expectComputerWorkload(page: Page, device: string, titles:
 		expectedComputerOrder.map((name) => new RegExp(`^\\s*${name} ·`))
 	);
 	await expect(computer).toContainText('2 agents');
+	await expect(computer).toContainText('memory pressure is critical');
 	const trigger = computer.getByRole('button');
 	await trigger.click();
 	const detail = page.getByRole('dialog', { name: 'harbor-mbp-2' });

@@ -21,13 +21,29 @@ vi.mock(
 	'../../../src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPeer',
 	() => ({ readTrackerWatchdogPeer: async () => [] })
 );
-
 test('both computers see each other in machines, place and status', async () => {
 	const nodes = fleet();
 	try {
 		await nodes.tick();
+		nodes.readings[hubNode] = { swap: { total_mb: 22_528, used_mb: 21_617 } };
+		const pressure = {
+			total_mb: 36_864,
+			used_mb: 31_883,
+			available_mb: 4_981,
+			available_pct: 13.5,
+			pressure: 'warn' as const,
+			pressure_free_pct: 27
+		};
+		nodes.readings[hubNode].ram = pressure;
 		nodes.clock.at += minute;
 		await nodes.tick();
+		const overloaded = (await call(nodes.peer, ['machines', 'mac'])).data;
+		expect(overloaded.status).toBe('overloaded');
+		nodes.readings[hubNode].ram = { ...pressure, pressure: 'normal', pressure_free_pct: 62 };
+		nodes.clock.at += minute;
+		await nodes.tick();
+		const recovered = (await call(nodes.peer, ['machines', 'mac'])).data;
+		expect(recovered).toMatchObject({ status: 'ok', reasons: [], age_s: 0 });
 		for (const runtime of [nodes.hub, nodes.peer]) {
 			const { data, text } = await call(runtime, ['machines']);
 			expect(

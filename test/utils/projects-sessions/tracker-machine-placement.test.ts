@@ -35,8 +35,44 @@ test('judges a computer as ok, busy, overloaded or offline', () => {
 	expect(status({ ram: { ...ram, available_pct: 5 } }).status).toBe('overloaded');
 	expect(status({ ram: { ...ram, available_pct: 5, pressure_free_pct: 60 } }).status).toBe('ok');
 	expect(status({ ram: { ...ram, pressure: 'critical' } }).status).toBe('overloaded');
-	const earlier = resourceSample(now - 9 * minute);
-	expect(status({ swap: { total_mb: 2048, used_mb: 700 } }, [earlier]).status).toBe('overloaded');
+	const earlier = resourceSample(Date.parse('2026-11-28T10:09:55.434Z'), {
+		cores: 18,
+		swap: { total_mb: 17_408, used_mb: 15_770 }
+	});
+	const recoveredAt = Date.parse('2026-11-28T10:19:23.423Z');
+	const recovered = resourceSample(recoveredAt, {
+		cores: 18,
+		load: [6.3, 5.7, 5.2],
+		ram: {
+			total_mb: 36_864,
+			used_mb: 24_558,
+			available_mb: 12_306,
+			available_pct: 33.4,
+			pressure: 'normal',
+			pressure_free_pct: 62
+		},
+		swap: { total_mb: 22_528, used_mb: 21_916 },
+		disks: [{ mount: '/System/Volumes/Data', total_gb: 1858.1, free_gb: 76.6, free_pct: 4.1 }]
+	});
+	const underPressure = resourceSample(Date.parse('2026-11-28T10:14:08.644Z'), {
+		...recovered,
+		at: '2026-11-28T10:14:08.644Z',
+		ram: { ...recovered.ram, pressure: 'warn', pressure_free_pct: 27 },
+		swap: { total_mb: 22_528, used_mb: 21_617 }
+	});
+	expect(
+		trackerMachineStatus(underPressure, [earlier], Date.parse(underPressure.at))
+	).toMatchObject({
+		status: 'overloaded',
+		reasons: expect.arrayContaining(['swap grew 5847 MB in 10 min'])
+	});
+	expect(trackerMachineStatus(recovered, [earlier, underPressure], recoveredAt)).toEqual({
+		status: 'ok',
+		reasons: [],
+		age_s: 0
+	});
+	const legacy = { ...recovered, ram: { ...recovered.ram, pressure: undefined } };
+	expect(trackerMachineStatus(legacy, [earlier, underPressure], recoveredAt).status).toBe('ok');
 	expect(trackerMachineStatus(resourceSample(now - 6 * minute), [], now).status).toBe('offline');
 	expect(trackerMachineStatus(null, [], now).reasons).toEqual(['never reported a sample']);
 });
