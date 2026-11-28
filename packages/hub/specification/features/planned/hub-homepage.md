@@ -86,6 +86,17 @@ later, and to snapshots from older Mac apps. Personal and family agents, includi
 of Staff's list, never appear in Scheduled or in past-due work. Hub shows no line about Claude
 routine dates when it has no current reading of them.
 
+### Release acceptance for live counts
+
+For each Hub Home release, compare the signed-in Agents card's working session total with
+live Tracker runs on the online linked Macs. Include any synced Mac whose runs the
+release is expected to show. The Agents card can group several runs under one working agent.
+Require a stable sample with at least one eligible running session and exact count parity.
+A zero working count during that sample fails the release check.
+Record this result beside the Needs you answer canary on the same release item.
+Both checks must pass before closing a release that changes Home counts or their data sources.
+Follow the [post-release gate](../../../README.md#post-release-gate).
+
 ### Owner-host data
 
 The signed-in Projects card and dialog use the existing per-member project APIs. Tracker chat
