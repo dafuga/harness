@@ -79,7 +79,12 @@ async function phoneWith(state: RemoteNativeStatus, account = accountOf()) {
 	environment.phone!.onStatus(() => undefined);
 	await environment.phone!.status();
 	await environment.bridge!.hostedStatus!();
-	return { ...f, account, bridge: environment.bridge! };
+	return {
+		...f,
+		account,
+		bridge: environment.bridge!,
+		outgoing: environment.trackerHome?.outgoing
+	};
 }
 
 test('a paired phone with an owner account reads the overview with one fixed GET and nothing else', async () => {
@@ -91,6 +96,31 @@ test('a paired phone with an owner account reads the overview with one fixed GET
 		path: '/api/tracker-overview'
 	});
 	expect(plugin.request, 'the computer is never asked for the overview').not.toHaveBeenCalled();
+});
+
+test('the phone sends owner draft operations through its own Hub account', async () => {
+	const draft = { id: '77ecc6dd-7d69-4c9c-9981-2804ecc6f93c', revision: 2, status: 'draft' };
+	const account = accountOf(
+		vi
+			.fn()
+			.mockResolvedValueOnce(replyOf(200, [draft]))
+			.mockResolvedValueOnce(replyOf(200, { ...draft, status: 'sent' }))
+			.mockResolvedValueOnce(replyOf(403, denial))
+	);
+	const f = await phoneWith(online, account);
+	const cache = vi.fn();
+	f.bridge.onCacheStatus!(cache);
+	const body = { id: draft.id, revision: draft.revision, action: 'send' as const };
+	await expect(f.outgoing!.read()).resolves.toEqual([draft]);
+	await expect(f.outgoing!.write(body)).resolves.toEqual({ ...draft, status: 'sent' });
+	await expect(f.outgoing!.read()).rejects.toMatchObject({ status: 403 });
+	expect(account.request.mock.calls).toEqual([
+		[{ method: 'GET', path: '/api/outgoing-drafts' }],
+		[{ method: 'POST', path: '/api/outgoing-drafts', body }],
+		[{ method: 'GET', path: '/api/outgoing-drafts' }]
+	]);
+	expect(cache).not.toHaveBeenCalled();
+	expect(f.plugin.request).not.toHaveBeenCalled();
 });
 
 test('the overview waits for the account without waiting for computer status', async () => {

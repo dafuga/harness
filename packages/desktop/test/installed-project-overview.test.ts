@@ -187,6 +187,34 @@ test('a window of a Desktop with a Hub reads the owner overview through its nati
 	expect(hub.overviewRequests).toHaveLength(1);
 }, 30000);
 
+test('a signed-in Mac approves an exact draft revision through its local window', async () => {
+	const version = { id: '77ecc6dd-7d69-4c9c-9981-2804ecc6f93c', revision: 2 };
+	const result = { ...version, status: 'sent' };
+	const hub = connection({ body: result });
+	await hub.service.status();
+	const f = await localFixture();
+	const shared = {
+		registry: f.registry,
+		arbiter: f.arbiter,
+		providers: f.providers,
+		renderMockups: f.renderMockups,
+		outbox: new CommentOutboxService(),
+		auth: hub.service
+	};
+	const client = f.connect(f.window({ shared }));
+	const approval = { ...version, action: 'send' };
+	expect(await client.request('outgoingDrafts', approval)).toEqual(result);
+	expect(hub.overviewRequests).toEqual([
+		{
+			method: 'POST',
+			url: origin + '/api/outgoing-drafts',
+			body: JSON.stringify(approval)
+		}
+	]);
+	const guest = f.connect(f.window());
+	await expect(guest.request('outgoingDrafts', approval)).rejects.toThrow(/Sign in/);
+}, 30000);
+
 test('a window of a Desktop without a Hub keeps reading the local tracker', async () => {
 	reader.read.mockReset();
 	reader.read.mockResolvedValue(local);
