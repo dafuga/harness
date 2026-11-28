@@ -252,6 +252,10 @@ operator verifies the stopped database and chooses a rollback.
   When a run has ended, Tracker records that no live delivery was needed.
   An answer that releases a finished blocked run allows the watcher to
   relaunch the task. The answer stays available on the item and in the launch brief.
+  When Chief of Staff has already handed an answer to a live pane, record it
+  immediately with `tracker note <item> "Tracker answer <answered_at> hand-delivered to run #<run-id> on <node>."`
+  Use the exact answer timestamp, run ID and node from `tracker show <item> --json`.
+  The receipt clears an outstanding alert and stops retries to that run for that answer.
 
   Chief of Staff files ideas when Daniel raises them and sets the project.
   Use `add --next-step` or `update --next-step` to record a decision. Use

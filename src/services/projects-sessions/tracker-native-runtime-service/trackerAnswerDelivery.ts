@@ -26,7 +26,8 @@ export function trackerAnswerDelivery(
 		if (alert.kind !== alertKind) return true;
 		const [answer] = pendingAnswers(store, alert.item_id);
 		return (
-			answer?.generation === alert.identity && matchesAnswerRun(alert, answerRun(runs, answer))
+			answer?.generation === alert.identity &&
+			matchesAnswerRun(alert, answerRun(store, runs, answer))
 		);
 	};
 	return {
@@ -38,7 +39,7 @@ export function trackerAnswerDelivery(
 			clearResolvedAnswerAlerts(store, currentAlert);
 			for (const answer of pendingAnswers(store)) {
 				signal.throwIfAborted();
-				const run = answerRun(runs, answer);
+				const run = answerRun(store, runs, answer);
 				if (!run) continue;
 				if (run.state === 'finished') {
 					if (run.node === store.node) recordNoLiveDelivery(store, answer, run);
@@ -51,10 +52,27 @@ export function trackerAnswerDelivery(
 	};
 }
 
-function answerRun(runs: TrackerRunReadRepository, answer: PendingTrackerAnswer) {
+function answerRun(
+	store: TrackerPersistenceService,
+	runs: TrackerRunReadRepository,
+	answer: PendingTrackerAnswer
+) {
 	const history = runs.list({ itemId: answer.id }).filter(({ started_at }) => started_at != null);
 	const answeredAt = Date.parse(answer.answeredAt);
-	return history.some(({ started_at }) => started_at! <= answeredAt) ? history.at(-1) : undefined;
+	if (!history.some(({ started_at }) => started_at! <= answeredAt)) return undefined;
+	const run = history.at(-1)!;
+	return hasManualAnswerReceipt(store, answer, run) ? undefined : run;
+}
+
+function hasManualAnswerReceipt(
+	store: TrackerPersistenceService,
+	answer: PendingTrackerAnswer,
+	run: TrackerAnswerAttempt['run']
+) {
+	const note = `${receiptPrefix}${answer.answeredAt} hand-delivered to run #${run.id} on ${run.node}.`;
+	return store.database
+		.prepare('SELECT 1 FROM item_notes WHERE item_id = ? AND hlc > ? AND text = ? LIMIT 1')
+		.get(answer.id, answer.generation, note);
 }
 
 function liveAnswerRun(run: TrackerAnswerAttempt['run']) {
