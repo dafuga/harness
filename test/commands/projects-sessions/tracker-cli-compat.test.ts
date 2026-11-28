@@ -48,14 +48,16 @@ test('block accepts --no-needs-daniel and points --needs-daniel at flag', async 
 		});
 	}
 	expect(route).not.toHaveBeenCalled();
-	const blocker = 'waiting on CI\n' + proof;
+	const blocker = 'waiting on CI\nhygiene: closed 0 tabs/windows; left open: none';
 	const managedBlock = await run('block', 'taskfi', blocker, '--json');
+	expect(managedBlock).toMatchObject({ code: 0, err: '' });
 	expect(JSON.parse(managedBlock.out)).toMatchObject({
 		status: 'blocked',
 		blocked_reason: blocker
 	});
 	await run('unblock', 'taskfi');
 	const done = await run('done', fixtureItem, '--note', 'Checks passed\n' + proof, '--json');
+	expect(done).toMatchObject({ code: 0, err: '' });
 	expect(JSON.parse(done.out)).toMatchObject({
 		status: 'done',
 		notes_log: expect.arrayContaining([
