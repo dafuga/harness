@@ -100,21 +100,34 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 		async send(alerts, signal, queue) {
 			const now = Date.now();
 			if (cosSendWindowStart(now) === null) return false;
-			if (
-				now < nextCosTick &&
-				!alerts.some(
-					({ kind }) => kind === urgentQueueAlertKind || kind === staleDispatchHeartbeatKind
-				)
-			)
-				return false;
-			const panes = await tmux.scan(signal, /^cos$/);
-			if (panes.length !== 1) return false;
+			const destination = cosDestination(await tmux.scan(signal, /^cos$/));
+			if (typeof destination !== 'object') return destination;
+			if (now < nextCosTick && !alerts.some(bypassesCosCadence)) return 'deferred';
 			const message = cosMessage(alerts);
-			const sent = await tmux.nudge({ pane: panes[0], cli: 'claude', message }, signal);
+			const sent = await tmux.nudge({ pane: destination, cli: 'claude', message }, signal);
 			if (sent) nextCosTick = now + (queue?.backlog ? backlogInterval : cosInterval);
 			return sent;
 		}
 	};
+}
+
+function cosDestination([pane, extra]: WatchdogPane[]) {
+	if (!pane?.ready || extra) return false;
+	if (panes.idlePrompt(pane) === 'claude') return pane;
+	return workingCosPane(pane) ? 'deferred' : false;
+}
+
+function bypassesCosCadence({ kind }: TrackerWatchdogAlert) {
+	return kind === urgentQueueAlertKind || kind === staleDispatchHeartbeatKind;
+}
+
+function workingCosPane({ screen, y }: WatchdogPane) {
+	return /\b(?:esc to interrupt|ctrl\+c to interrupt)\b/i.test(
+		screen
+			?.split('\n')
+			.slice(Math.max(0, y - 5), y + 4)
+			.join('\n') ?? ''
+	);
 }
 
 function cosSummary(alerts: readonly TrackerWatchdogAlert[], trailer = '') {

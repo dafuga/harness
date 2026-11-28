@@ -1,6 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
 import { createHash } from 'node:crypto';
-import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
+import type { TrackerCosSendResult, TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { launchWithoutRunKind } from './trackerWatchLaunchRequests';
@@ -32,14 +32,15 @@ export async function sendWatchdogAlerts(
 	driver: TrackerWatchdogPort,
 	alerts: readonly TrackerWatchdogAlert[],
 	signal: AbortSignal
-): Promise<void> {
+): Promise<TrackerCosSendResult> {
 	const unsent = unsentCosAlerts(store, alerts).sort(
 		(a, b) => alertRank(a.kind) - alertRank(b.kind) || a.at - b.at
 	);
 	const batch = unsent.slice(0, driver.batchLimit ?? batchSize);
-	if (!batch.length) return;
-	if (!(await driver.send(batch, signal, { backlog: unsent.length > batch.length }))) return;
-	recordCosReceipts(store, batch);
+	if (!batch.length) return false;
+	const result = await driver.send(batch, signal, { backlog: unsent.length > batch.length });
+	if (result === true) recordCosReceipts(store, batch);
+	return result;
 }
 
 export function recordCosReceipts(
@@ -64,8 +65,17 @@ export function cosReceiptReference(alert: TrackerWatchdogAlert): string {
 		.slice(0, 24);
 }
 
-/** Explicit CoS messages are versioned by their full text, independent of host and queue ID. */
-function messageReceiptKey({ item_id, kind, reason }: TrackerWatchdogAlert): string | undefined {
+/** Answer alerts use the answer generation. Explicit CoS messages use their full text. */
+function messageReceiptKey({
+	item_id,
+	kind,
+	identity,
+	reason
+}: TrackerWatchdogAlert): string | undefined {
+	if (kind === 'answer-delivery') {
+		const digest = createHash('sha256').update(identity).digest('hex');
+		return `watchdog_cos_answer:${item_id}:${digest}`;
+	}
 	if (
 		kind !== 'cos-message' &&
 		(kind !== 'alert' || !/\bcredential\/access dependency\b/i.test(reason))

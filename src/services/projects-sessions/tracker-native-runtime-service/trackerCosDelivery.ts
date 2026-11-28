@@ -22,7 +22,8 @@ const alphabet = '0123456789abcdefghjkmnpqrstvwxyz';
 export function watchCosDelivery(
 	store: TrackerPersistenceService,
 	pending: readonly TrackerWatchdogAlert[],
-	now: number
+	now: number,
+	progressExpected = false
 ): void {
 	const windowStart = cosSendWindowStart(now);
 	if (windowStart === null) return;
@@ -32,6 +33,7 @@ export function watchCosDelivery(
 		if (alarm?.open) closeAlarm(store, alarm);
 		return;
 	}
+	if (progressExpected) return;
 	const stuck = pending.some((alert) => overdue(alert, now - Math.max(alert.at, windowStart)));
 	if (stuck && askDue(store, alarm, now)) raiseAlarm(store, { alarm, pending, now });
 }

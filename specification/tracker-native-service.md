@@ -232,6 +232,10 @@ operator verifies the stopped database and chooses a rollback.
   When tmux misses an acceptance, Tracker checks Claude's recorded prompt
   or queue receipt before retrying. Changes to the dependency text can
   trigger a new alert. Open blockers continue to appear in the daily digest.
+  While the CoS pane is working or waiting for the next delivery interval,
+  Tracker keeps the alerts queued and retries without asking Daniel to intervene.
+  The fallback question remains available if the pane is unavailable and delivery
+  has exceeded its grace period.
   CoS batches carry up to four alerts within a 450-byte composer budget. A long alert uses its item ID
   and a short sentence, with full details available in Tracker. The batch
   includes the slot summary when it fits.
@@ -247,9 +251,15 @@ operator verifies the stopped database and chooses a rollback.
 
   A Hub or CLI answer to an assigned task is routed to its current Codex or
   Claude pane. Tracker waits for an idle composer, records the computer and run
-  once submission is confirmed, and alerts Chief of Staff if delivery stays
-  pending. An answer that releases a finished blocked run allows the watcher to
-  relaunch the task. The answer stays available on the item during recovery.
+  once submission is confirmed. Only a live run can produce a late-delivery
+  alert, and Chief of Staff receives at most one alert per answer generation.
+  When a run has ended, Tracker records that no live delivery was needed.
+  An answer that releases a finished blocked run allows the watcher to
+  relaunch the task. The answer stays available on the item and in the launch brief.
+  When Chief of Staff has already handed an answer to a live pane, record it
+  immediately with `tracker note <item> "Tracker answer <answered_at> hand-delivered to run #<run-id> on <node>."`
+  Use the exact answer timestamp, run ID and node from `tracker show <item> --json`.
+  The receipt clears an outstanding alert and stops retries to that run for that answer.
 
   Chief of Staff files ideas when Daniel raises them and sets the project.
   Use `add --next-step` or `update --next-step` to record a decision. Use

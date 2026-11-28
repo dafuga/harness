@@ -22,6 +22,7 @@ import {
 	minute,
 	readCosPrompts,
 	recordedDependencyQueue,
+	verifyBusyCosRetry,
 	writeAcceptedPrompts
 } from '../../support/trackerCosDeliveryFixture';
 import { withTempDir } from '../../support/temporary';
@@ -31,7 +32,7 @@ const now = Date.UTC(2026, 10, 25, 23);
 test(
 	'oversized CoS alerts fit the 80x24 composer and leave room for the next alert',
 	() =>
-		cosDeliveryFixture(({ store }) =>
+		cosDeliveryFixture(({ store, items }) =>
 			withTempDir('hnt-cos-window-', async (root) => {
 				const executable = join(root, 'tmux-fixture');
 				writeFileSync(executable, `#!${process.execPath}\n${claudePaneFixture}`, { mode: 0o700 });
@@ -55,12 +56,11 @@ test(
 					.spyOn(Date, 'now')
 					.mockImplementation(() => clock + performance.now() - started);
 				try {
-					const driver = trackerWatchdogPort(
-						{ tmux: executable, chiefOfStaff: true },
-						'daniel-primary-mbp'
-					);
+					const driver = trackerWatchdogPort({ tmux: executable }, 'daniel-primary-mbp');
 					const signal = AbortSignal.timeout(22_000);
-					await sendWatchdogAlerts(store, driver, queue, signal);
+					const watchdog = trackerCosRound(store, driver, { now: () => clock, local: () => queue });
+					const run = () => watchdog.run(signal, false);
+					await verifyBusyCosRetry(root, items, run, () => (clock += minute));
 					const pane = JSON.parse(readFileSync(join(root, 'state'), 'utf8'));
 					expect(pane.enters, 'the first batch must submit in the 80x24 pane').toBe(1);
 					for (let round = 0; round < 2; round++) {

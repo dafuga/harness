@@ -7,7 +7,6 @@ import { trackerNodeRuntime } from '../../src/services/projects-sessions/tracker
 import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import type { TrackerSlotFixture, TrackerSlotPane } from './trackerSlotFixture.types';
 import { driverProgram, tmuxProgram } from './trackerSlotFixturePrograms';
-
 const node = 'daniel-primary-mbp';
 const signal = new AbortController().signal;
 export const protectedPanes = ['cos', 'credential-broker-mac', 'deploy-abc123', 'rng-poker-keeper'];
@@ -16,6 +15,41 @@ export const composer = (status = footer) =>
 	['─'.repeat(20), '❯ ', '─'.repeat(20), status].join('\n');
 export const codexComposer = (background = '') =>
 	[background, '› ', '', '  gpt-6.2-sol high · ~/work'].join('\n');
+
+export async function verifyAnswerAfterExit(hub: TrackerSlotFixture, item: string) {
+	await hub.request(`/items/${item}/flag`, { question: 'Choose the synthetic region' });
+	await hub.request(`/items/${item}/answer`, { answer: 'Use the first region' });
+	const kind = 'answer-delivery';
+	const stale = { item_id: item, kind };
+	const { generation } = hub.database
+		.prepare("SELECT json_extract(clocks, '$.answer') AS generation FROM items WHERE id = ?")
+		.get(item)!;
+	const alert = {
+		...stale,
+		id: 'already-queued',
+		host: 'daniel-primary-mbp',
+		identity: generation,
+		session: 'auto-report-r1',
+		reason: 'Previously queued answer delivery',
+		at: hub.now()
+	};
+	hub.runtime.store.writeMeta({ watchdog_alerts: JSON.stringify({ [`${item}:${kind}`]: alert }) });
+	const alerts = () => hub.runtime.watchdog!.alerts();
+	expect
+		.soft(alerts(), 'A queued answer alert must disappear when its run has ended')
+		.not.toContainEqual(expect.objectContaining(stale));
+	await hub.advance(11 * 60_000);
+	await hub.advance(60_000);
+	expect
+		.soft(alerts(), 'An ended run must never raise an answer alert')
+		.not.toContainEqual(expect.objectContaining(stale));
+	expect(hub.runs(item)).toEqual([{ state: 'finished', outcome: 'abandoned' }]);
+	expect(hub.tmuxInput()).not.toContain(`Tracker answer for item ${item}`);
+	const notes = hub.database.prepare('SELECT text FROM item_notes WHERE item_id = ?').all(item);
+	expect(notes.filter(({ text }) => String(text).includes('no live delivery needed'))).toHaveLength(
+		1
+	);
+}
 
 export async function verifyManualLaunchWithBlockedPane(hub: TrackerSlotFixture) {
 	const item = 'retrylive1';
@@ -75,7 +109,6 @@ export function trackerSlotFixture(root: string, start: number): TrackerSlotFixt
 		}
 	};
 }
-
 function paneStore(state: string) {
 	const read = () => JSON.parse(readFileSync(state, 'utf8')) as Record<string, TrackerSlotPane>;
 	const allPanes = () => Object.keys(read());
@@ -96,7 +129,6 @@ function paneStore(state: string) {
 		}
 	};
 }
-
 function protectedState(start: number) {
 	return JSON.stringify(
 		Object.fromEntries(
@@ -107,7 +139,6 @@ function protectedState(start: number) {
 		)
 	);
 }
-
 function slotReads(runtime: TrackerNativeRuntimeService, database: DatabaseSync) {
 	return {
 		async request(path: string, body: object = {}) {
@@ -133,7 +164,6 @@ function slotReads(runtime: TrackerNativeRuntimeService, database: DatabaseSync)
 			queueSlotItem(runtime, itemId, model)
 	};
 }
-
 function queueSlotItem(runtime: TrackerNativeRuntimeService, itemId: string, model: string) {
 	runtime.store.appendLocal({
 		itemId,

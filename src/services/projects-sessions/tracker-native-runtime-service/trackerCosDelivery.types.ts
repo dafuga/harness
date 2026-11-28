@@ -11,4 +11,5 @@ export interface TrackerCosDeliveryAlarm {
 export interface TrackerCosRoundPorts {
 	now(): number;
 	local(): readonly TrackerWatchdogAlert[];
+	current?(alert: TrackerWatchdogAlert): boolean;
 }

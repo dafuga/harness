@@ -47,24 +47,24 @@ export function trackerHostWatchdog(
 	const scanTranscripts = trackerTranscriptScan(store, config.transcriptRoots ?? [], now);
 	const items = new TrackerItemReadRepository(store.database, now);
 	const chiefOfStaff = config.chiefOfStaff === true && store.node === 'daniel-primary-mbp';
+	const answers = trackerAnswerDelivery(store, driver, now, chiefOfStaff);
 	const readItems = () => items.list({ status: 'all', limit: -1 });
 	let liveSessions = new Set<string>();
 	const cos = trackerCosRound(store, driver, {
 		now,
+		current: answers.currentAlert,
 		local: () => [
 			...localAlerts(store, items, now(), liveSessions),
 			...(options.dispatchAlerts?.() ?? [])
 		]
 	});
-	const alerts = cos.alerts;
 	const pollSessions = watchHostSessions(
 		{ store, items, driver },
 		{ ...options, readItems, roots: config.transcriptRoots }
 	);
 	const deliverMessages = trackerHubMessageDelivery({ store, driver, now });
-	const deliverAnswers = trackerAnswerDelivery(store, driver, now, chiefOfStaff);
 	return {
-		alerts,
+		alerts: cos.alerts,
 		chiefOfStaff,
 		inspect: inspectHostWatchdog({ store, items, driver }, { ...options, readItems }),
 		async tick(signal: AbortSignal) {
@@ -81,7 +81,7 @@ export function trackerHostWatchdog(
 				}
 			} finally {
 				// Answer delivery checks its own pane, even if the wider watchdog scan fails.
-				if (!signal.aborted) await deliverAnswers(signal);
+				if (!signal.aborted) await answers.poll(signal);
 			}
 			// Last, so a pane that cannot be typed into never holds back the checks above.
 			await deliverMessages(signal);

@@ -4,6 +4,7 @@ import { hubMessageLine } from '../../../utils/projects-sessions/hubSessionMessa
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from './trackerHostWatchdogState';
+import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import type { PendingTrackerAnswer, TrackerAnswerAttempt } from './trackerAnswerDelivery.types';
 
@@ -21,35 +22,84 @@ export function trackerAnswerDelivery(
 ) {
 	const runs = new TrackerRunReadRepository(store.database, store.node);
 	let lastPoll = -Infinity;
-	return async (signal: AbortSignal) => {
-		const at = now();
-		if (at - lastPoll < pollInterval) return;
-		lastPoll = at;
-		const pending = pendingAnswers(store);
-		clearResolvedAnswerAlerts(store, pending);
-		for (const answer of pending) {
-			signal.throwIfAborted();
-			const history = runs
-				.list({ itemId: answer.id })
-				.filter(({ started_at }) => started_at != null);
-			const run = history.at(-1);
-			const answeredAt = Date.parse(answer.answeredAt);
-			if (!run || !history.some(({ started_at }) => started_at! <= answeredAt)) continue;
-			if (run.node !== store.node && !chiefOfStaff) continue;
-			await deliverAnswer(store, driver, { answer, run, at, answeredAt }, signal);
+	const currentAlert = (alert: TrackerWatchdogAlert) => {
+		if (alert.kind !== alertKind) return true;
+		const [answer] = pendingAnswers(store, alert.item_id);
+		return (
+			answer?.generation === alert.identity &&
+			matchesAnswerRun(alert, answerRun(store, runs, answer))
+		);
+	};
+	return {
+		currentAlert,
+		async poll(signal: AbortSignal) {
+			const at = now();
+			if (at - lastPoll < pollInterval) return;
+			lastPoll = at;
+			clearResolvedAnswerAlerts(store, currentAlert);
+			for (const answer of pendingAnswers(store)) {
+				signal.throwIfAborted();
+				const run = answerRun(store, runs, answer);
+				if (!run) continue;
+				if (run.state === 'finished') {
+					if (run.node === store.node) recordNoLiveDelivery(store, answer, run);
+					continue;
+				}
+				if (!liveAnswerRun(run) || (run.node !== store.node && !chiefOfStaff)) continue;
+				await deliverAnswer(store, driver, { answer, run, at }, signal);
+			}
 		}
 	};
 }
 
+function answerRun(
+	store: TrackerPersistenceService,
+	runs: TrackerRunReadRepository,
+	answer: PendingTrackerAnswer
+) {
+	const history = runs.list({ itemId: answer.id }).filter(({ started_at }) => started_at != null);
+	const answeredAt = Date.parse(answer.answeredAt);
+	if (!history.some(({ started_at }) => started_at! <= answeredAt)) return undefined;
+	const run = history.at(-1)!;
+	return hasManualAnswerReceipt(store, answer, run) ? undefined : run;
+}
+
+function hasManualAnswerReceipt(
+	store: TrackerPersistenceService,
+	answer: PendingTrackerAnswer,
+	run: TrackerAnswerAttempt['run']
+) {
+	const note = `${receiptPrefix}${answer.answeredAt} hand-delivered to run #${run.id} on ${run.node}.`;
+	return store.database
+		.prepare('SELECT 1 FROM item_notes WHERE item_id = ? AND hlc > ? AND text = ? LIMIT 1')
+		.get(answer.id, answer.generation, note);
+}
+
+function liveAnswerRun(run: TrackerAnswerAttempt['run']) {
+	return run.ended_at == null && (run.state === 'running' || run.state === 'observed');
+}
+
+function matchesAnswerRun(
+	alert: TrackerWatchdogAlert,
+	run: TrackerAnswerAttempt['run'] | undefined
+) {
+	return (
+		!!run &&
+		liveAnswerRun(run) &&
+		run.node === alert.host &&
+		run.tmux === alert.session &&
+		run.started_at! <= alert.at
+	);
+}
+
 /** Read the current answer generation. A replaced ask or a closed item has nothing to deliver. */
-function pendingAnswers(store: TrackerPersistenceService) {
+function pendingAnswers(store: TrackerPersistenceService, itemId?: string) {
+	const itemFilter = itemId === undefined ? '' : 'AND i.id = ?';
 	return store.database
 		.prepare(
 			`SELECT i.id, i.answered_at AS answeredAt, json_extract(i.clocks, '$.answer') AS generation,
 				CASE WHEN i.answer_option IS NOT NULL AND coalesce(i.confirm,'') <> 'secret'
-					AND cast(coalesce(i.sensitive,0) AS INTEGER) = 0 THEN i.answer END AS choice,
-				(i.status = 'blocked' AND json_extract(i.clocks,'$.status') >= json_extract(i.clocks,'$.answer'))
-					AS keepBlocked
+					AND cast(coalesce(i.sensitive,0) AS INTEGER) = 0 THEN i.answer END AS choice
 			FROM items i
 			WHERE i.deleted = 0 AND coalesce(i.kind,'task') = 'task'
 				AND i.status IN ('open','in_progress','blocked')
@@ -57,22 +107,34 @@ function pendingAnswers(store: TrackerPersistenceService) {
 				AND json_extract(i.clocks,'$.answer') = json_extract(i.clocks,'$.answered_at')
 				AND json_extract(i.clocks,'$.answer') > coalesce(json_extract(i.clocks,'$.question'),'')
 				AND NOT EXISTS (SELECT 1 FROM item_notes n WHERE n.item_id = i.id
-					AND instr(n.text, ? || json_extract(i.clocks,'$.answer') || ' delivered to ') = 1)`
+					AND instr(n.text, ? || json_extract(i.clocks,'$.answer') || ' delivered to ') = 1)
+				${itemFilter}`
 		)
-		.all(receiptPrefix) as PendingTrackerAnswer[];
+		.all(receiptPrefix, ...(itemId === undefined ? [] : [itemId])) as PendingTrackerAnswer[];
 }
 
 function clearResolvedAnswerAlerts(
 	store: TrackerPersistenceService,
-	pending: PendingTrackerAnswer[]
+	currentAlert: (alert: TrackerWatchdogAlert) => boolean
 ) {
-	const generations = new Map(pending.map(({ id, generation }) => [id, generation]));
 	const alerts = Object.entries(readWatchdogAlerts(store));
-	const retained = alerts.filter(
-		([, alert]) => alert.kind !== alertKind || generations.get(alert.item_id) === alert.identity
-	);
+	const retained = alerts.filter(([, alert]) => currentAlert(alert));
 	if (alerts.length !== retained.length)
 		store.writeMeta({ watchdog_alerts: JSON.stringify(Object.fromEntries(retained)) });
+}
+
+/** Keep the answer eligible for a later launch or a blocked run that becomes live again. */
+function recordNoLiveDelivery(
+	store: TrackerPersistenceService,
+	{ id, generation }: PendingTrackerAnswer,
+	run: TrackerAnswerAttempt['run']
+) {
+	const note = `${receiptPrefix}${generation}: no live delivery needed (run #${run.id} on ${run.node} ended).`;
+	if (
+		store.database.prepare('SELECT 1 FROM item_notes WHERE item_id = ? AND text = ?').get(id, note)
+	)
+		return;
+	store.appendLocal({ itemId: id, actor: 'Tracker', fields: { 'note+': note } });
 }
 
 function recordedPaneKey(store: TrackerPersistenceService, runId: number): string | undefined {
@@ -90,7 +152,7 @@ function recordedPaneKey(store: TrackerPersistenceService, runId: number): strin
 async function deliverAnswer(
 	store: TrackerPersistenceService,
 	driver: TrackerWatchdogPort,
-	{ answer, run, at, answeredAt }: TrackerAnswerAttempt,
+	{ answer, run, at }: TrackerAnswerAttempt,
 	signal: AbortSignal
 ) {
 	const { id, generation } = answer;
@@ -105,8 +167,7 @@ async function deliverAnswer(
 		});
 		return;
 	}
-	if (answer.keepBlocked && run.state === 'finished') return;
-	if (at - answeredAt < (local ? alertGrace : remoteAlertGrace)) return;
+	if (at - Date.parse(answer.answeredAt) < (local ? alertGrace : remoteAlertGrace)) return;
 	recordWatchdogAlert(
 		store,
 		{
@@ -127,9 +188,8 @@ async function submitAnswer(
 	{ answer, run }: Pick<TrackerAnswerAttempt, 'answer' | 'run'>,
 	signal: AbortSignal
 ) {
-	const live = run.state === 'running' || run.state === 'observed' || run.outcome === 'blocked';
 	const { tmux, cli, started_at: startedAt } = run;
-	if (!live || !tmux || startedAt == null || (cli !== 'codex' && cli !== 'claude')) return false;
+	if (!tmux || startedAt == null || (cli !== 'codex' && cli !== 'claude')) return false;
 	const result = await driver
 		.deliver?.(
 			{
