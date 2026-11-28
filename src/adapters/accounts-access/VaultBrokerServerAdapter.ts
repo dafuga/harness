@@ -5,6 +5,10 @@ import { dirname } from 'node:path';
 import type { z } from 'zod';
 import { VaultBrokerError } from '../../validators/accounts-access/VaultBrokerError';
 import {
+	vaultPurchaseRoutes,
+	vaultPurchaseProof
+} from '../../validators/accounts-access/VaultPaymentValidator';
+import {
 	VaultWireValidator,
 	vaultChallenge,
 	vaultLeaseCall,
@@ -30,7 +34,7 @@ export class VaultBrokerServerAdapter {
 	private server: Server | null = null;
 
 	constructor(private readonly config: VaultBrokerServerConfig) {
-		const { broker, keeper, devices } = config;
+		const { broker, keeper, devices, payments } = config;
 		const route = <T>(schema: z.ZodType<T>, run: (body: T, uid: number | null) => unknown) =>
 			({ schema, run }) as Route;
 		this.routes = {
@@ -55,6 +59,14 @@ export class VaultBrokerServerAdapter {
 			'/v1/device/requests': route(vaultProof, (body) => broker.queue(body)),
 			'/v1/device/decision': route(vaultProof, (body) => ({ status: broker.decide(body) }))
 		};
+		if (payments) {
+			this.routes[vaultPurchaseRoutes.queue] = route(vaultPurchaseProof, (body) =>
+				payments.queue(body)
+			);
+			this.routes[vaultPurchaseRoutes.decision] = route(vaultPurchaseProof, (body) => ({
+				status: payments.decide(body)
+			}));
+		}
 	}
 
 	async listen(): Promise<string> {
