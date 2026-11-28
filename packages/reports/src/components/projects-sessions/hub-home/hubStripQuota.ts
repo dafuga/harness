@@ -31,7 +31,7 @@ const specs: QuotaSpec[] = [
 	{ provider: 'codex', name: 'Codex', window: 'weekly', pick: codexLimit }
 ];
 
-/** Claude's 5-hour and Codex's weekly limit, Claude first; a provider without a fresh reading shows none. */
+/** @pure Claude's 5-hour and Codex's weekly limit, Claude first; a provider without a fresh reading shows none. */
 export function stripQuota(subscriptions: HomeSubscription[] | null, now: number): StripQuota[] {
 	const readings = subscriptions ?? [];
 	return specs.map((spec) => entryFor(spec, readings, now));

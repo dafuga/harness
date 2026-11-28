@@ -32,6 +32,7 @@
 		if (target === undefined) return;
 		event.preventDefault();
 		onselect(target);
+		document.getElementById(`hs-tab-${target}`)?.focus();
 	}
 </script>
 
@@ -81,7 +82,7 @@
 		text-align: center;
 	}
 	.hs-tab:focus-visible {
-		outline: 2px solid var(--hx-color-primary);
+		outline: 2px solid var(--home-accent, var(--hx-color-primary));
 		outline-offset: 2px;
 	}
 	.hs-count {
@@ -98,7 +99,7 @@
 		width: 8px;
 		height: 8px;
 		border-radius: 50%;
-		background: var(--hx-color-primary);
+		background: var(--home-accent, var(--hx-color-primary));
 	}
 	.hs-tab[aria-selected='true'] {
 		border-color: var(--hx-color-border-strong);
