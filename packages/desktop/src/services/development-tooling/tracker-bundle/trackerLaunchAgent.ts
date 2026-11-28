@@ -111,17 +111,58 @@ export async function agentLoaded(host: TrackerBundleHost): Promise<boolean> {
 	return (await host.run(launchctl, ['print', `gui/${host.uid}/${trackerLabel}`])).status === 0;
 }
 
-/** Unloads and loads the agent so launchd reads the changed command line. */
+/** An absent label has exit status 113. Other lookup failures cannot confirm a stop. */
+async function printAgent(host: TrackerBundleHost, target: string): Promise<string | null> {
+	const { status, stdout } = await host.run(launchctl, ['print', target]);
+	if (status === 113) return null;
+	if (status !== 0)
+		throw new TrackerBundleError(
+			`Cannot confirm Tracker stopped (launchctl print exit ${status}).`
+		);
+	return stdout;
+}
+
+async function waitForBootout(
+	host: TrackerBundleHost,
+	target: string,
+	stopping: Set<number>
+): Promise<void> {
+	const job = await printAgent(host, target);
+	if (job !== null) {
+		// Only the job's own top-level pid field, never a nested job or environment entry.
+		const match = /^\tpid = ([1-9]\d*)$/m.exec(job);
+		if (match) stopping.add(Number(match[1]));
+		await host.run(launchctl, ['bootout', target]);
+	} else if (stopping.size === 0) return;
+	const interval = 250;
+	const timeout = 60_000;
+	for (let elapsed = 0; elapsed <= timeout; elapsed += interval) {
+		if (
+			(await printAgent(host, target)) === null &&
+			![...stopping].some((id) => host.isProcessRunning(id))
+		) {
+			stopping.clear();
+			return;
+		}
+		if (elapsed < timeout) await host.sleep(interval);
+	}
+	throw new TrackerBundleError('Tracker did not stop within 60 seconds.');
+}
+
+/** Waits for removal before loading the changed plist. Zero attempts requests unload only. */
 export async function reloadAgent(
 	agent: string,
 	host: TrackerBundleHost,
-	attempts = 5
+	attempts = 5,
+	stopping: Set<number> = new Set<number>()
 ): Promise<void> {
 	const domain = `gui/${host.uid}`;
-	await host.run(launchctl, ['bootout', `${domain}/${trackerLabel}`]);
+	await waitForBootout(host, `${domain}/${trackerLabel}`, stopping);
 	for (let attempt = 1; attempt <= attempts; attempt++) {
-		if ((await host.run(launchctl, ['bootstrap', domain, agent])).status === 0) return;
+		const { status } = await host.run(launchctl, ['bootstrap', domain, agent]);
+		if (status === 0) return;
+		if (attempt === attempts)
+			throw new TrackerBundleError(`launchctl bootstrap failed for Tracker (exit ${status}).`);
 		await host.sleep(1000);
 	}
-	throw new TrackerBundleError('launchd would not load the Tracker service.');
 }

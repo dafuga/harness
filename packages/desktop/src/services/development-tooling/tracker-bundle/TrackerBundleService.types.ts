@@ -5,6 +5,8 @@ export interface TrackerBundleHost {
 	run(file: string, args: string[], env?: Record<string, string>): Promise<TrackerBundleRun>;
 	/** The user id whose launchd domain owns the service. */
 	uid: number;
+	/** Checks process existence without sending a signal. */
+	isProcessRunning(pid: number): boolean;
 	sleep(milliseconds: number): Promise<void>;
 }
 

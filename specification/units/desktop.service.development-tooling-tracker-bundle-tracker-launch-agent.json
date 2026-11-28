@@ -91,6 +91,11 @@
 				"type": "number",
 				"required": false,
 				"default": 5
+			},
+			{
+				"name": "reloadAgent.stopping",
+				"type": "Set<number>",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -287,6 +292,11 @@
 						"type": "number",
 						"required": false,
 						"default": 5
+					},
+					{
+						"name": "reloadAgent.stopping",
+						"type": "Set<number>",
+						"required": false
 					}
 				],
 				"outputs": [
