@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { formatNativeTrackerInspection } from '../../../src/commands/projects-sessions/tracker-command/formatNativeTrackerInspection';
 import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/tracker-command/nativeTrackerRequest';
 
 test('flag and answer carry multiple-choice options', () => {
@@ -36,6 +37,16 @@ test('flag and answer carry multiple-choice options', () => {
 		nativeTrackerArgs(['answer', 'abc123', '--option', '2', '--confirmed', '--by', 'Daniel'])
 			.request.body
 	).toMatchObject({ option: '2', confirmed: true, by: 'Daniel' });
+});
+
+test('show points a session to the private Chief of Staff answer', () => {
+	const item = { id: 'abc123def4', title: 'Fixture', status: 'in_progress', chief_answered: true };
+	expect(formatNativeTrackerInspection('show', item as never)).toContain(
+		'Chief of Staff answered; read it with: tracker review abc123'
+	);
+	expect(
+		formatNativeTrackerInspection('show', { ...item, chief_answered: false } as never)
+	).not.toContain('tracker review');
 });
 
 test('reject sends its words as the reason and works without one', () => {
