@@ -1,0 +1,69 @@
+{
+	"name": "d0cgxn-due-launch-gate",
+	"goal": "Keep scheduled work out of unattended launch until the due time, then launch it through normal dispatch",
+	"createdAt": "2026-11-28T13:01:22.371Z",
+	"updatedAt": "2026-11-28T13:42:58.266Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:02:41.738Z",
+			"evidence": "Runs 1263 and 1264 started automatically about two hours after schedule-on, ahead of their stored due timestamps."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:02:42.429Z",
+			"evidence": "Tracker due-launch coverage only ticked the scheduler. It now enables the schedule and sweeps idle work before due; dispatcher coverage rechecks queued automatic claims and recovery."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:05:35.580Z",
+			"evidence": "Committed replay 49c242db33 failed: the watchdog set a launch token and the runner recorded later00001 as automatic before its due time."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:05:36.870Z",
+			"evidence": "The dispatcher reuses the scheduler due-time calculation for unattended admission. The native runner rechecks the stored due time before starting."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:07:01.562Z",
+			"evidence": "Clean snapshot 09c71be8cc passed the same ten tests. The watchdog left the item unqueued, it started as due at the exact time, and automatic claims and recovery respected the gate."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:08:11.388Z",
+			"evidence": "siblings-3b95a059-de38-479e-9442-1321b9a05ab5.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:42:58.266Z",
+			"evidence": "The unchanged clean red/green replay passed on 09c71be8cc. Integrated candidate c432b4b243 passed 51 Tracker unit and integration cases, one signed hub-spoke CLI case, scoped TypeScript, ESLint and formatting. Shared check requested; the planner could not resolve existing ESLint and desktop script imports and ran no focused assertions."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

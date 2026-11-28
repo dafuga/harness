@@ -1,0 +1,65 @@
+{
+	"name": "wat005-placement",
+	"goal": "Prove that unnamed light Tracker launches use available MB2 session and RAM capacity, CPU-heavy work prefers a fitting primary Mac, and desktop Chrome work stays on primary.",
+	"createdAt": "2026-11-28T12:58:26.234Z",
+	"updatedAt": "2026-11-28T13:08:34.441Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T12:59:40.839Z",
+			"evidence": "The release report recorded MB2 has about 45 GB free and one agent versus primary about 7 GB and 19 agents, yet light ranking preferred primary. The launch planner also converted omitted computer to the local node before fleet assignment."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T12:59:41.477Z",
+			"evidence": "tracker-machine-placement used idle default/physical ratios only. tracker-fleet-telemetry offered a single eligible host or asserted local routing when omitted. Extend those cases with busy-vs-idle ranking, peer saturation, primary-only desktop work and ordinary requests."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:05:05.306Z",
+			"evidence": "Committed 7c25507f6b failed the frozen suite. Both Macs fit the reported light demand, and the old score still chose primary. The fleet cases also failed for omitted computer, fewer slots, heavy builds and Chrome."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:05:06.601Z",
+			"evidence": "Use workload headroom and reported slots in ranking, route ordinary unnamed launches through fleet placement, and pin automatic desktop work to primary."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:08:34.441Z",
+			"evidence": "Frozen tests passed 13 of 13 at 55c32f3c91. Recorded fd493258ed6d5da0db1a1ad063523fae651f5982893f2e0d51c99bbb4d044f4c with 424 runtime observations."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

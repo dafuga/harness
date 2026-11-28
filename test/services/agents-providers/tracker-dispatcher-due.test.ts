@@ -18,6 +18,7 @@ test('due intent uses a local-zone date, holds future or ineligible work and kee
 	await verifyRecoveryGates(fixture);
 
 	changeItem({ due: '2026-11-21' });
+	await verifyQueuedLaunchGates(fixture);
 	expect(await service.request(sampleId, due)).toEqual({
 		status: 'held',
 		reason: 'item is not due'
@@ -61,6 +62,21 @@ test('due intent uses a local-zone date, holds future or ineligible work and kee
 	});
 });
 
+async function verifyQueuedLaunchGates({
+	changeItem,
+	service,
+	runs
+}: ReturnType<typeof dispatcherFixture>) {
+	const launch = { source: 'automatic', token: 'already-queued', target: primary } as const;
+	changeItem({ launch });
+	expect.soft(await service.claim(sampleId, launch.token)).toEqual({
+		status: 'held',
+		reason: 'item is not due'
+	});
+	expect.soft(runs()).toEqual([]);
+	changeItem({ launch: null });
+}
+
 async function verifyRecoveryGates({
 	changeItem,
 	service,
@@ -78,6 +94,7 @@ async function verifyRecoveryGates({
 		{ kind: 'plan' },
 		{ awaitingAnswer: true, question: 'What do you think?' },
 		{ parkedUntil: policy.now() + 60_000 },
+		{ due: new Date(policy.now() + 1).toISOString() },
 		{ status: 'blocked' as const },
 		{ status: 'done' as const }
 	]) {
@@ -89,6 +106,7 @@ async function verifyRecoveryGates({
 			scheduleOff: false,
 			awaitingAnswer: false,
 			parkedUntil: 0,
+			due: '2026-11-20',
 			...item
 		});
 		expect.soft(await service.request(sampleId, recovery), JSON.stringify(item)).not.toMatchObject({
@@ -96,7 +114,7 @@ async function verifyRecoveryGates({
 		});
 		changeItem({ launch: null });
 	}
-	changeItem({ status: 'open', parkedUntil: 0 });
+	changeItem({ status: 'open', parkedUntil: 0, due: '2026-11-20' });
 }
 
 test('a reachable denial beats local fallback, while a sole owner can start during an outage', async () => {
