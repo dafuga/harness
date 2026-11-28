@@ -174,23 +174,8 @@
 				"required": true
 			},
 			{
-				"name": "canBlockStoppedRun.item",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "canBlockStoppedRun.runs",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "canBlockStoppedRun.openSession",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "canBlockStoppedRun.activeSessionKeys",
-				"type": "unknown",
+				"name": "canBlockStoppedRun.snapshot",
+				"type": "TrackerDispatchSnapshot",
 				"required": true
 			},
 			{
@@ -780,23 +765,8 @@
 				"name": "canBlockStoppedRun",
 				"inputs": [
 					{
-						"name": "canBlockStoppedRun.item",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "canBlockStoppedRun.runs",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "canBlockStoppedRun.openSession",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "canBlockStoppedRun.activeSessionKeys",
-						"type": "unknown",
+						"name": "canBlockStoppedRun.snapshot",
+						"type": "TrackerDispatchSnapshot",
 						"required": true
 					},
 					{

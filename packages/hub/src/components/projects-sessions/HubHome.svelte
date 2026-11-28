@@ -38,7 +38,6 @@
 	import '$reports/lib/styles/hub-home/index.css';
 	const { api, session, projects } = browserContext();
 	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
-	provideHubSpecDocuments(({ id }) => api.get('/api/hub-home/doc', { id }));
 	const cosChat = provideHomeCosChat(
 		() => reads.read(),
 		() => outgoing
@@ -105,6 +104,7 @@
 		home: (result) => ((home = result), (now = Date.now())),
 		linked: (result) => ((live = result), (now = Date.now()))
 	});
+	provideHubSpecDocuments(reads.readDocument);
 	function refresh() {
 		const actor = session.actor?.id;
 		const request = ++flight;

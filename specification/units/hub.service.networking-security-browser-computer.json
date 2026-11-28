@@ -15,6 +15,7 @@
 			"BrowserComputerService.connect",
 			"BrowserComputerService.home",
 			"BrowserComputerService.chat",
+			"BrowserComputerService.readDocument",
 			"BrowserComputerService.close"
 		]
 	},
@@ -55,6 +56,16 @@
 				"name": "BrowserComputerService.chat.message",
 				"type": "object",
 				"required": true
+			},
+			{
+				"name": "BrowserComputerService.readDocument.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "BrowserComputerService.readDocument.id",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -68,6 +79,10 @@
 			},
 			{
 				"name": "BrowserComputerService.chat",
+				"type": "Promise<unknown>"
+			},
+			{
+				"name": "BrowserComputerService.readDocument",
 				"type": "Promise<unknown>"
 			},
 			{
@@ -144,12 +159,30 @@
 						"type": "Promise<unknown>"
 					}
 				],
-				"errors": [
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserComputerService.readDocument",
+				"inputs": [
 					{
-						"name": "RemoteFailure",
-						"type": "thrown"
+						"name": "BrowserComputerService.readDocument.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "BrowserComputerService.readDocument.id",
+						"type": "string",
+						"required": true
 					}
 				],
+				"outputs": [
+					{
+						"name": "BrowserComputerService.readDocument",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{

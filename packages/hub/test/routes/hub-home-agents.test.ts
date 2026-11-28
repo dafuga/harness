@@ -24,27 +24,22 @@ test('the Hub keeps every project, lets Daniel add and remove sessions he create
 			options
 		};
 		const nudge = { ...harbor, id: 'nudge', name: 'nudge', state: 'working', sessions: 1 };
-		// An older Mac app publishes every Tracker project as an agent, without sub-agent counts.
-		await serve(homeRequest('PUT', { bearer }, '', { ...payload, agents: [agent, harbor, nudge] }));
-		const read = async () =>
-			(await (await serve(homeRequest('GET', { cookie }))).json()) as {
-				snapshot: { agents: { id: string }[] };
-				controlled: string[];
-			};
-		expect((await read()).snapshot.agents.map((entry) => entry.id)).toEqual([
-			'cos',
-			'harbor',
-			'nudge'
-		]);
-		expect((await read()).controlled).toEqual([]);
+		const read = async () => (await serve(homeRequest('GET', { cookie }))).json();
+		expect(await read()).toMatchObject({ snapshot: null, controlled: [] });
 		const add = (body: unknown, method = 'POST', session = cookie) =>
 			serve(homeRequest(method, { cookie: session }, '/agents', body));
 		expect((await add({ id: 'harbor' }, 'POST', other)).status).toBe(404);
 		expect((await add({ id: 'not valid!' })).status).toBe(400);
 		expect(await (await add({ id: 'harbor' })).json()).toEqual({ controlled: ['harbor'] });
 		expect(await (await add({ id: 'harbor' })).json()).toEqual({ controlled: ['harbor'] });
-		expect((await read()).controlled).toEqual(['harbor']);
+		expect(await read()).toMatchObject({ snapshot: null, controlled: ['harbor'] });
 		expect(await (await add({ id: 'harbor' }, 'DELETE')).json()).toEqual({ controlled: [] });
+		expect(await read()).toMatchObject({ snapshot: null, controlled: [] });
+		// The optional publisher still sends every Tracker project as an agent.
+		await serve(homeRequest('PUT', { bearer }, '', { ...payload, agents: [agent, harbor, nudge] }));
+		expect(await read()).toMatchObject({
+			snapshot: { agents: [{ id: 'cos' }, { id: 'harbor' }, { id: 'nudge' }] }
+		});
 		// A tap on an ask from an agent-created project reaches the Tracker queue.
 		const tap = {
 			id,
