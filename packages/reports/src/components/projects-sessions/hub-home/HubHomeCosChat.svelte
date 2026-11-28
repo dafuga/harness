@@ -42,6 +42,7 @@
 		showCard?: boolean;
 	} = $props();
 	const chat = homeCosChat() ?? provideHomeCosChat();
+	const outgoingActions = $derived(outgoing ?? chat.outgoing?.actions);
 	const name = 'Chief of Staff';
 	const phone = new MediaQuery('max-width: 560px');
 	const askId = $derived(chat.target?.askId);
@@ -79,12 +80,12 @@
 			editing = undefined;
 			return;
 		}
+		if (!outgoingActions) editing = undefined;
 		if (draftItem === draftKey) return;
 		draftItem = draftKey;
 		draft = '';
 		feedback = '';
 	});
-	/** Chief of Staff is always reachable, even before the Tracker reports anything for it. */
 	const chief = $derived<HomeAgent>(
 		agent ?? {
 			id: 'cos',
@@ -108,7 +109,6 @@
 	const waiting = $derived(
 		sent.filter((entry) => !thread.some((known) => known.messageId === entry.messageId))
 	);
-	/** The latest few only, so the newest is always on screen; the Agents dialog keeps the rest. */
 	const shown = $derived([...thread, ...waiting].slice(-4));
 
 	function submitted(message: HomeChatInput, receipt: HomeChatReceipt) {
@@ -156,7 +156,7 @@
 		{#if item && !askId}<hx-p class="po-sessions hh-cos-context" aria-label="Attached item">
 				About <LinkifiedText text={item.title} />
 			</hx-p>{/if}
-		{#if shown.length || ask || askId || outgoing?.drafts.length}
+		{#if shown.length || ask || askId || outgoingActions?.drafts.length}
 			<hx-div class="hh-cos-history">
 				<hx-ol class="hh-thread hh-cos-thread" aria-label="Chief of Staff conversation">
 					{#each shown as entry (entry.id)}
@@ -168,13 +168,13 @@
 							>
 						</hx-li>
 					{/each}
-					{#if outgoing}
-						{#each outgoing.drafts as record (record.id)}
+					{#if outgoingActions}
+						{#each outgoingActions.drafts as record (record.id)}
 							<hx-li class="outgoing-entry">
 								<HubHomeOutgoingDraftCard
 									draft={record}
-									send={outgoing.send}
-									discard={outgoing.discard}
+									send={outgoingActions.send}
+									discard={outgoingActions.discard}
 									edit={editOutgoing}
 								/>
 							</hx-li>
@@ -192,6 +192,9 @@
 		{:else}
 			<hx-p class="po-sessions hh-cos-empty">No messages yet.</hx-p>
 		{/if}
+		{#if chat.outgoing?.unavailable}
+			<hx-p class="po-sessions" role="status">Outgoing drafts are temporarily unavailable.</hx-p>
+		{/if}
 		<HubHomeComposer
 			agents={[chief]}
 			agentId="cos"
@@ -204,8 +207,8 @@
 			label="Message {name}"
 		/>
 	</hx-div>
-	{#if editing && outgoing}
-		<HubHomeOutgoingDraftEditor draft={editing.draft} save={outgoing.edit} close={closeOutgoing} />
+	{#if editing && outgoingActions}
+		<HubHomeOutgoingDraftEditor draft={editing.draft} save={outgoingActions.edit} close={closeOutgoing} />
 	{/if}
 </Modal>
 

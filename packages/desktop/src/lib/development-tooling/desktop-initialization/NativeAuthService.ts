@@ -1,4 +1,5 @@
 // @harness-uid u_bt6e76o6y5
+import { homeOutgoingPath } from '$reports/components/projects-sessions/hub-home/hubHomeOutgoingDraft';
 import type { Pending, AuthOptions } from './NativeAuthService.types';
 import { NativeSignInError } from './NativeAuthService.types';
 import { NativeSignInService } from '../../../services/accounts-access/NativeSignInService';
@@ -75,6 +76,23 @@ export class NativeAuthService {
 	}
 	overview(): Promise<OverviewSnapshot> {
 		return readOverview(this.options);
+	}
+
+	/** A fixed route, using only the current native account in the main process. */
+	async outgoingDrafts(input: Record<string, unknown>): Promise<unknown> {
+		const generation = this.generation;
+		const { http, store } = this.options;
+		const session = store.generation;
+		const credential = await http.authorize();
+		const sameAccount = () => this.generation === generation && store.generation === session;
+		if (!sameAccount()) throw new NativeSignInError('The Harness account changed.');
+		const request = Object.keys(input).length
+			? { method: 'POST', body: JSON.stringify(input) }
+			: undefined;
+		const response = await http.request(homeOutgoingPath, credential, request);
+		const result: unknown = await response.json();
+		if (!sameAccount()) throw new NativeSignInError('The Harness account changed.');
+		return result;
 	}
 
 	private serial(action: () => Promise<NativeHostedStatus>): Promise<NativeHostedStatus> {

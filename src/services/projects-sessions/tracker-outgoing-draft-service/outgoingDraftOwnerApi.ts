@@ -39,7 +39,7 @@ export async function outgoingDraftOwnerApi(
 	)
 		return Response.json({ error: 'owner approval required' }, { status: 403, headers });
 	try {
-		if (method === 'GET') return Response.json(service.list(owner), { headers });
+		if (method === 'GET') return Response.json(service.reviewQueue(), { headers });
 		if (method !== 'POST')
 			return Response.json({ error: 'method not allowed' }, { status: 405, headers });
 		request.signal?.throwIfAborted();

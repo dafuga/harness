@@ -30,7 +30,11 @@
 {/if}
 
 {#if work && environment?.trackerHome}
-	<TrackerWork source={environment.trackerHome} mac={environment.kind === 'electron'} />
+	<TrackerWork
+		source={environment.trackerHome}
+		mac={environment.kind === 'electron'}
+		signedIn={account.signedIn}
+	/>
 {:else if local}
 	{#if project}<hx-a class="project-overview-link" href={resolve('/tracker')}>Needs you</hx-a>{/if}
 	{#key project}<TrackerInbox source={local} mode="mac" {project} />{/key}

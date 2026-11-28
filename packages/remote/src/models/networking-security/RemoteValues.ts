@@ -72,6 +72,7 @@ export const localMethods = [
 	'connectHosted',
 	'disconnectHosted',
 	'projectOverview',
+	'outgoingDrafts',
 	'trackerInboxRead',
 	'trackerInboxWrite'
 ] as const;
@@ -118,6 +119,7 @@ export const mutationMethods: readonly RemoteMethod[] = [
 	'trackerReplicaPush',
 	'homeChat',
 	'trackerInboxWrite',
+	'outgoingDrafts',
 	...commentMethods,
 	...agentMethods,
 	'gameCreate',

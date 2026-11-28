@@ -24,3 +24,5 @@ export function outgoingHref(value?: string) {
 		return;
 	}
 }
+
+export const homeOutgoingPath = '/api/outgoing-drafts';

@@ -11,7 +11,16 @@ export interface HomeOutgoingFields {
 	body: string;
 }
 
+export type HomeOutgoingAction = HomeOutgoingVersion &
+	({ action: 'send' | 'discard' } | { action: 'edit'; message: HomeOutgoingFields });
+
+export interface HomeOutgoingSource {
+	read(): Promise<HomeOutgoingDraft[]>;
+	write(action: HomeOutgoingAction): Promise<HomeOutgoingDraft>;
+}
+
 export interface HomeOutgoingDraft extends HomeOutgoingVersion {
+	canSend?: boolean;
 	status: 'draft' | 'sent' | 'discarded';
 	delivery: 'idle' | 'sending' | 'failed' | 'unconfirmed';
 	message: HomeOutgoingFields & {

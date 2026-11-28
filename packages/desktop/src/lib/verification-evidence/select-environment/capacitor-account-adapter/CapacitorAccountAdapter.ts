@@ -31,6 +31,9 @@ import {
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 const changed = 'The account on this phone changed. Reload and try again.';
 const notMade = 'This request is not made from this phone.';
+import { homeOutgoingPath } from '$reports/components/projects-sessions/hub-home/hubHomeOutgoingDraft';
+import type { HomeOutgoingSource } from '$reports/components/projects-sessions/hub-home/hubHomeOutgoingDraft.types';
+
 const overviewPath = '/api/tracker-overview';
 const unavailableOverview: OverviewSnapshot = { status: 'unavailable' };
 /** The Hub's answers that deny this account the overview: not signed in, not the owner, or not found. */
@@ -87,6 +90,12 @@ export class CapacitorAccountAdapter {
 	/** The generation in which the Hub denied the overview; the offer stays withdrawn until the account changes. */
 	private refusedAt: number | null = null;
 	constructor(private readonly config: CapacitorAccountAdapterConfig) {}
+
+	/** Owner review uses the phone’s Hub account, independently of its paired computer. */
+	outgoing: HomeOutgoingSource = {
+		read: async () => json(await this.send({ method: 'GET', path: homeOutgoingPath })),
+		write: async (body) => json(await this.send({ method: 'POST', path: homeOutgoingPath, body }))
+	};
 
 	connect(): DesktopBridge {
 		const shared = browserBridge(browserApiOf((call) => this.send(call)));

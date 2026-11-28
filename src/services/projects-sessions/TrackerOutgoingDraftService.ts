@@ -67,6 +67,14 @@ export class TrackerOutgoingDraftService {
 		return this.drafts.list(conversation, 100, actor.kind === 'agent' ? actor.by : undefined);
 	}
 
+	/** A missing channel/account binding cannot accept an owner approval. */
+	reviewQueue() {
+		return this.list({ kind: 'owner', by: 'Daniel' }).map((draft) => ({
+			...draft,
+			canSend: draft.status === 'draft' && Boolean(this.options.provider?.(draft.message))
+		}));
+	}
+
 	edit(input: unknown, editor: unknown, actor: TrackerOutgoingActor): TrackerOutgoingDraft {
 		const version = this.approval(input, actor);
 		const current = this.current(version);

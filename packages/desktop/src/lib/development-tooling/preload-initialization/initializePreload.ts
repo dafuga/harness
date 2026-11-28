@@ -81,6 +81,7 @@ const bridge: DesktopBridge = {
 	projectOverview: call('projectOverview'),
 	homeSnapshot: call('homeSnapshot'),
 	homeChat: call('homeChat'),
+	homeOutgoing: { read: call('outgoingDrafts'), write: call('outgoingDrafts') },
 	trackerInbox,
 	listProjects: call('listProjects'),
 	selectProject: call('selectProject'),

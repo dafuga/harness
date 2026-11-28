@@ -17,6 +17,7 @@ export async function serveOutgoingDrafts(request: Request, deps: OutgoingDraftD
 	if (!deps.gateway) return error(503, 'drafts-unavailable');
 	const { method } = request;
 	if (method !== 'GET' && method !== 'POST') return error(405, 'method-not-allowed');
+	if (method === 'POST' && !isJson(request)) return error(415, 'unsupported-media-type');
 	const body = method === 'POST' ? await boundedBody(request) : '';
 	return body instanceof Response ? body : await proxyDraft(method, body, deps.gateway, deps);
 }
@@ -45,6 +46,13 @@ async function proxyDraft(
 	} catch {
 		return error(503, 'drafts-unavailable');
 	}
+}
+
+function isJson(request: Request): boolean {
+	return (
+		request.headers.get('content-type')?.split(';', 1)[0].trim().toLowerCase() ===
+		'application/json'
+	);
 }
 
 async function boundedBody(request: Request) {

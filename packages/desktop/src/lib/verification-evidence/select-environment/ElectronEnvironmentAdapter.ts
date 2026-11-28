@@ -31,7 +31,7 @@ export class ElectronEnvironmentAdapter {
 			bridge: harness,
 			trackerHome:
 				harness?.homeSnapshot && harness.homeChat
-					? { read: harness.homeSnapshot, send: harness.homeChat }
+					? { read: harness.homeSnapshot, send: harness.homeChat, outgoing: harness.homeOutgoing }
 					: undefined,
 			local: true,
 			host: whole ? (harnessRemote as RemoteDesktopControl) : undefined

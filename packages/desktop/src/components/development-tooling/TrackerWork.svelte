@@ -30,8 +30,9 @@
 	import '$reports/lib/styles/home-scheme.css';
 	import '$reports/lib/styles/hub-home/index.css';
 
-	let { source, mac }: { source: TrackerHomeSource; mac: boolean } = $props();
-	const chat = provideHomeCosChat();
+	let { source, mac, signedIn }: { source: TrackerHomeSource; mac: boolean; signedIn: boolean } =
+		$props();
+	const chat = provideHomeCosChat(undefined, () => (signedIn ? source.outgoing : undefined));
 	let snapshot = $state.raw<OwnerHomeSnapshot | null>(null);
 	let unavailable = $state(false);
 	let now = $state(Date.now());
@@ -166,7 +167,7 @@
 			agent={snapshot?.agents.find((agent) => agent.id === 'cos')}
 			now={new Date(now).toISOString()}
 			{send}
-			showCard={false}
+			showCard={signedIn && Boolean(source.outgoing)}
 		/>
 	</hx-section>
 </hx-div>

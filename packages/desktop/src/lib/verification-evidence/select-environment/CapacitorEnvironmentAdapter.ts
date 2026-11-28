@@ -96,12 +96,18 @@ export class CapacitorEnvironmentAdapter {
 			...(tracker ? { tracker } : {})
 		} as const;
 		if (!this.account) return { ...local, bridge: mac };
-		const cloud = new CapacitorAccountAdapter({ plugin: this.account }).connect();
+		const account = new CapacitorAccountAdapter({ plugin: this.account });
+		const cloud = account.connect();
 		const bridge = new CapacitorProjectsService({
 			cloud,
 			mac
 		}).connect();
-		return { ...local, bridge, account: true };
+		return {
+			...local,
+			trackerHome: { ...local.trackerHome, outgoing: account.outgoing },
+			bridge,
+			account: true
+		};
 	}
 
 	private listen<K extends keyof RemoteNativeEvents>(

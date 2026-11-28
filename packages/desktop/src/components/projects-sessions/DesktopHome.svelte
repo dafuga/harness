@@ -51,7 +51,10 @@
 	let active = true;
 	const receipts = new SvelteMap<string, HomeChatReceipt>();
 	const sync = new ProjectSyncService({ refresh });
-	provideHomeCosChat(() => void sync.sync());
+	provideHomeCosChat(
+		() => void sync.sync(),
+		() => workspace.bridge?.homeOutgoing
+	);
 	setContext<LoadSpecDocument>(hubSpecDocumentKey, async (attachment) => {
 		const ask = home?.openAsks?.find((entry) =>
 			entry.attachments?.some(({ id }) => id === attachment.id)

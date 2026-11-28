@@ -16,7 +16,7 @@
 	import { onMount, tick } from 'svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
-	import { homeSnapshot } from './hubHomeClient';
+	import { homeOutgoing, homeSnapshot } from './hubHomeClient';
 	import { hubHomeReads } from './hubHomeReads';
 	import { provideHubSpecDocuments } from '$reports/components/projects-sessions/hub-home/hubSpecDocument';
 	import { provideHomeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
@@ -39,7 +39,11 @@
 	const { api, session, projects } = browserContext();
 	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
 	provideHubSpecDocuments(({ id }) => api.get('/api/hub-home/doc', { id }));
-	const cosChat = provideHomeCosChat(() => reads.read());
+	const cosChat = provideHomeCosChat(
+		() => reads.read(),
+		() => outgoing
+	);
+	const outgoing = $derived(home?.granted && session.actor?.id ? homeOutgoing(api) : undefined);
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
 	let list = $state<ProjectSummary[] | null>(null);
@@ -136,7 +140,6 @@
 			const pushed = link === 'live' && Date.now() - readAllAt < liveReadMs;
 			const actor = session.actor?.id;
 			void session.check().then(() => {
-				// Change notices cover the stored Home only: linked computers are asked every turn.
 				if (actor && session.actor?.id === actor) (pushed ? reads.computers : refresh)();
 			});
 		});

@@ -67,7 +67,7 @@
 	let error = $state('');
 
 	async function act(action: 'send' | 'discard') {
-		if (!editable || pending) return;
+		if (!editable || pending || (action === 'send' && draft.canSend === false)) return;
 		const { id, revision } = draft;
 		pending = action;
 		if (action === 'send') sendingRevision = revision;
@@ -136,6 +136,9 @@
 		</hx-p>
 	{/if}
 	{#if error}<hx-p class="outgoing-notice" role="alert">{error}</hx-p>{/if}
+	{#if editable && draft.canSend === false}
+		<hx-p class="outgoing-notice">This sending account is unavailable.</hx-p>
+	{/if}
 	{#if editable || deliveryState === 'sending'}
 		<hx-footer class="outgoing-actions">
 			<hx-button
@@ -147,7 +150,7 @@
 			<hx-button
 				type="button"
 				class="po-action outgoing-primary"
-				disabled={Boolean(pending) || !editable}
+				disabled={Boolean(pending) || !editable || draft.canSend === false}
 				onclick={() => act('send')}>{deliveryState === 'failed' ? 'Retry send' : 'Send'}</hx-button
 			>
 		</hx-footer>

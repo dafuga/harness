@@ -26,6 +26,7 @@ export function composeTrackerResponder(
 		runs: () => runs,
 		duePolicy,
 		...permits,
+		now,
 		...syncResponder,
 		outgoingDrafts: runtime.outgoingDrafts.service,
 		machines:
