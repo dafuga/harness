@@ -8,6 +8,8 @@ import { TrackerSpokeSyncService } from '../../../src/services/projects-sessions
 import { trackerFleetMachineStore } from '../../../src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks';
 import { trackerHostLaunch } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
+import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
+import { queueIdleWork } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests';
 import { fixturePolicy, primary, secondary } from '../../support/trackerDispatcherFixture';
 import { fixtureSecret, wire } from '../../support/trackerDispatchQueueFixture';
 import { trackerResourceHoldPrefix } from '../../../src/utils/projects-sessions/trackerHostResourceHold';
@@ -50,7 +52,7 @@ function task(id: string, due: string, computer = primary) {
 	};
 }
 
-test('a past-due task launches within one scheduler tick on the default launch config', async () => {
+test('the default launcher honors due times across watchdog and scheduler ticks', async () => {
 	const database = new DatabaseSync(':memory:');
 	const start = starter();
 	let instant = night;
@@ -67,7 +69,18 @@ test('a past-due task launches within one scheduler tick on the default launch c
 		}
 	});
 	try {
-		runtime.store.appendLocal(task('later00001', '2026-11-25T13:00:00.000Z'));
+		const future = '2026-11-25T13:00:00.000Z';
+		runtime.store.appendLocal(task('later00001', future));
+		const enabled = await runtime.items.handle(
+			new Request('http://tracker-fixture.invalid/items/later00001/schedule-on', {
+				method: 'POST',
+				body: '{}'
+			})
+		);
+		expect(enabled.status).toBe(200);
+		instant += 120 * 60_000;
+		await sweepIdleWork(runtime);
+		expect.soft(start.mock.calls).toEqual([]);
 		runtime.store.appendLocal(task('past000001', '2026-11-24T09:00:00.000Z'));
 		runtime.store.appendLocal(task('held000001', '2026-11-24T09:00:00.000Z'));
 		const held = await runtime.items.handle(
@@ -78,16 +91,36 @@ test('a past-due task launches within one scheduler tick on the default launch c
 		);
 		expect(held.status).toBe(200);
 		await runtime.scheduler!.tick(signal);
-		expect(start.mock.calls.map(([{ run }]) => [run.item_id, run.launch_source])).toEqual([
-			['past000001', 'due']
-		]);
-		instant += 24 * 60 * 60_000;
+		expect
+			.soft(start.mock.calls.map(([{ run }]) => [run.item_id, run.launch_source]))
+			.toEqual([['past000001', 'due']]);
+		instant = Date.parse(future);
+		await runtime.scheduler!.tick(signal);
+		expect
+			.soft(start.mock.calls.map(([{ run }]) => [run.item_id, run.launch_source]))
+			.toContainEqual(['later00001', 'due']);
+		instant = night + 26 * 60 * 60_000;
 		await runtime.scheduler!.tick(signal);
 		expect(start.mock.calls.map(([{ run }]) => run.item_id)).toContain('held000001');
 	} finally {
 		database.close();
 	}
 });
+
+async function sweepIdleWork(runtime: TrackerNativeRuntimeService) {
+	const items = new TrackerItemReadRepository(runtime.store.database, runtime.now);
+	await queueIdleWork(
+		runtime.store,
+		{
+			rows: items.list({ status: 'all', limit: -1 }),
+			snapshot: { now: runtime.now(), panes: [], items: [], runs: [] },
+			dispatch: runtime.dispatch!,
+			minutes: 120
+		},
+		signal
+	);
+	expect.soft(items.getStored('later00001').auto).toBeNull();
+}
 
 test.each([
 	{ name: 'a calm computer', reading: [1, 1, 1], ageMs: 0, starts: ['mbtwo00001'] },
