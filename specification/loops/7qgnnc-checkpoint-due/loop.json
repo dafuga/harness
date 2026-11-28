@@ -2,7 +2,7 @@
 	"name": "7qgnnc-checkpoint-due",
 	"goal": "Keep verified started watchdog work eligible for continuation while holding first unattended starts until due",
 	"createdAt": "2026-11-28T14:25:56.031Z",
-	"updatedAt": "2026-11-28T14:33:31.680Z",
+	"updatedAt": "2026-11-28T14:41:51.682Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -27,7 +27,7 @@
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
 			"status": "complete",
 			"completedAt": "2026-11-28T14:33:30.353Z",
-			"evidence": "Formal red 3a451fdab389 on the existing dispatcher cases: the recovery request returned item is not due and the answered live attempt was ignored. The unchanged MB2 native tmux case also exhausted its recovery budget before the future deadline."
+			"evidence": "Formal red c3d663cae42d on the existing dispatcher cases: the recovery request returned item is not due and the answered live attempt was ignored. The unchanged MB2 native tmux case also exhausted its recovery budget before the future deadline."
 		},
 		{
 			"id": "implement",
@@ -39,12 +39,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T14:38:40.807Z",
+			"evidence": "Exact unchanged dispatcher proof passed at e38d75611b after formal red c3d663cae4 in one identical environment. Harbor-mbp-2 native tmux ran the same test on both commits. It reached one fresh same-model and effort pane with the original checkpoint on green."
 		},
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T14:41:51.682Z",
+			"evidence": "siblings-cb2fb45c-7596-45bb-be67-8114ce6b785c.json"
 		},
 		{
 			"id": "verify",
