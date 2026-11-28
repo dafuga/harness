@@ -53,6 +53,12 @@ async function signedIn() {
 test('an enrolled identifier cannot approve another Google session', async () => {
 	const { device, headers, scope, pin } = await signedIn();
 	const path = `ops/${scope}`;
+	const projects = () =>
+		fetch(fixture.origin + '/api/projects', { headers: { 'X-Test-Session': otherSession } });
+	expect(await snapshot(await projects())).toEqual({
+		status: 403,
+		body: { error: 'device-approval-required' }
+	});
 	const hold = await fixture.call(session, 'GET', path, { headers });
 	expect(await snapshot(hold)).toEqual({
 		status: 403,
@@ -208,6 +214,7 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	expect(admitted.pin).toEqual(nextPin);
 	expect(toBase64Url(admitted.keys[0].scopeId)).toBe(scope);
 	expect(admitted.keys[0].dataKey.extractable).toBe(false);
+	expect(await snapshot(await projects())).toEqual({ status: 200, body: [] });
 	expect((await fixture.call(otherSession, 'GET', path, { headers: newHeaders })).status).toBe(200);
 	expect(await (await fixture.call(session, 'GET', 'enroll', { headers })).json()).toEqual({
 		requests: []

@@ -1,5 +1,6 @@
 import type { TestEnv } from './syncWorker.types';
 import type { SessionRecord } from '../../src/models/accounts-access/HubAuthStore.types';
+import { guardHubDeviceSession } from '../../src/routes/api/sync/guardHubDeviceSession';
 import { serveSync } from '../../src/routes/api/sync/syncPolicy';
 
 /**
@@ -49,6 +50,8 @@ export default {
 					resource: 'projects'
 				} as SessionRecord)
 			: null;
+		if (new URL(request.url).pathname === '/api/projects')
+			return (await guardHubDeviceSession(framed, env.DB, record, Date.now())) ?? Response.json([]);
 		const response = await serveSync(framed, {
 			sessions: { resolve: async () => record },
 			db: env.DB,
