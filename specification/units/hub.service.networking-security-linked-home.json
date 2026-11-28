@@ -18,6 +18,7 @@
 			"LinkedHomeService.constructor",
 			"LinkedHomeService.read",
 			"LinkedHomeService.chat",
+			"LinkedHomeService.readDocument",
 			"LinkedHomeService.close",
 			"LinkedHome",
 			"Connect"
@@ -47,6 +48,11 @@
 			{
 				"name": "LinkedHomeService.chat.message",
 				"type": "HomeChatInput",
+				"required": true
+			},
+			{
+				"name": "LinkedHomeService.readDocument.id",
+				"type": "string",
 				"required": true
 			}
 		],
@@ -91,6 +97,25 @@
 					{
 						"name": "LinkedHomeService.chat",
 						"type": "Promise<HomeChatReceipt | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LinkedHomeService.readDocument",
+				"inputs": [
+					{
+						"name": "LinkedHomeService.readDocument.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LinkedHomeService.readDocument",
+						"type": "Promise<TrackerAttachmentDocument | null>",
+						"description": "The document from a linked computer that listed it on an open ask, or null if none returns it."
 					}
 				],
 				"errors": [],
@@ -145,6 +170,16 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-attachment-document-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.function.browser-api",
 			"via": "import",

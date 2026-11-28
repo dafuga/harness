@@ -16,6 +16,7 @@
 			"HubHomeReadOptions",
 			"HubHomeReads",
 			"hubHomeReads",
+			"LinkedHomeSession",
 			"HubHomeReadOptions",
 			"HubHomeReads"
 		]
@@ -65,6 +66,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.browser-api",
 			"via": "import",
 			"origin": "derived"
@@ -81,6 +87,11 @@
 		},
 		{
 			"unit": "hub.service.networking-security-linked-home",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-spec-document-view",
 			"via": "import",
 			"origin": "derived"
 		},

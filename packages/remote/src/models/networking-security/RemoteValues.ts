@@ -41,10 +41,9 @@ export const readMethods = [
 	'providers'
 ] as const;
 /**
- * The account's Home view of this computer: its running agents, work and quota, and the one write
- * Home makes: answering an open Tracker ask, or noting an agent's current item.
+ * The account's Home view of this computer, its open ask documents, and its Tracker chat.
  */
-export const homeMethods = ['homeSnapshot', 'homeChat'] as const;
+export const homeMethods = ['homeSnapshot', 'homeDocument', 'homeChat'] as const;
 /** A person's own comment, and the thread it needs. No planning, approval or run comes with it. */
 export const commentMethods = ['addComment', 'openThread'] as const;
 /** Planning writes and agent runs: only with the `agents` permission of a grant. */
@@ -106,8 +105,7 @@ export const revisionMethods: readonly RemoteMethod[] = [
 export const projectlessMethods: readonly RemoteMethod[] = [
 	attachMethod,
 	'listProjects',
-	'homeSnapshot',
-	'homeChat',
+	...homeMethods,
 	'deploymentActivities',
 	'trackerReplicaPull',
 	'trackerReplicaPush',

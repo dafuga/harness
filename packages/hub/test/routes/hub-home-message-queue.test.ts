@@ -14,7 +14,6 @@ test('the queue takes a message for Chief of Staff or the live run it showed, an
 		const bearer = await fixture.native();
 		const session = { ...agent, id: 'harbor', name: 'harbor', runId: 'mb2#104' };
 		const home = { ...payload, agents: [agent, session] };
-		expect((await serve(homeRequest('PUT', { bearer }, '', home))).status).toBe(200);
 		const base = { kind: 'message', question: null, text: 'Ship it' } as const;
 		const cos: HomeChatInput = {
 			...base,
@@ -30,6 +29,12 @@ test('the queue takes a message for Chief of Staff or the live run it showed, an
 			runId: 'mb2#104'
 		};
 		const post = (body: object) => serve(homeRequest('POST', { cookie }, '/chat', body));
+		expect(await (await post(cos)).json()).toEqual({ id: cos.id, status: 'refused' });
+		expect(await (await post(run)).json()).toEqual({ id: run.id, status: 'refused' });
+		const receipt = await serve(homeRequest('GET', { cookie }, `/chat?id=${cos.id}`));
+		expect(await receipt.json()).toEqual({ id: cos.id, status: 'unconfirmed' });
+		const published = await serve(homeRequest('PUT', { bearer }, '', home));
+		expect(await published.json()).toEqual({ messages: [] });
 		expect((await post(cos)).status).toBe(202);
 		expect((await post(run)).status).toBe(202);
 		const stale = { ...run, id: '33333333-3333-4333-8333-333333333333', runId: 'mb2#103' };

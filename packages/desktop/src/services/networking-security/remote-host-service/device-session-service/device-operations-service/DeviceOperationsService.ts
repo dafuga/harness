@@ -26,6 +26,26 @@ function ancestor(root: string, commit: string, tip: string): Promise<boolean> {
 	);
 }
 
+function trackerCalls(
+	options: DeviceOperationsOptions
+): Partial<Record<RemoteMethod, (input: Fields) => Promise<unknown>>> {
+	const { home, homeChat, homeDocument, trackerPull, trackerPush } = options;
+	return {
+		homeSnapshot: home,
+		homeDocument,
+		homeChat:
+			homeChat &&
+			((input) => {
+				// The wire's epoch authenticates the mutation, but is not part of the message.
+				const message = { ...input };
+				delete message.epoch;
+				return homeChat(message);
+			}),
+		trackerReplicaPull: trackerPull,
+		trackerReplicaPush: trackerPush
+	};
+}
+
 /**
  * What an approved phone may ask of this computer: its granted local projects, by explicit id
  * and revision. No folder, no hosted credential, no path, and nothing outside the bridge.
@@ -41,10 +61,9 @@ export class DeviceOperationsService {
 			agents =
 				this.options.grant().agents && this.options.grant().comments !== false ? agentMethods : [];
 		const comments = this.options.grant().comments === false ? [] : commentMethods;
-		const tracker: RemoteMethod[] = this.options.home ? ['homeSnapshot'] : [];
-		if (this.options.homeChat) tracker.push('homeChat');
-		if (this.options.trackerPull) tracker.push('trackerReplicaPull');
-		if (this.options.trackerPush) tracker.push('trackerReplicaPush');
+		const tracker = Object.entries(trackerCalls(this.options))
+			.filter(([, call]) => call !== undefined)
+			.map(([method]) => method as RemoteMethod);
 		return [attachMethod, ...reads, ...comments, ...agents, ...tracker];
 	}
 	async handle(request: WireRequest): Promise<unknown> {
@@ -53,17 +72,8 @@ export class DeviceOperationsService {
 			{ agents, projects } = this.options.grant();
 		if (method === 'listProjects')
 			return projects.map(({ id, name }) => ({ id, name, kind: 'local' }));
-		if (method === 'homeSnapshot') return await this.trackerCall(this.options.home, input);
-		if (method === 'homeChat') {
-			// The wire adds its session epoch to every write; the message itself does not carry it.
-			const message = { ...input };
-			delete message.epoch;
-			return await this.trackerCall(this.options.homeChat, message);
-		}
-		if (method === 'trackerReplicaPull')
-			return await this.trackerCall(this.options.trackerPull, input);
-		if (method === 'trackerReplicaPush')
-			return await this.trackerCall(this.options.trackerPush, input);
+		const tracker = trackerCalls(this.options)[method];
+		if (tracker) return await this.trackerCall(tracker, input);
 		if (method === 'providers') return agents ? this.options.providers.list() : [];
 		const project = await this.project(input),
 			payload = this.payload(method, input),
@@ -73,10 +83,9 @@ export class DeviceOperationsService {
 		return this.shaped(method, await operation(payload));
 	}
 	private async trackerCall(
-		call: ((input: Fields) => Promise<unknown>) | undefined,
+		call: (input: Fields) => Promise<unknown>,
 		input: Fields
 	): Promise<unknown> {
-		if (!call) throw new RemoteFailure('method-denied');
 		this.live();
 		const value = await call(input);
 		this.live();
