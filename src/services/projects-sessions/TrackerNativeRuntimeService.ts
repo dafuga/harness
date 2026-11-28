@@ -122,7 +122,6 @@ export class TrackerNativeRuntimeService {
 		}
 	}
 }
-
 function composeMachines(
 	store: TrackerPersistenceService,
 	{ machineSampler }: TrackerNativeRuntimeOptions,
@@ -142,6 +141,7 @@ function composeItemApi(
 		planLaunch,
 		role,
 		manualLaunch,
+		projectPlanDirectory,
 		phoneWrite
 	}: TrackerNativeRuntimeOptions,
 	recurring?: ReturnType<typeof composeTrackerRecurrence>
@@ -156,6 +156,7 @@ function composeItemApi(
 		validateModel,
 		planLaunch,
 		manualLaunch,
+		projectPlanDirectory,
 		...trackerItemViews(runtime),
 		reject: runtime.dispatch && ((id, reason) => runtime.dispatch!.reject(id, reason)),
 		runs,

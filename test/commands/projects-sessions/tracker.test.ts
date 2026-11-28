@@ -1,5 +1,6 @@
 import { expect, afterEach, beforeEach, onTestFinished, test, vi } from 'vitest';
 import { rmSync } from 'node:fs';
+import { verifyProjectModuleProgress } from '../../support/trackerModuleProgressFixture';
 import { verifyArtifactCommand } from '../../support/trackerPlanningAssertions';
 import { createTempDirectory } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
@@ -92,6 +93,7 @@ async function verifyCodexReportRange() {
 		.run(fixtureItem, Date.parse(fixtureTime));
 	const { code, out } = await run('models', 'report');
 	expect(code).toBe(0);
+	await verifyProjectModuleProgress(fixture);
 	expect(out).toContain('$0.71–$1.37');
 	expect(out).toContain('1/1');
 	expect(out).toContain('API-equivalent estimate');

@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import { formatProjectModuleProgress } from '../../../helpers/projects-sessions/projectModuleProgress';
 import { lstatSync } from 'node:fs';
 import { homedir, userInfo } from 'node:os';
 import { join } from 'node:path';
@@ -108,7 +109,8 @@ async function sendNativeTracker(
 	if (command === 'check') return renderCheck(data, Boolean(values.json));
 	if (values.json) console.log(JSON.stringify(data, null, 2));
 	else {
-		renderNativeTracker(command, data, { quiet: Boolean(values.quiet), first: words[0] });
+		const verb = request.path.startsWith('/progress?') ? 'project-progress' : command;
+		renderNativeTracker(verb, data, { quiet: Boolean(values.quiet), first: words[0] });
 		if (!values.quiet) await printNativeTrackerAddHint(command, data as NativeTrackerItem, config);
 	}
 	return 0;
@@ -200,6 +202,7 @@ function renderNativeTrackerItemOrReport(command: string, data: unknown, first?:
 		return;
 	}
 	const rendered =
+		formatProjectModuleProgress(command, data) ??
 		formatNativeTrackerInspection(command, data as NativeTrackerInspection) ??
 		formatNativeTrackerRunRead(command, data as NativeTrackerRunRead);
 	const item = data as NativeTrackerItem;

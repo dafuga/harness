@@ -170,7 +170,14 @@ export function buildHomeLiveOverview(sources: TrackerSources, now: number): Hom
 			own.map((item) => ({ item, runs: runs.get(item.id) ?? [], offline, now }))
 		)
 	);
-	const projects = built.map((entry) => entry.project).sort(byActivity);
+	const projects = built.map((entry) => entry.project);
+	for (const project of projects) {
+		const key = project.agent.toLowerCase();
+		if (key !== 'harness' && key !== 'harbor') continue;
+		const plan = sources.modulePlans?.[key];
+		if (plan) project.modulePlan = plan;
+	}
+	projects.sort(byActivity);
 	return {
 		readAt: new Date(now).toISOString(),
 		projects: projects.slice(0, homeLiveLimits.projects),

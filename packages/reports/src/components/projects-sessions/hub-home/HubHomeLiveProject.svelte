@@ -2,6 +2,12 @@
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_52e2mcsala -->
 <script lang="ts">
+	import {
+		projectModuleMilestones,
+		projectModuleProgress,
+		projectModuleProgressLabel,
+		projectModuleStates
+	} from '../../../../../../src/helpers/projects-sessions/projectModuleProgress';
 	import { pastDueLabel } from './hubHomeStatusText';
 	import type { HomePastDue } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { hasWebLink } from '$reports/utils/strings/linkSegments';
@@ -28,6 +34,17 @@
 	}: { project: HomeWorkProject; now: number; dueById?: ReadonlyMap<string, HomePastDue> } =
 		$props();
 	let all = $state(false);
+	let expanded = $state(false);
+	const moduleLabels = {
+		live: 'Live',
+		built: 'Built',
+		in_progress: 'In progress',
+		planned: 'Planned'
+	};
+	const plan = $derived(project.modulePlan);
+	const modulesByState = $derived(
+		Map.groupBy(plan?.state === 'available' ? plan.modules : [], ({ state }) => state)
+	);
 	const tones: Record<HomeWorkState, string> = {
 		running: 'active',
 		offline: 'blocked',
@@ -88,7 +105,8 @@
 <hx-details
 	class="hh-live-project"
 	ontoggle={(event) => {
-		if (!event.currentTarget.open) all = false;
+		expanded = event.currentTarget.open;
+		if (!expanded) all = false;
 	}}
 >
 	<hx-summary class="hh-live-head">
@@ -96,7 +114,60 @@
 		<hx-span class="hh-live-counts"
 			>Running {counts.running} · Blocked {counts.blocked} · Not running {counts.resting}</hx-span
 		>
+		{#if plan?.state === 'available'}
+			{#each projectModuleMilestones as { id, label } (id)}
+				{@const progress = projectModuleProgress(plan, id)}
+				<hx-span class="hh-progress hh-module-progress">
+					<hx-span>{label}</hx-span>
+					{#if progress}
+						<hx-span
+							class="hh-progress-bar"
+							role="progressbar"
+							aria-label={`${label} module completion`}
+							aria-valuenow={progress.percent}
+							aria-valuetext={`${projectModuleProgressLabel(plan, id)} · ${progress.inProgress.toLocaleString('en-US')} in progress`}
+						>
+							<hx-span style:width={`${(progress.built / progress.total) * 100}%`}></hx-span>
+							<hx-span
+								class="hh-module-progress-started"
+								style:width={`${(progress.inProgress / progress.total) * 100}%`}
+							></hx-span>
+						</hx-span>
+					{/if}
+					<hx-span>{projectModuleProgressLabel(plan, id)}</hx-span>
+				</hx-span>
+			{/each}
+		{:else if plan}
+			<hx-span class="hh-progress hh-module-progress"
+				>{projectModuleProgressLabel(plan, 'full')}</hx-span
+			>
+		{/if}
 	</hx-summary>
+	{#if expanded && plan?.state === 'available'}
+		<hx-section class="hh-module-plan" aria-label="Module plan">
+			<hx-h3 class="po-band-title">Modules</hx-h3>
+			{#each projectModuleStates as state (state)}
+				{@const modules = modulesByState.get(state) ?? []}
+				<hx-details>
+					<hx-summary>{moduleLabels[state]} · {modules.length.toLocaleString('en-US')}</hx-summary>
+					{#if modules.length}
+						<hx-ul>
+							{#each modules as module (module.id)}
+								<hx-li
+									>{module.title ?? module.id}
+									{#if module.release === 'first'}<hx-span class="hh-live-status">
+											· First release</hx-span
+										>{/if}
+								</hx-li>
+							{/each}
+						</hx-ul>
+					{:else}
+						<hx-p class="po-sessions">No modules in this state.</hx-p>
+					{/if}
+				</hx-details>
+			{/each}
+		</hx-section>
+	{/if}
 	{#if running.length}{@render list(running, `${project.agent} running jobs`)}
 	{:else}<hx-p class="po-sessions hh-live-more">No running jobs</hx-p>{/if}
 	{#if blocked.length}<hx-h3 class="po-band-title">Blocked</hx-h3>{@render list(

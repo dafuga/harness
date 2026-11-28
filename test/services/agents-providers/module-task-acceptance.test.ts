@@ -7,6 +7,7 @@ import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { verifiedSubmission, verifiedTaskBaseline } from '../../support/moduleTaskEvidence';
 import { runHarness } from '../../support/cli';
+import { verifyHarnessModuleProgress } from '../../support/harnessModuleProgressFixture';
 
 async function submitted() {
 	const f = await moduleTaskFixture();
@@ -84,6 +85,7 @@ test('a verified submission is accepted once and a resent verdict replays the re
 				feedback: 'Too late to bounce.'
 			})
 		).rejects.toThrow('already reviewed as accepted');
+		await verifyHarnessModuleProgress(f, service, evidence);
 	} finally {
 		await f.dispose();
 	}

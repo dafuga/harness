@@ -8,6 +8,8 @@ export const TRACKER_GET_URLS = {
 	homeRuns: `${TRACKER_ORIGIN}/runs?limit=500&include_active=1`,
 	runs: `${TRACKER_ORIGIN}/runs?limit=500`,
 	machines: `${TRACKER_ORIGIN}/machines`,
+	harnessProgress: `${TRACKER_ORIGIN}/progress?project=harness`,
+	harborProgress: `${TRACKER_ORIGIN}/progress?project=harbor`,
 	status: `${TRACKER_ORIGIN}/status`
 } as const;
 

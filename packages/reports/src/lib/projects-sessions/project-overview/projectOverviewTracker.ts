@@ -8,6 +8,7 @@ import {
 import { readHomeAskConfirm, readHomeAskOptions } from '../hub-home/homeAskOptions';
 import type { HomeAskInput } from '../hub-home/hubHome.types';
 import { z } from 'zod';
+import { projectModulePlanSchema } from '../../../../../../src/helpers/projects-sessions/projectModuleProgress';
 import type { MachineStatus } from './projectOverview.types';
 import type * as Tracker from './projectOverviewTracker.types';
 import { TRACKER_GET_URLS, ITEM_STATUSES, MACHINE_STATUSES } from './trackerReadTargets';
@@ -19,18 +20,33 @@ export async function readTrackerSources(
 	fetcher: typeof fetch,
 	includeHomeFields = false
 ): Promise<Tracker.TrackerSources> {
-	const [items, runs, machines] = await Promise.all([
+	const [items, runs, machines, modulePlans] = await Promise.all([
 		getTrackerJson(fetcher, TRACKER_GET_URLS.items),
 		getTrackerJson(fetcher, includeHomeFields ? TRACKER_GET_URLS.homeRuns : TRACKER_GET_URLS.runs),
-		getTrackerJson(fetcher, TRACKER_GET_URLS.machines)
+		getTrackerJson(fetcher, TRACKER_GET_URLS.machines),
+		includeHomeFields ? readModulePlans(fetcher) : undefined
 	]);
 	return {
+		...(modulePlans && { modulePlans }),
 		items: asList(items, 'items').map((item) => parseItem(item, includeHomeFields)),
 		runs: asList(runs, 'runs').map((run) => parseRun(run, includeHomeFields)),
 		machines: asList(machines, 'machines').map((machine) =>
 			parseMachine(machine, includeHomeFields)
 		)
 	};
+}
+
+async function readModulePlans(fetcher: typeof fetch) {
+	const response = z.object({ plan: projectModulePlanSchema });
+	const read = async (url: string) => {
+		const payload = await getTrackerJson(fetcher, url).catch(() => undefined);
+		return response.safeParse(payload).data?.plan;
+	};
+	const [harness, harbor] = await Promise.all([
+		read(TRACKER_GET_URLS.harnessProgress),
+		read(TRACKER_GET_URLS.harborProgress)
+	]);
+	return { harness, harbor };
 }
 
 function parseItem(value: unknown, includeHomeFields: boolean): Tracker.TrackerItemRecord {
