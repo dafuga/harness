@@ -1,3 +1,4 @@
+// @harness-uid u_y7fkzvhxby
 import { createInterface } from 'node:readline/promises';
 import { z } from 'zod';
 import { ExpectedCliError } from '../../../src/core/errors';

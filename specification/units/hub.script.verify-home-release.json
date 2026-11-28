@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "hub.script.verify-home-release",
+	"uid": "u_y7fkzvhxby",
 	"kind": "script",
 	"title": "verify-home-release",
 	"responsibility": "Verifies that the signed-in Hub Home Agents card counts the live Tracker sessions across the requested computers.",
@@ -11,10 +12,7 @@
 			"packages/hub/scripts/verify-home-release.ts",
 			"packages/hub/scripts/verify-home-release.types.ts"
 		],
-		"symbols": [
-			"verifyHubHomeRelease",
-			"TrackerFetch"
-		]
+		"symbols": ["verifyHubHomeRelease", "TrackerFetch"]
 	},
 	"contract": {
 		"origin": "declared",
