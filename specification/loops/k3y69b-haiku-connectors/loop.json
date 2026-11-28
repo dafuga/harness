@@ -2,7 +2,7 @@
 	"name": "k3y69b-haiku-connectors",
 	"goal": "Haiku module workers no longer receive claude.ai connector tools mid-session, so fresh sessions stop hitting the context limit at startup",
 	"createdAt": "2026-11-28T17:04:26.283Z",
-	"updatedAt": "2026-11-28T17:27:28.639Z",
+	"updatedAt": "2026-11-28T17:32:07.782Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -53,7 +53,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T17:32:07.782Z",
+			"evidence": "At ee56777707: agents-providers 55/55; module-tasks, module-task-dispatch and driver-queue 12/12; root tsc, changed-file eslint and prettier pass; harness audit reports only two findings in untouched files. Live command.report: fixed 3/3 review in one session (30.3k-32.8k peak); main rotated in 2 of 3 runs and failed the third. Shared affected check blocked before running any check (unresolved-import in untouched files). No UI path changed."
 		}
 	],
 	"evaluators": [
