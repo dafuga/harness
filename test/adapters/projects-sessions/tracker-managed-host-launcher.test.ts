@@ -13,7 +13,11 @@ import {
 	verifyClaudeRefusals,
 	verifyUnusableWorktree
 } from '../../support/trackerClaudeStartupFixture';
-import { verifyNativeInvocations } from '../../support/trackerNativeInvocationAssertions';
+import {
+	managedTrackerTools,
+	verifyNativeInvocations,
+	verifyTrackerCliUpgrade
+} from '../../support/trackerNativeInvocationAssertions';
 import { withTempRepo } from '../../support/temporary';
 import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
@@ -37,7 +41,8 @@ test(
 async function proveManagedWorker({ root, git }: TemporaryRepo) {
 	git('commit', '--allow-empty', '-m', 'Fixture source');
 	const paths = managedFixtureBindings(root);
-	const managed = loadManagedFixture(root, paths.config);
+	const trackerBinDirectory = managedTrackerTools(root);
+	const managed = loadManagedFixture(root, { ...paths.config, trackerBinDirectory });
 	const { trackerManagedHostLauncher } =
 		await import('../../../src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher');
 	const scoped = {
@@ -82,6 +87,7 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 	]);
 	await restarted.start(docker, signal);
 	verifyWorkerInvocations(paths.profiles);
+	verifyTrackerCliUpgrade(trackerBinDirectory, paths.profiles.native);
 	expect(
 		await trackerManagedHostLauncher(managed, { client, platform: 'linux' }).start(native, signal)
 	).toEqual({

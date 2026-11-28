@@ -53,6 +53,7 @@ appendFileSync(join(process.env.HOME, 'invoked.ndjson'), JSON.stringify({
 	brief: briefPath && readFileSync(briefPath, 'utf8'),
 	client: JSON.parse(readFileSync(process.env.HARNESS_TRACKER_CONFIG, 'utf8')),
 	legacy: process.env.HARNESS_TRACKER_LEGACY_BIN,
+	trackerExecutable: process.env.HARNESS_EXECUTABLE,
 	guestAuthFile: process.env.HARNESS_TRACKER_GUEST_AUTH_FILE ?? null
 }) + '\\n');
 `;
