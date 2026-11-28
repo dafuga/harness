@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import type { HomePlan } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
-import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
+import { expect, type Locator, type Page } from '../../../../test/support/browserTest';
 import { capture, captureNeedsYou } from './hub-home-capture';
 import type { CapturePosition, HomeFixture } from './hub-home-fixture.types';
 
@@ -174,32 +174,6 @@ export async function expectAnswerDialogs(
 	await page.keyboard.press('Escape');
 	await expect(answer).toHaveCount(0);
 	await expect(other).toBeFocused();
-}
-
-export async function recordAnswerMotion(
-	page: Page,
-	row: Locator,
-	size: 'desktop' | 'phone',
-	viewport: { width: number; height: number }
-) {
-	const choice = row.getByRole('button', { name: /Hold harbor/ });
-	await page.emulateMedia({ reducedMotion: 'no-preference' });
-	await choice.scrollIntoViewIfNeeded();
-	await page.evaluate(() => document.fonts.ready.then(() => {}));
-	const record = process.env.TAKE_SCREENSHOT === 'true';
-	if (record)
-		await page.screencast.start({
-			path: test.info().outputPath(`answer-${size}.webm`),
-			size: viewport
-		});
-	try {
-		await choice.click();
-		await expect(row.getByRole('status')).toContainText(/Answer sent.*Hold harbor/);
-		await captureNeedsYou(page, `answer-confirmed-${size}`);
-		await expect(row).toHaveCount(0);
-	} finally {
-		if (record) await page.screencast.stop();
-	}
 }
 
 export const needsYou = (page: Page) => page.getByRole('region', { name: /^Blocked - needs you/ });

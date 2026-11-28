@@ -58,7 +58,7 @@ async function projectFixture(page: Page, projects: FixtureProject[], held?: Pro
 	});
 }
 
-export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
+export async function hubHomeFixture(page: Page, mode: HomeFixtureState, live = false) {
 	const state = await hostedFixture(page, { actor: { ...ada, name: 'Daniel' } });
 	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
 		route.fulfill({ json: { computers: [] } })
@@ -95,7 +95,7 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 		const granted = state.signedIn && state.actor.id === ada.id;
 		const hasSnapshot = granted && (mode !== 'unavailable' || released);
 		await route.fulfill({
-			json: { granted, snapshot: hasSnapshot ? snapshot : null, controlled: [...controlled] }
+			json: { granted, snapshot: hasSnapshot ? snapshot : null, controlled: [...controlled], live }
 		});
 	});
 	await page.route(/\/api\/hub-home\/chat(?:\?|$)/, async (route) => {
@@ -176,14 +176,15 @@ export const needsYouSizes = {
 export async function needsYouHome(
 	page: Page,
 	size: keyof typeof needsYouSizes,
-	change: 'two-asks' | 'no-choices'
+	change: 'two-asks' | 'no-choices',
+	live = false
 ) {
 	await page.setViewportSize(needsYouSizes[size]);
 	await page.emulateMedia({
 		colorScheme: size === 'tablet' ? 'light' : 'dark',
 		reducedMotion: 'reduce'
 	});
-	const fixture = await hubHomeFixture(page, 'default');
+	const fixture = await hubHomeFixture(page, 'default', live);
 	const [chief] = fixture.snapshot.agents;
 	if (change === 'two-asks')
 		fixture.snapshot.agents.push({

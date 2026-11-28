@@ -33,3 +33,7 @@ Daniel, 26 Nov 2026. Replaces the 25 Nov layout rule that kept answer controls o
   already have received the answer.
 - `homeChat` writes only what the Hub queue could: an answer to an open structured ask, or a note on
   a listed agent's current item, checked against the Tracker at the time of the write.
+- While Hub Home is live, a snapshot refresh keeps existing answer targets in place. One
+  activation selects the choice and shows “Sending answer…” on the next frame, within 100 ms,
+  while the write is pending. The row prevents repeat submissions and shows a recoverable error
+  if the write is refused or its receipt cannot be confirmed.

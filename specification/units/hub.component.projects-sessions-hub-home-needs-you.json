@@ -36,7 +36,7 @@
 				"name": "HubHomeNeedsYou.asks",
 				"type": "HomeOpenAsk[]",
 				"required": true,
-				"description": "The open structured asks, in the order to show them."
+				"description": "Current structured asks in snapshot order. The view preserves the order of rows already shown."
 			},
 			{
 				"name": "HubHomeNeedsYou.now",
