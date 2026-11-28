@@ -182,8 +182,9 @@ test.each(['repaired', 'exhausted'] as const)(
 			const check = {
 				argv: [
 					process.execPath,
+					'--input-type=module',
 					'--eval',
-					"const file = await Bun.file('src/orders.ts').text(); if (!file.includes('orders = 3')) { console.error('Expected order count 3'); process.exit(1); }"
+					"const file = (await import('node:fs')).readFileSync('src/orders.ts', 'utf8'); if (!file.includes('orders = 3')) { console.error('Expected order count 3'); process.exit(1); }"
 				]
 			};
 			await service.add(JSON.parse(await readFile(await f.input({ check }), 'utf8')));
