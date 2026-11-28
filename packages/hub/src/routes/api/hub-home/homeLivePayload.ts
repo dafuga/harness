@@ -1,7 +1,7 @@
 // @harness-uid u_ukg7o7reue
 import { z } from 'zod';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
-import { trackerUtilizationSchema } from '../../../../../reports/src/lib/projects-sessions/project-overview/trackerReadTargets';
+import { trackerUtilizationSchema } from '$reports/lib/projects-sessions/project-overview/trackerReadTargets';
 import { parseHomePayload } from './homePayload';
 
 const text = (max: number) =>
