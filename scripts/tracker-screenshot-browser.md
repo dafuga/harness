@@ -6,11 +6,19 @@ The helper returns page viewport PNGs and accepts clicks and ordinary form text.
 
 Use the route when credentials stay out of the rendered page. If a page can show a secret in the viewport or an action can reveal one, use the reviewed script-only Vault path. Type only nonsecret form data. Keep screenshots in memory and return them as images through the tool.
 
-In a persistent Node REPL with Node 22.18 or later, load the helper from the verified Harness checkout. Use a fresh screenshot for coordinates after the page moves or changes size.
+From the verified Harness checkout, bundle the helper into a task-owned private directory. The persistent Node REPL loads the bundled JavaScript.
+
+```sh
+bundle_dir=$(mktemp -d)
+bun build scripts/tracker-screenshot-browser.ts --target node --outfile "$bundle_dir/tracker-screenshot-browser.mjs"
+printf '%s\n' "$bundle_dir/tracker-screenshot-browser.mjs"
+```
+
+Use a persistent Node REPL with Node 22.18 or later. Use a fresh screenshot for coordinates after the page moves or changes size.
 
 ```js
 const { openScreenshotBrowser } =
-	await import('/absolute/path/to/harness/scripts/tracker-screenshot-browser.ts');
+	await import('/absolute/path/to/the/bundle/tracker-screenshot-browser.mjs');
 const page = await openScreenshotBrowser('https://example.invalid');
 await nodeRepl.emitImage({ bytes: await page.screenshot(), mimeType: 'image/png' });
 // Choose these coordinates from the screenshot.
@@ -19,4 +27,4 @@ await page.type('Nonsecret form text');
 await page.close();
 ```
 
-Close the tab explicitly when work finishes or pauses, including after an input or capture error. Keep the same REPL session until it confirms closure.
+Close the tab explicitly when work finishes or pauses, including after an input or capture error. Keep the same REPL session until it confirms closure, then remove the task-owned bundle.
