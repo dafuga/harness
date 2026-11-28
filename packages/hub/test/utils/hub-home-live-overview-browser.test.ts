@@ -18,6 +18,7 @@ import {
 import {
 	recordedTracker,
 	recordedTrackerFetch,
+	seedComputerWork,
 	type RecordedTracker
 } from '../support/recordedTracker';
 import { recordedMacAnswer } from '../support/recordedTrackerMac';
@@ -66,6 +67,7 @@ describe('how the browser receives it', () => {
 		).read();
 
 	test('the overview arrives from the linked computer, with credentials redacted', async () => {
+		const remoteTitles = seedComputerWork(tracker);
 		const secret = 'ghp_' + 'a'.repeat(36);
 		itemOf(liveRuns()[0].item_id).title = `Use ${secret}`;
 		const answer = await recordedMacAnswer(tracker);
@@ -74,6 +76,12 @@ describe('how the browser receives it', () => {
 
 		expect(snapshot?.liveOverview?.projects).toHaveLength(answer.liveOverview.projects.length);
 		expect(JSON.stringify(snapshot)).not.toContain(secret);
+		const machine = snapshot!.liveOverview!.machines.find(({ name }) => name === 'harbor-mbp-2');
+		expect(machine).toMatchObject({
+			agentCount: 2,
+			resources: { ramAvailableMB: 12288, ramTotalMB: 65536, cores: 10, loadOne: 3.5, diskFreeGB: 45.5 },
+			sessions: ['Use [redacted]', remoteTitles[1]].map((title) => ({ title, origin: 'studio-mac' }))
+		});
 		expectInitialProjectList(snapshot!.liveOverview!);
 	});
 

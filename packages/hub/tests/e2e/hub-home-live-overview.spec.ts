@@ -1,6 +1,6 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { captureNeedsYou } from './hub-home-capture';
-import { recordedTracker } from '../../test/support/recordedTracker';
+import { recordedTracker, seedComputerWork } from '../../test/support/recordedTracker';
 import {
 	checkProjectDisclosure,
 	expandProjects,
@@ -26,12 +26,10 @@ for (const [device, width, height] of [
 	}) => {
 		const tracker = recordedTracker();
 		await page.setViewportSize({ width, height });
-		tracker.machines.push(
-			Object.assign({ node: 'harbor-mbp-2', status: 'overloaded' }, { remote_runs: 2 })
-		);
+		const remoteTitles = seedComputerWork(tracker);
+		await page.emulateMedia({ colorScheme: device === 'phone' ? 'dark' : 'light' });
 		seedLiveDisposition(tracker);
 		const answer = await macAnswer(tracker);
-		answer.liveOverview!.machines.push({ name: 'grok-box', status: 'offline' });
 		const sample = answer.liveOverview!.projects[0];
 		answer.liveOverview!.projects.push({
 			...sample,
@@ -68,7 +66,7 @@ for (const [device, width, height] of [
 			await page.evaluate(() => document.fonts.ready.then(() => {}));
 			await page.screenshot({ path: test.info().outputPath(`home-top-${device}.png`) });
 		}
-		await expectComputerWorkload(page, device);
+		await expectComputerWorkload(page, device, remoteTitles);
 		await checkProjectDisclosure(page, answer.liveOverview!.projects, device);
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);

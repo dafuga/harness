@@ -188,7 +188,7 @@ export async function expectRecordedProjects(page: Page, tracker: RecordedTracke
 		).toBeAttached();
 }
 
-export async function expectComputerWorkload(page: Page, device: string) {
+export async function expectComputerWorkload(page: Page, device: string, titles: string[]) {
 	const computer = page
 		.getByRole('list', { name: 'Computers' })
 		.getByRole('listitem')
@@ -196,5 +196,25 @@ export async function expectComputerWorkload(page: Page, device: string) {
 	await expect(computer).toBeVisible();
 	await page.evaluate(() => window.scrollTo(0, 0));
 	await captureNeedsYou(page, `host-work-${device}`);
-	await expect(computer).toContainText('2 remote runs');
+	await expect(computer).toContainText('2 agents');
+	const trigger = computer.getByRole('button');
+	await trigger.click();
+	const detail = page.getByRole('dialog', { name: 'harbor-mbp-2' });
+	await expect(detail).toBeVisible();
+	await captureNeedsYou(page, `host-detail-${device}`);
+	await expect(detail).toContainText('12 GB free of 64 GB');
+	await expect(detail).toContainText('3.5 load / 10 cores');
+	await expect(detail).toContainText('6.5 estimated free cores');
+	await expect(detail).toContainText('45.5 GB free');
+	for (const title of titles) await expect(detail.getByText(title)).toBeVisible();
+	await page.keyboard.press('Escape');
+	await expect(detail).toBeHidden();
+	await expect(trigger).toBeFocused();
+	await expect(page.getByRole('button', { name: /travel-mac.*5 agents/ })).toBeVisible();
+	const offline = page.getByRole('button', { name: /grok-box.*offline/ });
+	await offline.click();
+	const offlineDetail = page.getByRole('dialog', { name: 'grok-box' });
+	await expect(offlineDetail).toContainText('No current resource reading');
+	await offlineDetail.getByRole('button', { name: 'Close' }).click();
+	await expect(offline).toBeFocused();
 }

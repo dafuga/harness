@@ -22,3 +22,24 @@ export function recordedTrackerFetch(tracker: RecordedTracker): typeof fetch {
 		throw new Error(`unexpected Tracker read: ${path}`);
 	}) as typeof fetch;
 }
+
+/** Two live origin runs delegate work to the same computer. */
+export function seedComputerWork(tracker: RecordedTracker) {
+	const running = tracker.runs.filter((run) => run.state === 'running').slice(0, 2);
+	tracker.machines.push(
+		{ node: 'studio-mac', status: 'busy' },
+		{ node: 'travel-mac', status: 'ok' },
+		{
+			node: 'harbor-mbp-2',
+			status: 'overloaded',
+			remote_runs: 2,
+			remote_run_refs: running.map(({ node, id }) => ({ node, id })),
+			cores: 10,
+			load: [3.5, 3, 2],
+			ram: { available_mb: 12288, total_mb: 65536 },
+			disks: [{ mount: '/', free_gb: 45.5 }]
+		},
+		{ node: 'grok-box', status: 'offline' }
+	);
+	return running.map((run) => tracker.items.find((item) => item.id === run.item_id)!.title);
+}

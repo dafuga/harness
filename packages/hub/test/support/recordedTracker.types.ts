@@ -34,5 +34,14 @@ export interface RecordedTracker {
 	recordedAt: string;
 	items: RecordedTrackerItem[];
 	runs: RecordedTrackerRun[];
-	machines: { node: string; status: string }[];
+	machines: {
+		node: string;
+		status: string;
+		remote_runs?: number;
+		remote_run_refs?: { node: string; id: number }[];
+		cores?: number;
+		load?: number[];
+		ram?: { total_mb: number; available_mb: number };
+		disks?: { mount: string; free_gb: number }[];
+	}[];
 }
