@@ -4,7 +4,34 @@ import { runTaskCheck } from '../module-task-worker-service/taskCheck';
 import { CompletionCheckError } from './CompletionCheckError';
 import { requireNondecreasingCoverage } from './lcovCoverage';
 import { moduleCompletionMeasurement } from './moduleCompletionMeasurement';
+import type { CompletionReceipt } from './completionRun.types';
 import type { ModuleCandidate, ModuleReductionAssessment } from './moduleCompletion.types';
+
+/**
+ * Read the baseline's size, tests and coverage. A task whose declared check passed does not depend
+ * on this optional reading: when it is unavailable, the reduction is skipped and the original kept.
+ */
+export async function measureBaseline(
+	candidate: ModuleCandidate,
+	receipt: CompletionReceipt,
+	measure: ModuleReductionAssessment['measure']
+): Promise<boolean> {
+	try {
+		await moduleCompletionMeasurement(
+			measure,
+			candidate.base,
+			join(candidate.reportDirectory, 'before'),
+			(reading) => (receipt.before = reading)
+		);
+		return true;
+	} catch (error) {
+		const { task } = candidate.input;
+		const optional = task.check && !candidate.input.context.signal.aborted;
+		if (!optional || !(error instanceof CompletionCheckError)) throw error;
+		receipt.reason = error.message;
+		return false;
+	}
+}
 
 /** A measured candidate must retain coverage and clear the baseline's checks to be applied. */
 export async function assessReduction(

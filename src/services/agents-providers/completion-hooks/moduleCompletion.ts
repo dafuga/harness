@@ -7,12 +7,11 @@ import { completionHooksConfig } from '../../../configs/agents-providers/complet
 import type { TaskRunInput } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { taskWrites } from '../module-task-worker-service/taskClaim';
 import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/ModuleTaskWorktreeAdapter';
-import { assessReduction } from './assessReduction';
+import { assessReduction, measureBaseline } from './assessReduction';
 import { CompletionCheckError } from './CompletionCheckError';
 import { loadCompletionConfig } from './completionConfig';
 import { askCompletion, completionRecordPath, evaluateCompletion } from './completionRun';
 import type { CompletionCheck, CompletionReceipt } from './completionRun.types';
-import { moduleCompletionMeasurement } from './moduleCompletionMeasurement';
 import type {
 	ModuleCandidate,
 	ModuleCompletionContext,
@@ -103,13 +102,9 @@ async function reviewModule(
 		signal: context.signal
 	};
 	if (measured) {
-		await moduleCompletionMeasurement(
-			measure,
-			base,
-			join(candidate.reportDirectory, 'before'),
-			(reading) => (receipt.before = reading)
-		);
+		const readable = await measureBaseline(candidate, receipt, measure);
 		await requireSameTree(base, await candidateCheckpoint(input, scratch, base), scratch);
+		if (!readable) return;
 	}
 	const proposedReduction = await moduleReviewVerdict(
 		context,
