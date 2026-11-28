@@ -123,3 +123,37 @@ test('check and a refused duplicate explain each match and what to do', async ()
 		'no similar items (not ignored, not already open)'
 	);
 });
+
+test('show keeps a long note history bounded and pages through every note', async () => {
+	const { run } = await compatibilityFixture();
+	await run('note', 'taskfi', 'short first note');
+	expect((await run('show', 'taskfi')).out).toContain('short first note');
+	expect((await run('show', 'taskfi')).out).not.toContain('--notes-page');
+	const handoff =
+		'stopped: watchdog context handoff; resume from: branch fixture ' + 'h'.repeat(900);
+	await run('note', 'taskfi', handoff);
+	const marks = Array.from({ length: 60 }, (_, index) => `milestone-${index + 100} `);
+	for (const mark of marks) await run('note', 'taskfi', mark + 'x'.repeat(1500));
+
+	const shown = (await run('show', 'taskfi')).out;
+	expect(shown.length).toBeLessThan(16_000);
+	expect(shown).toContain(marks.at(-1));
+	expect(shown).toContain(handoff);
+	expect(shown).not.toContain(marks[0]);
+	const pages = Number(/--notes-page 1 \(to (\d+)\)/.exec(shown)?.[1]);
+	expect(pages).toBeGreaterThan(1);
+
+	let all = '';
+	for (let page = 1; page <= pages; page++) {
+		const result = await run('show', 'taskfi', '--notes-page', String(page));
+		expect(result).toMatchObject({ code: 0, err: '' });
+		expect(result.out.length).toBeLessThan(13_000);
+		all += result.out + '\n';
+	}
+	for (const text of ['short first note', handoff, ...marks.map((mark) => mark + 'x'.repeat(1500))])
+		expect(all.split(text)).toHaveLength(2);
+	for (const page of ['0', 'two', String(pages + 1)])
+		expect((await run('show', 'taskfi', '--notes-page', page)).code).not.toBe(0);
+	const json = JSON.parse((await run('show', 'taskfi', '--json')).out);
+	expect(json.notes_log).toHaveLength(62);
+});

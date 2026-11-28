@@ -103,7 +103,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['done', { note: text, failed: flag, occurrence: text, 'next-step': text, force: flag }],
 	['launch', launchOptions],
 	['unlaunch', {}],
-	['show', {}],
+	['show', { 'notes-page': text }],
 	['stage', {}],
 	['artifact', { 'merge-links': flag }],
 	[

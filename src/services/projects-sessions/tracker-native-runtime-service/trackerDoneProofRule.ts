@@ -1,7 +1,7 @@
 // @harness-uid u_rwxks6olfz
 export const trackerDoneProofRule = `## Done proof
 
-Before \`tracker done\`, reread every note with \`tracker show <id> --json\`. This brief may omit or shorten notes, and requirements can be appended after launch.
+Before \`tracker done\`, reread every note, one bounded page at a time: \`tracker show <id> --notes-page 1\`, then each next page it names. This brief may omit or shorten notes, and requirements can be appended after launch.
 
 - For a user-facing feature delivery, use \`bun scripts/deliver-feature.ts <item> <dev|staging|live> --note "<done proof>" -- <headless capture command>\`. The command records and attaches the video link before finishing the item. The capture runs the built app and writes \`feature-delivery.webm\` under \`HEADLESS_RUN_ARTIFACTS\`. Show the MOCK badge when the walkthrough uses simulated operations.
 - The done note maps EVERY requirement (title, task and all notes, including appended ones) to evidence for each named computer: \`<requirement> | <computer> | <evidence>\`.

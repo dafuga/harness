@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"revision": "d19a55e0080d9916756e494e8feba7c7fe335547",
+	"bugClass": {
+		"id": "unbounded-note-context",
+		"title": "Unbounded note output exhausts agent context",
+		"cause": "Agent-facing CLI output or launch-brief generation includes every item note without a count, size, or recency bound, so session context grows with the full note history.",
+		"criteria": "Classify when an agent-facing command or launch-brief path serializes or formats item notes without limiting count or output size. Either CLI output that includes all notes or launch briefs that embed all notes qualifies independently. Exclude bounded summaries and paths that do not place notes in agent session context.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "notes.map(",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "item.notes",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "--notes",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "launchBrief",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "Promise.all",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "map",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "join",
+				"weight": 1
+			}
+		],
+		"contextTerms": ["notes", "tracker", "brief", "session", "context", "limit", "agent"],
+		"pathHints": [
+			{
+				"contains": "src/cli/",
+				"weight": 4
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 3
+			},
+			{
+				"contains": "src/services/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 1
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			}
+		]
+	}
+}
