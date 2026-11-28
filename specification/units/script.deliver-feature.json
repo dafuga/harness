@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "script.deliver-feature",
+	"kind": "script",
+	"title": "deliver-feature",
+	"responsibility": "Owns the deliver-feature build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/deliver-feature.ts"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-feature-delivery",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.reports-environment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.adapter.r2-evidence-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.deliver-feature-deliver-feature",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.deliver-feature-record-delivery",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.deliver-feature-tracker-delivery-client",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/deliver-feature.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/deliver-feature.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

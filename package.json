@@ -71,6 +71,7 @@
 	],
 	"scripts": {
 		"dev": "bun run src/cli/index.ts",
+		"deliver-feature": "bun scripts/deliver-feature.ts",
 		"build": "bun scripts/with-resources.ts coding -- sh -c 'bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/hub svelte-kit sync && bun run build:kernel && bun run build:cli && bun run build:api && bun run --cwd packages/reports build && bun scripts/package-website.ts && bun run build:picker \"$@\"' --",
 		"check": "bun scripts/shared-checks.ts",
 		"typecheck": "bun scripts/with-resources.ts agent-test -- sh -c 'tsc --noEmit \"$@\"' --",

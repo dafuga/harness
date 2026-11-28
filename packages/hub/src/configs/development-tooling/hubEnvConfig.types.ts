@@ -25,6 +25,7 @@ export interface HubEnv {
 	HARNESS_PUSH_PUBLIC_KEY?: string;
 	DB?: D1Database;
 	CACHE?: R2Bucket;
+	EVIDENCE?: R2Bucket;
 	/** The relay's host objects, reachable through this binding only. */
 	REMOTE_HOSTS?: DurableObjectNamespace;
 	/** The relay's account sync objects: live fan-out and sign-in mailboxes of the sealed account sync. */

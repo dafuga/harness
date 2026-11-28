@@ -27,6 +27,8 @@
 			"R2EvidenceStoreAdapter.get",
 			"R2EvidenceStoreAdapter.putReplay",
 			"R2EvidenceStoreAdapter.getReplay",
+			"R2EvidenceStoreAdapter.putFeatureVideo",
+			"R2EvidenceStoreAdapter.putFeatureReceipt",
 			"R2EvidenceStoreError",
 			"R2EvidenceStoreError"
 		]
@@ -185,6 +187,21 @@
 					"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4",
 					"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.mp4"
 				]
+			},
+			{
+				"name": "R2EvidenceStoreAdapter.putFeatureVideo.delivery",
+				"type": "FeatureDelivery",
+				"required": true
+			},
+			{
+				"name": "R2EvidenceStoreAdapter.putFeatureVideo.bytes",
+				"type": "Buffer",
+				"required": true
+			},
+			{
+				"name": "R2EvidenceStoreAdapter.putFeatureReceipt.delivery",
+				"type": "FeatureDelivery",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -649,6 +666,47 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "R2EvidenceStoreAdapter.putFeatureVideo",
+				"inputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.putFeatureVideo.delivery",
+						"type": "FeatureDelivery",
+						"required": true
+					},
+					{
+						"name": "R2EvidenceStoreAdapter.putFeatureVideo.bytes",
+						"type": "Buffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.putFeatureVideo",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "R2EvidenceStoreAdapter.putFeatureReceipt",
+				"inputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.putFeatureReceipt.delivery",
+						"type": "FeatureDelivery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.putFeatureReceipt",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -703,6 +761,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-feature-delivery",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.adapter.r2-screenshot-store",
 			"via": "import",

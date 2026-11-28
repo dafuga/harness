@@ -1,0 +1,216 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-feature-delivery",
+	"kind": "function",
+	"title": "featureDelivery",
+	"responsibility": "Owns the featureDelivery shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/featureDelivery.ts",
+			"src/utils/projects-sessions/featureDelivery.types.ts"
+		],
+		"symbols": [
+			"featureDeliveryStages",
+			"featureDeliveryStage",
+			"featureDeliveryId",
+			"featureDeliveryDigest",
+			"featureDeliveryProject",
+			"featureDeliveryDuration",
+			"featureDeliverySchema",
+			"featureDeliveryPageSchema",
+			"featureDeliveryApi",
+			"featureDeliveryPrefix",
+			"featureDeliveryReceiptKey",
+			"featureDeliverySource",
+			"featureDeliveryVideoKey",
+			"FeatureDelivery",
+			"FeatureDeliveryPage",
+			"FeatureDeliveryStage"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "featureDeliveryPrefix.project",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "featureDeliveryReceiptKey.value",
+				"type": "FeatureDelivery",
+				"required": true
+			},
+			{
+				"name": "featureDeliverySource.value",
+				"type": "Pick<FeatureDelivery, 'id' | 'sha256'>",
+				"required": true
+			},
+			{
+				"name": "featureDeliveryVideoKey.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "featureDeliveryVideoKey.sha256",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "featureDeliveryStages",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliveryStage",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliveryId",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliveryDigest",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliveryProject",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliveryDuration",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliverySchema",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliveryPageSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliveryApi",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliveryPrefix",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliveryReceiptKey",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliverySource",
+				"type": "unknown"
+			},
+			{
+				"name": "featureDeliveryVideoKey",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "featureDeliveryPrefix",
+				"inputs": [
+					{
+						"name": "featureDeliveryPrefix.project",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "featureDeliveryPrefix",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "featureDeliveryReceiptKey",
+				"inputs": [
+					{
+						"name": "featureDeliveryReceiptKey.value",
+						"type": "FeatureDelivery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "featureDeliveryReceiptKey",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "featureDeliverySource",
+				"inputs": [
+					{
+						"name": "featureDeliverySource.value",
+						"type": "Pick<FeatureDelivery, 'id' | 'sha256'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "featureDeliverySource",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "featureDeliveryVideoKey",
+				"inputs": [
+					{
+						"name": "featureDeliveryVideoKey.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "featureDeliveryVideoKey.sha256",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "featureDeliveryVideoKey",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/featureDelivery.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/featureDelivery.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

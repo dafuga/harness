@@ -1,3 +1,7 @@
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/tracker-command/nativeTrackerRequest';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, onTestFinished, test } from 'vitest';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
@@ -72,3 +76,37 @@ function planningFixture() {
 		request(`${item}/artifact`, 'POST', { stage: 'detail', artifact: value });
 	return { id, item, request, stage, artifact, store };
 }
+
+test('the Tracker artifact command merges delivery links without replacing the build document', async () => {
+	const { id, item, request } = planningFixture();
+	const existing = {
+		summary: 'Existing build details',
+		links: [
+			{ label: 'PR', url: 'https://example.test/pr/123' },
+			{ label: 'Feature video · dev', url: 'https://example.test/first-video' }
+		]
+	};
+	expect(
+		(await request(item + '/artifact', 'POST', { stage: 'build', artifact: existing })).status
+	).toBe(200);
+	const directory = await mkdtemp(join(tmpdir(), 'tracker-artifact-'));
+	onTestFinished(() => rm(directory, { recursive: true, force: true }));
+	const file = join(directory, 'artifact.json');
+	const link = { label: 'Feature video · dev', url: 'https://example.test/delivery' };
+	await writeFile(file, JSON.stringify({ links: [link] }));
+	const { request: parsed } = nativeTrackerArgs(['artifact', id, 'build', file, '--merge-links']);
+	const updated = await request(parsed.path, parsed.method, parsed.body as object);
+	expect(updated.status).toBe(200);
+	expect(await updated.json()).toMatchObject({
+		planning: { artifacts: { build: { ...existing, links: [existing.links[0], link] } } }
+	});
+	expect(
+		(
+			await request(item + '/artifact', 'POST', {
+				stage: 'build',
+				merge_links: true,
+				artifact: { summary: 'Would replace' }
+			})
+		).status
+	).toBe(400);
+});

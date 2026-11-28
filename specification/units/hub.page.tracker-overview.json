@@ -12,6 +12,7 @@
 		"uses": [
 			"hub.component.hub-frame",
 			"hub.component.login-panel",
+			"hub.component.projects-sessions-delivered-features",
 			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.projects-sessions-project-overview-project-overview"
 		]
@@ -22,7 +23,14 @@
 			"packages/hub/src/routes/tracker-overview/overviewClient.ts",
 			"packages/hub/src/routes/tracker-overview/overviewClient.types.ts"
 		],
-		"symbols": ["+page", "overviewPath", "readOverview", "watchWhileVisible", "OverviewOutcome"]
+		"symbols": [
+			"+page",
+			"+page.deliveries",
+			"overviewPath",
+			"readOverview",
+			"watchWhileVisible",
+			"OverviewOutcome"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -85,7 +93,21 @@
 				"errorStatus": "unknown"
 			}
 		],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "+page.deliveries",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "+page.deliveries",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -95,6 +117,11 @@
 		},
 		{
 			"unit": "hub.component.login-panel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-delivered-features",
 			"via": "import",
 			"origin": "derived"
 		},

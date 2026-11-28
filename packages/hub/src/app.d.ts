@@ -14,6 +14,8 @@ declare global {
 				HARNESS_RELAY_ORIGIN?: string;
 				DB?: D1Database;
 				CACHE?: R2Bucket;
+				/** Private Reports R2 bucket for reading published feature videos. */
+				EVIDENCE?: R2Bucket;
 				/** Private bucket of vetted release archives. Read only by the Mac download route. */
 				DOWNLOADS?: R2Bucket;
 				/** Provisioned object key of the vetted Mac archive, e.g. releases/mac-arm64/<sha>/Harness.zip. */

@@ -6,7 +6,8 @@ import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 export function nativeTrackerPlanningRequest(
 	command: 'stage' | 'artifact',
 	id: string,
-	[stage, file, ...rest]: string[]
+	[stage, file, ...rest]: string[],
+	mergeLinks = false
 ): NativeTrackerRequest {
 	const usage = `usage: tracker ${command} <id> idea|detail|design|build${command === 'artifact' ? ' <file>' : ''}`;
 	if (!id || !stage || (command === 'stage' ? file : !file || rest.length))
@@ -14,7 +15,10 @@ export function nativeTrackerPlanningRequest(
 	return {
 		method: 'POST',
 		path: `/items/${encodeURIComponent(id)}/${command}`,
-		body: command === 'stage' ? { stage } : { stage, artifact: readPlanningArtifact(file) }
+		body:
+			command === 'stage'
+				? { stage }
+				: { stage, artifact: readPlanningArtifact(file), ...(mergeLinks && { merge_links: true }) }
 	};
 }
 

@@ -73,6 +73,18 @@
 				"required": false,
 				"default": [],
 				"description": "Optional initial frame feedback shown before the owner-protected list request completes; defaults to an empty list."
+			},
+			{
+				"name": "VideoEvidence.playbackOnly",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "VideoEvidence.metadata",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)"
 			}
 		],
 		"outputs": [
