@@ -2,7 +2,8 @@ import type { TrackerUnattendedCaller } from './trackerUnattendedCallers.types';
 
 /**
  * Unattended callers of the `tracker` CLI: LaunchAgents and the scripts they run.
- * Inventoried 2026-11-26 on both Macs; the shared Linux box could not be reached.
+ * Inventoried 2026-11-27 on both Macs; the shared Linux box could not be reached.
+ * Legacy calls remain here to check the fallback for scripts that still use them.
  *
  * Before changing any verb's arguments or refusals:
  * 1. Repeat the inventory on every computer (LaunchAgents, systemd units, cron, relays). Start from
@@ -44,6 +45,10 @@ export const trackerUnattendedCallers: readonly TrackerUnattendedCaller[] = [
 		computers: secondary,
 		calls: [
 			{
+				args: ['alert', 'ITEM', 'Production quote failure {"ok":false,"status":503}'],
+				outcome: 'alerts'
+			},
+			{
 				args: ['flag', 'ITEM', 'Production quote failure {"ok":false,"status":503}'],
 				outcome: 'kept'
 			},
@@ -55,6 +60,10 @@ export const trackerUnattendedCallers: readonly TrackerUnattendedCaller[] = [
 		computers: primary,
 		calls: [
 			add,
+			{
+				args: ['alert', 'ITEM', 'RNG sample keeper failing: endpoint timed out.'],
+				outcome: 'alerts'
+			},
 			{
 				args: [
 					'flag',
