@@ -86,8 +86,7 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 		{ key: native.key, state: 'exited', exitCode: 0 }
 	]);
 	await restarted.start(docker, signal);
-	verifyWorkerInvocations(paths.profiles);
-	verifyTrackerCliUpgrade(trackerBinDirectory, paths.profiles.native);
+	verifyWorkerInvocations(paths.profiles, trackerBinDirectory);
 	expect(
 		await trackerManagedHostLauncher(managed, { client, platform: 'linux' }).start(native, signal)
 	).toEqual({
@@ -151,7 +150,10 @@ function launchInput(
 	};
 }
 
-function verifyWorkerInvocations(profiles: ReturnType<typeof managedFixtureBindings>['profiles']) {
+function verifyWorkerInvocations(
+	profiles: ReturnType<typeof managedFixtureBindings>['profiles'],
+	trackerBinDirectory: string
+) {
 	const read = (profile: string) =>
 		readFileSync(join(profile, 'invoked.ndjson'), 'utf8')
 			.trim()
@@ -187,6 +189,7 @@ function verifyWorkerInvocations(profiles: ReturnType<typeof managedFixtureBindi
 	expect(Buffer.byteLength(docker[0].brief)).toBeLessThan(16_000);
 	expect(docker[0].cwd).toMatch(/\/effects\/[a-f0-9]{64}\/worktree$/);
 	verifyNativeInvocations(native[0], claude[0], { dockerWorktree: docker[0].cwd, client });
+	verifyTrackerCliUpgrade(trackerBinDirectory, profiles.native);
 }
 
 function verifySecretSafety(profiles: { native: string; docker: string }, briefs: string[]) {
