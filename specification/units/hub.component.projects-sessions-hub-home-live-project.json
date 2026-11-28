@@ -4,13 +4,14 @@
 	"uid": "u_52e2mcsala",
 	"kind": "component",
 	"title": "HubHomeLiveProject",
-	"responsibility": "Shows one project of the Live overview with a row for each live run or task in motion: run state, Tracker stage, owner, computer, model and age.",
+	"responsibility": "Shows one project’s live jobs in a compact responsive grid with state, model, computer and update age. Selecting a card opens its complete details.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
 		"uses": [
 			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-details",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -37,7 +38,7 @@
 				"name": "HubHomeLiveProject.project",
 				"type": "HomeWorkProject",
 				"required": true,
-				"description": "One project with its task counts and its rows, already in the order to show them."
+				"description": "One project with its task counts and jobs, already in the order to show them."
 			},
 			{
 				"name": "HubHomeLiveProject.now",
@@ -57,7 +58,7 @@
 			{
 				"name": "HubHomeLiveProject",
 				"type": "markup",
-				"description": "A foldable project group, open while it has a live run, with the resting rows past the first few behind a button."
+				"description": "A collapsed project group with grids for running, blocked, waiting and recently finished jobs. The finished jobs appear behind See all."
 			}
 		],
 		"errors": [],
@@ -103,6 +104,11 @@
 		},
 		{
 			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
 			"via": "import",
 			"origin": "derived"
 		},
