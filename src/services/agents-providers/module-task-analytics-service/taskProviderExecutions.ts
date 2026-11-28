@@ -31,7 +31,7 @@ function combineTurns(turns: TaskExecution[]): TaskExecution {
 	const totals = (key: 'usd' | 'minimumUsd' | 'maximumUsd') => {
 		const values = turns.map((turn) => turn.apiCost[key]);
 		return values.every((value) => value !== null)
-			? values.reduce<number>((sum, value) => sum + value!, 0)
+			? values.reduce<number>((sum, value) => sum + value, 0)
 			: null;
 	};
 	return {
