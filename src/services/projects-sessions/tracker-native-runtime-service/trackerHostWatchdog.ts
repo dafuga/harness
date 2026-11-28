@@ -58,14 +58,13 @@ export function trackerHostWatchdog(
 			...(options.dispatchAlerts?.() ?? [])
 		]
 	});
-	const alerts = cos.alerts;
 	const pollSessions = watchHostSessions(
 		{ store, items, driver },
 		{ ...options, readItems, roots: config.transcriptRoots }
 	);
 	const deliverMessages = trackerHubMessageDelivery({ store, driver, now });
 	return {
-		alerts,
+		alerts: cos.alerts,
 		chiefOfStaff,
 		inspect: inspectHostWatchdog({ store, items, driver }, { ...options, readItems }),
 		async tick(signal: AbortSignal) {
