@@ -145,7 +145,6 @@ async function proveHandoff(sampled: boolean) {
 		);
 		const driver = { ...trackerWatchdogPort({ transcriptRoots: [] }, host), nudge, close };
 		await trackerContextHandoffs(store, driver, scan(now), signal);
-		expect(nudge).not.toHaveBeenCalled();
 		await trackerContextHandoffs(store, driver, scan(createdAt), signal);
 		await trackerContextHandoffs(store, driver, scan(createdAt), signal);
 		expect(nudge).not.toHaveBeenCalled();

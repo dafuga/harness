@@ -13,6 +13,7 @@ import {
 } from './trackerManagedProcessFixture';
 import {
 	seedTask,
+	verifyContextContinuation,
 	verifyFailureBudget,
 	verifyKilledReminder,
 	verifyResumeBrief,
@@ -82,6 +83,8 @@ async function proveRecovery(root: string) {
 		unlinkSync(join(root, 'reject-boot'));
 		await verifyStoppedRun(runtime, { dispatch, tmux, watchdog });
 		await verifyKilledReminder(runtime, { dispatch, tmux, watchdog });
+		offset = 0;
+		await verifyContextContinuation(runtime, config, { dispatch, tmux, watchdog });
 	} finally {
 		try {
 			tmux('kill-server');
@@ -92,6 +95,7 @@ async function proveRecovery(root: string) {
 		clock.mockRestore();
 	}
 }
+
 async function verifyEligibleRecovery(
 	runtime: TrackerNativeRuntimeService,
 	{
