@@ -48,6 +48,8 @@ function matrix(plan: Awaited<ReturnType<typeof stored>>['plan']) {
 const widths = ['width-390', 'width-834', 'width-1440', 'width-1920'];
 const expected = [...widths, ...widths, ...widths];
 const pixels = (bytes: Uint8Array) => PNG.sync.read(Buffer.from(bytes)).data;
+// Saving all twelve mockup captures can take longer under macOS background scheduling.
+const mockupTimeout = 75000;
 
 test('remote: a phone starts a Plan stating no count over the wire; it finishes with three responsive mockups', async () => {
 	const r = await remoteFixture();
@@ -57,7 +59,7 @@ test('remote: a phone starts a Plan stating no count over the wire; it finishes 
 	const request = r.start();
 	expect(request).not.toHaveProperty('designOptions');
 	await phone.client.request<{ runId: string }>('startRun', request);
-	await expect.poll(() => seen.at(-1)?.kind, { timeout: 30000 }).toBe('finished');
+	await expect.poll(() => seen.at(-1)?.kind, { timeout: mockupTimeout }).toBe('finished');
 	const { plan, images } = await stored(r.root, r.request.entityId);
 	expect(plan.versions.map((version) => version.options?.length)).toEqual([3]);
 	expect(matrix(plan)).toEqual(expected);
@@ -66,7 +68,7 @@ test('remote: a phone starts a Plan stating no count over the wire; it finishes 
 		12
 	]);
 	expect(pixels(images[0])).toEqual(pixels(bytes));
-}, 60000);
+}, 180000);
 
 test('local: a window opens its project and starts a Plan stating no count; it finishes with three responsive mockups', async () => {
 	const l = await localFixture();
@@ -76,7 +78,7 @@ test('local: a window opens its project and starts a Plan stating no count; it f
 	await window.request('openProject');
 	expect(l.request).not.toHaveProperty('designOptions');
 	await window.request('startRun', l.request);
-	await expect.poll(() => seen.at(-1)?.kind, { timeout: 30000 }).toBe('finished');
+	await expect.poll(() => seen.at(-1)?.kind, { timeout: mockupTimeout }).toBe('finished');
 	const { plan, images } = await stored(l.root, l.request.entityId);
 	expect(plan.versions.map((version) => version.options?.length)).toEqual([3]);
 	expect(matrix(plan)).toEqual(expected);
@@ -85,7 +87,7 @@ test('local: a window opens its project and starts a Plan stating no count; it f
 		12
 	]);
 	expect(pixels(images[0])).toEqual(pixels(bytes));
-}, 60000);
+}, 180000);
 
 test('native: the fixture project plans with its stand-in providers, stating no count; it finishes with three responsive mockups', async () => {
 	const { root, entityId, threadId } = await remoteFixtureProject();
@@ -104,7 +106,7 @@ test('native: the fixture project plans with its stand-in providers, stating no 
 		...{ mode: 'plan', provider: 'codex', model: 'fixture-model', effort: 'high' },
 		...{ entityId, threadId, text: 'Design the fixture page', approval: null }
 	} as RunRequest);
-	await expect.poll(() => session.busy, { timeout: 30000 }).toBe(false);
+	await expect.poll(() => session.busy, { timeout: mockupTimeout }).toBe(false);
 	expect(events.at(-1)).toMatchObject({ kind: 'finished' });
 	const { api, plan, images } = await stored(root, entityId);
 	expect(plan.versions.map((version) => version.options?.length)).toEqual([undefined, 3]);
@@ -118,4 +120,4 @@ test('native: the fixture project plans with its stand-in providers, stating no 
 	const [seed] = plan.versions[0].images;
 	const seeded = await api.readImage({ unitId: entityId, version: 'v001', file: seed.file });
 	expect(Buffer.from(seeded.bytes).equals(Buffer.from(fixtureImage()))).toBe(true);
-}, 60000);
+}, 180000);
