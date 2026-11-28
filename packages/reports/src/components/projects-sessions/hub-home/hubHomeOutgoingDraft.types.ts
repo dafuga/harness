@@ -1,3 +1,4 @@
+// @harness-uid u_apuvwehhpw
 export interface HomeOutgoingVersion {
 	id: string;
 	revision: number;
