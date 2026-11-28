@@ -163,10 +163,8 @@ export const dispatchLaunchSource = `CASE
 	) THEN 'manual'
 	ELSE 'automatic' END`;
 
-export function canBlockStoppedRun(
-	{ item, runs, openSession, activeSessionKeys }: TrackerDispatchSnapshot,
-	run: TrackerRunReceipt
-) {
+export function canBlockStoppedRun(snapshot: TrackerDispatchSnapshot, run: TrackerRunReceipt) {
+	const { item, runs, openSession, activeSessionKeys } = snapshot;
 	return (
 		item?.status === 'in_progress' &&
 		!item.launch &&

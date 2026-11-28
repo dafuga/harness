@@ -24,25 +24,17 @@ import {
 	recoveryRung
 } from './trackerRecoveryHistory';
 
-const requestTimeout = sessionHealthInterval;
-
 export async function recoverTrackerSession(
 	store: TrackerPersistenceService,
 	input: { item: TrackerItem; launch: TrackerWatchdogLaunch; now: number }
 ): Promise<string | null> {
 	const { item, launch, now } = input;
-	const history = new TrackerRunReadRepository(store.database, store.node).list({
-		itemId: item.id
-	});
-	const latest = history.filter(({ node }) => node === store.node).at(-1);
+	const runs = new TrackerRunReadRepository(store.database, store.node);
+	const latest = runs.list({ itemId: item.id }).findLast((run) => run.node === store.node);
 	const key = `tracker_session_recovery:${item.id}`;
 	const state = recoveryBudget(store, { key, latest, item });
-	const held = legacyProviderHold(store, { latest, state, now });
-	if (held) {
-		// A pending legacy request keeps its budget while its provider is unavailable.
-		saveRecovery(store, key, { ...state, requestedAt: now });
-		return `Tracker relaunch is waiting: ${held}.`;
-	}
+	const held = waitForRecoveryProvider(store, latest, state, { item, key, now });
+	if (held) return held;
 	if (state.token) return checkRecovery(store, { item, key, state, latest }, now);
 	if (now < state.retryAt) return null;
 	const rung = recoveryRung(latest, item, store.node);
@@ -56,14 +48,23 @@ export async function recoverTrackerSession(
 	return submitRecovery(store, { item, key, state, launch }, { now, rung });
 }
 
-function legacyProviderHold(
+function waitForRecoveryProvider(
 	store: TrackerPersistenceService,
-	{ latest, state, now }: { latest?: TrackerListedRun; state: TrackerRecoveryState; now: number }
+	latest: TrackerListedRun | undefined,
+	state: TrackerRecoveryState,
+	{ item, key, now }: { item: TrackerItem; key: string; now: number }
 ) {
-	if (!latest || !state.token || latest.auto_token === state.token) return null;
-	return trackerProviderHold(store, latest.cli, now);
+	if (
+		!latest ||
+		latest.auto_token === state.token ||
+		(!state.token && item.status !== 'in_progress')
+	)
+		return null;
+	const held = trackerProviderHold(store, latest.cli, now);
+	if (!held) return null;
+	if (state.token) saveRecovery(store, key, { ...state, requestedAt: now });
+	return `Tracker relaunch is waiting: ${held}.`;
 }
-
 async function submitRecovery(
 	store: TrackerPersistenceService,
 	{
@@ -131,7 +132,7 @@ function checkRecovery(
 		const evidence = `run #${latest.id} ${latest.outcome ?? 'ended'}${latest.failure_reason ? ` (${latest.failure_reason})` : ''}`;
 		return recordFailure(store, { item, key, state }, now, evidence);
 	}
-	if (now - state.requestedAt < requestTimeout) return null;
+	if (now - state.requestedAt < sessionHealthInterval) return null;
 	if (item.auto === state.token) {
 		const run = new TrackerRunReadRepository(store.database, store.node)
 			.list({ itemId: item.id })
