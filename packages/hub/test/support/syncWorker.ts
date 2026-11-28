@@ -12,6 +12,7 @@ import { serveSync } from '../../src/routes/api/sync/syncPolicy';
 const actors: Record<string, string> = {
 	'session-a': 'google:fixture-a',
 	'session-a-browser': 'google:fixture-a',
+	'session-a-browser-returning': 'google:fixture-a',
 	'session-a-secondary': 'google:fixture-a',
 	'session-b': 'google:fixture-b'
 };
