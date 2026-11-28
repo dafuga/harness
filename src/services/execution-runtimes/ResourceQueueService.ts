@@ -10,6 +10,7 @@ import {
 } from '../../core/execution-runtimes/resourceTypes';
 import { resourceConfig, resourceHome } from '../../utils/execution-runtimes/resourceConfig';
 import { resourceContext } from '../../utils/execution-runtimes/resourceContext';
+import { inheritedLeaseContext } from './resource-queue-service/inheritedLease';
 import { resourceIdentity } from '../../utils/execution-runtimes/resourceIdentity';
 import { ProcessIdentityAdapter } from '../agents-providers/agent-activity-service/ProcessIdentityAdapter';
 import { ResourceMonitorService } from './resource-queue-service/ResourceMonitorService';
@@ -49,6 +50,12 @@ export class ResourceQueueService {
 			(!Number.isFinite(options.waitTimeoutMs) || options.waitTimeoutMs <= 0)
 		)
 			throw new ResourceQueueError('Invalid resource queue wait timeout');
+		const inherited = inheritedLeaseContext(
+			request,
+			{ ...env, HARNESS_RESOURCES_HOME: this.home },
+			this.queue
+		);
+		if (inherited) return action(inherited);
 		const id = await this.enqueue(request, env);
 		try {
 			await this.monitor.wait(id, request, options);

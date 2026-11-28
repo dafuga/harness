@@ -7,7 +7,7 @@ import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/ModuleTaskWorktreeAdapter';
 import { resolve, join } from 'node:path';
 import { existsSync } from 'node:fs';
-import { symlink } from 'node:fs/promises';
+import { mkdir, readdir, symlink } from 'node:fs/promises';
 import { pendingTaskResult, taskWrites } from './taskClaim';
 import { FrameFlagService } from '../../verification-evidence/FrameFlagService';
 import { completeModule, moduleCompletionContext } from '../completion-hooks/moduleCompletion';
@@ -22,11 +22,18 @@ export async function taskWorkspace(root: string, task: ModuleTask, selection: T
 	};
 }
 
-/** Share installed dependencies without moving worker output into the common checkout. */
+/**
+ * Share installed packages but keep the folder itself in the worktree, so tool caches written
+ * under node_modules stay with this attempt and inside a provider sandbox's writable area.
+ */
 export async function prepareTaskWorkspace(root: string, worktree: string): Promise<void> {
 	const source = join(root, 'node_modules'),
 		target = join(worktree, 'node_modules');
-	if (existsSync(source) && !existsSync(target)) await symlink(source, target, 'dir');
+	if (!existsSync(source) || existsSync(target)) return;
+	await mkdir(target);
+	for (const entry of await readdir(source, { withFileTypes: true }))
+		if (entry.isDirectory() || entry.isSymbolicLink())
+			await symlink(join(source, entry.name), join(target, entry.name), 'dir');
 }
 
 /** Pending frame feedback follows ownership into each isolated attempt. */

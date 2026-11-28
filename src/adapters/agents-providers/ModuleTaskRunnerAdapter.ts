@@ -13,37 +13,15 @@ import { completeOrchestration } from '../../services/agents-providers/completio
 import { completionTurn } from '../../services/agents-providers/completion-hooks/completionRun';
 import type { CompletionTurnInput } from '../../services/agents-providers/completion-hooks/completionRun.types';
 import {
-	hardContextTokens,
-	providerCompactionTokens
-} from './module-task-runner-adapter/sessionPolicy';
+	codexTaskCommand,
+	type CodexTaskSelection
+} from './module-task-runner-adapter/codexTaskCommand';
 /** Run the installed CLIs with saved login, exact model/effort and public output only. */
 export class ModuleTaskRunnerAdapter implements TaskRunner {
 	constructor(private readonly execute: TaskProcessExecutor = taskProcess) {}
-	command(selection: TaskSelection & Pick<TaskRunInput, 'images'>): string[] {
+	command(selection: CodexTaskSelection): string[] {
 		if (selection.provider === 'claude') return claudeTaskCommand(selection);
-		return [
-			'codex',
-			'exec',
-			'--json',
-			'--sandbox',
-			'workspace-write',
-			'-m',
-			selection.model,
-			'-c',
-			`model_reasoning_effort=${JSON.stringify(selection.intelligence)}`,
-			'-c',
-			'model_provider="openai"',
-			'-c',
-			'approval_policy="never"',
-			'-c',
-			`model_context_window=${hardContextTokens}`,
-			'-c',
-			`model_auto_compact_token_limit=${providerCompactionTokens}`,
-			'-c',
-			'tool_output_token_limit=12000',
-			...(selection.images ?? []).flatMap((path) => ['-i', path]),
-			'-'
-		];
+		return codexTaskCommand(selection);
 	}
 	async run(input: TaskRunInput): Promise<TaskRunResult> {
 		if (input.supervision) return completeOrchestration(input, (task) => this.runProvider(task));
