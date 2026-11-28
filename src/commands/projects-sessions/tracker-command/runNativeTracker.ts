@@ -1,4 +1,6 @@
 // @harness-uid u_r7qgepnoax
+import type { TrackerSessionRule } from '../../../repositories/projects-sessions/TrackerSessionRuleRepository.types';
+import { formatNativeTrackerRules } from './nativeTrackerRule';
 import { lstatSync } from 'node:fs';
 import { homedir, userInfo } from 'node:os';
 import { join } from 'node:path';
@@ -191,6 +193,10 @@ function renderNativeTracker(
 }
 
 function renderNativeTrackerItemOrReport(command: string, data: unknown, first?: string): void {
+	if (command === 'rule') {
+		console.log(formatNativeTrackerRules(data as TrackerSessionRule | TrackerSessionRule[]));
+		return;
+	}
 	if (command === 'reply') {
 		console.log(`reply sent to Daniel in the Hub (${(data as { id?: string }).id ?? 'message'})`);
 		return;

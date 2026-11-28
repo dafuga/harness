@@ -28,6 +28,7 @@
 	} from './projectOverviewPresentation';
 	import type { OverviewFilter } from './projectOverviewPresentation.types';
 	import { compareOverviewMachines } from '../../../lib/projects-sessions/project-overview/projectOverviewItems';
+	import type { TrackerSessionRule } from '../../../../../../src/repositories/projects-sessions/TrackerSessionRuleRepository.types';
 	import type { OverviewItem } from '../../../lib/projects-sessions/project-overview/projectOverview.types';
 	import type { ProjectOverviewDetailRow, ProjectOverviewProps } from './ProjectOverview.types';
 	import '../../../lib/styles/project-overview.css';
@@ -152,6 +153,22 @@
 				</hx-section>
 			{/each}
 		{/if}
+	{/if}
+	{#if !project && ready?.sessionRules}
+		<hx-section class="po-band" aria-labelledby="po-session-rules">
+			<hx-h2 id="po-session-rules" class="po-band-title">Recent session rules</hx-h2>
+			<DetailList
+				rows={ready.sessionRules}
+				rowKey={(rule) => JSON.stringify([rule.incident, rule.skill, rule.text])}
+				className="po-detail"
+			>
+				{#snippet label(rule: TrackerSessionRule)}{rule.skill} · {formatWhen(rule.at)}{/snippet}
+				{#snippet children(rule: TrackerSessionRule)}<LinkifiedText text={rule.text} />{/snippet}
+				{#snippet empty()}<EmptyState as="div" className="po-empty"
+						>No session rules yet.</EmptyState
+					>{/snippet}
+			</DetailList>
+		</hx-section>
 	{/if}
 {/snippet}
 

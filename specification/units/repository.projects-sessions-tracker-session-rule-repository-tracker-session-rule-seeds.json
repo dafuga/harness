@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-session-rule-repository-tracker-session-rule-seeds",
+	"uid": "u_mzhddyflf2",
+	"kind": "repository",
+	"title": "trackerSessionRuleSeeds",
+	"responsibility": "Owns the trackerSessionRuleSeeds persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/tracker-session-rule-repository/trackerSessionRuleSeeds.ts"
+		],
+		"symbols": ["trackerSessionRuleSeeds"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "trackerSessionRuleSeeds",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-session-rule",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/tracker-session-rule-repository/trackerSessionRuleSeeds.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/tracker-session-rule-repository/trackerSessionRuleSeeds.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

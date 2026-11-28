@@ -1,6 +1,6 @@
 // @harness-uid u_k4rxbz6pq3
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
-import { trackerUtilizationSchema } from '../../../../../reports/src/lib/projects-sessions/project-overview/trackerReadTargets';
+import { trackerUtilizationSchema } from '$reports/lib/projects-sessions/project-overview/trackerReadTargets';
 import { hubFail } from '../../../utils/development-tooling/hubJson';
 export { MAX_BODY_BYTES, readOverviewText } from './trackerOverviewBody';
 import type {
@@ -38,7 +38,9 @@ export function readySnapshot(value: OverviewRecord): ReadyOverviewPayload {
 }
 
 function ready(value: OverviewRecord): ReadyOverviewPayload {
-	const body = record(value, ['status', 'projects', 'machines', 'liveSessions']);
+	const keys = ['status', 'projects', 'machines', 'liveSessions'];
+	const hasRules = Object.hasOwn(value, 'sessionRules');
+	const body = record(value, hasRules ? [...keys, 'sessionRules'] : keys);
 	if (body.status !== 'ready') invalid();
 	const projects = list(body.projects, MAX_PROJECTS).map(card);
 	const agents = new Set(projects.map((project) => project.agent));
@@ -48,7 +50,18 @@ function ready(value: OverviewRecord): ReadyOverviewPayload {
 		status: 'ready',
 		projects,
 		machines: list(body.machines, MAX_MACHINES).map(machine),
-		liveSessions: live
+		liveSessions: live,
+		...(hasRules && { sessionRules: list(body.sessionRules, 5).map(sessionRule) })
+	};
+}
+
+function sessionRule(value: unknown) {
+	const body = record(value, ['at', 'incident', 'skill', 'text']);
+	return {
+		at: time(body.at),
+		incident: identifier(body.incident, 64),
+		skill: identifier(body.skill, 64),
+		text: excerpt(body.text, 500)
 	};
 }
 

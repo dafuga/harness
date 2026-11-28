@@ -90,6 +90,8 @@ CREATE TABLE IF NOT EXISTS ops(
 	hlc TEXT NOT NULL, node TEXT NOT NULL, received_at INTEGER
 );
 CREATE INDEX IF NOT EXISTS ops_node ON ops(node, seq);
+CREATE INDEX IF NOT EXISTS ops_session_rules ON ops(hlc DESC, op_id DESC)
+	WHERE json_type(fields, '$.session_rule_v1') = 'object';
 CREATE TABLE IF NOT EXISTS meta(k TEXT PRIMARY KEY, v TEXT);
 CREATE TABLE IF NOT EXISTS agents(name TEXT PRIMARY KEY, target TEXT NOT NULL, created_at INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS deliveries(

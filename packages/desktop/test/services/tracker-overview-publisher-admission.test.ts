@@ -104,6 +104,54 @@ test('re-entry: an owner who signs in after a non-owner publishes without a rest
 	expect(authority.put).toHaveBeenLastCalledWith(credential, JSON.stringify(ready));
 });
 
+test('the owner publisher rereads session rules on each flight and works with older Tracker nodes', async () => {
+	const authority = fakeAuthority();
+	const rule = {
+		at: '2026-11-28T12:00:00.000Z',
+		incident: 'fixture123',
+		skill: 'computer-hygiene',
+		text: 'Close the browser fixture after testing.'
+	};
+	let currentRules = [rule];
+	let supportsRules = true;
+	const loopback = vi.fn(async (url: string) => {
+		if (url === 'http://127.0.0.1:7701/rules?limit=5')
+			return supportsRules ? Response.json(currentRules) : new Response(null, { status: 404 });
+		return Response.json([]);
+	});
+	vi.stubGlobal('fetch', loopback);
+	const publisher = createTrackerOverviewPublisher({
+		authority,
+		env: {
+			HARNESS_TRACKER_OVERVIEW_PUBLISH: '1',
+			HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID: OWNER_ACTOR_ID
+		}
+	})!;
+	const overview = { ...ready, machines: [] };
+	try {
+		publisher.start();
+		await publisher.tick();
+		expect(authority.put).toHaveBeenLastCalledWith(
+			credential,
+			JSON.stringify({ ...overview, sessionRules: currentRules })
+		);
+		currentRules = [{ ...rule, text: 'Keep the fixture open until the capture finishes.' }];
+		await vi.advanceTimersByTimeAsync(INTERVAL);
+		await publisher.tick();
+		expect(authority.put).toHaveBeenLastCalledWith(
+			credential,
+			JSON.stringify({ ...overview, sessionRules: currentRules })
+		);
+		supportsRules = false;
+		await vi.advanceTimersByTimeAsync(INTERVAL);
+		await publisher.tick();
+		expect(authority.put).toHaveBeenLastCalledWith(credential, JSON.stringify(overview));
+	} finally {
+		publisher.stop();
+		vi.unstubAllGlobals();
+	}
+});
+
 test('re-entry: a refused owner publishes again only after a new connection, without a restart', async () => {
 	let version = 1;
 	const put = vi

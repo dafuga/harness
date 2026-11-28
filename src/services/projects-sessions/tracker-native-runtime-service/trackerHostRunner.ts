@@ -34,7 +34,7 @@ import type {
 import { trackerHandSession } from '../../../utils/projects-sessions/trackerSessionNames';
 import type { TrackerTmuxWindow } from '../../../utils/projects-sessions/trackerSessionNames.types';
 import { trackerHostReport, trackerRouteSessionName, withLaunchOrigin } from './trackerHostReport';
-import { formatTrackerHostBrief, trackerLaunchContext } from './trackerHostBrief';
+import * as brief from './trackerHostBrief';
 import { recordedHostEvent } from './trackerHostRunEvents';
 import { startTrackerHost } from './trackerHostLaunchPort';
 import { trackerCpuBudget } from '../../../utils/projects-sessions/trackerCpuBudget';
@@ -177,10 +177,11 @@ async function launchApprovedItem(
 			reservation,
 			cpuBudget,
 			sessionName: trackerRouteSessionName(item, route),
-			brief: formatTrackerHostBrief(item, instructions, {
-				launch: trackerLaunchContext(store, item, reservation.run, route),
+			brief: brief.formatTrackerHostBrief(item, instructions, {
+				launch: brief.trackerLaunchContext(store, item, reservation.run, route),
 				recovery: reservation.run.launch_source === 'recovery',
-				cpuBudget
+				cpuBudget,
+				rules: brief.trackerHostRules(store)
 			})
 		},
 		signal

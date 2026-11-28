@@ -210,6 +210,7 @@
 			"occupiedHostRuns",
 			"TrackerOccupiedRun",
 			"formatTrackerHostBrief",
+			"trackerHostRules",
 			"trackerLaunchContext",
 			"unsentCosAlerts",
 			"sendWatchdogAlerts",
@@ -925,6 +926,17 @@
 				"name": "formatTrackerHostBrief.launch",
 				"type": "string",
 				"required": false
+			},
+			{
+				"name": "formatTrackerHostBrief.rules",
+				"type": "TrackerSessionRule[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "trackerHostRules.store",
+				"type": "TrackerPersistenceService",
+				"required": true
 			},
 			{
 				"name": "trackerLaunchContext.store",
@@ -3597,12 +3609,36 @@
 						"name": "formatTrackerHostBrief.launch",
 						"type": "string",
 						"required": false
+					},
+					{
+						"name": "formatTrackerHostBrief.rules",
+						"type": "TrackerSessionRule[]",
+						"required": false,
+						"default": []
 					}
 				],
 				"outputs": [
 					{
 						"name": "formatTrackerHostBrief",
 						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHostRules",
+				"inputs": [
+					{
+						"name": "trackerHostRules.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHostRules",
+						"type": "TrackerSessionRule[]"
 					}
 				],
 				"errors": [],
@@ -6304,6 +6340,11 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-run-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-session-rule",
 			"via": "import",
 			"origin": "derived"
 		},

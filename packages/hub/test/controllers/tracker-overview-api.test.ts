@@ -75,13 +75,24 @@ test('the owner publishes with a bearer and reads back the same snapshot, never 
 		const before = await f.handle(overviewRequest('GET', { bearer }));
 		expect(before.status).toBe(503);
 		expect(await before.json()).toEqual({ status: 'unavailable' });
-		const put = await f.handle(overviewRequest('PUT', { bearer }, snapshot()));
+		const current = {
+			...snapshot(),
+			sessionRules: [
+				{
+					at: '2026-11-28T11:50:42.133Z',
+					incident: 'fixture123',
+					skill: 'computer-hygiene',
+					text: 'Close the fixture after testing.'
+				}
+			]
+		};
+		const put = await f.handle(overviewRequest('PUT', { bearer }, current));
 		expect(put.status).toBe(204);
 		expect(await put.text()).toBe('');
 		const cookie = await f.browser();
 		const get = await f.handle(overviewRequest('GET', { cookie }));
 		expect(get.status).toBe(200);
-		expect(await get.json()).toEqual(snapshot());
+		expect(await get.json()).toEqual(current);
 		expect(get.headers.get('cache-control')).toBe('private, no-store');
 		expect(get.headers.get('access-control-allow-origin')).toBeNull();
 	}));

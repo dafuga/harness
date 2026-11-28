@@ -186,3 +186,13 @@ function canReplaceLaunch(
 		.get(id) as { source: string };
 	return origin.source !== 'manual';
 }
+
+export function readTrackerActor(headers: Headers): string | null {
+	const actor = headers
+		.get('x-tracker-as')
+		?.replace(/[^\P{Cc}\u0080-\u009f]/gu, '')
+		.trim()
+		.slice(0, 80);
+	if (!actor) return null;
+	return actor;
+}

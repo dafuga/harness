@@ -50,6 +50,7 @@
 			"recordTrackerSessionItem",
 			"readItemBody",
 			"itemMutationContext",
+			"readTrackerActor",
 			"trackerJobResponse",
 			"cosChatTitle",
 			"trackerMessageEndpoint",
@@ -269,6 +270,11 @@
 				"default": false
 			},
 			{
+				"name": "readTrackerActor.headers",
+				"type": "Headers",
+				"required": true
+			},
+			{
 				"name": "trackerJobResponse.request",
 				"type": "Request",
 				"required": true
@@ -450,6 +456,10 @@
 			{
 				"name": "itemMutationContext",
 				"type": "TrackerItemMutationContext"
+			},
+			{
+				"name": "readTrackerActor",
+				"type": "string | null"
 			},
 			{
 				"name": "trackerJobResponse",
@@ -843,6 +853,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "readTrackerActor",
+				"inputs": [
+					{
+						"name": "readTrackerActor.headers",
+						"type": "Headers",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerActor",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerJobResponse",
 				"inputs": [
 					{
@@ -1189,6 +1217,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-local-api-service-tracker-local-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api-service-tracker-session-rule-endpoint",
 			"via": "import",
 			"origin": "derived"
 		},

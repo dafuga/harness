@@ -154,3 +154,9 @@
 .po-detail {
 	margin: 0;
 }
+
+.po-band .po-detail {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-16);
+}

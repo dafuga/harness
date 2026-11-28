@@ -28,6 +28,7 @@ import {
 	verifyManagedBrief
 } from '../../support/trackerManagedLaunchAssertions';
 
+import { setFixtureSessionRule } from '../../support/trackerNodeSessionRules';
 import { verifyInPlaceBrief } from '../../support/trackerInPlaceFixture';
 import { expectedTokenUsage } from '../../support/trackerCodexUsageExpectation';
 import {
@@ -88,6 +89,7 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 			now: () => Date.now()
 		});
 		seedManagedBriefItems(runtime, itemId);
+		const rule = await setFixtureSessionRule(runtime, 'parent0001');
 		expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).status).toBe(200);
 		await runtime.scheduler!.tick(signal);
 		expect(database.prepare('SELECT state,tmux FROM runs').all()).toEqual([
@@ -108,6 +110,7 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 			guestAuthFile: expect.stringMatching(/\/effects\/[a-f0-9]{64}\/guest-auth\.json$/)
 		});
 		verifyManagedBrief(launched, root);
+		expect(launched.brief).toContain(rule);
 		expect(launched.guestAuthFile.startsWith(launched.cwd + '/')).toBe(false);
 		expect(existsSync(launched.guestAuthFile)).toBe(false);
 		await verifyLostSession(runtime, database, config.stateDirectory);

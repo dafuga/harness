@@ -104,7 +104,21 @@ export function syntheticOverview(): OverviewSnapshot {
 			{ name: 'synthetic-computer', status: 'ok' },
 			{ name: 'synthetic-laptop', status: 'busy' }
 		],
-		liveSessions: 1
+		liveSessions: 1,
+		sessionRules: [
+			{
+				at,
+				incident: 'fixture123',
+				skill: 'computer-hygiene',
+				text: 'Close synthetic browser windows after checking the fixture.'
+			},
+			{
+				at,
+				incident: 'fixture456',
+				skill: 'computer-hygiene',
+				text: 'Use bounded log reads for long-running checks.'
+			}
+		]
 	};
 }
 
@@ -198,7 +212,11 @@ async function buildOf(page: Page): Promise<string> {
 export async function capture(page: Page, testInfo: TestInfo, state: string, viewport: Viewport) {
 	await page.evaluate(() => document.fonts.ready);
 	const buildId = await buildOf(page);
-	const body = await page.screenshot({ animations: 'disabled', caret: 'hide' });
+	const body = await page.screenshot({
+		animations: 'disabled',
+		caret: 'hide',
+		fullPage: state === 'ready'
+	});
 	await testInfo.attach(`${state}-${viewport.id}.png`, { body, contentType: 'image/png' });
 	recordCapture(
 		{

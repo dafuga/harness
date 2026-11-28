@@ -1,0 +1,212 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-session-rule",
+	"uid": "u_yj6etxhn2o",
+	"kind": "repository",
+	"title": "TrackerSessionRuleRepository",
+	"responsibility": "Owns the TrackerSessionRuleRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerSessionRuleRepository.ts",
+			"src/repositories/projects-sessions/TrackerSessionRuleRepository.types.ts"
+		],
+		"symbols": [
+			"trackerRecentRuleCount",
+			"TrackerSessionRuleRepository",
+			"TrackerSessionRuleRepository.constructor",
+			"TrackerSessionRuleRepository.list",
+			"trackerRuleFields",
+			"trackerRuleSkill",
+			"trackerRuleText",
+			"TrackerSessionRule"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerSessionRuleRepository.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerSessionRuleRepository.list.skill",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "trackerRuleFields.rule",
+				"type": "Pick<TrackerSessionRule, 'skill' | 'text'>",
+				"required": true
+			},
+			{
+				"name": "trackerRuleSkill.value",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerRuleText.value",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerRecentRuleCount",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerSessionRuleRepository.list",
+				"type": "TrackerSessionRule[]"
+			},
+			{
+				"name": "trackerRuleFields",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerRuleSkill",
+				"type": "boolean"
+			},
+			{
+				"name": "trackerRuleText",
+				"type": "boolean"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerSessionRuleRepository.list",
+				"inputs": [
+					{
+						"name": "TrackerSessionRuleRepository.list.skill",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSessionRuleRepository.list",
+						"type": "TrackerSessionRule[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRuleFields",
+				"inputs": [
+					{
+						"name": "trackerRuleFields.rule",
+						"type": "Pick<TrackerSessionRule, 'skill' | 'text'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRuleFields",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerRuleSkill",
+				"inputs": [
+					{
+						"name": "trackerRuleSkill.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRuleSkill",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRuleText",
+				"inputs": [
+					{
+						"name": "trackerRuleText.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRuleText",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerSessionRuleRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerSessionRuleRepository.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSessionRuleRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-sanitize-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-session-rule-repository-tracker-session-rule-seeds",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerSessionRuleRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerSessionRuleRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
