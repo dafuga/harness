@@ -74,7 +74,6 @@ final class HubAccountSession {
         }
     }
 
-    /// The public status. It never holds the session, the verifier or the nonce.
     var snapshot: [String: Any] {
         var status: [String: Any] = ["configured": origin != nil, "state": "signed-out"]
         if let handoff = handoff {
@@ -90,8 +89,7 @@ final class HubAccountSession {
         return status
     }
 
-    /// The kept session while its expiry is ahead and it belongs to this build's Hub. Any other
-    /// is erased, and never sent anywhere.
+    /// Expired credentials and credentials for another Hub are erased.
     func live() -> HubAccountCredential? {
         if !loaded {
             loaded = true

@@ -23,46 +23,10 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
 
     static let sharedSession: HubAccountSession = {
         let session = HubAccountSession(origin: hubOrigin)
-        session.accountEnded = {
-            TrackerRefresh.session.endAccount()
-            let center = UNUserNotificationCenter.current()
-            center.removePendingNotificationRequests(withIdentifiers: [approvalAlertID])
-            center.removeDeliveredNotifications(withIdentifiers: [approvalAlertID])
-        }
-        session.approvalAlert = { [weak session] in
-            guard let session else { return }
-            let generation = session.generation
-            Task { @MainActor in
-                await Self.showApprovalAlert {
-                    session.queue.sync {
-                        session.generation == generation && session.deviceStage == .approved && session.live() != nil
-                    }
-                }
-            }
-        }
+        session.accountEnded = HarnessAccountPlugin.accountEnded
+        HarnessAccountPlugin.registerApprovalAlerts(session)
         return session
     }()
-
-    private static let approvalAlertID = "harness-device-approval"
-
-    @MainActor
-    private static func showApprovalAlert(_ current: () -> Bool) async {
-        let center = UNUserNotificationCenter.current()
-        let settings = await center.notificationSettings()
-        guard current() else { return }
-        let authorized: Bool
-        if settings.authorizationStatus == .notDetermined, UIApplication.shared.applicationState == .active {
-            authorized = (try? await center.requestAuthorization(options: [.alert, .sound])) == true
-        } else {
-            authorized = settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional
-        }
-        guard authorized, current() else { return }
-        let content = UNMutableNotificationContent()
-        content.title = "Harness"
-        content.body = "A device sign-in is ready for review."
-        content.sound = .default
-        try? await center.add(UNNotificationRequest(identifier: approvalAlertID, content: content, trigger: nil))
-    }
 
     private static var hubOrigin: URL? {
         HubAccountPolicy.origin(Bundle.main.object(forInfoDictionaryKey: HubAccountPolicy.infoKey))
@@ -156,6 +120,48 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
 }
 
 extension HarnessAccountPlugin {
+    private static let approvalAlertID = "harness-device-approval"
+
+    private static func accountEnded() {
+        TrackerRefresh.session.endAccount()
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [approvalAlertID])
+        center.removeDeliveredNotifications(withIdentifiers: [approvalAlertID])
+    }
+
+    private static func registerApprovalAlerts(_ session: HubAccountSession) {
+        session.approvalAlert = { [weak session] in
+            guard let session else { return }
+            let generation = session.generation
+            Task { @MainActor in
+                await showApprovalAlert {
+                    session.queue.sync {
+                        session.generation == generation && session.deviceStage == .approved && session.live() != nil
+                    }
+                }
+            }
+        }
+    }
+
+    @MainActor
+    private static func showApprovalAlert(_ current: () -> Bool) async {
+        let center = UNUserNotificationCenter.current()
+        let settings = await center.notificationSettings()
+        guard current() else { return }
+        let authorized: Bool
+        if settings.authorizationStatus == .notDetermined, UIApplication.shared.applicationState == .active {
+            authorized = (try? await center.requestAuthorization(options: [.alert, .sound])) == true
+        } else {
+            authorized = settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional
+        }
+        guard authorized, current() else { return }
+        let content = UNMutableNotificationContent()
+        content.title = "Harness"
+        content.body = "A device sign-in is ready for review."
+        content.sound = .default
+        try? await center.add(UNNotificationRequest(identifier: approvalAlertID, content: content, trigger: nil))
+    }
+
     /// The web view can review public approval details. Credentials and key wrapping stay here.
     @objc func deviceApproval(_ call: CAPPluginCall) {
         let done: HubAccountSession.Status = { Self.settle(call, $0) }
