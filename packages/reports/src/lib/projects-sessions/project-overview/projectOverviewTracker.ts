@@ -1,5 +1,4 @@
 // @harness-uid u_nves237tvx
-import { z } from 'zod';
 import type { TrackerAttachmentListingSource } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 import { trackerAttachmentFields } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
 import {

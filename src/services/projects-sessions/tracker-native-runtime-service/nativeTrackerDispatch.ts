@@ -1,6 +1,5 @@
 import { chooseTrackerFleetHost } from './composeTrackerFleet';
-import type { TrackerFleetRuntime } from './nativeTrackerDispatch.types';
-import type { PeerStarts } from './nativeTrackerDispatch.types';
+import type { PeerStarts, TrackerFleetRuntime } from './nativeTrackerDispatch.types';
 // @harness-uid u_bl6xl2h4a3
 import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { adapterFailover } from './trackerAdapterFailover';

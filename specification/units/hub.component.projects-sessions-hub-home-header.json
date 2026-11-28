@@ -56,13 +56,6 @@
 				"description": "Provides the linked computer data and connection notices for the banner."
 			},
 			{
-				"name": "HubHomeHeader.localMachines",
-				"type": "HomeComputer[]",
-				"required": false,
-				"default": "undefined (omitted)",
-				"description": "Current computer summaries from the local or paired Tracker reader. When omitted, use linked Hub data and the overview fallback."
-			},
-			{
 				"name": "HubHomeHeader.accountName",
 				"type": "string",
 				"required": false,
