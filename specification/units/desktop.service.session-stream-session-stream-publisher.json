@@ -1,0 +1,286 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.session-stream-session-stream-publisher",
+	"uid": "u_idvtlr5mn3",
+	"kind": "service",
+	"title": "SessionStreamPublisherService",
+	"responsibility": "Owns the SessionStreamPublisherService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/services/session-stream/SessionStreamPublisherService.ts",
+			"packages/desktop/src/services/session-stream/SessionStreamPublisherService.types.ts"
+		],
+		"symbols": [
+			"SessionStreamPublisherService",
+			"SessionStreamPublisherService.constructor",
+			"SessionStreamPublisherService.publishStatus",
+			"SessionStreamPublisherService.publishOutput",
+			"SessionStreamPublisherService.publishCapturedOutput",
+			"SessionStreamPublisherService.publishTranscriptSegment",
+			"SessionStreamPublisherService.close",
+			"SessionStreamTarget",
+			"SessionStreamTransport",
+			"SessionRunStatus"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SessionStreamPublisherService.constructor.keys",
+				"type": "ScopeKeys",
+				"required": true
+			},
+			{
+				"name": "SessionStreamPublisherService.constructor.runId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SessionStreamPublisherService.constructor.transport",
+				"type": "SessionStreamTransport",
+				"required": true
+			},
+			{
+				"name": "SessionStreamPublisherService.publishStatus.status",
+				"type": "SessionRunStatus",
+				"required": true
+			},
+			{
+				"name": "SessionStreamPublisherService.publishOutput.bytes",
+				"type": "Uint8Array",
+				"required": true
+			},
+			{
+				"name": "SessionStreamPublisherService.publishCapturedOutput.index",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "SessionStreamPublisherService.publishCapturedOutput.bytes",
+				"type": "Uint8Array",
+				"required": true
+			},
+			{
+				"name": "SessionStreamPublisherService.publishTranscriptSegment.index",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "SessionStreamPublisherService.publishTranscriptSegment.bytes",
+				"type": "Uint8Array",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "SessionStreamPublisherService.publishStatus",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "SessionStreamPublisherService.publishOutput",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "SessionStreamPublisherService.publishCapturedOutput",
+				"type": "Promise<'live' | 'stored'>"
+			},
+			{
+				"name": "SessionStreamPublisherService.publishTranscriptSegment",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "SessionStreamPublisherService.close",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SessionPublishError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SessionStreamPublisherService.publishStatus",
+				"inputs": [
+					{
+						"name": "SessionStreamPublisherService.publishStatus.status",
+						"type": "SessionRunStatus",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionStreamPublisherService.publishStatus",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SessionStreamPublisherService.publishOutput",
+				"inputs": [
+					{
+						"name": "SessionStreamPublisherService.publishOutput.bytes",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionStreamPublisherService.publishOutput",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SessionStreamPublisherService.publishCapturedOutput",
+				"inputs": [
+					{
+						"name": "SessionStreamPublisherService.publishCapturedOutput.index",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "SessionStreamPublisherService.publishCapturedOutput.bytes",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionStreamPublisherService.publishCapturedOutput",
+						"type": "Promise<'live' | 'stored'>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SessionStreamPublisherService.publishTranscriptSegment",
+				"inputs": [
+					{
+						"name": "SessionStreamPublisherService.publishTranscriptSegment.index",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "SessionStreamPublisherService.publishTranscriptSegment.bytes",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionStreamPublisherService.publishTranscriptSegment",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SessionStreamPublisherService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SessionStreamPublisherService.close",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SessionStreamPublisherService.constructor",
+				"inputs": [
+					{
+						"name": "SessionStreamPublisherService.constructor.keys",
+						"type": "ScopeKeys",
+						"required": true
+					},
+					{
+						"name": "SessionStreamPublisherService.constructor.runId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SessionStreamPublisherService.constructor.transport",
+						"type": "SessionStreamTransport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionStreamPublisherService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.service.session-stream-session-publish-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-padding",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-scope-keys",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/session-stream/SessionStreamPublisherService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/session-stream/SessionStreamPublisherService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

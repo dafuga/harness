@@ -1,0 +1,52 @@
+{
+	"name": "sealed-session-publisher",
+	"goal": "Prove sealed run revisions, unique live counters and encrypted transcript objects at the Mac publisher boundary",
+	"createdAt": "2026-11-25T17:35:21.390Z",
+	"updatedAt": "2026-11-25T18:10:17.068Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T17:36:12.087Z",
+			"evidence": "PR #310 sealed v1 wire contract. Assert opaque session id, increasing revisions, ordered binary frame counters, encrypted R2-sized transcript segment and native header-only authentication."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-25T17:40:36.846Z",
+			"evidence": "Added the scoped native publisher, authenticated transport, and registered units. Mac activation is tracked separately as a dependency on enrolled scope keys and attachment to the run owner."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-25T17:40:38.467Z",
+			"evidence": "3 publisher tests and 8 Hub Workerd route tests passed, including publisher-to-Durable Object binary output, D1 revisions, R2 transcript decryption and plaintext canary checks."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		},
+		{
+			"id": "captured-boundary",
+			"title": "Prove captured transcript and live output agree through a synthetic enrolled account",
+			"status": "complete",
+			"completedAt": "2026-11-25T18:10:17.068Z",
+			"evidence": "17 focused tests pass. Synthetic Workerd account stores a signed genesis and wrapped grant, opens it for the Mac publisher, and verifies R2 bytes match the live stream counter. Simulated object and socket failures verify durable-before-live ordering and monotonic counters."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
