@@ -8,9 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/projects-sessions/trackerMachineStatus.ts"
-		],
+		"source": ["src/utils/projects-sessions/trackerMachineStatus.ts"],
 		"symbols": [
 			"trackerSampleOfflineMs",
 			"trackerBusyLoadPerCore",
