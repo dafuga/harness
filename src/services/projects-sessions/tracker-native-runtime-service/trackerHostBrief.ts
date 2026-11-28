@@ -19,6 +19,7 @@ const launchRules = [
 	'Never merge into a Greymass repository. For Greymass work, stop at the pull request.',
 	'For other repositories, work on a branch and open a PR within the task scope. Merge only if Daniel explicitly authorized the PR and target on this item, or the standing authorization for Harness PRs covers this merge. Follow the item restrictions and required checks.',
 	'A production deploy or promotion, including a merge that deploys to production, requires Daniel’s explicit approval for the specific release.',
+	'When sending an email, message, comment or public post on Daniel’s behalf, create it with `tracker draft create <file.json>` for this item. Use private temporary storage for the JSON and avoid sending directly through a connector, CLI or browser. Daniel approves the exact draft by tapping Send in Chief of Staff chat. Routine Tracker alerts and operational notifications use their existing paths.',
 	'Before raising a problem or asking Daniel, run `tracker check "<topic>"`. Reuse any existing item. If the topic is ignored, do not raise it again.',
 	'',
 	'## Tests',

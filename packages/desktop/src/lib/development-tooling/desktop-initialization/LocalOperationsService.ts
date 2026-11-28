@@ -58,6 +58,11 @@ export class LocalOperationsService {
 			input: Fields = { ...request.input };
 		delete input.epoch;
 		if (method === 'projectOverview') return overview(input, this.options.hubOverview);
+		if (method === 'outgoingDrafts') {
+			if (!this.options.outgoingDrafts)
+				throw new DesktopOperationUnavailableError('Outgoing drafts are unavailable.');
+			return this.options.outgoingDrafts(input);
+		}
 		if (homeMethods.some((name) => name === method)) return this.home(method, input);
 		if (method === 'trackerInboxRead') return this.tracker.read(input);
 		if (method === 'trackerInboxWrite') return this.tracker.write(input);

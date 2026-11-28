@@ -1,0 +1,152 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-outgoing-driver",
+	"uid": "u_6x5aw74rep",
+	"kind": "adapter",
+	"title": "TrackerOutgoingDriverAdapter",
+	"responsibility": "Owns the TrackerOutgoingDriverAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/TrackerOutgoingDriverAdapter.ts",
+			"src/adapters/projects-sessions/TrackerOutgoingDriverAdapter.types.ts"
+		],
+		"symbols": [
+			"TrackerOutgoingDriverAdapter",
+			"TrackerOutgoingDriverAdapter.constructor",
+			"TrackerOutgoingDriverAdapter.matches",
+			"TrackerOutgoingDriverAdapter.send",
+			"TrackerOutgoingDriverAdapterConfig",
+			"TrackerOutgoingDriverAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerOutgoingDriverAdapter.constructor.config",
+				"type": "TrackerOutgoingDriverAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDriverAdapter.matches.message",
+				"type": "TrackerOutgoingMessage",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDriverAdapter.send.message",
+				"type": "TrackerOutgoingMessage",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDriverAdapter.send.attempt",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerOutgoingDriverAdapter.matches",
+				"type": "boolean"
+			},
+			{
+				"name": "TrackerOutgoingDriverAdapter.send",
+				"type": "Promise<TrackerOutgoingResult>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerOutgoingDriverAdapter.matches",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDriverAdapter.matches.message",
+						"type": "TrackerOutgoingMessage",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDriverAdapter.matches",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDriverAdapter.send",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDriverAdapter.send.message",
+						"type": "TrackerOutgoingMessage",
+						"required": true
+					},
+					{
+						"name": "TrackerOutgoingDriverAdapter.send.attempt",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDriverAdapter.send",
+						"type": "Promise<TrackerOutgoingResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerOutgoingDriverAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDriverAdapter.constructor.config",
+						"type": "TrackerOutgoingDriverAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDriverAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-outgoing-draft",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/TrackerOutgoingDriverAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/TrackerOutgoingDriverAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

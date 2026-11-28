@@ -34,6 +34,7 @@ import type {
 	HomeChatReceipt,
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import type { HomeOutgoingSource } from '$reports/components/projects-sessions/hub-home/hubHomeOutgoingDraft.types';
 import type { TrackerInboxSource } from './TrackerInbox.types';
 import type { channels } from './DesktopBridgeValues';
 import type { DesignCanvasPage } from '$reports/utils/planning-collaboration/designCanvas.types';
@@ -159,6 +160,7 @@ export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
 	/** The local tracker's read-only overview; takes no input. Absent on hosts without a local tracker. */
 	projectOverview?(): Promise<OverviewSnapshot>;
 	homeSnapshot?(): Promise<OwnerHomeSnapshot>;
+	homeOutgoing?: HomeOutgoingSource;
 	homeChat?(input: HomeChatInput): Promise<HomeChatReceipt>;
 	/** Direct inbox access on this Mac through the trusted local transport. */
 	trackerInbox?: TrackerInboxSource;

@@ -1,3 +1,4 @@
+import { verifyDraftAndTrackerWire } from './trackerOutgoingDraftAssertions';
 import { qualifyPlanningStages } from './trackerPlanningAssertions';
 import { verifyLaunchCliOptions } from './trackerManagedLaunchAssertions';
 import { createServer } from 'node:http';
@@ -8,9 +9,7 @@ import {
 	fixtureTrackerJson,
 	loopback,
 	startTrackerFixture,
-	trackerProcess,
-	verifyDefaultPickup,
-	verifyTrackerWire
+	trackerProcess
 } from './trackerNodeProcess';
 import type { TrackerFixtureReceipts, TrackerNodeFixture } from './trackerNodeProcess.types';
 import { verifyCosDryRun } from './verifyCosDryRun';
@@ -49,8 +48,7 @@ export async function proveForegroundSync(
 				.toEqual(expect.arrayContaining([expect.objectContaining({ id })]));
 			expect(await fixtureTrackerJson(hub, ['show', id])).toMatchObject({ stage: 'build' });
 			await verifySpokePublication(hub);
-			await verifyDefaultPickup(hub);
-			await verifyTrackerWire(syncPort, id);
+			await verifyDraftAndTrackerWire(hub, spoke, { id, syncPort });
 			const reverse = await fixtureTrackerJson(hub, ['add', 'Reverse fixture item']);
 			await expect
 				.poll(() => fixtureTrackerJson(spoke, ['list']), { timeout: 8_000 })

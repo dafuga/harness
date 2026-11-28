@@ -44,13 +44,17 @@ function localOperations(bridge: LocalOperationsOptions['bridge'], options: Loca
 		bridge,
 		control: options.control,
 		hubOverview: auth && (() => auth.overview()),
+		outgoingDrafts: auth && ((input) => auth.outgoingDrafts(input)),
 		home,
 		homeChat
 	});
 }
 
 function authorizeLocal(method: RemoteMethod, options: LocalClientOptions) {
-	const requiresAccount = options.accountRequired || homeMethods.some((name) => name === method);
+	const requiresAccount =
+		options.accountRequired ||
+		method === 'outgoingDrafts' ||
+		homeMethods.some((name) => name === method);
 	if (requiresAccount && !options.shared.auth?.admitted && !accountMethods.has(method))
 		throw new Error('Sign in to Harness to continue.');
 }

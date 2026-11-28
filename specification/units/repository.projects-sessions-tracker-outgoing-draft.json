@@ -1,0 +1,353 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-outgoing-draft",
+	"uid": "u_4snu2qhejr",
+	"kind": "repository",
+	"title": "TrackerOutgoingDraftRepository",
+	"responsibility": "Owns the TrackerOutgoingDraftRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerOutgoingDraftRepository.ts",
+			"src/repositories/projects-sessions/TrackerOutgoingDraftRepository.types.ts"
+		],
+		"symbols": [
+			"TrackerOutgoingDraftRepository",
+			"TrackerOutgoingDraftRepository.constructor",
+			"TrackerOutgoingDraftRepository.initialize",
+			"TrackerOutgoingDraftRepository.create",
+			"TrackerOutgoingDraftRepository.find",
+			"TrackerOutgoingDraftRepository.list",
+			"TrackerOutgoingDraftRepository.edit",
+			"TrackerOutgoingDraftRepository.discard",
+			"TrackerOutgoingDraftRepository.reserve",
+			"TrackerOutgoingDraftRepository.finish",
+			"TrackerOutgoingChannel",
+			"TrackerOutgoingMessage",
+			"NewTrackerOutgoingDraft",
+			"TrackerOutgoingReceipt",
+			"TrackerOutgoingDraft",
+			"TrackerOutgoingRevision",
+			"TrackerOutgoingAttempt",
+			"TrackerOutgoingResult",
+			"TrackerOutgoingDraftRow"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerOutgoingDraftRepository.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.create.draft",
+				"type": "NewTrackerOutgoingDraft",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.find.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.list.conversationId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.list.limit",
+				"type": "number",
+				"required": false,
+				"default": 100
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.list.by",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.edit.version",
+				"type": "TrackerOutgoingRevision",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.edit.message",
+				"type": "TrackerOutgoingMessage",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.discard.version",
+				"type": "TrackerOutgoingRevision",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.reserve.version",
+				"type": "TrackerOutgoingRevision",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.reserve.attempt",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.finish.version",
+				"type": "TrackerOutgoingAttempt",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.finish.result",
+				"type": "TrackerOutgoingResult",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerOutgoingDraftRepository.initialize",
+				"type": "void"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.create",
+				"type": "TrackerOutgoingDraft"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.find",
+				"type": "TrackerOutgoingDraft | undefined"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.list",
+				"type": "TrackerOutgoingDraft[]"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.edit",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.discard",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.reserve",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.finish",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerOutgoingDraftRepository.initialize",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.initialize",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.create",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.create.draft",
+						"type": "NewTrackerOutgoingDraft",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.create",
+						"type": "TrackerOutgoingDraft"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.find",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.find.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.find",
+						"type": "TrackerOutgoingDraft | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.list",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.list.conversationId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerOutgoingDraftRepository.list.limit",
+						"type": "number",
+						"required": false,
+						"default": 100
+					},
+					{
+						"name": "TrackerOutgoingDraftRepository.list.by",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.list",
+						"type": "TrackerOutgoingDraft[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.edit",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.edit.version",
+						"type": "TrackerOutgoingRevision",
+						"required": true
+					},
+					{
+						"name": "TrackerOutgoingDraftRepository.edit.message",
+						"type": "TrackerOutgoingMessage",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.edit",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.discard",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.discard.version",
+						"type": "TrackerOutgoingRevision",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.discard",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.reserve",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.reserve.version",
+						"type": "TrackerOutgoingRevision",
+						"required": true
+					},
+					{
+						"name": "TrackerOutgoingDraftRepository.reserve.attempt",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.reserve",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftRepository.finish",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.finish.version",
+						"type": "TrackerOutgoingAttempt",
+						"required": true
+					},
+					{
+						"name": "TrackerOutgoingDraftRepository.finish.result",
+						"type": "TrackerOutgoingResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.finish",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerOutgoingDraftRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerOutgoingDraftRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerOutgoingDraftRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

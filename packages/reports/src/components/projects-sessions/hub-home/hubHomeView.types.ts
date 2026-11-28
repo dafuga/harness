@@ -77,6 +77,7 @@ export interface ReadHomeResult {
 	granted: boolean;
 	snapshot: OwnerHomeSnapshot | null;
 	controlled?: string[];
+	outgoingDrafts?: boolean;
 	/** The Hub pushes change notices to this account. */
 	live?: boolean;
 }

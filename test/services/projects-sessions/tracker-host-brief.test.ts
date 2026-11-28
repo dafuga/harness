@@ -15,6 +15,8 @@ const item = {
 test('every session brief tells the agent to flag with 2 to 4 options and one recommendation', () => {
 	const brief = formatTrackerHostBrief(item, 'Finish by running tracker done.');
 	expect(brief).toContain('## Asking Daniel');
+	expect(brief).toContain('tracker draft create <file.json>');
+	expect(brief).toContain('Daniel approves the exact draft by tapping Send');
 	expect(brief).toContain('--option "<label>=<what happens if chosen>"');
 	expect(brief).toContain('--recommend');
 	expect(brief).toContain('--confirm deploy|money|secret');

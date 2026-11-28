@@ -1,4 +1,5 @@
 // @harness-uid u_kda7xezayo
+import type { HomeOutgoingSource } from '$reports/components/projects-sessions/hub-home/hubHomeOutgoingDraft.types';
 import type { OverviewSnapshot, ProjectState } from '../project-overview/projectOverview.types';
 import type * as Planning from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
 import type { HomeLiveOverview } from './homeLive.types';
@@ -194,6 +195,7 @@ export interface OwnerHomeSnapshot {
 
 /** The active local Mac or approved connection used by the installed apps. */
 export interface TrackerHomeSource {
+	outgoing?: HomeOutgoingSource;
 	read(): Promise<OwnerHomeSnapshot>;
 	send(message: HomeChatInput): Promise<HomeChatReceipt>;
 }

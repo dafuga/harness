@@ -1,0 +1,592 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-outgoing-draft",
+	"uid": "u_4usb4rrlje",
+	"kind": "service",
+	"title": "TrackerOutgoingDraftService",
+	"responsibility": "Publishes private draft revisions, records owner actions, and reserves one approved delivery attempt.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerOutgoingDraftService.ts",
+			"src/services/projects-sessions/TrackerOutgoingDraftService.types.ts",
+			"src/services/projects-sessions/tracker-outgoing-draft-service/outgoingDraftAgentApi.ts",
+			"src/services/projects-sessions/tracker-outgoing-draft-service/outgoingDraftInput.ts",
+			"src/services/projects-sessions/tracker-outgoing-draft-service/outgoingDraftOwnerApi.ts"
+		],
+		"symbols": [
+			"TrackerOutgoingDraftService",
+			"TrackerOutgoingDraftService.constructor",
+			"TrackerOutgoingDraftService.create",
+			"TrackerOutgoingDraftService.list",
+			"TrackerOutgoingDraftService.reviewQueue",
+			"TrackerOutgoingDraftService.edit",
+			"TrackerOutgoingDraftService.discard",
+			"TrackerOutgoingDraftService.send",
+			"TrackerOutgoingActor",
+			"TrackerOutgoingSender",
+			"TrackerOutgoingDraftServiceOptions",
+			"outgoingDraftPath",
+			"outgoingDraftSyncPath",
+			"outgoingDraftBodyLimit",
+			"outgoingDraftAgentApi",
+			"outgoingReceipt",
+			"parseOutgoingDraft",
+			"parseOutgoingEditor",
+			"parseOutgoingRevision",
+			"outgoingDraftOwnerPath",
+			"outgoingDraftOwnerApi"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerOutgoingDraftService.constructor.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftService.constructor.options",
+				"type": "TrackerOutgoingDraftServiceOptions",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "TrackerOutgoingDraftService.create.input",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "Untrusted agent JSON. The draft schema validates item ID, message fields and channel recipients before storage."
+			},
+			{
+				"name": "TrackerOutgoingDraftService.create.actor",
+				"type": "TrackerOutgoingActor",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftService.list.actor",
+				"type": "TrackerOutgoingActor",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftService.edit.input",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "Untrusted owner JSON. Approval requires the record ID and revision displayed to the owner."
+			},
+			{
+				"name": "TrackerOutgoingDraftService.edit.editor",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "Untrusted editor payload. Only recipients, subject and body can change."
+			},
+			{
+				"name": "TrackerOutgoingDraftService.edit.actor",
+				"type": "TrackerOutgoingActor",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftService.discard.input",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "Untrusted owner JSON. Discard requires the exact displayed ID and revision."
+			},
+			{
+				"name": "TrackerOutgoingDraftService.discard.actor",
+				"type": "TrackerOutgoingActor",
+				"required": true
+			},
+			{
+				"name": "TrackerOutgoingDraftService.send.input",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "Untrusted owner JSON. Send requires the exact displayed ID and revision."
+			},
+			{
+				"name": "TrackerOutgoingDraftService.send.actor",
+				"type": "TrackerOutgoingActor",
+				"required": true
+			},
+			{
+				"name": "outgoingDraftAgentApi.service",
+				"type": "TrackerOutgoingDraftService",
+				"required": true
+			},
+			{
+				"name": "outgoingDraftAgentApi.method",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "outgoingDraftAgentApi.payload",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "Untrusted request JSON validated by the draft service on creation."
+			},
+			{
+				"name": "outgoingDraftAgentApi.peer",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "parseOutgoingDraft.value",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "The input is raw JSON. This function establishes the complete draft creation schema."
+			},
+			{
+				"name": "parseOutgoingEditor.input",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "The input is raw JSON. This function establishes the exact editable message fields."
+			},
+			{
+				"name": "parseOutgoingEditor.current",
+				"type": "TrackerOutgoingMessage",
+				"required": true
+			},
+			{
+				"name": "parseOutgoingRevision.value",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "The input is raw JSON. This function establishes the required ID and revision."
+			},
+			{
+				"name": "outgoingDraftOwnerApi.service",
+				"type": "TrackerOutgoingDraftService",
+				"required": true
+			},
+			{
+				"name": "outgoingDraftOwnerApi.auth",
+				"type": "TrackerSyncAuthService",
+				"required": true
+			},
+			{
+				"name": "outgoingDraftOwnerApi.request",
+				"type": "TrackerHubRequest",
+				"required": true
+			},
+			{
+				"name": "outgoingDraftOwnerApi.body",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "outgoingDraftOwnerApi.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerOutgoingDraftService.create",
+				"type": "TrackerOutgoingDraft"
+			},
+			{
+				"name": "TrackerOutgoingDraftService.list",
+				"type": "TrackerOutgoingDraft[]"
+			},
+			{
+				"name": "TrackerOutgoingDraftService.reviewQueue",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftService.edit",
+				"type": "TrackerOutgoingDraft"
+			},
+			{
+				"name": "TrackerOutgoingDraftService.discard",
+				"type": "TrackerOutgoingDraft"
+			},
+			{
+				"name": "TrackerOutgoingDraftService.send",
+				"type": "Promise<TrackerOutgoingDraft>"
+			},
+			{
+				"name": "outgoingDraftPath",
+				"type": "unknown"
+			},
+			{
+				"name": "outgoingDraftSyncPath",
+				"type": "unknown"
+			},
+			{
+				"name": "outgoingDraftBodyLimit",
+				"type": "unknown"
+			},
+			{
+				"name": "outgoingDraftAgentApi",
+				"type": "Response"
+			},
+			{
+				"name": "outgoingReceipt",
+				"type": "unknown"
+			},
+			{
+				"name": "parseOutgoingDraft",
+				"type": "unknown"
+			},
+			{
+				"name": "parseOutgoingEditor",
+				"type": "unknown"
+			},
+			{
+				"name": "parseOutgoingRevision",
+				"type": "unknown"
+			},
+			{
+				"name": "outgoingDraftOwnerPath",
+				"type": "unknown"
+			},
+			{
+				"name": "outgoingDraftOwnerApi",
+				"type": "Promise<Response>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerOutgoingDraftService.create",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftService.create.input",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "Untrusted agent JSON. The draft schema validates item ID, message fields and channel recipients before storage."
+					},
+					{
+						"name": "TrackerOutgoingDraftService.create.actor",
+						"type": "TrackerOutgoingActor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftService.create",
+						"type": "TrackerOutgoingDraft"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftService.list",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftService.list.actor",
+						"type": "TrackerOutgoingActor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftService.list",
+						"type": "TrackerOutgoingDraft[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftService.reviewQueue",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftService.reviewQueue",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftService.edit",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftService.edit.input",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "Untrusted owner JSON. Approval requires the record ID and revision displayed to the owner."
+					},
+					{
+						"name": "TrackerOutgoingDraftService.edit.editor",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "Untrusted editor payload. Only recipients, subject and body can change."
+					},
+					{
+						"name": "TrackerOutgoingDraftService.edit.actor",
+						"type": "TrackerOutgoingActor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftService.edit",
+						"type": "TrackerOutgoingDraft"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftService.discard",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftService.discard.input",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "Untrusted owner JSON. Discard requires the exact displayed ID and revision."
+					},
+					{
+						"name": "TrackerOutgoingDraftService.discard.actor",
+						"type": "TrackerOutgoingActor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftService.discard",
+						"type": "TrackerOutgoingDraft"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOutgoingDraftService.send",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftService.send.input",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "Untrusted owner JSON. Send requires the exact displayed ID and revision."
+					},
+					{
+						"name": "TrackerOutgoingDraftService.send.actor",
+						"type": "TrackerOutgoingActor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftService.send",
+						"type": "Promise<TrackerOutgoingDraft>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "outgoingDraftAgentApi",
+				"inputs": [
+					{
+						"name": "outgoingDraftAgentApi.service",
+						"type": "TrackerOutgoingDraftService",
+						"required": true
+					},
+					{
+						"name": "outgoingDraftAgentApi.method",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "outgoingDraftAgentApi.payload",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "Untrusted request JSON validated by the draft service on creation."
+					},
+					{
+						"name": "outgoingDraftAgentApi.peer",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "outgoingDraftAgentApi",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseOutgoingDraft",
+				"inputs": [
+					{
+						"name": "parseOutgoingDraft.value",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "The input is raw JSON. This function establishes the complete draft creation schema."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseOutgoingDraft",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseOutgoingEditor",
+				"inputs": [
+					{
+						"name": "parseOutgoingEditor.input",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "The input is raw JSON. This function establishes the exact editable message fields."
+					},
+					{
+						"name": "parseOutgoingEditor.current",
+						"type": "TrackerOutgoingMessage",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseOutgoingEditor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseOutgoingRevision",
+				"inputs": [
+					{
+						"name": "parseOutgoingRevision.value",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "The input is raw JSON. This function establishes the required ID and revision."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseOutgoingRevision",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "outgoingDraftOwnerApi",
+				"inputs": [
+					{
+						"name": "outgoingDraftOwnerApi.service",
+						"type": "TrackerOutgoingDraftService",
+						"required": true
+					},
+					{
+						"name": "outgoingDraftOwnerApi.auth",
+						"type": "TrackerSyncAuthService",
+						"required": true
+					},
+					{
+						"name": "outgoingDraftOwnerApi.request",
+						"type": "TrackerHubRequest",
+						"required": true
+					},
+					{
+						"name": "outgoingDraftOwnerApi.body",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "outgoingDraftOwnerApi.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "outgoingDraftOwnerApi",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerOutgoingDraftService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerOutgoingDraftService.constructor.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "TrackerOutgoingDraftService.constructor.options",
+						"type": "TrackerOutgoingDraftServiceOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOutgoingDraftService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-outgoing-draft",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-tracker-sync-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-hub-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api-service-tracker-local-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerOutgoingDraftService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerOutgoingDraftService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

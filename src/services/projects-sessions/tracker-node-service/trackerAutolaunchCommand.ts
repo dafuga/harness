@@ -1,4 +1,5 @@
 // @harness-uid u_gvqtr5mdwv
+import { outgoingDraftPath } from '../tracker-outgoing-draft-service/outgoingDraftAgentApi';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
 import { trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
@@ -13,6 +14,7 @@ export function trackerCommandOrItemResponse(
 	runtime: TrackerNativeRuntimeService,
 	supervisor: TrackerSupervisorService
 ) {
+	if (path === outgoingDraftPath) return runtime.outgoingDrafts.route(request);
 	if (request.method === 'POST' && commands.has(path))
 		return runTrackerAutolaunchCommand(request, path, runtime);
 	const inspection =

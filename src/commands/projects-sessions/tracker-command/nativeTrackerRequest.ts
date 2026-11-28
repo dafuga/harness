@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import { nativeTrackerDraftRequest } from './nativeTrackerDraftRequest';
 import { parseArgs } from 'node:util';
 import { nativeTrackerTimedItemRequest } from './nativeTrackerTimedItemRequest';
 import { nativeTrackerPlanningRequest } from './nativeTrackerPlanningRequest';
@@ -93,6 +94,8 @@ function itemQuery(
 		case 'list':
 			if (words.length) throw new TypeError('usage: tracker list [options]');
 			return { method: 'GET', path: '/items' + query(fields) };
+		case 'draft':
+			return nativeTrackerDraftRequest(words);
 		case 'stage':
 		case 'artifact':
 			return nativeTrackerPlanningRequest(command, words[0], words.slice(1));

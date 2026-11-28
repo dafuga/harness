@@ -12,6 +12,7 @@ export interface LocalOperationsOptions {
 	control: LocalControl;
 	/** Present only when a Hub is configured: the overview then comes from the Hub, never the local tracker. */
 	hubOverview?: () => Promise<OverviewSnapshot>;
+	outgoingDrafts?: (input: Fields) => Promise<unknown>;
 	home?: DesktopBridge['homeSnapshot'];
 	homeChat?: (input: unknown) => ReturnType<NonNullable<DesktopBridge['homeChat']>>;
 }

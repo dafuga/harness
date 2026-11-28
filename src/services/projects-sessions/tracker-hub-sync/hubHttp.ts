@@ -4,7 +4,10 @@ import { TrackerHubInputError } from './TrackerHubInputError';
 
 const maxBodyBytes = 8 * 1024 * 1024;
 
-export async function readTrackerHubBody(request: TrackerHubRequest): Promise<string> {
+export async function readTrackerHubBody(
+	request: TrackerHubRequest,
+	maximum: number = maxBodyBytes
+): Promise<string> {
 	const { body, signal } = request;
 	if (!body) return '';
 	const reader = body.getReader();
@@ -15,7 +18,7 @@ export async function readTrackerHubBody(request: TrackerHubRequest): Promise<st
 		let size = 0;
 		for (let part = await reader.read(); !part.done; part = await reader.read()) {
 			size += part.value.byteLength;
-			if (size > maxBodyBytes) {
+			if (size > maximum) {
 				cancel();
 				throw new TrackerHubInputError(413, 'body too large');
 			}

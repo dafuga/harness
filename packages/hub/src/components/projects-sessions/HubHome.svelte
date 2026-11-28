@@ -16,7 +16,7 @@
 	import { onMount, tick } from 'svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
-	import { homeSnapshot } from './hubHomeClient';
+	import { homeOutgoing, homeSnapshot } from './hubHomeClient';
 	import { hubHomeReads } from './hubHomeReads';
 	import { provideHubSpecDocuments } from '$reports/components/projects-sessions/hub-home/hubSpecDocument';
 	import { provideHomeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
@@ -38,7 +38,6 @@
 	import '$reports/lib/styles/hub-home/index.css';
 	const { api, session, projects } = browserContext();
 	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
-	const cosChat = provideHomeCosChat(() => reads.read());
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
 	let list = $state<ProjectSummary[] | null>(null);
@@ -46,6 +45,9 @@
 	const projectFlights = new SvelteMap<string, Promise<ProjectSnapshot>>();
 	let projectError = $state(false);
 	let home = $state<Home.ReadHomeResult | null>(null);
+	const outgoing = $derived(
+		home?.outgoingDrafts && session.actor?.id ? homeOutgoing(api) : undefined
+	);
 	let live = $state<LinkedHome | null>(null);
 	let now = $state(Date.now());
 	let flight = 0;
@@ -101,6 +103,7 @@
 		linked: (result) => ((live = result), (now = Date.now()))
 	});
 	provideHubSpecDocuments(reads.readDocument);
+	const cosChat = provideHomeCosChat(reads.read, () => outgoing);
 	function refresh() {
 		const actor = session.actor?.id;
 		const request = ++flight;
@@ -136,7 +139,6 @@
 			const pushed = link === 'live' && Date.now() - readAllAt < liveReadMs;
 			const actor = session.actor?.id;
 			void session.check().then(() => {
-				// Change notices cover the stored Home only: linked computers are asked every turn.
 				if (actor && session.actor?.id === actor) (pushed ? reads.computers : refresh)();
 			});
 		});

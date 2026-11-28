@@ -18,7 +18,8 @@
 			"src/services/projects-sessions/tracker-hub-sync/TrackerHubPolls.ts",
 			"src/services/projects-sessions/tracker-hub-sync/hubHttp.ts",
 			"src/services/projects-sessions/tracker-hub-sync/hubRoutes.ts",
-			"src/services/projects-sessions/tracker-hub-sync/readJournalPage.ts"
+			"src/services/projects-sessions/tracker-hub-sync/readJournalPage.ts",
+			"src/services/projects-sessions/tracker-hub-sync/serveSyncedDraft.ts"
 		],
 		"symbols": [
 			"TrackerHubSyncService",
@@ -45,7 +46,8 @@
 			"receiveJournalPush",
 			"grantDuePermission",
 			"recordFleetTelemetry",
-			"readJournalPage"
+			"readJournalPage",
+			"serveSyncedDraft"
 		]
 	},
 	"contract": {
@@ -92,6 +94,11 @@
 				"name": "readTrackerHubBody.request",
 				"type": "TrackerHubRequest",
 				"required": true
+			},
+			{
+				"name": "readTrackerHubBody.maximum",
+				"type": "number",
+				"required": false
 			},
 			{
 				"name": "trackerHubResponse.status",
@@ -167,6 +174,26 @@
 			{
 				"name": "readJournalPage.signal",
 				"type": "AbortSignal | undefined",
+				"required": true
+			},
+			{
+				"name": "serveSyncedDraft.service",
+				"type": "TrackerOutgoingDraftService",
+				"required": true
+			},
+			{
+				"name": "serveSyncedDraft.method",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "serveSyncedDraft.body",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "serveSyncedDraft.peer",
+				"type": "string",
 				"required": true
 			}
 		],
@@ -293,6 +320,11 @@
 						"name": "readTrackerHubBody.request",
 						"type": "TrackerHubRequest",
 						"required": true
+					},
+					{
+						"name": "readTrackerHubBody.maximum",
+						"type": "number",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -449,6 +481,39 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "serveSyncedDraft",
+				"inputs": [
+					{
+						"name": "serveSyncedDraft.service",
+						"type": "TrackerOutgoingDraftService",
+						"required": true
+					},
+					{
+						"name": "serveSyncedDraft.method",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "serveSyncedDraft.body",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "serveSyncedDraft.peer",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "serveSyncedDraft",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -518,6 +583,11 @@
 	"dependencies": [
 		{
 			"unit": "service.networking-security-tracker-sync-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-outgoing-draft",
 			"via": "import",
 			"origin": "derived"
 		}
