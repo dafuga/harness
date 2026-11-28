@@ -67,7 +67,9 @@ test('delivers the reviewed revision once and records the outcome without the me
 	expect(service.list(owner)).toMatchObject([
 		{ status: 'sent', receipt: { reference: 'delivery-1' } }
 	]);
-	expect(notes().join('\n')).toContain('Outgoing draft 77ecc6dd-7d69-4c9c-9981-2804ecc6f93c sent');
+	expect(notes()).toContain(`Outgoing draft ${submitted.id} edited (revision 2)`);
+	expect(notes()).toContain(`Outgoing draft ${submitted.id} approved (revision 2)`);
+	expect(notes()).toContain(`Outgoing draft ${submitted.id} sent (revision 2, receipt delivery-1)`);
 	expect(notes().join('\n')).not.toContain('Reviewed body');
 	expect(notes().join('\n')).not.toContain('new@example.test');
 });
