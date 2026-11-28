@@ -10,14 +10,8 @@ import type {
 	TrackerReceiptUsage,
 	TrackerRunReceipt
 } from '../TrackerDispatcherService.types';
-import {
-	automaticRequestHold,
-	canonicalNode,
-	inactive,
-	matchesRequest,
-	minute
-} from './launchEligibility';
-import { giveUp, retryRung } from './runGiveUp';
+import { canonicalNode, matchesRequest, minute } from './launchEligibility';
+import { giveUp, retryHeld, retryRung } from './runGiveUp';
 
 export function etaFor(
 	item: TrackerDispatchItem | null,
@@ -161,17 +155,14 @@ export function failRun(
 	const finished = finishRun(run, { ...failure, now });
 	// A failed verification or rejection reopens completed work, whether or not a retry follows.
 	const reopen = failure.reopen ? { status: 'open' as const, appendNote: failure.note } : undefined;
-	// Recovery owns its budget and backoff across separate launch tokens.
 	if (
-		run.launch_source === 'recovery' ||
 		!item ||
 		!matchesRequest(item, run, policy) ||
-		unavailableRetry(item, failure.reopen) ||
-		automaticRequestHold({ ...item, ...reopen }, policy, now)
+		retryHeld({ ...item, ...reopen }, run, failure.startup, { policy, now })
 	)
 		return recordFailedRun(finished, reopen);
 	const choice = retryRung(item, run, policy, failure.startup);
-	if (!choice) return recordFailedRun(finished, giveUp(snapshot, finished, reopen));
+	if (!choice) return exhaustRetries(snapshot, finished, reopen, failure.startup);
 	const pick = {
 		rung: choice,
 		kind: run.kind ?? item.kind,
@@ -183,17 +174,31 @@ export function failRun(
 		policy,
 		now
 	);
+	if (failure.startup && run.launch_source === 'manual') retry.manualStartupRetry = true;
 	return {
 		result: { status: 'recorded', run: finished, retry },
 		writes: { runs: [finished, retry], failedRunId: finished.id, ...(reopen && { item: reopen }) }
 	};
 }
 
-function recordFailedRun(run: TrackerRunReceipt, item?: TrackerDispatchWrites['item']) {
-	const { result, writes } = recordRun(run, item);
-	return { result, writes: { ...writes, failedRunId: run.id } };
+function exhaustRetries(
+	snapshot: TrackerDispatchSnapshot,
+	run: TrackerRunReceipt,
+	reopen: TrackerDispatchWrites['item'],
+	startup?: boolean
+) {
+	const blocked = giveUp(snapshot, run, reopen);
+	return recordFailedRun(run, blocked, startup && Boolean(blocked));
 }
 
-function unavailableRetry(item: TrackerDispatchItem, reopen?: boolean) {
-	return inactive(item) && !reopen;
+function recordFailedRun(
+	run: TrackerRunReceipt,
+	item?: TrackerDispatchWrites['item'],
+	alertStartup = false
+) {
+	const { result, writes } = recordRun(run, item);
+	return {
+		result,
+		writes: { ...writes, failedRunId: run.id, ...(alertStartup && { startupFailure: run }) }
+	};
 }

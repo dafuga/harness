@@ -63,7 +63,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		itemId: string,
 		decide: (snapshot: TrackerDispatchSnapshot) => TrackerDispatchDecision
 	): Promise<TrackerDispatchResult> {
-		const target = { store: this.store, node: this.node, now: this.options.now };
+		const target = { ...this.options, store: this.store, node: this.node };
 		const read = (id: string) => this.readSnapshot(id);
 		return commitDecision(target, { itemId, read }, decide);
 	}

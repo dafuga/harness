@@ -192,6 +192,8 @@ function automaticHostHold(
 	run: TrackerRunReceipt,
 	{ now, automaticEnabled }: { now: () => number; automaticEnabled?: () => boolean }
 ) {
+	if (run.manualStartupRetry)
+		return trackerStoredSchedulingHold({ ...item, schedule_off: false }, now());
 	return (
 		(run.launch_source !== 'manual' || run.attempt > 1) &&
 		(automaticEnabled?.() === false || trackerStoredSchedulingHold(item, now()))

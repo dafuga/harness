@@ -38,6 +38,8 @@ export interface TrackerRunReceipt extends TrackerReceiptUsage {
 	exit_code?: number | null;
 	queued_at: number;
 	dispatch_at?: number;
+	/** Continues an explicitly requested launch that never started. */
+	manualStartupRetry?: boolean;
 	started_at: number | null;
 	ended_at: number | null;
 	resumed_at?: number;

@@ -261,6 +261,7 @@
 			"TrackerWatchdogAlerts",
 			"TrackerWatchdogAlert",
 			"urgentQueueAlertKind",
+			"recordLaunchStartupFailure",
 			"recordStartupAlerts",
 			"recordWatchdogAlert",
 			"contextAlert",
@@ -1264,6 +1265,21 @@
 				"name": "configuredHostWatchdog.automaticEnabled",
 				"type": "() => boolean",
 				"required": false
+			},
+			{
+				"name": "recordLaunchStartupFailure.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordLaunchStartupFailure.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "recordLaunchStartupFailure.at",
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "recordStartupAlerts.store",
@@ -4212,6 +4228,34 @@
 				"outputs": [
 					{
 						"name": "configuredHostWatchdog",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordLaunchStartupFailure",
+				"inputs": [
+					{
+						"name": "recordLaunchStartupFailure.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordLaunchStartupFailure.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "recordLaunchStartupFailure.at",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordLaunchStartupFailure",
 						"type": "unknown"
 					}
 				],

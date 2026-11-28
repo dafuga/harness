@@ -151,6 +151,7 @@ function receipt(row: TrackerStoredDispatchRun, node: string): TrackerRunReceipt
 		pinned: Boolean(row.pinned),
 		launch_source: metadata?.launch_source ?? 'manual',
 		dispatch_at: metadata?.dispatch_at,
+		manualStartupRetry: metadata?.manualStartupRetry,
 		verificationFor: metadata?.verificationFor,
 		host_session_id: metadata?.hostSessionId,
 		revision: metadata?.revision ?? -1
@@ -187,6 +188,7 @@ function writeReservation(store: TrackerPersistenceService, run: TrackerRunRecei
 		revision,
 		launch_source,
 		dispatch_at,
+		manualStartupRetry: run.manualStartupRetry,
 		verificationFor,
 		hostSessionId: run.host_session_id,
 		signature: signature(run)

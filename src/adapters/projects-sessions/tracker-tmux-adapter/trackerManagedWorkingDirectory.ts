@@ -24,7 +24,10 @@ export async function prepareTrackerWorkingDirectory(
 		source,
 		['-c', 'core.hooksPath=/dev/null', 'worktree', 'add', '--detach', worktree, 'HEAD'],
 		signal
-	);
+	).catch((error: unknown) => {
+		if (!(error instanceof Error)) throw error;
+		throw new Error(`Git worktree add: ${error.message}`, { cause: error });
+	});
 	return git.code === 0
 		? worktree
 		: { failure: `could not create a worktree of ${source}: ${git.stderr}` };

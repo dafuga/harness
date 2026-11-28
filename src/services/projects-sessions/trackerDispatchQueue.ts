@@ -43,6 +43,7 @@ export class TrackerDispatchQueue {
 		const current = this.repository.readSnapshot(id).item;
 		// Retire cancelled reservations even if the launch window is closed.
 		if (
+			!run.manualStartupRetry &&
 			current?.launch?.token === token &&
 			!schedulingHold(current, policyNow(this.options)) &&
 			!(await this.automaticPermission(id, current.launch, signal, queuedRung(run)))

@@ -38,7 +38,12 @@
 				"type": "Promise<string | { failure: string }>"
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
 		"errorStatus": "unknown",
 		"operations": [
 			{

@@ -108,6 +108,7 @@
 			"claimLaunch",
 			"prepareRetry",
 			"retireUnstartedRun",
+			"retryHeld",
 			"retryRung",
 			"giveUp",
 			"activeRun",
@@ -580,6 +581,31 @@
 			{
 				"name": "retireUnstartedRun.clock",
 				"type": "{ policy: TrackerDispatchPolicy; now: number }",
+				"required": true
+			},
+			{
+				"name": "retryHeld.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "retryHeld.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "retryHeld.startup",
+				"type": "boolean | undefined",
+				"required": true
+			},
+			{
+				"name": "retryHeld.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "retryHeld.now",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -1840,6 +1866,44 @@
 					{
 						"name": "retireUnstartedRun",
 						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "retryHeld",
+				"inputs": [
+					{
+						"name": "retryHeld.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "retryHeld.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "retryHeld.startup",
+						"type": "boolean | undefined",
+						"required": true
+					},
+					{
+						"name": "retryHeld.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "retryHeld.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "retryHeld",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

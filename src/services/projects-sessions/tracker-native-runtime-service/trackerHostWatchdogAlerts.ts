@@ -11,6 +11,26 @@ import { readWatchdogAlerts } from './trackerHostWatchdogState';
 
 export const urgentQueueAlertKind = 'urgent-launch-queue-stuck';
 
+export function recordLaunchStartupFailure(
+	store: TrackerPersistenceService,
+	run: TrackerRunReceipt,
+	at: number
+) {
+	const attempts = run.attempt === 1 ? '1 attempt' : `${run.attempt} attempts`;
+	recordWatchdogAlert(
+		store,
+		{
+			itemId: run.item_id,
+			kind: 'launch-startup-failed',
+			identity: String(run.id),
+			reason: `Tracker launch stopped after ${attempts}. Run #${run.id}: ${run.failure_reason}. Inspect the launch host before requesting another launch.`,
+			// The dispatch transaction already writes the block and its item note.
+			localOnly: true
+		},
+		at
+	);
+}
+
 export function recordStartupAlerts(
 	store: TrackerPersistenceService,
 	snapshot: WatchdogScan,

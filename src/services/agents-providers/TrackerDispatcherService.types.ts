@@ -146,6 +146,8 @@ export interface TrackerDispatchWrites {
 	lastDueStartAt?: number;
 	/** A run abandoned by a launch failure, rather than a cancellation, which is announced. */
 	failedRunId?: number;
+	/** A terminal startup failure to publish to Chief of Staff. */
+	startupFailure?: TrackerRunReceipt;
 }
 
 export type TrackerDispatchResult =

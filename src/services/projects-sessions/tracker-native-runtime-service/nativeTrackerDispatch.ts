@@ -24,6 +24,7 @@ import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { liveTrackerDuePolicy } from './nativeTrackerDuePolicy';
 import { grantsDelegation } from './trackerDueDelegation';
 import { spokeAutomaticPermit, spokeGrant } from './trackerHubPermits';
+import { recordLaunchStartupFailure } from './trackerHostWatchdogAlerts';
 
 export function composeTrackerDispatch(
 	store: TrackerPersistenceService,
@@ -79,7 +80,8 @@ function nativeDispatch(
 		policy,
 		due: duePolicy,
 		sessions,
-		now
+		now,
+		onStartupFailure: (run, at) => recordLaunchStartupFailure(store, run, at)
 	});
 	const dispatch = new TrackerDispatcherService(repository, policy);
 	const grant =
