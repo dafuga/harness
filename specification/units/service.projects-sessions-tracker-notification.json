@@ -21,6 +21,7 @@
 			"src/services/projects-sessions/tracker-notification-service/callbackDelivery.ts",
 			"src/services/projects-sessions/tracker-notification-service/chiefChannel.ts",
 			"src/services/projects-sessions/tracker-notification-service/completeDelivery.ts",
+			"src/services/projects-sessions/tracker-notification-service/deliveryOutcome.ts",
 			"src/services/projects-sessions/tracker-notification-service/deliveryRequest.ts",
 			"src/services/projects-sessions/tracker-notification-service/directReminders.ts",
 			"src/services/projects-sessions/tracker-notification-service/enqueueWebhook.ts",
@@ -89,6 +90,8 @@
 			"nextCallback",
 			"trackerChiefChannel",
 			"completeDelivery",
+			"sendOutcome",
+			"logFailure",
 			"flagWebhook",
 			"webhookRequest",
 			"callbackRequest",
@@ -386,6 +389,31 @@
 				"type": "TrackerNotificationOptions",
 				"required": true,
 				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "sendOutcome.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
+			},
+			{
+				"name": "sendOutcome.attempt",
+				"type": "DeliveryAttempt",
+				"required": true
+			},
+			{
+				"name": "logFailure.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
+			},
+			{
+				"name": "logFailure.attempt",
+				"type": "DeliveryAttempt",
+				"required": true
+			},
+			{
+				"name": "logFailure.result",
+				"type": "TrackerDeliveryResult",
+				"required": true
 			},
 			{
 				"name": "flagWebhook.destination",
@@ -1722,6 +1750,57 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "sendOutcome",
+				"inputs": [
+					{
+						"name": "sendOutcome.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					},
+					{
+						"name": "sendOutcome.attempt",
+						"type": "DeliveryAttempt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sendOutcome",
+						"type": "Promise<TrackerDeliveryResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "logFailure",
+				"inputs": [
+					{
+						"name": "logFailure.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					},
+					{
+						"name": "logFailure.attempt",
+						"type": "DeliveryAttempt",
+						"required": true
+					},
+					{
+						"name": "logFailure.result",
+						"type": "TrackerDeliveryResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "logFailure",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "flagWebhook",

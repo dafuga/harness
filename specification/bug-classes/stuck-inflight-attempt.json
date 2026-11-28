@@ -1,0 +1,163 @@
+{
+	"schemaVersion": 1,
+	"revision": "9ad800231aa8e64e0b423b7a7c1d47771737d38b",
+	"bugClass": {
+		"id": "stuck-inflight-attempt",
+		"title": "Unsettled in-flight queue attempt blocks later work",
+		"cause": "A single-slot queue consumer allows an adapter exception to escape without settling or clearing the current attempt. The slot remains occupied, so later ticks replay the same failed attempt and never reach queued work.",
+		"criteria": "Classify another site when it has a single in-flight slot or equivalent serialized consumer and either (a) an adapter/send operation can throw before the attempt is settled or the slot cleared, causing repeated replay and blocking later work, or (b) a tick retries an already occupied slot without advancing or releasing it. Either path independently qualifies.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "Promise.reject(",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "catch {",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "catch (",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "finally {",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "inFlight",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "inflight",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "pendingAttempt",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "currentAttempt",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "setInterval(",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "onMount(",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "$effect(",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "send",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "notify",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "dequeue",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "ack",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "settle",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "tick",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "retry",
+				"weight": 2
+			},
+			{
+				"kind": "construct",
+				"value": "Promise",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"queue",
+			"attempt",
+			"inflight",
+			"pending",
+			"adapter",
+			"notification",
+			"retry",
+			"tick"
+		],
+		"pathHints": [
+			{
+				"contains": "src/adapters/",
+				"weight": 3
+			},
+			{
+				"contains": "src/services/",
+				"weight": 3
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 2
+			},
+			{
+				"contains": "src/core/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/relay/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 1
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "test/examples/",
+				"weight": -3
+			},
+			{
+				"contains": "test/support/",
+				"weight": -3
+			}
+		]
+	}
+}

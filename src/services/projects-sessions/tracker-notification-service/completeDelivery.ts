@@ -70,7 +70,8 @@ function completeReminders(
 	result: TrackerDeliveryResult,
 	options: TrackerNotificationOptions
 ): void {
-	const at = attempt.startedAt;
+	// A replayed attempt can be old: time a retry from now so it cannot be due at once.
+	const at = result.status === 'sent' ? attempt.startedAt : options.now();
 	const interval = intervalMs(options.reminderIntervalMinutes, 60);
 	const retry = intervalMs(options.retryMinutes, 5);
 	const next = at + (result.status === 'sent' ? interval : retry);

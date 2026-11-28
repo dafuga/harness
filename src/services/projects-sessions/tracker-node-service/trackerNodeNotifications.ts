@@ -38,6 +38,7 @@ export function trackerNodeNotifications(
 	const { chiefOfStaff, itemCallbacks = [] } = notifications;
 	if (chiefOfStaff) http(chiefOfStaff);
 	return {
+		log: (message) => console.error(message),
 		legacyDestinations: { urls: new Map(itemCallbacks.map((id) => [http(id).raw, id])) },
 		chiefOfStaff: chiefOfStaff ? destination(chiefOfStaff) : undefined,
 		webhook: digestWebhook(notifications, destination),
@@ -83,7 +84,12 @@ async function postDelivery(
 	});
 	await response.body?.cancel();
 	if (!response.ok)
-		throw new TrackerNodeTransportError('Tracker notification receipt is uncertain');
+		throw Object.assign(
+			new TrackerNodeTransportError('Tracker notification receipt is uncertain'),
+			{
+				diagnostic: `HTTP ${response.status}`
+			}
+		);
 	return { status: 'sent' };
 }
 
