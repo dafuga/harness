@@ -13,6 +13,8 @@ import type { SyncFixture } from '../support/syncFixture.types';
 const account = 'google:fixture-a';
 const session = 'session-a';
 const otherSession = 'session-a-browser';
+const pushPath = 'approval-push';
+const pushKey = 'fixture-application-key';
 let fixture: SyncFixture;
 beforeAll(async () => {
 	fixture = await startSync({ country: 'PT' });
@@ -89,6 +91,7 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 		device
 	);
 	expect(approved).toBe('approved');
+	await verifyPushRegistration(device, headers);
 	const held = await fixture.call(session, 'GET', 'device-session', { headers });
 	expect(await snapshot(held)).toEqual({ status: 200, body: { state: 'approved' } });
 	expect((await fixture.call(session, 'GET', path, { headers })).status).toBe(200);
@@ -138,6 +141,7 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 		code: null
 	});
 	expect(progress.mailbox).toBe(id);
+	await verifyPushDelivery(1);
 	const visible = await fixture.call(session, 'GET', 'enroll', { headers });
 	expect(await visible.json()).toEqual({
 		requests: [
@@ -220,3 +224,29 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 		requests: []
 	});
 }, 60_000);
+
+async function verifyPushRegistration(
+	device: Awaited<ReturnType<typeof sealedDevice>>,
+	headers: Record<string, string>
+) {
+	const body = {
+		endpoint: 'https://fcm.googleapis.com/fcm/send/approval-fixture',
+		keys: { p256dh: toBase64Url(device.kemPublic), auth: 'a'.repeat(22) }
+	};
+	expect(await snapshot(await fixture.call(otherSession, 'POST', pushPath, { headers, body }))).toEqual({
+		status: 403, body: { error: 'device-approval-required' }
+	});
+	expect(await snapshot(await fixture.call(session, 'GET', pushPath, { headers }))).toEqual({
+		status: 200, body: { publicKey: pushKey }
+	});
+	expect(await snapshot(await fixture.call(session, 'POST', pushPath, { headers, body }))).toEqual({
+		status: 200, body: { subscribed: true }
+	});
+}
+
+async function verifyPushDelivery(count: number) {
+	const rows = await fixture.db
+		.prepare('SELECT kind FROM fixture_approval_deliveries ORDER BY rowid')
+		.all<{ kind: string }>();
+	expect(rows.results).toEqual(Array.from({ length: count }, () => ({ kind: 'device-approval' })));
+}
