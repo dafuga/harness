@@ -1,6 +1,7 @@
 // @harness-uid u_nchu7tvx63
 export interface TrackerGmailSendAdapterConfig {
 	account: string;
+	selfTestThread?: string;
 	readAccessToken(signal: AbortSignal): Promise<string>;
 	fetcher?: (...args: Parameters<typeof fetch>) => ReturnType<typeof fetch>;
 }

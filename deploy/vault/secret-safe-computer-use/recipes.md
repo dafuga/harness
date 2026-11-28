@@ -121,3 +121,54 @@ the producer, the pins and the store.
 These are operator recipes. The current Harness browser executor admits synthetic
 `.test` origins. Live adapters need provider-specific identity checks, signed selectors,
 approval and destination bindings before enablement.
+
+## Harness Gmail self-send grant
+
+This is a one-test binding under the dedicated Google project
+`harness-gmail-outgoing-test`. The policy file contains exactly `project`,
+`clientId`, `account`, and `threadId`. Put it in the trusted executor's
+owner-only storage and use the fixed personal test mailbox and a pre-existing
+self-thread whose subject starts with `[Harness test]`. Approval uses only
+`gmail.send` and `gmail.metadata`. Gmail's metadata grant is mailbox-wide at
+the provider. This recipe and the Tracker test binding only read the pinned
+thread's Message-ID, Subject, and References. They request no bodies, snippets,
+or attachments. [Gmail scopes](https://developers.google.com/workspace/gmail/api/auth/scopes)
+· [Thread metadata](https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.threads/get)
+
+### After 08:00 Lisbon
+
+1. Review both the Gmail patch and the outgoing drafts patch. Select the
+   dedicated Google project and verify its project number, External Testing
+   audience, sole personal test user, Gmail API, and the exact two requested
+   scopes. Create the project and its dedicated Desktop client if needed
+   through a reviewed, script-only provider setup. Pin its exact client ID in
+   the owner-only policy. Use the official Desktop client JSON as a private
+   pipe input, with model attachment and recording disabled.
+2. Verify the Vault's reviewed runner and private destination before requesting
+   phone approval. The browser launcher must accept the consent URL over stdin,
+   use a disposable script-only browser, reach the executor's loopback callback,
+   and tear down after consent. The trusted Tracker driver must be able to read
+   the private grant while ordinary agent processes cannot. A passed synthetic
+   check does not qualify either live boundary.
+3. Request Daniel's phone approval for this Gmail enrollment only. After
+   approval, the trusted executor pipes the Desktop client packet into
+   `python3 deploy/vault/harness_gmail_consent.py POLICY PRIVATE_DIRECTORY PRIVATE_BROWSER_LAUNCHER`.
+   The receiver creates ephemeral state and PKCE, handles one matching loopback
+   callback, verifies the exact granted scopes and the required reply headers,
+   and creates `gmail-self-test.json` at mode 0600. The binding expires within
+   24 hours. A failed enrollment requires checking provider grant state before
+   retrying. No approval or exchange should occur before the daytime window.
+4. After separate installed-release authorization, configure the Tracker Gmail
+   binding with the same `account` and `selfTestThread` as the policy, and a
+   trusted owner-controlled `tokenDriver`. The driver takes no arguments from
+   Tracker and runs `python3 deploy/vault/harness_gmail_grant.py refresh POLICY PRIVATE_DIRECTORY/gmail-self-test.json`.
+   The short-lived credential travels only in Tracker's private capture pipe.
+   Verify readback of the exact released surfaces and the unavailable Send
+   control on a synthetic foreign recipient without contacting Gmail.
+5. Create one Tracker reply draft on the approved self-thread. Address it only
+   to the pinned mailbox, leave Cc empty, preserve the original subject starting with
+   `[Harness test]`, and state that it is a test in the body. Inspect the real
+   Chief of Staff card. Send one daytime Tracker ask for Daniel to tap Send
+   himself. Confirm one receipt in the original thread by exact ID, check the
+   same receipt in Tracker and the card, then remove the test binding and
+   revoke the ephemeral Google grant through the reviewed executor.

@@ -29,10 +29,11 @@ const original = {
 	]
 };
 
-function fixture() {
+function fixture(selfTestThread?: string) {
 	const fetcher = vi.fn<typeof fetch>();
 	const adapter = new TrackerGmailSendAdapter({
 		account,
+		selfTestThread,
 		readAccessToken: async () => 'synthetic-token',
 		fetcher
 	});
@@ -54,6 +55,10 @@ test('submits the reviewed MIME body with the authorized account and Gmail reply
 	expect(String(fetcher.mock.calls[0][0])).toContain(
 		'/users/sender%40example.test/threads/thread-1?'
 	);
+	const selection = new URL(String(fetcher.mock.calls[0][0])).searchParams;
+	expect(selection.get('format')).toBe('metadata');
+	expect(selection.get('fields')).toBe('messages(threadId,payload(headers(name,value)))');
+	expect(selection.getAll('metadataHeaders')).toEqual(['Message-ID', 'Subject', 'References']);
 	const [url, options] = fetcher.mock.calls[1];
 	expect(url).toBe(
 		'https://gmail.googleapis.com/gmail/v1/users/sender%40example.test/messages/send'
@@ -87,4 +92,27 @@ test('refuses a mismatched account or subject before sending and treats a lost d
 	fetcher.mockRejectedValueOnce(new Error('lost response'));
 	await expect(adapter.send(message, attempt)).resolves.toEqual({ kind: 'unconfirmed' });
 	expect(fetcher).toHaveBeenCalledTimes(3);
+});
+
+test('a live test binding refuses any other recipient, copy, thread or subject before reading Gmail', async () => {
+	const { adapter, fetcher } = fixture('thread-1');
+	const allowed = { ...message, to: [account], cc: [], subject: '[Harness test] Fixture' };
+	for (const changes of [
+		{ to: ['other@example.test'] },
+		{ to: [account, account] },
+		{ cc: [account] },
+		{ thread: { id: 'other-thread', label: 'Other thread' } },
+		{ thread: undefined },
+		{ subject: 'Unlabelled' },
+		{ subject: 'Re: [Harness test] Fixture' }
+	]) {
+		await expect(adapter.send({ ...allowed, ...changes }, attempt)).resolves.toEqual({
+			kind: 'failed'
+		});
+	}
+	expect(fetcher).not.toHaveBeenCalled();
+	fetcher.mockResolvedValueOnce(Response.json(original));
+	fetcher.mockResolvedValueOnce(Response.json({ id: 'sent-1', threadId: 'thread-1' }));
+	await expect(adapter.send(allowed, attempt)).resolves.toMatchObject({ kind: 'sent' });
+	expect(fetcher).toHaveBeenCalledTimes(2);
 });

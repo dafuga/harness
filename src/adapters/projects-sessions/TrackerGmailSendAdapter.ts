@@ -36,8 +36,7 @@ export class TrackerGmailSendAdapter {
 	constructor(private readonly config: TrackerGmailSendAdapterConfig) {}
 
 	async send(message: TrackerOutgoingMessage, attempt: string): Promise<TrackerOutgoingResult> {
-		if (!this.matchesAccount(message) || !z.uuid().safeParse(attempt).success)
-			return { kind: 'failed' };
+		if (!this.matches(message) || !z.uuid().safeParse(attempt).success) return { kind: 'failed' };
 		const signal = AbortSignal.timeout(12_000);
 		const account = encodeURIComponent(this.config.account);
 		const root = 'https://gmail.googleapis.com/gmail/v1/users/' + account;
@@ -59,14 +58,28 @@ export class TrackerGmailSendAdapter {
 		}
 	}
 
-	private matchesAccount(message: TrackerOutgoingMessage) {
+	matches(message: TrackerOutgoingMessage): boolean {
 		return (
 			message.channel === 'gmail' &&
 			message.account === this.config.account &&
+			(!message.thread || gmailNativeId(message.thread.id)) &&
+			this.matchesSelfTest(message) &&
 			[message.account, ...message.to, ...message.cc].every(
 				(value) => z.email().safeParse(value).success
 			) &&
 			!/[\p{Cc}\u2028\u2029]/u.test(message.subject ?? '')
+		);
+	}
+
+	private matchesSelfTest({ to, cc, thread, subject }: TrackerOutgoingMessage) {
+		const { selfTestThread, account } = this.config;
+		return (
+			!selfTestThread ||
+			(thread?.id === selfTestThread &&
+				to.length === 1 &&
+				to[0] === account &&
+				cc.length === 0 &&
+				(subject ?? '').startsWith('[Harness test]'))
 		);
 	}
 
@@ -75,8 +88,12 @@ export class TrackerGmailSendAdapter {
 		{ root, headers, signal }: GmailRequest
 	): Promise<TrackerGmailReply | undefined> {
 		if (!thread || !gmailNativeId(thread.id)) return undefined;
-		const query =
-			'format=metadata&metadataHeaders=Message-ID&metadataHeaders=Subject&metadataHeaders=References';
+		const query = new URLSearchParams({
+			format: 'metadata',
+			fields: 'messages(threadId,payload(headers(name,value)))'
+		});
+		for (const header of ['Message-ID', 'Subject', 'References'])
+			query.append('metadataHeaders', header);
 		const response = await (this.config.fetcher ?? fetch)(
 			root + '/threads/' + thread.id + '?' + query,
 			{
