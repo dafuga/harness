@@ -12,7 +12,7 @@ import {
 	talk,
 	widget
 } from './hub-home-click-through';
-import { linkedComputersFixture } from './linked-computers-fixture';
+import { proveCoSDeliveryAskClears } from './linked-computers-fixture';
 
 test.setTimeout(60000);
 for (const size of ['desktop', 'tablet', 'phone'] as const) {
@@ -198,7 +198,7 @@ test('with nothing stored on the Hub, a row tap goes to the linked Mac over its 
 	if (!asked?.options) throw new Error('Expected a fixture ask with choices');
 	delete asked.confirm;
 	const chats: unknown[] = [];
-	await linkedComputersFixture(page, fixture.snapshot, chats);
+	await proveCoSDeliveryAskClears(page, fixture.snapshot, chats);
 	await page.goto('/');
 	await needsYou(page)
 		.getByRole('button', { name: new RegExp(asked.options[1].label) })
