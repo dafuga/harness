@@ -1,5 +1,8 @@
 // @harness-uid u_bl6xl2h4a3
-import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
+import type {
+	TrackerItem,
+	TrackerItemNote
+} from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { isTrackerResumeNote } from '../../../utils/projects-sessions/isTrackerResumeNote';
 
 const recentCount = 10;
@@ -9,14 +12,12 @@ const handoffChars = 4_000;
 /** Tracker's own bookkeeping, which carries nothing a new session acts on. */
 const routineNote = /^(?:watchdog context:|Closed finished run session |auto-launch requested )/;
 
-type Note = TrackerItem['notes_log'][number];
-
 const cut = (text: string, limit: number) =>
 	text.length > limit ? `${text.slice(0, limit)}…` : text;
 
 export function trackerBriefNotes(item: TrackerItem, recovery: boolean) {
 	const handoff = recovery
-		? item.notes_log.findLast(({ text }) => isTrackerResumeNote(text))
+		? item.notes_log.filter(({ text }) => isTrackerResumeNote(text)).at(-1)
 		: undefined;
 	return [
 		recentNotes(item, handoff),
@@ -24,7 +25,7 @@ export function trackerBriefNotes(item: TrackerItem, recovery: boolean) {
 	];
 }
 
-function recentNotes(item: TrackerItem, handoff?: Note) {
+function recentNotes(item: TrackerItem, handoff?: TrackerItemNote) {
 	const useful = item.notes_log.filter((note) => note !== handoff && !routineNote.test(note.text));
 	const lines: string[] = [];
 	let used = 0;

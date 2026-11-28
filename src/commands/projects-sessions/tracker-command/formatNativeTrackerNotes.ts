@@ -1,5 +1,6 @@
 // @harness-uid u_r7qgepnoax
 import { isTrackerResumeNote } from '../../../utils/projects-sessions/isTrackerResumeNote';
+import type { TrackerItemNote } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { NativeTrackerItemDetail } from './nativeTrackerCli.types';
 
 /** A session reads this output into its context, so one command prints a bounded amount. */
@@ -7,9 +8,7 @@ const pageChars = 12_000;
 const noteChars = 2_000;
 const handoffChars = 4_000;
 
-type Note = NonNullable<NativeTrackerItemDetail['notes_log']>[number];
-
-const noteLine = ({ at, node, text }: Note) => `  note ${at} [${node}]: ${text}`;
+const noteLine = ({ at, node, text }: TrackerItemNote) => `  note ${at} [${node}]: ${text}`;
 
 const cutLine = (line: string, limit: number) =>
 	line.length > limit ? `${line.slice(0, limit)}… [cut]` : line;
@@ -24,8 +23,9 @@ export function formatNativeTrackerNotes(item: NativeTrackerItemDetail): string[
 	return [pointer, ...shown];
 }
 
-function recentLines(notes: readonly Note[], lines: readonly string[]): string[] {
-	const handoff = notes.findLastIndex(({ text }) => isTrackerResumeNote(text));
+function recentLines(notes: readonly TrackerItemNote[], lines: readonly string[]): string[] {
+	const resumes = notes.map(({ text }) => isTrackerResumeNote(text));
+	const handoff = resumes.lastIndexOf(true);
 	const shown = new Map<number, string>();
 	if (handoff >= 0) shown.set(handoff, cutLine(lines[handoff], handoffChars));
 	let used = shown.get(handoff)?.length ?? 0;
