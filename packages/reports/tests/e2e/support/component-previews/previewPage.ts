@@ -19,7 +19,6 @@ import { routeLoadingZoom } from './imageZoomActions';
 import { settlePreviewAudio } from './audioPreviewReadiness';
 import { prepareDesktopPage, frameDesktopCapture } from './desktopStateActions';
 import { explorerPreviewInteraction } from './explorerCatalogVariants';
-
 import {
 	assertPreviewCaptureState,
 	assertPreviewLoading,
@@ -147,8 +146,9 @@ async function readyRoute(page: Page, id: string) {
 		await expect(
 			page.getByRole('cell', { name: 'ada@example.invalid', exact: true })
 		).toBeVisible();
+	const hubHeadline = /^\d+ sessions? running(?: for \d+ agents?)?, 1 needs you$/;
 	if (id === 'hub.page.root' || id === 'hub.component.projects-sessions-hub-home')
-		await expect(page.getByRole('heading', { name: /working, .* need[s]? you/ })).toBeVisible();
+		await expect(page.getByRole('heading', { name: hubHeadline })).toBeVisible();
 	else if (isHubHomePreview(id))
 		await expect(page.locator('[data-catalog-home-part]')).toBeAttached();
 }

@@ -15,8 +15,18 @@ export function isHubHomePreview(id: string) {
 	return id.startsWith(prefix + 'home') || id === prefix + 'quota-subscription';
 }
 
+const catalogAsk = {
+	itemId: 'ITEM-A1',
+	agentId: 'orders',
+	agentName: 'Orders',
+	title: 'Review the export headings',
+	question: 'Which column names should we use?',
+	options: previewAnswerOptions,
+	since: stamp(-1)
+};
 const snapshot: OwnerHomeSnapshot = {
 	overview: allStatesSnapshot(),
+	openAsks: [catalogAsk],
 	agents: [
 		{
 			id: 'atlas',
@@ -156,17 +166,7 @@ export const catalogDesktopHome: OwnerHomeSnapshot = {
 		{ name: 'Orders', state: 'needs-you', needsYou: 1 },
 		{ name: 'Atlas', state: 'quiet', needsYou: 0 }
 	],
-	openAsks: [
-		{
-			itemId: 'ITEM-A1',
-			agentId: 'orders',
-			agentName: 'Orders',
-			title: 'Review the export headings',
-			question: 'Which column names should we use?',
-			options: previewAnswerOptions,
-			since: stamp(-1)
-		}
-	],
+	openAsks: [catalogAsk],
 	agents: [],
 	plans: snapshot.plans,
 	scheduled: [],
@@ -184,7 +184,7 @@ export const catalogPush = {
 export const catalogHomeView: HomeView = {
 	overview: snapshot.overview,
 	agents: snapshot.agents,
-	openAsks: [],
+	openAsks: [catalogAsk],
 	reminders: catalogReminders,
 	controlled: [],
 	plans: snapshot.plans,
