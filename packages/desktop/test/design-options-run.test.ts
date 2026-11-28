@@ -108,7 +108,8 @@ test('a headless Plan keeps notes and generates no image, whatever count it is g
 
 test('Haiku adds widths and states then rerenders the saved design without replacing its source', async () => {
 	const f = await fixture();
-	const turnTimeout = 75000;
+	// Each turn persists real Git LFS mockups, including under background scheduling.
+	const turnTimeout = 120000;
 	const first = await settled(f, counted(f, 2), turnTimeout);
 	expect(f.events.at(-1)).toMatchObject({ kind: 'finished', runId: first.runId });
 	const pngs = f.renderMockups.mock.calls[0][0].map((capture) => capture.html);
@@ -144,4 +145,4 @@ test('Haiku adds widths and states then rerenders the saved design without repla
 		'claude-haiku-5-5',
 		'claude-haiku-5-5'
 	]);
-}, 180000);
+}, 390000);
