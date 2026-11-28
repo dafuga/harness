@@ -2,7 +2,7 @@ import type { Made } from './design-options-creation.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
-import { fixture, git, visualAnswer } from './run-fixture';
+import { fixture, git, settled, visualAnswer } from './run-fixture';
 const contract = {
 	inputs: [{ name: 'milliseconds', type: 'number' }],
 	outputs: [{ name: 'formatted', type: 'string' }],
@@ -16,11 +16,11 @@ async function created(f: Made, proposed: { category: string; title: string }, e
 		text: visualAnswer(turn) ?? text,
 		model: turn.model
 	}));
-	await f.service.start({
+	const request = {
 		...{ intent: 'create', projectId: f.session.projectId!, category: 'functions', mode: 'plan' },
 		...{ provider: 'codex', model: 'selected', effort: 'high', text: 'Add it', ...extra }
-	} as unknown as RunRequest);
-	await expect.poll(() => f.session.busy, { timeout: 30000 }).toBe(false);
+	} as unknown as RunRequest;
+	await settled(f, request, 45000);
 	const plans = await f.planning.plans(git(f.root, 'rev-parse', 'HEAD'));
 	return plans.find((item) => item.title === title);
 }

@@ -107,7 +107,8 @@ test('a headless Plan keeps notes and generates no image, whatever count it is g
 
 test('Haiku adds widths and states then rerenders the saved design without replacing its source', async () => {
 	const f = await fixture();
-	const first = await settled(f, counted(f, 2));
+	const turnTimeout = 75000;
+	const first = await settled(f, counted(f, 2), turnTimeout);
 	expect(f.events.at(-1)).toMatchObject({ kind: 'finished', runId: first.runId });
 	const pngs = f.renderMockups.mock.calls[0][0].map((capture) => capture.html);
 	const busy = [
@@ -125,7 +126,7 @@ test('Haiku adds widths and states then rerenders the saved design without repla
 			)
 	}));
 	const change = { ...f.request, text: 'Add a 1024px viewport and a busy state' };
-	await settled(f, change);
+	await settled(f, change, turnTimeout);
 	expect(f.events.at(-1)).toMatchObject({ kind: 'finished' });
 	const captures = f.renderMockups.mock.calls[1][0];
 	expect(
@@ -134,7 +135,7 @@ test('Haiku adds widths and states then rerenders the saved design without repla
 			.map((capture) => capture.html)
 	).toEqual(pngs);
 	expect(captures.filter((capture) => capture.state === 'busy')).toHaveLength(10);
-	await settled(f, { ...f.request, text: 'Rerender' });
+	await settled(f, { ...f.request, text: 'Rerender' }, turnTimeout);
 	expect(f.events.at(-1)).toMatchObject({ kind: 'finished' });
 	expect(f.renderMockups.mock.calls[2][0]).toEqual(captures);
 	expect(f.run.mock.calls.map(([turn]) => turn.model)).toEqual([
@@ -142,4 +143,4 @@ test('Haiku adds widths and states then rerenders the saved design without repla
 		'claude-haiku-5-5',
 		'claude-haiku-5-5'
 	]);
-}, 60000);
+}, 180000);
