@@ -1,18 +1,8 @@
-import type {
-	SealedChainEntry,
-	SealedGrant
-} from '../../../remote/src/models/networking-security/Sealed.types';
-import type { EnrollmentMailbox } from '../../../remote/src/services/networking-security/SealedEnrollmentReviewService.types';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { SealedEnrollmentReviewService } from '../../../remote/src/services/networking-security/SealedEnrollmentReviewService';
 import { chainEntryHash } from '../../../remote/src/utils/networking-security/sealedChainEntry';
-import { sealedChain } from '../../../remote/src/utils/networking-security/sealedChain';
-import { openSealedGrant } from '../../../remote/src/utils/networking-security/sealedGrant';
-import { fromBase64Url } from '../../../remote/src/utils/networking-security/remoteBytes';
-import {
-	sealedSas,
-	sealedEnrollCommit
-} from '../../../remote/src/utils/networking-security/sealedSas';
+import { SealedEnrollmentRequestService } from '../../../remote/src/services/networking-security/SealedEnrollmentRequestService';
+import type { EnrollmentProgress } from '../../../remote/src/services/networking-security/SealedEnrollmentRequestService.types';
 import { sealedDevice } from '../../../remote/src/utils/networking-security/sealedDevice';
 import { toBase64Url } from '../../../remote/src/utils/networking-security/remoteBytes';
 import { readSealedDeviceSession } from '../../../remote/src/utils/networking-security/readSealedDeviceSession';
@@ -115,29 +105,28 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 		body: { error: 'device-approval-required' }
 	});
 	const requestNonce = crypto.getRandomValues(new Uint8Array(32));
-	const opening = {
-		kemPublic: toBase64Url(pending.kemPublic),
-		signingPublic: toBase64Url(pending.signingPublic),
-		commit: await sealedEnrollCommit(pending, requestNonce)
-	};
-	const mailbox = await fixture.call(otherSession, 'POST', 'enroll', {
-		headers: { ...newHeaders, 'CF-IPCountry': 'CA' },
-		body: { ...opening, platform: 'iphone' }
+	const browserRequest = (path: string, init: RequestInit) =>
+		fetch(fixture.origin + path, {
+			...init,
+			headers: { ...init.headers, 'X-Test-Session': otherSession, 'CF-IPCountry': 'CA' }
+		});
+	const login = () => new SealedEnrollmentRequestService({
+		account, device: pending, signal: new AbortController().signal, request: browserRequest
 	});
-	expect(mailbox.status).toBe(201);
-	const { id } = (await mailbox.json()) as { id: string };
-	const reissued = await fixture.call(otherSession, 'POST', 'enroll', {
-		headers: newHeaders,
-		body: opening
-	});
-	expect(await snapshot(reissued)).toMatchObject({ status: 200, body: { id } });
+	let progress: EnrollmentProgress = { nonce: requestNonce };
+	const save = async (next: EnrollmentProgress) => { progress = structuredClone(next); };
+	expect(await login().resolve(progress, save)).toEqual({ state: 'waiting-for-approval', code: null });
+	const id = progress.mailbox!;
+	expect(id).toMatch(/^[a-f0-9]{32}$/);
+	expect(await login().resolve(progress, save)).toEqual({ state: 'waiting-for-approval', code: null });
+	expect(progress.mailbox).toBe(id);
 	const visible = await fixture.call(session, 'GET', 'enroll', { headers });
 	expect(await visible.json()).toEqual({
 		requests: [
 			expect.objectContaining({
 				id,
 				createdAt: expect.any(Number),
-				display: { platform: 'iphone', country: 'PT' }
+				display: { platform: 'web', country: 'PT' }
 			})
 		]
 	});
@@ -166,27 +155,11 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	);
 	await review.claim();
 	expect(await review.comparison()).toBeNull();
-	const pathToMailbox = 'enroll/' + id;
-	const claimed = (await (
-		await fixture.call(otherSession, 'GET', pathToMailbox, { headers: newHeaders })
-	).json()) as EnrollmentMailbox;
-	expect(claimed).not.toHaveProperty('display');
-	expect(JSON.parse(claimed.steps[0].body)).toEqual(opening);
-	const claim = JSON.parse(claimed.steps[1].body);
-	const code = await sealedSas({
-		request: pending,
-		requestNonce,
-		approverSigningPublic: device.signingPublic,
-		approverNonce: fromBase64Url(claim.nonce)
-	});
-	expect(
-		(
-			await fixture.call(otherSession, 'POST', pathToMailbox, {
-				headers: newHeaders,
-				body: { nonce: toBase64Url(requestNonce) }
-			})
-		).status
-	).toBe(201);
+	const waiting = await login().resolve(progress, save);
+	expect(waiting).toEqual({ state: 'waiting-for-approval', code: expect.stringMatching(/^\d{6}$/) });
+	if (waiting.state !== 'waiting-for-approval' || !waiting.code) throw new Error('Missing code');
+	const code = waiting.code;
+	expect(progress.claim?.approver).toBe(device.deviceId);
 	expect(await review.comparison()).toBe(code);
 	expect(await review.approve(code, async () => false)).toBeNull();
 	expect(
@@ -201,18 +174,20 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 		throw new Error('Retry prompted twice.');
 	});
 	expect(nextPin?.seq).toBe(1);
-	const history = (await (
-		await fixture.call(otherSession, 'GET', 'chain', { headers: newHeaders })
-	).json()) as { entries: SealedChainEntry[] };
-	const chain = await sealedChain(history.entries, { account, pin: nextPin! });
-	const delivered = (await (
-		await fixture.call(otherSession, 'GET', 'grants?device=' + pending.deviceId, {
-			headers: newHeaders
-		})
-	).json()) as { grants: SealedGrant[] };
-	expect(toBase64Url((await openSealedGrant(delivered.grants[0], pending, chain)).scopeId)).toBe(
-		scope
-	);
+	const withoutGrants = new SealedEnrollmentRequestService({
+		account, device: pending, signal: new AbortController().signal,
+		request: (path, init) =>
+			path.includes('/grants?') ? Promise.resolve(Response.json({ grants: [] })) : browserRequest(path, init)
+	});
+	await expect(withoutGrants.resolve(progress, save)).rejects.toThrow('A current grant is missing.');
+	expect((await fixture.call(otherSession, 'GET', path, { headers: newHeaders })).status).toBe(403);
+	const admitted = await login().resolve(progress, save);
+	expect(admitted.state).toBe('approved');
+	if (admitted.state !== 'approved') throw new Error('Missing admission');
+	expect(admitted.pin).toEqual(nextPin);
+	expect(toBase64Url(admitted.keys[0].scopeId)).toBe(scope);
+	expect(admitted.keys[0].dataKey.extractable).toBe(false);
+	expect((await fixture.call(otherSession, 'GET', path, { headers: newHeaders })).status).toBe(200);
 	expect(await (await fixture.call(session, 'GET', 'enroll', { headers })).json()).toEqual({
 		requests: []
 	});
