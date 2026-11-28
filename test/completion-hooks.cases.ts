@@ -95,7 +95,12 @@ test.each(models)(
 	30000
 );
 
-test.each(['completion-coverage-loss', 'completion-test-failure', 'completion-declared-check'])(
+test.each([
+	'completion-coverage-loss',
+	'completion-test-failure',
+	'completion-declared-check',
+	'completion-provider-rejected'
+])(
 	'managed module completion discards %s and preserves the verified baseline',
 	async (mode) => {
 		const f = await moduleTaskFixture({ checks: [] });
@@ -133,9 +138,18 @@ test.each(['completion-coverage-loss', 'completion-test-failure', 'completion-de
 				name: 'reduce-module-bytes',
 				status: 'passed',
 				disposition: 'discarded',
-				before: { testExitCode: 0 },
-				after: { testExitCode: mode === 'completion-test-failure' ? 1 : 0 }
+				before: { testExitCode: 0 }
 			});
+			if (mode === 'completion-provider-rejected') {
+				expect(receipt.checks[0].summary).toBe(
+					'Removed redundant comments and condensed test layout.'
+				);
+				expect(receipt.checks[0].after).toBeUndefined();
+			} else {
+				expect(receipt.checks[0].after.testExitCode).toBe(
+					mode === 'completion-test-failure' ? 1 : 0
+				);
+			}
 			if (check) {
 				expect(result.checkRounds).toMatchObject([{ status: 'passed', exitCode: 0 }]);
 				expect(receipt.checks[0].candidateCheck).toMatchObject({ status: 'failed', exitCode: 1 });

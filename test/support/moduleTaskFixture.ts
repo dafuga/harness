@@ -115,7 +115,7 @@ if(provider==='claude'&&mode==='quota') { console.log(JSON.stringify({type:'rate
 if(provider==='claude'&&mode==='auth') {console.log(JSON.stringify({type:'result',is_error:true,result:'Authentication required'}));process.exit(1);}
 if(mode==='outside') writeFileSync('outside.txt','outside requested module');
 else if(!mode.startsWith('completion-')) writeFileSync('src/orders.ts','export const orders = 2;\\n');
-const response = check ? JSON.stringify({status: check==='security-review'?'failed':'passed',summary}) : summary;
+const response = check ? JSON.stringify({status: check==='security-review'||mode==='completion-provider-rejected'?'failed':'passed',summary}) : summary;
 if(provider==='claude') {console.log(JSON.stringify({type:'system',subtype:'init',model}));console.log(JSON.stringify({type:'result',subtype:'success',is_error:false,result:response,usage:{input_tokens:70,output_tokens:20,cache_read_input_tokens:30,cache_creation_input_tokens:0,cache_creation:{ephemeral_1h_input_tokens:0}},total_cost_usd:0.002,modelUsage:{[model]:{}}}));}
 ${fakeCodexCompletion()}
 `;
