@@ -36,8 +36,20 @@ for (const [device, width, height] of [
 		seedLiveDisposition(tracker);
 		const answer = await macAnswer(tracker);
 		const sample = answer.liveOverview!.projects[0];
+		Object.assign(sample, {
+			modulePlan: {
+				state: 'available',
+				modules: [
+					{ id: 'one', state: 'built' },
+					{ id: 'two', state: 'live' },
+					{ id: 'three', state: 'in_progress' },
+					{ id: 'four', state: 'planned' }
+				]
+			}
+		});
 		answer.liveOverview!.projects.push({
 			...sample,
+			modulePlan: undefined,
 			agent: 'completed-only',
 			running: 0,
 			blockedRows: 0,
@@ -71,6 +83,19 @@ for (const [device, width, height] of [
 			await page.evaluate(() => document.fonts.ready.then(() => {}));
 			await page.screenshot({ path: test.info().outputPath(`home-top-${device}.png`) });
 		}
+		const progress = groups.filter({ has: page.getByText(sample.agent, { exact: true }) });
+		await captureNeedsYou(page, `module-summary-${device}`, progress);
+		await expect(progress.locator(':scope > summary')).toContainText('2 of 4 modules built (50%)');
+		await expect(progress.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '50');
+		await progress.locator(':scope > summary').click();
+		await progress.getByText('Built · 1', { exact: true }).click();
+		await expect(progress.getByText('one', { exact: true })).toBeVisible();
+		await expect(progress.getByText('Live · 1', { exact: true })).toBeVisible();
+		await expect(progress.getByText('In progress · 1', { exact: true })).toBeVisible();
+		await expect(progress.getByText('Planned · 1', { exact: true })).toBeVisible();
+		await captureNeedsYou(page, `module-detail-${device}`, progress);
+		await progress.locator(':scope > summary').click();
+
 		await expectComputerWorkload(page, device, remoteTitles);
 		if (process.env.TAKE_SCREENSHOT === 'true')
 			await recordRendererMetrics(page, device, navigation?.request().timing().responseEnd);

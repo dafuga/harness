@@ -78,6 +78,12 @@ test('native Tracker forwards existing run, report and model selection commands'
 			'sol (gpt-6.2-sol medium, codex) - named on the item\n  named on the item\n  computer: fixture-mac'
 		);
 		await verifyCodexReportRange();
+		const { run } = await compatibilityFixture();
+		expect(await run('progress', '--project', 'harbor')).toMatchObject({
+			code: 0,
+			out: 'harbor: Module plan awaiting review',
+			err: ''
+		});
 	}));
 
 async function verifyCodexReportRange() {
