@@ -30,7 +30,8 @@ export async function recoverTrackerSession(
 ): Promise<string | null> {
 	const { item, launch, now } = input;
 	const runs = new TrackerRunReadRepository(store.database, store.node);
-	const latest = runs.list({ itemId: item.id }).findLast((run) => run.node === store.node);
+	const history = runs.list({ itemId: item.id });
+	const latest = history.filter(({ node }) => node === store.node).at(-1);
 	const key = `tracker_session_recovery:${item.id}`;
 	const state = recoveryBudget(store, { key, latest, item });
 	const held = waitForRecoveryProvider(store, latest, state, { item, key, now });
@@ -54,17 +55,14 @@ function waitForRecoveryProvider(
 	state: TrackerRecoveryState,
 	{ item, key, now }: { item: TrackerItem; key: string; now: number }
 ) {
-	if (
-		!latest ||
-		latest.auto_token === state.token ||
-		(!state.token && item.status !== 'in_progress')
-	)
-		return null;
+	if (!latest || latest.auto_token === state.token) return null;
+	if (!state.token && item.status !== 'in_progress') return null;
 	const held = trackerProviderHold(store, latest.cli, now);
 	if (!held) return null;
 	if (state.token) saveRecovery(store, key, { ...state, requestedAt: now });
 	return `Tracker relaunch is waiting: ${held}.`;
 }
+
 async function submitRecovery(
 	store: TrackerPersistenceService,
 	{
