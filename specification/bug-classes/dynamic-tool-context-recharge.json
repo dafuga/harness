@@ -1,0 +1,138 @@
+{
+	"schemaVersion": 1,
+	"revision": "d4e4b55568bddbb41d6e0087b05887b9b7f47287",
+	"bugClass": {
+		"id": "dynamic-tool-context-recharge",
+		"title": "Dynamic tools cause context churn and repeated input charging",
+		"cause": "A worker starts with only some tools restricted while account or user MCP tools continue loading or changing during the session, causing context growth and tool-list churn. Separately, admission logic fingerprints the entire tools block as one unit, so adding one tool makes every existing tool appear new and recharge as input.",
+		"criteria": "Classify a site when either mechanism is present: (1) a worker launch restricts built-in tools but leaves account/user MCP servers enabled for mid-session loading or updates; or (2) a pre-request context or cost gate hashes or fingerprints the complete tools block as a single field and treats a change to that block as new input for all tools. Either mechanism alone qualifies.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "--tools",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "tool_use",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "mcpServers",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "tools_fingerprint",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "tool_choice",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "input_tokens",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "Promise.all",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "createHash",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "hash",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "fingerprint",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "loadMcpServers",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "listTools",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "setInterval",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "onMount",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"tools",
+			"mcpservers",
+			"tool_use",
+			"tool_choice",
+			"input_tokens",
+			"fingerprint",
+			"checkpoint",
+			"context"
+		],
+		"pathHints": [
+			{
+				"contains": "src/services/",
+				"weight": 4
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 3
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 3
+			},
+			{
+				"contains": "src/core/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 1
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "test/examples/",
+				"weight": -3
+			},
+			{
+				"contains": "test/support/",
+				"weight": -3
+			}
+		]
+	}
+}
