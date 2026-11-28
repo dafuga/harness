@@ -39,7 +39,6 @@
 	let { approvals }: { approvals?: Snippet } = $props();
 	const { api, session, projects } = browserContext();
 	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
-	provideHubSpecDocuments(({ id }) => api.get('/api/hub-home/doc', { id }));
 	const cosChat = provideHomeCosChat(() => reads.read());
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
@@ -102,6 +101,7 @@
 		home: (result) => ((home = result), (now = Date.now())),
 		linked: (result) => ((live = result), (now = Date.now()))
 	});
+	provideHubSpecDocuments(reads.readDocument);
 	function refresh() {
 		const actor = session.actor?.id;
 		const request = ++flight;

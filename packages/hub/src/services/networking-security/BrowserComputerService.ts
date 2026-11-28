@@ -41,6 +41,23 @@ function browserSocket(path: string): RemoteSocket {
 	};
 }
 
+function pairingFetch(
+	api: BrowserApi,
+	signal: AbortSignal,
+	path: string,
+	pairingId: string
+): typeof fetch {
+	return (async (target: string | Request | URL, init?: RequestInit) => {
+		signal.throwIfAborted();
+		const operation = new URL(String(target)).pathname.split('/').at(-1);
+		if (operation !== 'poll' && operation !== 'exchange')
+			throw new RemoteFailure('failed', 'Invalid computer connection operation.');
+		const body = JSON.parse(String(init?.body));
+		const answer = await api.send('POST', `${path}/${pairingId}/${operation}`, body);
+		return Response.json(answer);
+	}) as typeof fetch;
+}
+
 /** A browser connection to one Mac. The Hub cookie stays out of the wire client and URLs. */
 export class BrowserComputerService {
 	private connection: DeviceConnectionService | undefined;
@@ -79,8 +96,17 @@ export class BrowserComputerService {
 
 	/** One answer or note for this computer's Tracker, on the connection `home` already opened. */
 	async chat(message: object): Promise<unknown> {
+		return this.homeRequest('homeChat', { ...message });
+	}
+
+	/** One Tracker document, over the same connection as the open ask that names it. */
+	async readDocument(itemId: string, id: string): Promise<unknown> {
+		return this.homeRequest('homeDocument', { itemId, id });
+	}
+
+	private async homeRequest(method: 'homeChat' | 'homeDocument', input: Record<string, unknown>) {
 		if (!this.ready) throw new RemoteFailure('offline');
-		return (await this.ready).wire.request<unknown>('homeChat', { ...message });
+		return (await this.ready).wire.request<unknown>(method, input);
 	}
 
 	private async open(hostId: string, lost: () => void): Promise<DeviceConnectionService> {
@@ -123,7 +149,9 @@ export class BrowserComputerService {
 		if (info.hostId !== hostId)
 			throw new RemoteFailure('failed', 'The Hub answered for a different computer.');
 		const pairingId = randomId();
-		const pairing = new DevicePairingService({ fetch: this.pairingFetch(path, pairingId) });
+		const pairing = new DevicePairingService({
+			fetch: pairingFetch(this.api, this.cancel.signal, path, pairingId)
+		});
 		const input = {
 			...info,
 			pairingId,
@@ -148,17 +176,5 @@ export class BrowserComputerService {
 			await new Promise((resolve) => setTimeout(resolve, 350));
 		} while (Date.now() < deadline);
 		throw new RemoteFailure('failed', 'The computer did not accept the connection.');
-	}
-
-	private pairingFetch(path: string, pairingId: string): typeof fetch {
-		return (async (target: string | Request | URL, init?: RequestInit) => {
-			this.cancel.signal.throwIfAborted();
-			const operation = new URL(String(target)).pathname.split('/').at(-1);
-			if (operation !== 'poll' && operation !== 'exchange')
-				throw new RemoteFailure('failed', 'Invalid computer connection operation.');
-			const body = JSON.parse(String(init?.body));
-			const answer = await this.api.send('POST', `${path}/${pairingId}/${operation}`, body);
-			return Response.json(answer);
-		}) as typeof fetch;
 	}
 }

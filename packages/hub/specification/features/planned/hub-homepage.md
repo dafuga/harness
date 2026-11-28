@@ -63,9 +63,11 @@ Home follows the OS color scheme and uses the approved design in
 Signing in is enough. Home asks every online computer linked to the signed-in Google account
 for its Home view (running agents and sessions, plans, schedule, quota) over the same
 end-to-end encrypted device connection as Devices, with no click and no stored copy on the
-Hub. The Mac answers the read-only `homeSnapshot` wire method, and takes Home's answers and
-notes through `homeChat` (see `specification/features/implemented/needs-you-row-answers.md`). Each browser keeps one device
-key pair per computer, so a reload is the same device and adds no new one. Views from several
+Hub. The Mac answers `homeSnapshot` and takes choices, free-text answers, notes, messages and
+reminder actions through `homeChat`. Replies appear in refreshed linked snapshots. View spec reads the selected
+document from a computer that listed it using `homeDocument`. That computer checks the current
+Tracker item is an open ask and returns the document for the specified item and content id.
+Each browser keeps one device key pair per computer, so a reload adds no new one. Views from several
 computers are merged: work the Tracker syncs between them appears once. The headline counts
 running sessions. Quota stays Unknown until a computer reports it. `Connect a computer`
 appears only when the account has no linked computer. The owner snapshot below remains a
@@ -99,12 +101,26 @@ Follow the [post-release gate](../../../README.md#post-release-gate).
 
 ### Owner-host data
 
-The signed-in Projects card and dialog use the existing per-member project APIs. Tracker chat
-and provider details require the existing configured overview owner and a verified native
-connection, with `HARNESS_HUB_HOME_PUBLISH=1` on the desktop that reads Tracker. Previously
-configured overview publishing continues to work independently. The new Hub chat table is
-created by migration `0005-hub-home-chat.sql`. Messages expire after two minutes if no native
-publisher claims them. A claimed message with an ambiguous result is shown as unconfirmed.
+The signed-in Projects card and dialog use the existing per-member project APIs. The configured
+owner uses the linked Mac for Tracker data, documents, provider details and chat. The desktop's
+`HARNESS_HUB_HOME_PUBLISH` opt-in is off in installed configuration. The optional publisher and
+previously configured overview publishing continue to work independently.
+
+| Home endpoint                                              | With the Home publisher off                                                                                                                                          |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/hub-home`                                        | Returns the owner grant and controlled-session preferences, with a null snapshot when there is no cached overview. The browser reads live data using `homeSnapshot`. |
+| `GET /api/hub-home/doc`                                    | Reads only legacy R2 documents and returns 404 for a missing document. View spec reads linked documents using `homeDocument`.                                        |
+| `POST /api/hub-home/chat`                                  | The legacy queue refuses writes without a current published Home. The browser sends Tracker writes using `homeChat`.                                                 |
+| `GET /api/hub-home/chat`                                   | Reads legacy queue receipts and returns `unconfirmed` for unknown ids. The linked write returns its receipt directly.                                                |
+| `POST /api/hub-home/agents`, `DELETE /api/hub-home/agents` | Adds or removes an account preference in Hub storage. Preferences are applied to linked and stored views. The Tracker is not written.                                |
+| `PUT /api/hub-home`                                        | Accepts a verified legacy publisher's first snapshot and claims queued messages. The installed linked flow never invokes it.                                         |
+| `PUT /api/hub-home/doc`                                    | Accepts a legacy publisher's document when the current stored snapshot requested that hash. A missing snapshot gives 409.                                            |
+| `PUT /api/hub-home/chat`                                   | Finishes a legacy publisher's claimed queue entry. Linked writes never need this callback.                                                                           |
+| `POST /api/hub-home/doc`                                   | Unsupported by the Home policy and returns 404.                                                                                                                      |
+
+The optional queue uses migration `0005-hub-home-chat.sql`. Messages expire after two minutes
+if no native publisher claims them. A claimed message with an ambiguous result is shown as
+unconfirmed.
 
 The owner desktop reads the Claude and Codex quota and Claude routine dates from a single
 owner-managed JSON file. Set `HARNESS_HUB_HOME_PROVIDER_FILE` to its absolute path on the

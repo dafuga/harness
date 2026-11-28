@@ -3948,6 +3948,12 @@
 			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeMerge",
 			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeMerge.ts",
 			"reason": "The linked Home service uses the shared snapshot merge."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeReads.types.ts",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/SpecDocumentView.types",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/SpecDocumentView.types.ts",
+			"reason": "Resolves the shared Home dependency through the Reports build alias."
 		}
 	]
 }

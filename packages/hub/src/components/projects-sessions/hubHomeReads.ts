@@ -2,8 +2,9 @@
 import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { coalesced } from '$reports/lib/projects-sessions/realtime/coalesced';
 import { LinkedHomeService } from '../../services/networking-security/LinkedHomeService';
+import type { TrackerAttachmentDocument } from '../../../../../src/utils/projects-sessions/trackerAttachment.types';
 import { readHome } from './hubHomeClient';
-import type { HubHomeReadOptions, HubHomeReads } from './hubHomeReads.types';
+import type { HubHomeReadOptions, HubHomeReads, LinkedHomeSession } from './hubHomeReads.types';
 export type { HubHomeReadOptions, HubHomeReads } from './hubHomeReads.types';
 
 const followMs = 5 * 60_000;
@@ -27,13 +28,30 @@ function freshFollower(closed: () => boolean, read: () => void) {
 	return { start, stop, read };
 }
 
+function homeDocumentReader(
+	{ api, actor }: HubHomeReadOptions,
+	session: () => LinkedHomeSession | undefined,
+	closed: () => boolean
+): HubHomeReads['readDocument'] {
+	return async ({ id }) => {
+		const reader = actor();
+		if (!reader || closed()) return null;
+		const current = session();
+		const linked = current?.actor === reader ? await current.service.readDocument(id) : null;
+		if (closed() || reader !== actor()) return null;
+		const document =
+			linked ?? (await api.get<TrackerAttachmentDocument>('/api/hub-home/doc', { id }));
+		return !closed() && reader === actor() ? document : null;
+	};
+}
+
 /**
  * What a change notice reads again: the published Home and the linked computers. Each has one
  * flight at a time, so a burst of notices cannot discard every answer before it lands.
  */
 export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 	const { api, actor } = options;
-	let linkedHome: { actor: string; service: LinkedHomeService } | undefined;
+	let linkedHome: LinkedHomeSession | undefined;
 	let closed = false;
 	const stored = coalesced(async () => {
 		const reader = actor();
@@ -71,9 +89,12 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 			if (message.kind === 'answer') follower.read();
 			return receipt;
 		},
-		computers() {
-			void linked();
-		},
+		readDocument: homeDocumentReader(
+			options,
+			() => linkedHome,
+			() => closed
+		),
+		computers: () => void linked(),
 		close() {
 			closed = true;
 			follower.stop();

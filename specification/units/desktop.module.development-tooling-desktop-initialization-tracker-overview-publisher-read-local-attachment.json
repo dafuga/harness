@@ -26,6 +26,11 @@
 				"name": "readLocalAttachment.fetcher",
 				"type": "typeof fetch",
 				"required": false
+			},
+			{
+				"name": "readLocalAttachment.scope",
+				"type": "'open-ask'",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -49,6 +54,11 @@
 						"name": "readLocalAttachment.fetcher",
 						"type": "typeof fetch",
 						"required": false
+					},
+					{
+						"name": "readLocalAttachment.scope",
+						"type": "'open-ask'",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -71,6 +81,16 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-structured-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
 			"via": "import",
 			"origin": "derived"
 		}

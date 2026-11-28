@@ -11,6 +11,7 @@ import { RemoteRegistrationAdapter } from '../RemoteRegistrationAdapter';
 import { liveQuotaSources } from '../tracker-overview-publisher/liveQuotaSources';
 import { createHomeChatWriter } from '../tracker-overview-publisher/createHomeChatWriter';
 import { createHomeSnapshotReader } from '../tracker-overview-publisher/createHomeSnapshotReader';
+import { readLocalAttachment } from '../tracker-overview-publisher/readLocalAttachment';
 
 /** Owns the Mac's relay connection and power events for the lifetime of the main process. */
 export function desktopRemote(options: DesktopRemoteOptions) {
@@ -39,6 +40,7 @@ export function desktopRemote(options: DesktopRemoteOptions) {
 			...stores,
 			home,
 			homeChat,
+			homeDocument: ({ itemId, id }) => readLocalAttachment({ itemId, id }, fetch, 'open-ask'),
 			trackerPhone: process.env.HARNESS_TRACKER_PHONE_DEVICE?.trim(),
 			trackerWrite:
 				phoneWriteDevice && phoneWriteToken

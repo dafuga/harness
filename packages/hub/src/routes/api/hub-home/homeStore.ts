@@ -25,7 +25,7 @@ export async function storeHome(
 	});
 }
 
-export async function readHomeSnapshot(
+export async function readPublishedHome(
 	bucket: OverviewBucket,
 	ownerId: string,
 	now: number
@@ -41,6 +41,16 @@ export async function readHomeSnapshot(
 			// The older overview is independently verified and can still supply the work view.
 		}
 	}
+	return null;
+}
+
+export async function readHomeSnapshot(
+	bucket: OverviewBucket,
+	ownerId: string,
+	now: number
+): Promise<OwnerHomeSnapshot | null> {
+	const published = await readPublishedHome(bucket, ownerId, now);
+	if (published) return published;
 	const overview = await readOverview(bucket, await overviewKey(ownerId), now);
 	return overview
 		? {
