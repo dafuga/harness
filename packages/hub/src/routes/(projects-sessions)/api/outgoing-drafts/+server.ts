@@ -7,7 +7,7 @@ import { serveOutgoingDrafts } from './serveOutgoingDrafts';
 import { outgoingGateway } from './outgoingGateway';
 
 const handler: RequestHandler = ({ request, platform }) => {
-	const privateEnv = { ...env, ...platform?.env };
+	const privateEnv: Record<string, unknown> = { ...env, ...platform?.env };
 	const config = hubEnvConfig(privateEnv);
 	return serveOutgoingDrafts(request, {
 		ownerId: config.HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID,
