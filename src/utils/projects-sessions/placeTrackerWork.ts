@@ -1,14 +1,20 @@
 // @harness-uid u_47p4ljwkx5
-import type { TrackerWorkPreference } from './placeTrackerWork.types';
-import { trackerBusyLoadPerCore } from './trackerMachineStatus';
+import {
+	trackerActualUtilization,
+	trackerBusyLoadPerCore,
+	trackerMacRole,
+	trackerSessionOverload,
+	trackerUtilizationTargets
+} from './trackerMachineStatus';
 import type {
-	TrackerMachineRole,
 	TrackerMachineRow,
 	TrackerPlacement,
 	TrackerPlacementCandidate,
 	TrackerPlacementRequest,
+	TrackerProcessGroup,
 	TrackerResourceSample,
-	TrackerWorkKind
+	TrackerWorkKind,
+	TrackerWorkDemand
 } from './trackerMachine.types';
 
 /** Typical RAM that new work needs, in GB. */
@@ -20,99 +26,179 @@ export const trackerWorkRamGB: Record<TrackerWorkKind, number> = {
 	general: 2
 };
 
-const roleNotes: Record<TrackerMachineRole, string | null> = {
-	shared: 'shared by all bots; keeps headroom (at least 4 GB free after the job)',
-	runner: 'dedicated runner for Claude tmux sessions and Playwright',
-	primary: 'runs Chief of Staff and many Codex sessions',
-	other: null
+const estimatedCores: Record<TrackerWorkKind, number> = {
+	codex: 0.25,
+	claude: 0.25,
+	'browser-tests': 4,
+	build: 5,
+	general: 0.25
 };
 
-const preferences: Partial<
-	Record<TrackerMachineRole, Partial<Record<TrackerWorkKind, TrackerWorkPreference>>>
-> = {
-	runner: {
-		claude: { score: 30, reason: 'preferred for claude' },
-		'browser-tests': { score: 30, reason: 'preferred for browser-tests' },
-		build: { score: 10 }
-	},
-	primary: {
-		codex: { score: 25, reason: 'preferred for codex' },
-		'browser-tests': { score: -20, reason: 'avoid heavy browser-tests next to Chief of Staff' },
-		build: { score: -20, reason: 'avoid heavy build next to Chief of Staff' }
+const noWork = { cores: 0, ramGB: 0 };
+
+/** Use the upper quartile of distinct observed process-group peaks, with cold-start defaults. */
+export function trackerObservedDemand(
+	kind: TrackerWorkKind,
+	history: readonly TrackerResourceSample[]
+): TrackerWorkDemand {
+	const fallback = { cores: estimatedCores[kind], ramGB: trackerWorkRamGB[kind] };
+	const peaks = new Map<string, TrackerWorkDemand>();
+	for (const sample of history) {
+		for (const group of [...sample.top_cpu, ...sample.top_rss]) {
+			if (!matchesObservedKind(group, kind)) continue;
+			const old = peaks.get(group.label) ?? noWork;
+			peaks.set(group.label, {
+				cores: Math.max(old.cores, group.cpu / 100),
+				ramGB: Math.max(old.ramGB, group.rss_mb / 1024)
+			});
+		}
 	}
-};
+	if (peaks.size < 3) return fallback;
+	const observations = [...peaks.values()];
+	const quartile = (key: keyof TrackerWorkDemand) =>
+		observations.map((sample) => sample[key]).sort((a, b) => a - b)[
+			Math.floor(observations.length * 0.75)
+		];
+	return { cores: Math.max(0.1, quartile('cores')), ramGB: Math.max(0.5, quartile('ramGB')) };
+}
+
+function matchesObservedKind(group: TrackerProcessGroup, kind: TrackerWorkKind): boolean {
+	const heavy = group.kind === 'test-runner' || group.kind === 'browser';
+	if (kind === 'browser-tests' || kind === 'build') return heavy;
+	return !heavy && group.cpu <= 75 && group.rss_mb <= 2560;
+}
 
 /** Rank computers for new work; the first one that fits is the recommendation. */
 export function placeTrackerWork(
 	rows: readonly TrackerMachineRow[],
 	request: TrackerPlacementRequest = {}
 ): TrackerPlacement {
-	const { kind = 'general', needsRamGB, exclude = [] } = request;
-	const need = needsRamGB ?? trackerWorkRamGB[kind];
+	const {
+		kind = 'general',
+		needsRamGB,
+		needsCores,
+		reserved,
+		exclude = [],
+		agentSession = kind === 'codex' || kind === 'claude'
+	} = request;
+	const demand = {
+		cores: needsCores ?? estimatedCores[kind],
+		ramGB: needsRamGB ?? trackerWorkRamGB[kind]
+	};
 	const ranked = rows
 		.filter(({ node }) => !exclude.includes(node))
-		.map((row) => candidate(row, kind, need))
+		.map((row) =>
+			candidate(row, demand, { agentSession, reserved: reserved?.get(row.node) ?? noWork })
+		)
 		.sort(
 			(left, right) =>
 				Number(right.fits) - Number(left.fits) ||
 				(right.score ?? -Infinity) - (left.score ?? -Infinity)
 		);
 	const best = ranked.find(({ fits }) => fits);
-	return { kind, needs_ram_gb: need, recommended: best?.node ?? null, ranked };
+	return {
+		kind,
+		needs_ram_gb: demand.ramGB,
+		needs_cores: demand.cores,
+		recommended: best?.node ?? null,
+		ranked
+	};
 }
 
 function candidate(
 	row: TrackerMachineRow,
-	kind: TrackerWorkKind,
-	need: number
+	demand: TrackerWorkDemand,
+	{ agentSession, reserved }: { agentSession: boolean; reserved: TrackerWorkDemand }
 ): TrackerPlacementCandidate {
 	const { node, role, status, sample } = row;
-	const note = roleNotes[role];
-	const notes = note ? [note] : [];
 	if (status === 'offline' || !sample)
-		return {
-			node,
-			role,
-			status,
-			fits: false,
-			score: null,
-			reasons: [...notes, `offline (${row.reasons[0] ?? 'no sample'})`]
-		};
-	const holds = fitHolds(row, sample, need);
-	const preference = preferences[role]?.[kind];
-	const reasons = [...notes, summary(sample), ...holds];
-	if (preference?.reason) reasons.push(preference.reason);
-	const score = headroom(row, sample, need) + (preference?.score ?? 0);
-	return { node, role, status, fits: !holds.length, score: Math.round(score), reasons };
+		return { node, role, status, fits: false, score: null, reasons: row.reasons };
+	const limits = placementCapacity(row, sample);
+	const free = placementHeadroom(sample, limits, reserved);
+	const holds = fitHolds(row, sample, { demand, free, agentSession });
+	const score = matchScore(demand, free, limits, sample) - (role === 'shared' ? 25 : 0);
+	const estimate = `needs ${demand.cores.toFixed(2)} cores and ${demand.ramGB.toFixed(2)} GB RAM; ${Math.max(0, free.cores).toFixed(1)} cores and ${Math.max(0, free.ramGB).toFixed(1)} GB under targets`;
+	return {
+		node,
+		role,
+		status,
+		fits: !holds.length,
+		score: Math.round(score),
+		reasons: [summary(sample), estimate, ...holds]
+	};
 }
 
-function fitHolds(row: TrackerMachineRow, sample: TrackerResourceSample, need: number): string[] {
+function placementCapacity(
+	row: TrackerMachineRow,
+	sample: TrackerResourceSample
+): TrackerWorkDemand {
+	const totalGB = sample.ram.total_mb / 1024;
+	const ramGB = trackerMacRole(row.role)
+		? totalGB * (trackerUtilizationTargets.ram / 100)
+		: Math.min(
+				totalGB * (trackerUtilizationTargets.ram / 100),
+				totalGB - (row.role === 'shared' ? 4 : 2)
+			);
+	return { cores: sample.cores * (trackerUtilizationTargets.cpu / 100), ramGB };
+}
+
+export function trackerMachineTargets(row: TrackerMachineRow, sample: TrackerResourceSample) {
+	const limits = placementCapacity(row, sample);
+	return {
+		cpu: trackerUtilizationTargets.cpu,
+		ram: Math.round(100 * clamp((limits.ramGB * 1024) / sample.ram.total_mb))
+	};
+}
+
+function placementHeadroom(
+	sample: TrackerResourceSample,
+	limits: TrackerWorkDemand,
+	reserved: TrackerWorkDemand
+) {
+	const usage = trackerActualUtilization(sample);
+	const busyCores = usage.cpu === null ? (sample.load[1] ?? 0) : (usage.cpu * sample.cores) / 100;
+	return {
+		cores: limits.cores - busyCores - reserved.cores,
+		ramGB: limits.ramGB - (usage.ram * sample.ram.total_mb) / (100 * 1024) - reserved.ramGB
+	};
+}
+
+function fitHolds(
+	row: TrackerMachineRow,
+	sample: TrackerResourceSample,
+	{
+		demand,
+		free,
+		agentSession
+	}: {
+		demand: TrackerWorkDemand;
+		free: TrackerWorkDemand;
+		agentSession: boolean;
+	}
+): string[] {
 	const holds: string[] = [];
-	const free = sample.ram.available_mb / 1024;
-	const keep = keepFreeGB(row.role);
-	if (row.status === 'overloaded') holds.push(`overloaded: ${row.reasons.join('; ')}`);
-	if (free - need < keep)
-		holds.push(`would leave ${round(free - need)} GB free (needs ${need} GB, keeps ${keep} GB)`);
+	const overload = agentSession ? trackerSessionOverload(row) : row.status === 'overloaded';
+	if (overload) holds.push(`overloaded: ${row.reasons.join('; ')}`);
+	if (free.ramGB < demand.ramGB) holds.push('insufficient RAM below the utilisation target');
+	if (!agentSession && free.cores < demand.cores)
+		holds.push('insufficient free cores below the utilisation target');
 	if (row.role === 'shared' && (sample.load[1] ?? 0) > trackerBusyLoadPerCore * sample.cores)
 		holds.push('shared box is already busy');
 	return holds;
 }
 
-function headroom(row: TrackerMachineRow, sample: TrackerResourceSample, need: number): number {
-	const busyLoad = trackerBusyLoadPerCore * sample.cores;
-	const cpu = clamp((busyLoad - (sample.load[1] ?? 0)) / busyLoad);
-	const spare = sample.ram.available_mb / 1024 - need - keepFreeGB(row.role);
-	const ram = clamp(spare / Math.max(1, sample.ram.total_mb / 1024 / 2));
-	const { claude, codex, test_runners, browsers } = sample.agents;
-	let score = 50 * cpu + 50 * ram - 3 * (claude + codex) - 5 * (test_runners + browsers);
-	if (row.status === 'busy') score -= 15;
-	// Other bots' work comes first on the shared box.
-	if (row.role === 'shared') score -= 25;
-	return score;
-}
-
-function keepFreeGB(role: TrackerMachineRole): number {
-	return role === 'shared' ? 4 : 2;
+function matchScore(
+	demand: TrackerWorkDemand,
+	free: TrackerWorkDemand,
+	limits: TrackerWorkDemand,
+	sample: TrackerResourceSample
+): number {
+	const jobRatio = demand.cores / demand.ramGB;
+	const hostRatio = sample.cores / (sample.ram.total_mb / 1024);
+	const mismatch = Math.abs(Math.log2(jobRatio / hostRatio));
+	const cpuFill = 1 - (free.cores - demand.cores) / limits.cores;
+	const ramFill = 1 - (free.ramGB - demand.ramGB) / limits.ramGB;
+	return 20 * (clamp(cpuFill) + clamp(ramFill)) - 20 * mismatch - 80 * Math.max(0, cpuFill - 1);
 }
 
 function summary(sample: TrackerResourceSample): string {

@@ -10,7 +10,11 @@ import type {
 import type { TrackerHostRoute, TrackerHostTarget } from './trackerHostLaunch.types';
 import type { TrackerOccupiedRun } from './trackerHostAdmission.types';
 import type { TrackerHostResources } from '../../../utils/projects-sessions/trackerHostResources.types';
-import { trackerHostResourceAdmission } from './trackerHostResourceAdmission';
+import { trackerHostRamSlots, trackerHostResourceAdmission } from './trackerHostResourceAdmission';
+import {
+	trackerMachineRole,
+	trackerMacRole
+} from '../../../utils/projects-sessions/trackerMachineStatus';
 
 export const trackerHostCapacityHold = 'Tracker host is at session capacity';
 
@@ -30,7 +34,7 @@ export function trackerHostAdmission(
 		now?: () => number;
 	}
 ): TrackerDispatchPolicy['admit'] {
-	const cap = config.maxConcurrent ?? 2;
+	const cap = trackerHostSessionCap(store.node, config);
 	const hostHold = trackerHostResourceAdmission(store, config, {
 		resources: hostResources,
 		occupied: () => occupiedHostRuns(store)
@@ -47,6 +51,19 @@ export function trackerHostAdmission(
 		const adapterDue = intent.source === 'due' && item.adapterDueOwner === store.node;
 		return adapterDue ? adapterDueDiskHold({ config, route, dueDisk: adapter?.dueDisk }) : null;
 	};
+}
+
+export function trackerHostSessionCap(node: string, config: TrackerHostLaunchConfig): number {
+	return config.maxConcurrent ?? (trackerMacRole(trackerMachineRole(node)) ? 20 : 2);
+}
+
+export function freeHostSessionSlots(
+	store: TrackerPersistenceService,
+	config: TrackerHostLaunchConfig,
+	resources?: TrackerHostResources
+): number {
+	const free = trackerHostSessionCap(store.node, config) - occupiedHostSlots(store);
+	return Math.max(0, Math.min(free, trackerHostRamSlots(store.node, resources)));
 }
 
 function providerAdmissionHold(store: TrackerPersistenceService, cli: string, now: number) {

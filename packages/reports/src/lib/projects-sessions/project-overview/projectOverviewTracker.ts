@@ -10,7 +10,12 @@ import type { HomeAskInput } from '../hub-home/hubHome.types';
 import { z } from 'zod';
 import type { MachineStatus } from './projectOverview.types';
 import type * as Tracker from './projectOverviewTracker.types';
-import { TRACKER_GET_URLS, ITEM_STATUSES, MACHINE_STATUSES } from './trackerReadTargets';
+import {
+	TRACKER_GET_URLS,
+	ITEM_STATUSES,
+	MACHINE_STATUSES,
+	trackerUtilizationSchema
+} from './trackerReadTargets';
 import { trackerRunDetail } from './projectOverviewRunDetail';
 import { getTrackerJson } from './trackerJsonRead';
 
@@ -112,8 +117,10 @@ const diskRow = z.object({ mount: z.string(), free_gb: nonnegative });
 function parseMachine(value: unknown, includeHomeFields: boolean): Tracker.TrackerMachineRecord {
 	const row = asRecord(value, 'machine');
 	const remoteRuns = z.int().min(0).max(1_000_000).safeParse(row.remote_runs).data;
+	const utilization = trackerUtilizationSchema.safeParse(row.utilization).data;
 	return {
 		remoteRuns,
+		...(utilization && { utilization }),
 		node: requiredText(row.node, 'machine node'),
 		status: oneOf(row.status, MACHINE_STATUSES, 'machine status') as MachineStatus,
 		...(includeHomeFields && {

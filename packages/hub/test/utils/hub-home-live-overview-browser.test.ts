@@ -71,11 +71,16 @@ describe('how the browser receives it', () => {
 		const remoteTitles = seedComputerWork(tracker);
 		const secret = 'ghp_' + 'a'.repeat(36);
 		itemOf(liveRuns()[0].item_id).title = `Use ${secret}`;
+		const utilization = { actual: { cpu: 42, ram: 61 }, target: { cpu: 80, ram: 75 } };
+		Object.assign(tracker.machines.find(({ node }) => node === 'harbor-mbp-2')!, { utilization });
 		const answer = await recordedMacAnswer(tracker);
 		answer.liveOverview.projects[0].rows[0].title = `Again ${secret}`;
 		const { snapshot } = await linked(answer);
 
 		expect(snapshot?.liveOverview?.projects).toHaveLength(answer.liveOverview.projects.length);
+		expect(
+			snapshot?.liveOverview?.machines.find(({ name }) => name === 'harbor-mbp-2')?.utilization
+		).toEqual(utilization);
 		expect(JSON.stringify(snapshot)).not.toContain(secret);
 		expect(snapshot!.liveOverview!.machines.map(({ name }) => name)).toEqual(expectedComputerOrder);
 		const overview = snapshot!.overview;

@@ -9,7 +9,13 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/lib/projects-sessions/project-overview/trackerReadTargets.ts"],
-		"symbols": ["TRACKER_TIMEOUT_MS", "TRACKER_GET_URLS", "ITEM_STATUSES", "MACHINE_STATUSES"]
+		"symbols": [
+			"TRACKER_TIMEOUT_MS",
+			"TRACKER_GET_URLS",
+			"ITEM_STATUSES",
+			"MACHINE_STATUSES",
+			"trackerUtilizationSchema"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -30,6 +36,10 @@
 			{
 				"name": "MACHINE_STATUSES",
 				"type": "ReadonlySet<string>"
+			},
+			{
+				"name": "trackerUtilizationSchema",
+				"type": "unknown"
 			}
 		],
 		"errors": [],

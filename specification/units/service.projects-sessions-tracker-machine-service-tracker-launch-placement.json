@@ -12,7 +12,12 @@
 			"src/services/projects-sessions/tracker-machine-service/trackerLaunchPlacement.ts",
 			"src/services/projects-sessions/tracker-machine-service/trackerLaunchPlacement.types.ts"
 		],
-		"symbols": ["trackerLaunchPlacement", "TrackerPlacedLaunch", "TrackerFleetView"]
+		"symbols": [
+			"trackerLaunchPlacement",
+			"TrackerPlacementReservation",
+			"TrackerPlacedLaunch",
+			"TrackerFleetView"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -26,6 +31,11 @@
 				"name": "trackerLaunchPlacement.view",
 				"type": "TrackerFleetView",
 				"required": true
+			},
+			{
+				"name": "trackerLaunchPlacement.reserved",
+				"type": "ReadonlyMap<string, TrackerPlacementReservation>",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -49,6 +59,11 @@
 						"name": "trackerLaunchPlacement.view",
 						"type": "TrackerFleetView",
 						"required": true
+					},
+					{
+						"name": "trackerLaunchPlacement.reserved",
+						"type": "ReadonlyMap<string, TrackerPlacementReservation>",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -71,16 +86,6 @@
 		},
 		{
 			"unit": "function.agents-providers-pick-tracker-model",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.projects-sessions-tracker-cpu-budget",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.projects-sessions-tracker-machine-status",
 			"via": "import",
 			"origin": "derived"
 		},

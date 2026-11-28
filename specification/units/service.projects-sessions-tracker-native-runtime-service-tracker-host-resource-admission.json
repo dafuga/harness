@@ -11,7 +11,7 @@
 		"source": [
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostResourceAdmission.ts"
 		],
-		"symbols": ["trackerHostResourceAdmission"]
+		"symbols": ["trackerHostResourceAdmission", "trackerHostRamSlots"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -35,16 +35,30 @@
 				"name": "trackerHostResourceAdmission.occupied",
 				"type": "() => TrackerOccupiedRun[]",
 				"required": true
+			},
+			{
+				"name": "trackerHostRamSlots.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHostRamSlots.resources",
+				"type": "TrackerHostResources",
+				"required": false
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerHostResourceAdmission",
 				"type": "unknown"
+			},
+			{
+				"name": "trackerHostRamSlots",
+				"type": "number"
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "trackerHostResourceAdmission",
@@ -78,16 +92,34 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerHostRamSlots",
+				"inputs": [
+					{
+						"name": "trackerHostRamSlots.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerHostRamSlots.resources",
+						"type": "TrackerHostResources",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHostRamSlots",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
-		{
-			"unit": "adapter.projects-sessions-tracker-host-resource",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "function.projects-sessions-tracker-cpu-budget",
 			"via": "import",
@@ -100,6 +132,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-host-resources-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-status",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,7 +1,7 @@
 // @harness-uid u_pv25xvpjzz
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import { trackerLaunchPlacement } from './trackerLaunchPlacement';
-import type { TrackerFleetView } from './trackerLaunchPlacement.types';
+import type { TrackerFleetView, TrackerPlacementReservation } from './trackerLaunchPlacement.types';
 
 /**
  * The hub hands each queued launch that names no computer to a peer that should run it. It
@@ -19,9 +19,17 @@ export function assignTrackerLaunches(view: TrackerFleetView): void {
 			AND NOT EXISTS (SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)`
 		)
 		.all() as { id: string }[];
+	const reserved = new Map<string, TrackerPlacementReservation>();
 	for (const { id } of unassigned) {
-		const placed = trackerLaunchPlacement(items.getStored(id), view);
-		if (!placed || placed.node === store.node) continue;
+		const placed = trackerLaunchPlacement(items.getStored(id), view, reserved);
+		if (!placed) continue;
+		const used = reserved.get(placed.node) ?? { cores: 0, ramGB: 0, sessions: 0 };
+		reserved.set(placed.node, {
+			cores: used.cores + placed.demand.cores,
+			ramGB: used.ramGB + placed.demand.ramGB,
+			sessions: used.sessions + 1
+		});
+		if (placed.node === store.node) continue;
 		store.appendLocal({
 			itemId: id,
 			fields: {

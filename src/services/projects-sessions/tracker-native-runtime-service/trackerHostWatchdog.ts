@@ -7,6 +7,7 @@ import { WatchdogIdleService } from '../WatchdogIdleService';
 import { WatchdogStartupService } from '../WatchdogStartupService';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import { trackerHostSessionCap } from './trackerHostAdmission';
 import { watchLaunchRequests } from './trackerWatchLaunchRequests';
 import { trackerCosRound } from './trackerCosRound';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
@@ -109,7 +110,7 @@ export function configuredHostWatchdog(
 		automaticEnabled,
 		dispatchAlerts: role === 'hub' ? () => staleDispatchAlerts(runtime) : undefined,
 		idleWork,
-		slotCap: launch ? (launch.maxConcurrent ?? 2) : null
+		slotCap: launch ? trackerHostSessionCap(store.node, launch) : null
 	});
 }
 

@@ -1,0 +1,58 @@
+{
+	"name": "xrvxyr-launch-capacity",
+	"goal": "Prove MB2 and primary launch sessions by available memory independently of CPU load and queue heavy test commands across worktrees at background priority",
+	"createdAt": "2026-11-28T09:03:00.630Z",
+	"updatedAt": "2026-11-28T09:13:08.707Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T09:04:04.033Z",
+			"evidence": "Installed MB2 maxConcurrent=5, implicit non-Harbor cap=1, and non-Harbor launch holds at load 4; reproduce in scheduler with a hot, RAM-healthy Mac. Full checks use a single Mac lock and normal Playwright commands bypass it; prove an independent core-based heavy admission path."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T09:04:06.727Z",
+			"evidence": "Current host-resource and fleet telemetry integration cases encode CPU holds on launches. Strengthen them with an occupied-slot and RAM recovery lifecycle under unchanged high load, including auto placement and due grants. Exercise resource CLI test command classification and native lock contention separately."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T09:11:17.187Z",
+			"evidence": "3e214c8b6e failed 5 assertions (21 passed): both launchers admitted zero of one at sustained load 23; overloaded peer was excluded from due and auto routing; Playwright wrapper had no --heavy-test. Harness red checkpoint recorded in a clean worktree."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T09:13:08.707Z",
+			"evidence": "Removed Mac CPU admission holds from explicit and automatic/due session paths. All launch paths share the memory reserve and general slot ceiling. Moved the macOS full-check lock into a shared two-lane policy for managed heavy test commands, with load recheck immediately before starting."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

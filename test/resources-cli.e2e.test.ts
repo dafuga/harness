@@ -106,3 +106,35 @@ test('an admitted command receives its bounded budget and releases its shared re
 	const status = await runHarness(['resources', 'status', '--json'], process.cwd(), true, env);
 	expect(JSON.parse(status.stdout).jobs).toEqual([]);
 }, 15000);
+
+test.skipIf(process.platform !== 'darwin')(
+	'the resource CLI runs a heavy test lane at background priority',
+	async () => {
+		const env = process.env.HARNESS_RESOURCE_LEASE ? {} : await environment();
+		const result = await runHarness(
+			[
+				'resources',
+				'run',
+				'--heavy-test',
+				'--cpus',
+				'1',
+				'--memory-mib',
+				'512',
+				'--wait-timeout',
+				'5000',
+				'--',
+				'/bin/sh',
+				'-c',
+				'test "$HARNESS_RESOURCE_HEAVY_TEST_LANE" = 1 && ps -o nice=,pri= -p $$'
+			],
+			process.cwd(),
+			false,
+			env
+		);
+		expect(result.exitCode, result.stderr).toBe(0);
+		const [nice, priority] = result.stdout.trim().split(/\s+/).map(Number);
+		expect(nice).toBeGreaterThanOrEqual(10);
+		expect(priority).toBeLessThan(10);
+	},
+	15000
+);

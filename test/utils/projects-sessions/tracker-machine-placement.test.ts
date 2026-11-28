@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
-import { placeTrackerWork } from '../../../src/utils/projects-sessions/placeTrackerWork';
+import {
+	placeTrackerWork,
+	trackerObservedDemand
+} from '../../../src/utils/projects-sessions/placeTrackerWork';
 import {
 	trackerMachineRole,
 	trackerMachineStatus
@@ -48,23 +51,40 @@ test('absolute free space protects a disk; a low percentage alone does not', () 
 	expect(status({ disks: [{ ...disk, free_gb: 19 }] }).status).toBe('overloaded');
 });
 
-test('places work by role, headroom and fit', () => {
-	const rows = [
-		row('daniel-primary-mbp'),
-		row('harbor-mbp-2'),
-		row('grok-box', {
-			ram: { total_mb: 16_384, used_mb: 11_000, available_mb: 5000, available_pct: 30 }
-		})
-	];
-	expect(placeTrackerWork(rows, { kind: 'claude' }).recommended).toBe('harbor-mbp-2');
-	expect(placeTrackerWork(rows, { kind: 'codex' }).recommended).toBe('daniel-primary-mbp');
-	const box = placeTrackerWork(rows).ranked.find(({ node }) => node === 'grok-box');
-	expect(box).toMatchObject({ fits: false });
-	expect(box?.reasons.join(' ')).toContain('keeps 4 GB');
+test('fits demand to live CPU and RAM across different host shapes', () => {
+	const primary = row('daniel-primary-mbp', {
+		cores: 18,
+		ram: { total_mb: 36_864, used_mb: 8192, available_mb: 28_672, available_pct: 78 }
+	});
+	const mb2 = row('harbor-mbp-2', { cores: 10 });
+	const rows = [primary, mb2];
+	expect(placeTrackerWork(rows, { kind: 'codex' }).recommended).toBe(mb2.node);
+	expect(placeTrackerWork(rows, { kind: 'browser-tests' }).recommended).toBe(primary.node);
 	expect(placeTrackerWork(rows, { needsRamGB: 200 }).recommended).toBeNull();
-	expect(
-		placeTrackerWork(rows, { kind: 'claude', exclude: ['harbor-mbp-2'] }).recommended
-	).not.toBe('harbor-mbp-2');
+	const cpuBusy = row(primary.node, { ...primary.sample, cpu_busy_pct: 80 });
+	expect(placeTrackerWork([cpuBusy, mb2], { kind: 'browser-tests' }).recommended).toBe(mb2.node);
+	const reserved = new Map([[primary.node, { cores: 12, ramGB: 4 }]]);
+	expect(placeTrackerWork(rows, { kind: 'browser-tests', reserved }).recommended).toBe(mb2.node);
+	const samples = Array.from({ length: 4 }, (_, pid) =>
+		resourceSample(now, {
+			top_cpu: [
+				{
+					pid,
+					label: `test-runner pid ${pid}`,
+					kind: 'test-runner',
+					cpu: 250,
+					rss_mb: 3072,
+					procs: 4
+				}
+			]
+		})
+	);
+	expect(trackerObservedDemand('browser-tests', samples)).toEqual({ cores: 2.5, ramGB: 3 });
+	expect(trackerObservedDemand('codex', samples)).toEqual({ cores: 0.25, ramGB: 1.5 });
+	const memoryBusy = row(mb2.node, {
+		ram: { total_mb: 65_536, used_mb: 49_152, available_mb: 16_384, available_pct: 25 }
+	});
+	expect(placeTrackerWork([primary, memoryBusy], { kind: 'codex' }).recommended).toBe(primary.node);
 });
 
 test('never recommends an overloaded or offline computer', () => {
@@ -74,7 +94,12 @@ test('never recommends an overloaded or offline computer', () => {
 		...trackerMachineStatus(null, [], now),
 		sample: null
 	};
-	const placement = placeTrackerWork([offline, row('daniel-primary-mbp', { load: [20, 20, 20] })]);
+	const busy = row('daniel-primary-mbp', { load: [20, 20, 20] });
+	const placement = placeTrackerWork([offline, busy]);
 	expect(placement.recommended).toBeNull();
+	expect(placeTrackerWork([offline, busy], { kind: 'codex' }).recommended).toBe(
+		'daniel-primary-mbp'
+	);
+	expect(placeTrackerWork([offline, busy], { kind: 'browser-tests' }).recommended).toBeNull();
 	expect(placement.ranked.at(-1)).toMatchObject({ node: 'harbor-mbp-2', score: null });
 });

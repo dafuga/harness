@@ -12,11 +12,29 @@
 			"src/utils/projects-sessions/placeTrackerWork.ts",
 			"src/utils/projects-sessions/placeTrackerWork.types.ts"
 		],
-		"symbols": ["trackerWorkRamGB", "placeTrackerWork", "TrackerWorkPreference"]
+		"symbols": [
+			"trackerWorkRamGB",
+			"trackerObservedDemand",
+			"placeTrackerWork",
+			"trackerMachineTargets",
+			"TrackerWorkPreference"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "trackerObservedDemand.kind",
+				"type": "TrackerWorkKind",
+				"required": true,
+				"description": "Requested kind of work, used to select matching process groups and cold-start estimates."
+			},
+			{
+				"name": "trackerObservedDemand.history",
+				"type": "readonly TrackerResourceSample[]",
+				"required": true,
+				"description": "Resource samples containing CPU and memory peaks for recent process groups."
+			},
 			{
 				"name": "placeTrackerWork.rows",
 				"type": "readonly TrackerMachineRow[]",
@@ -29,6 +47,18 @@
 				"required": false,
 				"default": {},
 				"description": "Kind of work, RAM it needs in GB and computers to leave out. Defaults to general work with none left out."
+			},
+			{
+				"name": "trackerMachineTargets.row",
+				"type": "TrackerMachineRow",
+				"required": true,
+				"description": "Fleet record holding the computer role and its configured limits."
+			},
+			{
+				"name": "trackerMachineTargets.sample",
+				"type": "TrackerResourceSample",
+				"required": true,
+				"description": "Latest sample with CPU and memory capacity for the computer."
 			}
 		],
 		"outputs": [
@@ -46,6 +76,32 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "trackerObservedDemand",
+				"inputs": [
+					{
+						"name": "trackerObservedDemand.kind",
+						"type": "TrackerWorkKind",
+						"required": true,
+						"description": "Requested kind of work, used to select matching process groups and cold-start estimates."
+					},
+					{
+						"name": "trackerObservedDemand.history",
+						"type": "readonly TrackerResourceSample[]",
+						"required": true,
+						"description": "Resource samples containing CPU and memory peaks for recent process groups."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerObservedDemand",
+						"type": "TrackerWorkDemand",
+						"description": "Estimated cores and GiB from the upper quartile of distinct process-group peaks, or the cold-start estimate."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "placeTrackerWork",
 				"inputs": [
@@ -68,6 +124,32 @@
 						"name": "placeTrackerWork",
 						"type": "TrackerPlacement",
 						"description": "Candidates ranked with fitting ones first, their reasons, and the recommended computer or null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerMachineTargets",
+				"inputs": [
+					{
+						"name": "trackerMachineTargets.row",
+						"type": "TrackerMachineRow",
+						"required": true,
+						"description": "Fleet record holding the computer role and its configured limits."
+					},
+					{
+						"name": "trackerMachineTargets.sample",
+						"type": "TrackerResourceSample",
+						"required": true,
+						"description": "Latest sample with CPU and memory capacity for the computer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMachineTargets",
+						"type": "unknown",
+						"description": "Target percentages for CPU and RAM use on the computer."
 					}
 				],
 				"errors": [],

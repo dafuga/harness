@@ -78,9 +78,9 @@
 			"CheckQueue.storePlan",
 			"CheckQueue.work",
 			"CheckQueue.close",
+			"checkNeedsHeavyLane",
 			"allowsE2e",
 			"backgroundArguments",
-			"withLegacyCheckSlot",
 			"checkEnvironment",
 			"checkTypeConfig",
 			"workCheckQueue",
@@ -421,23 +421,13 @@
 				"required": true
 			},
 			{
+				"name": "checkNeedsHeavyLane.plan",
+				"type": "CheckPlan",
+				"required": true
+			},
+			{
 				"name": "backgroundArguments.args",
 				"type": "string[]",
-				"required": true
-			},
-			{
-				"name": "withLegacyCheckSlot.full",
-				"type": "boolean",
-				"required": true
-			},
-			{
-				"name": "withLegacyCheckSlot.signal",
-				"type": "AbortSignal",
-				"required": true
-			},
-			{
-				"name": "withLegacyCheckSlot.run",
-				"type": "() => Promise<T>",
 				"required": true
 			},
 			{
@@ -1345,6 +1335,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "checkNeedsHeavyLane",
+				"inputs": [
+					{
+						"name": "checkNeedsHeavyLane.plan",
+						"type": "CheckPlan",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkNeedsHeavyLane",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "allowsE2e",
 				"inputs": [],
 				"outputs": [
@@ -1372,39 +1380,6 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "withLegacyCheckSlot",
-				"inputs": [
-					{
-						"name": "withLegacyCheckSlot.full",
-						"type": "boolean",
-						"required": true
-					},
-					{
-						"name": "withLegacyCheckSlot.signal",
-						"type": "AbortSignal",
-						"required": true
-					},
-					{
-						"name": "withLegacyCheckSlot.run",
-						"type": "() => Promise<T>",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "withLegacyCheckSlot",
-						"type": "Promise<T>"
-					}
-				],
-				"errors": [
-					{
-						"name": "ExpectedCliError",
-						"type": "thrown"
-					}
-				],
 				"errorStatus": "unknown"
 			},
 			{
@@ -1539,6 +1514,11 @@
 		},
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-with-mac-heavy-test-lane",
 			"via": "import",
 			"origin": "derived"
 		},

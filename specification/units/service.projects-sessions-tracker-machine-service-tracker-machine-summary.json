@@ -27,7 +27,7 @@
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "trackerMachineSummary",
@@ -45,12 +45,22 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-place-tracker-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-status",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.projects-sessions-tracker-machine-types",
 			"via": "import",

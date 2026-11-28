@@ -16,9 +16,10 @@ import {
 	allowsE2e,
 	backgroundArguments,
 	checkEnvironment,
-	checkTypeConfig,
-	withLegacyCheckSlot
+	checkNeedsHeavyLane,
+	checkTypeConfig
 } from './checkScheduling';
+import { withMacHeavyTestLane } from '../../src/utils/execution-runtimes/withMacHeavyTestLane';
 import type {
 	CandidateTree,
 	CheckObservation,
@@ -80,25 +81,29 @@ async function runCandidateChecks(
 	const observed: CheckObservation[] = [];
 	const resources = new ResourceQueueService();
 	try {
-		const failed = await withLegacyCheckSlot(plan.mode !== 'focused', signal, () =>
-			resources.run(
-				{
-					label: 'Shared Harness checks',
-					priority: 'agent-test',
-					cpus: 1,
-					memoryMiB: 2048
-				},
-				(context) =>
-					inCheckWorktree(candidate, queue.home, (directory) =>
-						runPlan(
-							{ plan, satisfied },
-							{ directory, queue, signal, env: context.env, track: context.track },
-							cache,
-							observed
-						)
-					),
-				{ signal }
-			)
+		const failed = await withMacHeavyTestLane(
+			{ enabled: checkNeedsHeavyLane(plan), signal },
+			(env, beforeStart) =>
+				resources.run(
+					{
+						label: 'Shared Harness checks',
+						priority: 'agent-test',
+						cpus: 1,
+						memoryMiB: 2048
+					},
+					async (context) => {
+						await beforeStart();
+						return await inCheckWorktree(candidate, queue.home, (directory) =>
+							runPlan(
+								{ plan, satisfied },
+								{ directory, queue, signal, env: context.env, track: context.track },
+								cache,
+								observed
+							)
+						);
+					},
+					{ signal, env }
+				)
 		);
 		return { failed, observed };
 	} finally {

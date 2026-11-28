@@ -366,9 +366,38 @@ due scheduling is enabled, subject to the usual eligibility and grant checks.
 `launch.due: true` enables due scheduling through the existing due-owner and
 signed permit path. The primary adapter's `scheduleDue` opt-in works
 independently. Its `dueDisk` limits apply to its due work and are checked
-against the repository and managed worktree disks. `maxConcurrent` counts
-retained running work, committed reservations, and independent live
-sessions. Carry forward the verified host value.
+against the repository and managed worktree disks.
+
+The Mac launcher defaults to 20 concurrent sessions. `maxConcurrent` is an
+explicit ceiling for running and verifying sessions and committed launch
+reservations. It advertises and admits up to one new session per GiB of
+available RAM above the existing 25% reserve. The disk and inode checks still
+apply at launch. Automatic placement and due-start grants keep the stale
+telemetry, memory, swap and disk checks. Placement estimates CPU cores and RAM from the upper quartile of recent
+process-group peaks for light agent or heavy test work, with defaults for
+new installations. It scores the workload ratio against each host’s cores
+per GiB, then packs work into available CPU and RAM below 80% and 75%
+utilisation targets. The Hub shows actual readings next to both targets.
+A scheduling round deducts already assigned demand when ranking the next
+run. Mac launch CPU utilisation affects ranking. Heavy test placement uses
+CPU and RAM fit and retains the overload guard.
+
+For the combined release that enables RAM-based placement, set
+`hostEffects.launch.maxConcurrent` to 20 on `harbor-mbp-2` in place of its
+emergency value of 5. Carry forward 20 on `daniel-primary-mbp`. Preserve any
+explicit `nonHarborSessionLimit` if configured. Verify both installed ceilings
+and each host's RAM-limited free slots after activation.
+
+Managed full checks and browser suites use the separate macOS heavy test
+lanes. On a Mac with at least 10 cores, the first two suites can run at
+background priority and subsequent suites wait for a free lane and lower
+load. Use `harness resources run --heavy-test -- <command>` for other heavy
+suites. In a managed session, `tracker host-work ssh auto -- <command>`
+chooses an eligible Mac for a portable CPU-heavy command and runs it through
+the managed lane with the estimated budget. Remote execution uses the
+existing SSH route for that Tracker computer. The command must use paths
+available on either target. Follow any suite-specific host restriction.
+The lane policy leaves production monitors outside the heavy test queue.
 
 To route tester corrections, configure `adapter.followUp` for one retained
 GitHub task source. Set `target` to its `owner/repo`, `author` to the tester's

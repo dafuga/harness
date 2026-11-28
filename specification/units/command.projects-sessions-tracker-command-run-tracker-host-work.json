@@ -35,6 +35,10 @@
 			{
 				"name": "DOMException",
 				"type": "thrown"
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
 			}
 		],
 		"errorStatus": "unknown",
@@ -72,12 +76,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-tracker-host-work",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-machine-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.projects-sessions-tracker-host-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
 			"via": "import",
 			"origin": "derived"
 		},

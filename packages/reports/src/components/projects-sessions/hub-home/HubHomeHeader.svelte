@@ -9,8 +9,8 @@
 	import BrandMark from '$reports/components/BrandMark.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import { count, homeHeadline, summaryLine } from './hubHomePresentation';
-	import { compareOverviewMachines } from '$reports/lib/projects-sessions/project-overview/projectOverviewItems';
-	import type { HomeComputer } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
+	import { compareOverviewMachines } from '../../../lib/projects-sessions/project-overview/projectOverviewItems';
+	import type { HomeComputer } from '../../../lib/projects-sessions/hub-home/homeLive.types';
 	import HubHomeComputerDetail from './HubHomeComputerDetail.svelte';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
@@ -138,7 +138,13 @@
 		{#if machines.length}
 			<hx-ul class="po-machines" aria-label="Computers">
 				{#each machines as machine (machine.name)}
-					<Pill as="li" tone="po-machine hh-computer-pill" state={machine.status}>
+					<Pill
+						as="li"
+						tone={machine.utilization
+							? 'po-machine hh-computer-pill hh-machine-with-usage'
+							: 'po-machine hh-computer-pill'}
+						state={machine.status}
+					>
 						<hx-button
 							type="button"
 							class="hh-computer-trigger"
@@ -159,6 +165,14 @@
 								<hx-span>· Agents unavailable</hx-span>
 							{/if}
 							<hx-span class="po-machine-status">· {machine.status}</hx-span>
+							{#if machine.utilization}
+								<hx-span class="po-machine-utilization">
+									CPU {machine.utilization.actual.cpu === null
+										? 'unknown'
+										: `${machine.utilization.actual.cpu}%`} / {machine.utilization.target.cpu}% ·
+									RAM {machine.utilization.actual.ram}% / {machine.utilization.target.ram}% target
+								</hx-span>
+							{/if}
 						</hx-button>
 					</Pill>
 				{/each}

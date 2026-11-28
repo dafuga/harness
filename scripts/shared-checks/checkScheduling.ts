@@ -1,12 +1,20 @@
 // @harness-uid u_sbz3zzk4fx
-import { ExpectedCliError } from '../../src/core/errors';
 import { randomUUID } from 'node:crypto';
-import { spawn } from 'node:child_process';
-import { once } from 'node:events';
-import { constants, existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { open } from 'node:fs/promises';
-import { getPriority, homedir, hostname, userInfo } from 'node:os';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { getPriority, homedir, hostname } from 'node:os';
 import { join, relative } from 'node:path';
+
+import { isHeavyTestCommand } from '../../src/utils/execution-runtimes/withMacHeavyTestLane';
+import type { CheckPlan } from './sharedCheck.types';
+
+export function checkNeedsHeavyLane(plan: CheckPlan): boolean {
+	return (
+		plan.mode !== 'focused' ||
+		[...(plan.setup ?? []), ...plan.checks].some(
+			(check) => check.browser || isHeavyTestCommand(check.command)
+		)
+	);
+}
 
 export function allowsE2e(): boolean {
 	if (process.platform !== 'darwin' || process.env.GITHUB_ACTIONS === 'true') return true;
@@ -23,33 +31,6 @@ export function allowsE2e(): boolean {
 export function backgroundArguments(args: string[]): string[] {
 	const priority = process.platform === 'darwin' ? ['/usr/sbin/taskpolicy', '-b'] : [];
 	return ['-n', String(Math.max(0, 10 - getPriority())), ...priority, ...args];
-}
-
-export async function withLegacyCheckSlot<T>(
-	full: boolean,
-	signal: AbortSignal,
-	run: () => Promise<T>
-): Promise<T> {
-	if (!full || process.platform !== 'darwin') return await run();
-	// Match x9b4rr's full-check lock while older check entry points are still installed.
-	const path = join(userInfo().homedir, '.harness-full-check.lock');
-	const lock = await open(
-		path,
-		constants.O_WRONLY | constants.O_CREAT | constants.O_NOFOLLOW,
-		0o600
-	);
-	try {
-		const waiter = spawn('/usr/bin/lockf', ['3'], {
-			stdio: ['ignore', 'ignore', 'ignore', lock.fd],
-			signal
-		});
-		const [code] = await once(waiter, 'exit');
-		if (code !== 0) throw new ExpectedCliError('Could not acquire the macOS full-check slot.');
-		signal.throwIfAborted();
-		return await run();
-	} finally {
-		await lock.close();
-	}
 }
 
 export function checkEnvironment(env: Record<string, string | undefined>) {

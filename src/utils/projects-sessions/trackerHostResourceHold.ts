@@ -4,8 +4,10 @@ import type {
 	TrackerHostResources,
 	TrackerHostVolume
 } from './trackerHostResources.types';
-import { trackerMacLaunchLoad, trackerOverloadedLoadPerCore } from './trackerMachineStatus';
-import { trackerBudgetCores } from './trackerCpuBudget';
+import {
+	trackerMacSessionMemoryReservePercent,
+	trackerOverloadedLoadPerCore
+} from './trackerMachineStatus';
 
 export const trackerResourceHoldPrefix = 'Tracker host resource hold: ';
 
@@ -39,14 +41,9 @@ export function trackerHostResourceHold(
 	return reason && trackerResourceHoldPrefix + reason;
 }
 
-function pressureHold(
-	resources: TrackerHostResources,
-	{ node, budgeted }: TrackerHostResourceRequest
-) {
-	const [load, sustained] = resources.load();
-	if (budgeted && load >= trackerBudgetCores)
-		return `load ${load.toFixed(2)} (need under ${trackerBudgetCores} for non-Harbor)`;
-	if (macNodes.has(node)) return macPressureHold(resources, load, sustained);
+function pressureHold(resources: TrackerHostResources, { node }: TrackerHostResourceRequest) {
+	if (macNodes.has(node)) return macPressureHold(resources);
+	const [, sustained] = resources.load();
 	const limits = node === sharedNode ? busyShared : overloaded;
 	const ceiling = limits.loadPerCore * resources.cores();
 	if (sustained > ceiling)
@@ -57,15 +54,11 @@ function pressureHold(
 		: null;
 }
 
-function macPressureHold(resources: TrackerHostResources, load: number, sustained: number) {
+function macPressureHold(resources: TrackerHostResources) {
 	const { freePercent } = resources.memory();
-	if (freePercent === null || freePercent < 25)
-		return `free memory ${freePercent === null ? 'unknown' : `${freePercent}%`} (need at least 25%)`;
-	if (load >= trackerMacLaunchLoad)
-		return `load ${load.toFixed(2)} (need under ${trackerMacLaunchLoad})`;
-	const ceiling = trackerOverloadedLoadPerCore * resources.cores();
-	return sustained > ceiling
-		? `5-min load ${sustained.toFixed(2)} (need at most ${ceiling})`
+	const reserve = trackerMacSessionMemoryReservePercent;
+	return freePercent === null || freePercent < reserve
+		? `free memory ${freePercent === null ? 'unknown' : `${freePercent}%`} (need at least ${reserve}%)`
 		: null;
 }
 

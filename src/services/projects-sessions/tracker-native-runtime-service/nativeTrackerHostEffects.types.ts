@@ -32,7 +32,7 @@ export interface TrackerHostEffects {
 
 export type TrackerHostLaunchConfig = TrackerHostResourceLimits & {
 	maxConcurrent?: number;
-	/** Concurrent non-Harbor sessions on a host with a Tracker CPU budget. */
+	/** Optional explicit non-Harbor session ceiling on MB2. */
 	nonHarborSessionLimit?: number;
 	legacyRunDirectory?: string;
 	repositories: Record<string, TrackerHostRepository>;

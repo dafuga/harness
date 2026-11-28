@@ -25,6 +25,8 @@ const launchRules = [
 	'Add or update relevant tests for each change and run them before tracker done. Fix failures or record the blocker.',
 	'Run only the tests relevant to your change. Run focused unit and E2E tests for changed modules and their dependents, and typecheck and lint the changed files.',
 	'Reuse GitHub CI results when available. Run the full suite once per combined release.',
+	'For a portable CPU-heavy suite, use `tracker host-work ssh auto -- <command>` to select a Mac with CPU and RAM headroom. Use absolute paths available on either eligible Mac. Follow any suite-specific host restriction.',
+	'For heavy suites with a required host, use `harness resources run --heavy-test -- <command>` on that computer.',
 	'',
 	'## Video evidence',
 	'If the task asks for a video, deliver a screen recording of the real app.',

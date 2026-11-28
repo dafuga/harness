@@ -35,7 +35,17 @@ export type OverviewCard = {
 };
 
 /** A computer chip. Older Trackers omit the remote work count. */
-export type OverviewMachine = { name: string; status: MachineStatus; remoteRuns?: number };
+export type MachineUtilization = {
+	actual: { cpu: number | null; ram: number };
+	target: { cpu: number; ram: number };
+};
+
+export type OverviewMachine = {
+	name: string;
+	status: MachineStatus;
+	remoteRuns?: number;
+	utilization?: MachineUtilization;
+};
 
 /** Confirmed overview data, or unavailable when the local tracker cannot be read. */
 export type OverviewSnapshot =

@@ -5,10 +5,15 @@ import { trackerHostWork } from '../../utils/projects-sessions/trackerHostWork';
 import type { TrackerHostWork } from '../../utils/projects-sessions/trackerHostWork.types';
 import { TrackerMachineRepository } from '../../repositories/projects-sessions/TrackerMachineRepository';
 import { trackerResourceSample } from '../../repositories/projects-sessions/tracker-machine-repository/trackerResourceSample';
-import { placeTrackerWork } from '../../utils/projects-sessions/placeTrackerWork';
+import {
+	placeTrackerWork,
+	trackerObservedDemand
+} from '../../utils/projects-sessions/placeTrackerWork';
 import {
 	trackerMachineRole,
-	trackerMacLaunchLoad,
+	trackerSessionOverload,
+	trackerMacRole,
+	trackerMacReportedRamSlots,
 	trackerMachineStatus
 } from '../../utils/projects-sessions/trackerMachineStatus';
 import type {
@@ -126,7 +131,14 @@ export class TrackerMachineService {
 	}
 
 	place(request: TrackerPlacementRequest) {
-		return placeTrackerWork(this.rows(), request);
+		const rows = this.rows();
+		const history = rows.flatMap(({ node }) => this.history(node, 6));
+		const demand = trackerObservedDemand(request.kind ?? 'general', history);
+		return placeTrackerWork(rows, {
+			...request,
+			needsCores: request.needsCores ?? demand.cores,
+			needsRamGB: request.needsRamGB ?? demand.ramGB
+		});
 	}
 
 	/**
@@ -137,10 +149,10 @@ export class TrackerMachineService {
 		const row = this.rows().find((candidate) => candidate.node === node);
 		if (!row?.sample) return null;
 		if ((row.age_s ?? Infinity) * 1000 > grantSampleAge) return 'no fresh machine sample';
-		if (row.status === 'overloaded') return `${node} is overloaded: ${row.reasons[0]}`;
-		const oneMinute = row.sample.load[0];
-		if ((row.role === 'primary' || row.role === 'runner') && oneMinute >= trackerMacLaunchLoad)
-			return `${node} is overloaded: 1-min load ${oneMinute} (need under ${trackerMacLaunchLoad})`;
+		const overload = trackerSessionOverload(row);
+		if (overload) return `${node} is overloaded: ${overload}`;
+		if (trackerMacRole(row.role) && trackerMacReportedRamSlots(row.sample.ram) < 1)
+			return `${node} has insufficient RAM for a new session`;
 		return null;
 	}
 }

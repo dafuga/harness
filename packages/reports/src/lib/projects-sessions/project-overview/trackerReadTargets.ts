@@ -1,4 +1,5 @@
 // @harness-uid u_jbitb4ddsm
+import { z } from 'zod';
 const TRACKER_ORIGIN = 'http://127.0.0.1:7701';
 export const TRACKER_TIMEOUT_MS = 1500;
 
@@ -24,3 +25,9 @@ export const MACHINE_STATUSES: ReadonlySet<string> = new Set([
 	'overloaded',
 	'offline'
 ]);
+
+const percent = z.number().int().min(0).max(100);
+export const trackerUtilizationSchema = z.strictObject({
+	actual: z.strictObject({ cpu: percent.nullable(), ram: percent }),
+	target: z.strictObject({ cpu: percent, ram: percent })
+});
