@@ -26,7 +26,7 @@ export async function sqliteRuntimePackage(project: string): Promise<void> {
 		join(directory, 'package.json'),
 		JSON.stringify({
 			name: '@dafuga01/harness',
-			version: '0.1.4',
+			version: '0.1.5',
 			type: 'module',
 			exports: { './sqlite': { types: './sqlite.d.ts', default: './sqlite.js' } }
 		})
