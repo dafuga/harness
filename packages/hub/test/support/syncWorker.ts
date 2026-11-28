@@ -59,14 +59,12 @@ export default {
 			bucket: env.CACHE,
 			accounts: env.ACCOUNT_SYNC,
 			approvalPush: {
-				publicKey:
-					'BP4z9KsN6nGRTbVYI_c7VJSPQTBtkgcy27mlmlMoZIIgDll6e3vCYLocInmYWAmS6TlzAC8wEqKK6PBru3jl7A8',
-				deliver: async () => {
-					await env.DB.prepare(
-						"INSERT INTO fixture_approval_deliveries (kind) VALUES ('device-approval')"
-					).run();
-					return 'delivered';
-				}
+				web: {
+					publicKey:
+						'BP4z9KsN6nGRTbVYI_c7VJSPQTBtkgcy27mlmlMoZIIgDll6e3vCYLocInmYWAmS6TlzAC8wEqKK6PBru3jl7A8',
+					deliver: () => fixtureDelivery(env.DB, 'device-approval')
+				},
+				apns: { deliver: () => fixtureDelivery(env.DB, 'apple-device-approval') }
 			},
 			now: Date.now()
 		});
@@ -74,3 +72,8 @@ export default {
 		return response;
 	}
 };
+
+async function fixtureDelivery(db: D1Database, kind: string) {
+	await db.prepare('INSERT INTO fixture_approval_deliveries (kind) VALUES (?)').bind(kind).run();
+	return 'delivered' as const;
+}

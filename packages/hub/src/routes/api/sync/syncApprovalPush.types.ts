@@ -2,15 +2,33 @@ import type { PushSubscriptionTarget } from '../../../../../../src/utils/project
 import type { PushDelivery } from '../../../../../../src/services/projects-sessions/tracker-web-push-service/webPush.types';
 
 export interface ApprovalPush {
-	publicKey: string;
-	deliver: (target: PushSubscriptionTarget) => Promise<PushDelivery>;
+	web?: WebApprovalPush;
+	apns?: ApnsApprovalPush;
 	schedule?: (work: Promise<void>) => void;
 }
 
-export interface ApprovalPushRow {
+export interface WebApprovalPush {
+	publicKey: string;
+	deliver: (target: PushSubscriptionTarget) => Promise<PushDelivery>;
+}
+
+export interface ApnsApprovalPush {
+	deliver: (token: string) => Promise<PushDelivery>;
+}
+
+export interface ApprovalDeviceRow {
 	device: string;
 	session_hash: string;
+}
+
+export interface ApprovalPushRow extends ApprovalDeviceRow {
 	endpoint: string;
 	p256dh: string;
 	auth: string;
 }
+
+export interface ApprovalApnsRow extends ApprovalDeviceRow {
+	token: string;
+}
+
+export type ApprovalPushTable = 'approval_web_push' | 'approval_apns';

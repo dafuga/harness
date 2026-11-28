@@ -27,6 +27,11 @@ export interface HubEnv {
 	HARNESS_APPROVAL_PUSH_PUBLIC_KEY?: string;
 	/** Hub-only VAPID signing binding for generic approval notices. */
 	HARNESS_APPROVAL_PUSH_PRIVATE_KEY?: string;
+	HARNESS_APPROVAL_APNS_ENVIRONMENT?: 'sandbox' | 'production';
+	HARNESS_APPROVAL_APNS_TEAM_ID?: string;
+	HARNESS_APPROVAL_APNS_KEY_ID?: string;
+	/** Harness-specific Apple signing key held only by the Hub. */
+	HARNESS_APPROVAL_APNS_PRIVATE_KEY?: string;
 	DB?: D1Database;
 	CACHE?: R2Bucket;
 	/** The relay's host objects, reachable through this binding only. */

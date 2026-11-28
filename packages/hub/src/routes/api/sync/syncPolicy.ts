@@ -2,6 +2,7 @@ import type { Handler } from './syncRoutes.types';
 import type { SyncCall, SyncDeps } from './syncPolicy.types';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
 import { approvalPush } from './syncApprovalPush';
+import { approvalApns } from './syncApprovalApns';
 import { bootstrap, readRecovery } from './syncBootstrap';
 import { changeDevices } from './syncDevices';
 import { bindDeviceSession, readDeviceSession, requireApprovedAccess } from './syncDeviceSession';
@@ -23,6 +24,10 @@ const routes: Record<string, Record<string, { handler: Handler; parts: number[] 
 		GET: { handler: approvalPush, parts: [1] },
 		POST: { handler: approvalPush, parts: [1] },
 		DELETE: { handler: approvalPush, parts: [1] }
+	},
+	'approval-apns': {
+		GET: { handler: approvalApns, parts: [1] },
+		POST: { handler: approvalApns, parts: [1] }
 	},
 	'device-session': {
 		GET: { handler: readDeviceSession, parts: [1] },
@@ -88,6 +93,7 @@ async function dispatch(request: Request, deps: SyncDeps): Promise<Response> {
 		url,
 		account: session.actor.id,
 		sessionHash: session.idHash,
+		sessionKind: session.kind,
 		device,
 		deps: { ...deps, db: deps.db },
 		parts

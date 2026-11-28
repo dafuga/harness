@@ -2,7 +2,9 @@ import { subscriptionInput } from '../push/pushPayload';
 import { readAccountChain, requireEnrollmentApprover } from './syncDeviceSession';
 import { readSyncJson, syncJson, syncProblem } from './syncHttp';
 import type { SyncCall } from './syncPolicy.types';
-import type { ApprovalPush, ApprovalPushRow } from './syncApprovalPush.types';
+import type { ApprovalPush, ApprovalPushRow, WebApprovalPush } from './syncApprovalPush.types';
+import { approvalPushTargets } from './syncApprovalTargets';
+import { deliverApnsTargets } from './syncApprovalApns';
 
 /** A Google session must prove its approved installation before it can listen for approvals. */
 export async function approvalPush(call: SyncCall): Promise<Response> {
@@ -12,9 +14,9 @@ export async function approvalPush(call: SyncCall): Promise<Response> {
 		return syncProblem(403, 'origin-denied');
 	const refusal = await requireEnrollmentApprover(call, true);
 	if (refusal) return refusal;
-	if (request.method === 'GET')
-		return syncJson({ publicKey: deps.approvalPush?.publicKey ?? null });
-	if (!deps.approvalPush) return syncProblem(404, 'unavailable');
+	const push = deps.approvalPush?.web;
+	if (request.method === 'GET') return syncJson({ publicKey: push?.publicKey ?? null });
+	if (!push) return syncProblem(404, 'unavailable');
 	if (request.method === 'DELETE') {
 		await deleteTarget(call);
 		return syncJson({ subscribed: false });
@@ -25,7 +27,7 @@ export async function approvalPush(call: SyncCall): Promise<Response> {
 	return syncJson({ subscribed: true });
 }
 
-async function saveTarget(call: SyncCall, target: Parameters<ApprovalPush['deliver']>[0]) {
+async function saveTarget(call: SyncCall, target: Parameters<WebApprovalPush['deliver']>[0]) {
 	const {
 		account,
 		device,
@@ -59,34 +61,31 @@ async function deleteTarget(call: SyncCall) {
 /** Fan out only the generic notice, independently of the enrollment response. */
 export async function notifyApprovalDevices(call: SyncCall): Promise<void> {
 	const push = call.deps.approvalPush;
-	if (!push) return;
+	if (!push || (!push.web && !push.apns)) return;
 	const delivery = deliver(call, push).catch(() => {});
 	if (push.schedule) push.schedule(delivery);
 	else await delivery;
 }
 
 async function deliver(call: SyncCall, push: ApprovalPush) {
-	const { db, now } = call.deps;
-	const chain = await readAccountChain(db, call.account);
+	const chain = await readAccountChain(call.deps.db, call.account);
 	if (!chain) return;
-	const { results } = await db
-		.prepare(
-			`SELECT p.device, p.session_hash, p.endpoint, p.p256dh, p.auth
-			FROM approval_web_push p JOIN auth_sessions s ON s.id_hash = p.session_hash
-			WHERE p.account = ? AND p.device != ? AND s.actor_id = p.account
-				AND s.sealed_device_id = p.device AND s.revoked_at IS NULL AND s.expires_at > ?
-				AND ? = (SELECT hash FROM sealed_chain WHERE account = p.account ORDER BY seq DESC LIMIT 1)`
-		)
-		.bind(call.account, call.device, now, chain.head)
-		.all<ApprovalPushRow>();
-	const active = results.filter(({ device }) => {
-		const entry = chain.devices[device];
-		return entry?.active && entry.role === 'admin';
-	});
+	await Promise.allSettled([
+		push.web && deliverWebTargets(call, chain, push.web),
+		push.apns && deliverApnsTargets(call, chain, push.apns)
+	]);
+}
+
+async function deliverWebTargets(
+	call: SyncCall,
+	chain: NonNullable<Awaited<ReturnType<typeof readAccountChain>>>,
+	push: WebApprovalPush
+) {
+	const active = await approvalPushTargets<ApprovalPushRow>(call, chain, 'approval_web_push');
 	await Promise.allSettled(active.map((target) => deliverTarget(call, push, target)));
 }
 
-async function deliverTarget(call: SyncCall, push: ApprovalPush, target: ApprovalPushRow) {
+async function deliverTarget(call: SyncCall, push: WebApprovalPush, target: ApprovalPushRow) {
 	const { endpoint, p256dh, auth } = target;
 	if ((await push.deliver({ endpoint, keys: { p256dh, auth } })) !== 'gone') return;
 	await call.deps.db
