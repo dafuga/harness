@@ -5,7 +5,7 @@ import {
 	trackerPlanningSchema,
 	trackerStageSchema
 } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
-import { trackerPersonalReminder } from '../../../../../../src/utils/projects-sessions/trackerPersonalReminder';
+import { trackerUpcomingReminder } from '../../../../../../src/utils/projects-sessions/trackerUpcomingReminder';
 import { trackerPersonalAgent } from '../../../../../../src/utils/projects-sessions/trackerUnattendedHold';
 import { trackerStructuredAsk } from '../../../../../../src/utils/projects-sessions/trackerStructuredAsk';
 import { sanitizeTrackerText } from '../../../../../../src/utils/projects-sessions/sanitizeTrackerText';
@@ -36,7 +36,10 @@ export function visible(item: TrackerItem): boolean {
 
 export function projectHeader(item: TrackerItem) {
 	const stage = trackerStageSchema.safeParse(item.stage);
-	const reminder = trackerPersonalReminder({ ...item, remindAt: item.remind_at });
+	const reminder = trackerUpcomingReminder(
+		{ ...item, remindAt: item.remind_at, autoLaunch: Boolean(item.auto) },
+		Date.now()
+	);
 	return {
 		id: item.id,
 		...(reminder && { reminder }),
