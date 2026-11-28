@@ -76,7 +76,10 @@ test(
 	() =>
 		withTempDir('hnt-area-claim-', async (root) => {
 			const host = areaLauncher(withOpenPulls(root, areaCheckout(root)));
-			host.queue('manual0001', '');
+			host.runtime.store.appendLocal({
+				itemId: 'manual0001',
+				fields: { title: 'Manual work', project: 'Harness', kind: 'task', status: 'in_progress' }
+			});
 			const reply = await host.runtime.coordination.claim({
 				id: 'manual0001',
 				areas: ['new/file.ts'],

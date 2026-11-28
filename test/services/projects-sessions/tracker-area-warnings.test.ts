@@ -65,12 +65,12 @@ launchTest('over 512 mentioned tracked paths warn and start', async (root) => {
 
 launchTest('an inferred overlap with a declared area warns and starts', async (root) => {
 	const host = areaLauncher(areaCheckout(root, ['src/launcher/start.ts']));
-	host.queue('owner00001', 'Areas: src/launcher');
-	host.queue('guess00002', 'Look at src/launcher/start.ts first');
+	host.queue('aowner0001', 'Areas: src/launcher');
+	host.queue('bguess0002', 'Look at src/launcher/start.ts first');
 	await host.tick(3);
-	expect(host.started()).toEqual(['owner00001', 'guess00002']);
-	expect(host.brief('guess00002')).toContain('Possible overlap');
-	expect(host.brief('guess00002')).toContain('owner00001');
+	expect(host.started()).toEqual(['aowner0001', 'bguess0002']);
+	expect(host.brief('bguess0002')).toContain('Possible overlap');
+	expect(host.brief('bguess0002')).toContain('aowner0001');
 });
 
 launchTest('an invalid declared path is ignored with a warning', async (root) => {
@@ -103,7 +103,10 @@ test.each([
 		const decision = await permit(item as Parameters<typeof permit>[0], start);
 		expect(decision.allowed).toBe(true);
 		expect(briefFor(start)).toContain('declared areas were not checked or recorded');
-		store.appendLocal({ itemId: 'spoke00001', fields: { title: 'Synthetic', status: 'open' } });
+		store.appendLocal({
+			itemId: 'spoke00001',
+			fields: { title: 'Synthetic', status: 'open', project: 'Harness' }
+		});
 		const claim = await commands.claim({
 			id: 'spoke00001',
 			areas: ['src/launcher'],
