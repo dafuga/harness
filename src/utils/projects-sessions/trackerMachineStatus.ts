@@ -33,7 +33,7 @@ export function trackerMachineRole(node: string): TrackerMachineRole {
 	return roles.get(node) ?? 'other';
 }
 
-/** Judge a computer from its latest sample and the samples of the last few minutes. */
+/** Judge current machine health. Recent swap growth only counts during elevated memory pressure. */
 export function trackerMachineStatus(
 	latest: TrackerResourceSample | null,
 	recent: readonly TrackerResourceSample[],
@@ -44,7 +44,9 @@ export function trackerMachineStatus(
 	const age_s = Math.round(age / 1000);
 	if (!(age <= trackerSampleOfflineMs))
 		return { status: 'offline', reasons: [`no sample for ${Math.round(age / minute)} min`], age_s };
-	const growth = swapGrowthMB([...recent, latest], now);
+	const pressure = latest.ram.pressure;
+	const growth =
+		pressure === 'warn' || pressure === 'critical' ? swapGrowthMB([...recent, latest], now) : 0;
 	for (const [status, limits] of levels) {
 		const reasons = breaches(latest, growth, { limits, status });
 		if (reasons.length) return { status, reasons, age_s };
@@ -79,8 +81,9 @@ function breaches(
 		reasons.push(
 			`5-min load ${load} > ${round(loadLimit)} (${limits.loadPerCore}x ${sample.cores} cores)`
 		);
-	reasons.push(...memoryBreaches(sample.ram, limits.ramPct, status));
-	if (growth > limits.swapGrowthMB) reasons.push(`swap grew ${growth} MB in 10 min`);
+	const swapIsGrowing = growth > limits.swapGrowthMB;
+	reasons.push(...memoryBreaches(sample.ram, limits.ramPct, status, swapIsGrowing));
+	if (swapIsGrowing) reasons.push(`swap grew ${growth} MB in 10 min`);
 	// Absolute free space protects a disk; a percentage floor would hold a large, full-ish disk.
 	for (const disk of sample.disks)
 		if (disk.free_gb < limits.diskFreeGB)
@@ -91,7 +94,8 @@ function breaches(
 function memoryBreaches(
 	ram: TrackerResourceSample['ram'],
 	floor: number,
-	status: TrackerMachineState
+	status: TrackerMachineState,
+	swapIsGrowing: boolean
 ): string[] {
 	const reasons: string[] = [];
 	// macOS counts reclaimable memory in its own reading, so prefer it when present.
@@ -101,7 +105,8 @@ function memoryBreaches(
 			`RAM available ${percent}% < ${floor}% (${round(ram.available_mb / 1024)} GB free)`
 		);
 	const pressure = status === 'overloaded' ? 'critical' : 'warn';
-	if (ram.pressure === pressure) reasons.push(`macOS memory pressure ${pressure}`);
+	if (ram.pressure === pressure || (swapIsGrowing && ram.pressure === 'warn'))
+		reasons.push(`macOS memory pressure ${ram.pressure}`);
 	return reasons;
 }
 

@@ -2,11 +2,9 @@
 	"name": "current-machine-health",
 	"goal": "Prove the recorded primary Mac recovery clears the Hub overload chip on the next sample, with current machine reasons shared by Tracker and Hub.",
 	"createdAt": "2026-11-28T10:19:22.639Z",
-	"updatedAt": "2026-11-28T10:20:31.337Z",
+	"updatedAt": "2026-11-28T10:30:24.592Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T10:30:21.344Z",
+			"evidence": "Frozen 1fa490a143 browser replay failed on missing pill reason in five viewports on harbor-mbp-2. Frozen Tracker regression e35c69c7c9 failed on swap grew 6146 MB in 10 min and on peer recovery."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T10:30:24.592Z",
+			"evidence": "Require elevated current pressure for swap growth to count. Render the existing Tracker reason inline in the shared Home pill and wrap it within phone width."
 		},
 		{
 			"id": "green",
@@ -42,6 +44,11 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Check consumers of current machine status and recent resource history",
 			"status": "pending"
 		}
 	],

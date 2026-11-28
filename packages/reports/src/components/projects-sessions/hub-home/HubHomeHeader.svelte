@@ -150,15 +150,20 @@
 							}}
 						>
 							<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
-							{machine.name}
-							{#if machine.agentCount !== undefined}
-								<hx-span>· {count(machine.agentCount, 'agent')}</hx-span>
-							{:else if machine.remoteRuns && machine.status !== 'offline'}
-								<hx-span>· {count(machine.remoteRuns, 'remote run')}</hx-span>
-							{:else}
-								<hx-span>· Agents unavailable</hx-span>
-							{/if}
-							<hx-span class="po-machine-status">· {machine.status}</hx-span>
+							<hx-span class="hh-computer-label">
+								{machine.name}
+								{#if machine.agentCount !== undefined}
+									{` · ${count(machine.agentCount, 'agent')}`}
+								{:else if machine.remoteRuns && machine.status !== 'offline'}
+									{` · ${count(machine.remoteRuns, 'remote run')}`}
+								{:else}
+									{' · Agents unavailable'}
+								{/if}
+								<hx-span class="po-machine-status">{` · ${machine.status}`}</hx-span>
+								{#if (machine.status === 'busy' || machine.status === 'overloaded') && machine.reasons?.[0]}
+									{` · ${machine.reasons[0]}`}
+								{/if}
+							</hx-span>
 						</hx-button>
 					</Pill>
 				{/each}
@@ -173,12 +178,15 @@
 
 <style>
 	:global(.po-machine.hh-computer-pill) {
+		box-sizing: border-box;
+		max-width: 100%;
 		padding: 0;
 	}
 	.hh-computer-trigger {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--hx-space-8);
+		min-width: 0;
 		min-height: 44px;
 		padding-inline: var(--hx-space-12);
 		border: 0;
@@ -190,6 +198,12 @@
 	}
 	.hh-computer-trigger:hover {
 		background: var(--hx-color-hover);
+	}
+	.hh-computer-label {
+		min-width: 0;
+		overflow-wrap: anywhere;
+		text-align: start;
+		white-space: normal;
 	}
 	.hh-inbox-link {
 		margin-inline-start: auto;
