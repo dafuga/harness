@@ -15,6 +15,47 @@ export interface TrackerAdapterSource extends GithubIssueIntakeSource {
 	paused: boolean;
 }
 
+export type TrackerAdapterWorkSource = Pick<
+	TrackerAdapterSource,
+	| 'id'
+	| 'target'
+	| 'kind'
+	| 'enabled_at'
+	| 'agent'
+	| 'project'
+	| 'owner'
+	| 'model'
+	| 'computer'
+	| 'every'
+	| 'every_tz'
+>;
+
+export type TrackerStoredAdapterSource = TrackerAdapterSource | TrackerMessageSource;
+
+export interface TrackerMessageSource {
+	id: string;
+	type: 'gmail';
+	target: string;
+	enabled_at: number;
+	cursor: number;
+	paused: boolean;
+	title: string;
+	match: TrackerMessageMatch;
+	quiet_hours?: string;
+	effect: TrackerMessageEffect;
+}
+
+export interface TrackerMessageMatch {
+	senders: string[];
+	domains: string[];
+	threads: string[];
+	keyword?: string;
+}
+
+export type TrackerMessageEffect =
+	| { kind: 'notify'; item_id: string }
+	| { kind: 'task'; agent: string; project: string; owner: string | null; launch: boolean };
+
 export type TrackerAdapterSourceAction = 'pause' | 'resume' | 'remove';
 
 export type TrackerAdapterRemoteState = 'open' | 'closed';

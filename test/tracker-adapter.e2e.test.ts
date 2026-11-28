@@ -2,6 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { withTempDir } from './support/temporary';
+import { verifyTrackerMessageIntake } from './support/trackerMessageIntakeFixture';
 import {
 	adapterFixture,
 	adapterIssue,
@@ -49,7 +50,6 @@ test('poll holds the shared lease across a delayed read and releases it on cance
 		}
 	});
 });
-
 test('poll retries a partially consumed feed and acknowledges the write only after pickup', async () => {
 	await withTempDir('harness-adapter-restart-', async (directory) => {
 		const file = join(directory, 'tracker.db');
@@ -78,7 +78,6 @@ test('poll retries a partially consumed feed and acknowledges the write only aft
 		}
 	});
 });
-
 test('poll commits links and event receipts with their operations and preserves close and reopen', async () => {
 	const fixture = adapterFixture();
 	const { database, feed, service, store, items } = fixture;
@@ -123,7 +122,6 @@ test('poll commits links and event receipts with their operations and preserves 
 		database.close();
 	}
 });
-
 test('poll adopts a matching item without reopening it or creating a second pickup', async () => {
 	const { database, feed, service, store, markTracked } = adapterFixture();
 	try {
@@ -152,6 +150,7 @@ test('poll adopts a matching item without reopening it or creating a second pick
 	}
 });
 
+test('native Gmail rules preview, defer, notify and create once', verifyTrackerMessageIntake);
 async function verifyWriteRetry(restarted: ReturnType<typeof adapterFixture>): Promise<void> {
 	await expect(restarted.service.poll(adapterSourceId)).resolves.toMatchObject({
 		actions: [],

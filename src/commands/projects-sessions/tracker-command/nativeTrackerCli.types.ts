@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import type { TrackerMessageEffect } from '../../../repositories/projects-sessions/TrackerAdapterRepository.types';
 import type { TrackerItemMatch } from '../../../utils/projects-sessions/checkTrackerItem.types';
 import type { TrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
 import type { TrackerAdapterPollResult } from '../../../services/projects-sessions/TrackerAdapterPollService.types';
@@ -96,7 +97,8 @@ export interface NativeTrackerAlertReceipt {
 
 export interface NativeTrackerAdapter {
 	id: string;
-	agent: string;
+	agent?: string;
+	effect?: TrackerMessageEffect;
 	paused: boolean;
 	runner?: string;
 	last_error?: string;

@@ -2,6 +2,7 @@
 import { TrackerHostProcessAdapter } from '../../../adapters/projects-sessions/TrackerHostProcessAdapter';
 import { TrackerAdapterLeaseAdapter } from '../../../adapters/projects-sessions/TrackerAdapterLeaseAdapter';
 import { trackerTesterLogin } from '../tracker-adapter-poll-service/readTrackerIntake';
+import { trackerGmailHost } from './trackerGmailHost';
 import { trackerGithubCli } from './trackerGithubCli';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
@@ -31,6 +32,7 @@ export function trackerHostAdapter(
 	const { followUp } = config;
 	return {
 		manual: config.manual,
+		...(config.gmail && { messageProviders: { gmail: trackerGmailHost(config.gmail) } }),
 		intakePolicy: (source) =>
 			source.target === followUp?.target
 				? {
@@ -106,6 +108,8 @@ export function configuredHostAdapter(
 ) {
 	const { adapter, hostEffects } = options;
 	const binding = hostEffects?.adapter;
-	const dependencies = adapter ?? (binding && trackerHostAdapter(binding, runs, now));
+	const dependencies = adapter
+		? { ...adapter, now: adapter.now ?? now }
+		: binding && trackerHostAdapter(binding, runs, now);
 	return dependencies ? new TrackerAdapterPollService(store, dependencies) : undefined;
 }

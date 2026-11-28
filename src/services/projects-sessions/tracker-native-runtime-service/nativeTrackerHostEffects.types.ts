@@ -75,6 +75,7 @@ export type TrackerHostAdapterBinding =
 	| { github: { executable: string; configDirectory: string } };
 
 export type TrackerHostAdapterConfig = TrackerHostAdapterBinding & {
+	gmail?: { account: string; tokenDriver: string };
 	manual?: true;
 	followUp?: TrackerGithubFollowUpPolicy & {
 		target: string;
