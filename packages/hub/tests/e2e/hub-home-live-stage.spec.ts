@@ -54,10 +54,10 @@ for (const [device, width, height] of [
 		await card.getByRole('button', { name: cardTitle, exact: true }).click();
 		const detail = page.getByRole('dialog', { name: 'Job details' });
 		await expect(detail).toContainText(claim);
+		await captureNeedsYou(page, `live-card-milestone-${device}`, detail);
 		await expect(detail).toContainText(milestone);
 		await expect(detail).not.toContainText('Stage: Idea');
 		await expect(detail.getByRole('link', { name: proofUrl })).toHaveAttribute('href', proofUrl);
 		await expect(detail.getByRole('link', { name: titleUrl })).toHaveAttribute('href', titleUrl);
-		await captureNeedsYou(page, `live-card-milestone-${device}`, detail);
 	});
 }
