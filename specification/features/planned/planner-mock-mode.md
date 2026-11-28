@@ -1,3 +1,11 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
+
 # Feature: Mock mode for costly app tests
 
 ## Overview
