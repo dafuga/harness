@@ -63,12 +63,13 @@ for (const viewport of scenario.viewports)
 			try {
 				const id = 'fixturemac';
 				store.appendLocal({ itemId: id, fields: { title, project: 'Fixture', status: 'open' } });
+				// Home reads active runs as well as history, so its query needs ended_at.
 				database.exec(
-					`CREATE TABLE runs(id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT)`
+					`CREATE TABLE runs(id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT, ended_at INTEGER)`
 				);
 				database
-					.prepare("INSERT INTO runs VALUES (1, ?, ?, 'finished', 'sol', 'done')")
-					.run(id, now());
+					.prepare("INSERT INTO runs VALUES (1, ?, ?, 'finished', 'sol', 'done', ?)")
+					.run(id, now(), now());
 				expect((await post(api, `/items/${id}/stage`, { stage: 'detail' })).status).toBe(200);
 				expect(
 					(
