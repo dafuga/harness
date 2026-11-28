@@ -2,7 +2,7 @@
 	"name": "7qgnnc-context-handoff",
 	"goal": "When a managed session reaches the context limit, preserve its checkpoint and continue the same Tracker item and model in a fresh session exactly once.",
 	"createdAt": "2026-11-28T11:03:23.056Z",
-	"updatedAt": "2026-11-28T11:04:23.424Z",
+	"updatedAt": "2026-11-28T11:07:49.844Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T11:07:47.741Z",
+			"evidence": "Committed c4a09cd709. Formal checkpoint 68a9fc0d records the unsampled context checkpoint failing because no close was attempted."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T11:07:49.844Z",
+			"evidence": "Recognize a same-host checkpoint from the current owned attempt independently of token sampling, prompt workers to stay in progress, alert on overdue notes while retaining the live run, and prefer the recorded recovery model for that checkpoint."
 		},
 		{
 			"id": "green",
@@ -42,6 +46,11 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Check other context handoff, worker settlement and requeue paths for the same blocked continuation",
 			"status": "pending"
 		}
 	],

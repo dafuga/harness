@@ -109,21 +109,6 @@ export function contextAlert(
 	);
 }
 
-export function recordHandoffFailure(
-	store: TrackerPersistenceService,
-	target: TrackerHandoffTarget,
-	now: number
-) {
-	const { pane, id } = target;
-	const reason = `Session ${pane.name} exceeded 150,000 context tokens and stayed idle without filing its requested handoff after 30 minutes.`;
-	recordWatchdogAlert(
-		store,
-		{ itemId: id, session: pane.name, kind: 'handoff-failed', reason, identity: pane.key },
-		now,
-		`Tracker recovery: ${reason} Chief of Staff should inspect the pane and recover its worktree before unblocking.`
-	);
-}
-
 export function recordOverdueAlert(
 	store: TrackerPersistenceService,
 	run: TrackerRunReceipt,

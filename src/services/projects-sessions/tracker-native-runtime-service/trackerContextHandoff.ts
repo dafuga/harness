@@ -4,17 +4,22 @@ import { trackerStoredSchedulingHold } from '../../../repositories/projects-sess
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { WatchdogPaneService } from '../WatchdogPaneService';
-import type { WatchdogItem, WatchdogPane, WatchdogScan } from '../WatchdogPaneService.types';
+import type {
+	WatchdogItem,
+	WatchdogPane,
+	WatchdogRun,
+	WatchdogScan
+} from '../WatchdogPaneService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { handoffRunOwnership } from './trackerHostWatchdogState';
-import { contextAlert, recordHandoffFailure } from './trackerHostWatchdogAlerts';
+import { contextAlert } from './trackerHostWatchdogAlerts';
 import { sessionHealthInterval } from './trackerSessionHealth';
+import { trackerContextCheckpointPrefix } from './trackerWatchdogContext';
 import type { TrackerHandoffAttempt, TrackerHandoffTarget } from './trackerWatchdogContext.types';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 
 const contextLimit = 150_000;
 const panes = new WatchdogPaneService();
-const resumePrefix = 'stopped: watchdog context handoff; resume from:';
 
 export async function trackerContextHandoffs(
 	store: TrackerPersistenceService,
@@ -43,14 +48,35 @@ function handoffTarget(
 	pane: WatchdogPane
 ): TrackerHandoffTarget | undefined {
 	if (!pane.live) return undefined;
-	const requested = Number(store.getMeta(handoffKey(pane)) ?? 0);
-	if ((pane.contextTokens ?? 0) <= contextLimit && !requested) return undefined;
 	const run = scan.runs.find((candidate) => panes.matchesRun(pane, candidate));
 	const row = run
 		? scan.items.find(({ id }) => id === run.itemId)
 		: panes.manualItem(pane, scan.items);
 	if (!handoffEligible(row)) return undefined;
+	const requested =
+		Number(store.getMeta(handoffKey(pane))) || checkpointStart(row, pane, run, scan.host);
+	if ((pane.contextTokens ?? 0) <= contextLimit && !requested) return undefined;
 	return { pane, id: row.id, requested, runId: run?.id };
+}
+
+function checkpointStart(
+	row: WatchdogItem,
+	pane: WatchdogPane,
+	run: WatchdogRun | undefined,
+	host: string
+) {
+	if (!run) return 0;
+	const startedAt = Math.max(pane.createdAt, run.startedAt ?? 0, run.resumedAt ?? 0);
+	return row.notes?.some(
+		({ node, at, text }) => node === host && at >= startedAt && isContextCheckpoint(text)
+	)
+		? startedAt
+		: 0;
+}
+
+function isContextCheckpoint(text: string): boolean {
+	const prefix = trackerContextCheckpointPrefix;
+	return text.toLowerCase().startsWith(prefix) && text.slice(prefix.length).trim().length > 8;
 }
 
 function handoffEligible(row?: WatchdogItem): row is WatchdogItem {
@@ -70,10 +96,7 @@ function handoffReady(item: TrackerItem, requested: number, node: string, now: n
 		!trackerStoredSchedulingHold(item, now) &&
 		item.notes_log.some(
 			({ at, text, node: author }) =>
-				author === node &&
-				Date.parse(at) >= requested &&
-				text.toLowerCase().startsWith(resumePrefix) &&
-				text.length > resumePrefix.length + 8
+				author === node && Date.parse(at) >= requested && isContextCheckpoint(text)
 		)
 	);
 }
@@ -136,22 +159,23 @@ async function finishHandoff(
 	signal: AbortSignal
 ) {
 	const { id, pane, requested } = target;
+	const ready = () => handoffReady(items.getStored(id), requested, store.node, now);
 	const stillComplete = () => {
 		const current = handoffRunOwnership(store, { id, runId: attempt.runId, pane });
 		return Boolean(
-			current &&
-			current.token === attempt.token &&
-			current.observed === attempt.observed &&
-			handoffReady(items.getStored(id), requested, store.node, now)
+			current && current.token === attempt.token && current.observed === attempt.observed && ready()
 		);
 	};
 	if (!stillComplete()) {
-		if (
-			now - requested >= 3 * sessionHealthInterval &&
-			!handoffReady(items.getStored(id), requested, store.node, now)
-		)
-			recordHandoffFailure(store, target, now);
-		else contextAlert(store, target, now, 'Waiting for the handoff note before relaunch.');
+		const overdue = now - requested >= 3 * sessionHealthInterval && !ready();
+		contextAlert(
+			store,
+			target,
+			now,
+			overdue
+				? 'The handoff note is overdue. Chief of Staff should inspect the idle pane.'
+				: 'Waiting for the handoff note before relaunch.'
+		);
 		return;
 	}
 	if (
@@ -193,6 +217,6 @@ async function requestHandoff(
 ): Promise<boolean> {
 	const key = handoffKey(pane);
 	store.writeMeta({ [key]: String(now) });
-	const message = `Save a short Tracker handoff so the task can resume in a fresh session. Record completed work, the exact worktree and branch, pending checks and the next step using tracker note ${id} with a note starting "${resumePrefix}". Then pause at the prompt. Preserve the worktree.`;
+	const message = `Save a short checkpoint using tracker note ${id} with a note starting "${trackerContextCheckpointPrefix}". Include completed work, the exact worktree and branch, pending checks and the next step. Leave the item in progress and pause at the idle prompt. Tracker will continue the same item with the same model in a fresh session. Preserve the worktree.`;
 	return driver.nudge({ pane, cli, message, id: key, itemId: id }, signal);
 }
