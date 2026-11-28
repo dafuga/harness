@@ -2,7 +2,7 @@
 	"name": "wat005-placement",
 	"goal": "Prove that unnamed light Tracker launches use available MB2 session and RAM capacity, CPU-heavy work prefers a fitting primary Mac, and desktop Chrome work stays on primary.",
 	"createdAt": "2026-11-28T12:58:26.234Z",
-	"updatedAt": "2026-11-28T13:05:06.601Z",
+	"updatedAt": "2026-11-28T13:08:34.441Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T13:08:34.441Z",
+			"evidence": "Frozen tests passed 13 of 13 at 55c32f3c91. Recorded fd493258ed6d5da0db1a1ad063523fae651f5982893f2e0d51c99bbb4d044f4c with 424 runtime observations."
 		},
 		{
 			"id": "siblings",
