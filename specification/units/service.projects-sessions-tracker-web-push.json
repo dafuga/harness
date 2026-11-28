@@ -9,10 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/projects-sessions/TrackerSafetyPushService.ts",
 			"src/services/projects-sessions/TrackerWebPushService.ts",
 			"src/services/projects-sessions/TrackerWebPushService.types.ts"
 		],
 		"symbols": [
+			"TrackerSafetyPushService",
+			"TrackerSafetyPushService.constructor",
+			"TrackerSafetyPushService.send",
 			"TrackerWebPushService",
 			"TrackerWebPushService.constructor",
 			"TrackerWebPushService.tick",
@@ -22,6 +26,16 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "TrackerSafetyPushService.constructor.options",
+				"type": "TrackerWebPushOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerSafetyPushService.send.config",
+				"type": "WebPushConfig",
+				"required": true
+			},
 			{
 				"name": "TrackerWebPushService.constructor.options",
 				"type": "TrackerWebPushOptions",
@@ -40,6 +54,24 @@
 		"errorStatus": "unknown",
 		"operations": [
 			{
+				"name": "TrackerSafetyPushService.send",
+				"inputs": [
+					{
+						"name": "TrackerSafetyPushService.send.config",
+						"type": "WebPushConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSafetyPushService.send",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "TrackerWebPushService.tick",
 				"inputs": [],
 				"outputs": [
@@ -54,6 +86,24 @@
 			}
 		],
 		"initialization": [
+			{
+				"name": "TrackerSafetyPushService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerSafetyPushService.constructor.options",
+						"type": "TrackerWebPushOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSafetyPushService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
 			{
 				"name": "TrackerWebPushService.constructor",
 				"inputs": [
@@ -76,6 +126,21 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "helper.attention-timing-quiet-hour-boundary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "service.projects-sessions-tracker-web-push-service-deliver-needs-you",
 			"via": "import",

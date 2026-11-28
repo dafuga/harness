@@ -34,7 +34,7 @@ function reviewedAskFields(
 	{ current, migrate = false }: ChiefReviewContext
 ): TrackerOperation['fields'] {
 	const { fields, actor, hlc } = operation;
-	const chiefOnly = isTrackerPlumbingAsk(actor, ask.text, fields.title);
+	const chiefOnly = isTrackerPlumbingAsk(actor, ask.text, String(fields.title));
 	const approved = !migrate && !chiefOnly && trackerReviewer(actor) !== null;
 	if (approved && cosSendWindowStart(trackerClockMilliseconds(hlc)) !== null)
 		return {

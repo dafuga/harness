@@ -21,12 +21,12 @@ export function trackerReviewer(actor: string | null | undefined): 'chief' | 'da
 export function isTrackerPlumbingAsk(
 	actor: string | null | undefined,
 	text: string,
-	title: unknown
+	title: string
 ): boolean {
 	return (
 		plumbingActor.test(actor ?? '') ||
 		plumbingQuestion.test(text) ||
 		isTrackerCosMessage(text) ||
-		plumbingTitles.has(String(title))
+		plumbingTitles.has(title)
 	);
 }

@@ -20,8 +20,9 @@ export const privateAskFields = [
 export function heldReviewFields(
 	operation: TrackerOperation,
 	ask: ChiefReviewAsk,
-	{ current, mode, keepPublished }: ChiefReviewHold
+	hold: ChiefReviewHold
 ): TrackerOperation['fields'] {
+	const { current, mode, keepPublished } = hold;
 	const { visible, details } = splitAsk(operation.fields, ask);
 	if (keepPublished) leaveUntouched(visible);
 	const previous = current?.chief_review ? (JSON.parse(current.chief_review) as ChiefReview) : null;

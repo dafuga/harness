@@ -3,7 +3,8 @@ import type { NeedsYouPushMessage } from '../../../utils/projects-sessions/webPu
 import type { TrackerCosSafetyNotice } from './trackerCosDelivery.types';
 
 /** The safety notice identifies only the size of the queue. */
-export function cosSafetyMessage({ count }: TrackerCosSafetyNotice): NeedsYouPushMessage {
+export function cosSafetyMessage(notice: TrackerCosSafetyNotice): NeedsYouPushMessage {
+	const { count } = notice;
 	return {
 		title: "Chief of Staff isn't responding",
 		body: count === 1 ? '1 ask is waiting' : `${count} asks are waiting`,

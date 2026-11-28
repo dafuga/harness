@@ -8,9 +8,10 @@ import { migrateTrackerChiefReviews } from './migrateTrackerChiefReviews';
 /** Open a node's journal with ask review on. Only the hub moves existing asks into the queue. */
 export function openTrackerReviewStore(
 	database: SqliteDatabase,
-	{ node, role, storage }: TrackerNativeRuntimeOptions,
+	options: TrackerNativeRuntimeOptions,
 	now: () => number
 ): TrackerPersistenceService {
+	const { node, role, storage } = options;
 	const store = new TrackerPersistenceService(database, node, {
 		...storage,
 		now,

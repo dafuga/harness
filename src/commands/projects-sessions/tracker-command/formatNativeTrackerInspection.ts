@@ -65,14 +65,21 @@ function itemNotes(item: NativeTrackerItemDetail): string[] {
 	if (item.parent) lines.push(`  parent: ${item.parent}`);
 	if (item.question) lines.push(`  question: ${item.question}`);
 	lines.push(...optionLines(item));
-	if (item.answer)
-		lines.push(`  answer: ${item.answer} (by ${item.answered_by} at ${item.answered_at})`);
+	lines.push(...answerLines(item));
+	if (item.notes) lines.push(`  notes: ${item.notes}`);
+	for (const n of item.notes_log ?? []) lines.push(`  note ${n.at} [${n.node}]: ${n.text}`);
+	return lines;
+}
+
+/** A Chief of Staff answer stays private, so show only how its session reads it. */
+function answerLines(item: NativeTrackerItemDetail): string[] {
+	const lines = item.answer
+		? [`  answer: ${item.answer} (by ${item.answered_by} at ${item.answered_at})`]
+		: [];
 	if (item.chief_answered)
 		lines.push(
 			`  Chief of Staff answered; read it with: tracker review ${String(item.id).slice(0, 6)}`
 		);
-	if (item.notes) lines.push(`  notes: ${item.notes}`);
-	for (const n of item.notes_log ?? []) lines.push(`  note ${n.at} [${n.node}]: ${n.text}`);
 	return lines;
 }
 

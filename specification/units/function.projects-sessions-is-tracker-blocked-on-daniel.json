@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/isTrackerBlockedOnDaniel.ts"],
-		"symbols": ["isTrackerBlockedOnDaniel"]
+		"symbols": ["isTrackerBlockedOnDaniel", "isPrivateTrackerReviewNote"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -19,6 +19,12 @@
 				"type": "string | null | undefined",
 				"required": true,
 				"description": "Blocked reason text. Past approvals, later steps and statements that nothing is needed do not count."
+			},
+			{
+				"name": "isPrivateTrackerReviewNote.note",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "One item note. Notes written by a Daniel blocker or a Chief of Staff message are private."
 			}
 		],
 		"outputs": [
@@ -50,6 +56,25 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "isPrivateTrackerReviewNote",
+				"inputs": [
+					{
+						"name": "isPrivateTrackerReviewNote.note",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "One item note. Notes written by a Daniel blocker or a Chief of Staff message are private."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isPrivateTrackerReviewNote",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []

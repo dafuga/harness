@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import type { TrackerOperation } from '../../../repositories/projects-sessions/TrackerOperationRepository.types';
 import type { TrackerNotificationItem } from '../TrackerNotificationService.types';
 
 /**
@@ -7,7 +8,7 @@ import type { TrackerNotificationItem } from '../TrackerNotificationService.type
  */
 export function isHiddenByReview(
 	item: Pick<TrackerNotificationItem, 'chief_review'>,
-	fields: Readonly<Record<string, unknown>>,
+	fields: TrackerOperation['fields'],
 	finished: boolean
 ): boolean {
 	if (fields.chief_answer) return true;

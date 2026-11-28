@@ -11,8 +11,13 @@
 		"source": [
 			"src/services/projects-sessions/TrackerLocalApiService.ts",
 			"src/services/projects-sessions/TrackerLocalApiService.types.ts",
+			"src/services/projects-sessions/tracker-local-api-service/planChiefReviewStep.ts",
+			"src/services/projects-sessions/tracker-local-api-service/readTrackerChiefReviews.ts",
 			"src/services/projects-sessions/tracker-local-api-service/readTrackerRunEndpoint.ts",
 			"src/services/projects-sessions/tracker-local-api-service/recordCosFlag.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerChiefReview.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerChiefReview.types.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalActor.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalAlert.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalAlert.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.ts",
@@ -25,7 +30,9 @@
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalRejection.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerPhoneReplicaResponse.ts",
-			"src/services/projects-sessions/tracker-local-api-service/trackerPhoneReplicaResponse.types.ts"
+			"src/services/projects-sessions/tracker-local-api-service/trackerPhoneReplicaResponse.types.ts",
+			"src/services/projects-sessions/tracker-local-api-service/writeTrackerItem.ts",
+			"src/services/projects-sessions/tracker-local-api-service/writeTrackerItem.types.ts"
 		],
 		"symbols": [
 			"TrackerLocalApiService",
@@ -33,9 +40,14 @@
 			"TrackerLocalApiService.handle",
 			"TrackerLocalApiOptions",
 			"TrackerLocalApiDependencies",
+			"planChiefReviewStep",
+			"readChiefReviews",
 			"readTrackerItemDetail",
 			"readTrackerRunEndpoint",
 			"recordCosFlag",
+			"writeChiefReview",
+			"ChiefReviewRequest",
+			"readActor",
 			"isTrackerAlert",
 			"trackerAlertResponse",
 			"TrackerAlertDependencies",
@@ -60,7 +72,10 @@
 			"isTrackerManualLaunch",
 			"planTrackerManualLaunch",
 			"phoneReplicaResponse",
-			"Respond"
+			"Respond",
+			"writeTrackerItem",
+			"TrackerItemRoute",
+			"TrackerItemWrite"
 		]
 	},
 	"contract": {
@@ -85,6 +100,36 @@
 			{
 				"name": "TrackerLocalApiService.handle.request",
 				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "planChiefReviewStep.item",
+				"type": "TrackerItemSnapshot",
+				"required": true
+			},
+			{
+				"name": "planChiefReviewStep.step",
+				"type": "ReviewStep",
+				"required": true
+			},
+			{
+				"name": "planChiefReviewStep.context",
+				"type": "TrackerItemMutationContext",
+				"required": true
+			},
+			{
+				"name": "readChiefReviews.ports",
+				"type": "TrackerLocalApiDependencies",
+				"required": true
+			},
+			{
+				"name": "readChiefReviews.id",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "readChiefReviews.actor",
+				"type": "string | null",
 				"required": true
 			},
 			{
@@ -125,6 +170,26 @@
 			{
 				"name": "recordCosFlag.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "writeChiefReview.ports",
+				"type": "TrackerLocalApiDependencies",
+				"required": true
+			},
+			{
+				"name": "writeChiefReview.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeChiefReview.request",
+				"type": "ChiefReviewRequest",
+				"required": true
+			},
+			{
+				"name": "readActor.headers",
+				"type": "Headers",
 				"required": true
 			},
 			{
@@ -392,12 +457,35 @@
 				"name": "phoneReplicaResponse.respond",
 				"type": "Respond",
 				"required": true
+			},
+			{
+				"name": "writeTrackerItem.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "writeTrackerItem.[, id, verb]",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "writeTrackerItem.ports",
+				"type": "TrackerLocalApiDependencies",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerLocalApiService.handle",
 				"type": "Promise<Response>"
+			},
+			{
+				"name": "planChiefReviewStep",
+				"type": "unknown"
+			},
+			{
+				"name": "readChiefReviews",
+				"type": "Response"
 			},
 			{
 				"name": "readTrackerItemDetail",
@@ -410,6 +498,14 @@
 			{
 				"name": "recordCosFlag",
 				"type": "void"
+			},
+			{
+				"name": "writeChiefReview",
+				"type": "Response | undefined"
+			},
+			{
+				"name": "readActor",
+				"type": "string | null"
 			},
 			{
 				"name": "isTrackerAlert",
@@ -482,6 +578,10 @@
 			{
 				"name": "phoneReplicaResponse",
 				"type": "unknown"
+			},
+			{
+				"name": "writeTrackerItem",
+				"type": "Promise<Response | undefined>"
 			}
 		],
 		"errors": [],
@@ -500,6 +600,62 @@
 					{
 						"name": "TrackerLocalApiService.handle",
 						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "planChiefReviewStep",
+				"inputs": [
+					{
+						"name": "planChiefReviewStep.item",
+						"type": "TrackerItemSnapshot",
+						"required": true
+					},
+					{
+						"name": "planChiefReviewStep.step",
+						"type": "ReviewStep",
+						"required": true
+					},
+					{
+						"name": "planChiefReviewStep.context",
+						"type": "TrackerItemMutationContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "planChiefReviewStep",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readChiefReviews",
+				"inputs": [
+					{
+						"name": "readChiefReviews.ports",
+						"type": "TrackerLocalApiDependencies",
+						"required": true
+					},
+					{
+						"name": "readChiefReviews.id",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "readChiefReviews.actor",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readChiefReviews",
+						"type": "Response"
 					}
 				],
 				"errors": [],
@@ -579,6 +735,52 @@
 					{
 						"name": "recordCosFlag",
 						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeChiefReview",
+				"inputs": [
+					{
+						"name": "writeChiefReview.ports",
+						"type": "TrackerLocalApiDependencies",
+						"required": true
+					},
+					{
+						"name": "writeChiefReview.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeChiefReview.request",
+						"type": "ChiefReviewRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeChiefReview",
+						"type": "Response | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readActor",
+				"inputs": [
+					{
+						"name": "readActor.headers",
+						"type": "Headers",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readActor",
+						"type": "string | null"
 					}
 				],
 				"errors": [],
@@ -1057,6 +1259,34 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeTrackerItem",
+				"inputs": [
+					{
+						"name": "writeTrackerItem.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "writeTrackerItem.[, id, verb]",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "writeTrackerItem.ports",
+						"type": "TrackerLocalApiDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeTrackerItem",
+						"type": "Promise<Response | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -1133,6 +1363,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
@@ -1154,6 +1389,11 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-operation",
 			"via": "import",
 			"origin": "derived"
 		},
