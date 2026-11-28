@@ -1,5 +1,9 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { compatibilityFixture, fixtureTitle } from '../../support/trackerCliCompatibilityFixture';
+import {
+	compatibilityFixture,
+	fixtureItem,
+	fixtureTitle
+} from '../../support/trackerCliCompatibilityFixture';
 import { measureWorkload } from '../../support/measureWorkload';
 
 afterEach(() => {
@@ -8,7 +12,7 @@ afterEach(() => {
 });
 
 test('block accepts --no-needs-daniel and points --needs-daniel at flag', async () => {
-	const { run } = await compatibilityFixture();
+	const { run, route } = await compatibilityFixture();
 	const refused = await run('block', 'taskfi', 'waiting on CI', '--needs-daniel');
 	expect(refused).toMatchObject({ code: 1, err: expect.stringContaining('tracker flag') });
 	expect(JSON.parse((await run('show', 'taskfi', '--json')).out)).toMatchObject({
@@ -20,6 +24,43 @@ test('block accepts --no-needs-daniel and points --needs-daniel at flag', async 
 		status: 'blocked',
 		blocked_reason: 'waiting on CI',
 		needs_daniel: false
+	});
+	await run('unblock', 'taskfi');
+	vi.stubEnv('TRACKER_ITEM_ID', fixtureItem);
+	vi.stubEnv('TRACKER_RUN_ID', '42');
+	const proof = 'hygiene: closed 0 tabs/windows I opened; left open: none';
+	route.mockClear();
+	for (const args of [
+		['block', 'taskfi', 'waiting on CI', '--force'],
+		['block', 'taskfi', 'waiting on CI\nhygiene:'],
+		['done', fixtureItem, '--force'],
+		[
+			'done',
+			'taskfi',
+			'--note',
+			'Verified hygiene: closed 0 tabs/windows I opened; left open: none'
+		],
+		['done', 'taskfi', '--note', 'Verified\nhygiene: closed 0 tabs/windows I opened; left open: ']
+	]) {
+		expect(await run(...args)).toMatchObject({
+			code: 1,
+			err: expect.stringContaining('hygiene: closed')
+		});
+	}
+	expect(route).not.toHaveBeenCalled();
+	const blocker = 'waiting on CI\n' + proof;
+	const managedBlock = await run('block', 'taskfi', blocker, '--json');
+	expect(JSON.parse(managedBlock.out)).toMatchObject({
+		status: 'blocked',
+		blocked_reason: blocker
+	});
+	await run('unblock', 'taskfi');
+	const done = await run('done', fixtureItem, '--note', 'Checks passed\n' + proof, '--json');
+	expect(JSON.parse(done.out)).toMatchObject({
+		status: 'done',
+		notes_log: expect.arrayContaining([
+			expect.objectContaining({ text: 'Checks passed\n' + proof })
+		])
 	});
 });
 

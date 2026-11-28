@@ -3,6 +3,7 @@ import type { TrackerNodeConfig } from '../../src/services/projects-sessions/tra
 export interface TrackerNodeFixture {
 	path: string;
 	config: TrackerNodeConfig;
+	env?: Record<string, string>;
 }
 
 export interface TrackerFixtureResult {
