@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.projects-sessions-hub-home-hub-home-outgoing-draft",
+	"uid": "u_apuvwehhpw",
+	"kind": "function",
+	"title": "hubHomeOutgoingDraft",
+	"responsibility": "Owns the hubHomeOutgoingDraft shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeOutgoingDraft.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeOutgoingDraft.types.ts"
+		],
+		"symbols": [
+			"outgoingChannels",
+			"outgoingHref",
+			"HomeOutgoingVersion",
+			"HomeOutgoingFields",
+			"HomeOutgoingDraft",
+			"HomeOutgoingActions",
+			"HomeOutgoingDetail"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "outgoingHref.value",
+				"type": "string",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "outgoingChannels",
+				"type": "unknown"
+			},
+			{
+				"name": "outgoingHref",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "outgoingHref",
+				"inputs": [
+					{
+						"name": "outgoingHref.value",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "outgoingHref",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.harness-icons",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeOutgoingDraft.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeOutgoingDraft.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

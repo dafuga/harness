@@ -1,0 +1,125 @@
+/* @harness-uid u_sd5h4qimru */
+.outgoing-card {
+	display: grid;
+	gap: var(--hx-space-12);
+	min-width: 0;
+	padding: var(--hx-space-16);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-large);
+	background: var(--hx-color-surface-raised);
+	color: var(--hx-color-text);
+	font-size: var(--hx-type-size-sm);
+	overflow-wrap: anywhere;
+}
+.outgoing-header,
+.outgoing-subject,
+.outgoing-actions {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-8);
+}
+.outgoing-header {
+	flex-wrap: wrap;
+}
+.outgoing-icon {
+	display: grid;
+	place-items: center;
+	width: var(--hx-space-32);
+	height: var(--hx-space-32);
+	border-radius: var(--hx-radius-compact);
+	background: var(--hx-color-primary-soft);
+	color: var(--home-accent, var(--hx-color-primary));
+}
+.outgoing-account {
+	display: grid;
+	flex: 1 1 8rem;
+	min-width: 0;
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+}
+.outgoing-channel {
+	color: var(--hx-color-text);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.outgoing-header .po-state {
+	margin-left: auto;
+	background: var(--hx-color-background);
+	color: var(--hx-color-text-supporting);
+}
+.outgoing-card[data-delivery='failed'] .outgoing-header .po-state {
+	background: var(--hx-color-error-soft);
+	color: var(--hx-color-error);
+}
+.outgoing-card[data-delivery='sent'] .outgoing-header .po-state {
+	background: var(--hx-color-success-soft);
+	color: var(--hx-color-success);
+}
+.outgoing-subject {
+	justify-content: space-between;
+}
+.outgoing-card h3 {
+	font-size: var(--hx-type-size-base);
+	line-height: 1.25;
+}
+.outgoing-fields {
+	display: grid;
+	grid-template-columns: max-content minmax(0, 1fr);
+	gap: var(--hx-space-4) var(--hx-space-12);
+	margin: 0;
+	font-size: var(--hx-type-size-compact);
+}
+.outgoing-card dt {
+	color: var(--hx-color-text-muted);
+}
+.outgoing-card dd {
+	margin: 0;
+}
+.outgoing-card a {
+	color: var(--home-accent, var(--hx-color-primary));
+	text-decoration: underline;
+	text-underline-offset: var(--hx-space-3);
+}
+.outgoing-body {
+	padding: var(--hx-space-12);
+	border-radius: var(--hx-radius-compact);
+	background: var(--hx-color-surface);
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+.outgoing-card summary {
+	cursor: pointer;
+}
+.outgoing-card details[open] > p {
+	margin-top: var(--hx-space-8);
+}
+.outgoing-notice {
+	color: var(--hx-color-text-supporting);
+}
+.outgoing-actions {
+	justify-content: flex-end;
+}
+.outgoing-card button {
+	min-height: var(--hx-space-44);
+}
+.outgoing-card .outgoing-edit {
+	padding-inline: var(--hx-space-12);
+}
+.outgoing-card .outgoing-primary {
+	border-color: transparent;
+	background: var(--hx-color-primary);
+	color: var(--hx-color-primary-contrast);
+}
+.outgoing-card button:active:not(:disabled) {
+	box-shadow: inset 0 0 0 var(--hx-border-thick) var(--hx-color-selected);
+}
+.outgoing-card button:disabled {
+	opacity: 0.56;
+	cursor: default;
+}
+.outgoing-receipt {
+	display: inline-flex;
+	align-items: center;
+	justify-self: start;
+	gap: var(--hx-space-4);
+	min-height: var(--hx-space-44);
+}
