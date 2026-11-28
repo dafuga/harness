@@ -68,6 +68,19 @@ async function runCheck(
 	}
 }
 
+export function completionSummary(receipts: CompletionReceipt[]): string {
+	return receipts
+		.map((receipt) => {
+			const line = `Completion check ${receipt.name}: ${receipt.status}`;
+			const evidence =
+				receipt.before || receipt.after
+					? ` ${JSON.stringify({ before: receipt.before, after: receipt.after, disposition: receipt.disposition })}`
+					: '';
+			return line + evidence;
+		})
+		.join('\n');
+}
+
 export async function saveCompletion(run: CompletionRun): Promise<void> {
 	const { path, id, scope, revision, provider, model, intelligence, checks, tracking } = run;
 	const data = { id, scope, revision, provider, model, intelligence, checks, tracking };

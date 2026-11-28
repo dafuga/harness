@@ -214,3 +214,4 @@ test('CLI installs module foundations and generates their declared resources', a
 	}
 }, 600_000);
 import './completion-hooks.cases';
+import './completion-measurement.cases';

@@ -24,11 +24,13 @@
 		"symbols": [
 			"CompletionCheckError",
 			"CompletionCheckError.constructor",
+			"measureBaseline",
 			"assessReduction",
 			"loadCompletionConfig",
 			"completionTurn",
 			"completionRecordPath",
 			"evaluateCompletion",
+			"completionSummary",
 			"saveCompletion",
 			"askCompletion",
 			"CompletionConfig",
@@ -65,6 +67,21 @@
 				"name": "CompletionCheckError.constructor.summary",
 				"type": "string",
 				"required": false
+			},
+			{
+				"name": "measureBaseline.candidate",
+				"type": "ModuleCandidate",
+				"required": true
+			},
+			{
+				"name": "measureBaseline.receipt",
+				"type": "CompletionReceipt",
+				"required": true
+			},
+			{
+				"name": "measureBaseline.measure",
+				"type": "ModuleReductionAssessment['measure']",
+				"required": true
 			},
 			{
 				"name": "assessReduction.candidate",
@@ -114,6 +131,11 @@
 			{
 				"name": "evaluateCompletion.evaluate",
 				"type": "(check: CompletionCheck, receipt: CompletionReceipt) => Promise<void>",
+				"required": true
+			},
+			{
+				"name": "completionSummary.receipts",
+				"type": "CompletionReceipt[]",
 				"required": true
 			},
 			{
@@ -209,6 +231,10 @@
 		],
 		"outputs": [
 			{
+				"name": "measureBaseline",
+				"type": "Promise<boolean>"
+			},
+			{
 				"name": "assessReduction",
 				"type": "unknown"
 			},
@@ -227,6 +253,10 @@
 			{
 				"name": "evaluateCompletion",
 				"type": "Promise<boolean>"
+			},
+			{
+				"name": "completionSummary",
+				"type": "string"
 			},
 			{
 				"name": "saveCompletion",
@@ -265,6 +295,34 @@
 		],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "measureBaseline",
+				"inputs": [
+					{
+						"name": "measureBaseline.candidate",
+						"type": "ModuleCandidate",
+						"required": true
+					},
+					{
+						"name": "measureBaseline.receipt",
+						"type": "CompletionReceipt",
+						"required": true
+					},
+					{
+						"name": "measureBaseline.measure",
+						"type": "ModuleReductionAssessment['measure']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "measureBaseline",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "assessReduction",
 				"inputs": [
@@ -372,6 +430,24 @@
 					{
 						"name": "evaluateCompletion",
 						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "completionSummary",
+				"inputs": [
+					{
+						"name": "completionSummary.receipts",
+						"type": "CompletionReceipt[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "completionSummary",
+						"type": "string"
 					}
 				],
 				"errors": [],

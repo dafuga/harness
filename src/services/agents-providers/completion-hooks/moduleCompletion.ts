@@ -10,7 +10,12 @@ import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/Mo
 import { assessReduction, measureBaseline } from './assessReduction';
 import { CompletionCheckError } from './CompletionCheckError';
 import { loadCompletionConfig } from './completionConfig';
-import { askCompletion, completionRecordPath, evaluateCompletion } from './completionRun';
+import {
+	askCompletion,
+	completionRecordPath,
+	completionSummary,
+	evaluateCompletion
+} from './completionRun';
 import type { CompletionCheck, CompletionReceipt } from './completionRun.types';
 import type {
 	ModuleCandidate,
@@ -46,7 +51,7 @@ export async function completeModule(input: ModuleCompletionInput): Promise<void
 				'Required module completion check failed. See the completion record.'
 			);
 	} finally {
-		result.text += '\nCompletion record: ' + path + '\n' + moduleCheckSummary(run.checks);
+		result.text += '\nCompletion record: ' + path + '\n' + completionSummary(run.checks);
 	}
 }
 
@@ -206,17 +211,4 @@ async function requireSameTree(before: string, after: string, git: GitAdapter) {
 	);
 	if (first !== last)
 		throw new CompletionCheckError('The measured worktree changed during verification.');
-}
-
-function moduleCheckSummary(receipts: CompletionReceipt[]): string {
-	return receipts
-		.map((receipt) => {
-			const line = `Completion check ${receipt.name}: ${receipt.status}`;
-			const evidence =
-				receipt.before || receipt.after
-					? ` ${JSON.stringify({ before: receipt.before, after: receipt.after, disposition: receipt.disposition })}`
-					: '';
-			return line + evidence;
-		})
-		.join('\n');
 }
