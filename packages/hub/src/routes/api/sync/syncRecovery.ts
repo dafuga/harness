@@ -1,3 +1,4 @@
+import type { D1Like } from '../[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.types';
 import type { SyncCall } from './syncPolicy.types';
 import { syncJson, syncProblem } from './syncHttp';
 
@@ -14,10 +15,14 @@ export async function deviceWriteConflict(call: SyncCall, legacyError?: string):
 	return legacyError ? syncProblem(409, legacyError) : syncJson({ stored: 0 }, 201);
 }
 
-export async function isRecoverableAccount(call: SyncCall): Promise<boolean> {
-	const present = await call.deps.db
+export function isRecoverableAccount(call: SyncCall): Promise<boolean> {
+	return hasRecoverableAccount(call.deps.db, call.account);
+}
+
+export async function hasRecoverableAccount(db: D1Like, account: string): Promise<boolean> {
+	const row = await db
 		.prepare('SELECT 1 AS present FROM sealed_recoveries WHERE account = ?')
-		.bind(call.account)
-		.first<number>('present');
-	return present === 1;
+		.bind(account)
+		.first<{ present: number }>();
+	return row?.present === 1;
 }

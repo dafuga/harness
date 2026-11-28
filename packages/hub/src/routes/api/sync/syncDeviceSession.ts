@@ -12,16 +12,16 @@ const maxEntries = 2048;
 const label = 'harness/sealed/v1/session\0';
 const utf8 = new TextEncoder();
 
-async function ledger(call: SyncCall) {
-	const rows = await call.deps.db
+export async function readAccountChain(db: D1Database, account: string) {
+	const rows = await db
 		.prepare('SELECT entry FROM sealed_chain WHERE account = ? ORDER BY seq LIMIT ?')
-		.bind(call.account, maxEntries + 1)
+		.bind(account, maxEntries + 1)
 		.all<{ entry: string }>();
 	if (!rows.results.length) return null;
 	if (rows.results.length > maxEntries)
 		throw new TypeError('Device chain exceeds the verification limit');
 	const entries = rows.results.map(({ entry }) => JSON.parse(entry) as SealedChainEntry);
-	return sealedChain(entries, { account: call.account });
+	return sealedChain(entries, { account });
 }
 
 async function challengeFor(call: SyncCall, window: number): Promise<string> {
@@ -36,7 +36,7 @@ function windowOf(call: SyncCall): number {
 
 async function activeChain(call: SyncCall) {
 	try {
-		return await ledger(call);
+		return await readAccountChain(call.deps.db, call.account);
 	} catch {
 		return syncProblem(409, 'chain-conflict');
 	}
@@ -55,14 +55,28 @@ export async function readDeviceSession(call: SyncCall): Promise<Response> {
 }
 
 async function sessionMatchesDevice(call: SyncCall): Promise<boolean> {
-	const bound = await call.deps.db
+	const bound = await sessionBoundDevice(
+		call.deps.db,
+		call.sessionHash,
+		call.account,
+		call.deps.now
+	);
+	return bound === call.device;
+}
+
+export function sessionBoundDevice(
+	db: D1Database,
+	idHash: string,
+	account: string,
+	now: number
+): Promise<string | null> {
+	return db
 		.prepare(
 			`SELECT sealed_device_id FROM auth_sessions
 			WHERE id_hash = ? AND actor_id = ? AND expires_at > ? AND revoked_at IS NULL`
 		)
-		.bind(call.sessionHash, call.account, call.deps.now)
+		.bind(idHash, account, now)
 		.first<string>('sealed_device_id');
-	return bound === call.device;
 }
 
 /** Recoverable accounts reserve the approval inbox, live connection and scoped data for enrolled devices. */

@@ -61,7 +61,11 @@ export class HubAuthController {
 		const session = await this.options.sessions.resolve(request);
 		const pending = session ? null : authCookies(request, EMAIL_PROOF_COOKIE);
 		const emailProof = await this.options.emailProofs.status(pending);
+		const deviceApproval =
+			session?.kind === 'browser' &&
+			(await this.options.requiresDeviceApproval?.(session.actor.id));
 		const status: AuthStatus = {
+			...(deviceApproval ? { deviceApproval: true } : {}),
 			actor: session?.actor ?? null,
 			configured: true,
 			clientId: this.options.clientId,
