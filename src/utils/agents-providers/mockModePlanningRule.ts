@@ -1,3 +1,4 @@
+// @harness-uid u_xhlm4envoy
 /** The mock-mode skill checklist carried by planner prompts and worker briefs. */
 export const mockModePlanningRule: string =
 	'When planning app work, use the `mock-mode` skill. Estimate the time and money for one real end-to-end test and record the estimate in the plan. ' +

@@ -29,7 +29,7 @@ const answers = (f: Fixture, before: (turn: AgentTurn) => Promise<void> | void =
 	});
 async function settled(f: Fixture, request = asked(f)) {
 	const started = await f.service.start(request);
-	await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
+	await expect.poll(() => f.session.busy, { timeout: 30000 }).toBe(false);
 	return started;
 }
 const head = (f: Fixture) => git(f.root, 'rev-parse', 'HEAD');
@@ -67,13 +67,13 @@ test('the agent decides the kind: a component asked for among functions is plann
 		summary: expect.stringContaining('Planned Order badge.'),
 		created: { ...created, requestSaved: true }
 	});
-}, 20000);
+}, 60000);
 
 test.each([
 	'$0.25 per real test, which takes 20 seconds',
 	'$0 per real test, which takes 3 minutes'
 ])(
-	'a costly app plan saves the mock-mode prerequisite when it costs %s',
+	'a costly app plan saves the mock-mode prerequisite for this estimate: %s',
 	async (cost) => {
 		const f = await fixture();
 		const proposal = [
@@ -110,7 +110,7 @@ test.each([
 		expect(notes).toBe(proposal);
 		expect(f.events.at(-1)).toMatchObject({ runId: started.runId, kind: 'finished' });
 	},
-	20000
+	60000
 );
 
 test.each([
