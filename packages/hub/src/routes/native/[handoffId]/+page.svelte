@@ -37,9 +37,9 @@
 <HubFrame>
 	<hx-div class="gate">
 		<hx-h1>Connect a Harness device</hx-h1>
-		{#if session.actor && browserReturn}
+		{#if session.identity && browserReturn}
 			<hx-section class="hub-card gate-card">
-				<hx-p class="muted">Sign in to the Harness app as {session.actor.email}.</hx-p>
+				<hx-p class="muted">Sign in to the Harness app as {session.identity.email}.</hx-p>
 				<hx-div class="return-actions">
 					<hx-button
 						class="primary"

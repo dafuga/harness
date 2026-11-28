@@ -45,7 +45,8 @@ export class SealedEnrollmentRequestService {
 			if (verified.pin.head !== progress.pin?.head) await keep({ ...progress, pin: verified.pin });
 		});
 		if (state === 'first-device') return { state };
-		if (state === 'waiting-for-approval') return this.wait(progress, keep);
+		if (state === 'waiting-for-approval')
+			return progress.pin ? { state: 'approval-denied' } : this.wait(progress, keep);
 		if (!verified) throw new SealedError('Device approval was not verified.');
 		signal.throwIfAborted();
 		return verified;

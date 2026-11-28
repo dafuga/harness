@@ -18,7 +18,9 @@
 			<hx-span class="sign-in-mark" role="img" aria-label="Harness"><BrandMark size={40} /></hx-span
 			>
 			<LoginPanel compact />
-			<hx-p class="note">Use the same Google account on your phone and computer.</hx-p>
+			{#if !session.status?.deviceApproval}
+				<hx-p class="note">Use the same Google account on your phone and computer.</hx-p>
+			{/if}
 		</hx-div>
 	</hx-main>
 {:else}
