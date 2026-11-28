@@ -50,9 +50,7 @@
 			{@const linked = hasWebLink(row.title)}
 			{@const due = dueById?.get(row.itemId)}
 			{@const label =
-				due && row.state === 'queued' && !row.runId
-					? pastDueLabel(due)
-					: workStateLabel(row)}
+				due && row.state === 'queued' && !row.runId ? pastDueLabel(due) : workStateLabel(row)}
 			<hx-li class="hh-live-row" data-state={row.state}>
 				<hx-div class="hh-live-item-text">
 					{#if linked}<hx-p class="hh-live-linked"><LinkifiedText text={row.title} /></hx-p>{/if}

@@ -19,7 +19,10 @@ import {
 test.setTimeout(90000);
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
-	['phone', 390, 844]
+	['phone', 390, 844],
+	['tablet', 834, 1194],
+	['desktop-dark', 1440, 900],
+	['phone-light', 390, 844]
 ] as const) {
 	test(`${device}: every project and live run of a recorded Tracker shows with its facts`, async ({
 		page
@@ -27,7 +30,9 @@ for (const [device, width, height] of [
 		const tracker = recordedTracker();
 		await page.setViewportSize({ width, height });
 		const remoteTitles = seedComputerWork(tracker);
-		await page.emulateMedia({ colorScheme: device === 'phone' ? 'dark' : 'light' });
+		await page.emulateMedia({
+			colorScheme: ['phone', 'desktop-dark'].includes(device) ? 'dark' : 'light'
+		});
 		seedLiveDisposition(tracker);
 		const answer = await macAnswer(tracker);
 		const sample = answer.liveOverview!.projects[0];
@@ -67,6 +72,15 @@ for (const [device, width, height] of [
 			await page.screenshot({ path: test.info().outputPath(`home-top-${device}.png`) });
 		}
 		await expectComputerWorkload(page, device, remoteTitles);
+		if (process.env.TAKE_SCREENSHOT === 'true') {
+			const metrics = await page.evaluate(() => {
+				const [nav] = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+				const memory = (performance as Performance & { memory?: { usedJSHeapSize: number } })
+					.memory;
+				return { loadEventEndMs: nav?.loadEventEnd, pageHeapBytes: memory?.usedJSHeapSize };
+			});
+			console.log('Home renderer', device, JSON.stringify(metrics));
+		}
 		await checkProjectDisclosure(page, answer.liveOverview!.projects, device);
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
@@ -79,7 +93,7 @@ for (const [device, width, height] of [
 		await expectLiveDisposition(page, test.info().outputPath(`live-disposition-${device}.png`));
 		await expect(overview(page)).toContainText('over an encrypted connection · read');
 		await expectNoSidewaysScroll(page, width);
-		if (device === 'phone') await expectEvenHeaderSpacing(page);
+		if (width === 390) await expectEvenHeaderSpacing(page);
 		expect(requests.filter((entry) => entry.path === '/api/tracker-overview')).toEqual([]);
 		expect(requests.filter((entry) => entry.method === 'PUT')).toEqual([]);
 	});

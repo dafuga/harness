@@ -14,6 +14,7 @@
 			"reports.component.brand-mark",
 			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.projects-sessions-hub-home-hub-home-computer-detail",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -46,6 +47,13 @@
 				"type": "RealtimeState | null",
 				"required": true,
 				"description": "Provides the linked computer data and connection notices for the banner."
+			},
+			{
+				"name": "HubHomeHeader.localMachines",
+				"type": "HomeComputer[]",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Current computer summaries from the local or paired Tracker reader. When omitted, use linked Hub data and the overview fallback."
 			},
 			{
 				"name": "HubHomeHeader.accountName",
@@ -128,6 +136,11 @@
 		},
 		{
 			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-hub-home-hub-home-computer-detail",
 			"via": "import",
 			"origin": "derived"
 		},

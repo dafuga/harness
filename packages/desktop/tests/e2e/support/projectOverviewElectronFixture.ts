@@ -152,6 +152,7 @@ export async function installTrackerDouble(app: ElectronApplication, double: Tra
 				input.payloads[key]
 			])
 		);
+		answers.set(`${input.urls.runs}&include_active=1`, input.payloads.runs);
 		Object.assign(globalThis, { overviewTrackerRequests: requests });
 		globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
 			const href = String(url);

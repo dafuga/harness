@@ -16,6 +16,9 @@
 			"HomeWorkState",
 			"HomeWorkRow",
 			"HomeWorkProject",
+			"HomeComputerResources",
+			"HomeComputerSession",
+			"HomeComputer",
 			"HomeLiveOverview",
 			"ItemWork",
 			"LinkedHome",
@@ -80,6 +83,11 @@
 	"dependencies": [
 		{
 			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-build-home-machines",
 			"via": "import",
 			"origin": "derived"
 		},

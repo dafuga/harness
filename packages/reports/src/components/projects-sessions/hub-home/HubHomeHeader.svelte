@@ -147,8 +147,10 @@
 							{machine.name}
 							{#if machine.agentCount !== undefined}
 								<hx-span>· {count(machine.agentCount, 'agent')}</hx-span>
-							{:else if machine.remoteRuns}
+							{:else if machine.remoteRuns && machine.status !== 'offline'}
 								<hx-span>· {count(machine.remoteRuns, 'remote run')}</hx-span>
+							{:else}
+								<hx-span>· Agents unavailable</hx-span>
 							{/if}
 							<hx-span class="po-machine-status">· {machine.status}</hx-span>
 						</hx-button>

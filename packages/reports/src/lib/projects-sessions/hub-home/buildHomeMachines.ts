@@ -15,17 +15,17 @@ export function isActiveHomeRun(run: TrackerRunRecord): boolean {
 
 /** Attribute active runs by origin and by the destination of each active host-work lease. */
 export function buildHomeMachines(
-	{ items, machines }: TrackerSources,
+	sources: TrackerSources,
 	runs: Map<string, TrackerRunRecord[]>,
 	listed: ReadonlySet<string>
 ): HomeComputer[] {
 	const titles = new Map(
-		items.filter(({ id }) => listed.has(id)).map(({ id, title }) => [id, title])
+		sources.items.filter(({ id }) => listed.has(id)).map(({ id, title }) => [id, title])
 	);
 	const all = [...runs.values()].flat();
 	const byNode = Map.groupBy(all.filter(isActiveHomeRun), (run) => run.node);
 	const byKey = new Map(all.map((run) => [runKey(run), run]));
-	return machines.map((machine) =>
+	return sources.machines.map((machine) =>
 		homeComputer(machine, byNode.get(machine.node) ?? [], byKey, titles)
 	);
 }
@@ -59,8 +59,8 @@ function homeComputer(
 	return {
 		name,
 		status,
-		...(resources && { resources }),
-		...(remoteRuns !== undefined && { remoteRuns }),
+		resources,
+		remoteRuns,
 		agentCount: runs.size + (remoteRunRefs ? 0 : (remoteRuns ?? 0)),
 		sessions: sessions.slice(0, maxListedSessions)
 	};

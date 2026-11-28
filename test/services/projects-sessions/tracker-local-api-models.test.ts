@@ -36,19 +36,30 @@ function request(path: string, method = 'GET', payload?: object | string, actor 
 	);
 }
 
+async function expectOlderActiveRun(id: string) {
+	database.prepare("INSERT INTO runs VALUES (2, ?, 50, 'running', 'sol', NULL, NULL)").run(id);
+	const recent = await request('/runs?limit=1');
+	expect(await recent.json()).toMatchObject([{ id: 1, node: 'fixture-peer' }]);
+	const withActive = await request('/runs?limit=1&include_active=1');
+	expect(await withActive.json()).toMatchObject([
+		{ id: 1, node: 'fixture-peer' },
+		{ id: 2, node: 'fixture-mac' }
+	]);
+}
+
 test('reports persisted run history and selects a model through the native item API', async () => {
 	const { id } = await (
 		await request('/items', 'POST', { title: 'Fixture model selection' })
 	).json();
 	database.exec(`
-		CREATE TABLE runs(id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT);
+		CREATE TABLE runs(id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT, ended_at INTEGER);
 		CREATE TABLE remote_runs(node TEXT, id INTEGER, item_id TEXT, queued_at INTEGER,
-			state TEXT, rung TEXT, outcome TEXT);
+			state TEXT, rung TEXT, outcome TEXT, ended_at INTEGER);
 	`);
-	database.prepare("INSERT INTO runs VALUES (1, ?, 100, 'finished', 'sol', 'done')").run(id);
+	database.prepare("INSERT INTO runs VALUES (1, ?, 100, 'finished', 'sol', 'done', 300)").run(id);
 	database
 		.prepare(
-			"INSERT INTO remote_runs VALUES ('fixture-peer', 1, ?, 200, 'finished', 'sol', 'blocked')"
+			"INSERT INTO remote_runs VALUES ('fixture-peer', 1, ?, 200, 'finished', 'sol', 'blocked', 400)"
 		)
 		.run(id);
 	const occurrence = '2026-11-21T12:00:00.000Z';
@@ -66,6 +77,7 @@ test('reports persisted run history and selects a model through the native item 
 		{ id: 1, node: 'fixture-mac' },
 		{ id: 1, node: 'fixture-peer' }
 	]);
+	await expectOlderActiveRun(id);
 	const report = await request('/models/report');
 	expect(await report.json()).toMatchObject({
 		ladder: ['haiku', 'sonnet', 'terra', 'sol', 'opus'],

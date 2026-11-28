@@ -8,6 +8,8 @@
 	import type { HomeComputer } from '../../../lib/projects-sessions/hub-home/homeLive.types';
 	import { count } from './hubHomePresentation';
 
+	type ResourceReading = { label: string; value: string };
+
 	let { machine, close }: { machine: HomeComputer; close: () => void } = $props();
 	const number = new Intl.NumberFormat('en', { maximumFractionDigits: 1 });
 	const resources = $derived(machine.resources ?? {});
@@ -25,8 +27,10 @@
 			? `${number.format(loadOne)} load / ${count(cores, 'core')} · ${number.format(Math.max(0, cores - loadOne))} estimated free cores`
 			: 'Not reported'
 	);
-	const disk = $derived(diskFreeGB === undefined ? 'Not reported' : `${number.format(diskFreeGB)} GB free`);
-	const readings = $derived([
+	const disk = $derived(
+		diskFreeGB === undefined ? 'Not reported' : `${number.format(diskFreeGB)} GB free`
+	);
+	const readings: ResourceReading[] = $derived([
 		{ label: 'RAM', value: ram },
 		{ label: 'CPU · 1 minute', value: cpu },
 		{ label: 'Startup disk', value: disk }
@@ -38,9 +42,9 @@
 <Modal isOpen title={machine.name} variant="section" onClose={close}>
 	<hx-div class="hh-computer-detail" data-harness-component="hub-home-computer-detail">
 		{#if machine.status !== 'offline' && reading}
-			<DetailList rows={readings} rowKey={(row) => row.label} className="po-detail">
-				{#snippet label(row)}{row.label}{/snippet}
-				{#snippet children(row)}{row.value}{/snippet}
+			<DetailList rows={readings} rowKey={(row) => row.label} className="hh-computer-readings">
+				{#snippet label(row: ResourceReading)}{row.label}{/snippet}
+				{#snippet children(row: ResourceReading)}{row.value}{/snippet}
 			</DetailList>
 		{:else}
 			<hx-p class="po-sessions">No current resource reading</hx-p>
@@ -62,7 +66,9 @@
 			{#if unlisted}
 				<hx-p class="po-sessions">{count(unlisted, 'session')} without listed details</hx-p>
 			{:else if !sessions.length}
-				<hx-p class="po-sessions">{machine.agentCount === 0 ? 'Nothing running' : 'No current session reading'}</hx-p>
+				<hx-p class="po-sessions"
+					>{machine.agentCount === 0 ? 'Nothing running' : 'No current session reading'}</hx-p
+				>
 			{/if}
 		</hx-section>
 	</hx-div>
@@ -74,6 +80,12 @@
 		height: fit-content;
 		max-height: calc(100dvh - var(--hx-space-32));
 		margin: auto;
+		border-radius: var(--hx-radius-xlarge);
+	}
+	.hh-computer-detail :global(.hh-computer-readings) {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--hx-space-12);
 	}
 	.hh-computer-detail,
 	.hh-computer-detail section {

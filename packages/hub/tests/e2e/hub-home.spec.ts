@@ -189,6 +189,7 @@ async function workByProject(page: Page, position: CapturePosition) {
 		await toggle.click();
 		const completed = dialog.getByRole('article', { name: 'iOS pairing', exact: true });
 		await expect(completed).toBeVisible();
+		await completed.scrollIntoViewIfNeeded();
 		await capture(page, position, 'wip-projects-show-done');
 		await expect(completed.locator('.po-counts')).toHaveText('Nothing open');
 	}

@@ -51,21 +51,21 @@ function expectInitialProjectList(overview: HomeLiveOverview) {
 	expect(quiet).not.toContain('class="hh-live-head"');
 }
 
-describe('how the browser receives it', () => {
-	const api = {
-		get: async () => ({ computers: [{ hostId: 'a'.repeat(40), name: 'Mac', online: true }] })
-	};
-	const linked = (answer: unknown) =>
-		new LinkedHomeService(
-			api as never,
-			'owner',
-			() =>
-				({
-					home: async () => answer,
-					close: () => {}
-				}) as never
-		).read();
+const api = {
+	get: async () => ({ computers: [{ hostId: 'a'.repeat(40), name: 'Mac', online: true }] })
+};
+const linked = (answer: unknown) =>
+	new LinkedHomeService(
+		api as never,
+		'owner',
+		() =>
+			({
+				home: async () => answer,
+				close: () => {}
+			}) as never
+	).read();
 
+describe('how the browser receives it', () => {
 	test('the overview arrives from the linked computer, with credentials redacted', async () => {
 		const remoteTitles = seedComputerWork(tracker);
 		const secret = 'ghp_' + 'a'.repeat(36);
@@ -79,8 +79,17 @@ describe('how the browser receives it', () => {
 		const machine = snapshot!.liveOverview!.machines.find(({ name }) => name === 'harbor-mbp-2');
 		expect(machine).toMatchObject({
 			agentCount: 2,
-			resources: { ramAvailableMB: 12288, ramTotalMB: 65536, cores: 10, loadOne: 3.5, diskFreeGB: 45.5 },
-			sessions: ['Use [redacted]', remoteTitles[1]].map((title) => ({ title, origin: 'studio-mac' }))
+			resources: {
+				ramAvailableMB: 12288,
+				ramTotalMB: 65536,
+				cores: 10,
+				loadOne: 3.5,
+				diskFreeGB: 45.5
+			},
+			sessions: ['Use [redacted]', remoteTitles[1]].map((title) => ({
+				title,
+				origin: 'studio-mac'
+			}))
 		});
 		expectInitialProjectList(snapshot!.liveOverview!);
 	});
