@@ -25,6 +25,13 @@ import type { TrackerNodeFixture } from './support/trackerNodeProcess.types';
 import { withTempDir } from './support/temporary';
 import { verifyTrackerRollback } from './support/verifyTrackerRollback';
 import { proveTrackerJobCommands } from './support/trackerBoxJobCli';
+import { proveTrackerHygieneCloseout } from './support/trackerNodeHygiene';
+
+test(
+	'a launched Tracker CLI requires and saves its hygiene attestation',
+	proveTrackerHygieneCloseout,
+	40_000
+);
 
 test('foreground hub and spoke converge over signed loopback and route compatibility commands and notifications', async () => {
 	await withTempDir('hnt-', async (temporary) => {

@@ -65,6 +65,11 @@ test('every session brief requires per-requirement, per-computer proof before tr
 		expect(brief).toContain('including appended ones) to evidence for each named computer');
 		expect(brief).toContain('wait out any grace period');
 		expect(brief).toContain('unproven, unseen or not rolled out, do not run `tracker done`');
+		expect(brief).toContain('Read the `computer-hygiene` skill');
+		expect(brief).toContain('close only the tabs and windows you opened');
+		expect(brief).toContain(
+			'hygiene: closed <N> tabs/windows I opened; left open: <none or what and why>'
+		);
 		expect(brief).toContain('`siblings` and `verify` steps as complete');
 		expect(brief.indexOf(completion)).toBeLessThan(brief.indexOf('## Done proof'));
 	}

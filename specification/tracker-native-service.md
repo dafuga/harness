@@ -409,6 +409,19 @@ generated client file holds inert placeholders for daemon-only paths.
 Use the immutable native `harness` and `tracker` shim in the configured
 tool directory so worker commands reach that foreground service.
 
+Every native launch brief points to the `computer-hygiene` skill. Before a
+launched session finishes or blocks its own item, it closes the unused tabs
+and windows it opened on each computer. Add a separate line to the
+`tracker done --note` value or the `tracker block` reason:
+
+```text
+hygiene: closed 0 tabs/windows I opened; left open: none
+```
+
+Use the actual count and describe any resources left open and why. The
+native CLI checks the line before sending an update for the launched
+session's item. The cleanup report is an attestation from the session.
+
 The staged managed Docker runner keeps the guest on `--network=none`.
 The separate relay fixture in #164 uses the attached streams for its
 own protocol and does not compose with provider prompts and output.

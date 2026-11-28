@@ -103,7 +103,7 @@ export function trackerFixtureEnv(fixture: TrackerNodeFixture) {
 }
 
 export function trackerProcess(fixture: TrackerNodeFixture, args: string[]) {
-	const env = trackerFixtureEnv(fixture);
+	const env = { ...trackerFixtureEnv(fixture), ...fixture.env };
 	const child = spawn('/bin/bash', [shim, ...args], { env, stdio: ['ignore', 'pipe', 'pipe'] });
 	let stdout = '';
 	let stderr = '';
