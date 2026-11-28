@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { constants } from 'node:os';
 import { clearInterval, setInterval } from 'node:timers';
 import { setTimeout as delay } from 'node:timers/promises';
+import { ExpectedCliError } from '../../../core/errors';
 import { trackerHostWork } from '../../../utils/projects-sessions/trackerHostWork';
 import type { TrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
 import type { TrackerHostWorkClaim } from '../../../repositories/projects-sessions/TrackerHostWorkRepository.types';
@@ -62,7 +63,7 @@ async function runTrackedHostWork(
 
 async function chooseHeavyTestHost(config: TrackerNodeConfig, command: string[]) {
 	if (!(Number(process.env.TRACKER_RUN_ID) > 0))
-		throw new Error('Run this inside a managed session.');
+		throw new ExpectedCliError('Run this inside a managed session.');
 	const { host, placement } = await waitForHeavyTestHost(config);
 	const cpus = String(Math.max(1, Math.ceil(placement.needs_cores)));
 	const memory = String(Math.max(512, Math.ceil(placement.needs_ram_gb * 1024)));
@@ -100,7 +101,8 @@ async function waitForHeavyTestHost(config: TrackerNodeConfig) {
 			)
 				return { host: node, placement };
 		}
-		if (candidates.length) throw new Error('Eligible test computers are unreachable over SSH.');
+		if (candidates.length)
+			throw new ExpectedCliError('Eligible test computers are unreachable over SSH.');
 		if (!announced) console.error('Waiting for a Mac with CPU and RAM for a heavy test lane.');
 		announced = true;
 		await delay(5000, undefined, { signal: wait });
@@ -113,10 +115,11 @@ async function readHeavyTestPlacement(config: TrackerNodeConfig): Promise<Tracke
 		{ method: 'GET', path: '/place?kind=build' },
 		`tracker-run-${process.env.TRACKER_RUN_ID}@${config.node}`
 	);
-	if (!response.ok) throw new Error(`Heavy test placement failed (HTTP ${response.status}).`);
+	if (!response.ok)
+		throw new ExpectedCliError(`Heavy test placement failed (HTTP ${response.status}).`);
 	const placement = (await response.json()) as TrackerPlacement;
 	if (!(placement.needs_cores > 0 && placement.needs_ram_gb > 0 && Array.isArray(placement.ranked)))
-		throw new Error('This Tracker service did not provide a CPU and RAM estimate.');
+		throw new ExpectedCliError('This Tracker service did not provide a CPU and RAM estimate.');
 	return placement;
 }
 

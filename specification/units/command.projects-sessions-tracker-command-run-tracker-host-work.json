@@ -37,7 +37,7 @@
 				"type": "thrown"
 			},
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
 		],
@@ -72,6 +72,11 @@
 	"dependencies": [
 		{
 			"unit": "command.projects-sessions-tracker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},
