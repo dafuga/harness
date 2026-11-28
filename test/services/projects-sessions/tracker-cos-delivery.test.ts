@@ -1,6 +1,9 @@
 import { expect, test } from 'vitest';
+import { measureWorkload } from '../../support/measureWorkload';
 import { withTempDir } from '../../support/temporary';
 import { sendWatchdogAlerts } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostCos';
+import type { TrackerWatchdogPort } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPort.types';
+import type { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import { trackerHostWatchdog } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdog';
 import {
 	alarmAsks,
@@ -120,7 +123,7 @@ test('the hub tick raises the ask even when the pane scan is broken', () =>
 		expect(alarmAsks(items, noon)).toHaveLength(1);
 	}, 'daniel-primary-mbp'));
 
-test('recorded dependency updates reach CoS once per item and text change', () =>
+test('dependency and answer updates reach CoS once per logical notification', () =>
 	cosDeliveryFixture(async ({ store, items }) => {
 		const queue = recordedDependencyQueue();
 		const deliveries: string[][] = [];
@@ -167,4 +170,43 @@ test('recorded dependency updates reach CoS once per item and text change', () =
 		expect(items.digest(noon).blocked).toContainEqual(
 			expect.objectContaining({ id: changed.item_id, blocked_reason: reason })
 		);
+		await verifyAnswerReplay(store, driver, deliveries);
 	}));
+
+function verifyAnswerReplay(
+	store: TrackerPersistenceService,
+	driver: TrackerWatchdogPort,
+	deliveries: string[][]
+) {
+	return measureWorkload(
+		'service.projects-sessions-tracker-native-runtime',
+		'answer-alert-replay',
+		async () => {
+			const signal = new AbortController().signal;
+			const prior = deliveries.length;
+			const answers = recordedDependencyQueue()
+				.slice(0, 5)
+				.map((entry) => ({
+					...entry,
+					id: entry.id + ':answer',
+					kind: 'answer-delivery',
+					reason: 'Synthetic live answer awaits delivery.',
+					identity: `answer-generation:${entry.item_id}`
+				}));
+			const replay = answers.map((entry) => ({
+				...entry,
+				id: entry.id + ':requeued',
+				at: entry.at + minute
+			}));
+			await sendWatchdogAlerts(store, driver, answers, signal);
+			await sendWatchdogAlerts(store, driver, replay, signal);
+			expect(
+				deliveries.slice(prior),
+				'Regenerated answer alerts must not resend the same batch'
+			).toEqual([answers.map(({ item_id }) => item_id)]);
+			const next = { ...answers[0], id: 'new-answer', identity: 'next-generation' };
+			await sendWatchdogAlerts(store, driver, [next], signal);
+			expect(deliveries.slice(prior + 1)).toEqual([[next.item_id]]);
+		}
+	);
+}

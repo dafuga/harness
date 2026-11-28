@@ -6,6 +6,7 @@ import {
 	composer,
 	protectedPanes,
 	trackerSlotFixture,
+	verifyAnswerAfterExit,
 	verifyManualLaunchWithBlockedPane
 } from '../../support/trackerSlotFixture';
 import type { TrackerSlotFixture } from '../../support/trackerSlotFixture.types';
@@ -26,7 +27,6 @@ const slotCase = (name: string, prove: (fixture: TrackerSlotFixture) => Promise<
 			}
 		})
 	);
-
 test('a finished run frees its slot, the queued run starts and the pane closes within a minute', () =>
 	slotCase('finished-run-frees-slot', async (hub) => {
 		hub.queue('first00001');
@@ -43,7 +43,6 @@ test('a finished run frees its slot, the queued run starts and the pane closes w
 		await hub.advance(35_000);
 		expect(hub.panes()).toEqual(['auto-second-r2']);
 	}));
-
 test('a session idle with a final report finishes its run and is not relaunched', () =>
 	slotCase('idle-final-report', async (hub) => {
 		hub.queue('report0001');
@@ -65,7 +64,7 @@ test('a session idle with a final report finishes its run and is not relaunched'
 		expect(hub.panes()).toEqual(['auto-queued-r2']);
 		await hub.request('/items/queued0001/done');
 		for (let poll = 0; poll < 15; poll++) await hub.advance(2 * minute);
-		expect(hub.runs('report0001')).toEqual([finished('abandoned')]);
+		await verifyAnswerAfterExit(hub, 'report0001');
 	}));
 
 async function verifyLiveAnswerDelivery(hub: TrackerSlotFixture) {
@@ -127,11 +126,13 @@ async function verifyAnsweredPaneRetained(hub: TrackerSlotFixture) {
 	await hub.advance(minute);
 	expect(hub.panes()).toContain(name);
 	expect(hub.runs(id)).toEqual([running]);
-	expect(hub.tmuxInput()).toContain(`Tracker answer for item ${id}`);
+	const message = `Tracker answer for item ${id}`;
+	expect.soft(hub.tmuxInput()).not.toContain(message);
+	await hub.advance(minute);
+	expect(hub.tmuxInput()).toContain(message);
 	await hub.request(`/items/${id}/done`);
 	await hub.advance(minute);
 }
-
 test('a blocked run closes and stays down until its answer allows a relaunch', () =>
 	slotCase('blocked-run-waits-for-answer', async (hub) => {
 		hub.queue('blocked001');
@@ -162,7 +163,6 @@ test('a blocked run closes and stays down until its answer allows a relaunch', (
 		await verifyAnsweredPaneRetained(hub);
 		await verifyManualLaunchWithBlockedPane(hub);
 	}));
-
 test('keeps a live background task until the item closes, then closes the pane', () =>
 	slotCase('background-task-retained', async (hub) => {
 		hub.queue('bgwork0001');

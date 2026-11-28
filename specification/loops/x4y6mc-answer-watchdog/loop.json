@@ -1,0 +1,61 @@
+{
+	"name": "x4y6mc-answer-watchdog",
+	"goal": "Retire answers to ended runs without alerts and send each stale-live alert batch once while preserving delivery to live runs.",
+	"createdAt": "2026-11-28T12:45:10.962Z",
+	"updatedAt": "2026-11-28T12:46:52.233Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T12:46:18.880Z",
+			"evidence": "An open item can have a newly answered question and only an ended run; no live delivery or CoS alert is needed. A replay with new queue IDs must represent the same logical notification."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T12:46:21.256Z",
+			"evidence": "The finished-session case stopped after proving no retry. Extend it past a later answer and grace period. The CoS replay case used only explicit dependency messages; extend it with answer generations and refreshed queue IDs."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Review adjacent watchdog delivery and alert routes for the same lifecycle and duplicate receipt gaps.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
