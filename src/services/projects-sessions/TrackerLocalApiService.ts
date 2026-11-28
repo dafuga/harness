@@ -39,6 +39,7 @@ import {
 } from './tracker-local-api-service/readTrackerRunEndpoint';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
 import {
+	isTrackerLaunchCancellation,
 	isTrackerManualLaunch,
 	planTrackerManualLaunch
 } from './tracker-local-api-service/trackerManualLaunch';
@@ -149,7 +150,7 @@ export class TrackerLocalApiService {
 		const persist = () => {
 			if (action === 'start')
 				recordTrackerSessionItem(this.store.database, plan.itemId, body.session_run);
-			if (manual && verb === 'unlaunch')
+			if (manual && isTrackerLaunchCancellation(verb))
 				cancelQueuedDispatchRuns(this.store, plan.itemId, context.now);
 		};
 		if (plan.fields)

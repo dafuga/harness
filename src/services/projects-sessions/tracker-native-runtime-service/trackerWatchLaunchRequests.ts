@@ -199,7 +199,7 @@ function unclaimedRequests(store: TrackerPersistenceService, now: number) {
 	})[];
 	return rows.flatMap((row) => {
 		const { id, auto, clock, target, source, priority, due } = row;
-		if (!auto && trackerScheduleHold(row, now)) return [];
+		if (source !== 'manual' && trackerScheduleHold(row, now)) return [];
 		const at = trackerClockMilliseconds(clock ?? '');
 		return clock && at && (auto || Date.parse(due ?? '') <= now) && now - at >= requestGrace
 			? [{ id, auto, clock, source, priority, age: now - at, computer: canonicalNode(target, {}) }]

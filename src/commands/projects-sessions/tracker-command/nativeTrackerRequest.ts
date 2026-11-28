@@ -136,12 +136,19 @@ function itemAction(
 			};
 		case 'launch':
 			return launchAction(id, [first, ...rest], values);
+		case 'unlaunch':
+			return unlaunchAction(id, rest, values.never === true);
 		case 'chase':
 			if (rest.length) throw new TypeError('usage: tracker chase <id> [--note text]');
 			return { method: 'POST', path: id + '/chase', body: { note: values.note } };
 		default:
 			return { method: 'POST', path: `${id}/${command}`, body: actionBody(command, rest, values) };
 	}
+}
+
+function unlaunchAction(path: string, rest: string[], never: boolean): NativeTrackerRequest {
+	if (rest.length) throw new TypeError('usage: tracker unlaunch <id> [--never]');
+	return { method: 'POST', path: path + (never ? '/unlaunch-never' : '/unlaunch') };
 }
 
 const textVerbs = new Set(['note', 'progress', 'alert']);

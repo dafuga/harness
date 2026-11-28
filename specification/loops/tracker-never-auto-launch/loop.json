@@ -2,11 +2,9 @@
 	"name": "tracker-never-auto-launch",
 	"goal": "Prove an explicit per-item auto-launch opt-out survives temporary pause expiry without changing flags, reminders or manual launch",
 	"createdAt": "2026-11-28T14:03:49.626Z",
-	"updatedAt": "2026-11-28T14:05:56.119Z",
+	"updatedAt": "2026-11-28T14:11:52.478Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T14:11:50.696Z",
+			"evidence": "Clean red checkpoint 504f52d91d returns no durable hold at the 24-hour cutoff and lacks an operator command."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-28T14:11:52.478Z",
+			"evidence": "Store the durable opt-out independently from the pause and preserve existing dispatch, manual launch, flag and reminder behavior."
 		},
 		{
 			"id": "green",

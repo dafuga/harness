@@ -51,6 +51,7 @@ export const trackerItemFields = [
 	'launch_source',
 	'launch_pick',
 	'schedule_off',
+	'schedule_never',
 	'schedule_hold_reason',
 	'schedule_status',
 	'every',
@@ -196,7 +197,9 @@ export class TrackerSchemaAdapter {
 			this.database
 				.prepare(`UPDATE items SET ${field} = ?, clocks = ? WHERE id = ?`)
 				.run(
-					typeof value === 'boolean' ? String(Number(value)) : (value ?? null),
+					typeof value === 'boolean' || typeof value === 'number'
+						? String(Number(value))
+						: (value ?? null),
 					JSON.stringify(clocks),
 					operation.item_id
 				);
