@@ -36,7 +36,7 @@
 		],
 		"errors": [
 			{
-				"name": "RangeError",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
 			},
@@ -73,7 +73,7 @@
 				],
 				"errors": [
 					{
-						"name": "RangeError",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
 					}
@@ -86,6 +86,11 @@
 	"dependencies": [
 		{
 			"unit": "command.execution-runtimes-jobs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

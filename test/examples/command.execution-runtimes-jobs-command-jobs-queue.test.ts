@@ -171,8 +171,8 @@ test('Rejects malformed queue JSON and invalid what-if flags', async () => {
 		const requiredError = captureError(() => jobsQueue(requiredInput.options, live));
 
 		expect(malformedError).toBeInstanceOf(SyntaxError);
-		expect(countError).toBeInstanceOf(RangeError);
-		expect(requiredError).toBeInstanceOf(RangeError);
+		expect(countError).toBeInstanceOf(ExpectedCliError);
+		expect(requiredError).toBeInstanceOf(ExpectedCliError);
 		recordExampleCases(
 			{
 				unitId: 'command.execution-runtimes-jobs-command-jobs-queue',

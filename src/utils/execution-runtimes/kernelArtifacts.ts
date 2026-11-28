@@ -8,6 +8,8 @@ import { fileURLToPath } from 'node:url';
 /** Where built kernels may live: an override, beside a bundle, or in a source checkout. */
 function candidates(env: RuntimeEnvironment): string[] {
 	const beside = [
+		// The published CLI is one bundle, dist/index.js, with dist/kernel beside it.
+		new URL('./kernel/', import.meta.url),
 		new URL('../kernel/', import.meta.url),
 		new URL('../../kernel/', import.meta.url),
 		new URL('../../../target/kernel/', import.meta.url)

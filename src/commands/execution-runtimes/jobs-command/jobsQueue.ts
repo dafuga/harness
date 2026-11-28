@@ -1,4 +1,5 @@
 // @harness-uid u_uig432kach
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -27,9 +28,9 @@ export function jobsQueue(options: JobsOptions, live: QueueSnapshot): QueueSnaps
 		const count =
 			options.whatIf === 'all-modules' ? moduleCount(options.project) : Number(options.whatIf);
 		if (!Number.isSafeInteger(count) || count < 0 || count > 1000000)
-			throw new RangeError('What-if count must be an integer from 0 to 1000000');
+			throw new ExpectedCliError('What-if count must be an integer from 0 to 1000000');
 		if (!options.type || !options.model)
-			throw new RangeError('What-if requires --type and --model');
+			throw new ExpectedCliError('What-if requires --type and --model');
 		return {
 			queued: Array.from({ length: count }, () => ({ type: options.type!, model: options.model! })),
 			running: [],
