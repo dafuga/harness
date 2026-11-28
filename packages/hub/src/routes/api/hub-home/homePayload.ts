@@ -140,6 +140,10 @@ const snapshot = z.object({
 		.optional(),
 	agents: z.array(agent).max(100),
 	openAsks: z.array(openAsk).max(100).optional(),
+	closedCosDeliveryAsks: z
+		.array(z.object({ itemId: id, closedAt: time }))
+		.max(100)
+		.optional(),
 	reminders: z.array(reminder).max(100).optional(),
 	plans: z.array(plan).max(100),
 	scheduled: z.array(homeRunPayload).max(200),

@@ -1,3 +1,7 @@
+import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import { agentOpenAsks } from '$reports/lib/projects-sessions/hub-home/homeOpenAsks';
+import { captureNeedsYou } from './hub-home-capture';
+import { needsYou } from './hub-home-click-through';
 import { expect, type Page } from '../../../../test/support/browserTest';
 import {
 	HostPairingService,
@@ -50,7 +54,8 @@ export async function linkedComputersFixture(
 	const pairing = new HostPairingService({ hostId, keys });
 	const endpoint = `/api/remote/hosts/${hostId}/pairing`;
 	let device: Awaited<ReturnType<typeof pairing.approve>> | undefined;
-	await computerListRoutes(page, { hostId, name: host.name, online: true }, offline);
+	const online = { hostId, name: host.name, online: true };
+	await computerListRoutes(page, online, offline);
 	await page.route('**' + endpoint, async (route) => {
 		const request = route.request();
 		if (request.method() === 'GET')
@@ -76,6 +81,7 @@ export async function linkedComputersFixture(
 		})
 	);
 	await connectFixture(page, { host, keys, grant, home, chats, answer, device: () => device! });
+	return online;
 }
 
 async function connectFixture(
@@ -133,4 +139,55 @@ async function connectFixture(
 			if (text) await link.receive(text);
 		});
 	});
+}
+
+export async function proveCoSDeliveryAskClears(
+	page: Page,
+	snapshot: OwnerHomeSnapshot,
+	chats: unknown[]
+) {
+	const since = new Date(Date.now() - 60_000).toISOString();
+	const alarm = {
+		itemId: 'sbb0mckfxs',
+		agentId: 'tracker',
+		agentName: 'Tracker',
+		title: 'Tracker alerts are not reaching Chief of Staff',
+		question: 'Four Tracker alerts have not reached Chief of Staff. What should happen?',
+		options: [
+			{ label: 'Check CoS', effect: '', recommended: true },
+			{ label: 'Wait', effect: '' }
+		],
+		since
+	};
+	const questions = snapshot.openAsks ?? agentOpenAsks(snapshot.agents);
+	const stale = await linkedComputersFixture(
+		page,
+		{ ...snapshot, openAsks: [...questions, alarm] },
+		chats
+	);
+	let answered = false;
+	const fresh = await linkedComputersFixture(page, () => ({
+		...snapshot,
+		openAsks: answered ? questions : [...questions, alarm],
+		...(answered && {
+			closedCosDeliveryAsks: [{ itemId: alarm.itemId, closedAt: new Date().toISOString() }]
+		})
+	}));
+	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
+		route.fulfill({ json: { computers: [stale, fresh] } })
+	);
+	await page.goto('/?view=needs-you');
+	const reminder = needsYou(page).getByText(alarm.question, { exact: true });
+	await expect(reminder).toBeVisible({ timeout: 20_000 });
+	answered = true;
+	await page.reload();
+	await expect(needsYou(page).getByText(questions[0].question, { exact: true })).toBeVisible({
+		timeout: 20_000
+	});
+	await captureNeedsYou(page, 'hub-cos-delivery-answered', needsYou(page));
+	const desktop = page.viewportSize()!;
+	await page.setViewportSize({ width: 390, height: 844 });
+	await captureNeedsYou(page, 'hub-cos-delivery-answered-phone', needsYou(page));
+	await expect(reminder).toHaveCount(0);
+	await page.setViewportSize(desktop);
 }

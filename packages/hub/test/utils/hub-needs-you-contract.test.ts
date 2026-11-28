@@ -23,10 +23,14 @@ const decisions: Record<SnapshotMoment, string[]> = {
 	recorded: ['snap042']
 };
 
-async function surfaces(tracker: ReturnType<typeof snapshotTracker>) {
+async function publishedHome(tracker: ReturnType<typeof snapshotTracker>) {
 	const sources = await readTrackerSources(tracker.fetcher, true);
 	const published = buildHomeSnapshot(sources, noProviders, recordedAt);
-	const parsed = parseHomePayload(JSON.parse(JSON.stringify(published)));
+	return parseHomePayload(JSON.parse(JSON.stringify(published)));
+}
+
+async function surfaces(tracker: ReturnType<typeof snapshotTracker>) {
+	const parsed = await publishedHome(tracker);
 	// Two linked computers report the same synced items; each decision still shows once.
 	const hub = listedHomeSnapshot(mergeHomeSnapshots([parsed, parsed])!);
 	const digest = (await (
@@ -69,7 +73,38 @@ for (const moment of ['before-cleanup', 'recorded'] as const)
 				(row) => row.flag?.state === 'open' && row.flag.options
 			);
 			expect(sorted(phone.map((row) => row.id))).toEqual(expected);
+			if (moment === 'recorded') await proveClosedDeliveryAlarm(tracker);
 		} finally {
 			tracker.close();
 		}
 	});
+
+async function proveClosedDeliveryAlarm(tracker: ReturnType<typeof snapshotTracker>) {
+	const itemId = 'sbb0mckfxs';
+	tracker.store.appendLocal({
+		itemId,
+		fields: {
+			title: 'Tracker alerts are not reaching Chief of Staff',
+			kind: 'reminder',
+			status: 'open',
+			needs_daniel: 1,
+			question: 'Four Tracker alerts have not reached Chief of Staff. What should happen?',
+			asked_at: new Date(recordedAt - 60_000).toISOString(),
+			options: JSON.stringify([{ label: 'Check CoS', recommended: true }, { label: 'Wait' }])
+		}
+	});
+	const stale = await publishedHome(tracker);
+	expect(stale.openAsks?.map((ask) => ask.itemId)).toContain(itemId);
+	for (const fields of [
+		{ answer: 'CoS reviewed all four alerts.', resolved: 1 },
+		{ status: 'done', answer: null, resolved: 0 }
+	]) {
+		tracker.store.appendLocal({ itemId, fields });
+		const current = await publishedHome(tracker);
+		const hub = listedHomeSnapshot(mergeHomeSnapshots([stale, current])!);
+		expect(
+			hub.openAsks.map((ask) => ask.itemId),
+			'the stale Mac copy must not revive the alarm'
+		).toEqual(['snap042']);
+	}
+}

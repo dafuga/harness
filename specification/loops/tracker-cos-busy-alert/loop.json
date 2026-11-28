@@ -1,0 +1,60 @@
+{
+	"name": "tracker-cos-busy-alert",
+	"goal": "Prove a busy live CoS pane suppresses the false escalation, queued delivery resumes on the next idle tick, recovery closes the alarm, and Hub hides answered or done alarms",
+	"createdAt": "2026-11-28T13:55:01.276Z",
+	"updatedAt": "2026-11-28T14:04:42.583Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:56:12.789Z",
+			"evidence": "Primary Mac report: live cos remained mid-turn while four alerts waited 6–16 minutes; a 15-minute age check raised a Hub ask before trying delivery. Expect a 30-minute escalation threshold for a live unavailable pane or aged outage/security alert, a retry on the next idle tick, and closure on receipt."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-28T13:56:34.108Z",
+			"evidence": "Prior delivery tests check alert age without a real pane contract. Exercise the exact round and tmux adapter with the existing simulated 80x24 Claude pane; exercise Hub snapshots with both current and stale copies."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-28T14:04:31.700Z",
+			"evidence": "Committed 12b8de2a4f: Tracker raised on a 16-minute-old alert while the live pane was busy; Hub merged the old answered reminder back in. On harbor-mbp-2 Chromium, the same Needs you checkpoint showed 1 reminder where 0 were expected; before screenshot retained."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-28T14:04:42.583Z",
+			"evidence": "Native round now reconciles after delivery and keys the busy grace to the live pane. The queue stays on the CoS route, and Hub merges closed alarm timestamps against stale open copies."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

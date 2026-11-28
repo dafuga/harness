@@ -2,13 +2,28 @@
 import { isTrackerCosMessage } from './isTrackerPing';
 import type { TrackerAskState } from './trackerStructuredAsk.types';
 
+export const trackerCosDeliveryAskTitle = 'Tracker alerts are not reaching Chief of Staff';
+
+/** @pure A recovered delivery alarm must disappear even if its old flag is still present. */
+export function isClosedTrackerCosDeliveryAsk(item: TrackerAskState): boolean {
+	return (
+		item.title === trackerCosDeliveryAskTitle && (item.status === 'done' || Boolean(item.resolved))
+	);
+}
+
 /**
  * @pure What an item's open flag is. An "ask" is a real Daniel decision: a question with 2 to 4
  * choices, exactly one recommended. A "ping" is an automated session alert and "needs-options" is
  * any other flag, such as a dependency block; both are for Chief of Staff. No open flag is null.
  */
 export function trackerFlagKind(item: TrackerAskState): 'ask' | 'ping' | 'needs-options' | null {
-	if (!item.needs_daniel || item.resolved || item.status === 'ignored') return null;
+	if (
+		!item.needs_daniel ||
+		item.resolved ||
+		item.status === 'ignored' ||
+		isClosedTrackerCosDeliveryAsk(item)
+	)
+		return null;
 	if (isTrackerCosMessage(item.question)) return 'ping';
 	return item.question?.trim() && answerableChoices(item.options) ? 'ask' : 'needs-options';
 }

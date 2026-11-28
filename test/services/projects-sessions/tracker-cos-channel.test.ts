@@ -20,6 +20,7 @@ import {
 	alarmAsks,
 	cosDeliveryFixture,
 	minute,
+	proveLiveTurnDelivery,
 	readCosPrompts,
 	recordedDependencyQueue,
 	writeAcceptedPrompts
@@ -82,7 +83,7 @@ test(
 					date.mockRestore();
 				}
 			})
-		),
+		).then(proveLiveTurnDelivery),
 	25_000
 );
 

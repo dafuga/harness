@@ -1,3 +1,8 @@
+import { expect, vi } from 'vitest';
+import { withTempDir } from './temporary';
+import { claudePaneFixture } from './claudePaneFixture';
+import { trackerCosRound } from '../../src/services/projects-sessions/tracker-native-runtime-service/trackerCosRound';
+import { trackerWatchdogPort } from '../../src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPort';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -119,4 +124,63 @@ export function readCosPrompts(root: string): string[] {
 		.split('\n')
 		.map((line) => JSON.parse(line).text)
 		.filter((text): text is string => typeof text === 'string');
+}
+
+export function proveLiveTurnDelivery() {
+	return cosDeliveryFixture(({ store, items }) =>
+		withTempDir('hnt-cos-live-turn-', async (root) => {
+			const executable = join(root, 'tmux-fixture');
+			writeFileSync(executable, `#!${process.execPath}\n${claudePaneFixture}`, { mode: 0o700 });
+			const mode = (value: string) => writeFileSync(join(root, 'mode'), value);
+			const started = performance.now();
+			let clock = noon;
+			const date = vi
+				.spyOn(Date, 'now')
+				.mockImplementation(() => clock + performance.now() - started);
+			const driver = trackerWatchdogPort(
+				{ tmux: executable, chiefOfStaff: true },
+				'daniel-primary-mbp'
+			);
+			let queue = [alert('alert', clock - 16 * minute)];
+			const watchdog = trackerCosRound(
+				store,
+				{ ...driver, peers: undefined },
+				{ now: () => clock, local: () => queue }
+			);
+			const tick = () => watchdog.run(AbortSignal.timeout(18_000), false);
+			try {
+				mode('busy');
+				await tick();
+				expect(alarmAsks(items, clock), 'a live mid-turn CoS is not a delivery outage').toEqual([]);
+				await nextTick('idle');
+				expect(readCosPrompts(root)).toHaveLength(1);
+
+				await nextTick('busy', 'alert');
+				await nextTick('idle');
+				expect(readCosPrompts(root), 'idle retry bypasses the routine cadence').toHaveLength(2);
+
+				await nextTick('busy', 'idle');
+				clock += 29 * minute;
+				await tick();
+				expect(alarmAsks(items, clock)).toEqual([]);
+				clock += minute;
+				await tick();
+				const [alarm] = alarmAsks(items, clock);
+				expect(alarm).toBeDefined();
+				await nextTick('idle');
+				expect(readCosPrompts(root)).toHaveLength(3);
+				expect(alarmAsks(items, clock)).toEqual([]);
+				expect(items.getStored(alarm.id)).toMatchObject({ status: 'done', needs_daniel: false });
+			} finally {
+				date.mockRestore();
+			}
+
+			async function nextTick(state: 'busy' | 'idle', kind?: string) {
+				clock += minute;
+				if (kind) queue = [alert(kind, clock)];
+				mode(state);
+				await tick();
+			}
+		})
+	);
 }

@@ -2,17 +2,18 @@
 import { randomBytes } from 'node:crypto';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { isOutageAlert } from './trackerCosAlertKinds';
+import { cosOutageGrace, isOutageAlert } from './trackerCosAlertKinds';
 import { cosDeliveryAsk, cosDeliveryDelivered } from './trackerCosDeliveryAsk';
 import { cosSendWindowStart } from './trackerCosWindow';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
-import type { TrackerCosDeliveryAlarm } from './trackerCosDelivery.types';
+import type { TrackerCosBusyPane, TrackerCosDeliveryAlarm } from './trackerCosDelivery.types';
+import type { CosSendResult } from './trackerWatchdogPort.types';
 
 const minute = 60_000;
 const routineGrace = 60 * minute;
-const outageGrace = 15 * minute;
 const askAgainAfter = 4 * 60 * minute;
 const metaKey = 'watchdog_cos_alarm';
+const busyKey = 'watchdog_cos_busy_pane';
 const alphabet = '0123456789abcdefghjkmnpqrstvwxyz';
 
 /**
@@ -22,22 +23,52 @@ const alphabet = '0123456789abcdefghjkmnpqrstvwxyz';
 export function watchCosDelivery(
 	store: TrackerPersistenceService,
 	pending: readonly TrackerWatchdogAlert[],
-	now: number
+	now: number,
+	result: CosSendResult = false
 ): void {
-	const windowStart = cosSendWindowStart(now);
-	if (windowStart === null) return;
-	const alarm = readAlarm(store);
-	// Overdue by real age keeps an ask open; only waiting time in today's window raises one.
-	if (!pending.some((alert) => overdue(alert, now - alert.at))) {
-		if (alarm?.open) closeAlarm(store, alarm);
+	if (!pending.length) {
+		closeRecoveredAlarm(store, now);
 		return;
 	}
-	const stuck = pending.some((alert) => overdue(alert, now - Math.max(alert.at, windowStart)));
-	if (stuck && askDue(store, alarm, now)) raiseAlarm(store, { alarm, pending, now });
+	const windowStart = cosSendWindowStart(now);
+	const busy = busySince(store, typeof result === 'object' ? result.busyPane : undefined, now);
+	if (windowStart === null || result === true || result === 'deferred') return;
+	if (!deliveryStuck(pending, { now, windowStart, busy, unreachable: result === false })) return;
+	const alarm = readAlarm(store);
+	if (askDue(store, alarm, now)) raiseAlarm(store, { alarm, pending, now });
 }
 
-function overdue({ kind }: TrackerWatchdogAlert, waited: number) {
-	return waited > (isOutageAlert(kind) ? outageGrace : routineGrace);
+function deliveryStuck(
+	pending: readonly TrackerWatchdogAlert[],
+	{
+		now,
+		windowStart,
+		busy,
+		unreachable
+	}: {
+		now: number;
+		windowStart: number;
+		busy?: number;
+		unreachable: boolean;
+	}
+) {
+	if (busy !== undefined && now - Math.max(busy, windowStart) >= cosOutageGrace) return true;
+	return pending.some(({ kind, at }) => {
+		const waited = now - Math.max(at, windowStart);
+		return isOutageAlert(kind) ? waited >= cosOutageGrace : unreachable && waited >= routineGrace;
+	});
+}
+
+function busySince(store: TrackerPersistenceService, pane: string | undefined, now: number) {
+	const stored = store.getMeta(busyKey);
+	const busy = stored ? (JSON.parse(stored) as TrackerCosBusyPane) : undefined;
+	if (!pane) {
+		if (stored) store.writeMeta({ [busyKey]: '' });
+		return undefined;
+	}
+	if (busy?.pane === pane) return busy.since;
+	store.writeMeta({ [busyKey]: JSON.stringify({ pane, since: now }) });
+	return now;
 }
 
 function readAlarm(store: TrackerPersistenceService): TrackerCosDeliveryAlarm | undefined {
@@ -73,9 +104,19 @@ function raiseAlarm(
 }
 
 function closeAlarm(store: TrackerPersistenceService, alarm: TrackerCosDeliveryAlarm) {
+	if (new TrackerItemReadRepository(store.database).getStored(alarm.itemId).status === 'done') {
+		store.writeMeta({ [metaKey]: JSON.stringify({ ...alarm, open: false }) });
+		return;
+	}
 	store.appendLocal({ itemId: alarm.itemId, fields: cosDeliveryDelivered }, () =>
 		store.writeMeta({ [metaKey]: JSON.stringify({ ...alarm, open: false }) })
 	);
+}
+
+function closeRecoveredAlarm(store: TrackerPersistenceService, now: number) {
+	busySince(store, undefined, now);
+	const alarm = readAlarm(store);
+	if (alarm?.open) closeAlarm(store, alarm);
 }
 
 function newItemId() {

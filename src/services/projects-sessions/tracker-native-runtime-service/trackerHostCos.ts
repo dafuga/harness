@@ -1,6 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
 import { createHash } from 'node:crypto';
-import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
+import type { CosSendResult, TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { launchWithoutRunKind } from './trackerWatchLaunchRequests';
@@ -32,14 +32,15 @@ export async function sendWatchdogAlerts(
 	driver: TrackerWatchdogPort,
 	alerts: readonly TrackerWatchdogAlert[],
 	signal: AbortSignal
-): Promise<void> {
+): Promise<CosSendResult> {
 	const unsent = unsentCosAlerts(store, alerts).sort(
 		(a, b) => alertRank(a.kind) - alertRank(b.kind) || a.at - b.at
 	);
 	const batch = unsent.slice(0, driver.batchLimit ?? batchSize);
-	if (!batch.length) return;
-	if (!(await driver.send(batch, signal, { backlog: unsent.length > batch.length }))) return;
-	recordCosReceipts(store, batch);
+	if (!batch.length) return 'deferred';
+	const result = await driver.send(batch, signal, { backlog: unsent.length > batch.length });
+	if (result === true) recordCosReceipts(store, batch);
+	return result;
 }
 
 export function recordCosReceipts(

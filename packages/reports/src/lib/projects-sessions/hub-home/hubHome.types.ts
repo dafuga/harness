@@ -179,6 +179,8 @@ export interface OwnerHomeSnapshot {
 	agents: HomeAgent[];
 	/** Every open structured ask, oldest first. Older Mac apps omit it. */
 	openAsks?: HomeOpenAsk[];
+	/** Latest closures for the CoS delivery reminder, which can be reopened in a new episode. */
+	closedCosDeliveryAsks?: { itemId: string; closedAt: string }[];
 	/** Personal reminders, soonest first. Older Mac apps omit them. */
 	reminders?: HomeReminder[];
 	plans: HomePlan[];

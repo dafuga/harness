@@ -6,6 +6,8 @@ import type {
 import type { WatchdogCli, WatchdogPane } from '../WatchdogPaneService.types';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 
+export type CosSendResult = boolean | 'deferred' | { busyPane: string };
+
 export interface TrackerWatchdogPort {
 	/** Maximum batch size supported by a destination with a bounded composer. */
 	batchLimit?: number;
@@ -21,12 +23,12 @@ export interface TrackerWatchdogPort {
 		alerts: readonly TrackerWatchdogAlert[],
 		signal: AbortSignal
 	): Promise<ReadonlySet<string>>;
-	/** True only with proof of delivery. `backlog` says more alerts wait behind this batch. */
+	/** True only with proof of delivery. False means the destination could not be reached. */
 	send(
 		alerts: readonly TrackerWatchdogAlert[],
 		signal: AbortSignal,
 		queue?: { backlog: boolean }
-	): Promise<boolean>;
+	): Promise<CosSendResult>;
 	/** Type one message into the named session's idle prompt and confirm it was submitted. */
 	deliver?(
 		input: {

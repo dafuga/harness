@@ -227,6 +227,14 @@ operator verifies the stopped database and chooses a rollback.
   A heartbeat more than three minutes old prompts a Chief of Staff alert
   outside the routine cadence during delivery hours. Tracker sends one alert
   per missed heartbeat and clears it from the active list when polling resumes.
+  Alerts waiting for a live CoS pane stay in the CoS queue during a normal turn.
+  Tracker retries them on the first watchdog tick with an idle prompt, even
+  inside the routine cadence. During delivery hours, Tracker asks Daniel after
+  the pane stays busy or fails to accept delivery for 30 minutes, or an outage
+  or security alert waits 30 minutes. With no live pane, routine alerts retain
+  their one-hour grace period. The delivery reminder closes on the tick that
+  confirms the queue is empty. Hub suppresses answered or done reminders even
+  when a linked computer still holds the earlier open copy.
   The separate tick can still read `tracker list --flagged --json` for decisions.
 
   CoS dependency messages are delivered once per item and message text.
