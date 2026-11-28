@@ -1,0 +1,65 @@
+{
+	"name": "hrbvhd-pairing-poll",
+	"goal": "A transient relay poll failure leaves the pending browser pairing available for approval within the 20 second window.",
+	"createdAt": "2026-11-27T18:34:55.283Z",
+	"updatedAt": "2026-11-27T18:44:23.276Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T18:37:40.896Z",
+			"evidence": "The Google Device Linking spec defines transient poll recovery on the same pending request and the original 20-second deadline."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T18:37:45.747Z",
+			"evidence": "The connect method test ended before polling; the account Devices browser fixture always approved the first poll. Both existing cases now exercise a one-off relay failure."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T18:41:13.275Z",
+			"evidence": "Committed test at 87397fdfb4 failed on the unchanged service: expected the same poll through approval and one exchange, observed only the request and first poll."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T18:42:22.550Z",
+			"evidence": "Fix 23940629c3 retries status 0, 408, 500, 502, 503 and 504 on poll only. Late approval, cancellation and terminal states end the attempt before exchange."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T18:44:23.276Z",
+			"evidence": "Exact-snapshot 23940629c3 passes the unchanged 87397fdfb4 regression and command. The service methods and real pairing protocol use a synthetic relay. Covers one exchange after recovery, no replay of a failed exchange, 403, denial, cancellation, timeout and late approval."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Inspect sibling pairing clients and retry loops for the same failure.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
