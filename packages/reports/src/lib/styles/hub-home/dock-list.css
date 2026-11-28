@@ -58,6 +58,7 @@
 }
 .hh-home .hd-text {
 	display: grid;
+	gap: var(--hx-space-4);
 	flex: 1;
 	min-width: 0;
 }
