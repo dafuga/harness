@@ -49,7 +49,6 @@
 	let url = $state('');
 	let error = $state('');
 	const current = $derived(entity.versions.find((v) => v.version === version));
-	/** Options are alternatives of one version: only the images of the option shown are offered. */
 	const choices = $derived(current?.options ?? []);
 	const images = $derived(optionImages(current, option));
 	const named = (id: string) => `Option ${choices.findIndex((item) => item.id === id) + 1}`;
@@ -88,7 +87,6 @@
 			? images.find((i) => i.viewport === viewport && i.state === `before-${selected.state}`)
 			: undefined
 	);
-	/** Only a commit view has a commit whose change can be shown as before and after. */
 	const viewed = $derived(workspace.pinned ? (workspace.snapshot?.revision.commit ?? null) : null);
 	const before = $derived(
 		mockup
@@ -128,7 +126,6 @@
 	const proposed = 'A plan is what is proposed. What the tests observed is under Overview.';
 	const earlier =
 		' This version also recorded a picture; it stays in the history and is not shown for a function.';
-	/** What an entity without a version says: how to start one, or that none was committed. */
 	const empty = $derived(
 		headless
 			? {
@@ -171,7 +168,10 @@
 				}
 			/>{#if chosen}<hx-small class="option-direction">{chosen.direction}</hx-small>{/if}
 		</hx-div>{/if}
-	{#if current && selected}<hx-div class="design-controls">
+	{#if current && selected}<hx-div
+			class="design-controls"
+			class:highlight-fixed-viewport={!inline && viewports.length === 1 && states.length === 1}
+		>
 			<SegmentedChoice
 				label="Viewport"
 				options={viewports.map(sized)}

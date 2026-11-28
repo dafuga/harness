@@ -1,0 +1,67 @@
+{
+	"name": "kdjh3x-designs-toggle-colours",
+	"goal": "Designs shows one gold choice across the viewport and image-state controls while keeping the other choice secondary.",
+	"createdAt": "2026-11-25T14:58:36.446Z",
+	"updatedAt": "2026-11-25T15:09:18.888Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-25T14:59:05.098Z",
+			"evidence": "Full-pass U2 requires one gold toggle for Desktop/Default. The singleton CSS repaints both as secondary on the Designs tab."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-25T14:59:06.280Z",
+			"evidence": "Desktop renderer cases open Designs without checking its toggle colors; U4 only checks singleton suppression. Strengthen existing renderer and composer cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:08:49.777Z",
+			"evidence": "dd79157490 reproduced the expected gold border assertion at desktop, tablet and phone widths."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:08:51.371Z",
+			"evidence": "The fix excludes only the fixed Designs viewport from the shared singleton treatment."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:08:55.234Z",
+			"evidence": "fe1b0e0f86 passed the same three Chromium cases on harbor-mbp-2."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:09:18.888Z",
+			"evidence": "siblings-ba10cda4-c1b8-4068-aed9-60b6f8125cf4.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

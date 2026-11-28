@@ -1,0 +1,104 @@
+{
+	"schemaVersion": 1,
+	"revision": "fe1b0e0f8665ac18d17c9b281c27b6d2c973806e",
+	"bugClass": {
+		"id": "singleton-segmented-style-conflict",
+		"title": "Singleton segmented controls inherit unintended active styling",
+		"cause": "A shared CSS selector targets an active button when it is the only child, causing singleton segmented groups to receive styling intended for a different state or context. The selector does not account for independent groups or the state-specific visual treatment required by the viewport.",
+		"criteria": "Match when a stylesheet has a singleton structural selector such as :only-child or :only-of-type combined with active/selected state and segmented-control button styling, and that rule can override state-specific styling across independently rendered groups. Each conflicting singleton selector is sufficient; neutral singleton styling without a state conflict does not match.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": ":only-child",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": ":only-of-type",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": ".active:only-child",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": ":only-child.active",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": ":checked",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "aria-pressed",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "aria-selected",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "segmented-choice",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "[aria-pressed=\"true\"]",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "[aria-selected=\"true\"]",
+				"weight": 3
+			}
+		],
+		"contextTerms": [
+			"css",
+			"segmented",
+			"active",
+			"selected",
+			"only-child",
+			"only-of-type",
+			"button",
+			"viewport",
+			"report",
+			"hub"
+		],
+		"pathHints": [
+			{
+				"contains": "packages/desktop/",
+				"weight": 5
+			},
+			{
+				"contains": "packages/reports/",
+				"weight": 4
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 4
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "src/services/",
+				"weight": -2
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": -2
+			}
+		]
+	}
+}

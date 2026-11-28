@@ -1,12 +1,12 @@
 import { desktopEvidence } from './desktop-evidence';
 import { catalogCategories } from './ui-workspace-fixture';
 import { test, expect, type Page } from '../../../../test/support/browserTest';
-import { fixture } from './ui-design-fixture';
+import { expectDesignToggleColours, fixture } from './ui-design-fixture';
 import type { DesktopBridge, RunEvent } from '../../src/models/DesktopBridge.types';
 import { openRows } from './picker-rows';
 
-async function checkpoint(page: Page, name: string) {
-	await desktopEvidence(page, name, false);
+async function checkpoint(page: Page, name: string, record = true) {
+	if (record) await desktopEvidence(page, name, false);
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
 	await page.evaluate(async () => {
 		await document.fonts.ready;
@@ -15,6 +15,7 @@ async function checkpoint(page: Page, name: string) {
 	await page.mouse.move(0, 0);
 	await page.screenshot({ path: `test-results/ui-${name}.png`, fullPage: true });
 }
+
 test('exact image region, approval, Change, public stream and source disclosure', async ({
 	page
 }) => {
@@ -24,6 +25,8 @@ test('exact image region, approval, Change, public stream and source disclosure'
 	await checkpoint(page, 'catalog');
 	await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 	await expect(page.getByRole('img', { name: 'Activity v002 desktop default' })).toBeVisible();
+	await checkpoint(page, 'design-toggles-desktop', false);
+	await expectDesignToggleColours(page);
 	await page.getByRole('button', { name: 'Open thread 1', exact: true }).click();
 	await expect(page.getByText('Keep the filters on one line.')).toBeVisible();
 	await checkpoint(page, 'design');
@@ -81,6 +84,8 @@ for (const viewport of [
 		await page.getByRole('button', { name: 'Open project', exact: true }).click();
 		await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 		await expect(page.getByRole('img', { name: 'Activity v002 desktop default' })).toBeVisible();
+		await checkpoint(page, `design-toggles-${viewport.name}`, false);
+		await expectDesignToggleColours(page);
 		await expect(
 			page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
 		).toHaveText(catalogCategories);
