@@ -35,6 +35,8 @@ test('ignores prefix references, Stripe publishable keys and standalone Twilio i
 	expect(trackerTranscriptMatches(Buffer.from(text + ' AC' + 'a'.repeat(32)), 0)).toEqual([]);
 });
 
+const awaitingReview = 'awaiting Chief of Staff review';
+
 test('watchdog flags the launched item and reopens a closed rotation on a new hit', () =>
 	measureWorkload(
 		'service.projects-sessions-tracker-native-runtime',
@@ -79,12 +81,14 @@ async function proveWatchdog(root: string) {
 		);
 		const items = await response.json();
 		expect(items).toHaveLength(2);
+		// The watchdog's asks wait for Chief of Staff; nothing reaches Daniel yet.
+		const held = { needs_daniel: false, question: null, review_status: awaitingReview };
 		expect(items).toEqual(
 			expect.arrayContaining([
-				expect.objectContaining({ id: itemId, needs_daniel: true }),
+				expect.objectContaining({ id: itemId, ...held }),
 				expect.objectContaining({
 					title: expect.stringContaining('Rotate exposed Google OAuth client secret'),
-					needs_daniel: true
+					...held
 				})
 			])
 		);
@@ -150,6 +154,10 @@ async function assertNewExposureReopens(
 	await runtime.watchdog!.tick(signal);
 	const reopened = await runtime.items.handle(new Request(target));
 	expect(alerts()).toHaveLength(1);
-	expect(await reopened.json()).toMatchObject({ status: 'open', needs_daniel: true });
+	expect(await reopened.json()).toMatchObject({
+		status: 'open',
+		needs_daniel: false,
+		review_status: awaitingReview
+	});
 	expect(JSON.stringify(runtime.store.opsSince(0, 100)).includes(anotherDummy)).toBe(false);
 }

@@ -8,18 +8,30 @@ import {
 import { cosSendWindowStart } from '../../../utils/projects-sessions/trackerCosSendWindow';
 import type { TrackerOperation } from '../TrackerOperationRepository.types';
 import { closedReviewFields } from './closedChiefReviewFields';
-import { heldReviewFields } from './heldChiefReviewFields';
-import type { ChiefReview, ChiefReviewContext } from './chiefReviewFields.types';
+import { heldReviewFields, privateAskFields } from './heldChiefReviewFields';
+import type { ChiefReview, ChiefReviewAsk, ChiefReviewContext } from './chiefReviewFields.types';
 
 /** Keep an ask's contents out of every public item field until the reviewer releases it. */
 export function chiefReviewFields(
 	operation: TrackerOperation,
-	{ current, migrate = false }: ChiefReviewContext = {}
+	context: ChiefReviewContext = {}
 ): TrackerOperation['fields'] {
-	const { fields, actor, hlc } = operation;
+	const { fields } = operation;
+	const { current } = context;
 	if (Object.hasOwn(fields, 'chief_review')) return fields;
 	const ask = readAsk(fields);
 	if (!ask.flag && !ask.blocker) return closedReviewFields(fields, current);
+	if (restatesReleasedAsk(fields, ask, current)) return fields;
+	return reviewedAskFields(operation, ask, context);
+}
+
+/** Publish what a reviewer raised in the daytime; hold everything else. */
+function reviewedAskFields(
+	operation: TrackerOperation,
+	ask: ChiefReviewAsk,
+	{ current, migrate = false }: ChiefReviewContext
+): TrackerOperation['fields'] {
+	const { fields, actor, hlc } = operation;
 	const chiefOnly = isTrackerPlumbingAsk(actor, ask.text, fields.title);
 	const approved = !migrate && !chiefOnly && trackerReviewer(actor) !== null;
 	if (approved && cosSendWindowStart(trackerClockMilliseconds(hlc)) !== null)
@@ -29,6 +41,16 @@ export function chiefReviewFields(
 			...(ask.flag && clearedPrivateAnswer(current?.chief_answer))
 		};
 	return heldReviewFields(operation, ask, { current, mode: reviewMode(chiefOnly, approved) });
+}
+
+/** Restoring a published flag, as unignore does, carries no wording that needs a new review. */
+function restatesReleasedAsk(
+	fields: TrackerOperation['fields'],
+	ask: ChiefReviewAsk,
+	current: ChiefReviewContext['current']
+) {
+	const published = current?.needs_daniel === 1 && current.resolved !== 1;
+	return published && !ask.blocker && !privateAskFields.some((key) => key in fields);
 }
 
 /** A released ask must not show the private answer an earlier review left behind. */

@@ -11,5 +11,6 @@ export function isHiddenByReview(
 	finished: boolean
 ): boolean {
 	if (fields.chief_answer) return true;
-	return !finished && Boolean(item.chief_review || typeof fields.chief_review === 'string');
+	const held = Boolean(item.chief_review) || typeof fields.chief_review === 'string';
+	return !finished && held;
 }

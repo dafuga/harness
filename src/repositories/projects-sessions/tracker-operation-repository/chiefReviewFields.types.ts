@@ -11,6 +11,8 @@ export interface ChiefReview {
 export interface CurrentChiefReview {
 	chief_review: string | null;
 	chief_answer: string | null;
+	needs_daniel: number | null;
+	resolved: number | null;
 }
 
 export interface ChiefReviewContext {

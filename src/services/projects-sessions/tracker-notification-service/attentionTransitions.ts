@@ -95,6 +95,18 @@ function attentionTransition(
 	return needsAttention(next) && !needsAttention(previous) ? 'needs_daniel' : undefined;
 }
 
+/** The transition that may notify: none for a removed, ignored or privately reviewed item. */
+function visibleTransition(
+	item: TrackerNotificationItem,
+	fields: TrackerNotificationOp['fields'],
+	[previous, next]: [AttentionItemState, AttentionItemState]
+) {
+	if (item.deleted || [item.status, next.status].includes('ignored')) return undefined;
+	const event = attentionTransition(previous, next);
+	if (!event || isHiddenByReview(item, fields, event === 'done')) return undefined;
+	return event;
+}
+
 export function observeAttention(
 	state: TrackerNotificationState,
 	source: TrackerNotificationSource,
@@ -111,10 +123,8 @@ export function observeAttention(
 	};
 	const next = applyAttentionPatch(previous, fields);
 	state.attentionItems.set(item.id, next);
-	if (item.deleted || [item.status, next.status].includes('ignored')) return;
-
-	const event = attentionTransition(previous, next);
-	if (!event || isHiddenByReview(item, fields, event === 'done')) return;
+	const event = visibleTransition(item, fields, [previous, next]);
+	if (!event) return;
 	const note = event === 'done' ? source.latestNote(item.id) : undefined;
 	enqueueTransition(state, item, event, { clock: op.hlc, now, at: clockTime(op.hlc) || now, note });
 }

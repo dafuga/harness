@@ -26,7 +26,7 @@ import {
 } from '../../support/trackerCosDeliveryFixture';
 import { withTempDir } from '../../support/temporary';
 
-const now = Date.UTC(2026, 10, 25, 23);
+const now = Date.UTC(2026, 10, 25, 15);
 
 test(
 	'oversized CoS alerts fit the 80x24 composer and leave room for the next alert',

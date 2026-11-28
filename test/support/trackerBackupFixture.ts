@@ -14,6 +14,13 @@ import { createTempDirectory } from './temporary';
 
 const node = 'daniel-primary-mbp';
 
+interface BackupAlert {
+	status: string;
+	needs_daniel: number;
+	question: string | null;
+	chief_review: string | null;
+}
+
 /**
  * A file-backed hub with an explicit clock and its own backup folders. `sharing` makes a
  * second hub, with another database, that writes into the first hub's backup folders.
@@ -57,12 +64,7 @@ export async function trackerBackupFixture(start: string, sharing?: { external: 
 		alerts: () =>
 			database
 				.prepare("SELECT * FROM items WHERE title = 'Tracker backups need attention'")
-				.all() as {
-				status: string;
-				needs_daniel: number;
-				question: string | null;
-				chief_review: string | null;
-			}[],
+				.all() as unknown as BackupAlert[],
 		review: (raw: string | null) => readChiefReview(raw),
 		tick: () => runWorkers(runtime),
 		api: (method: string, route: string) => callApi(runtime, method, route),

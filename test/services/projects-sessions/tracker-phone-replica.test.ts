@@ -63,17 +63,7 @@ test('bootstraps a redacted snapshot and sends a replayable delta for a run with
 		expect(JSON.stringify(first)).not.toMatch(
 			/Private item|synthetic-example|host-only|Review this/
 		);
-		const choices = [{ label: 'Use existing', recommended: true }, { label: 'Start fresh' }];
-		expect(
-			(await fixture.release('fixture001', { question: 'Review this', options: choices })).status
-		).toBe(200);
-		const release = await (await fixture.pull('&cursor=' + first.cursor)).json();
-		expect(release.operations).toMatchObject([
-			{
-				id: 'fixture001',
-				row: { flag: { state: 'open', at: updatedAt, question: 'Review this', options: choices } }
-			}
-		]);
+		const release = await checkReleaseDelta(fixture, first.cursor);
 		fixture.db.exec("UPDATE runs SET state = 'finished', outcome = 'done', ended_at = 3");
 		const request = '&cursor=' + release.cursor;
 		const delta = await (await fixture.pull(request)).json();
@@ -98,6 +88,20 @@ test('bootstraps a redacted snapshot and sends a replayable delta for a run with
 		fixture.db.close();
 	}
 });
+
+/** The question and its choices reach the phone only once Chief of Staff releases them. */
+async function checkReleaseDelta(fixture: ReturnType<typeof hub>, cursor: string) {
+	const ask = {
+		question: 'Review this',
+		options: [{ label: 'Use existing', recommended: true }, { label: 'Start fresh' }]
+	};
+	expect((await fixture.release('fixture001', ask)).status).toBe(200);
+	const release = await (await fixture.pull('&cursor=' + cursor)).json();
+	expect(release.operations).toMatchObject([
+		{ id: 'fixture001', row: { flag: { state: 'open', at: updatedAt, ...ask } } }
+	]);
+	return release as { cursor: string };
+}
 
 async function checkPlanningDelta(fixture: ReturnType<typeof hub>, cursor: string) {
 	fixture.item('fixture001', {

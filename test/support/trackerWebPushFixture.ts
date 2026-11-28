@@ -88,9 +88,12 @@ export async function trackerWebPushFixture() {
 		at(time: string) {
 			clock = Date.parse(time);
 		},
-		tick: () => {
-			publishApprovedReviews(runtime.store, clock);
-			return runtime.webPush!.tick();
-		}
+		tick: () => publishAndPush(runtime, clock)
 	};
+}
+
+/** What one hub pass does: publish what waited overnight, then push. */
+function publishAndPush(runtime: TrackerNativeRuntimeService, clock: number) {
+	publishApprovedReviews(runtime.store, clock);
+	return runtime.webPush!.tick();
 }

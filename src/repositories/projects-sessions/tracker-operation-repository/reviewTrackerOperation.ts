@@ -15,7 +15,7 @@ export function reviewLocalOperation(
 ): TrackerOperation {
 	if (gate === 'off' || !operation?.fields) return operation;
 	const current = database
-		.prepare('SELECT chief_review, chief_answer FROM items WHERE id = ?')
+		.prepare('SELECT chief_review, chief_answer, needs_daniel, resolved FROM items WHERE id = ?')
 		.get(operation.item_id) as CurrentChiefReview | undefined;
 	return { ...operation, fields: chiefReviewFields(operation, { current }) };
 }

@@ -1,5 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
 import { chiefReviewFields } from '../../../repositories/projects-sessions/tracker-operation-repository/chiefReviewFields';
+import { privateAskFields } from '../../../repositories/projects-sessions/tracker-operation-repository/heldChiefReviewFields';
 import { localTrackerOperation } from '../../../repositories/projects-sessions/tracker-operation-repository/localTrackerOperation';
 import { isTrackerBlockedOnDaniel } from '../../../utils/projects-sessions/isTrackerBlockedOnDaniel';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
@@ -53,5 +54,6 @@ function legacyAskFields(store: TrackerPersistenceService, id: string) {
 		row.status === 'blocked' && isTrackerBlockedOnDaniel(String(row.blocked_reason ?? ''));
 	const flagged = row.needs_daniel === 1 && row.resolved === 0;
 	if (!blocker) delete row.blocked_reason;
+	if (!flagged) for (const key of privateAskFields) delete row[key];
 	return blocker || flagged ? row : null;
 }

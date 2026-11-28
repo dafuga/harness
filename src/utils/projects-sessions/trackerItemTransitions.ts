@@ -180,7 +180,8 @@ function unignoreItem(item: TrackerItemSnapshot, body: TrackerItemInput): Tracke
 	return {
 		fields: {
 			status,
-			ignored_until: null
+			ignored_until: null,
+			...(item.needs_daniel && !item.resolved ? { needs_daniel: 1 } : {})
 		},
 		appendNote: `unignored by ${trackerItemValueOr(body.by, 'unknown')}${note}; back to ${status}`
 	};

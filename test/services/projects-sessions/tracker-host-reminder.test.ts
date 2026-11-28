@@ -14,7 +14,8 @@ async function proveHostReminders(root: string) {
 	const receipts = join(root, 'receipts.ndjson');
 	writeFileSync(executable, `#!${process.execPath}\n${driver}`, { mode: 0o700 });
 	const db = new DatabaseSync(':memory:');
-	let now = Date.parse('2026-11-24T02:00:00Z');
+	// Daytime in Lisbon: a Chief of Staff flag raised overnight waits until 08:00.
+	let now = Date.parse('2026-11-24T10:00:00Z');
 	const wake = now + 60_000;
 	const create = () => hostReminderRuntime(db, executable, () => now);
 	try {

@@ -1,3 +1,4 @@
+import { verifyReviewedFlag } from './trackerNodeReview';
 import { qualifyPlanningStages } from './trackerPlanningAssertions';
 import { verifyLaunchCliOptions } from './trackerManagedLaunchAssertions';
 import { createServer } from 'node:http';
@@ -123,23 +124,7 @@ async function verifyTrackerNotificationFlow(
 	expect(await fixtureTrackerJson(spoke, ['list', '--flagged'])).toEqual([]);
 	const alerts = await fixtureTrackerJson(spoke, ['needs-attention']);
 	expect(alerts).toContainEqual(expect.objectContaining({ item_id: id, kind: 'flag-refused' }));
-	expect(
-		await fixtureTrackerJson(spoke, ['flag', id, 'Is the fixture ready?', ...choices])
-	).toMatchObject({ needs_daniel: false, review_status: 'awaiting Chief of Staff review' });
-	await expect
-		.poll(() => fixtureTrackerJson(hub, ['review', id, '--by', 'Chief of Staff']))
-		.toMatchObject({ review: { fields: { question: 'Is the fixture ready?' } } });
-	expect(await fixtureTrackerJson(hub, ['list', '--flagged'])).toEqual([]);
-	expect(
-		await fixtureTrackerJson(spoke, [
-			'release',
-			id,
-			'Is the fixture ready?',
-			...choices,
-			'--by',
-			'Chief of Staff'
-		])
-	).toMatchObject({ needs_daniel: true });
+	await verifyReviewedFlag(hub, spoke, id, choices);
 	await expect
 		.poll(async () => (await trackerProcess(hub, ['digest']).exited).stdout)
 		.toContain('Is the fixture ready?');

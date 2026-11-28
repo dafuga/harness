@@ -4,7 +4,7 @@ import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextT
 import type { TrackerOperation } from '../TrackerOperationRepository.types';
 import type { ChiefReview, ChiefReviewHold, ChiefReviewAsk } from './chiefReviewFields.types';
 
-const privateFields = [
+export const privateAskFields = [
 	'question',
 	'options',
 	'confirm',
@@ -28,13 +28,16 @@ export function heldReviewFields(
 		mode,
 		fields: details
 	});
-	return { ...visible, needs_daniel: 0, chief_review: JSON.stringify(review) };
+	// A blocker alone leaves any flag Daniel already has exactly where it is.
+	const hidden = ask.flag && { needs_daniel: 0 };
+	return { ...visible, ...hidden, chief_review: JSON.stringify(review) };
 }
 
 function splitAsk(fields: TrackerOperation['fields'], ask: ChiefReviewAsk) {
 	const visible = { ...fields };
 	const details: Record<string, unknown> = ask.flag ? { needs_daniel: 1, resolved: 0 } : {};
-	for (const key of privateFields) {
+	for (const key of privateAskFields) {
+		if (!ask.flag && (visible[key] ?? null) === null) continue;
 		if (key in visible) details[key] = visible[key];
 		visible[key] = null;
 	}

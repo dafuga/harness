@@ -18,7 +18,7 @@ import type {
 	TrackerNativeRuntimeOptions
 } from './TrackerNativeRuntimeService.types';
 import { TrackerNotificationService } from './TrackerNotificationService';
-import { TrackerPersistenceService } from './TrackerPersistenceService';
+import type { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
 import { TrackerRecurringService } from './TrackerRecurringService';
 import { trackerAutolaunchAdmin } from './tracker-native-runtime-service/trackerAutolaunchAdmin';
@@ -70,7 +70,7 @@ export class TrackerNativeRuntimeService {
 
 	constructor(database: SqliteDatabase, options: TrackerNativeRuntimeOptions) {
 		validateLinks(options);
-		const { node, now = Date.now, storage, hostEffects, role } = options;
+		const { node, now = Date.now, hostEffects, role } = options;
 		const store = (this.store = openTrackerReviewStore(database, options, now));
 		this.role = role;
 		this.ladderConfig = options.ladderConfig;
