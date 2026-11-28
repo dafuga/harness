@@ -43,9 +43,9 @@ export async function assertDeclaredTaskCheck(outcome: 'repaired' | 'exhausted')
 						{ status: 'failed', exitCode: 1 },
 						{ status: 'passed', exitCode: 0 }
 					]
-				: Array.from({ length: 3 }, () => ({ status: 'failed', exitCode: 1 }))
+				: Array.from({ length: 4 }, () => ({ status: 'failed', exitCode: 1 }))
 		);
-		expect(shown.result?.executions).toHaveLength(repaired ? 2 : 3);
+		expect(shown.result?.executions).toHaveLength(repaired ? 2 : 4);
 		const events = taskEvents([shown], f.root);
 		expect(taskRunRecords(events, events)).toMatchObject([
 			{ attempt: 1, escalations: 0, outcome: repaired ? 'pending_review' : 'failed' }
