@@ -51,6 +51,13 @@ private func verifyRetainedAdmission(_ bench: AccountBench, admin: SealedDevice,
     let refused = restarted.status()?.refusal
     let discarded = restarted.session.queue.sync { restarted.session.enrolledDevice == nil }
     check(refused != nil && discarded, "grants: a signed fork of the admitted head clears access on relaunch")
+    guard let credential = bench.vault.credential else { throw HubAccountFailure.signedOut }
+    let keys = try HubLoginDeviceStore(credential, base: bench.session.loginKeys)
+    let pins = try HubLoginDeviceStore(credential, base: bench.session.loginPins)
+    let remembered = pins.load(HubLoginAdmission.pinName)
+    _ = restarted.disconnect()
+    check(remembered != nil && pins.load(HubLoginAdmission.pinName) == remembered &&
+          keys.load(SealedDeviceStore.name) == nil, "grants: sign-out preserves the verified head and erases the installation key")
 }
 
 /// Existing account checks exercise an already admitted first installation, including cold starts.

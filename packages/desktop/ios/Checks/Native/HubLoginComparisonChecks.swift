@@ -32,6 +32,8 @@ func verifyLoginComparison(_ bench: AccountBench) {
             reveal = step
             return hubJSON(201, step)
         }
+        let fork = try comparisonGenesis(admin, actor: actor, scope: scope)
+        guard try refusesForkBeforeReveal(bench, pinned: genesis, fork: fork, mailbox: route) else { return }
         let status = try bench.status()?.get()
         let raw = (bench.hub.body(route)["nonce"] as? String).flatMap(RemoteCoding.data(base64url:)) ?? Data()
         let publicKeys = SealedEnrollKeys(kemPublic: kem, signingPublic: signing)
@@ -58,4 +60,23 @@ func comparisonGenesis(_ admin: SealedDevice, actor: String, scope: SealedRawSco
                            SealedChainDevice(recovery, role: "recovery", scopes: [id]).json]),
         "scopes": .array([try SealedScopeCommitment(scope).json])])
     return try admin.sign(SealedChainEntry(seq: 0, prev: "", at: 1, body: body))
+}
+
+private func refusesForkBeforeReveal(_ bench: AccountBench, pinned: SealedChainEntry,
+                                     fork: SealedChainEntry, mailbox: String) throws -> Bool {
+    guard let credential = bench.vault.credential else { throw HubAccountFailure.signedOut }
+    let store = try HubLoginDeviceStore(credential, base: bench.session.loginPins)
+    let saved = SealedChainPin(seq: pinned.seq, head: pinned.hash)
+    try store.save(HubLoginAdmission.pinName, JSONEncoder().encode(saved))
+    let path = "GET /api/sync/v1/chain"
+    let original = bench.hub.routes[path]
+    defer { bench.hub.routes[path] = original }
+    bench.hub.routes[path] = { _ in
+        let wire = SealedJson.object(["entries": .array([fork.json]), "more": .bool(false)])
+        return HubAccountReply(status: 200, contentType: "application/json", data: Data(wire.canonical.utf8))
+    }
+    let refused = bench.status()?.refusal != nil
+    let revealed = bench.hub.asked(mailbox).contains { $0.httpMethod == "POST" }
+    check(refused && !revealed, "comparison: a remembered account head refuses a fork before reveal")
+    return refused && !revealed
 }
