@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { scanImports } from '../../../src/services/source-index-service/scanImports';
+import type { UnitsConfig } from '../../../src/core/development-tooling/unitsConfig.types';
 import type { SourceIndex } from '../../../src/services/development-tooling/source-index-service/SourceIndexService';
 import type { Written } from '../../shared-select-impact.test.types';
 
@@ -10,6 +11,15 @@ export function readBuildAliases(name: string): Record<string, string> {
 	const pairs = [...(stated?.[1] ?? '').matchAll(/(\$\w+):\s*'([^']+)'/g)];
 	return Object.fromEntries(pairs.map(([, alias, target]) => [alias, target]));
 }
+
+export function hasExpectedSourceBinding(references: UnitsConfig['references'], item: Written) {
+	if (!item.specifier.startsWith('$')) return true;
+	return references.some(
+		({ from, specifier, to }) =>
+			from === item.from && specifier === item.specifier && to === item.to
+	);
+}
+
 export function readSelectImports(
 	index: SourceIndex,
 	builds: Record<string, Record<string, string>>,
