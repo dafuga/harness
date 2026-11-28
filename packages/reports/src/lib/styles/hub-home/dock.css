@@ -1,0 +1,203 @@
+/* @harness-uid u_dk5s7yhc3n */
+/* Agents dock: a pill in the bottom-right corner of every signed-in page, and the panel it opens.
+   Its root borrows the Home scheme and shared Home styles without taking a page's frame. */
+.home-scheme > .home-page.hh-home.hd-root {
+	min-height: 0;
+	background: transparent;
+}
+.home-scheme > .hh-home.hd-root {
+	color: var(--hx-color-text);
+	font-family: var(--hx-font-family-body);
+}
+/* A dark-only dock keeps the dark accent in a light-scheme browser. */
+.home-scheme > .hh-home.hd-root:not(.home-page) {
+	--home-accent: var(--hx-color-primary);
+	color-scheme: dark;
+}
+/* The bottom band: the page ends above the dock, so the pill never covers a card. A page that
+   lays out its own band reads --hh-dock-band, which is set only while the dock shows. */
+:root:has(.hd-root) {
+	--hh-dock-band: calc(var(--hx-space-40) * 2);
+}
+.hd-band {
+	height: var(--hh-dock-band);
+}
+body:has(.hd-root) .home-page.hh-home:not(.hd-root) {
+	padding-bottom: var(--hh-dock-band);
+}
+body:has(.home-page.hh-home:not(.hd-root)) .hd-band {
+	display: none;
+}
+.hh-home .hd-bar {
+	position: fixed;
+	right: var(--hx-space-32);
+	bottom: var(--hx-space-16);
+	z-index: 40;
+}
+.hh-home .hd-launch {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-12);
+	min-height: 48px;
+	padding: 0 var(--hx-space-16) 0 var(--hx-space-10);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-pill);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
+	box-shadow: var(--hx-shadow-popover);
+	font: inherit;
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-semibold);
+	cursor: pointer;
+}
+.hh-home .hd-stack {
+	display: flex;
+	gap: var(--hx-space-4);
+}
+.hh-home .hd-stack .hd-avatar {
+	width: var(--hx-space-28);
+	height: var(--hx-space-28);
+	font-size: var(--hx-type-size-2xs);
+}
+.hh-home .hd-launch-go {
+	display: none;
+}
+.hh-home .hd-avatar {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: var(--hx-space-40);
+	height: var(--hx-space-40);
+	border: var(--hx-border-thick) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-round);
+	background: var(--hx-color-surface-raised);
+	color: var(--hx-color-text);
+	font-size: var(--hx-type-size-xs);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.hh-home .hd-avatar[data-state='needs-you'] {
+	border-color: var(--home-accent);
+}
+.hh-home .hd-avatar[data-state='working'] {
+	border-color: var(--hx-color-info);
+}
+.hh-home dialog.hd-panel[open] {
+	position: fixed;
+	inset: auto var(--hx-space-32) var(--hx-space-16) auto;
+	z-index: 40;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	width: min(392px, calc(100vw - 32px));
+	height: auto;
+	max-width: none;
+	max-height: calc(100dvh - 32px);
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-large);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
+	box-shadow: var(--hx-shadow-overlay);
+	animation: hd-rise 180ms ease-out;
+}
+@keyframes hd-rise {
+	from {
+		opacity: 0;
+		transform: translateY(var(--hx-space-12));
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.hh-home dialog.hd-panel[open] {
+		animation: none;
+	}
+}
+.hh-home .hd-head {
+	display: flex;
+	flex: none;
+	align-items: center;
+	gap: var(--hx-space-12);
+	padding: var(--hx-space-14) var(--hx-space-12) var(--hx-space-14) var(--hx-space-16);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-home .hd-titles {
+	flex: 1;
+	min-width: 0;
+}
+.hh-home .hd-title {
+	font-size: var(--hx-type-size-lg);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.hh-home .hd-sub,
+.hh-home .hd-meta {
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+}
+.hh-home .hd-name,
+.hh-home .hd-row .hd-meta {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.hh-home .hd-icon {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: var(--hx-space-36);
+	height: var(--hx-space-36);
+	padding: 0;
+	border: 0;
+	border-radius: var(--hx-radius-compact);
+	background: transparent;
+	color: var(--hx-color-text-muted);
+	font: inherit;
+	font-size: var(--hx-type-size-2xl);
+	cursor: pointer;
+}
+/* Hover lays the scheme's wash over a control, as on Home; touch screens skip it. */
+@media (hover: hover) {
+	.hh-home :is(.hd-launch, .hd-row, .hd-icon):hover {
+		background-image: linear-gradient(var(--hx-color-hover), var(--hx-color-hover));
+	}
+}
+.hh-home :is(.hd-launch, .hd-row, .hd-icon):active {
+	background-image: linear-gradient(var(--hx-color-selected), var(--hx-color-selected));
+}
+/* Phone: a full-width bar in the bottom band, and the dock as a full-screen sheet. */
+@media (max-width: 560px) {
+	.hh-home .hd-bar {
+		right: 0;
+		bottom: 0;
+		left: 0;
+		padding: var(--hx-space-10) var(--hx-space-16)
+			calc(var(--hx-space-14) + env(safe-area-inset-bottom));
+		border-top: var(--hx-border-thin) solid var(--hx-color-border);
+		background: var(--hx-color-surface);
+	}
+	.hh-home .hd-launch {
+		width: 100%;
+		box-shadow: none;
+	}
+	.hh-home .hd-launch-name {
+		flex: 1;
+		text-align: left;
+	}
+	.hh-home .hd-launch-go {
+		display: block;
+		color: var(--hx-color-text-muted);
+	}
+	.hh-home .hd-icon {
+		width: 44px;
+		height: 44px;
+	}
+	.hh-home dialog.hd-panel[open] {
+		inset: 0;
+		width: 100%;
+		height: 100dvh;
+		max-height: 100dvh;
+		border: 0;
+		border-radius: 0;
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+}

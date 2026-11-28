@@ -1,0 +1,127 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-source",
+	"uid": "u_pfflsnhfco",
+	"kind": "function",
+	"title": "hubHomeSource",
+	"responsibility": "Owns the hubHomeSource shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubHomeSource.svelte.ts"],
+		"symbols": ["HubHomeSource", "provideHubHomeSource", "hubHomeSource"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "provideHubHomeSource.browser",
+				"type": "HostedBrowser",
+				"required": true
+			},
+			{
+				"name": "provideHubHomeSource.wanted",
+				"type": "() => string | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "provideHubHomeSource",
+				"type": "HubHomeSource"
+			},
+			{
+				"name": "hubHomeSource",
+				"type": "HubHomeSource"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "provideHubHomeSource",
+				"inputs": [
+					{
+						"name": "provideHubHomeSource.browser",
+						"type": "HostedBrowser",
+						"required": true
+					},
+					{
+						"name": "provideHubHomeSource.wanted",
+						"type": "() => string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "provideHubHomeSource",
+						"type": "HubHomeSource"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubHomeSource",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "hubHomeSource",
+						"type": "HubHomeSource"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-reads",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.realtime-hub-live-updates",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.page.tracker-overview",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomeSource.svelte.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomeSource.svelte.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

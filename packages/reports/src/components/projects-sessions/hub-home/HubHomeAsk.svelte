@@ -22,7 +22,8 @@
 		send,
 		receipt,
 		submitted,
-		present
+		present,
+		kicker
 	}: {
 		ask: HomeOpenAsk;
 		send: SendHomeChat;
@@ -30,6 +31,8 @@
 		submitted?: (message: HomeChatInput, receipt: HomeChatReceipt) => void;
 		/** A Home row presents its dialogs beside the list. */
 		present?: (content: Snippet | null) => void;
+		/** Heads the question where the agent is already named, as in the agents dock. */
+		kicker?: string;
 	} = $props();
 	const load = hubSpecDocuments();
 	const feedback: Record<HomeChatStatus | 'sending', string> = {
@@ -133,9 +136,16 @@
 		{@render choices()}
 	{:else}
 		<hx-section class="hh-ask" aria-label={`${ask.agentName} needs you`}>
-			<hx-p class="hh-ask-question"
-				><hx-strong>{ask.agentName}</hx-strong> · <LinkifiedText text={ask.question} /></hx-p
-			>
+			{#if kicker}
+				<hx-p class="hh-ask-kicker">{kicker}</hx-p>
+				<hx-p class="hh-ask-question"
+					><hx-strong><LinkifiedText text={ask.question} /></hx-strong></hx-p
+				>
+			{:else}
+				<hx-p class="hh-ask-question"
+					><hx-strong>{ask.agentName}</hx-strong> · <LinkifiedText text={ask.question} /></hx-p
+				>
+			{/if}
 			{#if ask.attachments?.length}
 				<ViewSpecButtons attachments={ask.attachments} question={ask.question} {load}>
 					{#snippet answers(close: () => void)}
