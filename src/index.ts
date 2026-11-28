@@ -220,6 +220,3 @@ export { hubSessionMessages } from './utils/projects-sessions/hubSessionMessages
 export { TrackerOutgoingDraftRepository } from './repositories/projects-sessions/TrackerOutgoingDraftRepository';
 export { TrackerOutgoingDraftService } from './services/projects-sessions/TrackerOutgoingDraftService';
 export { TrackerGmailSendAdapter } from './adapters/projects-sessions/TrackerGmailSendAdapter';
-export { TrackerOutgoingDriverAdapter } from './adapters/projects-sessions/TrackerOutgoingDriverAdapter';
-export { TrackerGithubCommentAdapter } from './adapters/projects-sessions/TrackerGithubCommentAdapter';
-export { TrackerSmsSendAdapter } from './adapters/projects-sessions/TrackerSmsSendAdapter';

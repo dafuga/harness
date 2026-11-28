@@ -132,7 +132,7 @@
 		<hx-p class="outgoing-notice">
 			{deliveryState === 'failed'
 				? draft.reason || 'The provider did not accept this message.'
-				: 'Tracker is checking whether the message was delivered.'}
+				: 'Check the sending service for its delivery status.'}
 		</hx-p>
 	{/if}
 	{#if error}<hx-p class="outgoing-notice" role="alert">{error}</hx-p>{/if}

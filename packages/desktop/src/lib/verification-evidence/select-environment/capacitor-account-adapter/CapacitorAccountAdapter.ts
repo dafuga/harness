@@ -29,11 +29,11 @@ import {
 	replyLimit
 } from './capacitorAccountCodec';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
-const changed = 'The account on this phone changed. Reload and try again.';
-const notMade = 'This request is not made from this phone.';
 import { homeOutgoingPath } from '$reports/components/projects-sessions/hub-home/hubHomeOutgoingDraft';
 import type { HomeOutgoingSource } from '$reports/components/projects-sessions/hub-home/hubHomeOutgoingDraft.types';
 
+const changed = 'The account on this phone changed. Reload and try again.';
+const notMade = 'This request is not made from this phone.';
 const overviewPath = '/api/tracker-overview';
 const unavailableOverview: OverviewSnapshot = { status: 'unavailable' };
 /** The Hub's answers that deny this account the overview: not signed in, not the owner, or not found. */
@@ -54,7 +54,9 @@ function deniedBy(cause: unknown): boolean {
 
 /** A 403 of a project path clears those projects; the overview's own 403 only withdraws its offer. */
 function projectDenied(call: AccountNativeCall, status: number): boolean {
-	return status === 403 && call.path !== overviewPath;
+	return (
+		status === 403 && (call.path === '/api/projects' || call.path.startsWith('/api/projects/'))
+	);
 }
 
 /** The API of the shared reads over the plugin: the same paths, no origin and no credential. */
@@ -92,7 +94,7 @@ export class CapacitorAccountAdapter {
 	constructor(private readonly config: CapacitorAccountAdapterConfig) {}
 
 	/** Owner review uses the phone’s Hub account, independently of its paired computer. */
-	outgoing: HomeOutgoingSource = {
+	readonly outgoing: HomeOutgoingSource = {
 		read: async () => json(await this.send({ method: 'GET', path: homeOutgoingPath })),
 		write: async (body) => json(await this.send({ method: 'POST', path: homeOutgoingPath, body }))
 	};

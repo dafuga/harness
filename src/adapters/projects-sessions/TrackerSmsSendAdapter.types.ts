@@ -1,3 +1,8 @@
 export interface TrackerSmsSendAdapterConfig {
-	name?: string;
+	accountSid: string;
+	keySid: string;
+	from: string;
+	destinations: readonly string[];
+	readKeySecret: (signal: AbortSignal) => Promise<string>;
+	fetcher?: typeof fetch;
 }

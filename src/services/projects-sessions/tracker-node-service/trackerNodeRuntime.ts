@@ -50,10 +50,10 @@ export function trackerNodeRuntime(
 		automaticEnabled: trackerAutomaticSetting(config),
 		machineSampler: new TrackerMachineSamplerAdapter(config.node, configuredTmux(config)),
 		syncResponder: configuredSyncResponder(config, secret),
-		outgoingProvider: configuredOutgoingProvider(
-			config,
-			process.env.HARNESS_TRACKER_OUTGOING_GMAIL_BINDING
-		),
+		outgoingProvider: configuredOutgoingProvider(config, {
+			gmail: process.env.HARNESS_TRACKER_OUTGOING_GMAIL_BINDING,
+			providers: process.env.HARNESS_TRACKER_OUTGOING_BINDINGS
+		}),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
 		...(config.role === 'hub' && notification?.webhook && { recurring: boxJobs(config) }),
 		validateModel(model) {

@@ -1,3 +1,7 @@
 export interface TrackerGithubCommentAdapterConfig {
-	name?: string;
+	account: string;
+	userId: number;
+	repositories: readonly string[];
+	readAccessToken: (signal: AbortSignal) => Promise<string>;
+	fetcher?: typeof fetch;
 }

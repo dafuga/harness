@@ -15,7 +15,7 @@ ends the draft. Both outcomes stay in the conversation and Tracker history.
 | Sending        | Keep the card visible, show Sending and disable its controls while the outcome is pending.                                                                                                                                                                       | Same state, including after reopening Tracker Work.                                                                                              | Same state, including after leaving and returning to chat.                                                                               |
 | Sent           | Replace controls with Sent and the provider receipt link when supplied. Keep channel, account and message preview in the conversation.                                                                                                                           | Same receipt and keyboard-accessible link.                                                                                                       | Same receipt and tappable link.                                                                                                          |
 | Discarded      | Replace controls with Discarded and keep the summary in the conversation.                                                                                                                                                                                        | Same outcome on refresh and app restart.                                                                                                         | Same outcome after reopening chat.                                                                                                       |
-| Delivery issue | Show a short reason. Retry is available only when the provider confirms it did not accept the message. For an uncertain result, show Delivery unconfirmed while Tracker reconciles it.                                                                           | Same state and available action.                                                                                                                 | Same state and available action.                                                                                                         |
+| Delivery issue | Show a short reason. Retry is available only when the provider confirms it did not accept the message. For an uncertain result, show Delivery unconfirmed and keep Send disabled pending provider confirmation.                                                  | Same state and available action.                                                                                                                 | Same state and available action.                                                                                                         |
 
 The card uses the existing chat typography, button roles and spacing. It has no
 inline fields. Edit is a compact header action. Focus returns to the card after
@@ -69,3 +69,39 @@ in screenshots.
 - Merge source through Harness PR policy. Installed Hub, Mac and iPhone rollout
   requires Daniel's release approval, followed by version readback and signed-in
   acceptance on each surface.
+
+## Provider bindings
+
+Tracker applies review actions on the hub. The Hub app's private
+`HARNESS_TRACKER_OUTGOING_GATEWAY` binding points to that hub and holds a
+dedicated owner grant. The Tracker hub reads its copy from
+`HARNESS_TRACKER_OUTGOING_OWNER_KEY_FILE`. Keep the owner grant separate from
+the fleet sync key and available only to those two services.
+
+The owner-controlled file at `HARNESS_TRACKER_OUTGOING_GMAIL_BINDING` specifies
+the Gmail `account` and its `tokenDriver`. The driver returns a short-lived token
+through a private pipe. A thread reply requires Gmail read access for reply
+headers as well as send access.
+
+The optional owner-controlled JSON file at `HARNESS_TRACKER_OUTGOING_BINDINGS`
+can declare these arrays. Each channel and account has a single binding.
+
+| Binding   | Required fields and destinations                                                                                                                                                                                                                 |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `slack`   | The displayed `account`, canonical workspace `host`, scoped `installation`, `tokenDriver`, and permitted conversation IDs in `destinations`. A DM uses a `D…` conversation ID. A reply uses the parent Slack timestamp as its thread ID.         |
+| `github`  | GitHub login `account`, numeric `userId`, allowed owner/repository strings in `repositories`, and `tokenDriver`. Drafts address `owner/repo#number`.                                                                                             |
+| `sms`     | Twilio `accountSid`, dedicated API `keySid` and secret driver in `tokenDriver`, owning number `from`, and allowed E.164 numbers in `destinations`. The receipt records Twilio's acceptance.                                                      |
+| `drivers` | A `channel`, displayed `account`, exact `destinations`, reviewed absolute `executable`, and optional HTTPS `receiptOrigins`. For iMessage, Telegram, and public posts, install the matching service-specific driver before enabling the binding. |
+
+The driver reads a JSON object with the approved `message` and delivery
+`attempt` from stdin. It uses its configured account, submits once and returns
+a JSON result on stdout. Use `{"kind":"sent","receipt":{"reference":"…"}}` for
+confirmed provider acceptance. An optional receipt `url` must use a configured
+HTTPS origin. Use `{"kind":"failed"}` for confirmed non-acceptance and
+`{"kind":"unconfirmed"}` when the provider's decision is unknown. A crashed or
+unreadable driver leaves delivery unconfirmed.
+
+A session puts its `itemId`, fresh UUID `id`, and `message` into a private
+temporary JSON file and runs `tracker draft create <file.json>`. The message
+includes `channel`, `account`, `to`, `cc`, `body`, and optional `subject`
+and `thread` fields. `tracker draft list` returns redacted receipt statuses.
