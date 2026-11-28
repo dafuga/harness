@@ -65,6 +65,20 @@
 			"runner": "command",
 			"target": "bun x playwright test tests/e2e/hub-home.spec.ts --workers=1",
 			"cwd": "packages/hub"
+		},
+		{
+			"id": "hub-home-needs-you",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/hub-home-needs-you.spec.ts --workers=1",
+			"cwd": "packages/hub"
+		},
+		{
+			"id": "hub-home-tracker-answer",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/hub-realtime.spec.ts --workers=1 --grep 'seeded Tracker decision'",
+			"cwd": "packages/hub"
 		}
 	],
 	"evidence": [

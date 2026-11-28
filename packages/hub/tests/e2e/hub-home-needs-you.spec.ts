@@ -1,5 +1,6 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { hubHomeFixture, needsYouHome, needsYouSizes } from './hub-home-fixture';
+import { liveNeedsYouHome, recordAnswerMotion } from './hub-home-answer-motion';
 import { captureNeedsYou } from './hub-home-capture';
 import {
 	agentsCard,
@@ -7,7 +8,6 @@ import {
 	expectAnswerGrid,
 	needsYou,
 	openers,
-	recordAnswerMotion,
 	rowOf,
 	talk,
 	widget
@@ -162,13 +162,13 @@ test('a choice tapped on a row answers that ask without opening the chat', async
 	expect(fixture.sent).toHaveLength(2);
 });
 
-for (const size of ['desktop', 'phone'] as const)
+for (const size of ['desktop', 'tablet', 'phone'] as const)
 	test(`a choice tapped on a row answers that ask without opening the chat (${size})`, async ({
 		page
 	}) => {
-		const fixture = await needsYouHome(page, size, 'two-asks');
+		const fixture = await liveNeedsYouHome(page, size);
 		const row = rowOf(page, 'harbor');
-		await recordAnswerMotion(page, row, size, needsYouSizes[size]);
+		await recordAnswerMotion(page, row, size, fixture.refresh);
 		await expect.poll(() => fixture.sent.length).toBe(1);
 		expect(fixture.sent[0]).toMatchObject({
 			itemId: 'item-harbor',
