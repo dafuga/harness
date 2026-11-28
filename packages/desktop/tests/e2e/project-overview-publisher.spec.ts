@@ -128,14 +128,18 @@ test('the verified owner publishes the display snapshot over the real wire', asy
 		expect(snapshot.status).toBe('ready');
 		for (const sentinel of LEAK_SENTINELS) expect(put?.body ?? '').not.toContain(sentinel);
 		const page = await capturePublishedOverview(app);
-		expect(
-			hub.records.some(
-				(record) =>
-					record.method === 'GET' &&
-					record.bearer === OWNER.token &&
-					record.path === '/api/tracker-overview'
+		await expect
+			.poll(
+				() =>
+					hub.records.some(
+						(record) =>
+							record.method === 'GET' &&
+							record.bearer === OWNER.token &&
+							record.path === '/api/tracker-overview'
+					),
+				{ timeout: 25_000 }
 			)
-		).toBe(true);
+			.toBe(true);
 		hub.denyOverviewReads();
 		await page.evaluate(() => window.dispatchEvent(new Event('focus')));
 		await expect(page.getByText('fixture-needs', { exact: true })).toHaveCount(0, {
