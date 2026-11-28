@@ -100,7 +100,8 @@ test('delivery states retain the draft and restrict actions to confirmed outcome
 	] as const) {
 		const chat = await open(page, state);
 		const card = chat.getByRole('article', { name: 'Friday production notes' });
-		await expect(card.getByText(label, { exact: true })).toBeInViewport({ ratio: 1 });
+		await expect(card).toBeInViewport({ ratio: 1 });
+		await expect(card.getByText(label, { exact: true })).toBeVisible();
 		await screenshot(page, state);
 		if (state === 'failed') {
 			await expect(card).toContainText('The mail provider was unavailable.');
