@@ -14,7 +14,10 @@ let now: number;
 beforeEach(() => {
 	now = Date.UTC(2026, 10, 21, 12);
 	database = new DatabaseSync(':memory:');
-	store = new TrackerPersistenceService(database, 'fixture-mac', { now: () => now });
+	store = new TrackerPersistenceService(database, 'fixture-mac', {
+		now: () => now,
+		chiefReview: true
+	});
 	const recurring = new TrackerRecurringRepository(store);
 	api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
 		now: () => now,
@@ -103,7 +106,8 @@ test('blocks, unblocks and reopens an item with durable notes', async () => {
 	const { id } = await (
 		await request('/items', 'POST', { title: 'Synthetic bridge review' })
 	).json();
-	const mark = (verb: string, body?: object) => request(`/items/${id}/${verb}`, 'POST', body);
+	const mark = (verb: string, body?: object) =>
+		request(`/items/${id}/${verb}`, 'POST', body, 'Chief of Staff');
 	expect((await mark('unblock')).status).toBe(409);
 	expect(await (await mark('block', { reason: 'Waiting for fixture' })).json()).toMatchObject({
 		status: 'blocked',
@@ -126,18 +130,23 @@ test('blocks, unblocks and reopens an item with durable notes', async () => {
 });
 
 async function verifyProjectFollowUp() {
-	const project = await request('/items', 'POST', {
-		title: 'Elan proposal ready for review',
-		project: 'elan',
-		next_step: 'Choose the pilot scope'
-	});
+	const project = await request(
+		'/items',
+		'POST',
+		{
+			title: 'Elan proposal ready for review',
+			project: 'elan',
+			next_step: 'Choose the pilot scope'
+		},
+		'Daniel'
+	);
 	expect(project.status).toBe(201);
 	const idea = await project.json();
 	expect(idea).toMatchObject({ next_step: 'Choose the pilot scope', needs_daniel: true });
 	const followUp = (verb: string, body?: object, actor?: string) =>
 		request(`/items/${idea.id}/${verb}`, 'POST', body, actor);
 	expect(
-		await (await followUp('done', { next_step: 'Approve the pilot scope' })).json()
+		await (await followUp('done', { next_step: 'Approve the pilot scope' }, 'Daniel')).json()
 	).toMatchObject({ status: 'done', needs_daniel: true, next_step: 'Approve the pilot scope' });
 	expect(await (await request('/check?text=Elan+proposal+ready+for+review')).json()).toMatchObject({
 		open: [{ id: idea.id, status: 'done', needs_daniel: true }]
@@ -177,3 +186,46 @@ async function verifyProjectFollowUp() {
 	});
 	expect(await (await request('/items?flagged=1')).json()).toEqual([]);
 }
+
+test('holds a session decision until Chief of Staff releases it', async () => {
+	const { id } = await (await request('/items', 'POST', { title: 'Field fixture handoff' })).json();
+	const decision = {
+		question: 'Which fixture can we use?',
+		options: [
+			{ label: 'First fixture', effect: 'Use the existing setup.', recommended: true },
+			{ label: 'Second fixture', effect: 'Use a fresh setup.' }
+		]
+	};
+	const mark = (verb: string, body: object, actor?: string) =>
+		request(`/items/${id}/${verb}`, 'POST', body, actor);
+	expect((await mark('flag', decision)).status).toBe(200);
+	expect(await (await request(`/items/${id}`)).json()).toMatchObject({
+		needs_daniel: false,
+		question: null
+	});
+	expect(await (await request('/items?flagged=1')).json()).toEqual([]);
+	expect(await (await request('/digest')).json()).toMatchObject({ to_unblock: [] });
+	expect((await mark('release', decision)).status).toBe(403);
+	expect((await mark('release', decision, 'Chief of Staff')).status).toBe(200);
+	expect(await (await request('/items?flagged=1')).json()).toMatchObject([{ id, ...decision }]);
+	expect(await (await request('/digest')).json()).toMatchObject({ to_unblock: [{ id }] });
+	expect((await mark('release', decision, 'Chief of Staff')).status).toBe(409);
+});
+
+test('holds a Daniel blocker privately and records a Chief of Staff answer', async () => {
+	const { id } = await (
+		await request('/items', 'POST', { title: 'Fixture access handoff' })
+	).json();
+	const mark = (verb: string, body: object, actor?: string) =>
+		request(`/items/${id}/${verb}`, 'POST', body, actor);
+	const reason = 'Waiting on Daniel for fixture access';
+	expect((await mark('block', { reason })).status).toBe(200);
+	const pending = await (await request(`/items/${id}`)).json();
+	expect(JSON.stringify(pending)).not.toContain(reason);
+	expect(await (await request('/digest')).json()).toMatchObject({ to_unblock: [] });
+	expect((await mark('answer', { answer: 'Use the test account' }, 'Daniel')).status).toBe(403);
+	expect(
+		await (await mark('answer', { answer: 'Use the test account' }, 'Chief of Staff')).json()
+	).toMatchObject({ answered_by: 'Chief of Staff', needs_daniel: false, resolved: true });
+	expect(await (await request('/items?flagged=1')).json()).toEqual([]);
+});
