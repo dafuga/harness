@@ -52,7 +52,7 @@ function requireTrackerHygiene(
 	if (!runItem.startsWith(item.trim().toLowerCase())) return;
 	const proof = body?.[field];
 	const hygiene =
-		/^[ \t]*hygiene:[ \t]+closed[ \t]+\d+[ \t]+tabs\/windows I opened;[ \t]+left open:[ \t]+\S/im;
+		/^[ \t]*hygiene:[ \t]+closed[ \t]+\d+[ \t]+tabs\/windows(?: I opened)?;[ \t]+left open:[ \t]+\S/im;
 	if (typeof proof !== 'string' || !hygiene.test(proof))
 		throw new TypeError(
 			'close your unused tabs and windows, then include a separate line ' +
