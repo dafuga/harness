@@ -22,7 +22,13 @@ export class TrackerSessionRuleRepository {
 			)
 			.all() as { hlc: string; incident: string; skill: unknown; text: unknown }[];
 		const rules = rows
-			.filter((row) => trackerRuleSkill(row.skill) && trackerRuleText(row.text))
+			.filter(
+				({ skill, text }) =>
+					typeof skill === 'string' &&
+					typeof text === 'string' &&
+					trackerRuleSkill(skill) &&
+					trackerRuleText(text)
+			)
 			.map(({ hlc, incident, skill, text }) => ({
 				at: new Date(trackerClockMilliseconds(hlc)).toISOString(),
 				incident,
@@ -38,22 +44,20 @@ export class TrackerSessionRuleRepository {
 	}
 }
 
-export function trackerRuleFields({ skill, text }: Pick<TrackerSessionRule, 'skill' | 'text'>) {
+export function trackerRuleFields(rule: Pick<TrackerSessionRule, 'skill' | 'text'>) {
+	const { skill, text } = rule;
 	return {
 		[ruleField]: { skill, text },
 		'note+': `Session rule (${skill}): ${text}`
 	};
 }
 
-export function trackerRuleSkill(value: unknown): value is string {
-	return (
-		typeof value === 'string' && /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(value) && value.length <= 64
-	);
+export function trackerRuleSkill(value: string): boolean {
+	return /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(value) && value.length <= 64;
 }
 
-export function trackerRuleText(value: unknown): value is string {
+export function trackerRuleText(value: string): boolean {
 	return (
-		typeof value === 'string' &&
 		value.length > 0 &&
 		value.length <= 500 &&
 		!/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u.test(value) &&

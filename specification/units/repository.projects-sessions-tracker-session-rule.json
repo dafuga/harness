@@ -37,23 +37,18 @@
 				"required": false
 			},
 			{
-				"name": "trackerRuleFields.skill",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "trackerRuleFields.text",
-				"type": "unknown",
+				"name": "trackerRuleFields.rule",
+				"type": "Pick<TrackerSessionRule, 'skill' | 'text'>",
 				"required": true
 			},
 			{
 				"name": "trackerRuleSkill.value",
-				"type": "unknown",
+				"type": "string",
 				"required": true
 			},
 			{
 				"name": "trackerRuleText.value",
-				"type": "unknown",
+				"type": "string",
 				"required": true
 			}
 		],
@@ -72,11 +67,11 @@
 			},
 			{
 				"name": "trackerRuleSkill",
-				"type": "value is string"
+				"type": "boolean"
 			},
 			{
 				"name": "trackerRuleText",
-				"type": "value is string"
+				"type": "boolean"
 			}
 		],
 		"errors": [],
@@ -104,13 +99,8 @@
 				"name": "trackerRuleFields",
 				"inputs": [
 					{
-						"name": "trackerRuleFields.skill",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "trackerRuleFields.text",
-						"type": "unknown",
+						"name": "trackerRuleFields.rule",
+						"type": "Pick<TrackerSessionRule, 'skill' | 'text'>",
 						"required": true
 					}
 				],
@@ -128,14 +118,14 @@
 				"inputs": [
 					{
 						"name": "trackerRuleSkill.value",
-						"type": "unknown",
+						"type": "string",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerRuleSkill",
-						"type": "value is string"
+						"type": "boolean"
 					}
 				],
 				"errors": [],
@@ -146,14 +136,14 @@
 				"inputs": [
 					{
 						"name": "trackerRuleText.value",
-						"type": "unknown",
+						"type": "string",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerRuleText",
-						"type": "value is string"
+						"type": "boolean"
 					}
 				],
 				"errors": [],

@@ -368,7 +368,7 @@
 			},
 			{
 				"name": "formatNativeTrackerRules.data",
-				"type": "unknown",
+				"type": "TrackerSessionRule | TrackerSessionRule[]",
 				"required": true
 			},
 			{
@@ -1372,7 +1372,7 @@
 				"inputs": [
 					{
 						"name": "formatNativeTrackerRules.data",
-						"type": "unknown",
+						"type": "TrackerSessionRule | TrackerSessionRule[]",
 						"required": true
 					}
 				],

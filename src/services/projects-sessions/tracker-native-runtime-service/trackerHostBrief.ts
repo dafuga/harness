@@ -101,6 +101,7 @@ function trackerSessionRulesBrief(rules: TrackerSessionRule[]): string {
 	return [
 		'## Session rules',
 		'Read the current rule set with `tracker rule list` before acting. Tracker syncs these rules between computers.',
+		'When an incident calls for a durable rule, record it with `tracker rule add "<rule>" --from <incident> --skill <name>`.',
 		'Read the relevant installed skills before the action. In Claude, use `~/.claude/skills`; in Codex, use `~/.codex/skills`.',
 		'Read `secret-safe-computer-use/SKILL.md` before credential work and `computer-hygiene/SKILL.md` before using browsers, apps, simulators or background processes.',
 		...rules.map(({ incident, skill, text }) => `- [${skill}, incident ${incident}] ${text}`)

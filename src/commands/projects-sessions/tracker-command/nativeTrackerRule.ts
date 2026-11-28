@@ -20,8 +20,8 @@ export function nativeTrackerRuleRequest(
 	);
 }
 
-export function formatNativeTrackerRules(data: unknown): string {
-	const rules = Array.isArray(data) ? (data as TrackerSessionRule[]) : [data as TrackerSessionRule];
+export function formatNativeTrackerRules(data: TrackerSessionRule | TrackerSessionRule[]): string {
+	const rules = Array.isArray(data) ? data : [data];
 	return (
 		rules
 			.map(({ at, incident, skill, text }) => `${at} [${incident}] ${skill}: ${text}`)

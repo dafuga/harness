@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import type { TrackerSessionRule } from '../../../repositories/projects-sessions/TrackerSessionRuleRepository.types';
 import { formatNativeTrackerRules } from './nativeTrackerRule';
 import { lstatSync } from 'node:fs';
 import { homedir, userInfo } from 'node:os';
@@ -164,7 +165,7 @@ function renderNativeTracker(
 	}
 	switch (command) {
 		case 'rule':
-			console.log(formatNativeTrackerRules(data));
+			console.log(formatNativeTrackerRules(data as TrackerSessionRule | TrackerSessionRule[]));
 			return;
 		case 'job':
 			console.log(formatNativeTrackerJob(options.first, data as NativeTrackerJobResponse));

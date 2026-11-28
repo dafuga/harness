@@ -154,3 +154,8 @@
 .po-detail {
 	margin: 0;
 }
+
+.po-band .po-detail {
+	display: grid;
+	gap: var(--hx-space-16);
+}

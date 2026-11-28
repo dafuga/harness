@@ -22,13 +22,8 @@
 				"required": true
 			},
 			{
-				"name": "trackerSessionRuleEndpoint.store",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "trackerSessionRuleEndpoint.items",
-				"type": "unknown",
+				"name": "trackerSessionRuleEndpoint.dependencies",
+				"type": "TrackerLocalApiDependencies",
 				"required": true
 			},
 			{
@@ -60,13 +55,8 @@
 						"required": true
 					},
 					{
-						"name": "trackerSessionRuleEndpoint.store",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "trackerSessionRuleEndpoint.items",
-						"type": "unknown",
+						"name": "trackerSessionRuleEndpoint.dependencies",
+						"type": "TrackerLocalApiDependencies",
 						"required": true
 					},
 					{

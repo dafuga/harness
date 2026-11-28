@@ -114,7 +114,7 @@
 				"inputs": [
 					{
 						"name": "ProjectOverview.label.rule",
-						"type": "unknown",
+						"type": "TrackerSessionRule",
 						"required": true
 					}
 				],
@@ -132,7 +132,7 @@
 				"inputs": [
 					{
 						"name": "ProjectOverview.children.rule",
-						"type": "unknown",
+						"type": "TrackerSessionRule",
 						"required": true
 					}
 				],
@@ -328,6 +328,11 @@
 		},
 		{
 			"unit": "reports.style.project-overview-responsive",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-session-rule",
 			"via": "import",
 			"origin": "derived"
 		}

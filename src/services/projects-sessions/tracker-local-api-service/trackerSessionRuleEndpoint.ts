@@ -12,9 +12,10 @@ import { trackerResponse } from './trackerLocalResponse';
 
 export async function trackerSessionRuleEndpoint(
 	request: Request,
-	{ store, items }: TrackerLocalApiDependencies,
+	dependencies: TrackerLocalApiDependencies,
 	actor: string | null
 ): Promise<Response> {
+	const { store, items } = dependencies;
 	const rules = new TrackerSessionRuleRepository(store.database);
 	if (request.method === 'GET') return listRules(request, rules);
 	if (request.method !== 'POST') return trackerResponse(405, { error: 'method not allowed' });
@@ -22,7 +23,14 @@ export async function trackerSessionRuleEndpoint(
 	const skill = input.skill;
 	const text = typeof input.text === 'string' ? input.text.trim() : input.text;
 	const from = input.from;
-	if (typeof from !== 'string' || !from || !trackerRuleSkill(skill) || !trackerRuleText(text))
+	if (
+		typeof from !== 'string' ||
+		!from ||
+		typeof skill !== 'string' ||
+		!trackerRuleSkill(skill) ||
+		typeof text !== 'string' ||
+		!trackerRuleText(text)
+	)
 		throw new TrackerItemReadError(
 			'supply an incident, a skill name and a single-line rule of up to 500 characters without credentials or private paths'
 		);
