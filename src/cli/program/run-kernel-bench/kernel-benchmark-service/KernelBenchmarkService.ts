@@ -20,7 +20,8 @@ import type { UnitRuntime } from '../../../../core/execution-runtimes/runtimeTyp
 import type { RuntimeKind } from '../../../../core/development-tooling/unitTypes';
 import {
 	benchMeasurement,
-	type MeasureContext
+	type MeasureContext,
+	type Value
 } from '../../../../utils/verification-evidence/benchMeasurement';
 import { benchSamples } from './benchSamples';
 import { median } from '../../../../utils/development-tooling/benchSamples';
@@ -144,29 +145,28 @@ export class KernelBenchmarkService {
 		runtime: UnitRuntime
 	): Promise<BenchMeasurement> {
 		const base = { target, metric: 'memory-bytes', unitOfMeasure: 'bytes', workload: run.id };
+		const report = (value: Value, method: string) =>
+			benchMeasurement(this.context, {
+				...base,
+				value,
+				method,
+				samples: typeof value === 'number' && value > 0 ? 1 : undefined
+			});
 		if (runtime instanceof WasmRuntimeAdapter) {
 			const method = 'Linear memory size of the instantiated module after the warm loop.';
-			return benchMeasurement(this.context, {
-				...base,
-				value: await runtime.memoryBytes(),
-				method
-			});
+			return report(await runtime.memoryBytes(), method);
 		}
 		if (target === 'process' && this.artifacts.native) {
 			const peak = await peakMemory(this.artifacts.native, [], JSON.stringify(run.request));
 			const value = 'bytes' in peak ? peak.bytes : peak;
 			const method = 'Peak resident set size of one native process run, from /usr/bin/time.';
-			return benchMeasurement(this.context, { ...base, value, method });
+			return report(value, method);
 		}
 		const unavailable =
 			target === 'http'
 				? 'Memory belongs to the serving process, not to the caller.'
 				: 'In-process module memory cannot be attributed to one unit.';
-		return benchMeasurement(this.context, {
-			...base,
-			value: { unavailable },
-			method: 'Not measured.'
-		});
+		return report({ unavailable }, 'Not measured.');
 	}
 }
 

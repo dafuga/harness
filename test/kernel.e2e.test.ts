@@ -47,6 +47,30 @@ function recordBenchmarks(bench: Bench): void {
 const find = (bench: Bench, target: string, metric: string) =>
 	bench.measurements.filter((item) => item.target === target && item.metric === metric);
 
+function expectKernelMemory(bench: Bench): void {
+	for (const target of ['process', 'wasm']) {
+		const memory = find(bench, target, 'memory-bytes');
+		expect(memory.map((item) => item.workload)).toEqual(bench.workloads.map(({ id }) => id));
+		for (const item of memory) {
+			const label = `${target} ${item.workload} memory`;
+			expect(item).toMatchObject({
+				unit: 'kernel.impact-kernel',
+				unitOfMeasure: 'bytes',
+				profile: bench.profile.id
+			});
+			expect(item.value, label).toBeGreaterThan(0);
+			expect.soft(item.samples, `${label} samples`).toBeGreaterThan(0);
+			const latency = ['latency-cold-ms', 'latency-warm-ms'].flatMap((metric) =>
+				find(bench, target, metric)
+			);
+			expect(
+				latency.some((time) => time.workload === item.workload),
+				label
+			).toBe(true);
+		}
+	}
+}
+
 test('kernel parity compares the reference with the built Wasm and native runtimes', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-kernel-'));
 	const parity = JSON.parse((await runHarness(['kernel', 'parity', '--json'], root)).stdout);
@@ -74,7 +98,7 @@ test('kernel bench measures identical workloads fairly and records unavailable v
 
 	expect(bench.contract).toBe('impact-kernel/1');
 	expect(bench.profile.cores).toBeGreaterThan(0);
-	expect(bench.workloads.length).toBeGreaterThanOrEqual(2);
+	expect(bench.workloads.map(({ id }) => id)).toEqual(['graph-100', 'graph-1k']);
 	for (const workload of bench.workloads) expect(workload.requestBytes).toBeGreaterThan(0);
 	for (const target of ['module', 'wasm', 'process', 'http']) {
 		for (const metric of ['latency-cold-ms', 'latency-warm-ms', 'throughput-ops']) {
@@ -88,10 +112,10 @@ test('kernel bench measures identical workloads fairly and records unavailable v
 			}
 		}
 	}
-	const memory = (target: string) => find(bench, target, 'memory-bytes')[0];
-	expect(memory('wasm').value).toBeGreaterThan(0);
-	expect(memory('module')).toMatchObject({ value: null });
-	expect(memory('module').unavailable).toMatch(/cannot be attributed/);
+	expectKernelMemory(bench);
+	const moduleMemory = find(bench, 'module', 'memory-bytes')[0];
+	expect(moduleMemory).toMatchObject({ value: null });
+	expect(moduleMemory.unavailable).toMatch(/cannot be attributed/);
 	expect(find(bench, 'wasm', 'artifact-bytes')[0].artifacts[0].sha256).toMatch(/^[0-9a-f]{64}$/);
 	expect(find(bench, 'process', 'artifact-bytes')[0].value).toBeGreaterThan(1000);
 	expect(find(bench, 'module', 'source-bytes')[0].value).toBeGreaterThan(1000);
