@@ -5,6 +5,9 @@ import { readSealedDeviceSession } from '../../../remote/src/utils/networking-se
 import { bootstrapCandidate } from '../../test/support/syncBootstrapCandidate';
 import { startSync } from '../../test/support/syncFixture';
 import { hostedFixture, ada, clientId } from './hosted-fixture';
+import { shown } from './hub-web-push-page';
+
+test.use({ channel: 'chromium' });
 
 const account = 'google:fixture-a';
 const admin = 'session-a';
@@ -128,6 +131,16 @@ async function decideFromBrowser(
 	const review = inbox.getByRole('button', { name: 'Review Harness Hub' });
 	await capture(page, testInfo, 'inbox');
 	await expect(review).toBeVisible({ timeout: 19_000 });
+	await expect
+		.poll(() => shown(page))
+		.toEqual([
+			{
+				title: 'Harness',
+				body: 'A device sign-in is ready for review.',
+				tag: 'harness-device-approval',
+				data: null
+			}
+		]);
 	await capture(page, testInfo, 'inbox');
 	await review.click();
 	const dialog = page.getByRole('dialog', { name: 'Approve Harness Hub' });
@@ -175,6 +188,11 @@ test('each Hub browser sign-in waits for a verified device approval, including a
 			)
 		);
 		const decisions = await admitBrowser(fixture, page, testInfo);
+		await page.context().grantPermissions(['notifications']);
+		await page.evaluate(async () => {
+			await navigator.serviceWorker.register('/push-sw.js');
+			await navigator.serviceWorker.ready;
+		});
 		const target = await context.newPage();
 		const entered = await startBrowser(target, fixture.origin, [requester, returning]);
 		await expect(target.getByRole('heading', waiting)).toBeVisible({ timeout: 15_000 });
