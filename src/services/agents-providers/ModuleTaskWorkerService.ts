@@ -123,7 +123,10 @@ export class ModuleTaskWorkerService {
 			if (quota) await recordCooldown(this.root, input.provider, quota.resetsAt);
 			if (task.model !== 'auto' || !quota) throw error;
 			input.signal.throwIfAborted();
-			const choice: TaskSelection = { provider: 'codex', model: 'gpt-6-luna', intelligence: 'max' };
+			const choice: TaskSelection =
+				input.provider === 'codex'
+					? { provider: 'claude', model: 'claude-haiku-5-5', intelligence: 'medium' }
+					: { provider: 'codex', model: 'gpt-6-luna', intelligence: 'max' };
 			onFallback(choice);
 			const attempt = await dispatchTaskAttempt(this.runner, { ...input, ...choice }, executions);
 			return { ...attempt, fallback: true };
